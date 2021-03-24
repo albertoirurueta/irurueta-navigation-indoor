@@ -1,0 +1,1147 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PROSACRobustRssiRadioSourceEstimator2D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-indoor</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.indoor.radiosource</a> &gt; <span class="el_source">PROSACRobustRssiRadioSourceEstimator2D.java</span></div><h1>PROSACRobustRssiRadioSourceEstimator2D.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2018 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.indoor.radiosource;
+
+import com.irurueta.geometry.Point2D;
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.NotReadyException;
+import com.irurueta.navigation.indoor.RadioSource;
+import com.irurueta.navigation.indoor.RssiReadingLocated;
+import com.irurueta.numerical.robust.PROSACRobustEstimator;
+import com.irurueta.numerical.robust.PROSACRobustEstimatorListener;
+import com.irurueta.numerical.robust.RobustEstimator;
+import com.irurueta.numerical.robust.RobustEstimatorException;
+import com.irurueta.numerical.robust.RobustEstimatorMethod;
+import java.util.List;
+
+/**
+ * Robustly estimate 2D position, transmitted power and pathloss exponent of a radio source
+ * (e.g. WiFi access point or bluetooth beacon), by discarding outliers using PROSAC
+ * algorithm and assuming that the radio source emits isotropically following the
+ * expression below:
+ * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,
+ * where Pr is the received power (expressed in mW),
+ * Gt is the Gain of the transmission antenna
+ * Gr is the Gain of the receiver antenna
+ * d is the distance between emitter and receiver
+ * and lambda is the wavelength and is equal to: lambda = c / f,
+ * where c is the speed of light
+ * and f is the carrier frequency of the radio signal.
+ * Because usually information about the antenna of the radio source cannot be
+ * retrieved (because many measurements are made on unknown devices where
+ * physical access is not possible), this implementation will estimate the
+ * equivalent transmitted power as: Pte = Pt * Gt * Gr.
+ * If RssiReadings contain RSSI standard deviations, those values will be used,
+ * otherwise it will be assumed an RSSI standard deviation of 1 dB.
+ * Implementations of this class should be able to detect and discard outliers in
+ * order to find the best solution.
+ * &lt;p&gt;
+ * IMPORTANT: When using this class estimation can be done using a
+ * combination of radio source position, transmitted power and path loss
+ * exponent. However enabling all three estimations usually achieves
+ * inaccurate results. When using this class, estimation must be of at least
+ * one parameter (position, transmitted power or path loss exponent) when
+ * initial values are provided for the other two, and at most it should consist
+ * of two parameters (either position and transmitted power, position and
+ * path loss exponent or transmitted power and path loss exponent), providing an
+ * initial value for the remaining parameter.
+ *
+ * @param &lt;S&gt; a {@link RadioSource} type.
+ */
+@SuppressWarnings(&quot;Duplicates&quot;)
+public class PROSACRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends
+        RobustRssiRadioSourceEstimator2D&lt;S&gt; {
+
+    /**
+     * Constant defining default threshold to determine whether samples are inliers or not.
+     */
+    public static final double DEFAULT_THRESHOLD = 0.1;
+
+    /**
+     * Minimum value that can be set as threshold.
+     * Threshold must be strictly greater than 0.0.
+     */
+    public static final double MIN_THRESHOLD = 0.0;
+
+    /**
+     * Indicates that by default inliers will only be computed but not kept.
+     */
+    public static final boolean DEFAULT_COMPUTE_AND_KEEP_INLIERS = false;
+
+    /**
+     * Indicates that by default residuals will only be computed but not kept.
+     */
+    public static final boolean DEFAULT_COMPUTE_AND_KEEP_RESIDUALS = false;
+
+    /**
+     * Threshold to determine whether samples are inliers or not when testing possible solutions.
+     * The threshold refers to the amount of error on distance between estimated position and
+     * distances provided for each sample.
+     */
+<span class="fc" id="L94">    private double mThreshold = DEFAULT_THRESHOLD;</span>
+
+    /**
+     * Indicates whether inliers must be computed and kept.
+     */
+<span class="fc" id="L99">    private boolean mComputeAndKeepInliers = DEFAULT_COMPUTE_AND_KEEP_INLIERS;</span>
+
+    /**
+     * Indicates whether residuals must be computed and kept.
+     */
+<span class="fc" id="L104">    private boolean mComputeAndKeepResiduals = DEFAULT_COMPUTE_AND_KEEP_RESIDUALS;</span>
+
+    /**
+     * Quality scores corresponding to each provided sample.
+     * The larger the score value the better the quality of the sample.
+     */
+    private double[] mQualityScores;
+
+    /**
+     * Constructor.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D() {
+<span class="fc" id="L116">        super();</span>
+<span class="fc" id="L117">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings signal readings belonging to the same radio source.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings) {
+<span class="fc" id="L128">        super(readings);</span>
+<span class="fc" id="L129">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener in charge of attending events raised by this instance.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+<span class="fc" id="L137">            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {</span>
+<span class="fc" id="L138">        mListener = listener;</span>
+<span class="fc" id="L139">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings signal readings belonging to the same radio source.
+     * @param listener listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L152">        super(readings, listener);</span>
+<span class="fc" id="L153">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition) {
+<span class="fc" id="L167">        super(readings, initialPosition);</span>
+<span class="fc" id="L168">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final Point2D initialPosition) {
+<span class="fc" id="L178">        super(initialPosition);</span>
+<span class="fc" id="L179">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final Point2D initialPosition,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L191">        super(initialPosition, listener);</span>
+<span class="fc" id="L192">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L208">        super(readings, initialPosition, listener);</span>
+<span class="fc" id="L209">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L220">        super(initialTransmittedPowerdBm);</span>
+<span class="fc" id="L221">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L236">        super(readings, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L237">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L250">        super(initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L251">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L268">        super(readings, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L269">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L287">        super(readings, initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L288">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L302">        super(initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L303">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   in charge of attending events raised by this instance.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L319">        super(initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L320">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L340">        super(readings, initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L341">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent) {
+<span class="fc" id="L361">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
+                initialPathLossExponent);
+<span class="fc" id="L363">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent) {
+<span class="fc" id="L379">        super(initialPosition, initialTransmittedPowerdBm,</span>
+                initialPathLossExponent);
+<span class="fc" id="L381">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L399">        super(initialPosition, initialTransmittedPowerdBm,</span>
+                initialPathLossExponent, listener);
+<span class="fc" id="L401">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L423">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
+                initialPathLossExponent, listener);
+<span class="fc" id="L425">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      sample. The larger the score value the better
+     *                      the quality of the sample.
+     * @throws IllegalArgumentException if quality scores is null, or length
+     *                                  of quality scores is less than required minimum.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final double[] qualityScores) {
+<span class="fc" id="L438">        super();</span>
+<span class="fc" id="L439">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L440">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      sample. The larger the score value the better
+     *                      the quality of the sample.
+     * @param readings      signal readings belonging to the same radio source.
+     * @throws IllegalArgumentException if readings are not valid, quality scores
+     *                                  is null, or length of quality scores is less than required minimum.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings) {
+<span class="fc" id="L456">        super(readings);</span>
+<span class="fc" id="L457">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L458">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      sample. The larger the score value the better
+     *                      the quality of the sample.
+     * @param listener      listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if quality scores is null, or length
+     *                                  of quality scores is less than required minimum.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final double[] qualityScores,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L473">        super(listener);</span>
+<span class="fc" id="L474">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L475">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      sample. The larger the score value the better
+     *                      the quality of the sample.
+     * @param readings      signal readings belonging to the same radio source.
+     * @param listener      listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid, quality scores
+     *                                  is null, or length of quality scores is less than required minimum.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L493">        super(readings, listener);</span>
+<span class="fc" id="L494">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L495">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        sample. The larger the score value the better
+     *                        the quality of the sample.
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @throws IllegalArgumentException if readings are not valid, quality scores
+     *                                  is null, or length of quality scores is less than required minimum.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition) {
+<span class="fc" id="L514">        super(readings, initialPosition);</span>
+<span class="fc" id="L515">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L516">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        sample. The larger the score value the better
+     *                        the quality of the sample.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final double[] qualityScores,
+            final Point2D initialPosition) {
+<span class="fc" id="L530">        super(initialPosition);</span>
+<span class="fc" id="L531">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L532">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        sample. The larger the score value the better
+     *                        the quality of the sample.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if quality scores is null, or length
+     *                                  of quality scores is less than required minimum.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final double[] qualityScores,
+            final Point2D initialPosition,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L550">        super(initialPosition, listener);</span>
+<span class="fc" id="L551">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L552">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        sample. The larger the score value the better
+     *                        the quality of the sample.
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid, quality scores
+     *                                  is null, or length of quality scores is less than required minimum.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L573">        super(readings, initialPosition, listener);</span>
+<span class="fc" id="L574">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L575">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @throws IllegalArgumentException if quality scores is null, or length
+     *                                  of quality scores is less than required minimum.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final double[] qualityScores,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L592">        super(initialTransmittedPowerdBm);</span>
+<span class="fc" id="L593">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L594">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @throws IllegalArgumentException if readings are not valid, quality scores
+     *                                  is null, or length of quality scores is less than required minimum.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L614">        super(readings, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L615">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L616">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if quality scores is null, or length
+     *                                  of quality scores is less than required minimum.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final double[] qualityScores,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L635">        super(initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L636">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L637">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid, quality scores
+     *                                  is null, or length of quality scores is less than required minimum.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L659">        super(readings, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L660">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L661">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @throws IllegalArgumentException if readings are not valid, quality scores
+     *                                  is null, or length of quality scores is less than required minimum.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L684">        super(readings, initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L685">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L686">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @throws IllegalArgumentException if quality scores is null, or length
+     *                                  of quality scores is less than required minimum.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final double[] qualityScores,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L706">        super(initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L707">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L708">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if quality scores is null, or length
+     *                                  of quality scores is less than required minimum.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final double[] qualityScores,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L730">        super(initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L731">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L732">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid, quality scores
+     *                                  is null, or length of quality scores is less than required minimum.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L757">        super(readings, initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L758">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L759">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @throws IllegalArgumentException if readings are not valid, quality scores
+     *                                  is null, or length of quality scores is less than required minimum.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent) {
+<span class="fc" id="L784">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
+                initialPathLossExponent);
+<span class="fc" id="L786">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L787">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final double[] qualityScores,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent) {
+<span class="fc" id="L807">        super(initialPosition, initialTransmittedPowerdBm,</span>
+                initialPathLossExponent);
+<span class="fc" id="L809">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L810">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final double[] qualityScores,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L832">        super(initialPosition, initialTransmittedPowerdBm,</span>
+                initialPathLossExponent, listener);
+<span class="fc" id="L834">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L835">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid, quality scores
+     *                                  is null, or length of quality scores is less than required minimum.
+     */
+    public PROSACRobustRssiRadioSourceEstimator2D(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L862">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
+                initialPathLossExponent, listener);
+<span class="fc" id="L864">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L865">    }</span>
+
+    /**
+     * Gets threshold to determine whether samples are inliers or not when testing possible solutions.
+     * The threshold refers to the amount of error on distance between estimated position and distances
+     * provided for each sample.
+     *
+     * @return threshold to determine whether samples are inliers or not.
+     */
+    public double getThreshold() {
+<span class="fc" id="L875">        return mThreshold;</span>
+    }
+
+    /**
+     * Sets threshold to determine whether samples are inliers or not when testing possible solutions.
+     * The threshold refers to the amount of error on distance between estimated position and distances
+     * provided for each sample.
+     *
+     * @param threshold threshold to determine whether samples are inliers or not.
+     * @throws IllegalArgumentException if provided value is equal or less than zero.
+     * @throws LockedException          if this solver is locked.
+     */
+    public void setThreshold(final double threshold) throws LockedException {
+<span class="fc bfc" id="L888" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L889">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L891" title="All 2 branches covered.">        if (threshold &lt;= MIN_THRESHOLD) {</span>
+<span class="fc" id="L892">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L894">        mThreshold = threshold;</span>
+<span class="fc" id="L895">    }</span>
+
+    /**
+     * Returns quality scores corresponding to each pair of
+     * positions and distances (i.e. sample).
+     * The larger the score value the better the quality of the sample.
+     * This implementation always returns null.
+     * Subclasses using quality scores must implement proper behavior.
+     *
+     * @return quality scores corresponding to each sample.
+     */
+    @Override
+    public double[] getQualityScores() {
+<span class="fc" id="L908">        return mQualityScores;</span>
+    }
+
+    /**
+     * Sets quality scores corresponding to each pair of positions and
+     * distances (i.e. sample).
+     * The larger the score value the better the quality of the sample.
+     * This implementation makes no action.
+     * Subclasses using quality scores must implement proper behaviour.
+     *
+     * @param qualityScores quality scores corresponding to each pair of
+     *                      matched points.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than minimum required samples.
+     * @throws LockedException          if robust solver is locked because an
+     *                                  estimation is already in progress.
+     */
+    public void setQualityScores(final double[] qualityScores) throws LockedException {
+<span class="pc bpc" id="L926" title="1 of 2 branches missed.">        if (isLocked()) {</span>
+<span class="nc" id="L927">            throw new LockedException();</span>
+        }
+<span class="fc" id="L929">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L930">    }</span>
+
+    /**
+     * Indicates whether solver is ready to find a solution.
+     *
+     * @return true if solver is ready, false otherwise.
+     */
+    @Override
+    public boolean isReady() {
+<span class="fc bfc" id="L939" title="All 4 branches covered.">        return super.isReady() &amp;&amp; mQualityScores != null &amp;&amp;</span>
+<span class="pc bpc" id="L940" title="1 of 2 branches missed.">                mQualityScores.length == mReadings.size();</span>
+    }
+
+    /**
+     * Indicates whether inliers must be computed and kept.
+     *
+     * @return true if inliers must be computed and kept, false if inliers
+     * only need to be computed but not kept.
+     */
+    public boolean isComputeAndKeepInliersEnabled() {
+<span class="fc" id="L950">        return mComputeAndKeepInliers;</span>
+    }
+
+    /**
+     * Specifies whether inliers must be computed and kept.
+     *
+     * @param computeAndKeepInliers true if inliers must be computed and kept,
+     *                              false if inliers only need to be computed but not kept.
+     * @throws LockedException if this solver is locked.
+     */
+    public void setComputeAndKeepInliersEnabled(boolean computeAndKeepInliers)
+            throws LockedException {
+<span class="fc bfc" id="L962" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L963">            throw new LockedException();</span>
+        }
+<span class="fc" id="L965">        mComputeAndKeepInliers = computeAndKeepInliers;</span>
+<span class="fc" id="L966">    }</span>
+
+    /**
+     * Indicates whether residuals must be computed and kept.
+     *
+     * @return true if residuals must be computed and kept, false if residuals
+     * only need to be computed but not kept.
+     */
+    public boolean isComputeAndKeepResidualsEnabled() {
+<span class="fc" id="L975">        return mComputeAndKeepResiduals;</span>
+    }
+
+    /**
+     * Specifies whether residuals must be computed and kept.
+     *
+     * @param computeAndKeepResiduals true if residuals must be computed and kept,
+     *                                false if residuals only need to be computed but not kept.
+     * @throws LockedException if this solver is locked.
+     */
+    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals)
+            throws LockedException {
+<span class="fc bfc" id="L987" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L988">            throw new LockedException();</span>
+        }
+<span class="fc" id="L990">        mComputeAndKeepResiduals = computeAndKeepResiduals;</span>
+<span class="fc" id="L991">    }</span>
+
+    /**
+     * Robustly estimates position, transmitted power and pathloss exponent for a
+     * radio source.
+     *
+     * @throws LockedException          if instance is busy during estimation.
+     * @throws NotReadyException        if estimator is not ready.
+     * @throws RobustEstimatorException if estimation fails for any reason
+     *                                  (i.e. numerical instability, no solution available, etc).
+     */
+    @Override
+    public void estimate() throws LockedException, NotReadyException, RobustEstimatorException {
+<span class="fc bfc" id="L1004" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1005">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L1007" title="All 2 branches covered.">        if (!isReady()) {</span>
+<span class="fc" id="L1008">            throw new NotReadyException();</span>
+        }
+
+<span class="fc" id="L1011">        final PROSACRobustEstimator&lt;Solution&lt;Point2D&gt;&gt; innerEstimator =</span>
+                new PROSACRobustEstimator&lt;&gt;(
+<span class="fc" id="L1013">                        new PROSACRobustEstimatorListener&lt;Solution&lt;Point2D&gt;&gt;() {</span>
+
+                            @Override
+                            public double[] getQualityScores() {
+<span class="fc" id="L1017">                                return mQualityScores;</span>
+                            }
+
+                            @Override
+                            public double getThreshold() {
+<span class="fc" id="L1022">                                return mThreshold;</span>
+                            }
+
+                            @Override
+                            public int getTotalSamples() {
+<span class="fc" id="L1027">                                return mReadings.size();</span>
+                            }
+
+                            @Override
+                            public int getSubsetSize() {
+<span class="fc" id="L1032">                                return Math.max(mPreliminarySubsetSize, getMinReadings());</span>
+                            }
+
+                            @Override
+                            public void estimatePreliminarSolutions(
+                                    final int[] samplesIndices,
+                                    final List&lt;Solution&lt;Point2D&gt;&gt; solutions) {
+<span class="fc" id="L1039">                                solvePreliminarSolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L1040">                            }</span>
+
+                            @Override
+                            public double computeResidual(
+                                    final Solution&lt;Point2D&gt; currentEstimation,
+                                    final int i) {
+<span class="fc" id="L1046">                                return residual(currentEstimation, i);</span>
+                            }
+
+                            @Override
+                            public boolean isReady() {
+<span class="fc" id="L1051">                                return PROSACRobustRssiRadioSourceEstimator2D.this.isReady();</span>
+                            }
+
+                            @Override
+                            public void onEstimateStart(
+                                    final RobustEstimator&lt;Solution&lt;Point2D&gt;&gt; estimator) {
+<span class="fc" id="L1057">                            }</span>
+
+                            @Override
+                            public void onEstimateEnd(
+                                    final RobustEstimator&lt;Solution&lt;Point2D&gt;&gt; estimator) {
+<span class="fc" id="L1062">                            }</span>
+
+                            @Override
+                            public void onEstimateNextIteration(
+                                    final RobustEstimator&lt;Solution&lt;Point2D&gt;&gt; estimator,
+                                    final int iteration) {
+<span class="fc bfc" id="L1068" title="All 2 branches covered.">                                if (mListener != null) {</span>
+<span class="fc" id="L1069">                                    mListener.onEstimateNextIteration(</span>
+                                            PROSACRobustRssiRadioSourceEstimator2D.this,
+                                            iteration);
+                                }
+<span class="fc" id="L1073">                            }</span>
+
+                            @Override
+                            public void onEstimateProgressChange(
+                                    final RobustEstimator&lt;Solution&lt;Point2D&gt;&gt; estimator,
+                                    final float progress) {
+<span class="pc bpc" id="L1079" title="1 of 2 branches missed.">                                if (mListener != null) {</span>
+<span class="fc" id="L1080">                                    mListener.onEstimateProgressChange(</span>
+                                            PROSACRobustRssiRadioSourceEstimator2D.this,
+                                            progress);
+                                }
+<span class="fc" id="L1084">                            }</span>
+                        });
+
+        try {
+<span class="fc" id="L1088">            mLocked = true;</span>
+
+<span class="fc bfc" id="L1090" title="All 2 branches covered.">            if (mListener != null) {</span>
+<span class="fc" id="L1091">                mListener.onEstimateStart(this);</span>
+            }
+
+<span class="fc" id="L1094">            mInliersData = null;</span>
+<span class="fc bfc" id="L1095" title="All 4 branches covered.">            innerEstimator.setComputeAndKeepInliersEnabled(</span>
+                    mComputeAndKeepInliers || mRefineResult);
+<span class="fc bfc" id="L1097" title="All 4 branches covered.">            innerEstimator.setComputeAndKeepResidualsEnabled(</span>
+                    mComputeAndKeepResiduals || mRefineResult);
+<span class="fc" id="L1099">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L1100">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L1101">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L1102">            final Solution&lt;Point2D&gt; result = innerEstimator.estimate();</span>
+<span class="fc" id="L1103">            mInliersData = innerEstimator.getInliersData();</span>
+<span class="fc" id="L1104">            attemptRefine(result);</span>
+
+<span class="fc bfc" id="L1106" title="All 2 branches covered.">            if (mListener != null) {</span>
+<span class="fc" id="L1107">                mListener.onEstimateEnd(this);</span>
+            }
+
+<span class="nc" id="L1110">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L1111">            throw new LockedException(e);</span>
+<span class="nc" id="L1112">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L1113">            throw new NotReadyException(e);</span>
+        } finally {
+<span class="fc" id="L1115">            mLocked = false;</span>
+        }
+<span class="fc" id="L1117">    }</span>
+
+    /**
+     * Returns method being used for robust estimation.
+     *
+     * @return method being used for robust estimation.
+     */
+    @Override
+    public RobustEstimatorMethod getMethod() {
+<span class="fc" id="L1126">        return RobustEstimatorMethod.PROSAC;</span>
+    }
+
+    /**
+     * Sets quality scores corresponding to each provided sample.
+     * This method is used internally and does not check whether instance is
+     * locked or not.
+     *
+     * @param qualityScores quality scores to be set.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than required minimum.
+     */
+    private void internalSetQualityScores(final double[] qualityScores) {
+<span class="fc bfc" id="L1139" title="All 2 branches covered.">        if (qualityScores == null ||</span>
+<span class="fc bfc" id="L1140" title="All 2 branches covered.">                qualityScores.length &lt; getMinReadings()) {</span>
+<span class="fc" id="L1141">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L1144">        mQualityScores = qualityScores;</span>
+<span class="fc" id="L1145">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

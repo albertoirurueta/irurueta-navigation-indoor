@@ -1,0 +1,3066 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RobustRssiRadioSourceEstimator2D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-indoor</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.indoor.radiosource</a> &gt; <span class="el_source">RobustRssiRadioSourceEstimator2D.java</span></div><h1>RobustRssiRadioSourceEstimator2D.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2018 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.indoor.radiosource;
+
+import com.irurueta.algebra.Matrix;
+import com.irurueta.geometry.Point2D;
+import com.irurueta.navigation.NavigationException;
+import com.irurueta.navigation.indoor.Beacon;
+import com.irurueta.navigation.indoor.BeaconWithPowerAndLocated2D;
+import com.irurueta.navigation.indoor.RadioSource;
+import com.irurueta.navigation.indoor.RadioSourceWithPowerAndLocated;
+import com.irurueta.navigation.indoor.RssiReadingLocated;
+import com.irurueta.navigation.indoor.WifiAccessPoint;
+import com.irurueta.navigation.indoor.WifiAccessPointWithPowerAndLocated2D;
+import com.irurueta.numerical.robust.RobustEstimatorMethod;
+import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.List;
+
+/**
+ * This is an abstract class to robustly estimate 2D position, transmitted power and
+ * pathloss exponent of a radio source (e.g. WiFi access point or bluetooth beacon),
+ * by discarding outliers and assuming that the radio source emits isotropically
+ * following the expression below:
+ * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,
+ * where Pr is the received power (expressed in mW),
+ * Gt is the Gain of the transmission antena
+ * Gr is the Gain of the receiver antena
+ * d is the distance between emitter and receiver
+ * and lambda is the wavelength and is equal to: lambda = c / f,
+ * where c is the speed of light
+ * and f is the carrier frequency of the radio signal.
+ * Because usually information about the antena of the radio source cannot be
+ * retrieved (because many measurements are made on unkown devices where
+ * physical access is not possible), this implementation will estimate the
+ * equivalent transmitted power as: Pte = Pt * Gt * Gr.
+ * If RssiReadings contain RSSI standard deviations, those values will be used,
+ * otherwise it will be assumed an RSSI standard deviation of 1 dB.
+ * Implementations of this class should be able to detect and discard outliers in
+ * order to find the best solution.
+ * &lt;p&gt;
+ * IMPORTANT: Implementations of this class can choose to estimate a
+ * combination of radio source position, transmitted power and path loss
+ * exponent. However enabling all three estimations usually achieves
+ * inaccurate results. When using this class, estimation must be of at least
+ * one parameter (position, transmitted power or path loss exponent) when
+ * initial values are provided for the other two, and at most it should consist
+ * of two parameters (either position and transmitted power, position and
+ * path loss exponent or transmitted power and path loss exponent), providing an
+ * initial value for the remaining parameter.
+ *
+ * @param &lt;S&gt; a {@link RadioSource} type.
+ */
+@SuppressWarnings(&quot;Duplicates&quot;)
+public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends
+        RobustRssiRadioSourceEstimator&lt;S, Point2D&gt; {
+
+    /**
+     * Radio source estimator used internally.
+     */
+<span class="fc" id="L74">    protected RssiRadioSourceEstimator2D&lt;S&gt; mInnerEstimator =</span>
+            new RssiRadioSourceEstimator2D&lt;&gt;();
+
+    /**
+     * Subset of readings used by inner estimator.
+     */
+<span class="fc" id="L80">    private final List&lt;RssiReadingLocated&lt;S, Point2D&gt;&gt; mInnerReadings = new ArrayList&lt;&gt;();</span>
+
+    /**
+     * Constructor.
+     */
+    public RobustRssiRadioSourceEstimator2D() {
+<span class="fc" id="L86">        super();</span>
+<span class="fc" id="L87">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L88">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings signal readings belonging to the same radio source.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public RobustRssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings) {
+<span class="fc" id="L99">        super(readings);</span>
+<span class="fc" id="L100">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L101">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener in charge of attending events raised by this instance.
+     */
+    public RobustRssiRadioSourceEstimator2D(
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L110">        super(listener);</span>
+<span class="fc" id="L111">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L112">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings bleonging to the same radio source.
+     *
+     * @param readings signal readings belonging to the same radio source.
+     * @param listener listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public RobustRssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L125">        super(readings, listener);</span>
+<span class="fc" id="L126">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L127">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public RobustRssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition) {
+<span class="fc" id="L141">        super(readings, initialPosition);</span>
+<span class="fc" id="L142">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L143">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     */
+    public RobustRssiRadioSourceEstimator2D(
+            final Point2D initialPosition) {
+<span class="fc" id="L153">        super(initialPosition);</span>
+<span class="fc" id="L154">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L155">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     */
+    public RobustRssiRadioSourceEstimator2D(
+            final Point2D initialPosition,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L167">        super(initialPosition, listener);</span>
+<span class="fc" id="L168">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L169">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public RobustRssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L185">        super(readings, initialPosition, listener);</span>
+<span class="fc" id="L186">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L187">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     */
+    public RobustRssiRadioSourceEstimator2D(
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L198">        super(initialTransmittedPowerdBm);</span>
+<span class="fc" id="L199">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L200">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   WiFi signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public RobustRssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L215">        super(readings, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L216">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L217">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     */
+    public RobustRssiRadioSourceEstimator2D(
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L230">        super(initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L231">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L232">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   WiFi signal readings belonging to the radio source point.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public RobustRssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L249">        super(readings, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L250">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L251">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public RobustRssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L269">        super(readings, initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L270">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L271">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     */
+    public RobustRssiRadioSourceEstimator2D(
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L285">        super(initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L286">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L287">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     */
+    public RobustRssiRadioSourceEstimator2D(
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L303">        super(initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L304">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L305">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public RobustRssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L325">        super(readings, initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L326">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L327">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public RobustRssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent) {
+<span class="fc" id="L347">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
+                initialPathLossExponent);
+<span class="fc" id="L349">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L350">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     */
+    public RobustRssiRadioSourceEstimator2D(
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent) {
+<span class="fc" id="L366">        super(initialPosition, initialTransmittedPowerdBm,</span>
+                initialPathLossExponent);
+<span class="fc" id="L368">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L369">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     */
+    public RobustRssiRadioSourceEstimator2D(
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L387">        super(initialPosition, initialTransmittedPowerdBm,</span>
+                initialPathLossExponent, listener);
+<span class="fc" id="L389">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L390">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public RobustRssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L412">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
+                initialPathLossExponent, listener);
+<span class="fc" id="L414">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L415">    }</span>
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param method robust estimator method.
+     * @param &lt;S&gt;    a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L426" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L428">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;();</span>
+            case LMedS:
+<span class="fc" id="L430">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;();</span>
+            case MSAC:
+<span class="fc" id="L432">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;();</span>
+            case PROSAC:
+<span class="fc" id="L434">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;();</span>
+            case PROMedS:
+            default:
+<span class="fc" id="L437">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;();</span>
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param readings signal readings belonging to the same radio source.
+     * @param method   robust estimator method.
+     * @param &lt;S&gt;      a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L453" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L455">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings);
+            case LMedS:
+<span class="fc" id="L458">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings);
+            case MSAC:
+<span class="fc" id="L461">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings);
+            case PROSAC:
+<span class="fc" id="L464">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings);
+            case PROMedS:
+            default:
+<span class="fc" id="L468">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param listener listener in charge of attending events raised by this instance.
+     * @param method   robust estimator method.
+     * @param &lt;S&gt;      a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L484" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L486">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        listener);
+            case LMedS:
+<span class="fc" id="L489">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        listener);
+            case MSAC:
+<span class="fc" id="L492">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        listener);
+            case PROSAC:
+<span class="fc" id="L495">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        listener);
+            case PROMedS:
+            default:
+<span class="fc" id="L499">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        listener);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param readings signal readings belonging to the same radio source.
+     * @param listener listener in charge of attending events raised by this instance.
+     * @param method   robust estimator method.
+     * @param &lt;S&gt;      a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L518" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L520">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, listener);
+            case LMedS:
+<span class="fc" id="L523">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, listener);
+            case MSAC:
+<span class="fc" id="L526">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, listener);
+            case PROSAC:
+<span class="fc" id="L529">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, listener);
+            case PROMedS:
+            default:
+<span class="fc" id="L533">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param method          robust estimator method.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L553" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L555">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition);
+            case LMedS:
+<span class="fc" id="L558">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition);
+            case MSAC:
+<span class="fc" id="L561">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition);
+            case PROSAC:
+<span class="fc" id="L564">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition);
+            case PROMedS:
+            default:
+<span class="fc" id="L568">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param method          robust estimator method.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final Point2D initialPosition,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L585" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L587">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition);
+            case LMedS:
+<span class="fc" id="L590">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition);
+            case MSAC:
+<span class="fc" id="L593">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition);
+            case PROSAC:
+<span class="fc" id="L596">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition);
+            case PROMedS:
+            default:
+<span class="fc" id="L600">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     * @param method          robust estimator method.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final Point2D initialPosition,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L619" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L621">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, listener);
+            case LMedS:
+<span class="fc" id="L624">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, listener);
+            case MSAC:
+<span class="fc" id="L627">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, listener);
+            case PROSAC:
+<span class="fc" id="L630">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, listener);
+            case PROMedS:
+            default:
+<span class="fc" id="L634">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance
+     * @param method          robust estimator method.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L656" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L658">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, listener);
+            case LMedS:
+<span class="fc" id="L661">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, listener);
+            case MSAC:
+<span class="fc" id="L664">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, listener);
+            case PROSAC:
+<span class="fc" id="L667">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, listener);
+            case PROMedS:
+            default:
+<span class="fc" id="L671">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final Double initialTransmittedPowerdBm,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L689" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L691">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm);
+            case LMedS:
+<span class="fc" id="L694">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm);
+            case MSAC:
+<span class="fc" id="L697">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm);
+            case PROSAC:
+<span class="fc" id="L700">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm);
+            case PROMedS:
+            default:
+<span class="fc" id="L704">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Double initialTransmittedPowerdBm,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L725" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L727">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm);
+            case LMedS:
+<span class="fc" id="L730">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm);
+            case MSAC:
+<span class="fc" id="L733">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm);
+            case PROSAC:
+<span class="fc" id="L736">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm);
+            case PROMedS:
+            default:
+<span class="fc" id="L740">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L760" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L762">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm, listener);
+            case LMedS:
+<span class="fc" id="L765">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm, listener);
+            case MSAC:
+<span class="fc" id="L768">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm, listener);
+            case PROSAC:
+<span class="fc" id="L771">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm, listener);
+            case PROMedS:
+            default:
+<span class="fc" id="L775">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D radio source power and position estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L798" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L800">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm, listener);
+            case LMedS:
+<span class="fc" id="L803">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm, listener);
+            case MSAC:
+<span class="fc" id="L806">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm, listener);
+            case PROSAC:
+<span class="fc" id="L809">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm, listener);
+            case PROMedS:
+            default:
+<span class="fc" id="L813">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D radio source power and position estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L837" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L839">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm);
+            case LMedS:
+<span class="fc" id="L842">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm);
+            case MSAC:
+<span class="fc" id="L845">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm);
+            case PROSAC:
+<span class="fc" id="L848">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm);
+            case PROMedS:
+            default:
+<span class="fc" id="L852">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L873" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L875">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm);
+            case LMedS:
+<span class="fc" id="L878">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm);
+            case MSAC:
+<span class="fc" id="L881">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm);
+            case PROSAC:
+<span class="fc" id="L884">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm);
+            case PROMedS:
+            default:
+<span class="fc" id="L888">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L911" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L913">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm, listener);
+            case LMedS:
+<span class="fc" id="L916">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm, listener);
+            case MSAC:
+<span class="fc" id="L919">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm, listener);
+            case PROSAC:
+<span class="fc" id="L922">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm, listener);
+            case PROMedS:
+            default:
+<span class="fc" id="L926">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L952" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L954">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm, listener);
+            case LMedS:
+<span class="fc" id="L957">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm, listener);
+            case MSAC:
+<span class="fc" id="L960">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm, listener);
+            case PROSAC:
+<span class="fc" id="L963">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm, listener);
+            case PROMedS:
+            default:
+<span class="fc" id="L967">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L993" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L995">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+            case LMedS:
+<span class="fc" id="L999">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+            case MSAC:
+<span class="fc" id="L1003">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+            case PROSAC:
+<span class="fc" id="L1007">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+            case PROMedS:
+            default:
+<span class="fc" id="L1012">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1036" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1038">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+            case LMedS:
+<span class="fc" id="L1042">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+            case MSAC:
+<span class="fc" id="L1046">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+            case PROSAC:
+<span class="fc" id="L1050">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+            case PROMedS:
+            default:
+<span class="fc" id="L1055">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1081" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1083">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+            case LMedS:
+<span class="fc" id="L1087">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+            case MSAC:
+<span class="fc" id="L1091">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+            case PROSAC:
+<span class="fc" id="L1095">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+            case PROMedS:
+            default:
+<span class="fc" id="L1100">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1129" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1131">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+            case LMedS:
+<span class="fc" id="L1135">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+            case MSAC:
+<span class="fc" id="L1139">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+            case PROSAC:
+<span class="fc" id="L1143">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+            case PROMedS:
+            default:
+<span class="fc" id="L1148">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      sample. The larger the score value the better
+     *                      the quality of the sample.
+     * @param method        robust estimator method.
+     * @param &lt;S&gt;           a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores, final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1166" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1168">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;();</span>
+            case LMedS:
+<span class="fc" id="L1170">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;();</span>
+            case MSAC:
+<span class="fc" id="L1172">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;();</span>
+            case PROSAC:
+<span class="fc" id="L1174">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores);
+            case PROMedS:
+            default:
+<span class="fc" id="L1178">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      sample. The larger the score value the better
+     *                      the quality of the sample.
+     * @param readings      signal readings belonging to the same radio source.
+     * @param method        robust estimator method.
+     * @param &lt;S&gt;           a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1199" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1201">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings);
+            case LMedS:
+<span class="fc" id="L1204">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings);
+            case MSAC:
+<span class="fc" id="L1207">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings);
+            case PROSAC:
+<span class="fc" id="L1210">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, readings);
+            case PROMedS:
+            default:
+<span class="fc" id="L1214">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, readings);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      sample. The larger the score value the better
+     *                      the quality of the sample.
+     * @param listener      listener in charge of attending events raised by this instance.
+     * @param method        robust estimator method.
+     * @param &lt;S&gt;           a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1234" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1236">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        listener);
+            case LMedS:
+<span class="fc" id="L1239">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        listener);
+            case MSAC:
+<span class="fc" id="L1242">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        listener);
+            case PROSAC:
+<span class="fc" id="L1245">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, listener);
+            case PROMedS:
+            default:
+<span class="fc" id="L1249">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      sample. The larger the score value the better
+     *                      the quality of the sample.
+     * @param readings      signal readings belonging to the same radio source.
+     * @param listener      listener in charge of attending events raised by this instance.
+     * @param method        robust estimator method.
+     * @param &lt;S&gt;           a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1272" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1274">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, listener);
+            case LMedS:
+<span class="fc" id="L1277">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, listener);
+            case MSAC:
+<span class="fc" id="L1280">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, listener);
+            case PROSAC:
+<span class="fc" id="L1283">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, readings, listener);
+            case PROMedS:
+            default:
+<span class="fc" id="L1287">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, readings, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        sample. The larger the score value the better
+     *                        the quality of the sample.
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param method          robust estimator method.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1311" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1313">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition);
+            case LMedS:
+<span class="fc" id="L1316">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition);
+            case MSAC:
+<span class="fc" id="L1319">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition);
+            case PROSAC:
+<span class="fc" id="L1322">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, readings, initialPosition);
+            case PROMedS:
+            default:
+<span class="fc" id="L1326">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, readings, initialPosition);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        sample. The larger the score value the better
+     *                        the quality of the sample.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param method          robust estimator method.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores, final Point2D initialPosition,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1346" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1348">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition);
+            case LMedS:
+<span class="fc" id="L1351">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition);
+            case MSAC:
+<span class="fc" id="L1354">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition);
+            case PROSAC:
+<span class="fc" id="L1357">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, initialPosition);
+            case PROMedS:
+            default:
+<span class="fc" id="L1361">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, initialPosition);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        sample. The larger the score value the better
+     *                        the quality of the sample.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     * @param method          robust estimator method.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Point2D initialPosition,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1384" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1386">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, listener);
+            case LMedS:
+<span class="fc" id="L1389">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, listener);
+            case MSAC:
+<span class="fc" id="L1392">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, listener);
+            case PROSAC:
+<span class="fc" id="L1395">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, initialPosition, listener);
+            case PROMedS:
+            default:
+<span class="fc" id="L1399">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, initialPosition, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        sample. The larger the score value the better
+     *                        the quality of the sample.
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance
+     * @param method          robust estimator method.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1425" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1427">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, listener);
+            case LMedS:
+<span class="fc" id="L1430">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, listener);
+            case MSAC:
+<span class="fc" id="L1433">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, listener);
+            case PROSAC:
+<span class="fc" id="L1436">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, readings, initialPosition, listener);
+            case PROMedS:
+            default:
+<span class="fc" id="L1440">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, readings, initialPosition, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of access point transmitted power
+     *                                   (expressed in dBm's).
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Double initialTransmittedPowerdBm,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1462" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1464">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm);
+            case LMedS:
+<span class="fc" id="L1467">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm);
+            case MSAC:
+<span class="fc" id="L1470">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm);
+            case PROSAC:
+<span class="fc" id="L1473">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, initialTransmittedPowerdBm);
+            case PROMedS:
+            default:
+<span class="fc" id="L1477">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, initialTransmittedPowerdBm);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Double initialTransmittedPowerdBm,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1502" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1504">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm);
+            case LMedS:
+<span class="fc" id="L1507">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm);
+            case MSAC:
+<span class="fc" id="L1510">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm);
+            case PROSAC:
+<span class="fc" id="L1513">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, readings, initialTransmittedPowerdBm);
+            case PROMedS:
+            default:
+<span class="fc" id="L1517">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, readings, initialTransmittedPowerdBm);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1541" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1543">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm, listener);
+            case LMedS:
+<span class="fc" id="L1546">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm, listener);
+            case MSAC:
+<span class="fc" id="L1549">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm, listener);
+            case PROSAC:
+<span class="fc" id="L1552">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, initialTransmittedPowerdBm, listener);
+            case PROMedS:
+            default:
+<span class="fc" id="L1556">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, initialTransmittedPowerdBm, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1583" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1585">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm, listener);
+            case LMedS:
+<span class="fc" id="L1588">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm, listener);
+            case MSAC:
+<span class="fc" id="L1591">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm, listener);
+            case PROSAC:
+<span class="fc" id="L1594">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, readings, initialTransmittedPowerdBm, listener);
+            case PROMedS:
+            default:
+<span class="fc" id="L1598">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, readings, initialTransmittedPowerdBm, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1626" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1628">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm);
+            case LMedS:
+<span class="fc" id="L1631">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm);
+            case MSAC:
+<span class="fc" id="L1634">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm);
+            case PROSAC:
+<span class="fc" id="L1637">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, readings, initialPosition,
+                        initialTransmittedPowerdBm);
+            case PROMedS:
+            default:
+<span class="fc" id="L1642">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, readings, initialPosition,
+                        initialTransmittedPowerdBm);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1668" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1670">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm);
+            case LMedS:
+<span class="fc" id="L1673">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm);
+            case MSAC:
+<span class="fc" id="L1676">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm);
+            case PROSAC:
+<span class="fc" id="L1679">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, initialPosition, initialTransmittedPowerdBm);
+            case PROMedS:
+            default:
+<span class="fc" id="L1683">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, initialPosition, initialTransmittedPowerdBm);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1710" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1712">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm, listener);
+            case LMedS:
+<span class="fc" id="L1715">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm, listener);
+            case MSAC:
+<span class="fc" id="L1718">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm, listener);
+            case PROSAC:
+<span class="fc" id="L1721">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, initialPosition, initialTransmittedPowerdBm,
+                        listener);
+            case PROMedS:
+            default:
+<span class="fc" id="L1726">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, initialPosition, initialTransmittedPowerdBm,
+                        listener);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1757" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1759">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm, listener);
+            case LMedS:
+<span class="fc" id="L1762">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm, listener);
+            case MSAC:
+<span class="fc" id="L1765">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm, listener);
+            case PROSAC:
+<span class="fc" id="L1768">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, readings, initialPosition,
+                        initialTransmittedPowerdBm, listener);
+            case PROMedS:
+            default:
+<span class="fc" id="L1773">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, readings, initialPosition,
+                        initialTransmittedPowerdBm, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1804" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1806">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+            case LMedS:
+<span class="fc" id="L1810">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+            case MSAC:
+<span class="fc" id="L1814">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+            case PROSAC:
+<span class="fc" id="L1818">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, readings, initialPosition,
+                        initialTransmittedPowerdBm, initialPathLossExponent);
+            case PROMedS:
+            default:
+<span class="fc" id="L1823">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, readings, initialPosition,
+                        initialTransmittedPowerdBm, initialPathLossExponent);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1851" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1853">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+            case LMedS:
+<span class="fc" id="L1857">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+            case MSAC:
+<span class="fc" id="L1861">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+            case PROSAC:
+<span class="fc" id="L1865">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, initialPosition,
+                        initialTransmittedPowerdBm, initialPathLossExponent);
+            case PROMedS:
+            default:
+<span class="fc" id="L1870">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, initialPosition,
+                        initialTransmittedPowerdBm, initialPathLossExponent);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1900" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1902">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+            case LMedS:
+<span class="fc" id="L1906">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+            case MSAC:
+<span class="fc" id="L1910">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+            case PROSAC:
+<span class="fc" id="L1914">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, initialPosition,
+                        initialTransmittedPowerdBm, initialPathLossExponent,
+                        listener);
+            case PROMedS:
+            default:
+<span class="fc" id="L1920">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, initialPosition,
+                        initialTransmittedPowerdBm, initialPathLossExponent,
+                        listener);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1954" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1956">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+            case LMedS:
+<span class="fc" id="L1960">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+            case MSAC:
+<span class="fc" id="L1964">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+            case PROSAC:
+<span class="fc" id="L1968">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, readings, initialPosition,
+                        initialTransmittedPowerdBm, initialPathLossExponent,
+                        listener);
+            case PROMedS:
+            default:
+<span class="fc" id="L1974">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+                        qualityScores, readings, initialPosition,
+                        initialTransmittedPowerdBm, initialPathLossExponent,
+                        listener);
+        }
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param &lt;S&gt; a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create() {
+<span class="fc" id="L1989">        return create(DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param readings signal readings belonging to the same radio source.
+     * @param &lt;S&gt;      a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings) {
+<span class="fc" id="L2003">        return create(readings, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param listener listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;      a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L2016">        return create(listener, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param readings signal readings belonging to the same radio source.
+     * @param listener listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;      a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L2032">        return create(readings, listener, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition) {
+<span class="fc" id="L2049">        return create(readings, initialPosition, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final Point2D initialPosition) {
+<span class="fc" id="L2063">        return create(initialPosition, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final Point2D initialPosition,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L2079">        return create(initialPosition, listener, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L2098">        return create(readings, initialPosition, listener, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L2113">        return create(initialTransmittedPowerdBm, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L2131">        return create(readings, initialTransmittedPowerdBm, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L2148">        return create(initialTransmittedPowerdBm, listener, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L2168">        return create(readings, initialTransmittedPowerdBm, listener,</span>
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L2190">        return create(readings, initialPosition, initialTransmittedPowerdBm,</span>
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L2209">        return create(initialPosition, initialTransmittedPowerdBm,</span>
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L2230">        return create(initialPosition, initialTransmittedPowerdBm, listener,</span>
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L2254">        return create(readings, initialPosition, initialTransmittedPowerdBm, listener,</span>
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent) {
+<span class="fc" id="L2278">        return create(readings, initialPosition, initialTransmittedPowerdBm,</span>
+                initialPathLossExponent, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent) {
+<span class="fc" id="L2299">        return create(initialPosition, initialTransmittedPowerdBm,</span>
+                initialPathLossExponent, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L2322">        return create(initialPosition, initialTransmittedPowerdBm,</span>
+                initialPathLossExponent, listener, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L2348">        return create(readings, initialPosition, initialTransmittedPowerdBm,</span>
+                initialPathLossExponent, listener, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      sample. The larger the score value the better
+     *                      the quality of the sample.
+     * @param &lt;S&gt;           a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores) {
+<span class="fc" id="L2364">        return create(qualityScores, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      sample. The larger the score value the better
+     *                      the quality of the sample.
+     * @param readings      signal readings belonging to the same radio source.
+     * @param &lt;S&gt;           a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings) {
+<span class="fc" id="L2382">        return create(qualityScores, readings, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      sample. The larger the score value the better
+     *                      the quality of the sample.
+     * @param listener      listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;           a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L2399">        return create(qualityScores, listener, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      sample. The larger the score value the better
+     *                      the quality of the sample.
+     * @param readings      signal readings belonging to the same radio source.
+     * @param listener      listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;           a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L2419">        return create(qualityScores, readings, listener, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        sample. The larger the score value the better
+     *                        the quality of the sample.
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition) {
+<span class="fc" id="L2440">        return create(qualityScores, readings, initialPosition,</span>
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        sample. The larger the score value the better
+     *                        the quality of the sample.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Point2D initialPosition) {
+<span class="fc" id="L2459">        return create(qualityScores, initialPosition, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        sample. The larger the score value the better
+     *                        the quality of the sample.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Point2D initialPosition,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L2479">        return create(qualityScores, initialPosition, listener, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        sample. The larger the score value the better
+     *                        the quality of the sample.
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L2502">        return create(qualityScores, readings, initialPosition, listener,</span>
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L2522">        return create(qualityScores, initialTransmittedPowerdBm,</span>
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L2545">        return create(qualityScores, readings, initialTransmittedPowerdBm,</span>
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L2567">        return create(qualityScores, initialTransmittedPowerdBm, listener,</span>
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L2592">        return create(qualityScores, readings, initialTransmittedPowerdBm, listener,</span>
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L2618">        return create(qualityScores, readings, initialPosition,</span>
+                initialTransmittedPowerdBm, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L2641">        return create(qualityScores, initialPosition, initialTransmittedPowerdBm,</span>
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L2666">        return create(qualityScores, initialPosition, initialTransmittedPowerdBm,</span>
+                listener, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L2694">        return create(qualityScores, readings, initialPosition,</span>
+                initialTransmittedPowerdBm, listener, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent) {
+<span class="fc" id="L2722">        return create(qualityScores, readings, initialPosition,</span>
+                initialTransmittedPowerdBm, initialPathLossExponent,
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent) {
+<span class="fc" id="L2748">        return create(qualityScores, initialPosition,</span>
+                initialTransmittedPowerdBm, initialPathLossExponent,
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L2776">        return create(qualityScores, initialPosition, initialTransmittedPowerdBm,</span>
+                initialPathLossExponent, listener, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 2D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 2D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L2806">        return create(qualityScores, readings, initialPosition,</span>
+                initialTransmittedPowerdBm, initialPathLossExponent, listener,
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Gets minimum required number of readings to estimate
+     * power, position and pathloss exponent.
+     * This value depends on the number of parameters to
+     * be estimated, but for position only, this is 3
+     * readings.
+     *
+     * @return minimum required number of readings.
+     */
+    @Override
+    public int getMinReadings() {
+<span class="fc" id="L2822">        int minReadings = 0;</span>
+<span class="fc bfc" id="L2823" title="All 2 branches covered.">        if (isPositionEstimationEnabled()) {</span>
+<span class="fc" id="L2824">            minReadings += Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
+        }
+<span class="fc bfc" id="L2826" title="All 2 branches covered.">        if (isTransmittedPowerEstimationEnabled()) {</span>
+<span class="fc" id="L2827">            minReadings++;</span>
+        }
+<span class="fc bfc" id="L2829" title="All 2 branches covered.">        if (isPathLossEstimationEnabled()) {</span>
+<span class="fc" id="L2830">            minReadings++;</span>
+        }
+<span class="fc" id="L2832">        return ++minReadings;</span>
+    }
+
+    /**
+     * Gets number of dimensions of position points.
+     *
+     * @return always returns 2 dimensions.
+     */
+    @Override
+    public int getNumberOfDimensions() {
+<span class="fc" id="L2842">        return Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
+    }
+
+    /**
+     * Gets estimated located radio source with estimated transmitted power.
+     *
+     * @return estimated located radio source with estimated transmitted power or null.
+     */
+    @Override
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public RadioSourceWithPowerAndLocated&lt;Point2D&gt; getEstimatedRadioSource() {
+<span class="fc" id="L2853">        final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings = getReadings();</span>
+<span class="pc bpc" id="L2854" title="1 of 4 branches missed.">        if (readings == null || readings.isEmpty()) {</span>
+<span class="fc" id="L2855">            return null;</span>
+        }
+<span class="fc" id="L2857">        final S source = readings.get(0).getSource();</span>
+
+<span class="fc" id="L2859">        final Point2D estimatedPosition = getEstimatedPosition();</span>
+<span class="fc bfc" id="L2860" title="All 2 branches covered.">        if (estimatedPosition == null) {</span>
+<span class="fc" id="L2861">            return null;</span>
+        }
+
+<span class="fc" id="L2864">        final Matrix estimatedPositionCovariance = getEstimatedPositionCovariance();</span>
+
+<span class="fc" id="L2866">        final Double transmittedPowerVariance =</span>
+<span class="fc" id="L2867">                getEstimatedTransmittedPowerVariance();</span>
+<span class="fc bfc" id="L2868" title="All 2 branches covered.">        final Double transmittedPowerStandardDeviation = transmittedPowerVariance != null ?</span>
+<span class="fc" id="L2869">                Math.sqrt(transmittedPowerVariance) : null;</span>
+
+<span class="fc" id="L2871">        final Double pathlossExponentVariance =</span>
+<span class="fc" id="L2872">                getEstimatedPathLossExponentVariance();</span>
+<span class="fc bfc" id="L2873" title="All 2 branches covered.">        final Double pathlossExponentStandardDeviation = pathlossExponentVariance != null ?</span>
+<span class="fc" id="L2874">                Math.sqrt(pathlossExponentVariance) : null;</span>
+
+<span class="fc bfc" id="L2876" title="All 2 branches covered.">        if (source instanceof WifiAccessPoint) {</span>
+<span class="fc" id="L2877">            final WifiAccessPoint accessPoint = (WifiAccessPoint) source;</span>
+<span class="fc" id="L2878">            return new WifiAccessPointWithPowerAndLocated2D(accessPoint.getBssid(),</span>
+<span class="fc" id="L2879">                    source.getFrequency(), accessPoint.getSsid(),</span>
+<span class="fc" id="L2880">                    getEstimatedTransmittedPowerdBm(),</span>
+                    transmittedPowerStandardDeviation,
+<span class="fc" id="L2882">                    getEstimatedPathLossExponent(),</span>
+                    pathlossExponentStandardDeviation,
+                    estimatedPosition,
+                    estimatedPositionCovariance);
+<span class="pc bpc" id="L2886" title="1 of 2 branches missed.">        } else if (source instanceof Beacon) {</span>
+<span class="fc" id="L2887">            final Beacon beacon = (Beacon) source;</span>
+<span class="fc" id="L2888">            return new BeaconWithPowerAndLocated2D(beacon.getIdentifiers(),</span>
+<span class="fc" id="L2889">                    getEstimatedTransmittedPowerdBm(), beacon.getFrequency(),</span>
+<span class="fc" id="L2890">                    beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(),</span>
+<span class="fc" id="L2891">                    beacon.getManufacturer(), beacon.getServiceUuid(),</span>
+<span class="fc" id="L2892">                    beacon.getBluetoothName(),</span>
+<span class="fc" id="L2893">                    getEstimatedPathLossExponent(),</span>
+                    transmittedPowerStandardDeviation,
+                    pathlossExponentStandardDeviation,
+                    estimatedPosition, estimatedPositionCovariance);
+        } else {
+<span class="nc" id="L2898">            return null;</span>
+        }
+    }
+
+    /**
+     * Solves preliminar solution for a subset of samples.
+     *
+     * @param samplesIndices indices of subset samples.
+     * @param solutions      instance where solution will be stored.
+     */
+    @Override
+    protected void solvePreliminarSolutions(
+            final int[] samplesIndices,
+            final List&lt;Solution&lt;Point2D&gt;&gt; solutions) {
+
+        try {
+            int index;
+
+<span class="fc" id="L2916">            mInnerReadings.clear();</span>
+<span class="fc bfc" id="L2917" title="All 2 branches covered.">            for (final int samplesIndice : samplesIndices) {</span>
+<span class="fc" id="L2918">                index = samplesIndice;</span>
+<span class="fc" id="L2919">                mInnerReadings.add(mReadings.get(index));</span>
+            }
+
+            //initial transmitted power and position might or might not be available
+<span class="fc" id="L2923">            mInnerEstimator.setInitialTransmittedPowerdBm(</span>
+                    mInitialTransmittedPowerdBm);
+<span class="fc" id="L2925">            mInnerEstimator.setInitialPosition(mInitialPosition);</span>
+<span class="fc" id="L2926">            mInnerEstimator.setInitialPathLossExponent(mInitialPathLossExponent);</span>
+
+<span class="fc" id="L2928">            mInnerEstimator.setTransmittedPowerEstimationEnabled(mTransmittedPowerEstimationEnabled);</span>
+<span class="fc" id="L2929">            mInnerEstimator.setPositionEstimationEnabled(mPositionEstimationEnabled);</span>
+<span class="fc" id="L2930">            mInnerEstimator.setPathLossEstimationEnabled(mPathLossEstimationEnabled);</span>
+
+<span class="fc" id="L2932">            mInnerEstimator.setReadings(mInnerReadings);</span>
+
+<span class="fc" id="L2934">            mInnerEstimator.estimate();</span>
+
+<span class="fc" id="L2936">            final Point2D estimatedPosition = mInnerEstimator.getEstimatedPosition();</span>
+<span class="fc" id="L2937">            final double estimatedTransmittedPowerdBm =</span>
+<span class="fc" id="L2938">                    mInnerEstimator.getEstimatedTransmittedPowerdBm();</span>
+<span class="fc" id="L2939">            final double estimatedPathLossExponent =</span>
+<span class="fc" id="L2940">                    mInnerEstimator.getEstimatedPathLossExponent();</span>
+<span class="fc" id="L2941">            solutions.add(new Solution&lt;&gt;(estimatedPosition,</span>
+                    estimatedTransmittedPowerdBm, estimatedPathLossExponent));
+<span class="nc" id="L2943">        } catch (final NavigationException ignore) {</span>
+            //if anything fails, no solution is added
+<span class="fc" id="L2945">        }</span>
+<span class="fc" id="L2946">    }</span>
+
+    /**
+     * Attempts to refine estimated position and transmitted power contained in
+     * provided solution if refinement is requested.
+     * This method sets a refined result and transmitted power or provided input
+     * result if refinement is not requested or has failed.
+     * If refinement is enabled and it is requested to keep covariance, this method
+     * will also keep covariance of refined result.
+     * solution if not requested or refinement failed.
+     *
+     * @param result result to be refined.
+     */
+    protected void attemptRefine(final Solution&lt;Point2D&gt; result) {
+<span class="fc" id="L2960">        final Point2D initialPosition = result.getEstimatedPosition();</span>
+<span class="fc" id="L2961">        final double initialTransmittedPowerdBm =</span>
+<span class="fc" id="L2962">                result.getEstimatedTransmittedPowerdBm();</span>
+<span class="fc" id="L2963">        final double initialPathLossExponent = result.getEstimatedPathLossExponent();</span>
+
+<span class="pc bpc" id="L2965" title="1 of 4 branches missed.">        if (mRefineResult &amp;&amp; mInliersData != null) {</span>
+<span class="fc" id="L2966">            final BitSet inliers = mInliersData.getInliers();</span>
+<span class="fc" id="L2967">            final int nSamples = mReadings.size();</span>
+
+<span class="fc" id="L2969">            mInnerReadings.clear();</span>
+
+<span class="fc bfc" id="L2971" title="All 2 branches covered.">            for (int i = 0; i &lt; nSamples; i++) {</span>
+<span class="fc bfc" id="L2972" title="All 2 branches covered.">                if (inliers.get(i)) {</span>
+                    //sample is inlier
+<span class="fc" id="L2974">                    mInnerReadings.add(mReadings.get(i));</span>
+                }
+            }
+
+            try {
+<span class="fc" id="L2979">                mInnerEstimator.setInitialPosition(initialPosition);</span>
+<span class="fc" id="L2980">                mInnerEstimator.setInitialTransmittedPowerdBm(initialTransmittedPowerdBm);</span>
+<span class="fc" id="L2981">                mInnerEstimator.setInitialPathLossExponent(initialPathLossExponent);</span>
+<span class="fc" id="L2982">                mInnerEstimator.setTransmittedPowerEstimationEnabled(mTransmittedPowerEstimationEnabled);</span>
+<span class="fc" id="L2983">                mInnerEstimator.setPositionEstimationEnabled(mPositionEstimationEnabled);</span>
+<span class="fc" id="L2984">                mInnerEstimator.setPathLossEstimationEnabled(mPathLossEstimationEnabled);</span>
+<span class="fc" id="L2985">                mInnerEstimator.setReadings(mInnerReadings);</span>
+
+<span class="fc" id="L2987">                mInnerEstimator.estimate();</span>
+
+<span class="fc" id="L2989">                final Matrix cov = mInnerEstimator.getEstimatedCovariance();</span>
+<span class="pc bpc" id="L2990" title="2 of 4 branches missed.">                if (mKeepCovariance &amp;&amp; cov != null) {</span>
+                    //keep covariance
+<span class="fc" id="L2992">                    mCovariance = cov;</span>
+
+<span class="fc" id="L2994">                    final int dims = getNumberOfDimensions();</span>
+<span class="fc" id="L2995">                    int pos = 0;</span>
+<span class="fc bfc" id="L2996" title="All 2 branches covered.">                    if (mPositionEstimationEnabled) {</span>
+                        //position estimation enabled
+<span class="fc" id="L2998">                        final int d = dims - 1;</span>
+<span class="fc bfc" id="L2999" title="All 2 branches covered.">                        if (mEstimatedPositionCovariance == null) {</span>
+<span class="fc" id="L3000">                            mEstimatedPositionCovariance = mCovariance.</span>
+<span class="fc" id="L3001">                                    getSubmatrix(0, 0, d, d);</span>
+                        } else {
+<span class="fc" id="L3003">                            mCovariance.getSubmatrix(0, 0, d, d,</span>
+                                    mEstimatedPositionCovariance);
+                        }
+<span class="fc" id="L3006">                        pos += dims;</span>
+<span class="fc" id="L3007">                    } else {</span>
+                        //position estimation disabled
+<span class="fc" id="L3009">                        mEstimatedPositionCovariance = null;</span>
+                    }
+
+<span class="fc bfc" id="L3012" title="All 2 branches covered.">                    if (mTransmittedPowerEstimationEnabled) {</span>
+                        //transmitted power estimation enabled
+<span class="fc" id="L3014">                        mEstimatedTransmittedPowerVariance = mCovariance.</span>
+<span class="fc" id="L3015">                                getElementAt(pos, pos);</span>
+<span class="fc" id="L3016">                        pos++;</span>
+                    } else {
+                        //transmitted power estimation disabled
+<span class="fc" id="L3019">                        mEstimatedTransmittedPowerVariance = null;</span>
+                    }
+
+<span class="fc bfc" id="L3022" title="All 2 branches covered.">                    if (mPathLossEstimationEnabled) {</span>
+                        //pathloss exponent estimation enabled
+<span class="fc" id="L3024">                        mEstimatedPathLossExponentVariance = mCovariance.</span>
+<span class="fc" id="L3025">                                getElementAt(pos, pos);</span>
+                    } else {
+                        //pathloss exponent estimation disabled
+<span class="fc" id="L3028">                        mEstimatedPathLossExponentVariance = null;</span>
+                    }
+<span class="fc" id="L3030">                } else {</span>
+<span class="nc" id="L3031">                    mCovariance = null;</span>
+<span class="nc" id="L3032">                    mEstimatedPositionCovariance = null;</span>
+<span class="nc" id="L3033">                    mEstimatedTransmittedPowerVariance = null;</span>
+<span class="nc" id="L3034">                    mEstimatedPathLossExponentVariance = null;</span>
+                }
+
+<span class="fc" id="L3037">                mEstimatedPosition = mInnerEstimator.getEstimatedPosition();</span>
+<span class="fc" id="L3038">                mEstimatedTransmittedPowerdBm =</span>
+<span class="fc" id="L3039">                        mInnerEstimator.getEstimatedTransmittedPowerdBm();</span>
+<span class="fc" id="L3040">                mEstimatedPathLossExponent =</span>
+<span class="fc" id="L3041">                        mInnerEstimator.getEstimatedPathLossExponent();</span>
+<span class="nc" id="L3042">            } catch (final Exception e) {</span>
+                //refinement failed, so we return input value, and covariance
+                //becomes unavailable
+<span class="nc" id="L3045">                mCovariance = null;</span>
+<span class="nc" id="L3046">                mEstimatedPositionCovariance = null;</span>
+<span class="nc" id="L3047">                mEstimatedTransmittedPowerVariance = null;</span>
+<span class="nc" id="L3048">                mEstimatedPathLossExponentVariance = null;</span>
+
+<span class="nc" id="L3050">                mEstimatedPosition = initialPosition;</span>
+<span class="nc" id="L3051">                mEstimatedTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="nc" id="L3052">                mEstimatedPathLossExponent = initialPathLossExponent;</span>
+<span class="fc" id="L3053">            }</span>
+<span class="fc" id="L3054">        } else {</span>
+<span class="fc" id="L3055">            mCovariance = null;</span>
+<span class="fc" id="L3056">            mEstimatedPositionCovariance = null;</span>
+<span class="fc" id="L3057">            mEstimatedTransmittedPowerVariance = null;</span>
+<span class="fc" id="L3058">            mEstimatedPathLossExponentVariance = null;</span>
+
+<span class="fc" id="L3060">            mEstimatedPosition = initialPosition;</span>
+<span class="fc" id="L3061">            mEstimatedTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L3062">            mEstimatedPathLossExponent = initialPathLossExponent;</span>
+        }
+<span class="fc" id="L3064">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

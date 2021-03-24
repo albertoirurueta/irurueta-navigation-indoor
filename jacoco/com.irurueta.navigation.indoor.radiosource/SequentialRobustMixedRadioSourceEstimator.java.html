@@ -1,0 +1,2509 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SequentialRobustMixedRadioSourceEstimator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-indoor</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.indoor.radiosource</a> &gt; <span class="el_source">SequentialRobustMixedRadioSourceEstimator.java</span></div><h1>SequentialRobustMixedRadioSourceEstimator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2018 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.indoor.radiosource;
+
+import com.irurueta.algebra.AlgebraException;
+import com.irurueta.algebra.Matrix;
+import com.irurueta.geometry.Point;
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.NotReadyException;
+import com.irurueta.navigation.indoor.RadioSource;
+import com.irurueta.navigation.indoor.RadioSourceLocated;
+import com.irurueta.navigation.indoor.RangingAndRssiReadingLocated;
+import com.irurueta.navigation.indoor.RangingReadingLocated;
+import com.irurueta.navigation.indoor.ReadingLocated;
+import com.irurueta.navigation.indoor.RssiReadingLocated;
+import com.irurueta.navigation.indoor.Utils;
+import com.irurueta.numerical.robust.InliersData;
+import com.irurueta.numerical.robust.RobustEstimatorException;
+import com.irurueta.numerical.robust.RobustEstimatorMethod;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * This is an abstract class to robustly estimate position, transmitted power and pathloss
+ * exponent of a radio source (e.g. WiFi access point or bluetooth beacon), by discarding
+ * outliers and assuming that the ranging data is available to obtain position with
+ * greater accuracy and that the radio source emits isotropically following the
+ * expression below:
+ * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,
+ * where Pr is the received power (expressed in mW),
+ * Gt is the Gain of the transmission antena
+ * Gr is the Gain of the receiver antena
+ * d is the distance between emitter and receiver
+ * and lambda is the wavelength and is equal to: lambda = c / f,
+ * where c is the speed of light
+ * and f is the carrier frequency of the radio signal.
+ * &lt;p&gt;
+ * Implementations of this class sequentially estimate position and then remaining
+ * parameters. First ranging data is used to robustly estimate position and then
+ * remaining parameters are robustly estimated using former estimated position as
+ * an initial guess.
+ * &lt;p&gt;
+ * Because usually information about the antenna of the radio source cannot be
+ * retrieved (because many measurements are made on unknown devices where
+ * physical access is not possible), this implementation will estimate the
+ * equivalent transmitted power as: Pte = Pt * Gt * Gr.
+ * If Readings contain RSSI standard deviations, those values will be used,
+ * otherwise it will be assumed an RSSI standard deviation of 1 dB.
+ * &lt;p&gt;
+ * This implementation is like SequentialRobustRangingAndRssiRadioSourceEstimator but
+ * allows mixing different kinds of located radio source readings (ranging, RSSI
+ * and ranging+RSSI).
+ *
+ * @param &lt;S&gt; a {@link RadioSource} type.
+ * @param &lt;P&gt; a {@link Point} type.
+ */
+@SuppressWarnings({&quot;WeakerAccess&quot;, &quot;Duplicates&quot;})
+public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends RadioSource,
+        P extends Point&lt;P&gt;&gt; {
+
+    /**
+     * Default robust estimator method for robust position estimation using ranging
+     * data when no robust method is provided.
+     */
+<span class="fc" id="L78">    public static final RobustEstimatorMethod DEFAULT_PANGING_ROBUST_METHOD =</span>
+            RobustEstimatorMethod.PROMedS;
+
+    /**
+     * Default robust estimator method for pathloss exponent and transmitted power
+     * estimation using RSSI data when no robust method is provided.
+     */
+<span class="fc" id="L85">    public static final RobustEstimatorMethod DEFAULT_RSSI_ROBUST_METHOD =</span>
+            RobustEstimatorMethod.PROMedS;
+
+    /**
+     * Indicates that result is refined by default using all found inliers.
+     */
+    public static final boolean DEFAULT_REFINE_RESULT = true;
+
+    /**
+     * Indicates that covariance is kept by default after refining result.
+     */
+    public static final boolean DEFAULT_KEEP_COVARIANCE = true;
+
+    /**
+     * Default amount of progress variation before notifying a change in estimation progress.
+     * By default this is set to 5%.
+     */
+    public static final float DEFAULT_PROGRESS_DELTA = 0.05f;
+
+    /**
+     * Minimum allowed value for progress delta.
+     */
+    public static final float MIN_PROGRESS_DELTA = 0.0f;
+
+    /**
+     * Maximum allowed value for progress delta.
+     */
+    public static final float MAX_PROGRESS_DELTA = 1.0f;
+
+    /**
+     * Constant defining default confidence of the estimated result, which is
+     * 99%. This means that with a probability of 99% estimation will be
+     * accurate because chosen subsamples will be inliers.
+     */
+    public static final double DEFAULT_CONFIDENCE = 0.99;
+
+    /**
+     * Default maximum allowed number of iterations.
+     */
+    public static final int DEFAULT_MAX_ITERATIONS = 5000;
+
+    /**
+     * Minimum allowed confidence value.
+     */
+    public static final double MIN_CONFIDENCE = 0.0;
+
+    /**
+     * Maximum allowed confidence value.
+     */
+    public static final double MAX_CONFIDENCE = 1.0;
+
+    /**
+     * Minimum allowed number of iterations.
+     */
+    public static final int MIN_ITERATIONS = 1;
+
+    /**
+     * Indicates that by default position covariances of readings must be taken into account to increase
+     * the amount of standard deviation of each ranging measure by the amount of position standard deviation
+     * assuming that both measures are statistically independent.
+     */
+    public static final boolean DEFAULT_USE_READING_POSITION_COVARIANCES = true;
+
+    /**
+     * Internal robust estimator for position estimation.
+     */
+    protected RobustRangingRadioSourceEstimator&lt;S, P&gt; mRangingEstimator;
+
+    /**
+     * Internal robust estimator for pathloss exponent and transmitted power
+     * estimation.
+     */
+    protected RobustRssiRadioSourceEstimator&lt;S, P&gt; mRssiEstimator;
+
+    /**
+     * Robust method used for robust position estimation using ranging data.
+     */
+<span class="fc" id="L162">    protected RobustEstimatorMethod mRangingRobustMethod = DEFAULT_PANGING_ROBUST_METHOD;</span>
+
+    /**
+     * Robust method used for pathloss exponent and transmitted power estimation
+     * using RSSI data.
+     */
+<span class="fc" id="L168">    protected RobustEstimatorMethod mRssiRobustMethod = DEFAULT_RSSI_ROBUST_METHOD;</span>
+
+    /**
+     * Size of subsets to be checked during ranging robust estimation.
+     */
+    protected int mRangingPreliminarySubsetSize;
+
+    /**
+     * Size of subsets to be checked during RSSI robust estimation.
+     */
+    protected int mRssiPreliminarySubsetSize;
+
+    /**
+     * Threshold to determine when samples are inliers or not used during robust
+     * position estimation.
+     * If not defined, default threshold will be used.
+     */
+    protected Double mRangingThreshold;
+
+    /**
+     * Threshold to determine when samples are inliers or not used during robust
+     * pathloss exponent and transmitted power estimation.
+     */
+    protected Double mRssiThreshold;
+
+    /**
+     * Indicates whether position is estimated using RSSI data.
+     * If enough ranging readings are available, this is false and position is estimated using ranging readings,
+     * otherwise this is true and position is estimated using RSSI data in a less reliable way.
+     */
+    protected boolean mRssiPositionEnabled;
+
+    /**
+     * Signal readings belonging to the same radio source to be estimated.
+     */
+    private List&lt;? extends ReadingLocated&lt;P&gt;&gt; mReadings;
+
+    /**
+     * Quality scores corresponding to each provided sample.
+     * The larger the score value the better the quality of the sample.
+     */
+    private double[] mQualityScores;
+
+    /**
+     * Listener to be notified of events such as when estimation starts, ends or its
+     * progress significantly changes.
+     */
+    private SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; mListener;
+
+    /**
+     * Estimated position.
+     */
+    private P mEstimatedPosition;
+
+    /**
+     * Indicates if this instance is locked because estimation is being executed.
+     */
+    private boolean mLocked;
+
+    /**
+     * Amount of progress variation before notifying a progress change during estimation.
+     */
+<span class="fc" id="L230">    private float mProgressDelta = DEFAULT_PROGRESS_DELTA;</span>
+
+    /**
+     * Amount of confidence expressed as a value between 0.0 and 1.0 (which is equivalent
+     * to 100%) for robust position estimation. The amount of confidence indicates the
+     * probability that the estimated result is correct. Usually this value will be
+     * close to 1.0, but not exactly 1.0.
+     */
+<span class="fc" id="L238">    private double mRangingConfidence = DEFAULT_CONFIDENCE;</span>
+
+    /**
+     * Amoung of confidence expressed as a value between 0.0 and 1.0 (which is equivalent
+     * to 100%) for robust pathloss exponent and transmitted power estimation. The amount
+     * of confidence indicates the probability that the estimated result is correct.
+     * Usually this value will be close to 1.0, but not exactly 1.0.
+     */
+<span class="fc" id="L246">    private double mRssiConfidence = DEFAULT_CONFIDENCE;</span>
+
+    /**
+     * Maximum allowed number of iterations for robust position estimation. When the
+     * maximum number of iterations is exceeded, an approximate result might be
+     * available for retrieval.
+     */
+<span class="fc" id="L253">    private int mRangingMaxIterations = DEFAULT_MAX_ITERATIONS;</span>
+
+    /**
+     * Maximum allowed number of iterations for robust pathloss exponent and transmitted
+     * power estimation. When the maximum number of iterations is exceeded, an
+     * approximate result might be available for retrieval.
+     */
+<span class="fc" id="L260">    private int mRssiMaxIterations = DEFAULT_MAX_ITERATIONS;</span>
+
+    /**
+     * Indicates whether result must be refined using found inliers.
+     * If true, inliers will be computed and kept in any implementation regardless of the
+     * settings.
+     */
+<span class="fc" id="L267">    private boolean mRefineResult = DEFAULT_REFINE_RESULT;</span>
+
+    /**
+     * Indicates whether covariance must be kept after refining result.
+     * This setting is only taken into account if result is refined.
+     */
+<span class="fc" id="L273">    private boolean mKeepCovariance = DEFAULT_KEEP_COVARIANCE;</span>
+
+    /**
+     * Covariance of estimated position, power and/or pathloss exponent.
+     * This is only available when result has been refined and covariance is kept.
+     */
+    private Matrix mCovariance;
+
+    /**
+     * Covariance of estimated position.
+     * Size of this matrix will depend on the number of dimensions
+     * of estimated position (either 2 or 3).
+     * This value will only be available when position estimation is enabled.
+     */
+    private Matrix mEstimatedPositionCovariance;
+
+    /**
+     * Initially transmitted power to start the estimation of radio source
+     * transmitted power.
+     * If not defined, average value of received power readings will be used.
+     */
+    private Double mInitialTransmittedPowerdBm;
+
+    /**
+     * Initial position to start the estimation of radio source position.
+     * If not defined, centroid of provided located readings will be used.
+     */
+    private P mInitialPosition;
+
+    /**
+     * Initial exponent typically used on free space for path loss propagation in
+     * terms of distance.
+     * On different environments path loss exponent might have different values:
+     * - Free space: 2.0
+     * - Urban Area: 2.7 to 3.5
+     * - Suburban Area: 3 to 5
+     * - Indoor (line-of-sight): 1.6 to 1.8
+     * &lt;p&gt;
+     * If path loss exponent estimation is enabled, estimation will start at this
+     * value and will converge to the most appropriate value.
+     * If path loss exponent estimation is disabled, this value will be assumed
+     * to be exact and the estimated path loss exponent will be equal to this
+     * value.
+     */
+<span class="fc" id="L317">    private double mInitialPathLossExponent =</span>
+            MixedRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT;
+
+    /**
+     * Indicates whether transmitted power estimation is enabled or not.
+     */
+<span class="fc" id="L323">    private boolean mTransmittedPowerEstimationEnabled =</span>
+            MixedRadioSourceEstimator.DEFAULT_TRANSMITTED_POWER_ESTIMATION_ENABLED;
+
+    /**
+     * Indicates whether path loss estimation is enabled or not.
+     */
+<span class="fc" id="L329">    private boolean mPathLossEstimationEnabled =</span>
+            MixedRadioSourceEstimator.DEFAULT_PATHLOSS_ESTIMATION_ENABLED;
+
+    /**
+     * Estimated transmitted power expressed in dBm's or null if not available.
+     */
+    private Double mEstimatedTransmittedPowerdBm;
+
+    /**
+     * Estimated exponent typically used on free space for path loss propagation in
+     * terms of distance.
+     * On different environments path loss exponent might have different values:
+     * - Free space: 2.0
+     * - Urban Area: 2.7 to 3.5
+     * - Suburban Area: 3 to 5
+     * - Indoor (line-of-sight): 1.6 to 1.8
+     * If path loss exponent estimation is not enabled, this value will always be equal to
+     * {@link RssiRadioSourceEstimator#DEFAULT_PATH_LOSS_EXPONENT}
+     */
+<span class="fc" id="L348">    private double mEstimatedPathLossExponent =</span>
+            MixedRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT;
+
+    /**
+     * Variance of estimated transmitted power.
+     * This value will only be available when transmitted power
+     * estimation is enabled.
+     */
+    private Double mEstimatedTransmittedPowerVariance;
+
+    /**
+     * Variance of estimated path loss exponent.
+     * This value will only be available when pathloss
+     * exponent estimation is enabled.
+     */
+    private Double mEstimatedPathLossExponentVariance;
+
+    /**
+     * Data related to inliers found after estimation.
+     */
+    private InliersData mInliersData;
+
+    /**
+     * Indicates whether position covariances of readings must be taken into account to increase
+     * the amount of standard deviation of each ranging measure by the amount of position standard deviation
+     * assuming that both measures are statistically independent.
+     */
+<span class="fc" id="L375">    private boolean mUseReadingPositionCovariances = DEFAULT_USE_READING_POSITION_COVARIANCES;</span>
+
+    /**
+     * Indicates whether an homogeneous ranging linear solver is used to estimate preliminary positions.
+     */
+<span class="fc" id="L380">    private boolean mUseHomogeneousRangingLinearSolver =</span>
+            RangingRadioSourceEstimator.DEFAULT_USE_HOMOGENEOUS_LINEAR_SOLVER;
+
+    /**
+     * Number of ranging readings available among all readings.
+     */
+    private int mNumRangingReadings;
+
+    /**
+     * Number of RSSI readings available among all readings.
+     */
+    private int mNumRssiReadings;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L396">    public SequentialRobustMixedRadioSourceEstimator() {</span>
+<span class="fc" id="L397">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings signal readings belonging to the same radio source.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+<span class="fc" id="L407">            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings) {</span>
+<span class="fc" id="L408">        internalSetReadings(readings);</span>
+<span class="fc" id="L409">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener in charge of attending events raised by this instance.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+<span class="fc" id="L417">            final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {</span>
+<span class="fc" id="L418">        mListener = listener;</span>
+<span class="fc" id="L419">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings signal readings belonging to the same radio source.
+     * @param listener listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
+            final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L432">        this(readings);</span>
+<span class="fc" id="L433">        mListener = listener;</span>
+<span class="fc" id="L434">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
+            final P initialPosition) {
+<span class="fc" id="L448">        this(readings);</span>
+<span class="fc" id="L449">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L450">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+<span class="fc" id="L459">            final P initialPosition) {</span>
+<span class="fc" id="L460">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L461">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final P initialPosition,
+            final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L473">        this(listener);</span>
+<span class="fc" id="L474">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L475">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
+            final P initialPosition,
+            final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L491">        this(readings, listener);</span>
+<span class="fc" id="L492">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L493">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+<span class="fc" id="L503">            final Double initialTransmittedPowerdBm) {</span>
+<span class="fc" id="L504">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L505">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L520">        this(readings);</span>
+<span class="fc" id="L521">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L522">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final Double initialTransmittedPowerdBm,
+            final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L535">        this(listener);</span>
+<span class="fc" id="L536">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L537">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
+            final Double initialTransmittedPowerdBm,
+            final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L554">        this(readings, listener);</span>
+<span class="fc" id="L555">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L556">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
+            final P initialPosition,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L574">        this(readings);</span>
+<span class="fc" id="L575">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L576">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L577">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final P initialPosition,
+<span class="fc" id="L590">            final Double initialTransmittedPowerdBm) {</span>
+<span class="fc" id="L591">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L592">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L593">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   in charge of attenging events raised by this instance.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final P initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L609">        this(listener);</span>
+<span class="fc" id="L610">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L611">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L612">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
+            final P initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L632">        this(readings, listener);</span>
+<span class="fc" id="L633">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L634">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L635">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
+            final P initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent) {
+<span class="fc" id="L655">        this(readings, initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L656">        mInitialPathLossExponent = initialPathLossExponent;</span>
+<span class="fc" id="L657">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final P initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent) {
+<span class="fc" id="L673">        this(initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L674">        mInitialPathLossExponent = initialPathLossExponent;</span>
+<span class="fc" id="L675">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final P initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L693">        this(initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L694">        mInitialPathLossExponent = initialPathLossExponent;</span>
+<span class="fc" id="L695">    }</span>
+
+    /**
+     * Constructors.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
+            final P initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L717">        this(readings, initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L718">        mInitialPathLossExponent = initialPathLossExponent;</span>
+<span class="fc" id="L719">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided sample.
+     *                      The larger the score value the better the quality of
+     *                      the sample.
+     * @throws IllegalArgumentException if quality scores is null, or length of
+     *                                  quality scores is less than required minimum.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final double[] qualityScores) {
+<span class="fc" id="L732">        this();</span>
+<span class="fc" id="L733">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L734">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param qualityScores quality scores corresponding to each provided sample.
+     *                      The larger the score value the better the quality of
+     *                      the sample.
+     * @param readings      signal readings belonging to the same radio source.
+     * @throws IllegalArgumentException if readings are not valid, quality scores is
+     *                                  null, or length of quality scores is less than required minimum.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final double[] qualityScores,
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings) {
+<span class="fc" id="L750">        this(readings);</span>
+<span class="fc" id="L751">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L752">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores quality scores corresponding to each provided sample.
+     *                      The larger the score value the better the quality of
+     *                      the sample.
+     * @param listener      listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if quality scores is null, or length
+     *                                  of quality scores is less than required minimum.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final double[] qualityScores,
+            final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L767">        this(listener);</span>
+<span class="fc" id="L768">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L769">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param qualityScores quality scores corresponding to each provided sample.
+     *                      The larger the score value the better the quality of
+     *                      the sample.
+     * @param readings      signal readings belonging to the same radio source.
+     * @param listener      listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid, quality scores is
+     *                                  null, or length of quality scores is less than required minimum.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final double[] qualityScores,
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
+            final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L787">        this(readings, listener);</span>
+<span class="fc" id="L788">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L789">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param qualityScores   quality scores corresponding to each provided sample.
+     *                        The larger the score value the better the quality of
+     *                        the sample.
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @throws IllegalArgumentException if readings are not valid, quality scores is
+     *                                  null, or length of quality scores is less than required minimum.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final double[] qualityScores,
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
+            final P initialPosition) {
+<span class="fc" id="L808">        this(readings, initialPosition);</span>
+<span class="fc" id="L809">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L810">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores   quality scores corresponding to each provided sample.
+     *                        The larger the score value the better the quality of
+     *                        the sample.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @throws IllegalArgumentException if quality scores is null, or length
+     *                                  of quality scores is less than required minimum.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final double[] qualityScores,
+            final P initialPosition) {
+<span class="fc" id="L826">        this(initialPosition);</span>
+<span class="fc" id="L827">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L828">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores   quality scores corresponding to each provided sample.
+     *                        The larger the score value the better the quality of
+     *                        the sample.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if quality scores is null, or length
+     *                                  of quality scores is less than required minimum.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final double[] qualityScores,
+            final P initialPosition,
+            final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L846">        this(initialPosition, listener);</span>
+<span class="fc" id="L847">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L848">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param qualityScores   quality scores corresponding to each provided sample.
+     *                        The larger the score value the better the quality of
+     *                        the sample.
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid, quality scores
+     *                                  is null, or length of quality scores is less than required minimum.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final double[] qualityScores,
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
+            final P initialPosition,
+            final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L869">        this(readings, initialPosition, listener);</span>
+<span class="fc" id="L870">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L871">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores              quality scores corresponding to each provided sample.
+     *                                   The larger the score value the better the quality of
+     *                                   the sample.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @throws IllegalArgumentException if quality scores is null, or length
+     *                                  of quality scores is less than required minimum.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final double[] qualityScores,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L888">        this(initialTransmittedPowerdBm);</span>
+<span class="fc" id="L889">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L890">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param qualityScores              quality scores corresponding to each provided sample.
+     *                                   The larger the score value the better the quality of
+     *                                   the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @throws IllegalArgumentException if readings are not valid, quality scores
+     *                                  is null, or length of quality scores is less than required minimum.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final double[] qualityScores,
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L910">        this(readings, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L911">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L912">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores              quality scores corresponding to each provided sample.
+     *                                   The larger the score value the better the quality of
+     *                                   the sample.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if quality scores is null, or length
+     *                                  of quality scores is less than required minimum.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final double[] qualityScores,
+            final Double initialTransmittedPowerdBm,
+            final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L931">        this(initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L932">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L933">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid, quality scores
+     *                                  is null, or length of quality scores is less than required minimum.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final double[] qualityScores,
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
+            final Double initialTransmittedPowerdBm,
+            final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L955">        this(readings, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L956">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L957">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @throws IllegalArgumentException if readings are not valid, quality scores
+     *                                  is null, or length of quality scores is less than required minimum.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final double[] qualityScores,
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
+            final P initialPosition,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L980">        this(readings, initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L981">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L982">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @throws IllegalArgumentException if quality scores is null, or length
+     *                                  of quality scores is less than required minimum.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final double[] qualityScores,
+            final P initialPosition,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L1002">        this(initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L1003">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1004">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if quality scores is null, or length
+     *                                  of quality scores is less than required minimum.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final double[] qualityScores,
+            final P initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L1026">        this(initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L1027">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1028">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid, quality scores
+     *                                  is null, or length of quality scores is less than required minimum.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final double[] qualityScores,
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
+            final P initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L1053">        this(readings, initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L1054">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1055">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @throws IllegalArgumentException if readings are not valid, quality scores
+     *                                  is null, or length of quality scores is less than required minimum.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final double[] qualityScores,
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
+            final P initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent) {
+<span class="fc" id="L1080">        this(readings, initialPosition, initialTransmittedPowerdBm,</span>
+                initialPathLossExponent);
+<span class="fc" id="L1082">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1083">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @throws IllegalArgumentException if quality scores is null, or length
+     *                                  of quality scores is less than required minimum.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final double[] qualityScores,
+            final P initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent) {
+<span class="fc" id="L1105">        this(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);</span>
+<span class="fc" id="L1106">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1107">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if quality scores is null, or length
+     *                                  of quality scores is less than required minimum.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final double[] qualityScores,
+            final P initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L1131">        this(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent,</span>
+                listener);
+<span class="fc" id="L1133">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1134">    }</span>
+
+    /**
+     * Constructors.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid, quality scores
+     *                                  is null, or length of quality scores is less than required minimum.
+     */
+    public SequentialRobustMixedRadioSourceEstimator(
+            final double[] qualityScores,
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
+            final P initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L1161">        this(readings, initialPosition, initialTransmittedPowerdBm,</span>
+                initialPathLossExponent, listener);
+<span class="fc" id="L1163">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1164">    }</span>
+
+    /**
+     * Indicates whether estimator is locked during estimation.
+     *
+     * @return true if estimator is locked, false otherwise.
+     */
+    public boolean isLocked() {
+<span class="fc" id="L1172">        return mLocked;</span>
+    }
+
+    /**
+     * Returns amount of progress variation before notifying a progress change during
+     * estimation.
+     *
+     * @return amount of progress variation before notifying a progress change during
+     * estimation.
+     */
+    public float getProgressDelta() {
+<span class="fc" id="L1183">        return mProgressDelta;</span>
+    }
+
+    /**
+     * Sets amount of progress variation before notifying a progress change during
+     * estimation.
+     *
+     * @param progressDelta amount of progress variation before notifying a progress
+     *                      change during estimation.
+     * @throws IllegalArgumentException if progress delta is less than zero or greater than 1.
+     * @throws LockedException          if this estimator is locked.
+     */
+    public void setProgressDelta(final float progressDelta) throws LockedException {
+<span class="fc bfc" id="L1196" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1197">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L1199" title="All 4 branches covered.">        if (progressDelta &lt; MIN_PROGRESS_DELTA ||</span>
+                progressDelta &gt; MAX_PROGRESS_DELTA) {
+<span class="fc" id="L1201">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L1203">        mProgressDelta = progressDelta;</span>
+<span class="fc" id="L1204">    }</span>
+
+    /**
+     * Gets robust method used for robust position estimation using ranging data.
+     *
+     * @return robust method used for robust position estimation.
+     */
+    public RobustEstimatorMethod getRangingRobustMethod() {
+<span class="fc" id="L1212">        return mRangingRobustMethod;</span>
+    }
+
+    /**
+     * Sets robust method used for robust position estimation using ranging data.
+     *
+     * @param rangingRobustMethod robust method used for robust position estimation.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setRangingRobustMethod(
+            final RobustEstimatorMethod rangingRobustMethod) throws LockedException {
+<span class="fc bfc" id="L1223" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1224">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1226">        mRangingRobustMethod = rangingRobustMethod;</span>
+<span class="fc" id="L1227">    }</span>
+
+    /**
+     * Gets robust method used for pathloss exponent and transmitted power estimation
+     * using RSSI data.
+     *
+     * @return robust method used for pathloss exponent and transmitted power
+     * estimation.
+     */
+    public RobustEstimatorMethod getRssiRobustMethod() {
+<span class="fc" id="L1237">        return mRssiRobustMethod;</span>
+    }
+
+    /**
+     * Sets robust method used for pathloss exponent and transmitted power estimation
+     * using RSSI data.
+     *
+     * @param rssiRobustMethod robust method used for pathloss exponent and transmitted
+     *                         power estimation.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setRssiRobustMethod(
+            final RobustEstimatorMethod rssiRobustMethod) throws LockedException {
+<span class="fc bfc" id="L1250" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1251">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1253">        mRssiRobustMethod = rssiRobustMethod;</span>
+<span class="fc" id="L1254">    }</span>
+
+    /**
+     * Gets size of subsets to be checked during ranging robust estimation.
+     *
+     * @return size of subsets to be checked during ranging robust estimation.
+     */
+    public int getRangingPreliminarySubsetSize() {
+<span class="fc" id="L1262">        return mRangingPreliminarySubsetSize;</span>
+    }
+
+    /**
+     * Sets size of subsets to be checked during ranging robust estimation.
+     *
+     * @param rangingPreliminarySubsetSize size of subsets to be checked during
+     *                                     ranging robust estimation.
+     * @throws LockedException          if estimator is locked.
+     * @throws IllegalArgumentException if provided value is less than {@link #getMinReadings()}.
+     */
+    public void setRangingPreliminarySubsetSize(
+            final int rangingPreliminarySubsetSize) throws LockedException {
+<span class="fc bfc" id="L1275" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1276">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L1278" title="All 2 branches covered.">        if (rangingPreliminarySubsetSize &lt; getMinReadings()) {</span>
+<span class="fc" id="L1279">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L1282">        mRangingPreliminarySubsetSize = rangingPreliminarySubsetSize;</span>
+<span class="fc" id="L1283">    }</span>
+
+    /**
+     * Gets size of subsets to be checked during RSSI robust estimation.
+     *
+     * @return size of subsets to be checked during RSSI robust estimation.
+     */
+    public int getRssiPreliminarySubsetSize() {
+<span class="fc" id="L1291">        return mRssiPreliminarySubsetSize;</span>
+    }
+
+    /**
+     * Sets size of subsets to be checked during RSSI robust estimation.
+     *
+     * @param rssiPreliminarySubsetSize size of subsets to be checked during
+     *                                  RSSI robust estimation.
+     * @throws LockedException          if estimator is locked.
+     * @throws IllegalArgumentException if provided value is less than {@link #getMinReadings()}.
+     */
+    public void setRssiPreliminarySubsetSize(
+            final int rssiPreliminarySubsetSize) throws LockedException {
+<span class="fc bfc" id="L1304" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1305">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L1307" title="All 2 branches covered.">        if (rssiPreliminarySubsetSize &lt; getMinReadings()) {</span>
+<span class="fc" id="L1308">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L1311">        mRssiPreliminarySubsetSize = rssiPreliminarySubsetSize;</span>
+<span class="fc" id="L1312">    }</span>
+
+    /**
+     * Gets threshold to determine when samples are inliers or not, used during robust
+     * position estimation.
+     * If not defined, default threshold will be used.
+     *
+     * @return threshold for ranging estimation or null.
+     */
+    public Double getRangingThreshold() {
+<span class="fc" id="L1322">        return mRangingThreshold;</span>
+    }
+
+    /**
+     * Sets threshold to determine when samples are inliers or not, used during robust
+     * position estimation.
+     * If not defined, default threshold will be used.
+     *
+     * @param rangingThreshold threshold for ranging estimation or null.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setRangingThreshold(final Double rangingThreshold)
+            throws LockedException {
+<span class="fc bfc" id="L1335" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1336">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1338">        mRangingThreshold = rangingThreshold;</span>
+<span class="fc" id="L1339">    }</span>
+
+    /**
+     * Gets threshold to determine when samples are inliers or not, used during robust
+     * pathloss exponent and transmitted power estimation.
+     * If not defined, default threshold will be used.
+     *
+     * @return threshold for RSSI estimation or null.
+     */
+    public Double getRssiThreshold() {
+<span class="fc" id="L1349">        return mRssiThreshold;</span>
+    }
+
+    /**
+     * Sets threshold to determine when samples are inliers or not, used during robust
+     * pathloss exponent and transmitted power estimation.
+     * If not defined, default threshold will be used.
+     *
+     * @param rssiThreshold threshold for RSSI estimation or null.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setRssiThreshold(final Double rssiThreshold)
+            throws LockedException {
+<span class="fc bfc" id="L1362" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1363">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1365">        mRssiThreshold = rssiThreshold;</span>
+<span class="fc" id="L1366">    }</span>
+
+    /**
+     * Returns amount of confidence expressed as a value between 0.0 and 1.0
+     * (which is equivalent to 100%) for robust position estimation. The amount of
+     * confidence indicates the probability that the estimated result is correct.
+     * Usually this value will be close to 1.0, but not exactly 1.0.
+     *
+     * @return amount of confidence for robust position estimation as a value
+     * between 0.0 and 1.0.
+     */
+    public double getRangingConfidence() {
+<span class="fc" id="L1378">        return mRangingConfidence;</span>
+    }
+
+    /**
+     * Sets amount of confidence expressed as a value between 0.0 and 1.0 (which is
+     * equivalent to 100%) for robust position estimation. The amount of confidence
+     * indicates the probability that the estimated result is correct. Usually this
+     * value will be close to 1.0, but not exactly 1.0.
+     *
+     * @param rangingConfidence confidence to be set for robust position estimation
+     *                          as a value between 0.0 and 1.0.
+     * @throws IllegalArgumentException if provided value is not between 0.0 and 1.0.
+     * @throws LockedException          if estimator is locked.
+     */
+    public void setRangingConfidence(
+            final double rangingConfidence) throws LockedException {
+<span class="fc bfc" id="L1394" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1395">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L1397" title="All 4 branches covered.">        if (rangingConfidence &lt; MIN_CONFIDENCE || rangingConfidence &gt; MAX_CONFIDENCE) {</span>
+<span class="fc" id="L1398">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L1400">        mRangingConfidence = rangingConfidence;</span>
+<span class="fc" id="L1401">    }</span>
+
+    /**
+     * Returns amount of confidence expressed as a value between 0.0 and 1.0
+     * (which is equivalent to 100%) for pathloss exponent and transmitted power
+     * estimation. The amount of confidence indicates the probability that the
+     * estimated result is correct.
+     * Usually this value will be close to 1.0, but not exactly 1.0.
+     *
+     * @return amount of confidence for robust pathloss exponent and transmitted power
+     * estimation as a value between 0.0 and 1.0.
+     */
+    public double getRssiConfidence() {
+<span class="fc" id="L1414">        return mRssiConfidence;</span>
+    }
+
+    /**
+     * Sets amount of confidence expressed as a value between 0.0 and 1.0
+     * (which is equivalent to 100%) for pathloss exponent and transmitted power
+     * estimation. The amount of confidence indicates the probability that the
+     * estimated result is correct. Usually this value will be close to 10.0, but
+     * not exactly 1.0.
+     *
+     * @param rssiConfidence confidence to be set for robust pathloss exponent and
+     *                       transmitted power estimation as a value between 0.0 and
+     *                       1.0.
+     * @throws IllegalArgumentException if provided value is not between 0.0 and 1.0.
+     * @throws LockedException          if estimator is locked.
+     */
+    public void setRssiConfidence(
+            final double rssiConfidence) throws LockedException {
+<span class="fc bfc" id="L1432" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1433">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L1435" title="All 4 branches covered.">        if (rssiConfidence &lt; MIN_CONFIDENCE || rssiConfidence &gt; MAX_CONFIDENCE) {</span>
+<span class="fc" id="L1436">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L1438">        mRssiConfidence = rssiConfidence;</span>
+<span class="fc" id="L1439">    }</span>
+
+    /**
+     * Returns maximum allowed number of iterations for robust position estimation. If
+     * maximum allowed number of iterations is achieved without converging to a result
+     * when calling estimate(), a RobustEstimatorException will be raised.
+     *
+     * @return maximum allowed number of iterations for position estimation.
+     */
+    public int getRangingMaxIterations() {
+<span class="fc" id="L1449">        return mRangingMaxIterations;</span>
+    }
+
+    /**
+     * Sets maximum allowed number of iterations for robust position estimation. When
+     * the maximum number of iterations is exceeded, an approximate result might be
+     * available for retrieval.
+     *
+     * @param rangingMaxIterations maximum allowed number of iterations to be set
+     *                             for position estimation.
+     * @throws IllegalArgumentException if provided value is less than 1.
+     * @throws LockedException          if this estimator is locked.
+     */
+    public void setRangingMaxIterations(
+            final int rangingMaxIterations) throws LockedException {
+<span class="fc bfc" id="L1464" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1465">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L1467" title="All 2 branches covered.">        if (rangingMaxIterations &lt; MIN_ITERATIONS) {</span>
+<span class="fc" id="L1468">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L1470">        mRangingMaxIterations = rangingMaxIterations;</span>
+<span class="fc" id="L1471">    }</span>
+
+    /**
+     * Returns maximum allowed number of iterations for robust pathloss exponent and
+     * transmitted power estimation. If maximum allowed number of iterations is achieved
+     * without converging to a result when calling estimate(), a RobustEstimatorException
+     * will be raised.
+     *
+     * @return maximum allowed number of iterations for pathloss exponent and transmitted
+     * power estimation.
+     */
+    public int getRssiMaxIterations() {
+<span class="fc" id="L1483">        return mRssiMaxIterations;</span>
+    }
+
+    /**
+     * Sets maximum allowed number of iterations for robust pathloss exponent and
+     * transmitted power estimation. When the maximum number of iterations is exceeded,
+     * an approximate result might be available for retrieval.
+     *
+     * @param rssiMaxIterations maximum allowed number of iterations to be set for
+     *                          pathloss exponent and transmitted power estimation.
+     * @throws IllegalArgumentException if provided value is less than 1.
+     * @throws LockedException          if this estimator is locked.
+     */
+    public void setRssiMaxIterations(
+            final int rssiMaxIterations) throws LockedException {
+<span class="fc bfc" id="L1498" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1499">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L1501" title="All 2 branches covered.">        if (rssiMaxIterations &lt; MIN_ITERATIONS) {</span>
+<span class="fc" id="L1502">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L1504">        mRssiMaxIterations = rssiMaxIterations;</span>
+<span class="fc" id="L1505">    }</span>
+
+    /**
+     * Indicates whether result must be refined using a non-linear solver over found inliers.
+     *
+     * @return true to refine result, false to simply use result found by robust estimator
+     * without further refining.
+     */
+    public boolean isResultRefined() {
+<span class="fc" id="L1514">        return mRefineResult;</span>
+    }
+
+    /**
+     * Specifies whether result must be refined using a non-linear solver over found inliers.
+     *
+     * @param refineResult true to refine result, false to simply use result found by robust
+     *                     estimator without further refining.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setResultRefined(
+            final boolean refineResult) throws LockedException {
+<span class="fc bfc" id="L1526" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1527">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1529">        mRefineResult = refineResult;</span>
+<span class="fc" id="L1530">    }</span>
+
+    /**
+     * Indicates whether covariance must be kept after refining result.
+     * This setting is only taken into account if result is refined.
+     *
+     * @return true if covariance must be kept after refining result, false otherwise.
+     */
+    public boolean isCovarianceKept() {
+<span class="fc" id="L1539">        return mKeepCovariance;</span>
+    }
+
+    /**
+     * Specifies whether covariance must be kept after refining result.
+     * This setting is only taken into account if result is refined.
+     *
+     * @param keepCovariance true if covariance must be kept after refining result,
+     *                       false otherwise.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setCovarianceKept(
+            final boolean keepCovariance) throws LockedException {
+<span class="fc bfc" id="L1552" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1553">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1555">        mKeepCovariance = keepCovariance;</span>
+<span class="fc" id="L1556">    }</span>
+
+    /**
+     * Gets signal readings belonging to the same radio source.
+     *
+     * @return signal readings belonging to the same radio source.
+     */
+    public List&lt;? extends ReadingLocated&lt;P&gt;&gt; getReadings() {
+<span class="fc" id="L1564">        return mReadings;</span>
+    }
+
+    /**
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings signal readings belonging to the same
+     *                 radio source.
+     * @throws LockedException          if estimator is locked.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public void setReadings(
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings)
+            throws LockedException {
+<span class="fc bfc" id="L1578" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1579">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1582">        internalSetReadings(readings);</span>
+<span class="fc" id="L1583">    }</span>
+
+    /**
+     * Gets listener in charge of attending events raised by this instance.
+     *
+     * @return listener in charge of attending events raised by this instance.
+     */
+    public SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; getListener() {
+<span class="fc" id="L1591">        return mListener;</span>
+    }
+
+    /**
+     * Sets listener in charge of attending events raised by this instance.
+     *
+     * @param listener listener in charge of attending events raised by this
+     *                 instance.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setListener(
+            final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener)
+            throws LockedException {
+<span class="fc bfc" id="L1604" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1605">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1608">        mListener = listener;</span>
+<span class="fc" id="L1609">    }</span>
+
+    /**
+     * Returns quality scores corresponding to each pair of
+     * positions and distances (i.e. sample).
+     * The larger the score value the better the quality of the sample.
+     * This implementation always returns null.
+     * Subclasses using quality scores must implement proper behavior.
+     *
+     * @return quality scores corresponding to each sample.
+     */
+    public double[] getQualityScores() {
+<span class="fc" id="L1621">        return mQualityScores;</span>
+    }
+
+    /**
+     * Sets quality scores corresponding to each pair of positions and
+     * distances (i.e. sample).
+     * The larger the score value the better the quality of the sample.
+     * This implementation makes no action.
+     * Subclasses using quality scores must implement proper behaviour.
+     *
+     * @param qualityScores quality scores corresponding to each pair of
+     *                      matched points.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than minimum required samples.
+     * @throws LockedException          if robust solver is locked because an
+     *                                  estimation is already in progress.
+     */
+    public void setQualityScores(
+            final double[] qualityScores) throws LockedException {
+<span class="fc bfc" id="L1640" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1641">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1643">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1644">    }</span>
+
+    /**
+     * Gets initial transmitted power to start the estimation of radio source
+     * transmitted power (expressed in dBm's).
+     * If not defined, average value of received power readings will be used.
+     *
+     * @return initial transmitted power to start the estimation of radio source
+     * transmitted power.
+     */
+    public Double getInitialTransmittedPowerdBm() {
+<span class="fc" id="L1655">        return mInitialTransmittedPowerdBm;</span>
+    }
+
+    /**
+     * Sets initial transmitted power to start the estimation of radio source
+     * transmitted power (expressed in dBm's).
+     * If not defined, average value of received power readings will be used.
+     *
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted
+     *                                   power.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setInitialTransmittedPowerdBm(
+            final Double initialTransmittedPowerdBm) throws LockedException {
+<span class="fc bfc" id="L1670" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1671">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1673">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L1674">    }</span>
+
+    /**
+     * Gets initial transmitted power to start the estimation of radio source
+     * transmitted power (expressed in mW).
+     * If not defined, average value of received power readings will be used.
+     *
+     * @return initial transmitted power to start the estimation of radio source
+     * transmitted power.
+     */
+    public Double getInitialTransmittedPower() {
+<span class="fc bfc" id="L1685" title="All 2 branches covered.">        return mInitialTransmittedPowerdBm != null ?</span>
+<span class="fc" id="L1686">                Utils.dBmToPower(mInitialTransmittedPowerdBm) : null;</span>
+    }
+
+    /**
+     * Sets initial transmitted power to start the estimation of radio source
+     * transmitted power (expressed in mW).
+     * If not defined, average value of received power readings will be used.
+     *
+     * @param initialTransmittedPower initial transmitted power to start the
+     *                                estimation of radio source transmitted power.
+     * @throws LockedException          if estimator is locked.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public void setInitialTransmittedPower(
+            final Double initialTransmittedPower) throws LockedException {
+<span class="fc bfc" id="L1701" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1702">            throw new LockedException();</span>
+        }
+<span class="pc bpc" id="L1704" title="1 of 2 branches missed.">        if (initialTransmittedPower != null) {</span>
+<span class="pc bpc" id="L1705" title="1 of 2 branches missed.">            if (initialTransmittedPower &lt; 0.0) {</span>
+<span class="nc" id="L1706">                throw new IllegalArgumentException();</span>
+            }
+<span class="fc" id="L1708">            mInitialTransmittedPowerdBm = Utils.powerTodBm(</span>
+<span class="fc" id="L1709">                    initialTransmittedPower);</span>
+        } else {
+<span class="nc" id="L1711">            mInitialTransmittedPowerdBm = null;</span>
+        }
+<span class="fc" id="L1713">    }</span>
+
+    /**
+     * Gets initial position to start the estimation of radio source position.
+     * If not defined, centroid of provided fingerprints will be used.
+     *
+     * @return initial position to start the estimation of radio source position.
+     */
+    public P getInitialPosition() {
+<span class="fc" id="L1722">        return mInitialPosition;</span>
+    }
+
+    /**
+     * Sets initial position to start the estimation of radio source position.
+     * If not defined, centroid of provided fingerprints will be used.
+     *
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setInitialPosition(
+            final P initialPosition) throws LockedException {
+<span class="fc bfc" id="L1735" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1736">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1738">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L1739">    }</span>
+
+    /**
+     * Gets initial exponent typically used on free space for path loss propagation
+     * in terms of distance.
+     * On different environments path loss exponent might have different value:
+     * - Free space: 2.0
+     * - Urban Area: 2.7 to 3.5
+     * - Suburban Area: 3 to 5
+     * - Indoor (line-of-sight): 1.6 to 1.8
+     * &lt;p&gt;
+     * If path loss exponent estimation is enabled, estimation will start at this
+     * value and will converge to the most appropriate value.
+     * If path loss exponent estimation is disabled, this value will be assumed
+     * to be exact and the estimated path loss exponent will be equal to this
+     * value.
+     *
+     * @return initial path loss exponent.
+     */
+    public double getInitialPathLossExponent() {
+<span class="fc" id="L1759">        return mInitialPathLossExponent;</span>
+    }
+
+    /**
+     * Sets initial exponent typically used on free space for path loss propagation
+     * in terms of distance.
+     * On different environments path loss exponent might have different value:
+     * - Free space: 2.0
+     * - Urban Area: 2.7 to 3.5
+     * - Suburban Area: 3 to 5
+     * - Indoor (line-of-sight): 1.6 to 1.8
+     * &lt;p&gt;
+     * If path loss exponent estimation is enabled, estimation will start at this
+     * value and will converge to the most appropriate value.
+     * If path loss exponent estimation is disabled, this value will be assumed
+     * to be exact and the estimated path loss exponent will be equal to this
+     * value.
+     *
+     * @param initialPathLossExponent initial path loss exponent.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setInitialPathLossExponent(
+            final double initialPathLossExponent) throws LockedException {
+<span class="fc bfc" id="L1782" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1783">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1785">        mInitialPathLossExponent = initialPathLossExponent;</span>
+<span class="fc" id="L1786">    }</span>
+
+    /**
+     * Indicates whether transmitted power estimation is enabled or not.
+     *
+     * @return true if transmitted power estimation is enabled, false otherwise.
+     */
+    public boolean isTransmittedPowerEstimationEnabled() {
+<span class="fc" id="L1794">        return mTransmittedPowerEstimationEnabled;</span>
+    }
+
+    /**
+     * Specifies whether transmitted power estimation is enabled or not.
+     *
+     * @param transmittedPowerEstimationEnabled true if transmitted power estimation is enabled,
+     *                                          false otherwise.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setTransmittedPowerEstimationEnabled(
+            final boolean transmittedPowerEstimationEnabled) throws LockedException {
+<span class="fc bfc" id="L1806" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1807">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1809">        mTransmittedPowerEstimationEnabled = transmittedPowerEstimationEnabled;</span>
+<span class="fc" id="L1810">    }</span>
+
+    /**
+     * Indicates whether path loss estimation is enabled or not.
+     *
+     * @return true if path loss estimation is enabled, false otherwise.
+     */
+    public boolean isPathLossEstimationEnabled() {
+<span class="fc" id="L1818">        return mPathLossEstimationEnabled;</span>
+    }
+
+    /**
+     * Specifies whether path loss estimation is enabled or not.
+     *
+     * @param pathLossEstimationEnabled true if path loss estimation is enabled,
+     *                                  false otherwise.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setPathLossEstimationEnabled(
+            final boolean pathLossEstimationEnabled) throws LockedException {
+<span class="fc bfc" id="L1830" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1831">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1833">        mPathLossEstimationEnabled = pathLossEstimationEnabled;</span>
+<span class="fc" id="L1834">    }</span>
+
+    /**
+     * Indicates whether position covariances of readings must be taken into account to increase
+     * the amount of standard deviation of each ranging measure by the amount of position standard
+     * deviation assuming that both measures are statistically independent.
+     *
+     * @return true to take into account reading position covariances, false otherwise.
+     */
+    public boolean getUseReadingPositionCovariance() {
+<span class="fc" id="L1844">        return mUseReadingPositionCovariances;</span>
+    }
+
+    /**
+     * Specifies whether position covariances of readings must be taken into account to increase
+     * the amount of standard deviation of each ranging measure by the amount of position standard
+     * deviation assuming that both measures are statistically independent.
+     *
+     * @param useReadingPositionCovariances true to take into account reading position covariances, false
+     *                                      otherwise.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setUseReadingPositionCovariances(
+            final boolean useReadingPositionCovariances) throws LockedException {
+<span class="fc bfc" id="L1858" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1859">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1861">        mUseReadingPositionCovariances = useReadingPositionCovariances;</span>
+<span class="fc" id="L1862">    }</span>
+
+    /**
+     * Indicates whether an homogeneous ranging linear solver is used to estimate preliminary
+     * positions.
+     *
+     * @return true if homogeneous ranging linear solver is used, false if an inhomogeneous ranging linear
+     * one is used instead.
+     */
+    public boolean isHomogeneousRangingLinearSolverUsed() {
+<span class="fc" id="L1872">        return mUseHomogeneousRangingLinearSolver;</span>
+    }
+
+    /**
+     * Specifies whether an homogeneous ranging linear solver is used to estimate preliminary
+     * positions.
+     *
+     * @param useHomogeneousRangingLinearSolver true if homogeneous ranging linear solver is used, false
+     *                                          if an inhomogeneous ranging linear one is used instead.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setHomogeneousRangingLinearSolverUsed(
+            final boolean useHomogeneousRangingLinearSolver) throws LockedException {
+<span class="fc bfc" id="L1885" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1886">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1889">        mUseHomogeneousRangingLinearSolver = useHomogeneousRangingLinearSolver;</span>
+<span class="fc" id="L1890">    }</span>
+
+
+    /**
+     * Gets covariance for estimated position and power.
+     * Matrix contains information in the following order:
+     * Top-left submatrix contains covariance of position,
+     * then follows transmitted power variance, and finally
+     * the last element contains pathloss exponent variance.
+     * This is only available when result has been refined and covariance is kept.
+     *
+     * @return covariance for estimated position and power.
+     */
+    public Matrix getCovariance() {
+<span class="fc" id="L1904">        return mCovariance;</span>
+    }
+
+    /**
+     * Gets estimated position covariance.
+     * Size of this matrix will depend on the number of dimensions
+     * of estimated position (either 2 or 3).
+     * This is only available when result has been refined and covariance is kept.
+     *
+     * @return estimated position covariance.
+     */
+    public Matrix getEstimatedPositionCovariance() {
+<span class="fc" id="L1916">        return mEstimatedPositionCovariance;</span>
+    }
+
+    /**
+     * Gets estimated position.
+     *
+     * @return estimated position.
+     */
+    public P getEstimatedPosition() {
+<span class="fc" id="L1925">        return mEstimatedPosition;</span>
+    }
+
+    /**
+     * Indicates whether readings are valid or not.
+     * Readings are considered valid when there are enough readings.
+     *
+     * @param readings readings to be validated.
+     * @return true if readings are valid, false otherwise.
+     */
+    public boolean areValidReadings(
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings) {
+<span class="fc bfc" id="L1937" title="All 2 branches covered.">        if (readings == null) {</span>
+<span class="fc" id="L1938">            return false;</span>
+        }
+
+<span class="fc" id="L1941">        checkReadings(readings);</span>
+
+        //if enough ranging data is available, we check validity both for ranging and RSSI readings
+<span class="pc bpc" id="L1944" title="1 of 4 branches missed.">        return ((!mRssiPositionEnabled &amp;&amp; mNumRangingReadings &gt;= getMinRangingReadings() &amp;&amp;</span>
+<span class="fc bfc" id="L1945" title="All 4 branches covered.">                mNumRssiReadings &gt;= getMinRssiReadings()) ||</span>
+                //if not enough ranging data is available, we check validity only for RSSI readings
+<span class="pc bpc" id="L1947" title="1 of 6 branches missed.">                (mRssiPositionEnabled &amp;&amp; mNumRssiReadings &gt;= getMinRssiReadings()) ||</span>
+                //if only position is enabled, then only check for ranging readings
+                (!mTransmittedPowerEstimationEnabled &amp;&amp; !mPathLossEstimationEnabled &amp;&amp;
+<span class="pc bpc" id="L1950" title="1 of 2 branches missed.">                        mNumRangingReadings &gt;= getMinRangingReadings())) &amp;&amp;</span>
+                //in both upper cases enough general readings must be available
+<span class="pc bpc" id="L1952" title="1 of 2 branches missed.">                readings.size() &gt;= getMinReadings();</span>
+    }
+
+    /**
+     * Indicates whether this instance is ready to start the estimation.
+     *
+     * @return true if this instance is ready, false otherwise.
+     * @throws LockedException if estimator is locked
+     */
+    public boolean isReady() throws LockedException {
+<span class="fc" id="L1962">        checkReadings(mReadings);</span>
+
+<span class="fc" id="L1964">        buildRangingEstimatorIfNeeded();</span>
+<span class="fc" id="L1965">        setupRangingEstimator();</span>
+
+<span class="fc bfc" id="L1967" title="All 4 branches covered.">        if (mTransmittedPowerEstimationEnabled || mPathLossEstimationEnabled) {</span>
+<span class="fc" id="L1968">            buildRssiEstimatorIfNeeded();</span>
+<span class="fc" id="L1969">            setupRssiEstimator();</span>
+        }
+
+<span class="fc bfc" id="L1972" title="All 2 branches covered.">        if (mRssiPositionEnabled) {</span>
+<span class="fc" id="L1973">            return mRssiEstimator.isReady();</span>
+        } else {
+<span class="fc bfc" id="L1975" title="All 6 branches covered.">            return mRangingEstimator.isReady() &amp;&amp;</span>
+                    ((!mTransmittedPowerEstimationEnabled &amp;&amp; !mPathLossEstimationEnabled) ||
+<span class="pc bpc" id="L1977" title="1 of 2 branches missed.">                            mRssiEstimator.isReady());</span>
+        }
+    }
+
+    /**
+     * Gets minimum required number of ranging or ranging+rssi readings
+     * required to start estimation.
+     *
+     * @return minimum required number of ranging or ranging+rssi readings.
+     */
+    public int getMinRangingReadings() {
+<span class="fc" id="L1988">        return getNumberOfDimensions() + 1;</span>
+    }
+
+    /**
+     * Gets minimum required number of rssi or ranging+rssi readings
+     * required to start estimation.
+     *
+     * @return minimum required number of rssi or ranging+rssi readings.
+     */
+    public int getMinRssiReadings() {
+<span class="fc" id="L1998">        return getMinReadings();</span>
+    }
+
+    /**
+     * Gets minimum required number of readings to estimate
+     * power, position and pathloss exponent.
+     * This value depends on the number of parameters to
+     * be estimated, but for position only, this is 3
+     * readings for 2D, and 4 readings for 3D.
+     *
+     * @return minimum required number of readings.
+     */
+    public abstract int getMinReadings();
+
+    /**
+     * Gets number of dimensions of position points.
+     *
+     * @return number of dimensions of position points.
+     */
+    public abstract int getNumberOfDimensions();
+
+    /**
+     * Gets estimated transmitted power variance.
+     * This is only available when result has been refined and covariance is kept.
+     *
+     * @return estimated transmitted power variance.
+     */
+    public Double getEstimatedTransmittedPowerVariance() {
+<span class="fc" id="L2026">        return mEstimatedTransmittedPowerVariance;</span>
+    }
+
+    /**
+     * Gets estimated path loss exponent variance.
+     * This is only available when result has been refined and covariance is kept.
+     *
+     * @return estimated path loss exponent variance.
+     */
+    public Double getEstimatedPathLossExponentVariance() {
+<span class="fc" id="L2036">        return mEstimatedPathLossExponentVariance;</span>
+    }
+
+    /**
+     * Gets estimated transmitted power expressed in milli watts (mW) or null if
+     * not available.
+     *
+     * @return estimated transmitted power expressed in milli watts or null.
+     */
+    public Double getEstimatedTransmittedPower() {
+<span class="fc bfc" id="L2046" title="All 2 branches covered.">        return mEstimatedTransmittedPowerdBm != null ?</span>
+<span class="fc" id="L2047">                Utils.dBmToPower(mEstimatedTransmittedPowerdBm) : null;</span>
+    }
+
+    /**
+     * Gets estimated transmitted power expressed in dBm's or null if not available.
+     *
+     * @return estimated transmitted power expressed in dBm's or null.
+     */
+    public Double getEstimatedTransmittedPowerdBm() {
+<span class="fc" id="L2056">        return mEstimatedTransmittedPowerdBm;</span>
+    }
+
+    /**
+     * Gets estimated exponent typically used on free space for path loss propagation in
+     * terms of distance.
+     * On different environments path loss exponent might have different values:
+     * - Free space: 2.0
+     * - Urban Area: 2.7 to 3.5
+     * - Suburban Area: 3 to 5
+     * - Indoor (line-of-sight): 1.6 to 1.8
+     * If path loss exponent estimation is not enabled, this value will always be equal to
+     * {@link RssiRadioSourceEstimator#DEFAULT_PATH_LOSS_EXPONENT}
+     *
+     * @return estimated path loss exponent.
+     */
+    public double getEstimatedPathLossExponent() {
+<span class="fc" id="L2073">        return mEstimatedPathLossExponent;</span>
+    }
+
+    /**
+     * Robustly estimates position, transmitted power and pathloss exponent for a
+     * radio source.
+     *
+     * @throws LockedException          if instance is busy during estimation.
+     * @throws NotReadyException        if estimator is not ready.
+     * @throws RobustEstimatorException if estimation fails for any reason
+     *                                  (i.e. numerical instability, no solution available, etc).
+     */
+    public void estimate() throws LockedException, NotReadyException,
+            RobustEstimatorException {
+<span class="fc bfc" id="L2087" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L2088">            throw new LockedException();</span>
+        }
+        try {
+<span class="fc" id="L2091">            mLocked = true;</span>
+
+            //when checking for readiness, inner estimators are created and setup
+<span class="fc bfc" id="L2094" title="All 2 branches covered.">            if (!isReady()) {</span>
+<span class="fc" id="L2095">                throw new NotReadyException();</span>
+            }
+
+
+<span class="fc bfc" id="L2099" title="All 2 branches covered.">            if (mListener != null) {</span>
+<span class="fc" id="L2100">                mListener.onEstimateStart(this);</span>
+            }
+
+            //estimate position
+<span class="fc bfc" id="L2104" title="All 2 branches covered.">            if (!mRssiPositionEnabled) {</span>
+<span class="fc" id="L2105">                mRangingEstimator.setPreliminarySubsetSize(mRangingPreliminarySubsetSize);</span>
+
+<span class="fc" id="L2107">                mRangingEstimator.estimate();</span>
+
+<span class="fc" id="L2109">                mEstimatedPosition = mRangingEstimator.getEstimatedPosition();</span>
+<span class="fc" id="L2110">                mEstimatedPositionCovariance =</span>
+<span class="fc" id="L2111">                        mRangingEstimator.getEstimatedPositionCovariance();</span>
+<span class="fc" id="L2112">                mInliersData = mRangingEstimator.getInliersData();</span>
+            } else {
+<span class="fc" id="L2114">                mEstimatedPosition = null;</span>
+            }
+
+            //estimate transmitted power and/or pathloss if enabled
+<span class="pc bpc" id="L2118" title="1 of 6 branches missed.">            if (mTransmittedPowerEstimationEnabled || mPathLossEstimationEnabled ||</span>
+                    mRssiPositionEnabled) {
+<span class="fc" id="L2120">                mRssiEstimator.setPositionEstimationEnabled(mRssiPositionEnabled);</span>
+<span class="fc" id="L2121">                mRssiEstimator.setInitialPosition(mEstimatedPosition);</span>
+<span class="fc" id="L2122">                mRssiEstimator.setPreliminarySubsetSize(mRssiPreliminarySubsetSize);</span>
+
+<span class="fc" id="L2124">                mRssiEstimator.estimate();</span>
+
+<span class="fc bfc" id="L2126" title="All 2 branches covered.">                if (mRssiPositionEnabled) {</span>
+<span class="fc" id="L2127">                    mEstimatedPosition = mRssiEstimator.getEstimatedPosition();</span>
+<span class="fc" id="L2128">                    mEstimatedPositionCovariance =</span>
+<span class="fc" id="L2129">                            mRssiEstimator.getEstimatedPositionCovariance();</span>
+                }
+
+<span class="fc" id="L2132">                mInliersData = mRssiEstimator.getInliersData();</span>
+
+<span class="fc bfc" id="L2134" title="All 2 branches covered.">                if (mTransmittedPowerEstimationEnabled) {</span>
+                    //transmitted power estimation enabled
+<span class="fc" id="L2136">                    mEstimatedTransmittedPowerdBm =</span>
+<span class="fc" id="L2137">                            mRssiEstimator.getEstimatedTransmittedPowerdBm();</span>
+<span class="fc" id="L2138">                    mEstimatedTransmittedPowerVariance =</span>
+<span class="fc" id="L2139">                            mRssiEstimator.getEstimatedTransmittedPowerVariance();</span>
+                } else {
+                    //transmitted power estimation disabled
+<span class="fc" id="L2142">                    mEstimatedTransmittedPowerdBm = mInitialTransmittedPowerdBm;</span>
+<span class="fc" id="L2143">                    mEstimatedTransmittedPowerVariance = null;</span>
+                }
+
+<span class="fc bfc" id="L2146" title="All 2 branches covered.">                if (mPathLossEstimationEnabled) {</span>
+                    //pathloss exponent estimation enabled
+<span class="fc" id="L2148">                    mEstimatedPathLossExponent =</span>
+<span class="fc" id="L2149">                            mRssiEstimator.getEstimatedPathLossExponent();</span>
+<span class="fc" id="L2150">                    mEstimatedPathLossExponentVariance =</span>
+<span class="fc" id="L2151">                            mRssiEstimator.getEstimatedPathLossExponentVariance();</span>
+                } else {
+                    //pathloss exponent estimation disabled
+<span class="fc" id="L2154">                    mEstimatedPathLossExponent = mInitialPathLossExponent;</span>
+<span class="fc" id="L2155">                    mEstimatedPathLossExponentVariance = null;</span>
+                }
+
+                //build covariance matrix
+<span class="fc bfc" id="L2159" title="All 2 branches covered.">                if (mRssiPositionEnabled) {</span>
+                    //if only RSSI estimation is done, we use directly the available estimated covariance
+<span class="fc" id="L2161">                    mCovariance = mRssiEstimator.getCovariance();</span>
+                } else {
+                    //if both ranging and RSSI data is used, we build covariance matrix by setting
+                    //position covariance estimated by ranging estimator into top-left corner, and then
+                    //adding covariance terms related to pathloss exponent and transmitted power
+<span class="fc" id="L2166">                    final Matrix rssiCov = mRssiEstimator.getCovariance();</span>
+<span class="pc bpc" id="L2167" title="1 of 4 branches missed.">                    if (mEstimatedPositionCovariance != null &amp;&amp; rssiCov != null) {</span>
+<span class="fc" id="L2168">                        final int dims = getNumberOfDimensions();</span>
+<span class="fc" id="L2169">                        int n = dims;</span>
+<span class="fc bfc" id="L2170" title="All 2 branches covered.">                        if (mTransmittedPowerEstimationEnabled) {</span>
+<span class="fc" id="L2171">                            n++;</span>
+                        }
+<span class="fc bfc" id="L2173" title="All 2 branches covered.">                        if (mPathLossEstimationEnabled) {</span>
+<span class="fc" id="L2174">                            n++;</span>
+                        }
+
+<span class="fc" id="L2177">                        final int dimsMinus1 = dims - 1;</span>
+<span class="fc" id="L2178">                        final int nMinus1 = n - 1;</span>
+<span class="fc" id="L2179">                        mCovariance = new Matrix(n, n);</span>
+<span class="fc" id="L2180">                        mCovariance.setSubmatrix(0, 0,</span>
+                                dimsMinus1, dimsMinus1,
+                                mEstimatedPositionCovariance);
+<span class="fc" id="L2183">                        mCovariance.setSubmatrix(dims, dims,</span>
+                                nMinus1, nMinus1, rssiCov);
+<span class="fc" id="L2185">                    } else {</span>
+<span class="fc" id="L2186">                        mCovariance = null;</span>
+                    }
+<span class="fc" id="L2188">                }</span>
+            } else {
+<span class="fc" id="L2190">                mCovariance = mEstimatedPositionCovariance;</span>
+<span class="fc" id="L2191">                mEstimatedTransmittedPowerdBm = mInitialTransmittedPowerdBm;</span>
+<span class="fc" id="L2192">                mEstimatedTransmittedPowerVariance = null;</span>
+
+<span class="fc" id="L2194">                mEstimatedPathLossExponent = mInitialPathLossExponent;</span>
+<span class="fc" id="L2195">                mEstimatedPathLossExponentVariance = null;</span>
+            }
+
+<span class="fc bfc" id="L2198" title="All 2 branches covered.">            if (mListener != null) {</span>
+<span class="fc" id="L2199">                mListener.onEstimateEnd(this);</span>
+            }
+<span class="nc" id="L2201">        } catch (final AlgebraException e) {</span>
+<span class="nc" id="L2202">            throw new RobustEstimatorException(e);</span>
+        } finally {
+<span class="fc" id="L2204">            mLocked = false;</span>
+        }
+<span class="fc" id="L2206">    }</span>
+
+    /**
+     * Gets data related to inliers found after estimation.
+     *
+     * @return data related to inliers found after estimation.
+     */
+    public InliersData getInliersData() {
+<span class="fc" id="L2214">        return mInliersData;</span>
+    }
+
+    /**
+     * Indicates whether position is estimated using RSSI data.
+     * If enough ranging readings are available, this is false and position is estimated using ranging readings,
+     * otherwise this is true and position is estimated using RSSI data in a less reliable way.
+     *
+     * @return true if position is estimated using RSSI data, false if position is estimated using ranging data.
+     */
+    public boolean isRssiPositionEnabled() {
+<span class="fc" id="L2225">        return mRssiPositionEnabled;</span>
+    }
+
+    /**
+     * Gets estimated located radio source.
+     *
+     * @param &lt;S2&gt; type of located radio source.
+     * @return estimated located radio source.
+     */
+    public abstract &lt;S2 extends RadioSourceLocated&lt;P&gt;&gt; S2 getEstimatedRadioSource();
+
+    /**
+     * Builds ranging estimator.
+     */
+    protected abstract void buildRangingEstimatorIfNeeded();
+
+    /**
+     * Build RSSI estimator.
+     *
+     * @throws LockedException if estimator is locked.
+     */
+    protected abstract void buildRssiEstimatorIfNeeded() throws LockedException;
+
+    /**
+     * Setups ranging estimator.
+     *
+     * @throws LockedException if estimator is locked.
+     */
+    protected void setupRangingEstimator() throws LockedException {
+<span class="fc bfc" id="L2254" title="All 4 branches covered.">        if (mReadings != null &amp;&amp; !mRssiPositionEnabled) {</span>
+            //build ranging readings
+<span class="fc" id="L2256">            final List&lt;RangingReadingLocated&lt;S, P&gt;&gt; rangingReadings = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L2257" title="All 2 branches covered.">            for (final ReadingLocated&lt;P&gt; reading : mReadings) {</span>
+<span class="fc bfc" id="L2258" title="All 2 branches covered.">                if (reading instanceof RangingReadingLocated) {</span>
+<span class="fc" id="L2259">                    rangingReadings.add((RangingReadingLocated&lt;S, P&gt;) reading);</span>
+<span class="fc bfc" id="L2260" title="All 2 branches covered.">                } else if (reading instanceof RangingAndRssiReadingLocated) {</span>
+<span class="fc" id="L2261">                    rangingReadings.add(createRangingReading(</span>
+                            (RangingAndRssiReadingLocated&lt;S, P&gt;) reading));
+                }
+<span class="fc" id="L2264">            }</span>
+<span class="fc" id="L2265">            mRangingEstimator.setReadings(rangingReadings);</span>
+
+<span class="pc bpc" id="L2267" title="1 of 4 branches missed.">            if (mQualityScores != null &amp;&amp; !rangingReadings.isEmpty()) {</span>
+                //build quality scores
+<span class="fc" id="L2269">                final int numReadings = mReadings.size();</span>
+<span class="fc" id="L2270">                final int numRangingReadings = rangingReadings.size();</span>
+<span class="fc" id="L2271">                final double[] rangingQualityScores = new double[numRangingReadings];</span>
+<span class="fc" id="L2272">                int pos = 0;</span>
+<span class="fc bfc" id="L2273" title="All 2 branches covered.">                for (int i = 0; i &lt; numReadings; i++) {</span>
+<span class="fc" id="L2274">                    final ReadingLocated&lt;P&gt; reading = mReadings.get(i);</span>
+<span class="fc bfc" id="L2275" title="All 4 branches covered.">                    if (reading instanceof RangingReadingLocated ||</span>
+                            reading instanceof RangingAndRssiReadingLocated) {
+<span class="fc" id="L2277">                        rangingQualityScores[pos] = mQualityScores[i];</span>
+<span class="fc" id="L2278">                        pos++;</span>
+                    }
+                }
+
+<span class="fc" id="L2282">                mRangingEstimator.setQualityScores(rangingQualityScores);</span>
+            }
+
+            //enable RSSI position estimation only if not enough ranging readings are
+            //available
+<span class="fc" id="L2287">            mRssiPositionEnabled =</span>
+<span class="pc bpc" id="L2288" title="1 of 2 branches missed.">                    rangingReadings.size() &lt; mRangingEstimator.getMinReadings();</span>
+        }
+
+<span class="fc" id="L2291">        mRangingEstimator.setProgressDelta(2.0f * mProgressDelta);</span>
+<span class="fc" id="L2292">        mRangingEstimator.setConfidence(mRangingConfidence);</span>
+<span class="fc" id="L2293">        mRangingEstimator.setMaxIterations(mRangingMaxIterations);</span>
+<span class="fc" id="L2294">        mRangingEstimator.setResultRefined(mRefineResult);</span>
+<span class="fc" id="L2295">        mRangingEstimator.setCovarianceKept(mKeepCovariance);</span>
+<span class="fc" id="L2296">        mRangingEstimator.setUseReadingPositionCovariances(</span>
+                mUseReadingPositionCovariances);
+<span class="fc" id="L2298">        mRangingEstimator.setHomogeneousLinearSolverUsed(</span>
+                mUseHomogeneousRangingLinearSolver);
+
+<span class="fc" id="L2301">        mRangingEstimator.setInitialPosition(mInitialPosition);</span>
+
+<span class="fc" id="L2303">        mRangingEstimator.setListener(new RobustRangingRadioSourceEstimatorListener&lt;S, P&gt;() {</span>
+            @Override
+            public void onEstimateStart(
+                    final RobustRangingRadioSourceEstimator&lt;S, P&gt; estimator) {
+                //not used
+<span class="fc" id="L2308">            }</span>
+
+            @Override
+            public void onEstimateEnd(
+                    final RobustRangingRadioSourceEstimator&lt;S, P&gt; estimator) {
+                //not used
+<span class="fc" id="L2314">            }</span>
+
+            @Override
+            public void onEstimateNextIteration(
+                    final RobustRangingRadioSourceEstimator&lt;S, P&gt; estimator,
+                    final int iteration) {
+                //not used
+<span class="fc" id="L2321">            }</span>
+
+            @Override
+            public void onEstimateProgressChange(
+                    final RobustRangingRadioSourceEstimator&lt;S, P&gt; estimator,
+                    final float progress) {
+<span class="nc bnc" id="L2327" title="All 2 branches missed.">                if (mListener != null) {</span>
+<span class="nc" id="L2328">                    mListener.onEstimateProgressChange(</span>
+                            SequentialRobustMixedRadioSourceEstimator.this,
+                            0.5f * progress);
+                }
+<span class="nc" id="L2332">            }</span>
+        });
+<span class="fc" id="L2334">    }</span>
+
+    /**
+     * Setups RSSI estimator.
+     *
+     * @throws LockedException if estimator is locked.
+     */
+    protected void setupRssiEstimator() throws LockedException {
+<span class="fc bfc" id="L2342" title="All 2 branches covered.">        if (mReadings != null) {</span>
+<span class="fc" id="L2343">            mRssiEstimator.setPositionEstimationEnabled(mRssiPositionEnabled);</span>
+
+            //build RSSI readings
+<span class="fc" id="L2346">            final List&lt;RssiReadingLocated&lt;S, P&gt;&gt; rssiReadings = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L2347" title="All 2 branches covered.">            for (final ReadingLocated&lt;P&gt; reading : mReadings) {</span>
+<span class="fc bfc" id="L2348" title="All 2 branches covered.">                if (reading instanceof RssiReadingLocated) {</span>
+<span class="fc" id="L2349">                    rssiReadings.add((RssiReadingLocated&lt;S, P&gt;) reading);</span>
+<span class="fc bfc" id="L2350" title="All 2 branches covered.">                } else if (reading instanceof RangingAndRssiReadingLocated) {</span>
+<span class="fc" id="L2351">                    rssiReadings.add(createRssiReading(</span>
+                            (RangingAndRssiReadingLocated&lt;S, P&gt;) reading));
+                }
+<span class="fc" id="L2354">            }</span>
+<span class="fc" id="L2355">            mRssiEstimator.setReadings(rssiReadings);</span>
+
+<span class="pc bpc" id="L2357" title="1 of 4 branches missed.">            if (mQualityScores != null &amp;&amp; !rssiReadings.isEmpty()) {</span>
+                //build quality scores
+<span class="fc" id="L2359">                final int numReadings = mReadings.size();</span>
+<span class="fc" id="L2360">                final int numRssiReadings = rssiReadings.size();</span>
+<span class="fc" id="L2361">                final double[] rssiQualityScores = new double[numRssiReadings];</span>
+<span class="fc" id="L2362">                int pos = 0;</span>
+<span class="fc bfc" id="L2363" title="All 2 branches covered.">                for (int i = 0; i &lt; numReadings; i++) {</span>
+<span class="fc" id="L2364">                    final ReadingLocated&lt;P&gt; reading = mReadings.get(i);</span>
+<span class="fc bfc" id="L2365" title="All 4 branches covered.">                    if (reading instanceof RssiReadingLocated ||</span>
+                            reading instanceof RangingAndRssiReadingLocated) {
+<span class="fc" id="L2367">                        rssiQualityScores[pos] = mQualityScores[i];</span>
+<span class="fc" id="L2368">                        pos++;</span>
+                    }
+                }
+
+<span class="fc" id="L2372">                mRssiEstimator.setQualityScores(rssiQualityScores);</span>
+            }
+        }
+
+<span class="fc" id="L2376">        mRssiEstimator.setProgressDelta(2.0f * mProgressDelta);</span>
+<span class="fc" id="L2377">        mRssiEstimator.setConfidence(mRssiConfidence);</span>
+<span class="fc" id="L2378">        mRssiEstimator.setMaxIterations(mRssiMaxIterations);</span>
+<span class="fc" id="L2379">        mRssiEstimator.setResultRefined(mRefineResult);</span>
+<span class="fc" id="L2380">        mRssiEstimator.setCovarianceKept(mKeepCovariance);</span>
+
+        //initial position is not set because position estimated from ranging measures
+        //will be later used
+<span class="fc" id="L2384">        mRssiEstimator.setInitialTransmittedPowerdBm(mInitialTransmittedPowerdBm);</span>
+<span class="fc" id="L2385">        mRssiEstimator.setInitialPathLossExponent(mInitialPathLossExponent);</span>
+
+<span class="fc" id="L2387">        mRssiEstimator.setTransmittedPowerEstimationEnabled(</span>
+                mTransmittedPowerEstimationEnabled);
+<span class="fc" id="L2389">        mRssiEstimator.setPathLossEstimationEnabled(mPathLossEstimationEnabled);</span>
+
+<span class="fc" id="L2391">        mRssiEstimator.setListener(new RobustRssiRadioSourceEstimatorListener&lt;S, P&gt;() {</span>
+            @Override
+            public void onEstimateStart(
+<span class="fc" id="L2394">                    final RobustRssiRadioSourceEstimator&lt;S, P&gt; estimator) { /* not used */ }</span>
+
+            @Override
+            public void onEstimateEnd(
+<span class="fc" id="L2398">                    final RobustRssiRadioSourceEstimator&lt;S, P&gt; estimator) { /* not used */ }</span>
+
+            @Override
+            public void onEstimateNextIteration(
+                    final RobustRssiRadioSourceEstimator&lt;S, P&gt; estimator,
+<span class="fc" id="L2403">                    final int iteration) { /* not used */ }</span>
+
+            @Override
+            public void onEstimateProgressChange(
+                    final RobustRssiRadioSourceEstimator&lt;S, P&gt; estimator,
+                    final float progress) {
+<span class="nc bnc" id="L2409" title="All 2 branches missed.">                if (mListener != null) {</span>
+<span class="nc" id="L2410">                    mListener.onEstimateProgressChange(</span>
+                            SequentialRobustMixedRadioSourceEstimator.this,
+                            0.5f + 0.5f * progress);
+                }
+<span class="nc" id="L2414">            }</span>
+        });
+<span class="fc" id="L2416">    }</span>
+
+    /**
+     * Internally sets signal readings belonging to the same radio source.
+     *
+     * @param readings signal readings belonging to the same radio source.
+     * @throws IllegalArgumentException if readings are null, not enough readings
+     *                                  are available, or readings do not belong to the same access point.
+     */
+    private void internalSetReadings(
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings) {
+<span class="fc bfc" id="L2427" title="All 2 branches covered.">        if (!areValidReadings(readings)) {</span>
+<span class="fc" id="L2428">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L2431">        mReadings = readings;</span>
+<span class="fc" id="L2432">    }</span>
+
+    /**
+     * Sets quality scores corresponding to each provided sample.
+     * This method is used internally and does not check whether instance is
+     * locked or not.
+     *
+     * @param qualityScores quality scores to be set.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than required minimum.
+     */
+    private void internalSetQualityScores(final double[] qualityScores) {
+<span class="fc bfc" id="L2444" title="All 2 branches covered.">        if (qualityScores == null ||</span>
+<span class="fc bfc" id="L2445" title="All 2 branches covered.">                qualityScores.length &lt; getMinReadings()) {</span>
+<span class="fc" id="L2446">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L2449">        mQualityScores = qualityScores;</span>
+<span class="fc" id="L2450">    }</span>
+
+    /**
+     * Creates a ranging reading from a ranging and RSSI reading.
+     *
+     * @param reading input reading to convert from.
+     * @return a ranging reading containing only the ranging data of input reading.
+     */
+    private RangingReadingLocated&lt;S, P&gt; createRangingReading(
+            final RangingAndRssiReadingLocated&lt;S, P&gt; reading) {
+<span class="fc" id="L2460">        return new RangingReadingLocated&lt;&gt;(reading.getSource(),</span>
+<span class="fc" id="L2461">                reading.getDistance(), reading.getPosition(),</span>
+<span class="fc" id="L2462">                reading.getDistanceStandardDeviation(),</span>
+<span class="fc" id="L2463">                reading.getPositionCovariance());</span>
+    }
+
+    /**
+     * Creates an RSSI reading from a ranging and RSSI reading.
+     *
+     * @param reading input reading to convert from.
+     * @return an RSSI reading containing only the RSSI data of input reading.
+     */
+    private RssiReadingLocated&lt;S, P&gt; createRssiReading(
+            final RangingAndRssiReadingLocated&lt;S, P&gt; reading) {
+<span class="fc" id="L2474">        return new RssiReadingLocated&lt;&gt;(reading.getSource(),</span>
+<span class="fc" id="L2475">                reading.getRssi(), reading.getPosition(),</span>
+<span class="fc" id="L2476">                reading.getRssiStandardDeviation(),</span>
+<span class="fc" id="L2477">                reading.getPositionCovariance());</span>
+    }
+
+    /**
+     * Checks number of available ranging readings and number of available RSSI readings. Also determines
+     * whether position must be estimated using ranging data or RSSI data.
+     *
+     * @param readings readings to be checked.
+     */
+    private void checkReadings(final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings) {
+<span class="fc" id="L2487">        mNumRangingReadings = mNumRssiReadings = 0;</span>
+
+<span class="fc bfc" id="L2489" title="All 2 branches covered.">        if (readings == null) {</span>
+<span class="fc" id="L2490">            return;</span>
+        }
+
+<span class="fc bfc" id="L2493" title="All 2 branches covered.">        for (final ReadingLocated&lt;P&gt; reading : readings) {</span>
+<span class="fc bfc" id="L2494" title="All 2 branches covered.">            if (reading instanceof RangingReadingLocated) {</span>
+<span class="fc" id="L2495">                mNumRangingReadings++;</span>
+
+<span class="fc bfc" id="L2497" title="All 2 branches covered.">            } else if (reading instanceof RssiReadingLocated) {</span>
+<span class="fc" id="L2498">                mNumRssiReadings++;</span>
+
+<span class="pc bpc" id="L2500" title="1 of 2 branches missed.">            } else if (reading instanceof RangingAndRssiReadingLocated) {</span>
+<span class="fc" id="L2501">                mNumRangingReadings++;</span>
+<span class="fc" id="L2502">                mNumRssiReadings++;</span>
+            }
+<span class="fc" id="L2504">        }</span>
+
+<span class="fc bfc" id="L2506" title="All 2 branches covered.">        mRssiPositionEnabled = mNumRangingReadings &lt; getMinRangingReadings();</span>
+<span class="fc" id="L2507">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
