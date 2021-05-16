@@ -26,7 +26,6 @@ import com.irurueta.navigation.NotReadyException;
  *
  * @param &lt;P&gt; a {@link Point} type.
  */
-@SuppressWarnings({&quot;WeakerAccess&quot;, &quot;Duplicates&quot;})
 public abstract class WeightedKNearestNeighboursPositionSolver&lt;P extends Point&lt;?&gt;&gt; {
 
     /**
@@ -72,13 +71,13 @@ public abstract class WeightedKNearestNeighboursPositionSolver&lt;P extends Poin
     /**
      * Minimum allowed distance between received WiFi signal strengths.
      */
-<span class="fc" id="L75">    private double mEpsilon = DEFAULT_EPSILON;</span>
+<span class="fc" id="L74">    private double mEpsilon = DEFAULT_EPSILON;</span>
 
     /**
      * Constructor.
      */
-<span class="fc" id="L80">    public WeightedKNearestNeighboursPositionSolver() {</span>
-<span class="fc" id="L81">    }</span>
+<span class="fc" id="L79">    public WeightedKNearestNeighboursPositionSolver() {</span>
+<span class="fc" id="L80">    }</span>
 
     /**
      * Constructor.
@@ -93,9 +92,9 @@ public abstract class WeightedKNearestNeighboursPositionSolver&lt;P extends Poin
      */
     public WeightedKNearestNeighboursPositionSolver(
             final RssiFingerprintLocated&lt;WifiAccessPoint, RssiReading&lt;WifiAccessPoint&gt;, P&gt;[] fingerprints,
-<span class="fc" id="L96">            final double[] distances) {</span>
-<span class="fc" id="L97">        internalSetFingerprintsAndDistances(fingerprints, distances);</span>
-<span class="fc" id="L98">    }</span>
+<span class="fc" id="L95">            final double[] distances) {</span>
+<span class="fc" id="L96">        internalSetFingerprintsAndDistances(fingerprints, distances);</span>
+<span class="fc" id="L97">    }</span>
 
     /**
      * Constructor.
@@ -103,9 +102,9 @@ public abstract class WeightedKNearestNeighboursPositionSolver&lt;P extends Poin
      * @param listener listener to be notified of events raised by this instance.
      */
     public WeightedKNearestNeighboursPositionSolver(
-<span class="fc" id="L106">            final WeightedKNearestNeighboursPositionSolverListener&lt;P&gt; listener) {</span>
-<span class="fc" id="L107">        mListener = listener;</span>
-<span class="fc" id="L108">    }</span>
+<span class="fc" id="L105">            final WeightedKNearestNeighboursPositionSolverListener&lt;P&gt; listener) {</span>
+<span class="fc" id="L106">        mListener = listener;</span>
+<span class="fc" id="L107">    }</span>
 
     /**
      * Constructor.
@@ -123,9 +122,9 @@ public abstract class WeightedKNearestNeighboursPositionSolver&lt;P extends Poin
             final RssiFingerprintLocated&lt;WifiAccessPoint, RssiReading&lt;WifiAccessPoint&gt;, P&gt;[] fingerprints,
             final double[] distances,
             final WeightedKNearestNeighboursPositionSolverListener&lt;P&gt; listener) {
-<span class="fc" id="L126">        this(fingerprints, distances);</span>
-<span class="fc" id="L127">        mListener = listener;</span>
-<span class="fc" id="L128">    }</span>
+<span class="fc" id="L125">        this(fingerprints, distances);</span>
+<span class="fc" id="L126">        mListener = listener;</span>
+<span class="fc" id="L127">    }</span>
 
     /**
      * Gets listener to be notified of events raised by this instance.
@@ -133,7 +132,7 @@ public abstract class WeightedKNearestNeighboursPositionSolver&lt;P extends Poin
      * @return listener to be notified of events raised by this instance.
      */
     public WeightedKNearestNeighboursPositionSolverListener&lt;P&gt; getListener() {
-<span class="fc" id="L136">        return mListener;</span>
+<span class="fc" id="L135">        return mListener;</span>
     }
 
     /**
@@ -145,11 +144,11 @@ public abstract class WeightedKNearestNeighboursPositionSolver&lt;P extends Poin
     public void setListener(
             final WeightedKNearestNeighboursPositionSolverListener&lt;P&gt; listener)
             throws LockedException {
-<span class="fc bfc" id="L148" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L149">            throw new LockedException();</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L148">            throw new LockedException();</span>
         }
-<span class="fc" id="L151">        mListener = listener;</span>
-<span class="fc" id="L152">    }</span>
+<span class="fc" id="L150">        mListener = listener;</span>
+<span class="fc" id="L151">    }</span>
 
     /**
      * Gets known located WiFi fingerprints.
@@ -157,7 +156,7 @@ public abstract class WeightedKNearestNeighboursPositionSolver&lt;P extends Poin
      * @return known located WiFi fingerprints.
      */
     public RssiFingerprintLocated&lt;WifiAccessPoint, RssiReading&lt;WifiAccessPoint&gt;, P&gt;[] getFingerprints() {
-<span class="fc" id="L160">        return mFingerprints;</span>
+<span class="fc" id="L159">        return mFingerprints;</span>
     }
 
     /**
@@ -167,7 +166,7 @@ public abstract class WeightedKNearestNeighboursPositionSolver&lt;P extends Poin
      * @return euclidean distances between WiFi signal fingerprints.
      */
     public double[] getDistances() {
-<span class="fc" id="L170">        return mDistances;</span>
+<span class="fc" id="L169">        return mDistances;</span>
     }
 
     /**
@@ -176,7 +175,7 @@ public abstract class WeightedKNearestNeighboursPositionSolver&lt;P extends Poin
      * @return true if solver is ready, false otherwise.
      */
     public boolean isReady() {
-<span class="pc bpc" id="L179" title="2 of 6 branches missed.">        return mFingerprints != null &amp;&amp; mDistances != null &amp;&amp;</span>
+<span class="pc bpc" id="L178" title="2 of 6 branches missed.">        return mFingerprints != null &amp;&amp; mDistances != null &amp;&amp;</span>
                 mFingerprints.length &gt;= MIN_FINGERPRINTS;
     }
 
@@ -187,7 +186,7 @@ public abstract class WeightedKNearestNeighboursPositionSolver&lt;P extends Poin
      * @return true if solver is locked, false otherwise.
      */
     public boolean isLocked() {
-<span class="fc" id="L190">        return mLocked;</span>
+<span class="fc" id="L189">        return mLocked;</span>
     }
 
     /**
@@ -204,11 +203,11 @@ public abstract class WeightedKNearestNeighboursPositionSolver&lt;P extends Poin
     public void setFingerprintsAndDistances(
             final RssiFingerprintLocated&lt;WifiAccessPoint, RssiReading&lt;WifiAccessPoint&gt;, P&gt;[] fingerprints,
             final double[] distances) throws LockedException {
-<span class="fc bfc" id="L207" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L208">            throw new LockedException();</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L207">            throw new LockedException();</span>
         }
-<span class="fc" id="L210">        internalSetFingerprintsAndDistances(fingerprints, distances);</span>
-<span class="fc" id="L211">    }</span>
+<span class="fc" id="L209">        internalSetFingerprintsAndDistances(fingerprints, distances);</span>
+<span class="fc" id="L210">    }</span>
 
     /**
      * Gets minimum allowed distance between WiFi signal fingerprints.
@@ -216,7 +215,7 @@ public abstract class WeightedKNearestNeighboursPositionSolver&lt;P extends Poin
      * @return minimum allowed distance between WiFi signal fingerprints.
      */
     public double getEpsilon() {
-<span class="fc" id="L219">        return mEpsilon;</span>
+<span class="fc" id="L218">        return mEpsilon;</span>
     }
 
     /**
@@ -228,16 +227,16 @@ public abstract class WeightedKNearestNeighboursPositionSolver&lt;P extends Poin
      * @throws LockedException          if instance is busy solving the indoor problem.
      */
     public void setEpsilon(final double epsilon) throws LockedException {
-<span class="fc bfc" id="L231" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L232">            throw new LockedException();</span>
+<span class="fc bfc" id="L230" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L231">            throw new LockedException();</span>
         }
 
-<span class="fc bfc" id="L235" title="All 2 branches covered.">        if (epsilon &lt;= 0.0) {</span>
-<span class="fc" id="L236">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L234" title="All 2 branches covered.">        if (epsilon &lt;= 0.0) {</span>
+<span class="fc" id="L235">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L239">        mEpsilon = epsilon;</span>
-<span class="fc" id="L240">    }</span>
+<span class="fc" id="L238">        mEpsilon = epsilon;</span>
+<span class="fc" id="L239">    }</span>
 
     /**
      * Estimates position.
@@ -246,62 +245,62 @@ public abstract class WeightedKNearestNeighboursPositionSolver&lt;P extends Poin
      * @throws LockedException   if instance is busy solving position.
      */
     public void solve() throws NotReadyException, LockedException {
-<span class="fc bfc" id="L249" title="All 2 branches covered.">        if (!isReady()) {</span>
-<span class="fc" id="L250">            throw new NotReadyException();</span>
+<span class="fc bfc" id="L248" title="All 2 branches covered.">        if (!isReady()) {</span>
+<span class="fc" id="L249">            throw new NotReadyException();</span>
         }
-<span class="fc bfc" id="L252" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L253">            throw new LockedException();</span>
+<span class="fc bfc" id="L251" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L252">            throw new LockedException();</span>
         }
 
         try {
-<span class="fc" id="L257">            mLocked = true;</span>
+<span class="fc" id="L256">            mLocked = true;</span>
 
-<span class="fc bfc" id="L259" title="All 2 branches covered.">            if (mListener != null) {</span>
-<span class="fc" id="L260">                mListener.onSolveStart(this);</span>
+<span class="fc bfc" id="L258" title="All 2 branches covered.">            if (mListener != null) {</span>
+<span class="fc" id="L259">                mListener.onSolveStart(this);</span>
             }
 
-<span class="fc" id="L263">            final int num = mFingerprints.length;</span>
-<span class="fc" id="L264">            final int dims = getNumberOfDimensions();</span>
-<span class="fc bfc" id="L265" title="All 2 branches covered.">            if (num == 1) {</span>
-                //only one fingerprint available
-<span class="fc" id="L267">                mEstimatedPositionCoordinates = new double[dims];</span>
-<span class="fc bfc" id="L268" title="All 2 branches covered.">                for (int i = 0; i &lt; dims; i++) {</span>
-<span class="fc" id="L269">                    final P p = mFingerprints[0].getPosition();</span>
-<span class="fc" id="L270">                    mEstimatedPositionCoordinates[i] = p.getInhomogeneousCoordinate(i);</span>
+<span class="fc" id="L262">            final int num = mFingerprints.length;</span>
+<span class="fc" id="L263">            final int dims = getNumberOfDimensions();</span>
+<span class="fc bfc" id="L264" title="All 2 branches covered.">            if (num == 1) {</span>
+                // only one fingerprint available
+<span class="fc" id="L266">                mEstimatedPositionCoordinates = new double[dims];</span>
+<span class="fc bfc" id="L267" title="All 2 branches covered.">                for (int i = 0; i &lt; dims; i++) {</span>
+<span class="fc" id="L268">                    final P p = mFingerprints[0].getPosition();</span>
+<span class="fc" id="L269">                    mEstimatedPositionCoordinates[i] = p.getInhomogeneousCoordinate(i);</span>
                 }
             } else {
-                //multiple fingerprints available
-<span class="fc" id="L274">                final double[] coords = new double[dims];</span>
-<span class="fc" id="L275">                double sum = 0.0;</span>
+                // multiple fingerprints available
+<span class="fc" id="L273">                final double[] coords = new double[dims];</span>
+<span class="fc" id="L274">                double sum = 0.0;</span>
                 double w;
-<span class="fc bfc" id="L277" title="All 2 branches covered.">                for (int i = 0; i &lt; num; i++) {</span>
-                    //weighted average and weight summation
-<span class="fc" id="L279">                    w = 1.0 / mDistances[i];</span>
-<span class="fc" id="L280">                    sum += w;</span>
+<span class="fc bfc" id="L276" title="All 2 branches covered.">                for (int i = 0; i &lt; num; i++) {</span>
+                    // weighted average and weight summation
+<span class="fc" id="L278">                    w = 1.0 / mDistances[i];</span>
+<span class="fc" id="L279">                    sum += w;</span>
 
-<span class="fc" id="L282">                    final P p = mFingerprints[i].getPosition();</span>
-<span class="fc bfc" id="L283" title="All 2 branches covered.">                    for (int j = 0; j &lt; dims; j++) {</span>
-<span class="fc" id="L284">                        coords[j] += w * p.getInhomogeneousCoordinate(j);</span>
+<span class="fc" id="L281">                    final P p = mFingerprints[i].getPosition();</span>
+<span class="fc bfc" id="L282" title="All 2 branches covered.">                    for (int j = 0; j &lt; dims; j++) {</span>
+<span class="fc" id="L283">                        coords[j] += w * p.getInhomogeneousCoordinate(j);</span>
                     }
                 }
 
-                //normalize by weight summation
-<span class="pc bpc" id="L289" title="1 of 2 branches missed.">                if (sum != 0.0) {</span>
-<span class="fc bfc" id="L290" title="All 2 branches covered.">                    for (int j = 0; j &lt; dims; j++) {</span>
-<span class="fc" id="L291">                        coords[j] /= sum;</span>
+                // normalize by weight summation
+<span class="pc bpc" id="L288" title="1 of 2 branches missed.">                if (sum != 0.0) {</span>
+<span class="fc bfc" id="L289" title="All 2 branches covered.">                    for (int j = 0; j &lt; dims; j++) {</span>
+<span class="fc" id="L290">                        coords[j] /= sum;</span>
                     }
                 }
 
-<span class="fc" id="L295">                mEstimatedPositionCoordinates = coords;</span>
+<span class="fc" id="L294">                mEstimatedPositionCoordinates = coords;</span>
             }
 
-<span class="fc bfc" id="L298" title="All 2 branches covered.">            if (mListener != null) {</span>
-<span class="fc" id="L299">                mListener.onSolveEnd(this);</span>
+<span class="fc bfc" id="L297" title="All 2 branches covered.">            if (mListener != null) {</span>
+<span class="fc" id="L298">                mListener.onSolveEnd(this);</span>
             }
         } finally {
-<span class="fc" id="L302">            mLocked = false;</span>
+<span class="fc" id="L301">            mLocked = false;</span>
         }
-<span class="fc" id="L304">    }</span>
+<span class="fc" id="L303">    }</span>
 
     /**
      * Gets estimated inhomogeneous position coordinates.
@@ -309,7 +308,7 @@ public abstract class WeightedKNearestNeighboursPositionSolver&lt;P extends Poin
      * @return estimated inhomogeneous position coordinates.
      */
     public double[] getEstimatedPositionCoordinates() {
-<span class="fc" id="L312">        return mEstimatedPositionCoordinates;</span>
+<span class="fc" id="L311">        return mEstimatedPositionCoordinates;</span>
     }
 
     /**
@@ -318,13 +317,13 @@ public abstract class WeightedKNearestNeighboursPositionSolver&lt;P extends Poin
      * @param estimatedPosition instance where estimated position will be stored.
      */
     public void getEstimatedPosition(final P estimatedPosition) {
-<span class="pc bpc" id="L321" title="1 of 2 branches missed.">        if (mEstimatedPositionCoordinates != null) {</span>
-<span class="fc bfc" id="L322" title="All 2 branches covered.">            for (int i = 0; i &lt; mEstimatedPositionCoordinates.length; i++) {</span>
-<span class="fc" id="L323">                estimatedPosition.setInhomogeneousCoordinate(i,</span>
+<span class="pc bpc" id="L320" title="1 of 2 branches missed.">        if (mEstimatedPositionCoordinates != null) {</span>
+<span class="fc bfc" id="L321" title="All 2 branches covered.">            for (int i = 0; i &lt; mEstimatedPositionCoordinates.length; i++) {</span>
+<span class="fc" id="L322">                estimatedPosition.setInhomogeneousCoordinate(i,</span>
                         mEstimatedPositionCoordinates[i]);
             }
         }
-<span class="fc" id="L327">    }</span>
+<span class="fc" id="L326">    }</span>
 
     /**
      * Gets estimated position.
@@ -353,27 +352,27 @@ public abstract class WeightedKNearestNeighboursPositionSolver&lt;P extends Poin
     protected void internalSetFingerprintsAndDistances(
             final RssiFingerprintLocated&lt;WifiAccessPoint, RssiReading&lt;WifiAccessPoint&gt;, P&gt;[] fingerprints,
             final double[] distances) {
-<span class="fc bfc" id="L356" title="All 4 branches covered.">        if (fingerprints == null || distances == null) {</span>
-<span class="fc" id="L357">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L355" title="All 4 branches covered.">        if (fingerprints == null || distances == null) {</span>
+<span class="fc" id="L356">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc bfc" id="L360" title="All 2 branches covered.">        if (fingerprints.length &lt; MIN_FINGERPRINTS) {</span>
-<span class="fc" id="L361">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L359" title="All 2 branches covered.">        if (fingerprints.length &lt; MIN_FINGERPRINTS) {</span>
+<span class="fc" id="L360">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc bfc" id="L364" title="All 2 branches covered.">        if (fingerprints.length != distances.length) {</span>
-<span class="fc" id="L365">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L363" title="All 2 branches covered.">        if (fingerprints.length != distances.length) {</span>
+<span class="fc" id="L364">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L368">        mFingerprints = fingerprints;</span>
-<span class="fc" id="L369">        mDistances = distances;</span>
+<span class="fc" id="L367">        mFingerprints = fingerprints;</span>
+<span class="fc" id="L368">        mDistances = distances;</span>
 
-        //fix distances if needed
-<span class="fc bfc" id="L372" title="All 2 branches covered.">        for (int i = 0; i &lt; mDistances.length; i++) {</span>
-<span class="fc bfc" id="L373" title="All 2 branches covered.">            if (mDistances[i] &lt; mEpsilon) {</span>
-<span class="fc" id="L374">                mDistances[i] = mEpsilon;</span>
+        // fix distances if needed
+<span class="fc bfc" id="L371" title="All 2 branches covered.">        for (int i = 0; i &lt; mDistances.length; i++) {</span>
+<span class="fc bfc" id="L372" title="All 2 branches covered.">            if (mDistances[i] &lt; mEpsilon) {</span>
+<span class="fc" id="L373">                mDistances[i] = mEpsilon;</span>
             }
         }
-<span class="fc" id="L377">    }</span>
+<span class="fc" id="L376">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -27,6 +27,7 @@ import com.irurueta.navigation.lateration.LaterationException;
 import com.irurueta.navigation.lateration.LaterationSolver;
 import com.irurueta.navigation.lateration.LaterationSolverListener;
 import com.irurueta.navigation.lateration.NonLinearLeastSquaresLaterationSolver;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +40,6 @@ import java.util.List;
  *
  * @param &lt;P&gt; a {@link Point} type.
  */
-@SuppressWarnings(&quot;WeakerAccess&quot;)
 public abstract class NonLinearRangingPositionEstimator&lt;P extends Point&lt;?&gt;&gt; extends
         RangingPositionEstimator&lt;P&gt; {
 
@@ -321,7 +321,7 @@ public abstract class NonLinearRangingPositionEstimator&lt;P extends Point&lt;?&
 <span class="fc" id="L321">    }</span>
 
     /**
-     * Sets positions, distnaces and standard deviations of distances on internal
+     * Sets positions, distances and standard deviations of distances on internal
      * lateration solver.
      *
      * @param positions                  positions to be set.

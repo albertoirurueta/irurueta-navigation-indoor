@@ -30,6 +30,7 @@ import com.irurueta.navigation.indoor.WifiAccessPointLocated3D;
 import com.irurueta.navigation.lateration.HomogeneousLinearLeastSquaresLateration3DSolver;
 import com.irurueta.navigation.lateration.InhomogeneousLinearLeastSquaresLateration3DSolver;
 import com.irurueta.navigation.lateration.NonLinearLeastSquaresLateration3DSolver;
+
 import java.util.List;
 
 /**
@@ -41,7 +42,7 @@ import java.util.List;
  *
  * @param &lt;S&gt; a {@link RadioSource} type.
  */
-@SuppressWarnings({&quot;WeakerAccess&quot;, &quot;Duplicates&quot;})
+@SuppressWarnings(&quot;DuplicatedCode&quot;)
 public class RangingRadioSourceEstimator3D&lt;S extends RadioSource&gt; extends
         RangingRadioSourceEstimator&lt;S, Point3D&gt; {
 
@@ -49,8 +50,8 @@ public class RangingRadioSourceEstimator3D&lt;S extends RadioSource&gt; extends
      * Constructor.
      */
     public RangingRadioSourceEstimator3D() {
-<span class="fc" id="L52">        super();</span>
-<span class="fc" id="L53">    }</span>
+<span class="fc" id="L53">        super();</span>
+<span class="fc" id="L54">    }</span>
 
     /**
      * Constructor.
@@ -61,8 +62,8 @@ public class RangingRadioSourceEstimator3D&lt;S extends RadioSource&gt; extends
      */
     public RangingRadioSourceEstimator3D(
             final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings) {
-<span class="fc" id="L64">        super(readings);</span>
-<span class="fc" id="L65">    }</span>
+<span class="fc" id="L65">        super(readings);</span>
+<span class="fc" id="L66">    }</span>
 
     /**
      * Constructor.
@@ -71,8 +72,8 @@ public class RangingRadioSourceEstimator3D&lt;S extends RadioSource&gt; extends
      */
     public RangingRadioSourceEstimator3D(
             final RangingRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
-<span class="fc" id="L74">        super(listener);</span>
-<span class="fc" id="L75">    }</span>
+<span class="fc" id="L75">        super(listener);</span>
+<span class="fc" id="L76">    }</span>
 
     /**
      * Constructor.
@@ -85,8 +86,8 @@ public class RangingRadioSourceEstimator3D&lt;S extends RadioSource&gt; extends
     public RangingRadioSourceEstimator3D(
             final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings,
             final RangingRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
-<span class="fc" id="L88">        super(readings, listener);</span>
-<span class="fc" id="L89">    }</span>
+<span class="fc" id="L89">        super(readings, listener);</span>
+<span class="fc" id="L90">    }</span>
 
     /**
      * Constructor.
@@ -95,8 +96,8 @@ public class RangingRadioSourceEstimator3D&lt;S extends RadioSource&gt; extends
      *                        source position.
      */
     public RangingRadioSourceEstimator3D(final Point3D initialPosition) {
-<span class="fc" id="L98">        super(initialPosition);</span>
-<span class="fc" id="L99">    }</span>
+<span class="fc" id="L99">        super(initialPosition);</span>
+<span class="fc" id="L100">    }</span>
 
     /**
      * Constructor.
@@ -110,8 +111,8 @@ public class RangingRadioSourceEstimator3D&lt;S extends RadioSource&gt; extends
     public RangingRadioSourceEstimator3D(
             final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings,
             final Point3D initialPosition) {
-<span class="fc" id="L113">        super(readings, initialPosition);</span>
-<span class="fc" id="L114">    }</span>
+<span class="fc" id="L114">        super(readings, initialPosition);</span>
+<span class="fc" id="L115">    }</span>
 
     /**
      * Constructor.
@@ -123,8 +124,8 @@ public class RangingRadioSourceEstimator3D&lt;S extends RadioSource&gt; extends
     public RangingRadioSourceEstimator3D(
             final Point3D initialPosition,
             final RangingRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
-<span class="fc" id="L126">        super(initialPosition, listener);</span>
-<span class="fc" id="L127">    }</span>
+<span class="fc" id="L127">        super(initialPosition, listener);</span>
+<span class="fc" id="L128">    }</span>
 
     /**
      * Constructor.
@@ -140,8 +141,8 @@ public class RangingRadioSourceEstimator3D&lt;S extends RadioSource&gt; extends
             final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings,
             final Point3D initialPosition,
             final RangingRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
-<span class="fc" id="L143">        super(readings, initialPosition, listener);</span>
-<span class="fc" id="L144">    }</span>
+<span class="fc" id="L144">        super(readings, initialPosition, listener);</span>
+<span class="fc" id="L145">    }</span>
 
     /**
      * Gets minimum required number of readings to estimate position of radio source,
@@ -151,7 +152,7 @@ public class RangingRadioSourceEstimator3D&lt;S extends RadioSource&gt; extends
      */
     @Override
     public int getMinReadings() {
-<span class="fc" id="L154">        return Point3D.POINT3D_INHOMOGENEOUS_COORDINATES_LENGTH + 1;</span>
+<span class="fc" id="L155">        return Point3D.POINT3D_INHOMOGENEOUS_COORDINATES_LENGTH + 1;</span>
     }
 
     /**
@@ -162,7 +163,7 @@ public class RangingRadioSourceEstimator3D&lt;S extends RadioSource&gt; extends
      */
     @Override
     public int getNumberOfDimensions() {
-<span class="fc" id="L165">        return Point3D.POINT3D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
+<span class="fc" id="L166">        return Point3D.POINT3D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
     }
 
     /**
@@ -172,13 +173,13 @@ public class RangingRadioSourceEstimator3D&lt;S extends RadioSource&gt; extends
      */
     @Override
     public Point3D getEstimatedPosition() {
-<span class="fc bfc" id="L175" title="All 2 branches covered.">        if (mEstimatedPositionCoordinates == null) {</span>
-<span class="fc" id="L176">            return null;</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">        if (mEstimatedPositionCoordinates == null) {</span>
+<span class="fc" id="L177">            return null;</span>
         }
 
-<span class="fc" id="L179">        final InhomogeneousPoint3D result = new InhomogeneousPoint3D();</span>
-<span class="fc" id="L180">        getEstimatedPosition(result);</span>
-<span class="fc" id="L181">        return result;</span>
+<span class="fc" id="L180">        final InhomogeneousPoint3D result = new InhomogeneousPoint3D();</span>
+<span class="fc" id="L181">        getEstimatedPosition(result);</span>
+<span class="fc" id="L182">        return result;</span>
     }
 
     /**
@@ -189,34 +190,34 @@ public class RangingRadioSourceEstimator3D&lt;S extends RadioSource&gt; extends
     @Override
     @SuppressWarnings(&quot;unchecked&quot;)
     public RadioSourceLocated&lt;Point3D&gt; getEstimatedRadioSource() {
-<span class="fc" id="L192">        final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings = getReadings();</span>
-<span class="pc bpc" id="L193" title="1 of 4 branches missed.">        if (readings == null || readings.isEmpty()) {</span>
-<span class="fc" id="L194">            return null;</span>
+<span class="fc" id="L193">        final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings = getReadings();</span>
+<span class="pc bpc" id="L194" title="1 of 4 branches missed.">        if (readings == null || readings.isEmpty()) {</span>
+<span class="fc" id="L195">            return null;</span>
         }
-<span class="fc" id="L196">        final S source = readings.get(0).getSource();</span>
+<span class="fc" id="L197">        final S source = readings.get(0).getSource();</span>
 
-<span class="fc" id="L198">        final Point3D estimatedPosition = getEstimatedPosition();</span>
-<span class="fc bfc" id="L199" title="All 2 branches covered.">        if (estimatedPosition == null) {</span>
-<span class="fc" id="L200">            return null;</span>
+<span class="fc" id="L199">        final Point3D estimatedPosition = getEstimatedPosition();</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">        if (estimatedPosition == null) {</span>
+<span class="fc" id="L201">            return null;</span>
         }
 
-<span class="fc" id="L203">        final Matrix estimatedPositionCovariance = getEstimatedPositionCovariance();</span>
+<span class="fc" id="L204">        final Matrix estimatedPositionCovariance = getEstimatedPositionCovariance();</span>
 
-<span class="fc bfc" id="L205" title="All 2 branches covered.">        if (source instanceof WifiAccessPoint) {</span>
-<span class="fc" id="L206">            final WifiAccessPoint accessPoint = (WifiAccessPoint) source;</span>
-<span class="fc" id="L207">            return new WifiAccessPointLocated3D(accessPoint.getBssid(),</span>
-<span class="fc" id="L208">                    accessPoint.getFrequency(), accessPoint.getSsid(),</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">        if (source instanceof WifiAccessPoint) {</span>
+<span class="fc" id="L207">            final WifiAccessPoint accessPoint = (WifiAccessPoint) source;</span>
+<span class="fc" id="L208">            return new WifiAccessPointLocated3D(accessPoint.getBssid(),</span>
+<span class="fc" id="L209">                    accessPoint.getFrequency(), accessPoint.getSsid(),</span>
                     estimatedPosition, estimatedPositionCovariance);
-<span class="pc bpc" id="L210" title="1 of 2 branches missed.">        } else if (source instanceof Beacon) {</span>
-<span class="fc" id="L211">            final Beacon beacon = (Beacon) source;</span>
-<span class="fc" id="L212">            return new BeaconLocated3D(beacon.getIdentifiers(),</span>
-<span class="fc" id="L213">                    beacon.getTransmittedPower(), beacon.getFrequency(),</span>
-<span class="fc" id="L214">                    beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(),</span>
-<span class="fc" id="L215">                    beacon.getManufacturer(), beacon.getServiceUuid(),</span>
-<span class="fc" id="L216">                    beacon.getBluetoothName(), estimatedPosition,</span>
+<span class="pc bpc" id="L211" title="1 of 2 branches missed.">        } else if (source instanceof Beacon) {</span>
+<span class="fc" id="L212">            final Beacon beacon = (Beacon) source;</span>
+<span class="fc" id="L213">            return new BeaconLocated3D(beacon.getIdentifiers(),</span>
+<span class="fc" id="L214">                    beacon.getTransmittedPower(), beacon.getFrequency(),</span>
+<span class="fc" id="L215">                    beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(),</span>
+<span class="fc" id="L216">                    beacon.getManufacturer(), beacon.getServiceUuid(),</span>
+<span class="fc" id="L217">                    beacon.getBluetoothName(), estimatedPosition,</span>
                     estimatedPositionCovariance);
         } else {
-<span class="nc" id="L219">            return null;</span>
+<span class="nc" id="L220">            return null;</span>
         }
     }
 
@@ -225,38 +226,38 @@ public class RangingRadioSourceEstimator3D&lt;S extends RadioSource&gt; extends
      */
     @Override
     protected void buildLinearSolverIfNeeded() {
-<span class="fc bfc" id="L228" title="All 4 branches covered.">        if (mInitialPosition == null || !mNonLinearSolverEnabled) {</span>
-<span class="fc bfc" id="L229" title="All 4 branches covered.">            if (mUseHomogeneousLinearSolver &amp;&amp; mHomogeneousLinearSolver == null) {</span>
-<span class="fc" id="L230">                mHomogeneousLinearSolver = new HomogeneousLinearLeastSquaresLateration3DSolver();</span>
+<span class="fc bfc" id="L229" title="All 4 branches covered.">        if (mInitialPosition == null || !mNonLinearSolverEnabled) {</span>
+<span class="fc bfc" id="L230" title="All 4 branches covered.">            if (mUseHomogeneousLinearSolver &amp;&amp; mHomogeneousLinearSolver == null) {</span>
+<span class="fc" id="L231">                mHomogeneousLinearSolver = new HomogeneousLinearLeastSquaresLateration3DSolver();</span>
             }
-<span class="fc bfc" id="L232" title="All 4 branches covered.">            if (!mUseHomogeneousLinearSolver &amp;&amp; mInhomogeneousLinearSolver == null) {</span>
-<span class="fc" id="L233">                mInhomogeneousLinearSolver = new InhomogeneousLinearLeastSquaresLateration3DSolver();</span>
+<span class="fc bfc" id="L233" title="All 4 branches covered.">            if (!mUseHomogeneousLinearSolver &amp;&amp; mInhomogeneousLinearSolver == null) {</span>
+<span class="fc" id="L234">                mInhomogeneousLinearSolver = new InhomogeneousLinearLeastSquaresLateration3DSolver();</span>
             }
         }
-<span class="fc" id="L236">    }</span>
+<span class="fc" id="L237">    }</span>
 
     /**
      * Builds an instance of a non-linear lateration solver if needed.
      */
     @Override
     protected void buildNonLinearSolverIfNeeded() {
-<span class="fc bfc" id="L243" title="All 4 branches covered.">        if (mNonLinearSolver == null &amp;&amp; mNonLinearSolverEnabled) {</span>
-<span class="fc" id="L244">            mNonLinearSolver = new NonLinearLeastSquaresLateration3DSolver();</span>
+<span class="fc bfc" id="L244" title="All 4 branches covered.">        if (mNonLinearSolver == null &amp;&amp; mNonLinearSolverEnabled) {</span>
+<span class="fc" id="L245">            mNonLinearSolver = new NonLinearLeastSquaresLateration3DSolver();</span>
         }
-<span class="fc" id="L246">    }</span>
+<span class="fc" id="L247">    }</span>
 
     /**
      * Build an instance of accuracy if needed.
      */
     @Override
     protected void buildAccuracyIfNeeded() {
-<span class="fc bfc" id="L253" title="All 4 branches covered.">        if (mAccuracy == null &amp;&amp; mUseReadingPositionCovariances) {</span>
-<span class="fc" id="L254">            mAccuracy = new Accuracy3D();</span>
+<span class="fc bfc" id="L254" title="All 4 branches covered.">        if (mAccuracy == null &amp;&amp; mUseReadingPositionCovariances) {</span>
+<span class="fc" id="L255">            mAccuracy = new Accuracy3D();</span>
 
-            //to work with standard deviations, we need a unitary factor
-<span class="fc" id="L257">            mAccuracy.setStandardDeviationFactor(1.0);</span>
+            // to work with standard deviations, we need a unitary factor
+<span class="fc" id="L258">            mAccuracy.setStandardDeviationFactor(1.0);</span>
         }
-<span class="fc" id="L259">    }</span>
+<span class="fc" id="L260">    }</span>
 
     /**
      * Sets positions, distances and standard deviations of distances on internal
@@ -273,30 +274,30 @@ public class RangingRadioSourceEstimator3D&lt;S extends RadioSource&gt; extends
             final List&lt;Point3D&gt; positions, final List&lt;Double&gt; distances,
             final List&lt;Double&gt; distanceStandardDeviations) throws LockedException {
 
-<span class="fc" id="L276">        final int size = positions.size();</span>
-<span class="fc" id="L277">        Point3D[] positionsArray = new InhomogeneousPoint3D[size];</span>
-<span class="fc" id="L278">        positionsArray = positions.toArray(positionsArray);</span>
+<span class="fc" id="L277">        final int size = positions.size();</span>
+<span class="fc" id="L278">        Point3D[] positionsArray = new InhomogeneousPoint3D[size];</span>
+<span class="fc" id="L279">        positionsArray = positions.toArray(positionsArray);</span>
 
-<span class="fc" id="L280">        final double[] distancesArray = new double[size];</span>
-<span class="fc" id="L281">        final double[] distanceStandardDeviationsArray = new double[size];</span>
-<span class="fc bfc" id="L282" title="All 2 branches covered.">        for (int i = 0; i &lt; size; i++) {</span>
-<span class="fc" id="L283">            distancesArray[i] = distances.get(i);</span>
-<span class="fc" id="L284">            distanceStandardDeviationsArray[i] = distanceStandardDeviations.get(i);</span>
+<span class="fc" id="L281">        final double[] distancesArray = new double[size];</span>
+<span class="fc" id="L282">        final double[] distanceStandardDeviationsArray = new double[size];</span>
+<span class="fc bfc" id="L283" title="All 2 branches covered.">        for (int i = 0; i &lt; size; i++) {</span>
+<span class="fc" id="L284">            distancesArray[i] = distances.get(i);</span>
+<span class="fc" id="L285">            distanceStandardDeviationsArray[i] = distanceStandardDeviations.get(i);</span>
         }
 
-<span class="fc bfc" id="L287" title="All 4 branches covered.">        if (mInitialPosition == null || !mNonLinearSolverEnabled) {</span>
-<span class="fc bfc" id="L288" title="All 2 branches covered.">            if (mHomogeneousLinearSolver != null) {</span>
-<span class="fc" id="L289">                mHomogeneousLinearSolver.setPositionsAndDistances(positionsArray, distancesArray);</span>
+<span class="fc bfc" id="L288" title="All 4 branches covered.">        if (mInitialPosition == null || !mNonLinearSolverEnabled) {</span>
+<span class="fc bfc" id="L289" title="All 2 branches covered.">            if (mHomogeneousLinearSolver != null) {</span>
+<span class="fc" id="L290">                mHomogeneousLinearSolver.setPositionsAndDistances(positionsArray, distancesArray);</span>
             }
-<span class="fc bfc" id="L291" title="All 2 branches covered.">            if (mInhomogeneousLinearSolver != null) {</span>
-<span class="fc" id="L292">                mInhomogeneousLinearSolver.setPositionsAndDistances(positionsArray, distancesArray);</span>
+<span class="fc bfc" id="L292" title="All 2 branches covered.">            if (mInhomogeneousLinearSolver != null) {</span>
+<span class="fc" id="L293">                mInhomogeneousLinearSolver.setPositionsAndDistances(positionsArray, distancesArray);</span>
             }
         }
 
-<span class="fc bfc" id="L296" title="All 4 branches covered.">        if (mNonLinearSolver != null &amp;&amp; mNonLinearSolverEnabled) {</span>
-<span class="fc" id="L297">            mNonLinearSolver.setPositionsDistancesAndStandardDeviations(positionsArray, distancesArray,</span>
+<span class="fc bfc" id="L297" title="All 4 branches covered.">        if (mNonLinearSolver != null &amp;&amp; mNonLinearSolverEnabled) {</span>
+<span class="fc" id="L298">            mNonLinearSolver.setPositionsDistancesAndStandardDeviations(positionsArray, distancesArray,</span>
                     distanceStandardDeviationsArray);
         }
-<span class="fc" id="L300">    }</span>
+<span class="fc" id="L301">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

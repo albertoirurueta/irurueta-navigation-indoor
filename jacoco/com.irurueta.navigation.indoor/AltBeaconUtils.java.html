@@ -26,7 +26,7 @@ package com.irurueta.navigation.indoor;
  * - Pr is received signal strength (expressed in mW),
  * - Pt is transmitted signal strength (expressed in mW),
  * - k is equal to k = c / (4 * pi * f), where:
- * - c is speed of light (which is aproximately 9*10^8 m/s)
+ * - c is speed of light (which is approximately 9*10^8 m/s)
  * - f is the radio link frequency used by the beacon.
  * &lt;p&gt;
  * Hence, considering:
@@ -48,7 +48,6 @@ package com.irurueta.navigation.indoor;
  * 2.0, but can usually range from 1.6 to 1.8 on indoor environments)
  * coefficient3 is a bias term calibrated for each device.
  */
-@SuppressWarnings(&quot;WeakerAccess&quot;)
 public class AltBeaconUtils {
 
     /**
@@ -73,7 +72,7 @@ public class AltBeaconUtils {
      */
     public static double getK(final double frequency) {
         //k = c / (4 * pi * f)
-<span class="fc" id="L76">        return SPEED_OF_LIGHT / (4.0 * Math.PI * frequency);</span>
+<span class="fc" id="L75">        return SPEED_OF_LIGHT / (4.0 * Math.PI * frequency);</span>
     }
 
     /**
@@ -87,8 +86,8 @@ public class AltBeaconUtils {
             final double coefficient1, final double coefficient2) {
         //coefficient1 = k^(1/n), hence
         //k = coefficient1^n
-<span class="fc" id="L90">        final double n = -1.0 / coefficient2;</span>
-<span class="fc" id="L91">        return Math.pow(coefficient1, n);</span>
+<span class="fc" id="L89">        final double n = -1.0 / coefficient2;</span>
+<span class="fc" id="L90">        return Math.pow(coefficient1, n);</span>
     }
 
     /**
@@ -99,7 +98,7 @@ public class AltBeaconUtils {
      */
     public static double getFrequency(final double k) {
         //k = c / (4*pi*f) --&gt; f = c / (4*pi*k)
-<span class="fc" id="L102">        return SPEED_OF_LIGHT / (4.0 * Math.PI * k);</span>
+<span class="fc" id="L101">        return SPEED_OF_LIGHT / (4.0 * Math.PI * k);</span>
     }
 
     /**
@@ -111,7 +110,7 @@ public class AltBeaconUtils {
      */
     public static double getFrequency(
             final double coefficient1, final double coefficient2) {
-<span class="fc" id="L114">        return getFrequency(getK(coefficient1, coefficient2));</span>
+<span class="fc" id="L113">        return getFrequency(getK(coefficient1, coefficient2));</span>
     }
 
     /**
@@ -122,7 +121,7 @@ public class AltBeaconUtils {
      */
     public static double getPathLossExponent(final double coefficient2) {
         //coefficient2 = -1/n
-<span class="fc" id="L125">        return -1.0 / coefficient2;</span>
+<span class="fc" id="L124">        return -1.0 / coefficient2;</span>
     }
 
     /**
@@ -138,7 +137,7 @@ public class AltBeaconUtils {
             final double coefficient1, final double coefficient2,
             final double coefficient3, final double ratio) {
         //d = coefficient1 * ratio^coefficient2 + coefficient3
-<span class="fc" id="L141">        return coefficient1 * Math.pow(ratio, coefficient2) + coefficient3;</span>
+<span class="fc" id="L140">        return coefficient1 * Math.pow(ratio, coefficient2) + coefficient3;</span>
     }
 
     /**
@@ -155,7 +154,7 @@ public class AltBeaconUtils {
             final double coefficient1, final double coefficient2,
             final double coefficient3, final double receivedPower,
             final double transmittedPower) {
-<span class="fc" id="L158">        return getDistance(coefficient1, coefficient2, coefficient3,</span>
+<span class="fc" id="L157">        return getDistance(coefficient1, coefficient2, coefficient3,</span>
                 receivedPower / transmittedPower);
     }
 
@@ -176,7 +175,7 @@ public class AltBeaconUtils {
         //d - coefficient3 = coefficient1 * ratio^coefficient2
         //(d - coefficient3) / coefficient1 = ratio^coefficient2
         //ratio = ((d - coefficient3) / coefficient1)^(1/coefficient2)
-<span class="fc" id="L179">        return Math.pow((distance - coefficient3) / coefficient1,</span>
+<span class="fc" id="L178">        return Math.pow((distance - coefficient3) / coefficient1,</span>
                 1.0 / coefficient2);
     }
 
@@ -189,7 +188,7 @@ public class AltBeaconUtils {
      */
     public static double getRatio(
             final double receivedPower, final double transmittedPower) {
-<span class="fc" id="L192">        return receivedPower / transmittedPower;</span>
+<span class="fc" id="L191">        return receivedPower / transmittedPower;</span>
     }
 
     /**
@@ -202,7 +201,7 @@ public class AltBeaconUtils {
     public static double getReceivedPower(
             final double ratio, final double transmittedPower) {
         //ratio = Pr / Pt
-<span class="fc" id="L205">        return ratio * transmittedPower;</span>
+<span class="fc" id="L204">        return ratio * transmittedPower;</span>
     }
 
     /**
@@ -219,7 +218,7 @@ public class AltBeaconUtils {
             final double coefficient1, final double coefficient2,
             final double coefficient3, final double distance,
             final double transmittedPower) {
-<span class="fc" id="L222">        return getReceivedPower(getRatio(coefficient1, coefficient2, coefficient3,</span>
+<span class="fc" id="L221">        return getReceivedPower(getRatio(coefficient1, coefficient2, coefficient3,</span>
                 distance), transmittedPower);
     }
 
@@ -233,7 +232,7 @@ public class AltBeaconUtils {
     public static double getTransmittedPower(
             final double ratio, final double receivedPower) {
         //ratio = Pr / Pt
-<span class="fc" id="L236">        return receivedPower / ratio;</span>
+<span class="fc" id="L235">        return receivedPower / ratio;</span>
     }
 
     /**
@@ -250,7 +249,7 @@ public class AltBeaconUtils {
             final double coefficient1, final double coefficient2,
             final double coefficient3, final double distance,
             final double receivedPower) {
-<span class="fc" id="L253">        return getTransmittedPower(getRatio(coefficient1, coefficient2,</span>
+<span class="fc" id="L252">        return getTransmittedPower(getRatio(coefficient1, coefficient2,</span>
                 coefficient3, distance), receivedPower);
     }
 
@@ -264,7 +263,7 @@ public class AltBeaconUtils {
     public static double getCoefficient1(
             final double k, final double pathLossExponent) {
         //coefficient1 = k^(1/n)
-<span class="fc" id="L267">        return Math.pow(k, 1.0 / pathLossExponent);</span>
+<span class="fc" id="L266">        return Math.pow(k, 1.0 / pathLossExponent);</span>
     }
 
     /**
@@ -276,7 +275,7 @@ public class AltBeaconUtils {
      */
     public static double getCoefficient1WithFrequency(
             final double frequency, final double pathLossExponent) {
-<span class="fc" id="L279">        return getCoefficient1(getK(frequency), pathLossExponent);</span>
+<span class="fc" id="L278">        return getCoefficient1(getK(frequency), pathLossExponent);</span>
     }
 
     /**
@@ -287,7 +286,7 @@ public class AltBeaconUtils {
      */
     public static double getCoefficient2(final double pathLossExponent) {
         //coefficient2 = -1/n
-<span class="fc" id="L290">        return -1.0 / pathLossExponent;</span>
+<span class="fc" id="L289">        return -1.0 / pathLossExponent;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -23,6 +23,7 @@ import com.irurueta.navigation.indoor.RangingAndRssiFingerprint;
 import com.irurueta.navigation.indoor.RangingAndRssiReading;
 import com.irurueta.navigation.lateration.PROMedSRobustLateration3DSolver;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -33,7 +34,6 @@ import java.util.List;
  * device by getting ranging+RSSI readings at an unknown location of different radio
  * sources whose 3D locations are known.
  */
-@SuppressWarnings(&quot;WeakerAccess&quot;)
 public class PROMedSRobustRangingAndRssiPositionEstimator3D extends
         RobustRangingAndRssiPositionEstimator3D {
 
@@ -79,11 +79,12 @@ public class PROMedSRobustRangingAndRssiPositionEstimator3D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public PROMedSRobustRangingAndRssiPositionEstimator3D(
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint) {
-<span class="fc" id="L83">        super();</span>
-<span class="fc" id="L84">        init();</span>
-<span class="fc" id="L85">        internalSetFingerprint(fingerprint);</span>
-<span class="fc" id="L86">    }</span>
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint) {
+<span class="fc" id="L84">        super();</span>
+<span class="fc" id="L85">        init();</span>
+<span class="fc" id="L86">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L87">    }</span>
 
     /**
      * Constructor.
@@ -96,12 +97,13 @@ public class PROMedSRobustRangingAndRssiPositionEstimator3D extends
      */
     public PROMedSRobustRangingAndRssiPositionEstimator3D(
             final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources,
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint) {
-<span class="fc" id="L100">        super();</span>
-<span class="fc" id="L101">        init();</span>
-<span class="fc" id="L102">        internalSetSources(sources);</span>
-<span class="fc" id="L103">        internalSetFingerprint(fingerprint);</span>
-<span class="fc" id="L104">    }</span>
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint) {
+<span class="fc" id="L102">        super();</span>
+<span class="fc" id="L103">        init();</span>
+<span class="fc" id="L104">        internalSetSources(sources);</span>
+<span class="fc" id="L105">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L106">    }</span>
 
     /**
      * Constructor.
@@ -110,9 +112,9 @@ public class PROMedSRobustRangingAndRssiPositionEstimator3D extends
      */
     public PROMedSRobustRangingAndRssiPositionEstimator3D(
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener) {
-<span class="fc" id="L113">        super(listener);</span>
-<span class="fc" id="L114">        init();</span>
-<span class="fc" id="L115">    }</span>
+<span class="fc" id="L115">        super(listener);</span>
+<span class="fc" id="L116">        init();</span>
+<span class="fc" id="L117">    }</span>
 
     /**
      * Constructor.
@@ -125,10 +127,10 @@ public class PROMedSRobustRangingAndRssiPositionEstimator3D extends
     public PROMedSRobustRangingAndRssiPositionEstimator3D(
             final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources,
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener) {
-<span class="fc" id="L128">        super(listener);</span>
-<span class="fc" id="L129">        init();</span>
-<span class="fc" id="L130">        internalSetSources(sources);</span>
-<span class="fc" id="L131">    }</span>
+<span class="fc" id="L130">        super(listener);</span>
+<span class="fc" id="L131">        init();</span>
+<span class="fc" id="L132">        internalSetSources(sources);</span>
+<span class="fc" id="L133">    }</span>
 
     /**
      * Constructor.
@@ -139,12 +141,13 @@ public class PROMedSRobustRangingAndRssiPositionEstimator3D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public PROMedSRobustRangingAndRssiPositionEstimator3D(
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener) {
-<span class="fc" id="L144">        super(listener);</span>
-<span class="fc" id="L145">        init();</span>
-<span class="fc" id="L146">        internalSetFingerprint(fingerprint);</span>
-<span class="fc" id="L147">    }</span>
+<span class="fc" id="L147">        super(listener);</span>
+<span class="fc" id="L148">        init();</span>
+<span class="fc" id="L149">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L150">    }</span>
 
     /**
      * Constructor.
@@ -158,13 +161,14 @@ public class PROMedSRobustRangingAndRssiPositionEstimator3D extends
      */
     public PROMedSRobustRangingAndRssiPositionEstimator3D(
             final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources,
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener) {
-<span class="fc" id="L163">        super(listener);</span>
-<span class="fc" id="L164">        init();</span>
-<span class="fc" id="L165">        internalSetSources(sources);</span>
-<span class="fc" id="L166">        internalSetFingerprint(fingerprint);</span>
-<span class="fc" id="L167">    }</span>
+<span class="fc" id="L167">        super(listener);</span>
+<span class="fc" id="L168">        init();</span>
+<span class="fc" id="L169">        internalSetSources(sources);</span>
+<span class="fc" id="L170">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L171">    }</span>
 
     /**
      * Constructor.
@@ -181,10 +185,10 @@ public class PROMedSRobustRangingAndRssiPositionEstimator3D extends
     public PROMedSRobustRangingAndRssiPositionEstimator3D(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingsQualityScores) {
-<span class="fc" id="L184">        this();</span>
-<span class="fc" id="L185">        internalSetSourceQualityScores(sourceQualityScores);</span>
-<span class="fc" id="L186">        internalSetFingerprintReadingsQualityScores(fingerprintReadingsQualityScores);</span>
-<span class="fc" id="L187">    }</span>
+<span class="fc" id="L188">        this();</span>
+<span class="fc" id="L189">        internalSetSourceQualityScores(sourceQualityScores);</span>
+<span class="fc" id="L190">        internalSetFingerprintReadingsQualityScores(fingerprintReadingsQualityScores);</span>
+<span class="fc" id="L191">    }</span>
 
     /**
      * Constructor.
@@ -206,10 +210,10 @@ public class PROMedSRobustRangingAndRssiPositionEstimator3D extends
             final double[] sourceQualityScores,
             final double[] fingerprintReadingsQualityScores,
             final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources) {
-<span class="fc" id="L209">        this(sources);</span>
-<span class="fc" id="L210">        internalSetSourceQualityScores(sourceQualityScores);</span>
-<span class="fc" id="L211">        internalSetFingerprintReadingsQualityScores(fingerprintReadingsQualityScores);</span>
-<span class="fc" id="L212">    }</span>
+<span class="fc" id="L213">        this(sources);</span>
+<span class="fc" id="L214">        internalSetSourceQualityScores(sourceQualityScores);</span>
+<span class="fc" id="L215">        internalSetFingerprintReadingsQualityScores(fingerprintReadingsQualityScores);</span>
+<span class="fc" id="L216">    }</span>
 
     /**
      * Constructor.
@@ -230,11 +234,12 @@ public class PROMedSRobustRangingAndRssiPositionEstimator3D extends
     public PROMedSRobustRangingAndRssiPositionEstimator3D(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingsQualityScores,
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint) {
-<span class="fc" id="L234">        this(fingerprint);</span>
-<span class="fc" id="L235">        internalSetSourceQualityScores(sourceQualityScores);</span>
-<span class="fc" id="L236">        internalSetFingerprintReadingsQualityScores(fingerprintReadingsQualityScores);</span>
-<span class="fc" id="L237">    }</span>
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint) {
+<span class="fc" id="L239">        this(fingerprint);</span>
+<span class="fc" id="L240">        internalSetSourceQualityScores(sourceQualityScores);</span>
+<span class="fc" id="L241">        internalSetFingerprintReadingsQualityScores(fingerprintReadingsQualityScores);</span>
+<span class="fc" id="L242">    }</span>
 
     /**
      * Constructor.
@@ -259,11 +264,12 @@ public class PROMedSRobustRangingAndRssiPositionEstimator3D extends
             final double[] sourceQualityScores,
             final double[] fingerprintReadingsQualityScores,
             final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources,
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint) {
-<span class="fc" id="L263">        this(sources, fingerprint);</span>
-<span class="fc" id="L264">        internalSetSourceQualityScores(sourceQualityScores);</span>
-<span class="fc" id="L265">        internalSetFingerprintReadingsQualityScores(fingerprintReadingsQualityScores);</span>
-<span class="fc" id="L266">    }</span>
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint) {
+<span class="fc" id="L269">        this(sources, fingerprint);</span>
+<span class="fc" id="L270">        internalSetSourceQualityScores(sourceQualityScores);</span>
+<span class="fc" id="L271">        internalSetFingerprintReadingsQualityScores(fingerprintReadingsQualityScores);</span>
+<span class="fc" id="L272">    }</span>
 
     /**
      * Constructor.
@@ -282,10 +288,10 @@ public class PROMedSRobustRangingAndRssiPositionEstimator3D extends
             final double[] sourceQualityScores,
             final double[] fingerprintReadingsQualityScores,
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener) {
-<span class="fc" id="L285">        this(listener);</span>
-<span class="fc" id="L286">        internalSetSourceQualityScores(sourceQualityScores);</span>
-<span class="fc" id="L287">        internalSetFingerprintReadingsQualityScores(fingerprintReadingsQualityScores);</span>
-<span class="fc" id="L288">    }</span>
+<span class="fc" id="L291">        this(listener);</span>
+<span class="fc" id="L292">        internalSetSourceQualityScores(sourceQualityScores);</span>
+<span class="fc" id="L293">        internalSetFingerprintReadingsQualityScores(fingerprintReadingsQualityScores);</span>
+<span class="fc" id="L294">    }</span>
 
     /**
      * Constructor.
@@ -309,10 +315,10 @@ public class PROMedSRobustRangingAndRssiPositionEstimator3D extends
             final double[] fingerprintReadingsQualityScores,
             final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources,
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener) {
-<span class="fc" id="L312">        this(sources, listener);</span>
-<span class="fc" id="L313">        internalSetSourceQualityScores(sourceQualityScores);</span>
-<span class="fc" id="L314">        internalSetFingerprintReadingsQualityScores(fingerprintReadingsQualityScores);</span>
-<span class="fc" id="L315">    }</span>
+<span class="fc" id="L318">        this(sources, listener);</span>
+<span class="fc" id="L319">        internalSetSourceQualityScores(sourceQualityScores);</span>
+<span class="fc" id="L320">        internalSetFingerprintReadingsQualityScores(fingerprintReadingsQualityScores);</span>
+<span class="fc" id="L321">    }</span>
 
     /**
      * Constructor.
@@ -334,12 +340,13 @@ public class PROMedSRobustRangingAndRssiPositionEstimator3D extends
     public PROMedSRobustRangingAndRssiPositionEstimator3D(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingsQualityScores,
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener) {
-<span class="fc" id="L339">        this(fingerprint, listener);</span>
-<span class="fc" id="L340">        internalSetSourceQualityScores(sourceQualityScores);</span>
-<span class="fc" id="L341">        internalSetFingerprintReadingsQualityScores(fingerprintReadingsQualityScores);</span>
-<span class="fc" id="L342">    }</span>
+<span class="fc" id="L346">        this(fingerprint, listener);</span>
+<span class="fc" id="L347">        internalSetSourceQualityScores(sourceQualityScores);</span>
+<span class="fc" id="L348">        internalSetFingerprintReadingsQualityScores(fingerprintReadingsQualityScores);</span>
+<span class="fc" id="L349">    }</span>
 
     /**
      * Constructor.
@@ -365,12 +372,13 @@ public class PROMedSRobustRangingAndRssiPositionEstimator3D extends
             final double[] sourceQualityScores,
             final double[] fingerprintReadingsQualityScores,
             final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources,
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener) {
-<span class="fc" id="L370">        this(sources, fingerprint, listener);</span>
-<span class="fc" id="L371">        internalSetSourceQualityScores(sourceQualityScores);</span>
-<span class="fc" id="L372">        internalSetFingerprintReadingsQualityScores(fingerprintReadingsQualityScores);</span>
-<span class="fc" id="L373">    }</span>
+<span class="fc" id="L378">        this(sources, fingerprint, listener);</span>
+<span class="fc" id="L379">        internalSetSourceQualityScores(sourceQualityScores);</span>
+<span class="fc" id="L380">        internalSetFingerprintReadingsQualityScores(fingerprintReadingsQualityScores);</span>
+<span class="fc" id="L381">    }</span>
 
     /**
      * Returns quality scores corresponding to each radio source.
@@ -379,7 +387,7 @@ public class PROMedSRobustRangingAndRssiPositionEstimator3D extends
      * @return quality scores corresponding to each radio source.
      */
     public double[] getSourceQualityScores() {
-<span class="fc" id="L382">        return mSourceQualityScores;</span>
+<span class="fc" id="L390">        return mSourceQualityScores;</span>
     }
 
     /**
@@ -393,11 +401,11 @@ public class PROMedSRobustRangingAndRssiPositionEstimator3D extends
      */
     public void setSourceQualityScores(final double[] sourceQualityScores)
             throws LockedException {
-<span class="pc bpc" id="L396" title="1 of 2 branches missed.">        if (isLocked()) {</span>
-<span class="nc" id="L397">            throw new LockedException();</span>
+<span class="pc bpc" id="L404" title="1 of 2 branches missed.">        if (isLocked()) {</span>
+<span class="nc" id="L405">            throw new LockedException();</span>
         }
-<span class="fc" id="L399">        internalSetSourceQualityScores(sourceQualityScores);</span>
-<span class="fc" id="L400">    }</span>
+<span class="fc" id="L407">        internalSetSourceQualityScores(sourceQualityScores);</span>
+<span class="fc" id="L408">    }</span>
 
     /**
      * Gets quality scores corresponding to each reading within provided fingerprint.
@@ -409,7 +417,7 @@ public class PROMedSRobustRangingAndRssiPositionEstimator3D extends
      * fingerprint.
      */
     public double[] getFingerprintReadingsQualityScores() {
-<span class="fc" id="L412">        return mFingerprintReadingsQualityScores;</span>
+<span class="fc" id="L420">        return mFingerprintReadingsQualityScores;</span>
     }
 
     /**
@@ -426,18 +434,18 @@ public class PROMedSRobustRangingAndRssiPositionEstimator3D extends
      */
     public void setFingerprintReadingsQualityScores(
             final double[] fingerprintReadingsQualityScores) throws LockedException {
-<span class="pc bpc" id="L429" title="1 of 2 branches missed.">        if (isLocked()) {</span>
-<span class="nc" id="L430">            throw new LockedException();</span>
+<span class="pc bpc" id="L437" title="1 of 2 branches missed.">        if (isLocked()) {</span>
+<span class="nc" id="L438">            throw new LockedException();</span>
         }
-<span class="fc" id="L432">        internalSetFingerprintReadingsQualityScores(fingerprintReadingsQualityScores);</span>
-<span class="fc" id="L433">    }</span>
+<span class="fc" id="L440">        internalSetFingerprintReadingsQualityScores(fingerprintReadingsQualityScores);</span>
+<span class="fc" id="L441">    }</span>
 
     /**
      * Returns threshold to be used to keep the algorithm iterating in case that
      * best estimated threshold using median of residuals is not small enough.
      * Once a solution is found that generates a threshold below this value, the
      * algorithm will stop.
-     * The stop threshold can be used to prevent the LMedS algrithm to iterate
+     * The stop threshold can be used to prevent the LMedS algorithm to iterate
      * too many times in cases where samples have a very similar accuracy.
      * For instance, in cases where proportion of outliers is very small (close
      * to 0%), and samples are very accurate (i.e. 1e-6), the algorithm would
@@ -452,8 +460,8 @@ public class PROMedSRobustRangingAndRssiPositionEstimator3D extends
      * accuracy has been reached.
      */
     public double getStopThreshold() {
-<span class="fc" id="L455">        return ((PROMedSRobustLateration3DSolver) mLaterationSolver).</span>
-<span class="fc" id="L456">                getStopThreshold();</span>
+<span class="fc" id="L463">        return ((PROMedSRobustLateration3DSolver) mLaterationSolver).</span>
+<span class="fc" id="L464">                getStopThreshold();</span>
     }
 
     /**
@@ -478,9 +486,9 @@ public class PROMedSRobustRangingAndRssiPositionEstimator3D extends
      * @throws LockedException          if this solver is locked.
      */
     public void setStopThreshold(final double stopThreshold) throws LockedException {
-<span class="fc" id="L481">        ((PROMedSRobustLateration3DSolver) mLaterationSolver).</span>
-<span class="fc" id="L482">                setStopThreshold(stopThreshold);</span>
-<span class="fc" id="L483">    }</span>
+<span class="fc" id="L489">        ((PROMedSRobustLateration3DSolver) mLaterationSolver).</span>
+<span class="fc" id="L490">                setStopThreshold(stopThreshold);</span>
+<span class="fc" id="L491">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -489,16 +497,16 @@ public class PROMedSRobustRangingAndRssiPositionEstimator3D extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L492">        return RobustEstimatorMethod.PROMedS;</span>
+<span class="fc" id="L500">        return RobustEstimatorMethod.PROMedS;</span>
     }
 
     /**
      * Initializes robust lateration solver.
      */
     private void init() {
-<span class="fc" id="L499">        mLaterationSolver = new PROMedSRobustLateration3DSolver(</span>
+<span class="fc" id="L507">        mLaterationSolver = new PROMedSRobustLateration3DSolver(</span>
                 mTrilaterationSolverListener);
-<span class="fc" id="L501">    }</span>
+<span class="fc" id="L509">    }</span>
 
     /**
      * Sets quality scores corresponding to each provided located radio source.
@@ -510,15 +518,15 @@ public class PROMedSRobustRangingAndRssiPositionEstimator3D extends
      *                                  is smaller than 3 samples.
      */
     private void internalSetSourceQualityScores(final double[] sourceQualityScores) {
-<span class="fc bfc" id="L513" title="All 2 branches covered.">        if (sourceQualityScores == null ||</span>
-<span class="fc bfc" id="L514" title="All 2 branches covered.">                sourceQualityScores.length &lt; getMinRequiredSources()) {</span>
-<span class="fc" id="L515">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L521" title="All 2 branches covered.">        if (sourceQualityScores == null ||</span>
+<span class="fc bfc" id="L522" title="All 2 branches covered.">                sourceQualityScores.length &lt; getMinRequiredSources()) {</span>
+<span class="fc" id="L523">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L518">        mSourceQualityScores = sourceQualityScores;</span>
+<span class="fc" id="L526">        mSourceQualityScores = sourceQualityScores;</span>
 
-<span class="fc" id="L520">        buildPositionsDistancesDistanceStandardDeviationsAndQualityScores();</span>
-<span class="fc" id="L521">    }</span>
+<span class="fc" id="L528">        buildPositionsDistancesDistanceStandardDeviationsAndQualityScores();</span>
+<span class="fc" id="L529">    }</span>
 
     /**
      * Sets quality scores corresponding to each provided reading within provided
@@ -527,19 +535,19 @@ public class PROMedSRobustRangingAndRssiPositionEstimator3D extends
      * or not.
      *
      * @param fingerprintReadingsQualityScores quality scores to be set.
-     * @throws IllegalArgumentException if provided quality scores lengt is
+     * @throws IllegalArgumentException if provided quality scores length is
      *                                  smaller than 3 samples.
      */
     private void internalSetFingerprintReadingsQualityScores(
             final double[] fingerprintReadingsQualityScores) {
-<span class="fc bfc" id="L535" title="All 2 branches covered.">        if (fingerprintReadingsQualityScores == null ||</span>
-<span class="fc bfc" id="L536" title="All 2 branches covered.">                fingerprintReadingsQualityScores.length &lt; getMinRequiredSources()) {</span>
-<span class="fc" id="L537">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L543" title="All 2 branches covered.">        if (fingerprintReadingsQualityScores == null ||</span>
+<span class="fc bfc" id="L544" title="All 2 branches covered.">                fingerprintReadingsQualityScores.length &lt; getMinRequiredSources()) {</span>
+<span class="fc" id="L545">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L540">        mFingerprintReadingsQualityScores = fingerprintReadingsQualityScores;</span>
+<span class="fc" id="L548">        mFingerprintReadingsQualityScores = fingerprintReadingsQualityScores;</span>
 
-<span class="fc" id="L542">        buildPositionsDistancesDistanceStandardDeviationsAndQualityScores();</span>
-<span class="fc" id="L543">    }</span>
+<span class="fc" id="L550">        buildPositionsDistancesDistanceStandardDeviationsAndQualityScores();</span>
+<span class="fc" id="L551">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

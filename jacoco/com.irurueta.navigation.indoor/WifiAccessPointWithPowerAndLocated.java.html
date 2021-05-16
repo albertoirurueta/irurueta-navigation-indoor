@@ -24,7 +24,6 @@ import com.irurueta.geometry.Point;
  *
  * @param &lt;P&gt; a {@link Point} type.
  */
-@SuppressWarnings(&quot;WeakerAccess&quot;)
 public class WifiAccessPointWithPowerAndLocated&lt;P extends Point&lt;?&gt;&gt;
         extends WifiAccessPointWithPower implements RadioSourceWithPowerAndLocated&lt;P&gt; {
 
@@ -51,14 +50,14 @@ public class WifiAccessPointWithPowerAndLocated&lt;P extends Point&lt;?&gt;&gt;
     public WifiAccessPointWithPowerAndLocated(
             final String bssid, final double frequency,
             final double transmittedPower, final P position) {
-<span class="fc" id="L54">        super(bssid, frequency, transmittedPower);</span>
+<span class="fc" id="L53">        super(bssid, frequency, transmittedPower);</span>
 
-<span class="fc bfc" id="L56" title="All 2 branches covered.">        if (position == null) {</span>
-<span class="fc" id="L57">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        if (position == null) {</span>
+<span class="fc" id="L56">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L60">        mPosition = position;</span>
-<span class="fc" id="L61">    }</span>
+<span class="fc" id="L59">        mPosition = position;</span>
+<span class="fc" id="L60">    }</span>
 
     /**
      * Constructor.
@@ -74,14 +73,14 @@ public class WifiAccessPointWithPowerAndLocated&lt;P extends Point&lt;?&gt;&gt;
     public WifiAccessPointWithPowerAndLocated(
             final String bssid, final double frequency, final String ssid,
             final double transmittedPower, final P position) {
-<span class="fc" id="L77">        super(bssid, frequency, ssid, transmittedPower);</span>
+<span class="fc" id="L76">        super(bssid, frequency, ssid, transmittedPower);</span>
 
-<span class="fc bfc" id="L79" title="All 2 branches covered.">        if (position == null) {</span>
-<span class="fc" id="L80">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        if (position == null) {</span>
+<span class="fc" id="L79">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L83">        mPosition = position;</span>
-<span class="fc" id="L84">    }</span>
+<span class="fc" id="L82">        mPosition = position;</span>
+<span class="fc" id="L83">    }</span>
 
     /**
      * Constructor.
@@ -101,15 +100,15 @@ public class WifiAccessPointWithPowerAndLocated&lt;P extends Point&lt;?&gt;&gt;
             final double transmittedPower,
             final Double transmittedPowerStandardDeviation,
             final P position) {
-<span class="fc" id="L104">        super(bssid, frequency, transmittedPower,</span>
+<span class="fc" id="L103">        super(bssid, frequency, transmittedPower,</span>
                 transmittedPowerStandardDeviation);
 
-<span class="fc bfc" id="L107" title="All 2 branches covered.">        if (position == null) {</span>
-<span class="fc" id="L108">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">        if (position == null) {</span>
+<span class="fc" id="L107">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L111">        mPosition = position;</span>
-<span class="fc" id="L112">    }</span>
+<span class="fc" id="L110">        mPosition = position;</span>
+<span class="fc" id="L111">    }</span>
 
     /**
      * Constructor.
@@ -130,15 +129,15 @@ public class WifiAccessPointWithPowerAndLocated&lt;P extends Point&lt;?&gt;&gt;
             final double transmittedPower,
             final Double transmittedPowerStandardDeviation,
             final P position) {
-<span class="fc" id="L133">        super(bssid, frequency, ssid, transmittedPower,</span>
+<span class="fc" id="L132">        super(bssid, frequency, ssid, transmittedPower,</span>
                 transmittedPowerStandardDeviation);
 
-<span class="fc bfc" id="L136" title="All 2 branches covered.">        if (position == null) {</span>
-<span class="fc" id="L137">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L135" title="All 2 branches covered.">        if (position == null) {</span>
+<span class="fc" id="L136">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L140">        mPosition = position;</span>
-<span class="fc" id="L141">    }</span>
+<span class="fc" id="L139">        mPosition = position;</span>
+<span class="fc" id="L140">    }</span>
 
     /**
      * Constructor.
@@ -157,15 +156,15 @@ public class WifiAccessPointWithPowerAndLocated&lt;P extends Point&lt;?&gt;&gt;
             final String bssid, final double frequency,
             final double transmittedPower,
             final P position, final Matrix positionCovariance) {
-<span class="fc" id="L160">        this(bssid, frequency, transmittedPower, position);</span>
+<span class="fc" id="L159">        this(bssid, frequency, transmittedPower, position);</span>
 
-<span class="fc bfc" id="L162" title="All 2 branches covered.">        if (positionCovariance != null &amp;&amp;</span>
-<span class="fc bfc" id="L163" title="All 2 branches covered.">                (positionCovariance.getRows() != position.getDimensions() ||</span>
-<span class="pc bpc" id="L164" title="1 of 2 branches missed.">                        positionCovariance.getColumns() != position.getDimensions())) {</span>
-<span class="fc" id="L165">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">        if (positionCovariance != null &amp;&amp;</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">                (positionCovariance.getRows() != position.getDimensions() ||</span>
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">                        positionCovariance.getColumns() != position.getDimensions())) {</span>
+<span class="fc" id="L164">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L167">        mPositionCovariance = positionCovariance;</span>
-<span class="fc" id="L168">    }</span>
+<span class="fc" id="L166">        mPositionCovariance = positionCovariance;</span>
+<span class="fc" id="L167">    }</span>
 
     /**
      * Constructor.
@@ -185,15 +184,15 @@ public class WifiAccessPointWithPowerAndLocated&lt;P extends Point&lt;?&gt;&gt;
             final String bssid, final double frequency, final String ssid,
             final double transmittedPower, final P position,
             final Matrix positionCovariance) {
-<span class="fc" id="L188">        this(bssid, frequency, ssid, transmittedPower, position);</span>
+<span class="fc" id="L187">        this(bssid, frequency, ssid, transmittedPower, position);</span>
 
-<span class="fc bfc" id="L190" title="All 2 branches covered.">        if (positionCovariance != null &amp;&amp;</span>
-<span class="fc bfc" id="L191" title="All 2 branches covered.">                (positionCovariance.getRows() != position.getDimensions() ||</span>
-<span class="pc bpc" id="L192" title="1 of 2 branches missed.">                        positionCovariance.getColumns() != position.getDimensions())) {</span>
-<span class="fc" id="L193">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">        if (positionCovariance != null &amp;&amp;</span>
+<span class="fc bfc" id="L190" title="All 2 branches covered.">                (positionCovariance.getRows() != position.getDimensions() ||</span>
+<span class="pc bpc" id="L191" title="1 of 2 branches missed.">                        positionCovariance.getColumns() != position.getDimensions())) {</span>
+<span class="fc" id="L192">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L195">        mPositionCovariance = positionCovariance;</span>
-<span class="fc" id="L196">    }</span>
+<span class="fc" id="L194">        mPositionCovariance = positionCovariance;</span>
+<span class="fc" id="L195">    }</span>
 
     /**
      * Constructor.
@@ -216,16 +215,16 @@ public class WifiAccessPointWithPowerAndLocated&lt;P extends Point&lt;?&gt;&gt;
             final Double transmittedPowerStandardDeviation,
             final P position,
             final Matrix positionCovariance) {
-<span class="fc" id="L219">        this(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation,</span>
+<span class="fc" id="L218">        this(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation,</span>
                 position);
 
-<span class="fc bfc" id="L222" title="All 2 branches covered.">        if (positionCovariance != null &amp;&amp;</span>
-<span class="fc bfc" id="L223" title="All 2 branches covered.">                (positionCovariance.getRows() != position.getDimensions() ||</span>
-<span class="pc bpc" id="L224" title="1 of 2 branches missed.">                        positionCovariance.getColumns() != position.getDimensions())) {</span>
-<span class="fc" id="L225">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L221" title="All 2 branches covered.">        if (positionCovariance != null &amp;&amp;</span>
+<span class="fc bfc" id="L222" title="All 2 branches covered.">                (positionCovariance.getRows() != position.getDimensions() ||</span>
+<span class="pc bpc" id="L223" title="1 of 2 branches missed.">                        positionCovariance.getColumns() != position.getDimensions())) {</span>
+<span class="fc" id="L224">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L227">        mPositionCovariance = positionCovariance;</span>
-<span class="fc" id="L228">    }</span>
+<span class="fc" id="L226">        mPositionCovariance = positionCovariance;</span>
+<span class="fc" id="L227">    }</span>
 
     /**
      * Constructor.
@@ -249,16 +248,16 @@ public class WifiAccessPointWithPowerAndLocated&lt;P extends Point&lt;?&gt;&gt;
             final Double transmittedPowerStandardDeviation,
             final P position,
             final Matrix positionCovariance) {
-<span class="fc" id="L252">        this(bssid, frequency, ssid, transmittedPower,</span>
+<span class="fc" id="L251">        this(bssid, frequency, ssid, transmittedPower,</span>
                 transmittedPowerStandardDeviation, position);
 
-<span class="fc bfc" id="L255" title="All 2 branches covered.">        if (positionCovariance != null &amp;&amp;</span>
-<span class="fc bfc" id="L256" title="All 2 branches covered.">                (positionCovariance.getRows() != position.getDimensions() ||</span>
-<span class="pc bpc" id="L257" title="1 of 2 branches missed.">                        positionCovariance.getColumns() != position.getDimensions())) {</span>
-<span class="fc" id="L258">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L254" title="All 2 branches covered.">        if (positionCovariance != null &amp;&amp;</span>
+<span class="fc bfc" id="L255" title="All 2 branches covered.">                (positionCovariance.getRows() != position.getDimensions() ||</span>
+<span class="pc bpc" id="L256" title="1 of 2 branches missed.">                        positionCovariance.getColumns() != position.getDimensions())) {</span>
+<span class="fc" id="L257">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L260">        mPositionCovariance = positionCovariance;</span>
-<span class="fc" id="L261">    }</span>
+<span class="fc" id="L259">        mPositionCovariance = positionCovariance;</span>
+<span class="fc" id="L260">    }</span>
 
     /**
      * Constructor.
@@ -276,14 +275,14 @@ public class WifiAccessPointWithPowerAndLocated&lt;P extends Point&lt;?&gt;&gt;
             final double transmittedPower,
             final double pathLossExponent,
             final P position) {
-<span class="fc" id="L279">        super(bssid, frequency, transmittedPower, pathLossExponent);</span>
+<span class="fc" id="L278">        super(bssid, frequency, transmittedPower, pathLossExponent);</span>
 
-<span class="fc bfc" id="L281" title="All 2 branches covered.">        if (position == null) {</span>
-<span class="fc" id="L282">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L280" title="All 2 branches covered.">        if (position == null) {</span>
+<span class="fc" id="L281">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L285">        mPosition = position;</span>
-<span class="fc" id="L286">    }</span>
+<span class="fc" id="L284">        mPosition = position;</span>
+<span class="fc" id="L285">    }</span>
 
     /**
      * Constructor.
@@ -305,15 +304,15 @@ public class WifiAccessPointWithPowerAndLocated&lt;P extends Point&lt;?&gt;&gt;
             final Double transmittedPowerStandardDeviation,
             final double pathLossExponent,
             final P position) {
-<span class="fc" id="L308">        super(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation,</span>
+<span class="fc" id="L307">        super(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation,</span>
                 pathLossExponent);
 
-<span class="fc bfc" id="L311" title="All 2 branches covered.">        if (position == null) {</span>
-<span class="fc" id="L312">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L310" title="All 2 branches covered.">        if (position == null) {</span>
+<span class="fc" id="L311">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L315">        mPosition = position;</span>
-<span class="fc" id="L316">    }</span>
+<span class="fc" id="L314">        mPosition = position;</span>
+<span class="fc" id="L315">    }</span>
 
     /**
      * Constructor.
@@ -335,15 +334,15 @@ public class WifiAccessPointWithPowerAndLocated&lt;P extends Point&lt;?&gt;&gt;
             final double transmittedPower,
             final Double transmittedPowerStandardDeviation,
             final double pathLossExponent, final P position) {
-<span class="fc" id="L338">        super(bssid, frequency, ssid, transmittedPower,</span>
+<span class="fc" id="L337">        super(bssid, frequency, ssid, transmittedPower,</span>
                 transmittedPowerStandardDeviation, pathLossExponent);
 
-<span class="fc bfc" id="L341" title="All 2 branches covered.">        if (position == null) {</span>
-<span class="fc" id="L342">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L340" title="All 2 branches covered.">        if (position == null) {</span>
+<span class="fc" id="L341">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L345">        mPosition = position;</span>
-<span class="fc" id="L346">    }</span>
+<span class="fc" id="L344">        mPosition = position;</span>
+<span class="fc" id="L345">    }</span>
 
     /**
      * Constructor.
@@ -365,15 +364,15 @@ public class WifiAccessPointWithPowerAndLocated&lt;P extends Point&lt;?&gt;&gt;
             final double pathLossExponent,
             final P position,
             final Matrix positionCovariance) {
-<span class="fc" id="L368">        this(bssid, frequency, transmittedPower, pathLossExponent, position);</span>
+<span class="fc" id="L367">        this(bssid, frequency, transmittedPower, pathLossExponent, position);</span>
 
-<span class="fc bfc" id="L370" title="All 2 branches covered.">        if (positionCovariance != null &amp;&amp;</span>
-<span class="fc bfc" id="L371" title="All 2 branches covered.">                (positionCovariance.getRows() != position.getDimensions() ||</span>
-<span class="pc bpc" id="L372" title="1 of 2 branches missed.">                        positionCovariance.getColumns() != position.getDimensions())) {</span>
-<span class="fc" id="L373">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L369" title="All 2 branches covered.">        if (positionCovariance != null &amp;&amp;</span>
+<span class="fc bfc" id="L370" title="All 2 branches covered.">                (positionCovariance.getRows() != position.getDimensions() ||</span>
+<span class="pc bpc" id="L371" title="1 of 2 branches missed.">                        positionCovariance.getColumns() != position.getDimensions())) {</span>
+<span class="fc" id="L372">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L375">        mPositionCovariance = positionCovariance;</span>
-<span class="fc" id="L376">    }</span>
+<span class="fc" id="L374">        mPositionCovariance = positionCovariance;</span>
+<span class="fc" id="L375">    }</span>
 
     /**
      * Constructor.
@@ -398,16 +397,16 @@ public class WifiAccessPointWithPowerAndLocated&lt;P extends Point&lt;?&gt;&gt;
             final double pathLossExponent,
             final P position,
             final Matrix positionCovariance) {
-<span class="fc" id="L401">        this(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation,</span>
+<span class="fc" id="L400">        this(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation,</span>
                 pathLossExponent, position);
 
-<span class="fc bfc" id="L404" title="All 2 branches covered.">        if (positionCovariance != null &amp;&amp;</span>
-<span class="fc bfc" id="L405" title="All 2 branches covered.">                (positionCovariance.getRows() != position.getDimensions() ||</span>
-<span class="pc bpc" id="L406" title="1 of 2 branches missed.">                        positionCovariance.getColumns() != position.getDimensions())) {</span>
-<span class="fc" id="L407">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L403" title="All 2 branches covered.">        if (positionCovariance != null &amp;&amp;</span>
+<span class="fc bfc" id="L404" title="All 2 branches covered.">                (positionCovariance.getRows() != position.getDimensions() ||</span>
+<span class="pc bpc" id="L405" title="1 of 2 branches missed.">                        positionCovariance.getColumns() != position.getDimensions())) {</span>
+<span class="fc" id="L406">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L409">        mPositionCovariance = positionCovariance;</span>
-<span class="fc" id="L410">    }</span>
+<span class="fc" id="L408">        mPositionCovariance = positionCovariance;</span>
+<span class="fc" id="L409">    }</span>
 
     /**
      * Constructor.
@@ -433,16 +432,16 @@ public class WifiAccessPointWithPowerAndLocated&lt;P extends Point&lt;?&gt;&gt;
             final double pathLossExponent,
             final P position,
             final Matrix positionCovariance) {
-<span class="fc" id="L436">        this(bssid, frequency, ssid, transmittedPower,</span>
+<span class="fc" id="L435">        this(bssid, frequency, ssid, transmittedPower,</span>
                 transmittedPowerStandardDeviation, pathLossExponent, position);
 
-<span class="fc bfc" id="L439" title="All 2 branches covered.">        if (positionCovariance != null &amp;&amp;</span>
-<span class="fc bfc" id="L440" title="All 2 branches covered.">                (positionCovariance.getRows() != position.getDimensions() ||</span>
-<span class="pc bpc" id="L441" title="1 of 2 branches missed.">                        positionCovariance.getColumns() != position.getDimensions())) {</span>
-<span class="fc" id="L442">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L438" title="All 2 branches covered.">        if (positionCovariance != null &amp;&amp;</span>
+<span class="fc bfc" id="L439" title="All 2 branches covered.">                (positionCovariance.getRows() != position.getDimensions() ||</span>
+<span class="pc bpc" id="L440" title="1 of 2 branches missed.">                        positionCovariance.getColumns() != position.getDimensions())) {</span>
+<span class="fc" id="L441">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L444">        mPositionCovariance = positionCovariance;</span>
-<span class="fc" id="L445">    }</span>
+<span class="fc" id="L443">        mPositionCovariance = positionCovariance;</span>
+<span class="fc" id="L444">    }</span>
 
     /**
      * Constructor.
@@ -467,15 +466,15 @@ public class WifiAccessPointWithPowerAndLocated&lt;P extends Point&lt;?&gt;&gt;
             final double pathLossExponent,
             final Double pathLossExponentStandardDeviation,
             final P position) {
-<span class="fc" id="L470">        super(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation,</span>
+<span class="fc" id="L469">        super(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation,</span>
                 pathLossExponent, pathLossExponentStandardDeviation);
 
-<span class="fc bfc" id="L473" title="All 2 branches covered.">        if (position == null) {</span>
-<span class="fc" id="L474">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L472" title="All 2 branches covered.">        if (position == null) {</span>
+<span class="fc" id="L473">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L477">        mPosition = position;</span>
-<span class="fc" id="L478">    }</span>
+<span class="fc" id="L476">        mPosition = position;</span>
+<span class="fc" id="L477">    }</span>
 
     /**
      * Constructor.
@@ -501,16 +500,16 @@ public class WifiAccessPointWithPowerAndLocated&lt;P extends Point&lt;?&gt;&gt;
             final double pathLossExponent,
             final Double pathLossExponentStandardDeviation,
             final P position) {
-<span class="fc" id="L504">        super(bssid, frequency, ssid, transmittedPower,</span>
+<span class="fc" id="L503">        super(bssid, frequency, ssid, transmittedPower,</span>
                 transmittedPowerStandardDeviation, pathLossExponent,
                 pathLossExponentStandardDeviation);
 
-<span class="fc bfc" id="L508" title="All 2 branches covered.">        if (position == null) {</span>
-<span class="fc" id="L509">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L507" title="All 2 branches covered.">        if (position == null) {</span>
+<span class="fc" id="L508">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L512">        mPosition = position;</span>
-<span class="fc" id="L513">    }</span>
+<span class="fc" id="L511">        mPosition = position;</span>
+<span class="fc" id="L512">    }</span>
 
     /**
      * Constructor.
@@ -538,16 +537,16 @@ public class WifiAccessPointWithPowerAndLocated&lt;P extends Point&lt;?&gt;&gt;
             final Double pathLossExponentStandardDeviation,
             final P position,
             final Matrix positionCovariance) {
-<span class="fc" id="L541">        this(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation,</span>
+<span class="fc" id="L540">        this(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation,</span>
                 pathLossExponent, pathLossExponentStandardDeviation, position);
 
-<span class="fc bfc" id="L544" title="All 2 branches covered.">        if (positionCovariance != null &amp;&amp;</span>
-<span class="fc bfc" id="L545" title="All 2 branches covered.">                (positionCovariance.getRows() != position.getDimensions() ||</span>
-<span class="pc bpc" id="L546" title="1 of 2 branches missed.">                        positionCovariance.getColumns() != position.getDimensions())) {</span>
-<span class="fc" id="L547">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L543" title="All 2 branches covered.">        if (positionCovariance != null &amp;&amp;</span>
+<span class="fc bfc" id="L544" title="All 2 branches covered.">                (positionCovariance.getRows() != position.getDimensions() ||</span>
+<span class="pc bpc" id="L545" title="1 of 2 branches missed.">                        positionCovariance.getColumns() != position.getDimensions())) {</span>
+<span class="fc" id="L546">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L549">        mPositionCovariance = positionCovariance;</span>
-<span class="fc" id="L550">    }</span>
+<span class="fc" id="L548">        mPositionCovariance = positionCovariance;</span>
+<span class="fc" id="L549">    }</span>
 
     /**
      * Constructor.
@@ -576,24 +575,24 @@ public class WifiAccessPointWithPowerAndLocated&lt;P extends Point&lt;?&gt;&gt;
             final Double pathLossExponentStandardDeviation,
             final P position,
             final Matrix positionCovariance) {
-<span class="fc" id="L579">        this(bssid, frequency, ssid, transmittedPower,</span>
+<span class="fc" id="L578">        this(bssid, frequency, ssid, transmittedPower,</span>
                 transmittedPowerStandardDeviation, pathLossExponent,
                 pathLossExponentStandardDeviation, position);
 
-<span class="fc bfc" id="L583" title="All 2 branches covered.">        if (positionCovariance != null &amp;&amp;</span>
-<span class="fc bfc" id="L584" title="All 2 branches covered.">                (positionCovariance.getRows() != position.getDimensions() ||</span>
-<span class="pc bpc" id="L585" title="1 of 2 branches missed.">                        positionCovariance.getColumns() != position.getDimensions())) {</span>
-<span class="fc" id="L586">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L582" title="All 2 branches covered.">        if (positionCovariance != null &amp;&amp;</span>
+<span class="fc bfc" id="L583" title="All 2 branches covered.">                (positionCovariance.getRows() != position.getDimensions() ||</span>
+<span class="pc bpc" id="L584" title="1 of 2 branches missed.">                        positionCovariance.getColumns() != position.getDimensions())) {</span>
+<span class="fc" id="L585">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L588">        mPositionCovariance = positionCovariance;</span>
-<span class="fc" id="L589">    }</span>
+<span class="fc" id="L587">        mPositionCovariance = positionCovariance;</span>
+<span class="fc" id="L588">    }</span>
 
     /**
      * Empty constructor.
      */
     protected WifiAccessPointWithPowerAndLocated() {
-<span class="fc" id="L595">        super();</span>
-<span class="fc" id="L596">    }</span>
+<span class="fc" id="L594">        super();</span>
+<span class="fc" id="L595">    }</span>
 
     /**
      * Gets position where access point is located.
@@ -601,7 +600,7 @@ public class WifiAccessPointWithPowerAndLocated&lt;P extends Point&lt;?&gt;&gt;
      * @return position where access point is located.
      */
     public P getPosition() {
-<span class="fc" id="L604">        return mPosition;</span>
+<span class="fc" id="L603">        return mPosition;</span>
     }
 
     /**
@@ -610,7 +609,7 @@ public class WifiAccessPointWithPowerAndLocated&lt;P extends Point&lt;?&gt;&gt;
      * @return covariance of position or null.
      */
     public Matrix getPositionCovariance() {
-<span class="fc" id="L613">        return mPositionCovariance;</span>
+<span class="fc" id="L612">        return mPositionCovariance;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

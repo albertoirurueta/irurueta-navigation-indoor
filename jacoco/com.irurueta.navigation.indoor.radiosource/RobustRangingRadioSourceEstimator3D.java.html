@@ -27,6 +27,7 @@ import com.irurueta.navigation.indoor.RangingReadingLocated;
 import com.irurueta.navigation.indoor.WifiAccessPoint;
 import com.irurueta.navigation.indoor.WifiAccessPointLocated3D;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
@@ -37,28 +38,28 @@ import java.util.List;
  *
  * @param &lt;S&gt; a {@link RadioSource} type.
  */
-@SuppressWarnings({&quot;WeakerAccess&quot;, &quot;Duplicates&quot;})
+@SuppressWarnings(&quot;DuplicatedCode&quot;)
 public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSource&gt; extends
         RobustRangingRadioSourceEstimator&lt;S, Point3D&gt; {
 
     /**
      * Radio source estimator used internally.
      */
-<span class="fc" id="L47">    protected RangingRadioSourceEstimator3D&lt;S&gt; mInnerEstimator =</span>
+<span class="fc" id="L48">    protected final RangingRadioSourceEstimator3D&lt;S&gt; mInnerEstimator =</span>
             new RangingRadioSourceEstimator3D&lt;&gt;();
 
     /**
      * Subset of readings used by inner estimator.
      */
-<span class="fc" id="L53">    private final List&lt;RangingReadingLocated&lt;S, Point3D&gt;&gt; mInnerReadings = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L54">    private final List&lt;RangingReadingLocated&lt;S, Point3D&gt;&gt; mInnerReadings = new ArrayList&lt;&gt;();</span>
 
     /**
      * Constructor.
      */
     public RobustRangingRadioSourceEstimator3D() {
-<span class="fc" id="L59">        super();</span>
-<span class="fc" id="L60">        mPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L61">    }</span>
+<span class="fc" id="L60">        super();</span>
+<span class="fc" id="L61">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L62">    }</span>
 
     /**
      * Constructor.
@@ -70,9 +71,9 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
      */
     public RobustRangingRadioSourceEstimator3D(
             final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings) {
-<span class="fc" id="L73">        super(readings);</span>
-<span class="fc" id="L74">        mPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L75">    }</span>
+<span class="fc" id="L74">        super(readings);</span>
+<span class="fc" id="L75">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L76">    }</span>
 
     /**
      * Constructor.
@@ -81,9 +82,9 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
      */
     public RobustRangingRadioSourceEstimator3D(
             final RobustRangingRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
-<span class="fc" id="L84">        super(listener);</span>
-<span class="fc" id="L85">        mPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L86">    }</span>
+<span class="fc" id="L85">        super(listener);</span>
+<span class="fc" id="L86">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L87">    }</span>
 
     /**
      * Constructor.
@@ -96,9 +97,9 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
     public RobustRangingRadioSourceEstimator3D(
             final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings,
             final RobustRangingRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
-<span class="fc" id="L99">        super(readings, listener);</span>
-<span class="fc" id="L100">        mPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L101">    }</span>
+<span class="fc" id="L100">        super(readings, listener);</span>
+<span class="fc" id="L101">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L102">    }</span>
 
     /**
      * Constructor.
@@ -107,9 +108,9 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
      *                        source position.
      */
     public RobustRangingRadioSourceEstimator3D(final Point3D initialPosition) {
-<span class="fc" id="L110">        super(initialPosition);</span>
-<span class="fc" id="L111">        mPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L112">    }</span>
+<span class="fc" id="L111">        super(initialPosition);</span>
+<span class="fc" id="L112">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L113">    }</span>
 
     /**
      * Constructor.
@@ -123,9 +124,9 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
     public RobustRangingRadioSourceEstimator3D(
             final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings,
             final Point3D initialPosition) {
-<span class="fc" id="L126">        super(readings, initialPosition);</span>
-<span class="fc" id="L127">        mPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L128">    }</span>
+<span class="fc" id="L127">        super(readings, initialPosition);</span>
+<span class="fc" id="L128">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L129">    }</span>
 
     /**
      * Constructor.
@@ -137,9 +138,9 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
     public RobustRangingRadioSourceEstimator3D(
             final Point3D initialPosition,
             final RobustRangingRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
-<span class="fc" id="L140">        super(initialPosition, listener);</span>
-<span class="fc" id="L141">        mPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L142">    }</span>
+<span class="fc" id="L141">        super(initialPosition, listener);</span>
+<span class="fc" id="L142">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L143">    }</span>
 
     /**
      * Constructor.
@@ -155,9 +156,9 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
             final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings,
             final Point3D initialPosition,
             final RobustRangingRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
-<span class="fc" id="L158">        super(readings, initialPosition, listener);</span>
-<span class="fc" id="L159">        mPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L160">    }</span>
+<span class="fc" id="L159">        super(readings, initialPosition, listener);</span>
+<span class="fc" id="L160">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L161">    }</span>
 
 
     /**
@@ -169,18 +170,18 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
      */
     public static &lt;S extends RadioSource&gt; RobustRangingRadioSourceEstimator3D&lt;S&gt; create(
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L172" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L173" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L174">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;();</span>
+<span class="fc" id="L175">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;();</span>
             case LMedS:
-<span class="fc" id="L176">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;();</span>
+<span class="fc" id="L177">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;();</span>
             case MSAC:
-<span class="fc" id="L178">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;();</span>
+<span class="fc" id="L179">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;();</span>
             case PROSAC:
-<span class="fc" id="L180">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;();</span>
+<span class="fc" id="L181">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;();</span>
             case PROMedS:
             default:
-<span class="fc" id="L183">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;();</span>
+<span class="fc" id="L184">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;();</span>
         }
     }
 
@@ -195,18 +196,18 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
     public static &lt;S extends RadioSource&gt; RobustRangingRadioSourceEstimator3D&lt;S&gt; create(
             final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L198" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L199" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L200">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings);</span>
+<span class="fc" id="L201">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings);</span>
             case LMedS:
-<span class="fc" id="L202">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings);</span>
+<span class="fc" id="L203">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings);</span>
             case MSAC:
-<span class="fc" id="L204">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings);</span>
+<span class="fc" id="L205">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings);</span>
             case PROSAC:
-<span class="fc" id="L206">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings);</span>
+<span class="fc" id="L207">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings);</span>
             case PROMedS:
             default:
-<span class="fc" id="L209">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings);</span>
+<span class="fc" id="L210">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings);</span>
         }
     }
 
@@ -221,18 +222,18 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
     public static &lt;S extends RadioSource&gt; RobustRangingRadioSourceEstimator3D&lt;S&gt; create(
             final RobustRangingRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L224" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L225" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L226">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(listener);</span>
+<span class="fc" id="L227">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(listener);</span>
             case LMedS:
-<span class="fc" id="L228">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(listener);</span>
+<span class="fc" id="L229">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(listener);</span>
             case MSAC:
-<span class="fc" id="L230">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(listener);</span>
+<span class="fc" id="L231">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(listener);</span>
             case PROSAC:
-<span class="fc" id="L232">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(listener);</span>
+<span class="fc" id="L233">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(listener);</span>
             case PROMedS:
             default:
-<span class="fc" id="L235">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(listener);</span>
+<span class="fc" id="L236">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(listener);</span>
         }
     }
 
@@ -249,22 +250,22 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
             final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings,
             final RobustRangingRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L252" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L253" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L254">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
+<span class="fc" id="L255">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
                         listener);
             case LMedS:
-<span class="fc" id="L257">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
+<span class="fc" id="L258">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
                         listener);
             case MSAC:
-<span class="fc" id="L260">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
+<span class="fc" id="L261">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
                         listener);
             case PROSAC:
-<span class="fc" id="L263">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
+<span class="fc" id="L264">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
                         listener);
             case PROMedS:
             default:
-<span class="fc" id="L267">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
+<span class="fc" id="L268">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
                         listener);
         }
     }
@@ -281,18 +282,18 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
     public static &lt;S extends RadioSource&gt; RobustRangingRadioSourceEstimator3D&lt;S&gt; create(
             final Point3D initialPosition,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L284" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L285" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L286">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition);</span>
+<span class="fc" id="L287">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition);</span>
             case LMedS:
-<span class="fc" id="L288">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition);</span>
+<span class="fc" id="L289">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition);</span>
             case MSAC:
-<span class="fc" id="L290">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition);</span>
+<span class="fc" id="L291">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition);</span>
             case PROSAC:
-<span class="fc" id="L292">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition);</span>
+<span class="fc" id="L293">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition);</span>
             case PROMedS:
             default:
-<span class="fc" id="L295">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition);</span>
+<span class="fc" id="L296">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition);</span>
         }
     }
 
@@ -310,22 +311,22 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
             final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings,
             final Point3D initialPosition,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L313" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L314" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L315">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
+<span class="fc" id="L316">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
                         initialPosition);
             case LMedS:
-<span class="fc" id="L318">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
+<span class="fc" id="L319">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
                         initialPosition);
             case MSAC:
-<span class="fc" id="L321">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
+<span class="fc" id="L322">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
                         initialPosition);
             case PROSAC:
-<span class="fc" id="L324">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
+<span class="fc" id="L325">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
                         initialPosition);
             case PROMedS:
             default:
-<span class="fc" id="L328">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
+<span class="fc" id="L329">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
                         initialPosition);
         }
     }
@@ -344,22 +345,22 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
             final Point3D initialPosition,
             final RobustRangingRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L347" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L348" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L349">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition,</span>
+<span class="fc" id="L350">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition,</span>
                         listener);
             case LMedS:
-<span class="fc" id="L352">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition,</span>
+<span class="fc" id="L353">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition,</span>
                         listener);
             case MSAC:
-<span class="fc" id="L355">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition,</span>
+<span class="fc" id="L356">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition,</span>
                         listener);
             case PROSAC:
-<span class="fc" id="L358">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition,</span>
+<span class="fc" id="L359">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition,</span>
                         listener);
             case PROMedS:
             default:
-<span class="fc" id="L362">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition,</span>
+<span class="fc" id="L363">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition,</span>
                         listener);
         }
     }
@@ -380,22 +381,22 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
             final Point3D initialPosition,
             final RobustRangingRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L383" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L384" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L385">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
+<span class="fc" id="L386">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
                         initialPosition, listener);
             case LMedS:
-<span class="fc" id="L388">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
+<span class="fc" id="L389">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
                         initialPosition, listener);
             case MSAC:
-<span class="fc" id="L391">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
+<span class="fc" id="L392">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
                         initialPosition, listener);
             case PROSAC:
-<span class="fc" id="L394">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
+<span class="fc" id="L395">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
                         initialPosition, listener);
             case PROMedS:
             default:
-<span class="fc" id="L398">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
+<span class="fc" id="L399">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
                         initialPosition, listener);
         }
     }
@@ -412,18 +413,18 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
      */
     public static &lt;S extends RadioSource&gt; RobustRangingRadioSourceEstimator3D&lt;S&gt; create(
             final double[] qualityScores, final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L415" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L416" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L417">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;();</span>
+<span class="fc" id="L418">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;();</span>
             case LMedS:
-<span class="fc" id="L419">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;();</span>
+<span class="fc" id="L420">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;();</span>
             case MSAC:
-<span class="fc" id="L421">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;();</span>
+<span class="fc" id="L422">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;();</span>
             case PROSAC:
-<span class="fc" id="L423">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores);</span>
+<span class="fc" id="L424">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores);</span>
             case PROMedS:
             default:
-<span class="fc" id="L426">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores);</span>
+<span class="fc" id="L427">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores);</span>
         }
     }
 
@@ -442,19 +443,19 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
             final double[] qualityScores,
             final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L445" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L446" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L447">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings);</span>
+<span class="fc" id="L448">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings);</span>
             case LMedS:
-<span class="fc" id="L449">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings);</span>
+<span class="fc" id="L450">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings);</span>
             case MSAC:
-<span class="fc" id="L451">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings);</span>
+<span class="fc" id="L452">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings);</span>
             case PROSAC:
-<span class="fc" id="L453">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores,</span>
+<span class="fc" id="L454">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores,</span>
                         readings);
             case PROMedS:
             default:
-<span class="fc" id="L457">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores,</span>
+<span class="fc" id="L458">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores,</span>
                         readings);
         }
     }
@@ -474,19 +475,19 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
             final double[] qualityScores,
             final RobustRangingRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L477" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L478" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L479">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(listener);</span>
+<span class="fc" id="L480">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(listener);</span>
             case LMedS:
-<span class="fc" id="L481">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(listener);</span>
+<span class="fc" id="L482">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(listener);</span>
             case MSAC:
-<span class="fc" id="L483">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(listener);</span>
+<span class="fc" id="L484">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(listener);</span>
             case PROSAC:
-<span class="fc" id="L485">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores,</span>
+<span class="fc" id="L486">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores,</span>
                         listener);
             case PROMedS:
             default:
-<span class="fc" id="L489">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores,</span>
+<span class="fc" id="L490">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores,</span>
                         listener);
         }
     }
@@ -508,22 +509,22 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
             final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings,
             final RobustRangingRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L511" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L512" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L513">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
+<span class="fc" id="L514">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
                         listener);
             case LMedS:
-<span class="fc" id="L516">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
+<span class="fc" id="L517">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
                         listener);
             case MSAC:
-<span class="fc" id="L519">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
+<span class="fc" id="L520">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
                         listener);
             case PROSAC:
-<span class="fc" id="L522">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores,</span>
+<span class="fc" id="L523">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores,</span>
                         readings, listener);
             case PROMedS:
             default:
-<span class="fc" id="L526">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores,</span>
+<span class="fc" id="L527">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores,</span>
                         readings, listener);
         }
     }
@@ -544,19 +545,19 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
             final double[] qualityScores,
             final Point3D initialPosition,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L547" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L548" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L549">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition);</span>
+<span class="fc" id="L550">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition);</span>
             case LMedS:
-<span class="fc" id="L551">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition);</span>
+<span class="fc" id="L552">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition);</span>
             case MSAC:
-<span class="fc" id="L553">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition);</span>
+<span class="fc" id="L554">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition);</span>
             case PROSAC:
-<span class="fc" id="L555">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores,</span>
+<span class="fc" id="L556">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores,</span>
                         initialPosition);
             case PROMedS:
             default:
-<span class="fc" id="L559">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores,</span>
+<span class="fc" id="L560">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores,</span>
                         initialPosition);
         }
     }
@@ -579,22 +580,22 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
             final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings,
             final Point3D initialPosition,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L582" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L583" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L584">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
+<span class="fc" id="L585">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
                         initialPosition);
             case LMedS:
-<span class="fc" id="L587">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
+<span class="fc" id="L588">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
                         initialPosition);
             case MSAC:
-<span class="fc" id="L590">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
+<span class="fc" id="L591">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
                         initialPosition);
             case PROSAC:
-<span class="fc" id="L593">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores,</span>
+<span class="fc" id="L594">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores,</span>
                         readings, initialPosition);
             case PROMedS:
             default:
-<span class="fc" id="L597">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores,</span>
+<span class="fc" id="L598">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores,</span>
                         readings, initialPosition);
         }
     }
@@ -617,22 +618,22 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
             final Point3D initialPosition,
             final RobustRangingRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L620" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L621" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L622">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition,</span>
+<span class="fc" id="L623">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition,</span>
                         listener);
             case LMedS:
-<span class="fc" id="L625">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition,</span>
+<span class="fc" id="L626">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition,</span>
                         listener);
             case MSAC:
-<span class="fc" id="L628">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition,</span>
+<span class="fc" id="L629">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition,</span>
                         listener);
             case PROSAC:
-<span class="fc" id="L631">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores,</span>
+<span class="fc" id="L632">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores,</span>
                         initialPosition, listener);
             case PROMedS:
             default:
-<span class="fc" id="L635">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores,</span>
+<span class="fc" id="L636">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores,</span>
                         initialPosition, listener);
         }
     }
@@ -657,22 +658,22 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
             final Point3D initialPosition,
             final RobustRangingRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L660" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L661" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L662">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
+<span class="fc" id="L663">                return new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
                         initialPosition, listener);
             case LMedS:
-<span class="fc" id="L665">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
+<span class="fc" id="L666">                return new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
                         initialPosition, listener);
             case MSAC:
-<span class="fc" id="L668">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
+<span class="fc" id="L669">                return new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings,</span>
                         initialPosition, listener);
             case PROSAC:
-<span class="fc" id="L671">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores,</span>
+<span class="fc" id="L672">                return new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores,</span>
                         readings, initialPosition, listener);
             case PROMedS:
             default:
-<span class="fc" id="L675">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores,</span>
+<span class="fc" id="L676">                return new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores,</span>
                         readings, initialPosition, listener);
         }
     }
@@ -685,7 +686,7 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
      */
     @Override
     public int getMinReadings() {
-<span class="fc" id="L688">        return Point3D.POINT3D_INHOMOGENEOUS_COORDINATES_LENGTH + 1;</span>
+<span class="fc" id="L689">        return Point3D.POINT3D_INHOMOGENEOUS_COORDINATES_LENGTH + 1;</span>
     }
 
     /**
@@ -696,7 +697,7 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
      */
     @Override
     public int getNumberOfDimensions() {
-<span class="fc" id="L699">        return Point3D.POINT3D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
+<span class="fc" id="L700">        return Point3D.POINT3D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
     }
 
     /**
@@ -707,34 +708,34 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
     @SuppressWarnings(&quot;unchecked&quot;)
     @Override
     public RadioSourceLocated&lt;Point3D&gt; getEstimatedRadioSource() {
-<span class="fc" id="L710">        final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings = getReadings();</span>
-<span class="pc bpc" id="L711" title="1 of 4 branches missed.">        if (readings == null || readings.isEmpty()) {</span>
-<span class="fc" id="L712">            return null;</span>
+<span class="fc" id="L711">        final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings = getReadings();</span>
+<span class="pc bpc" id="L712" title="1 of 4 branches missed.">        if (readings == null || readings.isEmpty()) {</span>
+<span class="fc" id="L713">            return null;</span>
         }
-<span class="fc" id="L714">        final S source = readings.get(0).getSource();</span>
+<span class="fc" id="L715">        final S source = readings.get(0).getSource();</span>
 
-<span class="fc" id="L716">        final Point3D estimatedPosition = getEstimatedPosition();</span>
-<span class="fc bfc" id="L717" title="All 2 branches covered.">        if (estimatedPosition == null) {</span>
-<span class="fc" id="L718">            return null;</span>
+<span class="fc" id="L717">        final Point3D estimatedPosition = getEstimatedPosition();</span>
+<span class="fc bfc" id="L718" title="All 2 branches covered.">        if (estimatedPosition == null) {</span>
+<span class="fc" id="L719">            return null;</span>
         }
 
-<span class="fc" id="L721">        final Matrix estimatedPositionCovariance = getEstimatedPositionCovariance();</span>
+<span class="fc" id="L722">        final Matrix estimatedPositionCovariance = getEstimatedPositionCovariance();</span>
 
-<span class="fc bfc" id="L723" title="All 2 branches covered.">        if (source instanceof WifiAccessPoint) {</span>
-<span class="fc" id="L724">            final WifiAccessPoint accessPoint = (WifiAccessPoint) source;</span>
-<span class="fc" id="L725">            return new WifiAccessPointLocated3D(accessPoint.getBssid(),</span>
-<span class="fc" id="L726">                    accessPoint.getFrequency(), accessPoint.getSsid(),</span>
+<span class="fc bfc" id="L724" title="All 2 branches covered.">        if (source instanceof WifiAccessPoint) {</span>
+<span class="fc" id="L725">            final WifiAccessPoint accessPoint = (WifiAccessPoint) source;</span>
+<span class="fc" id="L726">            return new WifiAccessPointLocated3D(accessPoint.getBssid(),</span>
+<span class="fc" id="L727">                    accessPoint.getFrequency(), accessPoint.getSsid(),</span>
                     estimatedPosition, estimatedPositionCovariance);
-<span class="pc bpc" id="L728" title="1 of 2 branches missed.">        } else if (source instanceof Beacon) {</span>
-<span class="fc" id="L729">            final Beacon beacon = (Beacon) source;</span>
-<span class="fc" id="L730">            return new BeaconLocated3D(beacon.getIdentifiers(),</span>
-<span class="fc" id="L731">                    beacon.getTransmittedPower(), beacon.getFrequency(),</span>
-<span class="fc" id="L732">                    beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(),</span>
-<span class="fc" id="L733">                    beacon.getManufacturer(), beacon.getServiceUuid(),</span>
-<span class="fc" id="L734">                    beacon.getBluetoothName(), estimatedPosition,</span>
+<span class="pc bpc" id="L729" title="1 of 2 branches missed.">        } else if (source instanceof Beacon) {</span>
+<span class="fc" id="L730">            final Beacon beacon = (Beacon) source;</span>
+<span class="fc" id="L731">            return new BeaconLocated3D(beacon.getIdentifiers(),</span>
+<span class="fc" id="L732">                    beacon.getTransmittedPower(), beacon.getFrequency(),</span>
+<span class="fc" id="L733">                    beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(),</span>
+<span class="fc" id="L734">                    beacon.getManufacturer(), beacon.getServiceUuid(),</span>
+<span class="fc" id="L735">                    beacon.getBluetoothName(), estimatedPosition,</span>
                     estimatedPositionCovariance);
         } else {
-<span class="nc" id="L737">            return null;</span>
+<span class="nc" id="L738">            return null;</span>
         }
     }
 
@@ -747,7 +748,7 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
      */
     @Override
     public boolean isHomogeneousLinearSolverUsed() {
-<span class="fc" id="L750">        return mInnerEstimator.isHomogeneousLinearSolverUsed();</span>
+<span class="fc" id="L751">        return mInnerEstimator.isHomogeneousLinearSolverUsed();</span>
     }
 
     /**
@@ -761,53 +762,53 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
     @Override
     public void setHomogeneousLinearSolverUsed(
             final boolean useHomogeneousLinearSolver) throws LockedException {
-<span class="fc bfc" id="L764" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L765">            throw new LockedException();</span>
+<span class="fc bfc" id="L765" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L766">            throw new LockedException();</span>
         }
-<span class="fc" id="L767">        mInnerEstimator.setHomogeneousLinearSolverUsed(useHomogeneousLinearSolver);</span>
-<span class="fc" id="L768">    }</span>
+<span class="fc" id="L768">        mInnerEstimator.setHomogeneousLinearSolverUsed(useHomogeneousLinearSolver);</span>
+<span class="fc" id="L769">    }</span>
 
     /**
-     * Solves preliminar solution for a subset of samples.
+     * Solves preliminary solution for a subset of samples.
      *
      * @param samplesIndices indices of subset samples.
      * @param solutions      instance where solution will be stored.
      */
     @Override
-    protected void solvePreliminarSolutions(
+    protected void solvePreliminarySolutions(
             final int[] samplesIndices,
             final List&lt;Solution&lt;Point3D&gt;&gt; solutions) {
         try {
             int index;
 
-<span class="fc" id="L783">            mInnerReadings.clear();</span>
-<span class="fc bfc" id="L784" title="All 2 branches covered.">            for (final int samplesIndice : samplesIndices) {</span>
-<span class="fc" id="L785">                index = samplesIndice;</span>
-<span class="fc" id="L786">                mInnerReadings.add(mReadings.get(index));</span>
+<span class="fc" id="L784">            mInnerReadings.clear();</span>
+<span class="fc bfc" id="L785" title="All 2 branches covered.">            for (final int samplesIndex : samplesIndices) {</span>
+<span class="fc" id="L786">                index = samplesIndex;</span>
+<span class="fc" id="L787">                mInnerReadings.add(mReadings.get(index));</span>
             }
 
             // initial position might or might not be available
-<span class="fc" id="L790">            mInnerEstimator.setInitialPosition(mInitialPosition);</span>
+<span class="fc" id="L791">            mInnerEstimator.setInitialPosition(mInitialPosition);</span>
 
-<span class="fc" id="L792">            mInnerEstimator.setReadings(mInnerReadings);</span>
+<span class="fc" id="L793">            mInnerEstimator.setReadings(mInnerReadings);</span>
 
-            // for preliminar solutions, non linear solver is not needed, and if no
+            // for preliminary solutions, non linear solver is not needed, and if no
             // initial position is used, we can obtain faster solutions disabling
             // non-linear solver and using a linear one only (because covariance is not
             // required)
-<span class="fc bfc" id="L798" title="All 2 branches covered.">            mInnerEstimator.setNonLinearSolverEnabled(mInitialPosition != null);</span>
+<span class="fc bfc" id="L799" title="All 2 branches covered.">            mInnerEstimator.setNonLinearSolverEnabled(mInitialPosition != null);</span>
 
-            // indicastes whether readings position covariances must be taken into account
-<span class="fc" id="L801">            mInnerEstimator.setUseReadingPositionCovariances(mUseReadingPositionCovariances);</span>
+            // indicates whether readings position covariances must be taken into account
+<span class="fc" id="L802">            mInnerEstimator.setUseReadingPositionCovariances(mUseReadingPositionCovariances);</span>
 
-<span class="fc" id="L803">            mInnerEstimator.estimate();</span>
+<span class="fc" id="L804">            mInnerEstimator.estimate();</span>
 
-<span class="fc" id="L805">            final Point3D estimatedPosition = mInnerEstimator.getEstimatedPosition();</span>
-<span class="fc" id="L806">            solutions.add(new Solution&lt;&gt;(estimatedPosition));</span>
-<span class="fc" id="L807">        } catch (final NavigationException ignore) {</span>
+<span class="fc" id="L806">            final Point3D estimatedPosition = mInnerEstimator.getEstimatedPosition();</span>
+<span class="fc" id="L807">            solutions.add(new Solution&lt;&gt;(estimatedPosition));</span>
+<span class="fc" id="L808">        } catch (final NavigationException ignore) {</span>
             // if anything fails, no solution is added
-<span class="fc" id="L809">        }</span>
-<span class="fc" id="L810">    }</span>
+<span class="fc" id="L810">        }</span>
+<span class="fc" id="L811">    }</span>
 
     /**
      * Attempts to refine estimated position and transmitted power contained in
@@ -821,56 +822,56 @@ public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSour
      * @param result result to be refined.
      */
     protected void attemptRefine(final Solution&lt;Point3D&gt; result) {
-<span class="fc" id="L824">        final Point3D initialPosition = result.getEstimatedPosition();</span>
+<span class="fc" id="L825">        final Point3D initialPosition = result.getEstimatedPosition();</span>
 
-<span class="pc bpc" id="L826" title="1 of 4 branches missed.">        if (mRefineResult &amp;&amp; mInliersData != null) {</span>
-<span class="fc" id="L827">            final BitSet inliers = mInliersData.getInliers();</span>
-<span class="fc" id="L828">            final int nSamples = mReadings.size();</span>
+<span class="pc bpc" id="L827" title="1 of 4 branches missed.">        if (mRefineResult &amp;&amp; mInliersData != null) {</span>
+<span class="fc" id="L828">            final BitSet inliers = mInliersData.getInliers();</span>
+<span class="fc" id="L829">            final int nSamples = mReadings.size();</span>
 
-<span class="fc" id="L830">            mInnerReadings.clear();</span>
+<span class="fc" id="L831">            mInnerReadings.clear();</span>
 
-<span class="fc bfc" id="L832" title="All 2 branches covered.">            for (int i = 0; i &lt; nSamples; i++) {</span>
-<span class="fc bfc" id="L833" title="All 2 branches covered.">                if (inliers.get(i)) {</span>
-                    //sample is inlier
-<span class="fc" id="L835">                    mInnerReadings.add(mReadings.get(i));</span>
+<span class="fc bfc" id="L833" title="All 2 branches covered.">            for (int i = 0; i &lt; nSamples; i++) {</span>
+<span class="fc bfc" id="L834" title="All 2 branches covered.">                if (inliers.get(i)) {</span>
+                    // sample is inlier
+<span class="fc" id="L836">                    mInnerReadings.add(mReadings.get(i));</span>
                 }
             }
 
             try {
-<span class="fc" id="L840">                mInnerEstimator.setInitialPosition(initialPosition);</span>
-<span class="fc" id="L841">                mInnerEstimator.setReadings(mInnerReadings);</span>
+<span class="fc" id="L841">                mInnerEstimator.setInitialPosition(initialPosition);</span>
+<span class="fc" id="L842">                mInnerEstimator.setReadings(mInnerReadings);</span>
 
-<span class="fc" id="L843">                mInnerEstimator.setNonLinearSolverEnabled(true);</span>
-<span class="fc" id="L844">                mInnerEstimator.setUseReadingPositionCovariances(</span>
+<span class="fc" id="L844">                mInnerEstimator.setNonLinearSolverEnabled(true);</span>
+<span class="fc" id="L845">                mInnerEstimator.setUseReadingPositionCovariances(</span>
                         mUseReadingPositionCovariances);
-<span class="fc" id="L846">                mInnerEstimator.estimate();</span>
+<span class="fc" id="L847">                mInnerEstimator.estimate();</span>
 
-<span class="fc" id="L848">                final Matrix cov = mInnerEstimator.getEstimatedCovariance();</span>
-<span class="pc bpc" id="L849" title="2 of 4 branches missed.">                if (mKeepCovariance &amp;&amp; cov != null) {</span>
-                    //keep covariance
-<span class="fc" id="L851">                    mEstimatedPositionCovariance = mCovariance = cov;</span>
+<span class="fc" id="L849">                final Matrix cov = mInnerEstimator.getEstimatedCovariance();</span>
+<span class="pc bpc" id="L850" title="2 of 4 branches missed.">                if (mKeepCovariance &amp;&amp; cov != null) {</span>
+                    // keep covariance
+<span class="fc" id="L852">                    mEstimatedPositionCovariance = mCovariance = cov;</span>
 
                 } else {
-<span class="nc" id="L854">                    mCovariance = null;</span>
-<span class="nc" id="L855">                    mEstimatedPositionCovariance = null;</span>
+<span class="nc" id="L855">                    mCovariance = null;</span>
+<span class="nc" id="L856">                    mEstimatedPositionCovariance = null;</span>
                 }
 
-<span class="fc" id="L858">                mEstimatedPosition = mInnerEstimator.getEstimatedPosition();</span>
-<span class="nc" id="L859">            } catch (final Exception e) {</span>
-                //refinement failed, so we return input value, and covariance
-                //becomes unavailable
-<span class="nc" id="L862">                mCovariance = null;</span>
-<span class="nc" id="L863">                mEstimatedPositionCovariance = null;</span>
+<span class="fc" id="L859">                mEstimatedPosition = mInnerEstimator.getEstimatedPosition();</span>
+<span class="nc" id="L860">            } catch (final Exception e) {</span>
+                // refinement failed, so we return input value, and covariance
+                // becomes unavailable
+<span class="nc" id="L863">                mCovariance = null;</span>
+<span class="nc" id="L864">                mEstimatedPositionCovariance = null;</span>
 
-<span class="nc" id="L865">                mEstimatedPosition = initialPosition;</span>
-<span class="fc" id="L866">            }</span>
-<span class="fc" id="L867">        } else {</span>
-<span class="fc" id="L868">            mCovariance = null;</span>
-<span class="fc" id="L869">            mEstimatedPositionCovariance = null;</span>
+<span class="nc" id="L866">                mEstimatedPosition = initialPosition;</span>
+<span class="fc" id="L867">            }</span>
+<span class="fc" id="L868">        } else {</span>
+<span class="fc" id="L869">            mCovariance = null;</span>
+<span class="fc" id="L870">            mEstimatedPositionCovariance = null;</span>
 
-<span class="fc" id="L871">            mEstimatedPosition = initialPosition;</span>
+<span class="fc" id="L872">            mEstimatedPosition = initialPosition;</span>
         }
-<span class="fc" id="L873">    }</span>
+<span class="fc" id="L874">    }</span>
 }
 
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

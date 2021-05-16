@@ -24,6 +24,7 @@ import com.irurueta.navigation.indoor.RadioSourceLocated;
 import com.irurueta.navigation.indoor.Reading;
 import com.irurueta.navigation.lateration.HomogeneousLinearLeastSquaresLateration3DSolver;
 import com.irurueta.navigation.lateration.InhomogeneousLinearLeastSquaresLateration3DSolver;
+
 import java.util.List;
 
 /**
@@ -33,7 +34,6 @@ import java.util.List;
  * getting ranging readings at an unknown location of different radio sources whose
  * locations are known.
  */
-@SuppressWarnings(&quot;WeakerAccess&quot;)
 public class LinearMixedPositionEstimator3D extends
         LinearMixedPositionEstimator&lt;Point3D&gt; {
 
@@ -77,9 +77,9 @@ public class LinearMixedPositionEstimator3D extends
     /**
      * Constructor.
      *
-     * @param sources       located radio sources used for lateration.
-     * @param fingerprint   fingerprint containing ranging readings at an unknown location
-     *                      for provided located radio sources.
+     * @param sources     located radio sources used for lateration.
+     * @param fingerprint fingerprint containing ranging readings at an unknown location
+     *                    for provided located radio sources.
      * @throws IllegalArgumentException if either provided sources or fingerprint is null
      *                                  or the number of provided sources is less than
      *                                  the required minimum.
@@ -107,8 +107,8 @@ public class LinearMixedPositionEstimator3D extends
     /**
      * Constructor.
      *
-     * @param sources   located radio sources used for lateration.
-     * @param listener  listener in charge of handling events.
+     * @param sources  located radio sources used for lateration.
+     * @param listener listener in charge of handling events.
      * @throws IllegalArgumentException if provided sources is null or the number of
      *                                  provided sources is less than the required
      *                                  minimum.
@@ -124,9 +124,9 @@ public class LinearMixedPositionEstimator3D extends
     /**
      * Constructor.
      *
-     * @param fingerprint   fingerprint containing ranging readings at an unknown
-     *                      location for provided location radio sources.
-     * @param listener      listener in charge of handling events.
+     * @param fingerprint fingerprint containing ranging readings at an unknown
+     *                    location for provided location radio sources.
+     * @param listener    listener in charge of handling events.
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public LinearMixedPositionEstimator3D(
@@ -140,10 +140,10 @@ public class LinearMixedPositionEstimator3D extends
     /**
      * Constructor.
      *
-     * @param sources       located radio sources used for lateration.
-     * @param fingerprint   fingerprint containing ranging readings at an unknown
-     *                      location for provided located radio sources.
-     * @param listener      listener in charge of handling events.
+     * @param sources     located radio sources used for lateration.
+     * @param fingerprint fingerprint containing ranging readings at an unknown
+     *                    location for provided located radio sources.
+     * @param listener    listener in charge of handling events.
      * @throws IllegalArgumentException if either provided sources or fingerprint is
      *                                  null or the number of provided sources is less
      *                                  than the required minimum.
@@ -160,21 +160,23 @@ public class LinearMixedPositionEstimator3D extends
 
     /**
      * Gets estimated position.
+     *
      * @return estimated position.
      */
     @Override
     public Point3D getEstimatedPosition() {
-<span class="fc bfc" id="L167" title="All 2 branches covered.">        if(mEstimatedPositionCoordinates == null) {</span>
-<span class="fc" id="L168">            return null;</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">        if (mEstimatedPositionCoordinates == null) {</span>
+<span class="fc" id="L169">            return null;</span>
         }
 
-<span class="fc" id="L171">        final InhomogeneousPoint3D result = new InhomogeneousPoint3D();</span>
-<span class="fc" id="L172">        getEstimatedPosition(result);</span>
-<span class="fc" id="L173">        return result;</span>
+<span class="fc" id="L172">        final InhomogeneousPoint3D result = new InhomogeneousPoint3D();</span>
+<span class="fc" id="L173">        getEstimatedPosition(result);</span>
+<span class="fc" id="L174">        return result;</span>
     }
 
     /**
      * Sets positions and distances on internal lateration solver.
+     *
      * @param positions positions to be set.
      * @param distances distances to be set.
      * @throws IllegalArgumentException if something fails.
@@ -183,33 +185,33 @@ public class LinearMixedPositionEstimator3D extends
     @SuppressWarnings(&quot;Duplicates&quot;)
     protected void setPositionsAndDistances(
             final List&lt;Point3D&gt; positions, final List&lt;Double&gt; distances) {
-<span class="fc" id="L186">        final int size = positions.size();</span>
-<span class="fc" id="L187">        Point3D[] positionsArray = new InhomogeneousPoint3D[size];</span>
-<span class="fc" id="L188">        positionsArray = positions.toArray(positionsArray);</span>
+<span class="fc" id="L188">        final int size = positions.size();</span>
+<span class="fc" id="L189">        Point3D[] positionsArray = new InhomogeneousPoint3D[size];</span>
+<span class="fc" id="L190">        positionsArray = positions.toArray(positionsArray);</span>
 
-<span class="fc" id="L190">        final double[] distancesArray = new double[size];</span>
-<span class="fc bfc" id="L191" title="All 2 branches covered.">        for (int i = 0; i &lt; size; i++) {</span>
-<span class="fc" id="L192">            distancesArray[i] = distances.get(i);</span>
+<span class="fc" id="L192">        final double[] distancesArray = new double[size];</span>
+<span class="fc bfc" id="L193" title="All 2 branches covered.">        for (int i = 0; i &lt; size; i++) {</span>
+<span class="fc" id="L194">            distancesArray[i] = distances.get(i);</span>
         }
 
         try {
-<span class="fc" id="L196">            mHomogeneousTrilaterationSolver.setPositionsAndDistances(positionsArray,</span>
+<span class="fc" id="L198">            mHomogeneousTrilaterationSolver.setPositionsAndDistances(positionsArray,</span>
                     distancesArray);
-<span class="fc" id="L198">            mInhomogeneousTrilaterationSolver.setPositionsAndDistances(positionsArray,</span>
+<span class="fc" id="L200">            mInhomogeneousTrilaterationSolver.setPositionsAndDistances(positionsArray,</span>
                     distancesArray);
-<span class="nc" id="L200">        } catch (final LockedException e) {</span>
-<span class="nc" id="L201">            throw new IllegalArgumentException(e);</span>
-<span class="fc" id="L202">        }</span>
-<span class="fc" id="L203">    }</span>
+<span class="nc" id="L202">        } catch (final LockedException e) {</span>
+<span class="nc" id="L203">            throw new IllegalArgumentException(e);</span>
+<span class="fc" id="L204">        }</span>
+<span class="fc" id="L205">    }</span>
 
     /**
      * Initializes lateration solver.
      */
     private void init() {
-<span class="fc" id="L209">        mHomogeneousTrilaterationSolver = new HomogeneousLinearLeastSquaresLateration3DSolver(</span>
+<span class="fc" id="L211">        mHomogeneousTrilaterationSolver = new HomogeneousLinearLeastSquaresLateration3DSolver(</span>
                 mLaterationSolverListener);
-<span class="fc" id="L211">        mInhomogeneousTrilaterationSolver = new InhomogeneousLinearLeastSquaresLateration3DSolver(</span>
+<span class="fc" id="L213">        mInhomogeneousTrilaterationSolver = new InhomogeneousLinearLeastSquaresLateration3DSolver(</span>
                 mLaterationSolverListener);
-<span class="fc" id="L213">    }</span>
+<span class="fc" id="L215">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

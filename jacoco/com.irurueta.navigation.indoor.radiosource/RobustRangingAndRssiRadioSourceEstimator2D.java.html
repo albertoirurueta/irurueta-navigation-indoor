@@ -27,12 +27,13 @@ import com.irurueta.navigation.indoor.RangingAndRssiReadingLocated;
 import com.irurueta.navigation.indoor.WifiAccessPoint;
 import com.irurueta.navigation.indoor.WifiAccessPointWithPowerAndLocated2D;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 
 /**
- * This is an abstract class to robustly estimate 2D position, transmitted power and pathloss
+ * This is an abstract class to robustly estimate 2D position, transmitted power and path-loss
  * exponent of a radio source (e.g. WiFi access point or bluetooth beacon), by discarding
  * outliers and assuming that the ranging data is available to obtain position with
  * greater accuracy and that the radio source emits isotropically following the
@@ -59,14 +60,13 @@ import java.util.List;
  *
  * @param &lt;S&gt; a {@link RadioSource} type.
  */
-@SuppressWarnings({&quot;WeakerAccess&quot;, &quot;Duplicates&quot;})
 public abstract class RobustRangingAndRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends
         RobustRangingAndRssiRadioSourceEstimator&lt;S, Point2D&gt; {
 
     /**
      * Radio source estimator used internally.
      */
-<span class="fc" id="L69">    protected RangingAndRssiRadioSourceEstimator2D&lt;S&gt; mInnerEstimator =</span>
+<span class="fc" id="L69">    protected final RangingAndRssiRadioSourceEstimator2D&lt;S&gt; mInnerEstimator =</span>
             new RangingAndRssiRadioSourceEstimator2D&lt;&gt;();
 
     /**
@@ -109,7 +109,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D&lt;S extends Ra
 
     /**
      * Constructor.
-     * Sets signal readings bleonging to the same radio source.
+     * Sets signal readings belonging to the same radio source.
      *
      * @param readings signal readings belonging to the same radio source.
      * @param listener listener in charge of attending events raised by this instance.
@@ -2829,7 +2829,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D&lt;S extends Ra
 
     /**
      * Gets minimum required number of readings to estimate
-     * power, position and pathloss exponent.
+     * power, position and path-loss exponent.
      * This value depends on the number of parameters to
      * be estimated, but for position only, this is 3
      * readings.
@@ -2916,13 +2916,13 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D&lt;S extends Ra
     }
 
     /**
-     * Solves preliminar solution for a subset of samples.
+     * Solves preliminary solution for a subset of samples.
      *
      * @param samplesIndices indices of subset samples.
      * @param solutions      instance where solution will be stored.
      */
     @Override
-    protected void solvePreliminarSolutions(
+    protected void solvePreliminarySolutions(
             final int[] samplesIndices,
             final List&lt;Solution&lt;Point2D&gt;&gt; solutions) {
 
@@ -2930,12 +2930,12 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D&lt;S extends Ra
             int index;
 
 <span class="fc" id="L2932">            mInnerReadings.clear();</span>
-<span class="fc bfc" id="L2933" title="All 2 branches covered.">            for (final int samplesIndice : samplesIndices) {</span>
-<span class="fc" id="L2934">                index = samplesIndice;</span>
+<span class="fc bfc" id="L2933" title="All 2 branches covered.">            for (final int samplesIndex : samplesIndices) {</span>
+<span class="fc" id="L2934">                index = samplesIndex;</span>
 <span class="fc" id="L2935">                mInnerReadings.add(mReadings.get(index));</span>
             }
 
-            //initial transmitted power and position might or might not be available
+            // initial transmitted power and position might or might not be available
 <span class="fc" id="L2939">            mInnerEstimator.setInitialTransmittedPowerdBm(</span>
                     mInitialTransmittedPowerdBm);
 <span class="fc" id="L2941">            mInnerEstimator.setInitialPosition(mInitialPosition);</span>
@@ -2947,7 +2947,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D&lt;S extends Ra
 
 <span class="fc" id="L2948">            mInnerEstimator.setReadings(mInnerReadings);</span>
 
-            //indicastes whether readings position covariances must be taken into account
+            // indicates whether readings position covariances must be taken into account
 <span class="fc" id="L2951">            mInnerEstimator.setUseReadingPositionCovariances(</span>
                     mUseReadingPositionCovariances);
 
@@ -2961,7 +2961,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D&lt;S extends Ra
 <span class="fc" id="L2961">            solutions.add(new Solution&lt;&gt;(estimatedPosition,</span>
                     estimatedTransmittedPowerdBm, estimatedPathLossExponent));
 <span class="nc" id="L2963">        } catch (final NavigationException ignore) {</span>
-            //if anything fails, no solution is added
+            // if anything fails, no solution is added
 <span class="fc" id="L2965">        }</span>
 <span class="fc" id="L2966">    }</span>
 
@@ -2990,7 +2990,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D&lt;S extends Ra
 
 <span class="fc bfc" id="L2991" title="All 2 branches covered.">            for (int i = 0; i &lt; nSamples; i++) {</span>
 <span class="fc bfc" id="L2992" title="All 2 branches covered.">                if (inliers.get(i)) {</span>
-                    //sample is inlier
+                    // sample is inlier
 <span class="fc" id="L2994">                    mInnerReadings.add(mReadings.get(i));</span>
                 }
             }
@@ -3011,7 +3011,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D&lt;S extends Ra
 
 <span class="fc" id="L3012">                final Matrix cov = mInnerEstimator.getEstimatedCovariance();</span>
 <span class="pc bpc" id="L3013" title="2 of 4 branches missed.">                if (mKeepCovariance &amp;&amp; cov != null) {</span>
-                    //keep covariance
+                    // keep covariance
 <span class="fc" id="L3015">                    mCovariance = cov;</span>
 
 <span class="fc" id="L3017">                    final int dims = getNumberOfDimensions();</span>
@@ -3028,21 +3028,21 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D&lt;S extends Ra
 <span class="fc" id="L3028">                    pos += dims;</span>
 
 <span class="fc bfc" id="L3030" title="All 2 branches covered.">                    if (mTransmittedPowerEstimationEnabled) {</span>
-                        //transmitted power estimation enabled
+                        // transmitted power estimation enabled
 <span class="fc" id="L3032">                        mEstimatedTransmittedPowerVariance = mCovariance.</span>
 <span class="fc" id="L3033">                                getElementAt(pos, pos);</span>
 <span class="fc" id="L3034">                        pos++;</span>
                     } else {
-                        //transmitted power estimation disabled
+                        // transmitted power estimation disabled
 <span class="fc" id="L3037">                        mEstimatedTransmittedPowerVariance = null;</span>
                     }
 
 <span class="fc bfc" id="L3040" title="All 2 branches covered.">                    if (mPathLossEstimationEnabled) {</span>
-                        //pathloss exponent estimation enabled
+                        // path-loss exponent estimation enabled
 <span class="fc" id="L3042">                        mEstimatedPathLossExponentVariance = mCovariance.</span>
 <span class="fc" id="L3043">                                getElementAt(pos, pos);</span>
                     } else {
-                        //pathloss exponent estimation disabled
+                        // path-loss exponent estimation disabled
 <span class="fc" id="L3046">                        mEstimatedPathLossExponentVariance = null;</span>
                     }
 <span class="fc" id="L3048">                } else {</span>
@@ -3058,8 +3058,8 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D&lt;S extends Ra
 <span class="fc" id="L3058">                mEstimatedPathLossExponent =</span>
 <span class="fc" id="L3059">                        mInnerEstimator.getEstimatedPathLossExponent();</span>
 <span class="nc" id="L3060">            } catch (final Exception e) {</span>
-                //refinement failed, so we return input value, and covariance
-                //becomes unavailable
+                // refinement failed, so we return input value, and covariance
+                // becomes unavailable
 <span class="nc" id="L3063">                mCovariance = null;</span>
 <span class="nc" id="L3064">                mEstimatedPositionCovariance = null;</span>
 <span class="nc" id="L3065">                mEstimatedTransmittedPowerVariance = null;</span>

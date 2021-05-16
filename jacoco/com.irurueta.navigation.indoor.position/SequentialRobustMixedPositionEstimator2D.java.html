@@ -21,9 +21,16 @@ import com.irurueta.navigation.indoor.Fingerprint;
 import com.irurueta.navigation.indoor.RadioSource;
 import com.irurueta.navigation.indoor.RadioSourceLocated;
 import com.irurueta.navigation.indoor.Reading;
+
 import java.util.List;
 
-@SuppressWarnings(&quot;WeakerAccess&quot;)
+/**
+ * Robustly estimates 2D position, using RSSI readings first to obtain an initial coarse
+ * position estimation, and then ranging readings to refine such estimation.
+ * &lt;p&gt;
+ * This implementation is like SequentialRobustRangingAndRssiPositionEstimator but
+ * allows mixing different kinds of readings (ranging, RSSI or ranging+RSSI).
+ */
 public class SequentialRobustMixedPositionEstimator2D extends
         SequentialRobustMixedPositionEstimator&lt;Point2D&gt; {
 
@@ -31,9 +38,9 @@ public class SequentialRobustMixedPositionEstimator2D extends
      * Constructor.
      */
     public SequentialRobustMixedPositionEstimator2D() {
-<span class="fc" id="L34">        super();</span>
-<span class="fc" id="L35">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L36">    }</span>
+<span class="fc" id="L41">        super();</span>
+<span class="fc" id="L42">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L43">    }</span>
 
     /**
      * Constructor.
@@ -44,9 +51,9 @@ public class SequentialRobustMixedPositionEstimator2D extends
      */
     public SequentialRobustMixedPositionEstimator2D(
             final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources) {
-<span class="fc" id="L47">        super(sources);</span>
-<span class="fc" id="L48">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L49">    }</span>
+<span class="fc" id="L54">        super(sources);</span>
+<span class="fc" id="L55">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L56">    }</span>
 
     /**
      * Constructor.
@@ -57,15 +64,15 @@ public class SequentialRobustMixedPositionEstimator2D extends
      */
     public SequentialRobustMixedPositionEstimator2D(
             final Fingerprint&lt;? extends RadioSource, ? extends Reading&lt;? extends RadioSource&gt;&gt; fingerprint) {
-<span class="fc" id="L60">        super(fingerprint);</span>
-<span class="fc" id="L61">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L62">    }</span>
+<span class="fc" id="L67">        super(fingerprint);</span>
+<span class="fc" id="L68">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L69">    }</span>
 
     /**
      * Constructor.
      *
      * @param sources     located radio sources used for lateration.
-     * @param fingerprint fingerprint containing reagins at an unknown location for provided
+     * @param fingerprint fingerprint containing readings at an unknown location for provided
      *                    located radio sources.
      * @throws IllegalArgumentException if either provided sources or fingerprint is null or
      *                                  the number of provided sources is less than the
@@ -74,9 +81,9 @@ public class SequentialRobustMixedPositionEstimator2D extends
     public SequentialRobustMixedPositionEstimator2D(
             final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
             final Fingerprint&lt;? extends RadioSource, ? extends Reading&lt;? extends RadioSource&gt;&gt; fingerprint) {
-<span class="fc" id="L77">        super(sources, fingerprint);</span>
-<span class="fc" id="L78">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L79">    }</span>
+<span class="fc" id="L84">        super(sources, fingerprint);</span>
+<span class="fc" id="L85">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L86">    }</span>
 
     /**
      * Constructor.
@@ -85,9 +92,9 @@ public class SequentialRobustMixedPositionEstimator2D extends
      */
     public SequentialRobustMixedPositionEstimator2D(
             final SequentialRobustMixedPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L88">        super(listener);</span>
-<span class="fc" id="L89">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L90">    }</span>
+<span class="fc" id="L95">        super(listener);</span>
+<span class="fc" id="L96">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L97">    }</span>
 
     /**
      * Constructor.
@@ -100,9 +107,9 @@ public class SequentialRobustMixedPositionEstimator2D extends
     public SequentialRobustMixedPositionEstimator2D(
             final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
             final SequentialRobustMixedPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L103">        super(sources, listener);</span>
-<span class="fc" id="L104">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L105">    }</span>
+<span class="fc" id="L110">        super(sources, listener);</span>
+<span class="fc" id="L111">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L112">    }</span>
 
     /**
      * Constructor.
@@ -115,9 +122,9 @@ public class SequentialRobustMixedPositionEstimator2D extends
     public SequentialRobustMixedPositionEstimator2D(
             final Fingerprint&lt;? extends RadioSource, ? extends Reading&lt;? extends RadioSource&gt;&gt; fingerprint,
             final SequentialRobustMixedPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L118">        super(fingerprint, listener);</span>
-<span class="fc" id="L119">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L120">    }</span>
+<span class="fc" id="L125">        super(fingerprint, listener);</span>
+<span class="fc" id="L126">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L127">    }</span>
 
     /**
      * Constructor.
@@ -134,9 +141,9 @@ public class SequentialRobustMixedPositionEstimator2D extends
             final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
             final Fingerprint&lt;? extends RadioSource, ? extends Reading&lt;? extends RadioSource&gt;&gt; fingerprint,
             final SequentialRobustMixedPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L137">        super(sources, fingerprint, listener);</span>
-<span class="fc" id="L138">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L139">    }</span>
+<span class="fc" id="L144">        super(sources, fingerprint, listener);</span>
+<span class="fc" id="L145">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L146">    }</span>
 
     /**
      * Constructor.
@@ -151,9 +158,9 @@ public class SequentialRobustMixedPositionEstimator2D extends
     public SequentialRobustMixedPositionEstimator2D(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores) {
-<span class="fc" id="L154">        super(sourceQualityScores, fingerprintReadingQualityScores);</span>
-<span class="fc" id="L155">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L156">    }</span>
+<span class="fc" id="L161">        super(sourceQualityScores, fingerprintReadingQualityScores);</span>
+<span class="fc" id="L162">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L163">    }</span>
 
     /**
      * Constructor.
@@ -165,15 +172,16 @@ public class SequentialRobustMixedPositionEstimator2D extends
      *                                        provided fingerprint. The larger the score the
      *                                        better the quality of the reading.
      * @param sources                         located radio sources used for lateration.
-     * @throws IllegalArgumentException if provided sources is null or the number of provided sources is less than the required minimum.
+     * @throws IllegalArgumentException if provided sources is null or the number of provided sources is less than the
+     *                                  required minimum.
      */
     public SequentialRobustMixedPositionEstimator2D(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources) {
-<span class="fc" id="L174">        super(sourceQualityScores, fingerprintReadingQualityScores, sources);</span>
-<span class="fc" id="L175">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L176">    }</span>
+<span class="fc" id="L182">        super(sourceQualityScores, fingerprintReadingQualityScores, sources);</span>
+<span class="fc" id="L183">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L184">    }</span>
 
     /**
      * Constructor.
@@ -192,9 +200,9 @@ public class SequentialRobustMixedPositionEstimator2D extends
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final Fingerprint&lt;? extends RadioSource, ? extends Reading&lt;? extends RadioSource&gt;&gt; fingerprint) {
-<span class="fc" id="L195">        super(sourceQualityScores, fingerprintReadingQualityScores, fingerprint);</span>
-<span class="fc" id="L196">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L197">    }</span>
+<span class="fc" id="L203">        super(sourceQualityScores, fingerprintReadingQualityScores, fingerprint);</span>
+<span class="fc" id="L204">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L205">    }</span>
 
     /**
      * Constructor.
@@ -217,9 +225,9 @@ public class SequentialRobustMixedPositionEstimator2D extends
             final double[] fingerprintReadingQualityScores,
             final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
             final Fingerprint&lt;? extends RadioSource, ? extends Reading&lt;? extends RadioSource&gt;&gt; fingerprint) {
-<span class="fc" id="L220">        super(sourceQualityScores, fingerprintReadingQualityScores, sources, fingerprint);</span>
-<span class="fc" id="L221">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L222">    }</span>
+<span class="fc" id="L228">        super(sourceQualityScores, fingerprintReadingQualityScores, sources, fingerprint);</span>
+<span class="fc" id="L229">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L230">    }</span>
 
     /**
      * Constructor.
@@ -236,9 +244,9 @@ public class SequentialRobustMixedPositionEstimator2D extends
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final SequentialRobustMixedPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L239">        super(sourceQualityScores, fingerprintReadingQualityScores, listener);</span>
-<span class="fc" id="L240">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L241">    }</span>
+<span class="fc" id="L247">        super(sourceQualityScores, fingerprintReadingQualityScores, listener);</span>
+<span class="fc" id="L248">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L249">    }</span>
 
     /**
      * Constructor.
@@ -259,9 +267,9 @@ public class SequentialRobustMixedPositionEstimator2D extends
             final double[] fingerprintReadingQualityScores,
             final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
             final SequentialRobustMixedPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L262">        super(sourceQualityScores, fingerprintReadingQualityScores, sources, listener);</span>
-<span class="fc" id="L263">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L264">    }</span>
+<span class="fc" id="L270">        super(sourceQualityScores, fingerprintReadingQualityScores, sources, listener);</span>
+<span class="fc" id="L271">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L272">    }</span>
 
     /**
      * Constructor.
@@ -282,9 +290,9 @@ public class SequentialRobustMixedPositionEstimator2D extends
             final double[] fingerprintReadingQualityScores,
             final Fingerprint&lt;? extends RadioSource, ? extends Reading&lt;? extends RadioSource&gt;&gt; fingerprint,
             final SequentialRobustMixedPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L285">        super(sourceQualityScores, fingerprintReadingQualityScores, fingerprint, listener);</span>
-<span class="fc" id="L286">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L287">    }</span>
+<span class="fc" id="L293">        super(sourceQualityScores, fingerprintReadingQualityScores, fingerprint, listener);</span>
+<span class="fc" id="L294">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L295">    }</span>
 
     /**
      * Constructor.
@@ -309,18 +317,18 @@ public class SequentialRobustMixedPositionEstimator2D extends
             final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
             final Fingerprint&lt;? extends RadioSource, ? extends Reading&lt;? extends RadioSource&gt;&gt; fingerprint,
             final SequentialRobustMixedPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L312">        super(sourceQualityScores, fingerprintReadingQualityScores, sources, fingerprint, listener);</span>
-<span class="fc" id="L313">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L314">    }</span>
+<span class="fc" id="L320">        super(sourceQualityScores, fingerprintReadingQualityScores, sources, fingerprint, listener);</span>
+<span class="fc" id="L321">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L322">    }</span>
 
     /**
-     * Gets number of dimesnions of provided and estimated points.
+     * Gets number of dimensions of provided and estimated points.
      *
      * @return number of dimensions of provided and estimated points.
      */
     @Override
     public int getNumberOfDimensions() {
-<span class="fc" id="L323">        return Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
+<span class="fc" id="L331">        return Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
     }
 
     /**
@@ -330,7 +338,7 @@ public class SequentialRobustMixedPositionEstimator2D extends
      */
     @Override
     public int getMinRequiredSources() {
-<span class="fc" id="L333">        return Point2D.POINT2D_HOMOGENEOUS_COORDINATES_LENGTH;</span>
+<span class="fc" id="L341">        return Point2D.POINT2D_HOMOGENEOUS_COORDINATES_LENGTH;</span>
     }
 
     /**
@@ -338,16 +346,16 @@ public class SequentialRobustMixedPositionEstimator2D extends
      */
     @Override
     protected void buildRangingEstimator() {
-<span class="fc" id="L341">        mRangingEstimator = RobustRangingPositionEstimator2D.create(mRangingRobustMethod);</span>
-<span class="fc" id="L342">    }</span>
+<span class="fc" id="L349">        mRangingEstimator = RobustRangingPositionEstimator2D.create(mRangingRobustMethod);</span>
+<span class="fc" id="L350">    }</span>
 
     /**
      * Builds RSSI internal estimator.
      */
     @Override
     protected void buildRssiEstimator() {
-<span class="fc" id="L349">        mRssiEstimator = RobustRssiPositionEstimator2D.create(mRssiRobustMethod);</span>
-<span class="fc" id="L350">    }</span>
+<span class="fc" id="L357">        mRssiEstimator = RobustRssiPositionEstimator2D.create(mRssiRobustMethod);</span>
+<span class="fc" id="L358">    }</span>
 
     /**
      * Setup ranging internal estimator.
@@ -356,27 +364,27 @@ public class SequentialRobustMixedPositionEstimator2D extends
      */
     @Override
     protected void setupRangingEstimator() throws LockedException {
-<span class="fc" id="L359">        super.setupRangingEstimator();</span>
-<span class="fc bfc" id="L360" title="All 2 branches covered.">        if (mRangingThreshold != null) {</span>
-<span class="pc bpc" id="L361" title="1 of 6 branches missed.">            switch (mRangingRobustMethod) {</span>
+<span class="fc" id="L367">        super.setupRangingEstimator();</span>
+<span class="fc bfc" id="L368" title="All 2 branches covered.">        if (mRangingThreshold != null) {</span>
+<span class="pc bpc" id="L369" title="1 of 6 branches missed.">            switch (mRangingRobustMethod) {</span>
                 case RANSAC:
-<span class="fc" id="L363">                    ((RANSACRobustRangingPositionEstimator2D) mRangingEstimator).setThreshold(mRangingThreshold);</span>
-<span class="fc" id="L364">                    break;</span>
+<span class="fc" id="L371">                    ((RANSACRobustRangingPositionEstimator2D) mRangingEstimator).setThreshold(mRangingThreshold);</span>
+<span class="fc" id="L372">                    break;</span>
                 case LMedS:
-<span class="fc" id="L366">                    ((LMedSRobustRangingPositionEstimator2D) mRangingEstimator).setStopThreshold(mRangingThreshold);</span>
-<span class="fc" id="L367">                    break;</span>
+<span class="fc" id="L374">                    ((LMedSRobustRangingPositionEstimator2D) mRangingEstimator).setStopThreshold(mRangingThreshold);</span>
+<span class="fc" id="L375">                    break;</span>
                 case MSAC:
-<span class="fc" id="L369">                    ((MSACRobustRangingPositionEstimator2D) mRangingEstimator).setThreshold(mRangingThreshold);</span>
-<span class="fc" id="L370">                    break;</span>
+<span class="fc" id="L377">                    ((MSACRobustRangingPositionEstimator2D) mRangingEstimator).setThreshold(mRangingThreshold);</span>
+<span class="fc" id="L378">                    break;</span>
                 case PROSAC:
-<span class="fc" id="L372">                    ((PROSACRobustRangingPositionEstimator2D) mRangingEstimator).setThreshold(mRangingThreshold);</span>
-<span class="fc" id="L373">                    break;</span>
+<span class="fc" id="L380">                    ((PROSACRobustRangingPositionEstimator2D) mRangingEstimator).setThreshold(mRangingThreshold);</span>
+<span class="fc" id="L381">                    break;</span>
                 case PROMedS:
-<span class="fc" id="L375">                    ((PROMedSRobustRangingPositionEstimator2D) mRangingEstimator).setStopThreshold(mRangingThreshold);</span>
+<span class="fc" id="L383">                    ((PROMedSRobustRangingPositionEstimator2D) mRangingEstimator).setStopThreshold(mRangingThreshold);</span>
                     break;
             }
         }
-<span class="fc" id="L379">    }</span>
+<span class="fc" id="L387">    }</span>
 
     /**
      * Setup RSSI internal estimator.
@@ -385,26 +393,26 @@ public class SequentialRobustMixedPositionEstimator2D extends
      */
     @Override
     protected void setupRssiEstimator() throws LockedException {
-<span class="fc" id="L388">        super.setupRssiEstimator();</span>
-<span class="fc bfc" id="L389" title="All 2 branches covered.">        if (mRssiThreshold != null) {</span>
-<span class="pc bpc" id="L390" title="1 of 6 branches missed.">            switch (mRssiRobustMethod) {</span>
+<span class="fc" id="L396">        super.setupRssiEstimator();</span>
+<span class="fc bfc" id="L397" title="All 2 branches covered.">        if (mRssiThreshold != null) {</span>
+<span class="pc bpc" id="L398" title="1 of 6 branches missed.">            switch (mRssiRobustMethod) {</span>
                 case RANSAC:
-<span class="fc" id="L392">                    ((RANSACRobustRssiPositionEstimator2D) mRssiEstimator).setThreshold(mRssiThreshold);</span>
-<span class="fc" id="L393">                    break;</span>
+<span class="fc" id="L400">                    ((RANSACRobustRssiPositionEstimator2D) mRssiEstimator).setThreshold(mRssiThreshold);</span>
+<span class="fc" id="L401">                    break;</span>
                 case LMedS:
-<span class="fc" id="L395">                    ((LMedSRobustRssiPositionEstimator2D) mRssiEstimator).setStopThreshold(mRssiThreshold);</span>
-<span class="fc" id="L396">                    break;</span>
+<span class="fc" id="L403">                    ((LMedSRobustRssiPositionEstimator2D) mRssiEstimator).setStopThreshold(mRssiThreshold);</span>
+<span class="fc" id="L404">                    break;</span>
                 case MSAC:
-<span class="fc" id="L398">                    ((MSACRobustRssiPositionEstimator2D) mRssiEstimator).setThreshold(mRssiThreshold);</span>
-<span class="fc" id="L399">                    break;</span>
+<span class="fc" id="L406">                    ((MSACRobustRssiPositionEstimator2D) mRssiEstimator).setThreshold(mRssiThreshold);</span>
+<span class="fc" id="L407">                    break;</span>
                 case PROSAC:
-<span class="fc" id="L401">                    ((PROSACRobustRssiPositionEstimator2D) mRssiEstimator).setThreshold(mRssiThreshold);</span>
-<span class="fc" id="L402">                    break;</span>
+<span class="fc" id="L409">                    ((PROSACRobustRssiPositionEstimator2D) mRssiEstimator).setThreshold(mRssiThreshold);</span>
+<span class="fc" id="L410">                    break;</span>
                 case PROMedS:
-<span class="fc" id="L404">                    ((PROMedSRobustRssiPositionEstimator2D) mRssiEstimator).setStopThreshold(mRssiThreshold);</span>
+<span class="fc" id="L412">                    ((PROMedSRobustRssiPositionEstimator2D) mRssiEstimator).setStopThreshold(mRssiThreshold);</span>
                     break;
             }
         }
-<span class="fc" id="L408">    }</span>
+<span class="fc" id="L416">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

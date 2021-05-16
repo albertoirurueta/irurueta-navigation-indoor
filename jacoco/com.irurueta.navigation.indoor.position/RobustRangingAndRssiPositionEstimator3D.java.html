@@ -23,6 +23,7 @@ import com.irurueta.navigation.indoor.RadioSourceLocated;
 import com.irurueta.navigation.indoor.RangingAndRssiFingerprint;
 import com.irurueta.navigation.indoor.RangingAndRssiReading;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -34,7 +35,7 @@ import java.util.List;
  * Implementations of this class should be able to detect and discard outliers in order
  * to find the best solution.
  */
-@SuppressWarnings({&quot;WeakerAccess&quot;, &quot;Duplicates&quot;})
+@SuppressWarnings(&quot;DuplicatedCode&quot;)
 public abstract class RobustRangingAndRssiPositionEstimator3D extends
         RobustRangingAndRssiPositionEstimator&lt;Point3D&gt; {
 
@@ -42,9 +43,9 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
      * Constructor.
      */
     public RobustRangingAndRssiPositionEstimator3D() {
-<span class="fc" id="L45">        super();</span>
-<span class="fc" id="L46">        mPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L47">    }</span>
+<span class="fc" id="L46">        super();</span>
+<span class="fc" id="L47">        mPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L48">    }</span>
 
     /**
      * Constructor.
@@ -53,9 +54,9 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
      */
     public RobustRangingAndRssiPositionEstimator3D(
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener) {
-<span class="fc" id="L56">        super(listener);</span>
-<span class="fc" id="L57">        mPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L58">    }</span>
+<span class="fc" id="L57">        super(listener);</span>
+<span class="fc" id="L58">        mPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L59">    }</span>
 
     /**
      * Gets minimum required number of located radio sources to perform lateration.
@@ -64,7 +65,7 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
      */
     @Override
     public int getMinRequiredSources() {
-<span class="fc" id="L67">        return Point3D.POINT3D_HOMOGENEOUS_COORDINATES_LENGTH;</span>
+<span class="fc" id="L68">        return Point3D.POINT3D_HOMOGENEOUS_COORDINATES_LENGTH;</span>
     }
 
 
@@ -76,18 +77,18 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
      */
     public static RobustRangingAndRssiPositionEstimator3D create(
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L79" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L80" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L81">                return new RANSACRobustRangingAndRssiPositionEstimator3D();</span>
+<span class="fc" id="L82">                return new RANSACRobustRangingAndRssiPositionEstimator3D();</span>
             case LMedS:
-<span class="fc" id="L83">                return new LMedSRobustRangingAndRssiPositionEstimator3D();</span>
+<span class="fc" id="L84">                return new LMedSRobustRangingAndRssiPositionEstimator3D();</span>
             case MSAC:
-<span class="fc" id="L85">                return new MSACRobustRangingAndRssiPositionEstimator3D();</span>
+<span class="fc" id="L86">                return new MSACRobustRangingAndRssiPositionEstimator3D();</span>
             case PROSAC:
-<span class="fc" id="L87">                return new PROSACRobustRangingAndRssiPositionEstimator3D();</span>
+<span class="fc" id="L88">                return new PROSACRobustRangingAndRssiPositionEstimator3D();</span>
             case PROMedS:
             default:
-<span class="fc" id="L90">                return new PROMedSRobustRangingAndRssiPositionEstimator3D();</span>
+<span class="fc" id="L91">                return new PROMedSRobustRangingAndRssiPositionEstimator3D();</span>
         }
     }
 
@@ -103,18 +104,18 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
     public static RobustRangingAndRssiPositionEstimator3D create(
             final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L106" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L107" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L108">                return new RANSACRobustRangingAndRssiPositionEstimator3D(sources);</span>
+<span class="fc" id="L109">                return new RANSACRobustRangingAndRssiPositionEstimator3D(sources);</span>
             case LMedS:
-<span class="fc" id="L110">                return new LMedSRobustRangingAndRssiPositionEstimator3D(sources);</span>
+<span class="fc" id="L111">                return new LMedSRobustRangingAndRssiPositionEstimator3D(sources);</span>
             case MSAC:
-<span class="fc" id="L112">                return new MSACRobustRangingAndRssiPositionEstimator3D(sources);</span>
+<span class="fc" id="L113">                return new MSACRobustRangingAndRssiPositionEstimator3D(sources);</span>
             case PROSAC:
-<span class="fc" id="L114">                return new PROSACRobustRangingAndRssiPositionEstimator3D(sources);</span>
+<span class="fc" id="L115">                return new PROSACRobustRangingAndRssiPositionEstimator3D(sources);</span>
             case PROMedS:
             default:
-<span class="fc" id="L117">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(sources);</span>
+<span class="fc" id="L118">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(sources);</span>
         }
     }
 
@@ -128,20 +129,21 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public static RobustRangingAndRssiPositionEstimator3D create(
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L133" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L135" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L135">                return new RANSACRobustRangingAndRssiPositionEstimator3D(fingerprint);</span>
+<span class="fc" id="L137">                return new RANSACRobustRangingAndRssiPositionEstimator3D(fingerprint);</span>
             case LMedS:
-<span class="fc" id="L137">                return new LMedSRobustRangingAndRssiPositionEstimator3D(fingerprint);</span>
+<span class="fc" id="L139">                return new LMedSRobustRangingAndRssiPositionEstimator3D(fingerprint);</span>
             case MSAC:
-<span class="fc" id="L139">                return new MSACRobustRangingAndRssiPositionEstimator3D(fingerprint);</span>
+<span class="fc" id="L141">                return new MSACRobustRangingAndRssiPositionEstimator3D(fingerprint);</span>
             case PROSAC:
-<span class="fc" id="L141">                return new PROSACRobustRangingAndRssiPositionEstimator3D(fingerprint);</span>
+<span class="fc" id="L143">                return new PROSACRobustRangingAndRssiPositionEstimator3D(fingerprint);</span>
             case PROMedS:
             default:
-<span class="fc" id="L144">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(fingerprint);</span>
+<span class="fc" id="L146">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(fingerprint);</span>
         }
     }
 
@@ -158,20 +160,21 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
      */
     public static RobustRangingAndRssiPositionEstimator3D create(
             final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources,
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L163" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L166" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L165">                return new RANSACRobustRangingAndRssiPositionEstimator3D(sources, fingerprint);</span>
+<span class="fc" id="L168">                return new RANSACRobustRangingAndRssiPositionEstimator3D(sources, fingerprint);</span>
             case LMedS:
-<span class="fc" id="L167">                return new LMedSRobustRangingAndRssiPositionEstimator3D(sources, fingerprint);</span>
+<span class="fc" id="L170">                return new LMedSRobustRangingAndRssiPositionEstimator3D(sources, fingerprint);</span>
             case MSAC:
-<span class="fc" id="L169">                return new MSACRobustRangingAndRssiPositionEstimator3D(sources, fingerprint);</span>
+<span class="fc" id="L172">                return new MSACRobustRangingAndRssiPositionEstimator3D(sources, fingerprint);</span>
             case PROSAC:
-<span class="fc" id="L171">                return new PROSACRobustRangingAndRssiPositionEstimator3D(sources, fingerprint);</span>
+<span class="fc" id="L174">                return new PROSACRobustRangingAndRssiPositionEstimator3D(sources, fingerprint);</span>
             case PROMedS:
             default:
-<span class="fc" id="L174">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(sources, fingerprint);</span>
+<span class="fc" id="L177">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(sources, fingerprint);</span>
         }
     }
 
@@ -185,18 +188,18 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
     public static RobustRangingAndRssiPositionEstimator3D create(
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L188" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L191" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L190">                return new RANSACRobustRangingAndRssiPositionEstimator3D(listener);</span>
+<span class="fc" id="L193">                return new RANSACRobustRangingAndRssiPositionEstimator3D(listener);</span>
             case LMedS:
-<span class="fc" id="L192">                return new LMedSRobustRangingAndRssiPositionEstimator3D(listener);</span>
+<span class="fc" id="L195">                return new LMedSRobustRangingAndRssiPositionEstimator3D(listener);</span>
             case MSAC:
-<span class="fc" id="L194">                return new MSACRobustRangingAndRssiPositionEstimator3D(listener);</span>
+<span class="fc" id="L197">                return new MSACRobustRangingAndRssiPositionEstimator3D(listener);</span>
             case PROSAC:
-<span class="fc" id="L196">                return new PROSACRobustRangingAndRssiPositionEstimator3D(listener);</span>
+<span class="fc" id="L199">                return new PROSACRobustRangingAndRssiPositionEstimator3D(listener);</span>
             case PROMedS:
             default:
-<span class="fc" id="L199">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(listener);</span>
+<span class="fc" id="L202">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(listener);</span>
         }
     }
 
@@ -214,22 +217,22 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
             final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources,
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L217" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L220" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L219">                return new RANSACRobustRangingAndRssiPositionEstimator3D(sources,</span>
+<span class="fc" id="L222">                return new RANSACRobustRangingAndRssiPositionEstimator3D(sources,</span>
                         listener);
             case LMedS:
-<span class="fc" id="L222">                return new LMedSRobustRangingAndRssiPositionEstimator3D(sources,</span>
+<span class="fc" id="L225">                return new LMedSRobustRangingAndRssiPositionEstimator3D(sources,</span>
                         listener);
             case MSAC:
-<span class="fc" id="L225">                return new MSACRobustRangingAndRssiPositionEstimator3D(sources,</span>
+<span class="fc" id="L228">                return new MSACRobustRangingAndRssiPositionEstimator3D(sources,</span>
                         listener);
             case PROSAC:
-<span class="fc" id="L228">                return new PROSACRobustRangingAndRssiPositionEstimator3D(sources,</span>
+<span class="fc" id="L231">                return new PROSACRobustRangingAndRssiPositionEstimator3D(sources,</span>
                         listener);
             case PROMedS:
             default:
-<span class="fc" id="L232">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(sources,</span>
+<span class="fc" id="L235">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(sources,</span>
                         listener);
         }
     }
@@ -245,25 +248,26 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public static RobustRangingAndRssiPositionEstimator3D create(
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L251" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L255" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L253">                return new RANSACRobustRangingAndRssiPositionEstimator3D(fingerprint,</span>
+<span class="fc" id="L257">                return new RANSACRobustRangingAndRssiPositionEstimator3D(fingerprint,</span>
                         listener);
             case LMedS:
-<span class="fc" id="L256">                return new LMedSRobustRangingAndRssiPositionEstimator3D(fingerprint,</span>
+<span class="fc" id="L260">                return new LMedSRobustRangingAndRssiPositionEstimator3D(fingerprint,</span>
                         listener);
             case MSAC:
-<span class="fc" id="L259">                return new MSACRobustRangingAndRssiPositionEstimator3D(fingerprint,</span>
+<span class="fc" id="L263">                return new MSACRobustRangingAndRssiPositionEstimator3D(fingerprint,</span>
                         listener);
             case PROSAC:
-<span class="fc" id="L262">                return new PROSACRobustRangingAndRssiPositionEstimator3D(fingerprint,</span>
+<span class="fc" id="L266">                return new PROSACRobustRangingAndRssiPositionEstimator3D(fingerprint,</span>
                         listener);
             case PROMedS:
             default:
-<span class="fc" id="L266">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(fingerprint,</span>
+<span class="fc" id="L270">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(fingerprint,</span>
                         listener);
         }
     }
@@ -282,25 +286,26 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
      */
     public static RobustRangingAndRssiPositionEstimator3D create(
             final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources,
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L288" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L293" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L290">                return new RANSACRobustRangingAndRssiPositionEstimator3D(sources,</span>
+<span class="fc" id="L295">                return new RANSACRobustRangingAndRssiPositionEstimator3D(sources,</span>
                         fingerprint, listener);
             case LMedS:
-<span class="fc" id="L293">                return new LMedSRobustRangingAndRssiPositionEstimator3D(sources,</span>
+<span class="fc" id="L298">                return new LMedSRobustRangingAndRssiPositionEstimator3D(sources,</span>
                         fingerprint, listener);
             case MSAC:
-<span class="fc" id="L296">                return new MSACRobustRangingAndRssiPositionEstimator3D(sources,</span>
+<span class="fc" id="L301">                return new MSACRobustRangingAndRssiPositionEstimator3D(sources,</span>
                         fingerprint, listener);
             case PROSAC:
-<span class="fc" id="L299">                return new PROSACRobustRangingAndRssiPositionEstimator3D(sources,</span>
+<span class="fc" id="L304">                return new PROSACRobustRangingAndRssiPositionEstimator3D(sources,</span>
                         fingerprint, listener);
             case PROMedS:
             default:
-<span class="fc" id="L303">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(sources,</span>
+<span class="fc" id="L308">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(sources,</span>
                         fingerprint, listener);
         }
     }
@@ -323,19 +328,19 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L326" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L331" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L328">                return new RANSACRobustRangingAndRssiPositionEstimator3D();</span>
+<span class="fc" id="L333">                return new RANSACRobustRangingAndRssiPositionEstimator3D();</span>
             case LMedS:
-<span class="fc" id="L330">                return new LMedSRobustRangingAndRssiPositionEstimator3D();</span>
+<span class="fc" id="L335">                return new LMedSRobustRangingAndRssiPositionEstimator3D();</span>
             case MSAC:
-<span class="fc" id="L332">                return new MSACRobustRangingAndRssiPositionEstimator3D();</span>
+<span class="fc" id="L337">                return new MSACRobustRangingAndRssiPositionEstimator3D();</span>
             case PROSAC:
-<span class="fc" id="L334">                return new PROSACRobustRangingAndRssiPositionEstimator3D(</span>
+<span class="fc" id="L339">                return new PROSACRobustRangingAndRssiPositionEstimator3D(</span>
                         sourceQualityScores, fingerprintReadingQualityScores);
             case PROMedS:
             default:
-<span class="fc" id="L338">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(</span>
+<span class="fc" id="L343">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(</span>
                         sourceQualityScores, fingerprintReadingQualityScores);
         }
     }
@@ -363,20 +368,20 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
             final double[] fingerprintReadingQualityScores,
             final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L366" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L371" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L368">                return new RANSACRobustRangingAndRssiPositionEstimator3D(sources);</span>
+<span class="fc" id="L373">                return new RANSACRobustRangingAndRssiPositionEstimator3D(sources);</span>
             case LMedS:
-<span class="fc" id="L370">                return new LMedSRobustRangingAndRssiPositionEstimator3D(sources);</span>
+<span class="fc" id="L375">                return new LMedSRobustRangingAndRssiPositionEstimator3D(sources);</span>
             case MSAC:
-<span class="fc" id="L372">                return new MSACRobustRangingAndRssiPositionEstimator3D(sources);</span>
+<span class="fc" id="L377">                return new MSACRobustRangingAndRssiPositionEstimator3D(sources);</span>
             case PROSAC:
-<span class="fc" id="L374">                return new PROSACRobustRangingAndRssiPositionEstimator3D(</span>
+<span class="fc" id="L379">                return new PROSACRobustRangingAndRssiPositionEstimator3D(</span>
                         sourceQualityScores, fingerprintReadingQualityScores,
                         sources);
             case PROMedS:
             default:
-<span class="fc" id="L379">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(</span>
+<span class="fc" id="L384">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(</span>
                         sourceQualityScores, fingerprintReadingQualityScores,
                         sources);
         }
@@ -403,22 +408,23 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
     public static RobustRangingAndRssiPositionEstimator3D create(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L408" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L414" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L410">                return new RANSACRobustRangingAndRssiPositionEstimator3D(fingerprint);</span>
+<span class="fc" id="L416">                return new RANSACRobustRangingAndRssiPositionEstimator3D(fingerprint);</span>
             case LMedS:
-<span class="fc" id="L412">                return new LMedSRobustRangingAndRssiPositionEstimator3D(fingerprint);</span>
+<span class="fc" id="L418">                return new LMedSRobustRangingAndRssiPositionEstimator3D(fingerprint);</span>
             case MSAC:
-<span class="fc" id="L414">                return new MSACRobustRangingAndRssiPositionEstimator3D(fingerprint);</span>
+<span class="fc" id="L420">                return new MSACRobustRangingAndRssiPositionEstimator3D(fingerprint);</span>
             case PROSAC:
-<span class="fc" id="L416">                return new PROSACRobustRangingAndRssiPositionEstimator3D(</span>
+<span class="fc" id="L422">                return new PROSACRobustRangingAndRssiPositionEstimator3D(</span>
                         sourceQualityScores, fingerprintReadingQualityScores,
                         fingerprint);
             case PROMedS:
             default:
-<span class="fc" id="L421">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(</span>
+<span class="fc" id="L427">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(</span>
                         sourceQualityScores, fingerprintReadingQualityScores,
                         fingerprint);
         }
@@ -449,22 +455,23 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources,
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L454" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L461" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L456">                return new RANSACRobustRangingAndRssiPositionEstimator3D(sources, fingerprint);</span>
+<span class="fc" id="L463">                return new RANSACRobustRangingAndRssiPositionEstimator3D(sources, fingerprint);</span>
             case LMedS:
-<span class="fc" id="L458">                return new LMedSRobustRangingAndRssiPositionEstimator3D(sources, fingerprint);</span>
+<span class="fc" id="L465">                return new LMedSRobustRangingAndRssiPositionEstimator3D(sources, fingerprint);</span>
             case MSAC:
-<span class="fc" id="L460">                return new MSACRobustRangingAndRssiPositionEstimator3D(sources, fingerprint);</span>
+<span class="fc" id="L467">                return new MSACRobustRangingAndRssiPositionEstimator3D(sources, fingerprint);</span>
             case PROSAC:
-<span class="fc" id="L462">                return new PROSACRobustRangingAndRssiPositionEstimator3D(</span>
+<span class="fc" id="L469">                return new PROSACRobustRangingAndRssiPositionEstimator3D(</span>
                         sourceQualityScores, fingerprintReadingQualityScores,
                         sources, fingerprint);
             case PROMedS:
             default:
-<span class="fc" id="L467">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(</span>
+<span class="fc" id="L474">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(</span>
                         sourceQualityScores, fingerprintReadingQualityScores,
                         sources, fingerprint);
         }
@@ -490,20 +497,20 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
             final double[] fingerprintReadingQualityScores,
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L493" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L500" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L495">                return new RANSACRobustRangingAndRssiPositionEstimator3D(listener);</span>
+<span class="fc" id="L502">                return new RANSACRobustRangingAndRssiPositionEstimator3D(listener);</span>
             case LMedS:
-<span class="fc" id="L497">                return new LMedSRobustRangingAndRssiPositionEstimator3D(listener);</span>
+<span class="fc" id="L504">                return new LMedSRobustRangingAndRssiPositionEstimator3D(listener);</span>
             case MSAC:
-<span class="fc" id="L499">                return new MSACRobustRangingAndRssiPositionEstimator3D(listener);</span>
+<span class="fc" id="L506">                return new MSACRobustRangingAndRssiPositionEstimator3D(listener);</span>
             case PROSAC:
-<span class="fc" id="L501">                return new PROSACRobustRangingAndRssiPositionEstimator3D(</span>
+<span class="fc" id="L508">                return new PROSACRobustRangingAndRssiPositionEstimator3D(</span>
                         sourceQualityScores, fingerprintReadingQualityScores,
                         listener);
             case PROMedS:
             default:
-<span class="fc" id="L506">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(</span>
+<span class="fc" id="L513">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(</span>
                         sourceQualityScores, fingerprintReadingQualityScores,
                         listener);
         }
@@ -534,23 +541,23 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
             final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources,
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L537" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L544" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L539">                return new RANSACRobustRangingAndRssiPositionEstimator3D(sources,</span>
+<span class="fc" id="L546">                return new RANSACRobustRangingAndRssiPositionEstimator3D(sources,</span>
                         listener);
             case LMedS:
-<span class="fc" id="L542">                return new LMedSRobustRangingAndRssiPositionEstimator3D(sources,</span>
+<span class="fc" id="L549">                return new LMedSRobustRangingAndRssiPositionEstimator3D(sources,</span>
                         listener);
             case MSAC:
-<span class="fc" id="L545">                return new MSACRobustRangingAndRssiPositionEstimator3D(sources,</span>
+<span class="fc" id="L552">                return new MSACRobustRangingAndRssiPositionEstimator3D(sources,</span>
                         listener);
             case PROSAC:
-<span class="fc" id="L548">                return new PROSACRobustRangingAndRssiPositionEstimator3D(</span>
+<span class="fc" id="L555">                return new PROSACRobustRangingAndRssiPositionEstimator3D(</span>
                         sourceQualityScores, fingerprintReadingQualityScores,
                         sources, listener);
             case PROMedS:
             default:
-<span class="fc" id="L553">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(</span>
+<span class="fc" id="L560">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(</span>
                         sourceQualityScores, fingerprintReadingQualityScores,
                         sources, listener);
         }
@@ -578,26 +585,27 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
     public static RobustRangingAndRssiPositionEstimator3D create(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L584" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L592" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L586">                return new RANSACRobustRangingAndRssiPositionEstimator3D(fingerprint,</span>
+<span class="fc" id="L594">                return new RANSACRobustRangingAndRssiPositionEstimator3D(fingerprint,</span>
                         listener);
             case LMedS:
-<span class="fc" id="L589">                return new LMedSRobustRangingAndRssiPositionEstimator3D(fingerprint,</span>
+<span class="fc" id="L597">                return new LMedSRobustRangingAndRssiPositionEstimator3D(fingerprint,</span>
                         listener);
             case MSAC:
-<span class="fc" id="L592">                return new MSACRobustRangingAndRssiPositionEstimator3D(fingerprint,</span>
+<span class="fc" id="L600">                return new MSACRobustRangingAndRssiPositionEstimator3D(fingerprint,</span>
                         listener);
             case PROSAC:
-<span class="fc" id="L595">                return new PROSACRobustRangingAndRssiPositionEstimator3D(</span>
+<span class="fc" id="L603">                return new PROSACRobustRangingAndRssiPositionEstimator3D(</span>
                         sourceQualityScores, fingerprintReadingQualityScores,
                         fingerprint, listener);
             case PROMedS:
             default:
-<span class="fc" id="L600">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(</span>
+<span class="fc" id="L608">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(</span>
                         sourceQualityScores, fingerprintReadingQualityScores,
                         fingerprint, listener);
         }
@@ -629,26 +637,27 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources,
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L635" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L644" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L637">                return new RANSACRobustRangingAndRssiPositionEstimator3D(sources,</span>
+<span class="fc" id="L646">                return new RANSACRobustRangingAndRssiPositionEstimator3D(sources,</span>
                         fingerprint, listener);
             case LMedS:
-<span class="fc" id="L640">                return new LMedSRobustRangingAndRssiPositionEstimator3D(sources,</span>
+<span class="fc" id="L649">                return new LMedSRobustRangingAndRssiPositionEstimator3D(sources,</span>
                         fingerprint, listener);
             case MSAC:
-<span class="fc" id="L643">                return new MSACRobustRangingAndRssiPositionEstimator3D(sources,</span>
+<span class="fc" id="L652">                return new MSACRobustRangingAndRssiPositionEstimator3D(sources,</span>
                         fingerprint, listener);
             case PROSAC:
-<span class="fc" id="L646">                return new PROSACRobustRangingAndRssiPositionEstimator3D(</span>
+<span class="fc" id="L655">                return new PROSACRobustRangingAndRssiPositionEstimator3D(</span>
                         sourceQualityScores, fingerprintReadingQualityScores,
                         sources, fingerprint, listener);
             case PROMedS:
             default:
-<span class="fc" id="L651">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(</span>
+<span class="fc" id="L660">                return new PROMedSRobustRangingAndRssiPositionEstimator3D(</span>
                         sourceQualityScores, fingerprintReadingQualityScores,
                         sources, fingerprint, listener);
         }
@@ -660,7 +669,7 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
      * @return a robust 3D position estimator.
      */
     public static RobustRangingAndRssiPositionEstimator3D create() {
-<span class="fc" id="L663">        return create(DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L672">        return create(DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -673,7 +682,7 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
      */
     public static RobustRangingAndRssiPositionEstimator3D create(
             final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources) {
-<span class="fc" id="L676">        return create(sources, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L685">        return create(sources, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -685,8 +694,9 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public static RobustRangingAndRssiPositionEstimator3D create(
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint) {
-<span class="fc" id="L689">        return create(fingerprint, DEFAULT_ROBUST_METHOD);</span>
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint) {
+<span class="fc" id="L699">        return create(fingerprint, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -701,8 +711,9 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
      */
     public static RobustRangingAndRssiPositionEstimator3D create(
             final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources,
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint) {
-<span class="fc" id="L705">        return create(sources, fingerprint, DEFAULT_ROBUST_METHOD);</span>
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint) {
+<span class="fc" id="L716">        return create(sources, fingerprint, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -713,7 +724,7 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
      */
     public static RobustRangingAndRssiPositionEstimator3D create(
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener) {
-<span class="fc" id="L716">        return create(listener, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L727">        return create(listener, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -728,7 +739,7 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
     public static RobustRangingAndRssiPositionEstimator3D create(
             final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources,
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener) {
-<span class="fc" id="L731">        return create(sources, listener, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L742">        return create(sources, listener, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -741,9 +752,10 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public static RobustRangingAndRssiPositionEstimator3D create(
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener) {
-<span class="fc" id="L746">        return create(fingerprint, listener, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L758">        return create(fingerprint, listener, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -759,9 +771,10 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
      */
     public static RobustRangingAndRssiPositionEstimator3D create(
             final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources,
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener) {
-<span class="fc" id="L764">        return create(sources, fingerprint, listener, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L777">        return create(sources, fingerprint, listener, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -780,7 +793,7 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
     public static RobustRangingAndRssiPositionEstimator3D create(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores) {
-<span class="fc" id="L783">        return create(sourceQualityScores, fingerprintReadingQualityScores,</span>
+<span class="fc" id="L796">        return create(sourceQualityScores, fingerprintReadingQualityScores,</span>
                 DEFAULT_ROBUST_METHOD);
     }
 
@@ -805,7 +818,7 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources) {
-<span class="fc" id="L808">        return create(sourceQualityScores, fingerprintReadingQualityScores,</span>
+<span class="fc" id="L821">        return create(sourceQualityScores, fingerprintReadingQualityScores,</span>
                 sources, DEFAULT_ROBUST_METHOD);
     }
 
@@ -829,8 +842,9 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
     public static RobustRangingAndRssiPositionEstimator3D create(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint) {
-<span class="fc" id="L833">        return create(sourceQualityScores, fingerprintReadingQualityScores,</span>
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint) {
+<span class="fc" id="L847">        return create(sourceQualityScores, fingerprintReadingQualityScores,</span>
                 fingerprint, DEFAULT_ROBUST_METHOD);
     }
 
@@ -858,8 +872,9 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources,
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint) {
-<span class="fc" id="L862">        return create(sourceQualityScores, fingerprintReadingQualityScores,</span>
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint) {
+<span class="fc" id="L877">        return create(sourceQualityScores, fingerprintReadingQualityScores,</span>
                 sources, fingerprint, DEFAULT_ROBUST_METHOD);
     }
 
@@ -881,7 +896,7 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener) {
-<span class="fc" id="L884">        return create(sourceQualityScores, fingerprintReadingQualityScores,</span>
+<span class="fc" id="L899">        return create(sourceQualityScores, fingerprintReadingQualityScores,</span>
                 listener, DEFAULT_ROBUST_METHOD);
     }
 
@@ -908,7 +923,7 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
             final double[] fingerprintReadingQualityScores,
             final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources,
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener) {
-<span class="fc" id="L911">        return create(sourceQualityScores, fingerprintReadingQualityScores,</span>
+<span class="fc" id="L926">        return create(sourceQualityScores, fingerprintReadingQualityScores,</span>
                 sources, listener, DEFAULT_ROBUST_METHOD);
     }
 
@@ -933,9 +948,10 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
     public static RobustRangingAndRssiPositionEstimator3D create(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener) {
-<span class="fc" id="L938">        return create(sourceQualityScores, fingerprintReadingQualityScores,</span>
+<span class="fc" id="L954">        return create(sourceQualityScores, fingerprintReadingQualityScores,</span>
                 fingerprint, listener, DEFAULT_ROBUST_METHOD);
     }
 
@@ -964,9 +980,10 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources,
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener) {
-<span class="fc" id="L969">        return create(sourceQualityScores, fingerprintReadingQualityScores,</span>
+<span class="fc" id="L986">        return create(sourceQualityScores, fingerprintReadingQualityScores,</span>
                 sources, fingerprint, listener, DEFAULT_ROBUST_METHOD);
     }
 
@@ -985,37 +1002,37 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
             final List&lt;Point3D&gt; positions, List&lt;Double&gt; distances,
             final List&lt;Double&gt; distanceStandardDeviations,
             final List&lt;Double&gt; distanceQualityScores) {
-<span class="fc" id="L988">        final int size = positions.size();</span>
-<span class="fc" id="L989">        Point3D[] positionsArray = new InhomogeneousPoint3D[size];</span>
-<span class="fc" id="L990">        positionsArray = positions.toArray(positionsArray);</span>
+<span class="fc" id="L1005">        final int size = positions.size();</span>
+<span class="fc" id="L1006">        Point3D[] positionsArray = new InhomogeneousPoint3D[size];</span>
+<span class="fc" id="L1007">        positionsArray = positions.toArray(positionsArray);</span>
 
-<span class="fc" id="L992">        final double[] distancesArray = new double[size];</span>
-<span class="fc" id="L993">        final double[] distanceStandardDeviationsArray = new double[size];</span>
+<span class="fc" id="L1009">        final double[] distancesArray = new double[size];</span>
+<span class="fc" id="L1010">        final double[] distanceStandardDeviationsArray = new double[size];</span>
 
-<span class="fc" id="L995">        double[] qualityScoresArray = null;</span>
-<span class="pc bpc" id="L996" title="1 of 2 branches missed.">        if (distanceQualityScores != null) {</span>
-<span class="fc" id="L997">            qualityScoresArray = new double[size];</span>
+<span class="fc" id="L1012">        double[] qualityScoresArray = null;</span>
+<span class="pc bpc" id="L1013" title="1 of 2 branches missed.">        if (distanceQualityScores != null) {</span>
+<span class="fc" id="L1014">            qualityScoresArray = new double[size];</span>
         }
 
-<span class="fc bfc" id="L1000" title="All 2 branches covered.">        for (int i = 0; i &lt; size; i++) {</span>
-<span class="fc" id="L1001">            distancesArray[i] = distances.get(i);</span>
-<span class="fc" id="L1002">            distanceStandardDeviationsArray[i] = distanceStandardDeviations.get(i);</span>
+<span class="fc bfc" id="L1017" title="All 2 branches covered.">        for (int i = 0; i &lt; size; i++) {</span>
+<span class="fc" id="L1018">            distancesArray[i] = distances.get(i);</span>
+<span class="fc" id="L1019">            distanceStandardDeviationsArray[i] = distanceStandardDeviations.get(i);</span>
 
-<span class="pc bpc" id="L1004" title="1 of 2 branches missed.">            if (qualityScoresArray != null) {</span>
-<span class="fc" id="L1005">                qualityScoresArray[i] = distanceQualityScores.get(i);</span>
+<span class="pc bpc" id="L1021" title="1 of 2 branches missed.">            if (qualityScoresArray != null) {</span>
+<span class="fc" id="L1022">                qualityScoresArray[i] = distanceQualityScores.get(i);</span>
             }
         }
 
         try {
-<span class="fc" id="L1010">            mLaterationSolver.setPositionsDistancesAndStandardDeviations(</span>
+<span class="fc" id="L1027">            mLaterationSolver.setPositionsDistancesAndStandardDeviations(</span>
                     positionsArray, distancesArray, distanceStandardDeviationsArray);
 
-<span class="pc bpc" id="L1013" title="1 of 2 branches missed.">            if (qualityScoresArray != null) {</span>
-<span class="fc" id="L1014">                mLaterationSolver.setQualityScores(qualityScoresArray);</span>
+<span class="pc bpc" id="L1030" title="1 of 2 branches missed.">            if (qualityScoresArray != null) {</span>
+<span class="fc" id="L1031">                mLaterationSolver.setQualityScores(qualityScoresArray);</span>
             }
-<span class="nc" id="L1016">        } catch (final LockedException e) {</span>
-<span class="nc" id="L1017">            throw new IllegalArgumentException(e);</span>
-<span class="fc" id="L1018">        }</span>
-<span class="fc" id="L1019">    }</span>
+<span class="nc" id="L1033">        } catch (final LockedException e) {</span>
+<span class="nc" id="L1034">            throw new IllegalArgumentException(e);</span>
+<span class="fc" id="L1035">        }</span>
+<span class="fc" id="L1036">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -34,17 +34,17 @@
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.lateration.InhomogeneousLinearLeastSquaresLaterationSolver;
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.lateration.LaterationException;
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.lateration.NonLinearLeastSquaresLaterationSolver;
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> java.util.ArrayList;
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> java.util.List;
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>  
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <em class="jxr_javadoccomment"> * Estimates position of a radio source (e.g. WiFi access point or bluetooth beacon)</em>
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <em class="jxr_javadoccomment"> * by using ranging measurements.</em>
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <em class="jxr_javadoccomment"> * Ranging measurements can be obtained by protocols such as ieee 802.11mc (WiFi RTT) which</em>
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <em class="jxr_javadoccomment"> * measures travel time of signal and converts the result into distances by taking into</em>
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <em class="jxr_javadoccomment"> * account the speed of light as the propagation speed.</em>
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>  @SuppressWarnings(<span class="jxr_string">"WeakerAccess"</span>)
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> java.util.ArrayList;
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> java.util.List;
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <em class="jxr_javadoccomment"> * Estimates position of a radio source (e.g. WiFi access point or bluetooth beacon)</em>
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <em class="jxr_javadoccomment"> * by using ranging measurements.</em>
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <em class="jxr_javadoccomment"> * Ranging measurements can be obtained by protocols such as ieee 802.11mc (WiFi RTT) which</em>
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <em class="jxr_javadoccomment"> * measures travel time of signal and converts the result into distances by taking into</em>
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <em class="jxr_javadoccomment"> * account the speed of light as the propagation speed.</em>
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">class</strong> RangingRadioSourceEstimator&lt;S <strong class="jxr_keyword">extends</strong> RadioSource, P <strong class="jxr_keyword">extends</strong> Point&lt;P&gt;&gt;
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>          <strong class="jxr_keyword">extends</strong> RadioSourceEstimator&lt;P, RangingReadingLocated&lt;S, P&gt;,
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>          RangingRadioSourceEstimatorListener&lt;S, P&gt;&gt; {
@@ -331,7 +331,7 @@
 <a class="jxr_linenumber" name="L323" href="#L323">323</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L324" href="#L324">324</a>     @Override
 <a class="jxr_linenumber" name="L325" href="#L325">325</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> isReady() {
-<a class="jxr_linenumber" name="L326" href="#L326">326</a>         <em class="jxr_comment">//readings must be valid</em>
+<a class="jxr_linenumber" name="L326" href="#L326">326</a>         <em class="jxr_comment">// readings must be valid</em>
 <a class="jxr_linenumber" name="L327" href="#L327">327</a>         <strong class="jxr_keyword">return</strong> areValidReadings(mReadings);
 <a class="jxr_linenumber" name="L328" href="#L328">328</a>     }
 <a class="jxr_linenumber" name="L329" href="#L329">329</a> 
@@ -365,7 +365,7 @@
 <a class="jxr_linenumber" name="L357" href="#L357">357</a>             <strong class="jxr_keyword">if</strong> (((mUseHomogeneousLinearSolver &amp;&amp; mHomogeneousLinearSolver != <strong class="jxr_keyword">null</strong>) ||
 <a class="jxr_linenumber" name="L358" href="#L358">358</a>                     (!mUseHomogeneousLinearSolver &amp;&amp; mInhomogeneousLinearSolver != <strong class="jxr_keyword">null</strong>)) &amp;&amp;
 <a class="jxr_linenumber" name="L359" href="#L359">359</a>                     (mInitialPosition == <strong class="jxr_keyword">null</strong> || !mNonLinearSolverEnabled)) {
-<a class="jxr_linenumber" name="L360" href="#L360">360</a>                 <em class="jxr_comment">//if no initial position is provided, use linear solver to estimate one</em>
+<a class="jxr_linenumber" name="L360" href="#L360">360</a>                 <em class="jxr_comment">// if no initial position is provided, use linear solver to estimate one</em>
 <a class="jxr_linenumber" name="L361" href="#L361">361</a>                 <strong class="jxr_keyword">if</strong> (mUseHomogeneousLinearSolver) {
 <a class="jxr_linenumber" name="L362" href="#L362">362</a>                     mHomogeneousLinearSolver.solve();
 <a class="jxr_linenumber" name="L363" href="#L363">363</a>                     mInitialPosition = mHomogeneousLinearSolver.getEstimatedPosition();
@@ -379,13 +379,13 @@
 <a class="jxr_linenumber" name="L371" href="#L371">371</a>                 mNonLinearSolver.setInitialPosition(mInitialPosition);
 <a class="jxr_linenumber" name="L372" href="#L372">372</a>                 mNonLinearSolver.solve();
 <a class="jxr_linenumber" name="L373" href="#L373">373</a> 
-<a class="jxr_linenumber" name="L374" href="#L374">374</a>                 <em class="jxr_comment">//get position and covariance</em>
+<a class="jxr_linenumber" name="L374" href="#L374">374</a>                 <em class="jxr_comment">// get position and covariance</em>
 <a class="jxr_linenumber" name="L375" href="#L375">375</a>                 mEstimatedPositionCoordinates =
 <a class="jxr_linenumber" name="L376" href="#L376">376</a>                         mNonLinearSolver.getEstimatedPositionCoordinates();
 <a class="jxr_linenumber" name="L377" href="#L377">377</a>                 mEstimatedPositionCovariance = mEstimatedCovariance =
 <a class="jxr_linenumber" name="L378" href="#L378">378</a>                         mNonLinearSolver.getCovariance();
 <a class="jxr_linenumber" name="L379" href="#L379">379</a>             } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L380" href="#L380">380</a>                 <em class="jxr_comment">//non linear solver disabled</em>
+<a class="jxr_linenumber" name="L380" href="#L380">380</a>                 <em class="jxr_comment">// non linear solver disabled</em>
 <a class="jxr_linenumber" name="L381" href="#L381">381</a>                 <strong class="jxr_keyword">if</strong> (mUseHomogeneousLinearSolver) {
 <a class="jxr_linenumber" name="L382" href="#L382">382</a>                     mEstimatedPositionCoordinates =
 <a class="jxr_linenumber" name="L383" href="#L383">383</a>                             mHomogeneousLinearSolver != <strong class="jxr_keyword">null</strong> ?
@@ -488,10 +488,10 @@
 <a class="jxr_linenumber" name="L480" href="#L480">480</a>             }
 <a class="jxr_linenumber" name="L481" href="#L481">481</a> 
 <a class="jxr_linenumber" name="L482" href="#L482">482</a>             <strong class="jxr_keyword">if</strong> (mUseReadingPositionCovariances) {
-<a class="jxr_linenumber" name="L483" href="#L483">483</a>                 <em class="jxr_comment">//assuming that ranging measure and position measure are statistically independent, the</em>
-<a class="jxr_linenumber" name="L484" href="#L484">484</a>                 <em class="jxr_comment">//resulting variance would be the sum of their variances, when the resulting standard</em>
-<a class="jxr_linenumber" name="L485" href="#L485">485</a>                 <em class="jxr_comment">//deviation is the square root of the resulting variance (which is the sum of the square of</em>
-<a class="jxr_linenumber" name="L486" href="#L486">486</a>                 <em class="jxr_comment">//the standard deviations)</em>
+<a class="jxr_linenumber" name="L483" href="#L483">483</a>                 <em class="jxr_comment">// assuming that ranging measure and position measure are statistically independent, the</em>
+<a class="jxr_linenumber" name="L484" href="#L484">484</a>                 <em class="jxr_comment">// resulting variance would be the sum of their variances, when the resulting standard</em>
+<a class="jxr_linenumber" name="L485" href="#L485">485</a>                 <em class="jxr_comment">// deviation is the square root of the resulting variance (which is the sum of the square of</em>
+<a class="jxr_linenumber" name="L486" href="#L486">486</a>                 <em class="jxr_comment">// the standard deviations)</em>
 <a class="jxr_linenumber" name="L487" href="#L487">487</a>                 distanceStandardDeviation = Math.sqrt(Math.pow(distanceStandardDeviation, 2.0) +
 <a class="jxr_linenumber" name="L488" href="#L488">488</a>                         Math.pow(positionDistanceStandardDeviation, 2.0));
 <a class="jxr_linenumber" name="L489" href="#L489">489</a>             }

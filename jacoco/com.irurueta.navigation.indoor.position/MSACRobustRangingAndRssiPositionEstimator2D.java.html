@@ -23,6 +23,7 @@ import com.irurueta.navigation.indoor.RangingAndRssiFingerprint;
 import com.irurueta.navigation.indoor.RangingAndRssiReading;
 import com.irurueta.navigation.lateration.MSACRobustLateration2DSolver;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -33,7 +34,6 @@ import java.util.List;
  * device by getting ranging+RSSI readings at an unknown location of different radio
  * sources whose 2D locations are known.
  */
-@SuppressWarnings(&quot;WeakerAccess&quot;)
 public class MSACRobustRangingAndRssiPositionEstimator2D extends
         RobustRangingAndRssiPositionEstimator2D {
 
@@ -67,11 +67,12 @@ public class MSACRobustRangingAndRssiPositionEstimator2D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public MSACRobustRangingAndRssiPositionEstimator2D(
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint) {
-<span class="fc" id="L71">        super();</span>
-<span class="fc" id="L72">        init();</span>
-<span class="fc" id="L73">        internalSetFingerprint(fingerprint);</span>
-<span class="fc" id="L74">    }</span>
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint) {
+<span class="fc" id="L72">        super();</span>
+<span class="fc" id="L73">        init();</span>
+<span class="fc" id="L74">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L75">    }</span>
 
     /**
      * Constructor
@@ -84,12 +85,13 @@ public class MSACRobustRangingAndRssiPositionEstimator2D extends
      */
     public MSACRobustRangingAndRssiPositionEstimator2D(
             final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint) {
-<span class="fc" id="L88">        super();</span>
-<span class="fc" id="L89">        init();</span>
-<span class="fc" id="L90">        internalSetSources(sources);</span>
-<span class="fc" id="L91">        internalSetFingerprint(fingerprint);</span>
-<span class="fc" id="L92">    }</span>
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint) {
+<span class="fc" id="L90">        super();</span>
+<span class="fc" id="L91">        init();</span>
+<span class="fc" id="L92">        internalSetSources(sources);</span>
+<span class="fc" id="L93">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L94">    }</span>
 
     /**
      * Constructor.
@@ -98,9 +100,9 @@ public class MSACRobustRangingAndRssiPositionEstimator2D extends
      */
     public MSACRobustRangingAndRssiPositionEstimator2D(
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L101">        super(listener);</span>
-<span class="fc" id="L102">        init();</span>
-<span class="fc" id="L103">    }</span>
+<span class="fc" id="L103">        super(listener);</span>
+<span class="fc" id="L104">        init();</span>
+<span class="fc" id="L105">    }</span>
 
     /**
      * Constructor.
@@ -113,10 +115,10 @@ public class MSACRobustRangingAndRssiPositionEstimator2D extends
     public MSACRobustRangingAndRssiPositionEstimator2D(
             final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L116">        super(listener);</span>
-<span class="fc" id="L117">        init();</span>
-<span class="fc" id="L118">        internalSetSources(sources);</span>
-<span class="fc" id="L119">    }</span>
+<span class="fc" id="L118">        super(listener);</span>
+<span class="fc" id="L119">        init();</span>
+<span class="fc" id="L120">        internalSetSources(sources);</span>
+<span class="fc" id="L121">    }</span>
 
     /**
      * Constructor.
@@ -127,12 +129,13 @@ public class MSACRobustRangingAndRssiPositionEstimator2D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public MSACRobustRangingAndRssiPositionEstimator2D(
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L132">        super(listener);</span>
-<span class="fc" id="L133">        init();</span>
-<span class="fc" id="L134">        internalSetFingerprint(fingerprint);</span>
-<span class="fc" id="L135">    }</span>
+<span class="fc" id="L135">        super(listener);</span>
+<span class="fc" id="L136">        init();</span>
+<span class="fc" id="L137">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L138">    }</span>
 
     /**
      * Constructor.
@@ -144,13 +147,14 @@ public class MSACRobustRangingAndRssiPositionEstimator2D extends
      */
     public MSACRobustRangingAndRssiPositionEstimator2D(
             final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L149">        super(listener);</span>
-<span class="fc" id="L150">        init();</span>
-<span class="fc" id="L151">        internalSetSources(sources);</span>
-<span class="fc" id="L152">        internalSetFingerprint(fingerprint);</span>
-<span class="fc" id="L153">    }</span>
+<span class="fc" id="L153">        super(listener);</span>
+<span class="fc" id="L154">        init();</span>
+<span class="fc" id="L155">        internalSetSources(sources);</span>
+<span class="fc" id="L156">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L157">    }</span>
 
     /**
      * Gets threshold to determine whether samples are inliers or not when testing possible solutions.
@@ -160,8 +164,8 @@ public class MSACRobustRangingAndRssiPositionEstimator2D extends
      * @return threshold to determine whether samples are inliers or not.
      */
     public double getThreshold() {
-<span class="fc" id="L163">        return ((MSACRobustLateration2DSolver) mLaterationSolver).</span>
-<span class="fc" id="L164">                getThreshold();</span>
+<span class="fc" id="L167">        return ((MSACRobustLateration2DSolver) mLaterationSolver).</span>
+<span class="fc" id="L168">                getThreshold();</span>
     }
 
     /**
@@ -174,9 +178,9 @@ public class MSACRobustRangingAndRssiPositionEstimator2D extends
      * @throws LockedException          if this solver is locked.
      */
     public void setThreshold(final double threshold) throws LockedException {
-<span class="fc" id="L177">        ((MSACRobustLateration2DSolver) mLaterationSolver).</span>
-<span class="fc" id="L178">                setThreshold(threshold);</span>
-<span class="fc" id="L179">    }</span>
+<span class="fc" id="L181">        ((MSACRobustLateration2DSolver) mLaterationSolver).</span>
+<span class="fc" id="L182">                setThreshold(threshold);</span>
+<span class="fc" id="L183">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -185,15 +189,15 @@ public class MSACRobustRangingAndRssiPositionEstimator2D extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L188">        return RobustEstimatorMethod.MSAC;</span>
+<span class="fc" id="L192">        return RobustEstimatorMethod.MSAC;</span>
     }
 
     /**
      * Initializes robust lateration solver.
      */
     private void init() {
-<span class="fc" id="L195">        mLaterationSolver = new MSACRobustLateration2DSolver(</span>
+<span class="fc" id="L199">        mLaterationSolver = new MSACRobustLateration2DSolver(</span>
                 mTrilaterationSolverListener);
-<span class="fc" id="L197">    }</span>
+<span class="fc" id="L201">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

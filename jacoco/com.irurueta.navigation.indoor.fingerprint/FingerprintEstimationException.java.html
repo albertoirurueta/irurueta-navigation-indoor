@@ -21,18 +21,18 @@ import com.irurueta.navigation.indoor.IndoorException;
  * Base exception for this package.
  * Raised if estimation of position or radio source fails.
  */
-@SuppressWarnings(&quot;WeakerAccess&quot;)
 public class FingerprintEstimationException extends IndoorException {
 
     /**
      * Constructor.
      */
     public FingerprintEstimationException() {
-<span class="fc" id="L31">        super();</span>
-<span class="fc" id="L32">    }</span>
+<span class="fc" id="L30">        super();</span>
+<span class="fc" id="L31">    }</span>
 
     /**
      * Constructor with String containing message.
+     *
      * @param message message indicating the cause of the exception.
      */
     public FingerprintEstimationException(final String message) {
@@ -41,19 +41,21 @@ public class FingerprintEstimationException extends IndoorException {
 
     /**
      * Constructor with message and cause.
+     *
      * @param message message describing the cause of the exception.
-     * @param cause instance containing the cause of the exception.
+     * @param cause   instance containing the cause of the exception.
      */
     public FingerprintEstimationException(final String message, final Throwable cause) {
-<span class="fc" id="L48">        super(message, cause);</span>
-<span class="fc" id="L49">    }</span>
+<span class="fc" id="L49">        super(message, cause);</span>
+<span class="fc" id="L50">    }</span>
 
     /**
      * Constructor with cause.
+     *
      * @param cause instance containing the cause of the exception.
      */
     public FingerprintEstimationException(final Throwable cause) {
-<span class="fc" id="L56">        super(cause);</span>
-<span class="fc" id="L57">    }</span>
+<span class="fc" id="L58">        super(cause);</span>
+<span class="fc" id="L59">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

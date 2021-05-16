@@ -50,7 +50,7 @@
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>  
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/PositionEstimatorHelperTest.html">PositionEstimatorHelperTest</a> {
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>  
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> FREQUENCY = 2.4e9; <em class="jxr_comment">//(Hz)</em>
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> FREQUENCY = 2.4e9; <em class="jxr_comment">// (Hz)</em>
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> MIN_SOURCES = 3;
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> MAX_SOURCES = 10;
@@ -74,7 +74,7 @@
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>  
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> TX_POWER_VARIANCE = 0.1;
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> RX_POWER_VARIANCE = 0.5;
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> PATHLOSS_EXPONENT_VARIANCE = 0.001;
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> PATH_LOSS_EXPONENT_VARIANCE = 0.001;
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>  
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> POSITION_VARIANCE = 0.01;
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>  
@@ -352,7 +352,7 @@
 <a class="jxr_linenumber" name="L344" href="#L344">344</a>                                 FREQUENCY, transmittedPowerdBm,
 <a class="jxr_linenumber" name="L345" href="#L345">345</a>                                 Math.sqrt(TX_POWER_VARIANCE),
 <a class="jxr_linenumber" name="L346" href="#L346">346</a>                                 pathLossExponent,
-<a class="jxr_linenumber" name="L347" href="#L347">347</a>                                 Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+<a class="jxr_linenumber" name="L347" href="#L347">347</a>                                 Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
 <a class="jxr_linenumber" name="L348" href="#L348">348</a>                                 accessPointPosition);
 <a class="jxr_linenumber" name="L349" href="#L349">349</a>                 sources.add(locatedAccessPoint);
 <a class="jxr_linenumber" name="L350" href="#L350">350</a> 
@@ -426,7 +426,7 @@
 <a class="jxr_linenumber" name="L418" href="#L418">418</a>                                 FREQUENCY, transmittedPowerdBm,
 <a class="jxr_linenumber" name="L419" href="#L419">419</a>                                 Math.sqrt(TX_POWER_VARIANCE),
 <a class="jxr_linenumber" name="L420" href="#L420">420</a>                                 pathLossExponent,
-<a class="jxr_linenumber" name="L421" href="#L421">421</a>                                 Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+<a class="jxr_linenumber" name="L421" href="#L421">421</a>                                 Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
 <a class="jxr_linenumber" name="L422" href="#L422">422</a>                                 accessPointPosition);
 <a class="jxr_linenumber" name="L423" href="#L423">423</a>                 sources.add(locatedAccessPoint);
 <a class="jxr_linenumber" name="L424" href="#L424">424</a> 
@@ -498,7 +498,7 @@
 <a class="jxr_linenumber" name="L490" href="#L490">490</a>                                 FREQUENCY, transmittedPowerdBm,
 <a class="jxr_linenumber" name="L491" href="#L491">491</a>                                 Math.sqrt(TX_POWER_VARIANCE),
 <a class="jxr_linenumber" name="L492" href="#L492">492</a>                                 pathLossExponent,
-<a class="jxr_linenumber" name="L493" href="#L493">493</a>                                 Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+<a class="jxr_linenumber" name="L493" href="#L493">493</a>                                 Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
 <a class="jxr_linenumber" name="L494" href="#L494">494</a>                                 accessPointPosition);
 <a class="jxr_linenumber" name="L495" href="#L495">495</a>                 sources.add(locatedAccessPoint);
 <a class="jxr_linenumber" name="L496" href="#L496">496</a> 
@@ -636,7 +636,7 @@
 <a class="jxr_linenumber" name="L628" href="#L628">628</a>                             FREQUENCY, transmittedPowerdBm,
 <a class="jxr_linenumber" name="L629" href="#L629">629</a>                             Math.sqrt(TX_POWER_VARIANCE),
 <a class="jxr_linenumber" name="L630" href="#L630">630</a>                             pathLossExponent,
-<a class="jxr_linenumber" name="L631" href="#L631">631</a>                             Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+<a class="jxr_linenumber" name="L631" href="#L631">631</a>                             Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
 <a class="jxr_linenumber" name="L632" href="#L632">632</a>                             accessPointPosition);
 <a class="jxr_linenumber" name="L633" href="#L633">633</a>             sources.add(locatedAccessPoint);
 <a class="jxr_linenumber" name="L634" href="#L634">634</a> 
@@ -698,7 +698,7 @@
 <a class="jxr_linenumber" name="L690" href="#L690">690</a>                                 FREQUENCY, transmittedPowerdBm,
 <a class="jxr_linenumber" name="L691" href="#L691">691</a>                                 Math.sqrt(TX_POWER_VARIANCE),
 <a class="jxr_linenumber" name="L692" href="#L692">692</a>                                 pathLossExponent,
-<a class="jxr_linenumber" name="L693" href="#L693">693</a>                                 Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+<a class="jxr_linenumber" name="L693" href="#L693">693</a>                                 Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
 <a class="jxr_linenumber" name="L694" href="#L694">694</a>                                 accessPointPosition, positionCovariance);
 <a class="jxr_linenumber" name="L695" href="#L695">695</a>                 sources.add(locatedAccessPoint);
 <a class="jxr_linenumber" name="L696" href="#L696">696</a> 
@@ -774,7 +774,7 @@
 <a class="jxr_linenumber" name="L766" href="#L766">766</a>                                 FREQUENCY, transmittedPowerdBm,
 <a class="jxr_linenumber" name="L767" href="#L767">767</a>                                 Math.sqrt(TX_POWER_VARIANCE),
 <a class="jxr_linenumber" name="L768" href="#L768">768</a>                                 pathLossExponent,
-<a class="jxr_linenumber" name="L769" href="#L769">769</a>                                 Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+<a class="jxr_linenumber" name="L769" href="#L769">769</a>                                 Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
 <a class="jxr_linenumber" name="L770" href="#L770">770</a>                                 accessPointPosition, positionCovariance);
 <a class="jxr_linenumber" name="L771" href="#L771">771</a>                 sources.add(locatedAccessPoint);
 <a class="jxr_linenumber" name="L772" href="#L772">772</a> 
@@ -988,7 +988,7 @@
 <a class="jxr_linenumber" name="L980" href="#L980">980</a>                                 FREQUENCY, transmittedPowerdBm,
 <a class="jxr_linenumber" name="L981" href="#L981">981</a>                                 Math.sqrt(TX_POWER_VARIANCE),
 <a class="jxr_linenumber" name="L982" href="#L982">982</a>                                 pathLossExponent,
-<a class="jxr_linenumber" name="L983" href="#L983">983</a>                                 Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+<a class="jxr_linenumber" name="L983" href="#L983">983</a>                                 Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
 <a class="jxr_linenumber" name="L984" href="#L984">984</a>                                 accessPointPosition, positionCovariance);
 <a class="jxr_linenumber" name="L985" href="#L985">985</a>                 sources.add(locatedAccessPoint);
 <a class="jxr_linenumber" name="L986" href="#L986">986</a> 
@@ -1064,7 +1064,7 @@
 <a class="jxr_linenumber" name="L1056" href="#L1056">1056</a>                                 FREQUENCY, transmittedPowerdBm,
 <a class="jxr_linenumber" name="L1057" href="#L1057">1057</a>                                 Math.sqrt(TX_POWER_VARIANCE),
 <a class="jxr_linenumber" name="L1058" href="#L1058">1058</a>                                 pathLossExponent,
-<a class="jxr_linenumber" name="L1059" href="#L1059">1059</a>                                 Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+<a class="jxr_linenumber" name="L1059" href="#L1059">1059</a>                                 Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
 <a class="jxr_linenumber" name="L1060" href="#L1060">1060</a>                                 accessPointPosition);
 <a class="jxr_linenumber" name="L1061" href="#L1061">1061</a>                 sources.add(locatedAccessPoint);
 <a class="jxr_linenumber" name="L1062" href="#L1062">1062</a>                 sourcesQualityScores[i] = randomizer.nextDouble();
@@ -1174,7 +1174,7 @@
 <a class="jxr_linenumber" name="L1166" href="#L1166">1166</a>                                 FREQUENCY, transmittedPowerdBm,
 <a class="jxr_linenumber" name="L1167" href="#L1167">1167</a>                                 Math.sqrt(TX_POWER_VARIANCE),
 <a class="jxr_linenumber" name="L1168" href="#L1168">1168</a>                                 pathLossExponent,
-<a class="jxr_linenumber" name="L1169" href="#L1169">1169</a>                                 Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+<a class="jxr_linenumber" name="L1169" href="#L1169">1169</a>                                 Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
 <a class="jxr_linenumber" name="L1170" href="#L1170">1170</a>                                 accessPointPosition);
 <a class="jxr_linenumber" name="L1171" href="#L1171">1171</a>                 sources.add(locatedAccessPoint);
 <a class="jxr_linenumber" name="L1172" href="#L1172">1172</a> 
@@ -1291,7 +1291,7 @@
 <a class="jxr_linenumber" name="L1283" href="#L1283">1283</a>                                 FREQUENCY, transmittedPowerdBm,
 <a class="jxr_linenumber" name="L1284" href="#L1284">1284</a>                                 Math.sqrt(TX_POWER_VARIANCE),
 <a class="jxr_linenumber" name="L1285" href="#L1285">1285</a>                                 pathLossExponent,
-<a class="jxr_linenumber" name="L1286" href="#L1286">1286</a>                                 Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+<a class="jxr_linenumber" name="L1286" href="#L1286">1286</a>                                 Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
 <a class="jxr_linenumber" name="L1287" href="#L1287">1287</a>                                 accessPointPosition);
 <a class="jxr_linenumber" name="L1288" href="#L1288">1288</a>                 sources.add(locatedAccessPoint);
 <a class="jxr_linenumber" name="L1289" href="#L1289">1289</a>                 sourcesQualityScores[i] = randomizer.nextDouble();

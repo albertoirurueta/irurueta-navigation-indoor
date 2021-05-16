@@ -33,20 +33,20 @@
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.indoor.RssiReading;
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.indoor.Utils;
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> com.irurueta.statistics.MultivariateNormalDist;
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> java.util.List;
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>  
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <em class="jxr_javadoccomment"> * 3D position estimator based on located fingerprints containing only RSSI readings and</em>
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <em class="jxr_javadoccomment"> * having as well prior knowledge of the location of radio sources associated to those</em>
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <em class="jxr_javadoccomment"> * readings.</em>
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <em class="jxr_javadoccomment"> * This implementation uses a second-order Taylor approximation over provided located</em>
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <em class="jxr_javadoccomment"> * fingerprints to determine an approximate position for a non-located fingerprint using</em>
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <em class="jxr_javadoccomment"> * a non-linear solving algorithm.</em>
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <em class="jxr_javadoccomment"> * An initial position can be provided as a starting point to solve the position,</em>
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <em class="jxr_javadoccomment"> * otherwise the average point of selected nearest fingerprints is used as a starting</em>
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <em class="jxr_javadoccomment"> * point.</em>
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>  @SuppressWarnings(<span class="jxr_string">"WeakerAccess"</span>)
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> java.util.List;
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <em class="jxr_javadoccomment"> * 3D position estimator based on located fingerprints containing only RSSI readings and</em>
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <em class="jxr_javadoccomment"> * having as well prior knowledge of the location of radio sources associated to those</em>
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <em class="jxr_javadoccomment"> * readings.</em>
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <em class="jxr_javadoccomment"> * This implementation uses a second-order Taylor approximation over provided located</em>
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <em class="jxr_javadoccomment"> * fingerprints to determine an approximate position for a non-located fingerprint using</em>
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <em class="jxr_javadoccomment"> * a non-linear solving algorithm.</em>
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <em class="jxr_javadoccomment"> * An initial position can be provided as a starting point to solve the position,</em>
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <em class="jxr_javadoccomment"> * otherwise the average point of selected nearest fingerprints is used as a starting</em>
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>  <em class="jxr_javadoccomment"> * point.</em>
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../com/irurueta/navigation/indoor/fingerprint/SecondOrderNonLinearFingerprintPositionEstimator3D.html">SecondOrderNonLinearFingerprintPositionEstimator3D</a> <strong class="jxr_keyword">extends</strong>
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>          <a href="../../../../../com/irurueta/navigation/indoor/fingerprint/NonLinearFingerprintPositionEstimator3D.html">NonLinearFingerprintPositionEstimator3D</a> {
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>  
@@ -188,37 +188,37 @@
 <a class="jxr_linenumber" name="L180" href="#L180">180</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">double</strong> evaluate(
 <a class="jxr_linenumber" name="L181" href="#L181">181</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> i, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] point, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] params,
 <a class="jxr_linenumber" name="L182" href="#L182">182</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] derivatives) {
-<a class="jxr_linenumber" name="L183" href="#L183">183</a>         <em class="jxr_comment">//This method implements received power at point pi = (xi, yi, zi) and its derivatives</em>
+<a class="jxr_linenumber" name="L183" href="#L183">183</a>         <em class="jxr_comment">// This method implements received power at point pi = (xi, yi, zi) and its derivatives</em>
 <a class="jxr_linenumber" name="L184" href="#L184">184</a> 
-<a class="jxr_linenumber" name="L185" href="#L185">185</a>         <em class="jxr_comment">//Pr(pi) = Pr(p1)</em>
-<a class="jxr_linenumber" name="L186" href="#L186">186</a>         <em class="jxr_comment">// - 10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)</em>
-<a class="jxr_linenumber" name="L187" href="#L187">187</a>         <em class="jxr_comment">// - 10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)</em>
-<a class="jxr_linenumber" name="L188" href="#L188">188</a>         <em class="jxr_comment">// - 10*n*(z1 - za)/(ln(10)*d1a^2)*(zi - z1)</em>
-<a class="jxr_linenumber" name="L189" href="#L189">189</a>         <em class="jxr_comment">// - 5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*d1a^4)*(xi - x1)^2</em>
-<a class="jxr_linenumber" name="L190" href="#L190">190</a>         <em class="jxr_comment">// - 5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*d1a^4)*(yi - y1)^2</em>
-<a class="jxr_linenumber" name="L191" href="#L191">191</a>         <em class="jxr_comment">// - 5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*d1a^4)*(zi - z1)^2</em>
-<a class="jxr_linenumber" name="L192" href="#L192">192</a>         <em class="jxr_comment">// + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4)*(xi - x1)*(yi - y1)</em>
-<a class="jxr_linenumber" name="L193" href="#L193">193</a>         <em class="jxr_comment">// + 20*n*(y1 - ya)*(z1 - za)/(ln(10)*d1a^4)*(yi - y1)*(zi - z1)</em>
-<a class="jxr_linenumber" name="L194" href="#L194">194</a>         <em class="jxr_comment">// + 20*n*(x1 - xa)*(z1 - za)/(ln(10)*d1a^4)*(xi - x1)*(zi - z1)</em>
+<a class="jxr_linenumber" name="L185" href="#L185">185</a>         <em class="jxr_comment">// Pr(pi) = Pr(p1)</em>
+<a class="jxr_linenumber" name="L186" href="#L186">186</a>         <em class="jxr_comment">//  - 10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)</em>
+<a class="jxr_linenumber" name="L187" href="#L187">187</a>         <em class="jxr_comment">//  - 10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)</em>
+<a class="jxr_linenumber" name="L188" href="#L188">188</a>         <em class="jxr_comment">//  - 10*n*(z1 - za)/(ln(10)*d1a^2)*(zi - z1)</em>
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>         <em class="jxr_comment">//  - 5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*d1a^4)*(xi - x1)^2</em>
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>         <em class="jxr_comment">//  - 5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*d1a^4)*(yi - y1)^2</em>
+<a class="jxr_linenumber" name="L191" href="#L191">191</a>         <em class="jxr_comment">//  - 5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*d1a^4)*(zi - z1)^2</em>
+<a class="jxr_linenumber" name="L192" href="#L192">192</a>         <em class="jxr_comment">//  + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4)*(xi - x1)*(yi - y1)</em>
+<a class="jxr_linenumber" name="L193" href="#L193">193</a>         <em class="jxr_comment">//  + 20*n*(y1 - ya)*(z1 - za)/(ln(10)*d1a^4)*(yi - y1)*(zi - z1)</em>
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>         <em class="jxr_comment">//  + 20*n*(x1 - xa)*(z1 - za)/(ln(10)*d1a^4)*(xi - x1)*(zi - z1)</em>
 <a class="jxr_linenumber" name="L195" href="#L195">195</a> 
 <a class="jxr_linenumber" name="L196" href="#L196">196</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> xi = params[0];
 <a class="jxr_linenumber" name="L197" href="#L197">197</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> yi = params[1];
 <a class="jxr_linenumber" name="L198" href="#L198">198</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> zi = params[2];
 <a class="jxr_linenumber" name="L199" href="#L199">199</a> 
-<a class="jxr_linenumber" name="L200" href="#L200">200</a>         <em class="jxr_comment">//received power</em>
+<a class="jxr_linenumber" name="L200" href="#L200">200</a>         <em class="jxr_comment">// received power</em>
 <a class="jxr_linenumber" name="L201" href="#L201">201</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> pr = point[0];
 <a class="jxr_linenumber" name="L202" href="#L202">202</a> 
-<a class="jxr_linenumber" name="L203" href="#L203">203</a>         <em class="jxr_comment">//fingerprint coordinates</em>
+<a class="jxr_linenumber" name="L203" href="#L203">203</a>         <em class="jxr_comment">// fingerprint coordinates</em>
 <a class="jxr_linenumber" name="L204" href="#L204">204</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> x1 = point[1];
 <a class="jxr_linenumber" name="L205" href="#L205">205</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> y1 = point[2];
 <a class="jxr_linenumber" name="L206" href="#L206">206</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> z1 = point[3];
 <a class="jxr_linenumber" name="L207" href="#L207">207</a> 
-<a class="jxr_linenumber" name="L208" href="#L208">208</a>         <em class="jxr_comment">//radio source coordinates</em>
+<a class="jxr_linenumber" name="L208" href="#L208">208</a>         <em class="jxr_comment">// radio source coordinates</em>
 <a class="jxr_linenumber" name="L209" href="#L209">209</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> xa = point[4];
 <a class="jxr_linenumber" name="L210" href="#L210">210</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> ya = point[5];
 <a class="jxr_linenumber" name="L211" href="#L211">211</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> za = point[6];
 <a class="jxr_linenumber" name="L212" href="#L212">212</a> 
-<a class="jxr_linenumber" name="L213" href="#L213">213</a>         <em class="jxr_comment">//path loss exponent</em>
+<a class="jxr_linenumber" name="L213" href="#L213">213</a>         <em class="jxr_comment">// path loss exponent</em>
 <a class="jxr_linenumber" name="L214" href="#L214">214</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> n = point[7];
 <a class="jxr_linenumber" name="L215" href="#L215">215</a> 
 <a class="jxr_linenumber" name="L216" href="#L216">216</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> ln10 = Math.log(10.0);
@@ -263,27 +263,27 @@
 <a class="jxr_linenumber" name="L255" href="#L255">255</a>                 + value8 * diffYi1 * diffZi1
 <a class="jxr_linenumber" name="L256" href="#L256">256</a>                 + value9 * diffXi1 * diffZi1;
 <a class="jxr_linenumber" name="L257" href="#L257">257</a> 
-<a class="jxr_linenumber" name="L258" href="#L258">258</a>         <em class="jxr_comment">//derivative respect xi</em>
-<a class="jxr_linenumber" name="L259" href="#L259">259</a>         <em class="jxr_comment">//diff(Pr(pi))/diff(xi) = - 10*n*(x1 - xa)/(ln(10)*d1a^2)</em>
-<a class="jxr_linenumber" name="L260" href="#L260">260</a>         <em class="jxr_comment">//- 10*n*((y1 - ya)^2 + (z1 - za)^2) - (x1 - xa)^2)/(ln(10)*d1a^4)*(xi - x1)</em>
-<a class="jxr_linenumber" name="L261" href="#L261">261</a>         <em class="jxr_comment">//+ 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4)*(yi - y1)</em>
-<a class="jxr_linenumber" name="L262" href="#L262">262</a>         <em class="jxr_comment">//+ 20*n*(x1 - xa)*(z1 - za)/(ln(10)*d1a^4)*(zi - z1)</em>
+<a class="jxr_linenumber" name="L258" href="#L258">258</a>         <em class="jxr_comment">// derivative respect xi</em>
+<a class="jxr_linenumber" name="L259" href="#L259">259</a>         <em class="jxr_comment">// diff(Pr(pi))/diff(xi) = - 10*n*(x1 - xa)/(ln(10)*d1a^2)</em>
+<a class="jxr_linenumber" name="L260" href="#L260">260</a>         <em class="jxr_comment">// - 10*n*((y1 - ya)^2 + (z1 - za)^2) - (x1 - xa)^2)/(ln(10)*d1a^4)*(xi - x1)</em>
+<a class="jxr_linenumber" name="L261" href="#L261">261</a>         <em class="jxr_comment">// + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4)*(yi - y1)</em>
+<a class="jxr_linenumber" name="L262" href="#L262">262</a>         <em class="jxr_comment">// + 20*n*(x1 - xa)*(z1 - za)/(ln(10)*d1a^4)*(zi - z1)</em>
 <a class="jxr_linenumber" name="L263" href="#L263">263</a>         derivatives[0] = value1 + 2.0 * value4 * diffXi1 + value7 * diffYi1 +
 <a class="jxr_linenumber" name="L264" href="#L264">264</a>                 value8 * diffZi1;
 <a class="jxr_linenumber" name="L265" href="#L265">265</a> 
-<a class="jxr_linenumber" name="L266" href="#L266">266</a>         <em class="jxr_comment">//derivative respect yi</em>
-<a class="jxr_linenumber" name="L267" href="#L267">267</a>         <em class="jxr_comment">//diff(Pr(pi))/diff(yi) = - 10*n*(y1 - ya)/(ln(10)*d1a^2)</em>
-<a class="jxr_linenumber" name="L268" href="#L268">268</a>         <em class="jxr_comment">//- 10*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*d1a^4)*(yi - y1)</em>
-<a class="jxr_linenumber" name="L269" href="#L269">269</a>         <em class="jxr_comment">//+ 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4)*(xi - x1)</em>
-<a class="jxr_linenumber" name="L270" href="#L270">270</a>         <em class="jxr_comment">//+ 20*n*(y1 - ya)*(z1 - za)/(ln(10)*d1a^4)*(zi - z1)</em>
+<a class="jxr_linenumber" name="L266" href="#L266">266</a>         <em class="jxr_comment">// derivative respect yi</em>
+<a class="jxr_linenumber" name="L267" href="#L267">267</a>         <em class="jxr_comment">// diff(Pr(pi))/diff(yi) = - 10*n*(y1 - ya)/(ln(10)*d1a^2)</em>
+<a class="jxr_linenumber" name="L268" href="#L268">268</a>         <em class="jxr_comment">// - 10*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*d1a^4)*(yi - y1)</em>
+<a class="jxr_linenumber" name="L269" href="#L269">269</a>         <em class="jxr_comment">// + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4)*(xi - x1)</em>
+<a class="jxr_linenumber" name="L270" href="#L270">270</a>         <em class="jxr_comment">// + 20*n*(y1 - ya)*(z1 - za)/(ln(10)*d1a^4)*(zi - z1)</em>
 <a class="jxr_linenumber" name="L271" href="#L271">271</a>         derivatives[1] = value2 + 2.0 * value5 * diffYi1 + value7 * diffXi1 +
 <a class="jxr_linenumber" name="L272" href="#L272">272</a>                 value8 * diffZi1;
 <a class="jxr_linenumber" name="L273" href="#L273">273</a> 
-<a class="jxr_linenumber" name="L274" href="#L274">274</a>         <em class="jxr_comment">//derivative respect zi</em>
-<a class="jxr_linenumber" name="L275" href="#L275">275</a>         <em class="jxr_comment">//diff(Pr(pi))/diff(zi) = - 10*n*(z1 - za)/(ln(10)*d1a^2)</em>
-<a class="jxr_linenumber" name="L276" href="#L276">276</a>         <em class="jxr_comment">//- 10*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*d1a^4)*(zi - z1)</em>
-<a class="jxr_linenumber" name="L277" href="#L277">277</a>         <em class="jxr_comment">//+ 20*n*(y1 - ya)*(z1 - za)/(ln(10)*d1a^4)*(yi - y1)</em>
-<a class="jxr_linenumber" name="L278" href="#L278">278</a>         <em class="jxr_comment">//+ 20*n*(x1 - xa)*(z1 - za)/(ln(10)*d1a^4)*(xi - x1)</em>
+<a class="jxr_linenumber" name="L274" href="#L274">274</a>         <em class="jxr_comment">// derivative respect zi</em>
+<a class="jxr_linenumber" name="L275" href="#L275">275</a>         <em class="jxr_comment">// diff(Pr(pi))/diff(zi) = - 10*n*(z1 - za)/(ln(10)*d1a^2)</em>
+<a class="jxr_linenumber" name="L276" href="#L276">276</a>         <em class="jxr_comment">// - 10*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*d1a^4)*(zi - z1)</em>
+<a class="jxr_linenumber" name="L277" href="#L277">277</a>         <em class="jxr_comment">// + 20*n*(y1 - ya)*(z1 - za)/(ln(10)*d1a^4)*(yi - y1)</em>
+<a class="jxr_linenumber" name="L278" href="#L278">278</a>         <em class="jxr_comment">// + 20*n*(x1 - xa)*(z1 - za)/(ln(10)*d1a^4)*(xi - x1)</em>
 <a class="jxr_linenumber" name="L279" href="#L279">279</a>         derivatives[2] = value3 + 2.0 * value6 * diffZi1 + value8 * diffYi1 +
 <a class="jxr_linenumber" name="L280" href="#L280">280</a>                 value9 * diffXi1;
 <a class="jxr_linenumber" name="L281" href="#L281">281</a> 

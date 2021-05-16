@@ -31,16 +31,16 @@
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.indoor.Reading;
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.lateration.PROSACRobustLateration3DSolver;
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> com.irurueta.numerical.robust.RobustEstimatorMethod;
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> java.util.List;
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>  
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <em class="jxr_javadoccomment"> * Robustly estimates 3D position using located radio sources and their readings at</em>
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <em class="jxr_javadoccomment"> * unknown locations and using PROSAC algorithm to discard outliers.</em>
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <em class="jxr_javadoccomment"> * This kind of estimator can be used to robustly determine the 3D position of a given</em>
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <em class="jxr_javadoccomment"> * device by getting readings at an unknown location of different radio</em>
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <em class="jxr_javadoccomment"> * sources whose 3D locations are known.</em>
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>  @SuppressWarnings(<span class="jxr_string">"WeakerAccess"</span>)
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>  
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> java.util.List;
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <em class="jxr_javadoccomment"> * Robustly estimates 3D position using located radio sources and their readings at</em>
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <em class="jxr_javadoccomment"> * unknown locations and using PROSAC algorithm to discard outliers.</em>
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <em class="jxr_javadoccomment"> * This kind of estimator can be used to robustly determine the 3D position of a given</em>
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <em class="jxr_javadoccomment"> * device by getting readings at an unknown location of different radio</em>
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <em class="jxr_javadoccomment"> * sources whose 3D locations are known.</em>
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/PROSACRobustMixedPositionEstimator3D.html">PROSACRobustMixedPositionEstimator3D</a> <strong class="jxr_keyword">extends</strong>
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>          <a href="../../../../../com/irurueta/navigation/indoor/position/RobustMixedPositionEstimator3D.html">RobustMixedPositionEstimator3D</a> {
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>  
@@ -558,7 +558,7 @@
 <a class="jxr_linenumber" name="L550" href="#L550">550</a> <em class="jxr_javadoccomment">     * or not.</em>
 <a class="jxr_linenumber" name="L551" href="#L551">551</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L552" href="#L552">552</a> <em class="jxr_javadoccomment">     * @param fingerprintReadingsQualityScores quality scores to be set.</em>
-<a class="jxr_linenumber" name="L553" href="#L553">553</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if provided quality scores lengt is</em>
+<a class="jxr_linenumber" name="L553" href="#L553">553</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if provided quality scores length is</em>
 <a class="jxr_linenumber" name="L554" href="#L554">554</a> <em class="jxr_javadoccomment">     *                                  smaller than 3 samples.</em>
 <a class="jxr_linenumber" name="L555" href="#L555">555</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L556" href="#L556">556</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> internalSetFingerprintReadingsQualityScores(

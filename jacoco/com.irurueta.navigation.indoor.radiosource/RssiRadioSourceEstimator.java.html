@@ -28,6 +28,7 @@ import com.irurueta.numerical.NumericalException;
 import com.irurueta.numerical.fitting.FittingException;
 import com.irurueta.numerical.fitting.LevenbergMarquardtMultiDimensionFitter;
 import com.irurueta.numerical.fitting.LevenbergMarquardtMultiDimensionFunctionEvaluator;
+
 import java.util.List;
 
 /**
@@ -37,23 +38,23 @@ import java.util.List;
  * below:
  * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,
  * where Pr is the received power (expressed in mW),
- * Gt is the Gain of the transmission antena
- * Gr is the Gain of the receiver antena
+ * Gt is the Gain of the transmission antenna
+ * Gr is the Gain of the receiver antenna
  * d is the distance between emitter and receiver
  * and lambda is the wavelength and is equal to: lambda = c / f,
  * where c is the speed of light
  * and f is the carrier frequency of the radio signal.
- * Because usually information about the antena of the radio source cannot be
- * retrieved (because many measurements are made on unkown devices where
+ * Because usually information about the antenna of the radio source cannot be
+ * retrieved (because many measurements are made on unknown devices where
  * physical access is not possible), this implementation will estimate the
  * equivalent transmitted power as: Pte = Pt * Gt * Gr.
  * If Readings contain RSSI standard deviations, those values will be used,
- * otherwise it will be asumed an RSSI standard deviation of 1 dB.
+ * otherwise it will be assumed an RSSI standard deviation of 1 dB.
  * &lt;p&gt;
  * IMPORTANT: Implementations of this class can choose to estimate a
  * combination of radio source position, transmitted power and path loss
  * exponent. However enabling all three estimations usually achieves
- * innacurate results. When using this class, estimation must be of at least
+ * inaccurate results. When using this class, estimation must be of at least
  * one parameter (position, transmitted power or path loss exponent) when
  * initial values are provided for the other two, and at most it should consist
  * of two parameters (either position and transmitted power, position and
@@ -63,7 +64,7 @@ import java.util.List;
  * @param &lt;S&gt; a {@link RadioSource} type.
  * @param &lt;P&gt; a {@link Point} type.
  */
-@SuppressWarnings({&quot;WeakerAccess&quot;, &quot;Duplicates&quot;})
+@SuppressWarnings(&quot;DuplicatedCode&quot;)
 public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P extends Point&lt;P&gt;&gt;
         extends RadioSourceEstimator&lt;P, RssiReadingLocated&lt;S, P&gt;,
         RssiRadioSourceEstimatorListener&lt;S, P&gt;&gt; {
@@ -105,7 +106,7 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
     /**
      * Indicates whether radio source position estimation is enabled or not.
      */
-<span class="fc" id="L108">    private boolean mPositionEstimationEnabled = DEFAULT_POSITION_ESTIMATION_ENABLED;</span>
+<span class="fc" id="L109">    private boolean mPositionEstimationEnabled = DEFAULT_POSITION_ESTIMATION_ENABLED;</span>
 
     /**
      * Estimated transmitted power expressed in dBm's.
@@ -115,7 +116,7 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
     /**
      * Indicates whether transmitted power estimation is enabled or not.
      */
-<span class="fc" id="L118">    private boolean mTransmittedPowerEstimationEnabled = DEFAULT_TRANSMITTED_POWER_ESTIMATION_ENABLED;</span>
+<span class="fc" id="L119">    private boolean mTransmittedPowerEstimationEnabled = DEFAULT_TRANSMITTED_POWER_ESTIMATION_ENABLED;</span>
 
     /**
      * Estimated exponent typically used on free space for path loss propagation in
@@ -128,7 +129,7 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      * If path loss exponent estimation is not enabled, this value will always be equal to
      * {@link #DEFAULT_PATH_LOSS_EXPONENT}
      */
-<span class="fc" id="L131">    private double mEstimatedPathLossExponent = DEFAULT_PATH_LOSS_EXPONENT;</span>
+<span class="fc" id="L132">    private double mEstimatedPathLossExponent = DEFAULT_PATH_LOSS_EXPONENT;</span>
 
     /**
      * Variance of estimated transmitted power.
@@ -139,7 +140,7 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
 
     /**
      * Variance of estimated path loss exponent.
-     * This value will only be available when pathloss
+     * This value will only be available when path-loss
      * exponent estimation is enabled.
      */
     private Double mEstimatedPathLossExponentVariance;
@@ -177,25 +178,25 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      * to be exact and the estimated path loss exponent will be equal to this
      * value.
      */
-<span class="fc" id="L180">    private double mInitialPathLossExponent = DEFAULT_PATH_LOSS_EXPONENT;</span>
+<span class="fc" id="L181">    private double mInitialPathLossExponent = DEFAULT_PATH_LOSS_EXPONENT;</span>
 
     /**
      * Indicates whether path loss estimation is enabled or not.
      */
-<span class="fc" id="L185">    private boolean mPathLossEstimationEnabled = DEFAULT_PATHLOSS_ESTIMATION_ENABLED;</span>
+<span class="fc" id="L186">    private boolean mPathLossEstimationEnabled = DEFAULT_PATHLOSS_ESTIMATION_ENABLED;</span>
 
     /**
      * Levenberg-Marquardt fitter to find a solution.
      */
-<span class="fc" id="L190">    private final LevenbergMarquardtMultiDimensionFitter mFitter =</span>
+<span class="fc" id="L191">    private final LevenbergMarquardtMultiDimensionFitter mFitter =</span>
             new LevenbergMarquardtMultiDimensionFitter();
 
     /**
      * Constructor.
      */
     public RssiRadioSourceEstimator() {
-<span class="fc" id="L197">        super();</span>
-<span class="fc" id="L198">    }</span>
+<span class="fc" id="L198">        super();</span>
+<span class="fc" id="L199">    }</span>
 
     /**
      * Constructor.
@@ -207,8 +208,8 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      */
     public RssiRadioSourceEstimator(
             final List&lt;? extends RssiReadingLocated&lt;S, P&gt;&gt; readings) {
-<span class="fc" id="L210">        super(readings);</span>
-<span class="fc" id="L211">    }</span>
+<span class="fc" id="L211">        super(readings);</span>
+<span class="fc" id="L212">    }</span>
 
     /**
      * Constructor.
@@ -217,8 +218,8 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      */
     public RssiRadioSourceEstimator(
             final RssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
-<span class="fc" id="L220">        super(listener);</span>
-<span class="fc" id="L221">    }</span>
+<span class="fc" id="L221">        super(listener);</span>
+<span class="fc" id="L222">    }</span>
 
     /**
      * Constructor.
@@ -231,8 +232,8 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
     public RssiRadioSourceEstimator(
             final List&lt;? extends RssiReadingLocated&lt;S, P&gt;&gt; readings,
             final RssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
-<span class="fc" id="L234">        super(readings, listener);</span>
-<span class="fc" id="L235">    }</span>
+<span class="fc" id="L235">        super(readings, listener);</span>
+<span class="fc" id="L236">    }</span>
 
     /**
      * Constructor.
@@ -241,9 +242,9 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      *                        source position.
      */
     public RssiRadioSourceEstimator(
-<span class="fc" id="L244">            final P initialPosition) {</span>
-<span class="fc" id="L245">        mInitialPosition = initialPosition;</span>
-<span class="fc" id="L246">    }</span>
+<span class="fc" id="L245">            final P initialPosition) {</span>
+<span class="fc" id="L246">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L247">    }</span>
 
     /**
      * Constructor.
@@ -257,9 +258,9 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
     public RssiRadioSourceEstimator(
             final List&lt;? extends RssiReadingLocated&lt;S, P&gt;&gt; readings,
             final P initialPosition) {
-<span class="fc" id="L260">        super(readings);</span>
-<span class="fc" id="L261">        mInitialPosition = initialPosition;</span>
-<span class="fc" id="L262">    }</span>
+<span class="fc" id="L261">        super(readings);</span>
+<span class="fc" id="L262">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L263">    }</span>
 
     /**
      * Constructor.
@@ -271,9 +272,9 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
     public RssiRadioSourceEstimator(
             final P initialPosition,
             final RssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
-<span class="fc" id="L274">        super(listener);</span>
-<span class="fc" id="L275">        mInitialPosition = initialPosition;</span>
-<span class="fc" id="L276">    }</span>
+<span class="fc" id="L275">        super(listener);</span>
+<span class="fc" id="L276">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L277">    }</span>
 
     /**
      * Constructor.
@@ -289,9 +290,9 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
             final List&lt;? extends RssiReadingLocated&lt;S, P&gt;&gt; readings,
             final P initialPosition,
             final RssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
-<span class="fc" id="L292">        super(readings, listener);</span>
-<span class="fc" id="L293">        mInitialPosition = initialPosition;</span>
-<span class="fc" id="L294">    }</span>
+<span class="fc" id="L293">        super(readings, listener);</span>
+<span class="fc" id="L294">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L295">    }</span>
 
     /**
      * Constructor.
@@ -301,9 +302,9 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      *                                   (expressed in dBm's).
      */
     public RssiRadioSourceEstimator(
-<span class="fc" id="L304">            final Double initialTransmittedPowerdBm) {</span>
-<span class="fc" id="L305">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
-<span class="fc" id="L306">    }</span>
+<span class="fc" id="L305">            final Double initialTransmittedPowerdBm) {</span>
+<span class="fc" id="L306">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L307">    }</span>
 
     /**
      * Constructor.
@@ -318,9 +319,9 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
     public RssiRadioSourceEstimator(
             final List&lt;? extends RssiReadingLocated&lt;S, P&gt;&gt; readings,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L321">        super(readings);</span>
-<span class="fc" id="L322">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
-<span class="fc" id="L323">    }</span>
+<span class="fc" id="L322">        super(readings);</span>
+<span class="fc" id="L323">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L324">    }</span>
 
     /**
      * Constructor.
@@ -333,9 +334,9 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
     public RssiRadioSourceEstimator(
             final Double initialTransmittedPowerdBm,
             final RssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
-<span class="fc" id="L336">        super(listener);</span>
-<span class="fc" id="L337">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
-<span class="fc" id="L338">    }</span>
+<span class="fc" id="L337">        super(listener);</span>
+<span class="fc" id="L338">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L339">    }</span>
 
     /**
      * Constructor.
@@ -352,9 +353,9 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
             final List&lt;? extends RssiReadingLocated&lt;S, P&gt;&gt; readings,
             final Double initialTransmittedPowerdBm,
             final RssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
-<span class="fc" id="L355">        super(readings, listener);</span>
-<span class="fc" id="L356">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
-<span class="fc" id="L357">    }</span>
+<span class="fc" id="L356">        super(readings, listener);</span>
+<span class="fc" id="L357">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L358">    }</span>
 
     /**
      * Constructor.
@@ -372,10 +373,10 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
             final List&lt;? extends RssiReadingLocated&lt;S, P&gt;&gt; readings,
             final P initialPosition,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L375">        super(readings);</span>
-<span class="fc" id="L376">        mInitialPosition = initialPosition;</span>
-<span class="fc" id="L377">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
-<span class="fc" id="L378">    }</span>
+<span class="fc" id="L376">        super(readings);</span>
+<span class="fc" id="L377">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L378">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L379">    }</span>
 
     /**
      * Constructor.
@@ -388,10 +389,10 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      */
     public RssiRadioSourceEstimator(
             final P initialPosition,
-<span class="fc" id="L391">            final Double initialTransmittedPowerdBm) {</span>
-<span class="fc" id="L392">        mInitialPosition = initialPosition;</span>
-<span class="fc" id="L393">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
-<span class="fc" id="L394">    }</span>
+<span class="fc" id="L392">            final Double initialTransmittedPowerdBm) {</span>
+<span class="fc" id="L393">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L394">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L395">    }</span>
 
     /**
      * Constructor.
@@ -407,10 +408,10 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
             final RssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
-<span class="fc" id="L410">        super(listener);</span>
-<span class="fc" id="L411">        mInitialPosition = initialPosition;</span>
-<span class="fc" id="L412">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
-<span class="fc" id="L413">    }</span>
+<span class="fc" id="L411">        super(listener);</span>
+<span class="fc" id="L412">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L413">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L414">    }</span>
 
     /**
      * Constructor.
@@ -430,10 +431,10 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
             final RssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
-<span class="fc" id="L433">        super(readings, listener);</span>
-<span class="fc" id="L434">        mInitialPosition = initialPosition;</span>
-<span class="fc" id="L435">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
-<span class="fc" id="L436">    }</span>
+<span class="fc" id="L434">        super(readings, listener);</span>
+<span class="fc" id="L435">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L436">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L437">    }</span>
 
     /**
      * Constructor.
@@ -453,9 +454,9 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-<span class="fc" id="L456">        this(readings, initialPosition, initialTransmittedPowerdBm);</span>
-<span class="fc" id="L457">        mInitialPathLossExponent = initialPathLossExponent;</span>
-<span class="fc" id="L458">    }</span>
+<span class="fc" id="L457">        this(readings, initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L458">        mInitialPathLossExponent = initialPathLossExponent;</span>
+<span class="fc" id="L459">    }</span>
 
     /**
      * Constructor.
@@ -471,9 +472,9 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-<span class="fc" id="L474">        this(initialPosition, initialTransmittedPowerdBm);</span>
-<span class="fc" id="L475">        mInitialPathLossExponent = initialPathLossExponent;</span>
-<span class="fc" id="L476">    }</span>
+<span class="fc" id="L475">        this(initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L476">        mInitialPathLossExponent = initialPathLossExponent;</span>
+<span class="fc" id="L477">    }</span>
 
     /**
      * Constructor.
@@ -491,9 +492,9 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final RssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
-<span class="fc" id="L494">        this(initialPosition, initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L495">        mInitialPathLossExponent = initialPathLossExponent;</span>
-<span class="fc" id="L496">    }</span>
+<span class="fc" id="L495">        this(initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L496">        mInitialPathLossExponent = initialPathLossExponent;</span>
+<span class="fc" id="L497">    }</span>
 
     /**
      * Constructor.
@@ -515,9 +516,9 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final RssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
-<span class="fc" id="L518">        this(readings, initialPosition, initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L519">        mInitialPathLossExponent = initialPathLossExponent;</span>
-<span class="fc" id="L520">    }</span>
+<span class="fc" id="L519">        this(readings, initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L520">        mInitialPathLossExponent = initialPathLossExponent;</span>
+<span class="fc" id="L521">    }</span>
 
     /**
      * Gets initial transmitted power to start the estimation of radio source
@@ -525,7 +526,7 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      * If not defined, average value of received power readings will be used.
      * &lt;p&gt;
      * If transmitted power estimation is enabled, estimation will start at this
-     * value and will converte the most appropriate value.
+     * value and will be converted to the most appropriate value.
      * If transmitted power estimation is disabled, this value will be assumed to be
      * exact and the estimated transmitted power will be equal to this value
      * (converted to dBm's).
@@ -534,7 +535,7 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      * transmitted power.
      */
     public Double getInitialTransmittedPowerdBm() {
-<span class="fc" id="L537">        return mInitialTransmittedPowerdBm;</span>
+<span class="fc" id="L538">        return mInitialTransmittedPowerdBm;</span>
     }
 
     /**
@@ -543,7 +544,7 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      * If not defined, average value of received power readings will be used.
      * &lt;p&gt;
      * If transmitted power estimation is enabled, estimation will start at this
-     * value and will converte the most appropriate value.
+     * value and will be converted to the most appropriate value.
      * If transmitted power estimation is disabled, this value will be assumed to be
      * exact and the estimated transmitted power will be equal to this value
      * (converted to dBm's).
@@ -555,11 +556,11 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      */
     public void setInitialTransmittedPowerdBm(final Double initialTransmittedPowerdBm)
             throws LockedException {
-<span class="fc bfc" id="L558" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L559">            throw new LockedException();</span>
+<span class="fc bfc" id="L559" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L560">            throw new LockedException();</span>
         }
-<span class="fc" id="L561">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
-<span class="fc" id="L562">    }</span>
+<span class="fc" id="L562">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L563">    }</span>
 
     /**
      * Gets initial transmitted power to start the estimation of radio source
@@ -567,7 +568,7 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      * If not defined, average value of received power readings will be used.
      * &lt;p&gt;
      * If transmitted power estimation is enabled, estimation will start at this
-     * value and will converte the most appropriate value.
+     * value and will be converted to the most appropriate value.
      * If transmitted power estimation is disabled, this value will be assumed to be
      * exact and the estimated transmitted power will be equal to this value
      * (converted to dBm's).
@@ -576,8 +577,8 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      * transmitted power.
      */
     public Double getInitialTransmittedPower() {
-<span class="fc bfc" id="L579" title="All 2 branches covered.">        return mInitialTransmittedPowerdBm != null ?</span>
-<span class="fc" id="L580">                Utils.dBmToPower(mInitialTransmittedPowerdBm) : null;</span>
+<span class="fc bfc" id="L580" title="All 2 branches covered.">        return mInitialTransmittedPowerdBm != null ?</span>
+<span class="fc" id="L581">                Utils.dBmToPower(mInitialTransmittedPowerdBm) : null;</span>
     }
 
     /**
@@ -586,7 +587,7 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      * If not defined, average value of received power readings will be used.
      * &lt;p&gt;
      * If transmitted power estimation is enabled, estimation will start at this
-     * value and will converte the most appropriate value.
+     * value and will be converted to the most appropriate value.
      * If transmitted power estimation is disabled, this value will be assumed to be
      * exact and the estimated transmitted power will be equal to this value
      * (converted to dBm's).
@@ -598,19 +599,19 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      */
     public void setInitialTransmittedPower(final Double initialTransmittedPower)
             throws LockedException {
-<span class="fc bfc" id="L601" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L602">            throw new LockedException();</span>
+<span class="fc bfc" id="L602" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L603">            throw new LockedException();</span>
         }
-<span class="fc bfc" id="L604" title="All 2 branches covered.">        if (initialTransmittedPower != null) {</span>
-<span class="fc bfc" id="L605" title="All 2 branches covered.">            if (initialTransmittedPower &lt; 0.0) {</span>
-<span class="fc" id="L606">                throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L605" title="All 2 branches covered.">        if (initialTransmittedPower != null) {</span>
+<span class="fc bfc" id="L606" title="All 2 branches covered.">            if (initialTransmittedPower &lt; 0.0) {</span>
+<span class="fc" id="L607">                throw new IllegalArgumentException();</span>
             }
-<span class="fc" id="L608">            mInitialTransmittedPowerdBm = Utils.powerTodBm(</span>
-<span class="fc" id="L609">                    initialTransmittedPower);</span>
+<span class="fc" id="L609">            mInitialTransmittedPowerdBm = Utils.powerTodBm(</span>
+<span class="fc" id="L610">                    initialTransmittedPower);</span>
         } else {
-<span class="fc" id="L611">            mInitialTransmittedPowerdBm = null;</span>
+<span class="fc" id="L612">            mInitialTransmittedPowerdBm = null;</span>
         }
-<span class="fc" id="L613">    }</span>
+<span class="fc" id="L614">    }</span>
 
     /**
      * Indicates whether transmitted power estimation is enabled or not.
@@ -618,7 +619,7 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      * @return true if transmitted power estimation is enabled, false otherwise.
      */
     public boolean isTransmittedPowerEstimationEnabled() {
-<span class="fc" id="L621">        return mTransmittedPowerEstimationEnabled;</span>
+<span class="fc" id="L622">        return mTransmittedPowerEstimationEnabled;</span>
     }
 
     /**
@@ -631,11 +632,11 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
     public void setTransmittedPowerEstimationEnabled(
             final boolean transmittedPowerEstimationEnabled)
             throws LockedException {
-<span class="fc bfc" id="L634" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L635">            throw new LockedException();</span>
+<span class="fc bfc" id="L635" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L636">            throw new LockedException();</span>
         }
-<span class="fc" id="L637">        mTransmittedPowerEstimationEnabled = transmittedPowerEstimationEnabled;</span>
-<span class="fc" id="L638">    }</span>
+<span class="fc" id="L638">        mTransmittedPowerEstimationEnabled = transmittedPowerEstimationEnabled;</span>
+<span class="fc" id="L639">    }</span>
 
     /**
      * Gets initial position to start the estimation of radio source position.
@@ -649,7 +650,7 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      * @return initial position to start the estimation of radio source position.
      */
     public P getInitialPosition() {
-<span class="fc" id="L652">        return mInitialPosition;</span>
+<span class="fc" id="L653">        return mInitialPosition;</span>
     }
 
     /**
@@ -666,11 +667,11 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      * @throws LockedException if estimator is locked.
      */
     public void setInitialPosition(final P initialPosition) throws LockedException {
-<span class="fc bfc" id="L669" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L670">            throw new LockedException();</span>
+<span class="fc bfc" id="L670" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L671">            throw new LockedException();</span>
         }
-<span class="fc" id="L672">        mInitialPosition = initialPosition;</span>
-<span class="fc" id="L673">    }</span>
+<span class="fc" id="L673">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L674">    }</span>
 
     /**
      * Indicates whether radio source position estimation is enabled or not.
@@ -678,7 +679,7 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      * @return true if position estimation is enabled, false otherwise.
      */
     public boolean isPositionEstimationEnabled() {
-<span class="fc" id="L681">        return mPositionEstimationEnabled;</span>
+<span class="fc" id="L682">        return mPositionEstimationEnabled;</span>
     }
 
     /**
@@ -691,11 +692,11 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
     public void setPositionEstimationEnabled(
             final boolean positionEstimationEnabled)
             throws LockedException {
-<span class="fc bfc" id="L694" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L695">            throw new LockedException();</span>
+<span class="fc bfc" id="L695" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L696">            throw new LockedException();</span>
         }
-<span class="fc" id="L697">        mPositionEstimationEnabled = positionEstimationEnabled;</span>
-<span class="fc" id="L698">    }</span>
+<span class="fc" id="L698">        mPositionEstimationEnabled = positionEstimationEnabled;</span>
+<span class="fc" id="L699">    }</span>
 
     /**
      * Gets initial exponent typically used on free space for path loss propagation
@@ -715,7 +716,7 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      * @return initial path loss exponent.
      */
     public double getInitialPathLossExponent() {
-<span class="fc" id="L718">        return mInitialPathLossExponent;</span>
+<span class="fc" id="L719">        return mInitialPathLossExponent;</span>
     }
 
     /**
@@ -739,11 +740,11 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
     public void setInitialPathLossExponent(
             final double initialPathLossExponent)
             throws LockedException {
-<span class="fc bfc" id="L742" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L743">            throw new LockedException();</span>
+<span class="fc bfc" id="L743" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L744">            throw new LockedException();</span>
         }
-<span class="fc" id="L745">        mInitialPathLossExponent = initialPathLossExponent;</span>
-<span class="fc" id="L746">    }</span>
+<span class="fc" id="L746">        mInitialPathLossExponent = initialPathLossExponent;</span>
+<span class="fc" id="L747">    }</span>
 
     /**
      * Indicates whether path loss estimation is enabled or not.
@@ -751,7 +752,7 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      * @return true if path loss estimation is enabled, false otherwise.
      */
     public boolean isPathLossEstimationEnabled() {
-<span class="fc" id="L754">        return mPathLossEstimationEnabled;</span>
+<span class="fc" id="L755">        return mPathLossEstimationEnabled;</span>
     }
 
     /**
@@ -764,11 +765,11 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
     public void setPathLossEstimationEnabled(
             final boolean pathLossEstimationEnabled)
             throws LockedException {
-<span class="fc bfc" id="L767" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L768">            throw new LockedException();</span>
+<span class="fc bfc" id="L768" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L769">            throw new LockedException();</span>
         }
-<span class="fc" id="L770">        mPathLossEstimationEnabled = pathLossEstimationEnabled;</span>
-<span class="fc" id="L771">    }</span>
+<span class="fc" id="L771">        mPathLossEstimationEnabled = pathLossEstimationEnabled;</span>
+<span class="fc" id="L772">    }</span>
 
     /**
      * Indicates whether this instance is ready to start the estimation.
@@ -777,14 +778,14 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      */
     @Override
     public boolean isReady() {
-        //at least one parameter estimtion must be enabled
-<span class="pc bpc" id="L781" title="3 of 14 branches missed.">        return (mPositionEstimationEnabled || mTransmittedPowerEstimationEnabled || mPathLossEstimationEnabled) &amp;&amp;</span>
-                //if position estimation is disabled, an initial position must be provided
+        // at least one parameter estimation must be enabled
+<span class="pc bpc" id="L782" title="3 of 14 branches missed.">        return (mPositionEstimationEnabled || mTransmittedPowerEstimationEnabled || mPathLossEstimationEnabled) &amp;&amp;</span>
+                // if position estimation is disabled, an initial position must be provided
                 !(!mPositionEstimationEnabled &amp;&amp; mInitialPosition == null) &amp;&amp;
-                //if transmitted power estimation is disabled, an initial transmitted power must be provided
+                // if transmitted power estimation is disabled, an initial transmitted power must be provided
                 !(!mTransmittedPowerEstimationEnabled &amp;&amp; mInitialTransmittedPowerdBm == null) &amp;&amp;
-                //readings must also be valid
-<span class="fc bfc" id="L787" title="All 2 branches covered.">                areValidReadings(mReadings);</span>
+                // readings must also be valid
+<span class="fc bfc" id="L788" title="All 2 branches covered.">                areValidReadings(mReadings);</span>
     }
 
     /**
@@ -798,128 +799,128 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
     @Override
     public void estimate() throws RadioSourceEstimationException, NotReadyException,
             LockedException {
-<span class="fc bfc" id="L801" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L802">            throw new LockedException();</span>
+<span class="fc bfc" id="L802" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L803">            throw new LockedException();</span>
         }
-<span class="fc bfc" id="L804" title="All 2 branches covered.">        if (!isReady()) {</span>
-<span class="fc" id="L805">            throw new NotReadyException();</span>
+<span class="fc bfc" id="L805" title="All 2 branches covered.">        if (!isReady()) {</span>
+<span class="fc" id="L806">            throw new NotReadyException();</span>
         }
 
         try {
-<span class="fc" id="L809">            mLocked = true;</span>
+<span class="fc" id="L810">            mLocked = true;</span>
 
-<span class="fc bfc" id="L811" title="All 2 branches covered.">            if (mListener != null) {</span>
-<span class="fc" id="L812">                mListener.onEstimateStart(this);</span>
+<span class="fc bfc" id="L812" title="All 2 branches covered.">            if (mListener != null) {</span>
+<span class="fc" id="L813">                mListener.onEstimateStart(this);</span>
             }
 
-<span class="fc bfc" id="L815" title="All 6 branches covered.">            if (mPositionEstimationEnabled &amp;&amp;</span>
+<span class="fc bfc" id="L816" title="All 6 branches covered.">            if (mPositionEstimationEnabled &amp;&amp;</span>
                     !mTransmittedPowerEstimationEnabled &amp;&amp; !mPathLossEstimationEnabled) {
-                //only position estimation is enabled
-<span class="fc" id="L818">                setupFitterPosition();</span>
-<span class="fc bfc" id="L819" title="All 6 branches covered.">            } else if (!mPositionEstimationEnabled &amp;&amp;</span>
+                // only position estimation is enabled
+<span class="fc" id="L819">                setupFitterPosition();</span>
+<span class="fc bfc" id="L820" title="All 6 branches covered.">            } else if (!mPositionEstimationEnabled &amp;&amp;</span>
                     mTransmittedPowerEstimationEnabled &amp;&amp; !mPathLossEstimationEnabled) {
-                //only transmitted power estimation is enabled
-<span class="fc" id="L822">                setupFitterTransmittedPower();</span>
-<span class="pc bpc" id="L823" title="1 of 6 branches missed.">            } else if (!mPositionEstimationEnabled &amp;&amp;</span>
+                // only transmitted power estimation is enabled
+<span class="fc" id="L823">                setupFitterTransmittedPower();</span>
+<span class="pc bpc" id="L824" title="1 of 6 branches missed.">            } else if (!mPositionEstimationEnabled &amp;&amp;</span>
                     !mTransmittedPowerEstimationEnabled &amp;&amp; mPathLossEstimationEnabled) {
-                //only pathloss estimation is enabled
-<span class="fc" id="L826">                setupFitterPathLossExponent();</span>
-<span class="fc bfc" id="L827" title="All 6 branches covered.">            } else if (mPositionEstimationEnabled &amp;&amp;</span>
+                // only pathloss estimation is enabled
+<span class="fc" id="L827">                setupFitterPathLossExponent();</span>
+<span class="fc bfc" id="L828" title="All 6 branches covered.">            } else if (mPositionEstimationEnabled &amp;&amp;</span>
                     mTransmittedPowerEstimationEnabled &amp;&amp; !mPathLossEstimationEnabled) {
-                //position and transmitted power enabled
-<span class="fc" id="L830">                setupFitterPositionAndTransmittedPower();</span>
-<span class="pc bpc" id="L831" title="1 of 6 branches missed.">            } else if (mPositionEstimationEnabled &amp;&amp;</span>
+                // position and transmitted power enabled
+<span class="fc" id="L831">                setupFitterPositionAndTransmittedPower();</span>
+<span class="pc bpc" id="L832" title="1 of 6 branches missed.">            } else if (mPositionEstimationEnabled &amp;&amp;</span>
                     !mTransmittedPowerEstimationEnabled &amp;&amp; mPathLossEstimationEnabled) {
-                //position and pathloss enabled
-<span class="fc" id="L834">                setupFitterPositionAndPathLossExponent();</span>
-<span class="pc bpc" id="L835" title="2 of 6 branches missed.">            } else if (!mPositionEstimationEnabled &amp;&amp;</span>
+                // position and pathloss enabled
+<span class="fc" id="L835">                setupFitterPositionAndPathLossExponent();</span>
+<span class="pc bpc" id="L836" title="2 of 6 branches missed.">            } else if (!mPositionEstimationEnabled &amp;&amp;</span>
                     mTransmittedPowerEstimationEnabled &amp;&amp; mPathLossEstimationEnabled) {
-                //transmitted power and pathloss enabled
-<span class="fc" id="L838">                setupFitterTransmittedPowerAndPathLossExponent();</span>
+                // transmitted power and pathloss enabled
+<span class="fc" id="L839">                setupFitterTransmittedPowerAndPathLossExponent();</span>
             } else {
-                //position, transmitted power and pathloss enabled
-<span class="fc" id="L841">                setupFitterPositionTransmittedPowerAndPathLossExponent();</span>
+                // position, transmitted power and pathloss enabled
+<span class="fc" id="L842">                setupFitterPositionTransmittedPowerAndPathLossExponent();</span>
             }
 
-<span class="fc" id="L844">            mFitter.fit();</span>
+<span class="fc" id="L845">            mFitter.fit();</span>
 
-            //estimated position and transmitted power
-<span class="fc" id="L847">            final double[] a = mFitter.getA();</span>
-<span class="fc" id="L848">            final int dims = getNumberOfDimensions();</span>
+            // estimated position and transmitted power
+<span class="fc" id="L848">            final double[] a = mFitter.getA();</span>
+<span class="fc" id="L849">            final int dims = getNumberOfDimensions();</span>
 
-<span class="fc" id="L850">            mEstimatedCovariance = mFitter.getCovar();</span>
-<span class="fc" id="L851">            mChiSq = mFitter.getChisq();</span>
+<span class="fc" id="L851">            mEstimatedCovariance = mFitter.getCovar();</span>
+<span class="fc" id="L852">            mChiSq = mFitter.getChisq();</span>
 
-<span class="fc" id="L853">            int pos = 0;</span>
-<span class="fc" id="L854">            mEstimatedPositionCoordinates = new double[dims];</span>
-<span class="fc bfc" id="L855" title="All 2 branches covered.">            if (mPositionEstimationEnabled) {</span>
-                //position estimation enabled
-<span class="fc" id="L857">                System.arraycopy(a, 0, mEstimatedPositionCoordinates, 0, dims);</span>
+<span class="fc" id="L854">            int pos = 0;</span>
+<span class="fc" id="L855">            mEstimatedPositionCoordinates = new double[dims];</span>
+<span class="fc bfc" id="L856" title="All 2 branches covered.">            if (mPositionEstimationEnabled) {</span>
+                // position estimation enabled
+<span class="fc" id="L858">                System.arraycopy(a, 0, mEstimatedPositionCoordinates, 0, dims);</span>
 
-<span class="pc bpc" id="L859" title="1 of 2 branches missed.">                if (mEstimatedCovariance != null) {</span>
-<span class="fc" id="L860">                    final int d = dims - 1;</span>
-<span class="fc bfc" id="L861" title="All 2 branches covered.">                    if (mEstimatedPositionCovariance == null) {</span>
-<span class="fc" id="L862">                        mEstimatedPositionCovariance = mEstimatedCovariance.</span>
-<span class="fc" id="L863">                                getSubmatrix(0, 0, d, d);</span>
+<span class="pc bpc" id="L860" title="1 of 2 branches missed.">                if (mEstimatedCovariance != null) {</span>
+<span class="fc" id="L861">                    final int d = dims - 1;</span>
+<span class="fc bfc" id="L862" title="All 2 branches covered.">                    if (mEstimatedPositionCovariance == null) {</span>
+<span class="fc" id="L863">                        mEstimatedPositionCovariance = mEstimatedCovariance.</span>
+<span class="fc" id="L864">                                getSubmatrix(0, 0, d, d);</span>
                     } else {
-<span class="fc" id="L865">                        mEstimatedCovariance.getSubmatrix(0, 0, d, d,</span>
+<span class="fc" id="L866">                        mEstimatedCovariance.getSubmatrix(0, 0, d, d,</span>
                                 mEstimatedPositionCovariance);
                     }
                 }
-<span class="fc" id="L869">                pos += dims;</span>
+<span class="fc" id="L870">                pos += dims;</span>
             } else {
-                //position estimation disabled
-<span class="pc bpc" id="L872" title="1 of 2 branches missed.">                if (mInitialPosition != null) {</span>
-<span class="fc bfc" id="L873" title="All 2 branches covered.">                    for (int i = 0; i &lt; dims; i++) {</span>
-<span class="fc" id="L874">                        mEstimatedPositionCoordinates[i] =</span>
-<span class="fc" id="L875">                                mInitialPosition.getInhomogeneousCoordinate(i);</span>
+                // position estimation disabled
+<span class="pc bpc" id="L873" title="1 of 2 branches missed.">                if (mInitialPosition != null) {</span>
+<span class="fc bfc" id="L874" title="All 2 branches covered.">                    for (int i = 0; i &lt; dims; i++) {</span>
+<span class="fc" id="L875">                        mEstimatedPositionCoordinates[i] =</span>
+<span class="fc" id="L876">                                mInitialPosition.getInhomogeneousCoordinate(i);</span>
                     }
                 }
 
-<span class="fc" id="L879">                mEstimatedPositionCovariance = null;</span>
+<span class="fc" id="L880">                mEstimatedPositionCovariance = null;</span>
             }
 
-<span class="fc bfc" id="L882" title="All 2 branches covered.">            if (mTransmittedPowerEstimationEnabled) {</span>
-                //transmitted power estimation enabled
-<span class="fc" id="L884">                mEstimatedTransmittedPowerdBm = a[pos];</span>
+<span class="fc bfc" id="L883" title="All 2 branches covered.">            if (mTransmittedPowerEstimationEnabled) {</span>
+                // transmitted power estimation enabled
+<span class="fc" id="L885">                mEstimatedTransmittedPowerdBm = a[pos];</span>
 
-<span class="pc bpc" id="L886" title="1 of 2 branches missed.">                if (mEstimatedCovariance != null) {</span>
-<span class="fc" id="L887">                    mEstimatedTransmittedPowerVariance = mEstimatedCovariance.</span>
-<span class="fc" id="L888">                            getElementAt(pos, pos);</span>
+<span class="pc bpc" id="L887" title="1 of 2 branches missed.">                if (mEstimatedCovariance != null) {</span>
+<span class="fc" id="L888">                    mEstimatedTransmittedPowerVariance = mEstimatedCovariance.</span>
+<span class="fc" id="L889">                            getElementAt(pos, pos);</span>
                 }
-<span class="fc" id="L890">                pos++;</span>
+<span class="fc" id="L891">                pos++;</span>
             } else {
-                //transmitted power estimation disabled
-<span class="pc bpc" id="L893" title="1 of 2 branches missed.">                if (mInitialTransmittedPowerdBm != null) {</span>
-<span class="fc" id="L894">                    mEstimatedTransmittedPowerdBm = mInitialTransmittedPowerdBm;</span>
+                // transmitted power estimation disabled
+<span class="pc bpc" id="L894" title="1 of 2 branches missed.">                if (mInitialTransmittedPowerdBm != null) {</span>
+<span class="fc" id="L895">                    mEstimatedTransmittedPowerdBm = mInitialTransmittedPowerdBm;</span>
                 }
-<span class="fc" id="L896">                mEstimatedTransmittedPowerVariance = null;</span>
+<span class="fc" id="L897">                mEstimatedTransmittedPowerVariance = null;</span>
             }
 
-<span class="fc bfc" id="L899" title="All 2 branches covered.">            if (mPathLossEstimationEnabled) {</span>
-                //pathloss exponent estimation enabled
-<span class="fc" id="L901">                mEstimatedPathLossExponent = a[pos];</span>
+<span class="fc bfc" id="L900" title="All 2 branches covered.">            if (mPathLossEstimationEnabled) {</span>
+                // pathloss exponent estimation enabled
+<span class="fc" id="L902">                mEstimatedPathLossExponent = a[pos];</span>
 
-<span class="pc bpc" id="L903" title="1 of 2 branches missed.">                if (mEstimatedCovariance != null) {</span>
-<span class="fc" id="L904">                    mEstimatedPathLossExponentVariance = mEstimatedCovariance.</span>
-<span class="fc" id="L905">                            getElementAt(pos, pos);</span>
+<span class="pc bpc" id="L904" title="1 of 2 branches missed.">                if (mEstimatedCovariance != null) {</span>
+<span class="fc" id="L905">                    mEstimatedPathLossExponentVariance = mEstimatedCovariance.</span>
+<span class="fc" id="L906">                            getElementAt(pos, pos);</span>
                 }
             } else {
-                //pathloss exponent estimation disabled
-<span class="fc" id="L909">                mEstimatedPathLossExponent = mInitialPathLossExponent;</span>
-<span class="fc" id="L910">                mEstimatedPathLossExponentVariance = null;</span>
+                // pathloss exponent estimation disabled
+<span class="fc" id="L910">                mEstimatedPathLossExponent = mInitialPathLossExponent;</span>
+<span class="fc" id="L911">                mEstimatedPathLossExponentVariance = null;</span>
             }
 
 
-<span class="fc bfc" id="L914" title="All 2 branches covered.">            if (mListener != null) {</span>
-<span class="fc" id="L915">                mListener.onEstimateEnd(this);</span>
+<span class="fc bfc" id="L915" title="All 2 branches covered.">            if (mListener != null) {</span>
+<span class="fc" id="L916">                mListener.onEstimateEnd(this);</span>
             }
-<span class="fc" id="L917">        } catch (final NumericalException e) {</span>
-<span class="fc" id="L918">            throw new RadioSourceEstimationException(e);</span>
+<span class="fc" id="L918">        } catch (final NumericalException e) {</span>
+<span class="fc" id="L919">            throw new RadioSourceEstimationException(e);</span>
         } finally {
-<span class="fc" id="L920">            mLocked = false;</span>
+<span class="fc" id="L921">            mLocked = false;</span>
         }
-<span class="fc" id="L922">    }</span>
+<span class="fc" id="L923">    }</span>
 
     /**
      * Gets estimated transmitted power expressed in milli watts (mW).
@@ -927,7 +928,7 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      * @return estimated transmitted power expressed in milli watts.
      */
     public double getEstimatedTransmittedPower() {
-<span class="fc" id="L930">        return Utils.dBmToPower(mEstimatedTransmittedPowerdBm);</span>
+<span class="fc" id="L931">        return Utils.dBmToPower(mEstimatedTransmittedPowerdBm);</span>
     }
 
     /**
@@ -936,7 +937,7 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      * @return estimated transmitted power expressed in dBm's.
      */
     public double getEstimatedTransmittedPowerdBm() {
-<span class="fc" id="L939">        return mEstimatedTransmittedPowerdBm;</span>
+<span class="fc" id="L940">        return mEstimatedTransmittedPowerdBm;</span>
     }
 
     /**
@@ -953,7 +954,7 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      * @return estimated path loss exponent.
      */
     public double getEstimatedPathLossExponent() {
-<span class="fc" id="L956">        return mEstimatedPathLossExponent;</span>
+<span class="fc" id="L957">        return mEstimatedPathLossExponent;</span>
     }
 
     /**
@@ -964,18 +965,18 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      * @return estimated transmitted power variance or null.
      */
     public Double getEstimatedTransmittedPowerVariance() {
-<span class="fc" id="L967">        return mEstimatedTransmittedPowerVariance;</span>
+<span class="fc" id="L968">        return mEstimatedTransmittedPowerVariance;</span>
     }
 
     /**
      * Gets estimated path loss exponent variance.
-     * This value will only be available when pathloss
+     * This value will only be available when path-loss
      * exponent estimation is enabled.
      *
      * @return estimated path loss exponent variance or null.
      */
     public Double getEstimatedPathLossExponentVariance() {
-<span class="fc" id="L978">        return mEstimatedPathLossExponentVariance;</span>
+<span class="fc" id="L979">        return mEstimatedPathLossExponentVariance;</span>
     }
 
     /**
@@ -984,7 +985,7 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      * @return estimated chi square value.
      */
     public double getChiSq() {
-<span class="fc" id="L987">        return mChiSq;</span>
+<span class="fc" id="L988">        return mChiSq;</span>
     }
 
     /**
@@ -993,112 +994,112 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      * @throws FittingException if Levenberg-Marquardt fitting fails.
      */
     private void setupFitterPosition() throws FittingException {
-        //because all readings must belong to the same radio source, we
-        //obtain the frequency of the first radio source on the first reading
-<span class="fc" id="L998">        RssiReadingLocated&lt;S, P&gt; reading = mReadings.get(0);</span>
-<span class="fc" id="L999">        final double frequency = reading.getSource().getFrequency();</span>
+        // because all readings must belong to the same radio source, we
+        // obtain the frequency of the first radio source on the first reading
+<span class="fc" id="L999">        RssiReadingLocated&lt;S, P&gt; reading = mReadings.get(0);</span>
+<span class="fc" id="L1000">        final double frequency = reading.getSource().getFrequency();</span>
 
-        //n = 2.0, is the path loss exponent (which is typically 2.0)
+        // n = 2.0, is the path loss exponent (which is typically 2.0)
 
-        //Pr = Pt*Gt*Gr*lambda^n/(4*pi*d)^n,    where Pr is the received power
+        // Pr = Pt*Gt*Gr*lambda^n/(4*pi*d)^n,    where Pr is the received power
         // lambda = c/f, where lambda is wavelength,
         // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the received Gain
-        //Pr = Pte*c^n/((4*pi*f)^n * d^n)
+        // Pr = Pte*c^n/((4*pi*f)^n * d^n)
 
 
-        //compute k as the constant part of the isotropic received power formula
-        //so that: Pr = Pte*k/d^n
-<span class="fc" id="L1011">        final double k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI * frequency),</span>
+        // compute k as the constant part of the isotropic received power formula
+        // so that: Pr = Pte*k/d^n
+<span class="fc" id="L1012">        final double k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI * frequency),</span>
                 mInitialPathLossExponent);
-<span class="fc" id="L1013">        final double kdB = 10.0 * Math.log10(k);</span>
+<span class="fc" id="L1014">        final double kdB = 10.0 * Math.log10(k);</span>
 
-<span class="fc" id="L1015">        final int dims = getNumberOfDimensions();</span>
-<span class="fc" id="L1016">        final double initialTransmittedPowerdBm = computeInitialTransmittedPowerdBm();</span>
+<span class="fc" id="L1016">        final int dims = getNumberOfDimensions();</span>
+<span class="fc" id="L1017">        final double initialTransmittedPowerdBm = computeInitialTransmittedPowerdBm();</span>
 
-        //for numerical accuracy reasons, a logarithmic version of the previous
-        //formula will be used instead
-        //Pr (dBm) = 10 * log(Pte * k / d^n) = 10*log(k) + 10*log(Pte) - 10*n*log(d)
+        // for numerical accuracy reasons, a logarithmic version of the previous
+        // formula will be used instead
+        // Pr (dBm) = 10 * log(Pte * k / d^n) = 10*log(k) + 10*log(Pte) - 10*n*log(d)
 
-<span class="fc" id="L1022">        mFitter.setFunctionEvaluator(new LevenbergMarquardtMultiDimensionFunctionEvaluator() {</span>
+<span class="fc" id="L1023">        mFitter.setFunctionEvaluator(new LevenbergMarquardtMultiDimensionFunctionEvaluator() {</span>
             @Override
             public int getNumberOfDimensions() {
-<span class="fc" id="L1025">                return dims;</span>
+<span class="fc" id="L1026">                return dims;</span>
             }
 
             @Override
             public double[] createInitialParametersArray() {
-<span class="fc" id="L1030">                final double[] initial = new double[dims];</span>
-<span class="fc" id="L1031">                computeInitialPosition(initial, dims);</span>
-<span class="fc" id="L1032">                return initial;</span>
+<span class="fc" id="L1031">                final double[] initial = new double[dims];</span>
+<span class="fc" id="L1032">                computeInitialPosition(initial, dims);</span>
+<span class="fc" id="L1033">                return initial;</span>
             }
 
             @Override
             public double evaluate(
                     final int i, final double[] point, final double[] params,
                     final double[] derivatives) {
-<span class="fc" id="L1039">                double sqrDistance = 0.0;</span>
+<span class="fc" id="L1040">                double sqrDistance = 0.0;</span>
                 double diff;
-<span class="fc bfc" id="L1041" title="All 2 branches covered.">                for (int j = 0; j &lt; dims; j++) {</span>
-<span class="fc" id="L1042">                    diff = params[j] - point[j];</span>
-<span class="fc" id="L1043">                    sqrDistance += diff * diff;</span>
+<span class="fc bfc" id="L1042" title="All 2 branches covered.">                for (int j = 0; j &lt; dims; j++) {</span>
+<span class="fc" id="L1043">                    diff = params[j] - point[j];</span>
+<span class="fc" id="L1044">                    sqrDistance += diff * diff;</span>
 
-                    //n is mInitialPathLossExponent, which is typically 2.0
-<span class="fc" id="L1046">                    derivatives[j] = -10.0 * mInitialPathLossExponent * diff;</span>
+                    // n is mInitialPathLossExponent, which is typically 2.0
+<span class="fc" id="L1047">                    derivatives[j] = -10.0 * mInitialPathLossExponent * diff;</span>
                 }
 
-                //derivatives respect position coordinates are (2D case):
-                //f(x,y) = -5*n*log((x - xap)^2 + (y - yap)^2)
-                //df/dx = -5*n*2*(x - xap)/(ln(10)*((x - xap)^2 + (y - yap)^2)) = -10*n*diffX/(ln(10)*sqrDistance)
-                //df/dy = -5*n*2*(y - yap)/(ln(10)*((x - xap)^2 + (y - yap)^2)) = -10*n*diffY/(ln(10)*sqrDistance)
-<span class="fc" id="L1053">                final double ln10PerSqrDistance = Math.log(10.0) * sqrDistance;</span>
-<span class="pc bpc" id="L1054" title="1 of 2 branches missed.">                if (ln10PerSqrDistance != 0.0) {</span>
-<span class="fc bfc" id="L1055" title="All 2 branches covered.">                    for (int j = 0; j &lt; dims; j++) {</span>
-<span class="fc" id="L1056">                        derivatives[j] /= ln10PerSqrDistance;</span>
+                // derivatives respect position coordinates are (2D case):
+                // f(x,y) = -5*n*log((x - xap)^2 + (y - yap)^2)
+                // df/dx = -5*n*2*(x - xap)/(ln(10)*((x - xap)^2 + (y - yap)^2)) = -10*n*diffX/(ln(10)*sqrDistance)
+                // df/dy = -5*n*2*(y - yap)/(ln(10)*((x - xap)^2 + (y - yap)^2)) = -10*n*diffY/(ln(10)*sqrDistance)
+<span class="fc" id="L1054">                final double ln10PerSqrDistance = Math.log(10.0) * sqrDistance;</span>
+<span class="pc bpc" id="L1055" title="1 of 2 branches missed.">                if (ln10PerSqrDistance != 0.0) {</span>
+<span class="fc bfc" id="L1056" title="All 2 branches covered.">                    for (int j = 0; j &lt; dims; j++) {</span>
+<span class="fc" id="L1057">                        derivatives[j] /= ln10PerSqrDistance;</span>
                     }
                 }
 
-                //d^2 = (x - xap)^2 + (y - yap)^2
-                //d^n = (d^2)^n/2
+                // d^2 = (x - xap)^2 + (y - yap)^2
+                // d^n = (d^2)^n/2
 
-                //Pr = Pt*Gt*Gr*lambda^n/(4*pi*d)^n,    where Pr is the received power
-                //n is the path loss exponent
-                //lambda = c/f, where lambda is wavelength,
-                //Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the
-                //          received Gain
-                //Pr = Pte*c^n/((4*pi*f)^n * d^n)
-                //Pr (dBm) = 10*log(k) + 10*log(Pte) - 10*log(d^n) =
-                //10*log(k) + 10*log(Pte) - 10*log((d^2)^n/2) =
-                //10*log(k) + 10*log(Pte) - 10*n/2*log(d^2) =
-                //10*log(k) + 10*log(Pte) - 5*n*log(d^2) =
-<span class="fc" id="L1073">                return kdB + initialTransmittedPowerdBm</span>
-<span class="fc" id="L1074">                        - 5.0 * mInitialPathLossExponent * Math.log10(sqrDistance);</span>
+                // Pr = Pt*Gt*Gr*lambda^n/(4*pi*d)^n,    where Pr is the received power
+                // n is the path loss exponent
+                // lambda = c/f, where lambda is wavelength,
+                // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the
+                //           received Gain
+                // Pr = Pte*c^n/((4*pi*f)^n * d^n)
+                // Pr (dBm) = 10*log(k) + 10*log(Pte) - 10*log(d^n) =
+                // 10*log(k) + 10*log(Pte) - 10*log((d^2)^n/2) =
+                // 10*log(k) + 10*log(Pte) - 10*n/2*log(d^2) =
+                // 10*log(k) + 10*log(Pte) - 5*n*log(d^2) =
+<span class="fc" id="L1074">                return kdB + initialTransmittedPowerdBm</span>
+<span class="fc" id="L1075">                        - 5.0 * mInitialPathLossExponent * Math.log10(sqrDistance);</span>
             }
         });
 
-<span class="fc" id="L1078">        final int numReadings = mReadings.size();</span>
+<span class="fc" id="L1079">        final int numReadings = mReadings.size();</span>
         try {
-<span class="fc" id="L1080">            final Matrix x = new Matrix(numReadings, dims);</span>
-<span class="fc" id="L1081">            final double[] y = new double[numReadings];</span>
-<span class="fc" id="L1082">            final double[] standardDeviations = new double[numReadings];</span>
-<span class="fc bfc" id="L1083" title="All 2 branches covered.">            for (int i = 0; i &lt; numReadings; i++) {</span>
-<span class="fc" id="L1084">                reading = mReadings.get(i);</span>
-<span class="fc" id="L1085">                final P position = reading.getPosition();</span>
+<span class="fc" id="L1081">            final Matrix x = new Matrix(numReadings, dims);</span>
+<span class="fc" id="L1082">            final double[] y = new double[numReadings];</span>
+<span class="fc" id="L1083">            final double[] standardDeviations = new double[numReadings];</span>
+<span class="fc bfc" id="L1084" title="All 2 branches covered.">            for (int i = 0; i &lt; numReadings; i++) {</span>
+<span class="fc" id="L1085">                reading = mReadings.get(i);</span>
+<span class="fc" id="L1086">                final P position = reading.getPosition();</span>
 
-<span class="fc bfc" id="L1087" title="All 2 branches covered.">                for (int j = 0; j &lt; dims; j++) {</span>
-<span class="fc" id="L1088">                    x.setElementAt(i, j, position.getInhomogeneousCoordinate(j));</span>
+<span class="fc bfc" id="L1088" title="All 2 branches covered.">                for (int j = 0; j &lt; dims; j++) {</span>
+<span class="fc" id="L1089">                    x.setElementAt(i, j, position.getInhomogeneousCoordinate(j));</span>
                 }
 
-<span class="fc bfc" id="L1091" title="All 2 branches covered.">                standardDeviations[i] = reading.getRssiStandardDeviation() != null ?</span>
-<span class="fc" id="L1092">                        reading.getRssiStandardDeviation() :</span>
-<span class="fc" id="L1093">                        DEFAULT_POWER_STANDARD_DEVIATION;</span>
-<span class="fc" id="L1094">                y[i] = reading.getRssi();</span>
+<span class="fc bfc" id="L1092" title="All 2 branches covered.">                standardDeviations[i] = reading.getRssiStandardDeviation() != null ?</span>
+<span class="fc" id="L1093">                        reading.getRssiStandardDeviation() :</span>
+<span class="fc" id="L1094">                        DEFAULT_POWER_STANDARD_DEVIATION;</span>
+<span class="fc" id="L1095">                y[i] = reading.getRssi();</span>
             }
 
-<span class="fc" id="L1097">            mFitter.setInputData(x, y, standardDeviations);</span>
-<span class="nc" id="L1098">        } catch (final AlgebraException ignore) {</span>
-            //never happens
-<span class="fc" id="L1100">        }</span>
-<span class="fc" id="L1101">    }</span>
+<span class="fc" id="L1098">            mFitter.setInputData(x, y, standardDeviations);</span>
+<span class="nc" id="L1099">        } catch (final AlgebraException ignore) {</span>
+            // never happens
+<span class="fc" id="L1101">        }</span>
+<span class="fc" id="L1102">    }</span>
 
     /**
      * Setups fitter to estimate transmitted power.
@@ -1106,93 +1107,93 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      * @throws FittingException if Levenberg-Marquardt fitting fails.
      */
     private void setupFitterTransmittedPower() throws FittingException {
-        //because all readings must belong to the same radio source, we
-        //obtain the frequency of the first radio source on the first reading
-<span class="fc" id="L1111">        RssiReadingLocated&lt;S, P&gt; reading = mReadings.get(0);</span>
-<span class="fc" id="L1112">        final double frequency = reading.getSource().getFrequency();</span>
+        // because all readings must belong to the same radio source, we
+        // obtain the frequency of the first radio source on the first reading
+<span class="fc" id="L1112">        RssiReadingLocated&lt;S, P&gt; reading = mReadings.get(0);</span>
+<span class="fc" id="L1113">        final double frequency = reading.getSource().getFrequency();</span>
 
-        //n = 2.0, is the path loss exponent (which is typically 2.0)
+        // n = 2.0, is the path loss exponent (which is typically 2.0)
 
-        //Pr = Pt*Gt*Gr*lambda^n/(4*pi*d)^n,    where Pr is the received power
+        // Pr = Pt*Gt*Gr*lambda^n/(4*pi*d)^n,    where Pr is the received power
         // lambda = c/f, where lambda is wavelength,
         // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the received Gain
-        //Pr = Pte*c^n/((4*pi*f)^n * d^n)
+        // Pr = Pte*c^n/((4*pi*f)^n * d^n)
 
 
-        //compute k as the constant part of the isotropic received power formula
-        //so that: Pr = Pte*k/d^n
-<span class="fc" id="L1124">        final double k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI * frequency),</span>
+        // compute k as the constant part of the isotropic received power formula
+        // so that: Pr = Pte*k/d^n
+<span class="fc" id="L1125">        final double k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI * frequency),</span>
                 mInitialPathLossExponent);
-<span class="fc" id="L1126">        final double kdB = 10.0 * Math.log10(k);</span>
-<span class="fc" id="L1127">        final double initialTransmittedPowerdBm = computeInitialTransmittedPowerdBm();</span>
+<span class="fc" id="L1127">        final double kdB = 10.0 * Math.log10(k);</span>
+<span class="fc" id="L1128">        final double initialTransmittedPowerdBm = computeInitialTransmittedPowerdBm();</span>
 
-        //for numerical accuracy reasons, a logarithmic version of the previous
-        //formula will be used instead
-        //Pr (dBm) = 10 * log(Pte * k / d^n) = 10*log(k) + 10*log(Pte) - 10*n*log(d)
+        // for numerical accuracy reasons, a logarithmic version of the previous
+        // formula will be used instead
+        // Pr (dBm) = 10 * log(Pte * k / d^n) = 10*log(k) + 10*log(Pte) - 10*n*log(d)
 
-<span class="fc" id="L1133">        mFitter.setFunctionEvaluator(new LevenbergMarquardtMultiDimensionFunctionEvaluator() {</span>
+<span class="fc" id="L1134">        mFitter.setFunctionEvaluator(new LevenbergMarquardtMultiDimensionFunctionEvaluator() {</span>
             @Override
             public int getNumberOfDimensions() {
-<span class="fc" id="L1136">                return 1;</span>
+<span class="fc" id="L1137">                return 1;</span>
             }
 
             @Override
             public double[] createInitialParametersArray() {
-<span class="fc" id="L1141">                final double[] initial = new double[1];</span>
-<span class="fc" id="L1142">                initial[0] = initialTransmittedPowerdBm;</span>
-<span class="fc" id="L1143">                return initial;</span>
+<span class="fc" id="L1142">                final double[] initial = new double[1];</span>
+<span class="fc" id="L1143">                initial[0] = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L1144">                return initial;</span>
             }
 
             @Override
             public double evaluate(
                     final int i, final double[] point, final double[] params,
                     final double[] derivatives) {
-<span class="fc" id="L1150">                final double sqrDistance = mInitialPosition.sqrDistanceTo(mReadings.get(i).getPosition());</span>
+<span class="fc" id="L1151">                final double sqrDistance = mInitialPosition.sqrDistanceTo(mReadings.get(i).getPosition());</span>
 
-<span class="fc" id="L1152">                final double transmittedPowerdBm = params[0];</span>
+<span class="fc" id="L1153">                final double transmittedPowerdBm = params[0];</span>
 
-                //derivative respect transmitted power Pt (dBm) = 10*log(Pte)
-<span class="fc" id="L1155">                derivatives[0] = 1.0;</span>
+                // derivative respect transmitted power Pt (dBm) = 10*log(Pte)
+<span class="fc" id="L1156">                derivatives[0] = 1.0;</span>
 
-                //d^2 = (x - xap)^2 + (y - yap)^2
-                //d^n = (d^2)^n/2
+                // d^2 = (x - xap)^2 + (y - yap)^2
+                // d^n = (d^2)^n/2
 
-                //Pr = Pt*Gt*Gr*lambda^n/(4*pi*d)^n,    where Pr is the received power
-                //n is the path loss exponent
-                //lambda = c/f, where lambda is wavelength,
-                //Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the
+                // Pr = Pt*Gt*Gr*lambda^n/(4*pi*d)^n,    where Pr is the received power
+                // n is the path loss exponent
+                // lambda = c/f, where lambda is wavelength,
+                // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the
                 //          received Gain
-                //Pr = Pte*c^n/((4*pi*f)^n * d^n)
-                //Pr (dBm) = 10*log(k) + 10*log(Pte) - 10*log(d^n) =
-                //10*log(k) + 10*log(Pte) - 10*log((d^2)^n/2) =
-                //10*log(k) + 10*log(Pte) - 10*n/2*log(d^2) =
-                //10*log(k) + 10*log(Pte) - 5*n*log(d^2) =
-<span class="fc" id="L1170">                return kdB + transmittedPowerdBm</span>
-<span class="fc" id="L1171">                        - 5.0 * mInitialPathLossExponent * Math.log10(sqrDistance);</span>
+                // Pr = Pte*c^n/((4*pi*f)^n * d^n)
+                // Pr (dBm) = 10*log(k) + 10*log(Pte) - 10*log(d^n) =
+                // 10*log(k) + 10*log(Pte) - 10*log((d^2)^n/2) =
+                // 10*log(k) + 10*log(Pte) - 10*n/2*log(d^2) =
+                // 10*log(k) + 10*log(Pte) - 5*n*log(d^2) =
+<span class="fc" id="L1171">                return kdB + transmittedPowerdBm</span>
+<span class="fc" id="L1172">                        - 5.0 * mInitialPathLossExponent * Math.log10(sqrDistance);</span>
             }
         });
 
-<span class="fc" id="L1175">        final int numReadings = mReadings.size();</span>
+<span class="fc" id="L1176">        final int numReadings = mReadings.size();</span>
         try {
-<span class="fc" id="L1177">            final Matrix x = new Matrix(numReadings, 1);</span>
-<span class="fc" id="L1178">            final double[] y = new double[numReadings];</span>
-<span class="fc" id="L1179">            final double[] standardDeviations = new double[numReadings];</span>
+<span class="fc" id="L1178">            final Matrix x = new Matrix(numReadings, 1);</span>
+<span class="fc" id="L1179">            final double[] y = new double[numReadings];</span>
+<span class="fc" id="L1180">            final double[] standardDeviations = new double[numReadings];</span>
 
-<span class="fc" id="L1181">            x.initialize(initialTransmittedPowerdBm);</span>
-<span class="fc bfc" id="L1182" title="All 2 branches covered.">            for (int i = 0; i &lt; numReadings; i++) {</span>
-<span class="fc" id="L1183">                reading = mReadings.get(i);</span>
+<span class="fc" id="L1182">            x.initialize(initialTransmittedPowerdBm);</span>
+<span class="fc bfc" id="L1183" title="All 2 branches covered.">            for (int i = 0; i &lt; numReadings; i++) {</span>
+<span class="fc" id="L1184">                reading = mReadings.get(i);</span>
 
-<span class="fc bfc" id="L1185" title="All 2 branches covered.">                standardDeviations[i] = reading.getRssiStandardDeviation() != null ?</span>
-<span class="fc" id="L1186">                        reading.getRssiStandardDeviation() :</span>
-<span class="fc" id="L1187">                        DEFAULT_POWER_STANDARD_DEVIATION;</span>
-<span class="fc" id="L1188">                y[i] = reading.getRssi();</span>
+<span class="fc bfc" id="L1186" title="All 2 branches covered.">                standardDeviations[i] = reading.getRssiStandardDeviation() != null ?</span>
+<span class="fc" id="L1187">                        reading.getRssiStandardDeviation() :</span>
+<span class="fc" id="L1188">                        DEFAULT_POWER_STANDARD_DEVIATION;</span>
+<span class="fc" id="L1189">                y[i] = reading.getRssi();</span>
             }
 
-<span class="fc" id="L1191">            mFitter.setInputData(x, y, standardDeviations);</span>
-<span class="nc" id="L1192">        } catch (final AlgebraException ignore) {</span>
-            //never happens
-<span class="fc" id="L1194">        }</span>
-<span class="fc" id="L1195">    }</span>
+<span class="fc" id="L1192">            mFitter.setInputData(x, y, standardDeviations);</span>
+<span class="nc" id="L1193">        } catch (final AlgebraException ignore) {</span>
+            // never happens
+<span class="fc" id="L1195">        }</span>
+<span class="fc" id="L1196">    }</span>
 
     /**
      * Setups fitter to estimated path loss exponent.
@@ -1200,94 +1201,94 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      * @throws FittingException if Levenberg-Marquardt fitting fails.
      */
     private void setupFitterPathLossExponent() throws FittingException {
-        //because all readings must belong to the same radio source, we
-        //obtain the frequency of the first radio source on the first reading
-<span class="fc" id="L1205">        RssiReadingLocated&lt;S, P&gt; reading = mReadings.get(0);</span>
-<span class="fc" id="L1206">        final double frequency = reading.getSource().getFrequency();</span>
+        // because all readings must belong to the same radio source, we
+        // obtain the frequency of the first radio source on the first reading
+<span class="fc" id="L1206">        RssiReadingLocated&lt;S, P&gt; reading = mReadings.get(0);</span>
+<span class="fc" id="L1207">        final double frequency = reading.getSource().getFrequency();</span>
 
-        //n = 2.0, is the path loss exponent
+        // n = 2.0, is the path loss exponent
 
-        //Pr = Pt*Gt*Gr*lambda^n/(4*pi*d)^n,    where Pr is the received power
+        // Pr = Pt*Gt*Gr*lambda^n/(4*pi*d)^n,    where Pr is the received power
         // lambda = c/f, where lambda is wavelength,
         // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the received Gain
-        //Pr = Pte*c^n/((4*pi*f)^n * d^n)
+        // Pr = Pte*c^n/((4*pi*f)^n * d^n)
 
 
-        //k is defined so that: Pr = Pte * k^n / d^n so that
-        //k = (c/(4*pi*f))
-<span class="fc" id="L1218">        final double k = SPEED_OF_LIGHT / (4.0 * Math.PI * frequency);</span>
-<span class="fc" id="L1219">        final double kdB = 10.0 * Math.log10(k);</span>
-<span class="fc" id="L1220">        final double initialTransmittedPowerdBm = computeInitialTransmittedPowerdBm();</span>
+        // k is defined so that: Pr = Pte * k^n / d^n so that
+        // k = (c/(4*pi*f))
+<span class="fc" id="L1219">        final double k = SPEED_OF_LIGHT / (4.0 * Math.PI * frequency);</span>
+<span class="fc" id="L1220">        final double kdB = 10.0 * Math.log10(k);</span>
+<span class="fc" id="L1221">        final double initialTransmittedPowerdBm = computeInitialTransmittedPowerdBm();</span>
 
-        //for numerical accuracy reasons, a logarithmic version of the previous
-        //formula will be used instead
-        //Pr (dBm) = 10 * log(Pte * k^n / d^n) = 10*n*log(k) + 10*log(Pte) - 10*n*log(d)
+        // for numerical accuracy reasons, a logarithmic version of the previous
+        // formula will be used instead
+        // Pr (dBm) = 10 * log(Pte * k^n / d^n) = 10*n*log(k) + 10*log(Pte) - 10*n*log(d)
 
-<span class="fc" id="L1226">        mFitter.setFunctionEvaluator(new LevenbergMarquardtMultiDimensionFunctionEvaluator() {</span>
+<span class="fc" id="L1227">        mFitter.setFunctionEvaluator(new LevenbergMarquardtMultiDimensionFunctionEvaluator() {</span>
             @Override
             public int getNumberOfDimensions() {
-<span class="fc" id="L1229">                return 1;</span>
+<span class="fc" id="L1230">                return 1;</span>
             }
 
             @Override
             public double[] createInitialParametersArray() {
-<span class="fc" id="L1234">                final double[] initial = new double[1];</span>
-<span class="fc" id="L1235">                initial[0] = mInitialPathLossExponent;</span>
-<span class="fc" id="L1236">                return initial;</span>
+<span class="fc" id="L1235">                final double[] initial = new double[1];</span>
+<span class="fc" id="L1236">                initial[0] = mInitialPathLossExponent;</span>
+<span class="fc" id="L1237">                return initial;</span>
             }
 
             @Override
             public double evaluate(
                     final int i, final double[] point, final double[] params,
                     final double[] derivatives) {
-<span class="fc" id="L1243">                final double sqrDistance = mInitialPosition.sqrDistanceTo(mReadings.get(i).getPosition());</span>
-<span class="fc" id="L1244">                final double pathLossExponent = params[0];</span>
+<span class="fc" id="L1244">                final double sqrDistance = mInitialPosition.sqrDistanceTo(mReadings.get(i).getPosition());</span>
+<span class="fc" id="L1245">                final double pathLossExponent = params[0];</span>
 
-                //derivative respect to path loss exponent
-                //f(x,y,n) = n*kdB -5*n*log((x - xap)^2 + (y - yap)^2)
-                //df/dn = kdB -5*log((x - xap)^2 + (y - yap)^2) = kdB - 5*log(sqrDistance)
-<span class="fc" id="L1249">                final double logSqrDistance = Math.log10(sqrDistance);</span>
-<span class="fc" id="L1250">                derivatives[0] = kdB - 5 * logSqrDistance;</span>
+                // derivative respect to path loss exponent
+                // f(x,y,n) = n*kdB -5*n*log((x - xap)^2 + (y - yap)^2)
+                // df/dn = kdB -5*log((x - xap)^2 + (y - yap)^2) = kdB - 5*log(sqrDistance)
+<span class="fc" id="L1250">                final double logSqrDistance = Math.log10(sqrDistance);</span>
+<span class="fc" id="L1251">                derivatives[0] = kdB - 5 * logSqrDistance;</span>
 
-                //d^2 = (x - xap)^2 + (y - yap)^2
-                //d^n = (d^2)^n/2
+                // d^2 = (x - xap)^2 + (y - yap)^2
+                // d^n = (d^2)^n/2
 
-                //Pr = Pt*Gt*Gr*lambda^n/(4*pi*d)^n,    where Pr is the received power
-                //n is the path loss exponent
-                //lambda = c/f, where lambda is wavelength,
-                //Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the
-                //          received Gain
-                //Pr = Pte*c^n/((4*pi*f)^n * d^n)
-                //Pr (dBm) = 10*log(k^n) + 10*log(Pte) - 10*log(d^n) =
-                //10*log(k^n) + 10*log(Pte) - 10*log((d^2)^n/2) =
-                //10*n*log(k) + 10*log(Pte) - 10*n/2*log(d^2) =
-                //10*n*log(k) + 10*log(Pte) - 5*n*log(d^2) =
-<span class="fc" id="L1265">                return pathLossExponent * kdB + initialTransmittedPowerdBm</span>
+                // Pr = Pt*Gt*Gr*lambda^n/(4*pi*d)^n,    where Pr is the received power
+                // n is the path loss exponent
+                // lambda = c/f, where lambda is wavelength,
+                // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the
+                //           received Gain
+                // Pr = Pte*c^n/((4*pi*f)^n * d^n)
+                // Pr (dBm) = 10*log(k^n) + 10*log(Pte) - 10*log(d^n) =
+                // 10*log(k^n) + 10*log(Pte) - 10*log((d^2)^n/2) =
+                // 10*n*log(k) + 10*log(Pte) - 10*n/2*log(d^2) =
+                // 10*n*log(k) + 10*log(Pte) - 5*n*log(d^2) =
+<span class="fc" id="L1266">                return pathLossExponent * kdB + initialTransmittedPowerdBm</span>
                         - 5.0 * pathLossExponent * logSqrDistance;
             }
         });
 
-<span class="fc" id="L1270">        final int numReadings = mReadings.size();</span>
+<span class="fc" id="L1271">        final int numReadings = mReadings.size();</span>
         try {
-<span class="fc" id="L1272">            final Matrix x = new Matrix(numReadings, 1);</span>
-<span class="fc" id="L1273">            final double[] y = new double[numReadings];</span>
-<span class="fc" id="L1274">            final double[] standardDeviations = new double[numReadings];</span>
+<span class="fc" id="L1273">            final Matrix x = new Matrix(numReadings, 1);</span>
+<span class="fc" id="L1274">            final double[] y = new double[numReadings];</span>
+<span class="fc" id="L1275">            final double[] standardDeviations = new double[numReadings];</span>
 
-<span class="fc" id="L1276">            x.initialize(mInitialPathLossExponent);</span>
-<span class="fc bfc" id="L1277" title="All 2 branches covered.">            for (int i = 0; i &lt; numReadings; i++) {</span>
-<span class="fc" id="L1278">                reading = mReadings.get(i);</span>
+<span class="fc" id="L1277">            x.initialize(mInitialPathLossExponent);</span>
+<span class="fc bfc" id="L1278" title="All 2 branches covered.">            for (int i = 0; i &lt; numReadings; i++) {</span>
+<span class="fc" id="L1279">                reading = mReadings.get(i);</span>
 
-<span class="fc bfc" id="L1280" title="All 2 branches covered.">                standardDeviations[i] = reading.getRssiStandardDeviation() != null ?</span>
-<span class="fc" id="L1281">                        reading.getRssiStandardDeviation() :</span>
-<span class="fc" id="L1282">                        DEFAULT_POWER_STANDARD_DEVIATION;</span>
-<span class="fc" id="L1283">                y[i] = reading.getRssi();</span>
+<span class="fc bfc" id="L1281" title="All 2 branches covered.">                standardDeviations[i] = reading.getRssiStandardDeviation() != null ?</span>
+<span class="fc" id="L1282">                        reading.getRssiStandardDeviation() :</span>
+<span class="fc" id="L1283">                        DEFAULT_POWER_STANDARD_DEVIATION;</span>
+<span class="fc" id="L1284">                y[i] = reading.getRssi();</span>
             }
 
-<span class="fc" id="L1286">            mFitter.setInputData(x, y, standardDeviations);</span>
-<span class="nc" id="L1287">        } catch (final AlgebraException ignore) {</span>
-            //never happens
-<span class="fc" id="L1289">        }</span>
-<span class="fc" id="L1290">    }</span>
+<span class="fc" id="L1287">            mFitter.setInputData(x, y, standardDeviations);</span>
+<span class="nc" id="L1288">        } catch (final AlgebraException ignore) {</span>
+            // never happens
+<span class="fc" id="L1290">        }</span>
+<span class="fc" id="L1291">    }</span>
 
     /**
      * Setups fitter to estimate transmitted power and position.
@@ -1295,127 +1296,127 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      * @throws FittingException if Levenberg-Marquardt fitting fails.
      */
     private void setupFitterPositionAndTransmittedPower() throws FittingException {
-        //because all readings must belong to the same radio source, we
-        //obtain the frequency of the first radio source on the first reading
-<span class="fc" id="L1300">        RssiReadingLocated&lt;S, P&gt; reading = mReadings.get(0);</span>
-<span class="fc" id="L1301">        final double frequency = reading.getSource().getFrequency();</span>
+        // because all readings must belong to the same radio source, we
+        // obtain the frequency of the first radio source on the first reading
+<span class="fc" id="L1301">        RssiReadingLocated&lt;S, P&gt; reading = mReadings.get(0);</span>
+<span class="fc" id="L1302">        final double frequency = reading.getSource().getFrequency();</span>
 
-        //n = 2.0, is the path loss exponent (which is typically 2.0)
+        // n = 2.0, is the path loss exponent (which is typically 2.0)
 
-        //Pr = Pt*Gt*Gr*lambda^n/(4*pi*d)^n,    where Pr is the received power
+        // Pr = Pt*Gt*Gr*lambda^n/(4*pi*d)^n,    where Pr is the received power
         // lambda = c/f, where lambda is wavelength,
         // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the received Gain
-        //Pr = Pte*c^n/((4*pi*f)^n * d^n)
+        // Pr = Pte*c^n/((4*pi*f)^n * d^n)
 
 
-        //compute k as the constant part of the isotropic received power formula
-        //so that: Pr = Pte*k/d^n
-<span class="fc" id="L1313">        final double k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI * frequency),</span>
+        // compute k as the constant part of the isotropic received power formula
+        // so that: Pr = Pte*k/d^n
+<span class="fc" id="L1314">        final double k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI * frequency),</span>
                 mInitialPathLossExponent);
-<span class="fc" id="L1315">        final double kdB = 10.0 * Math.log10(k);</span>
+<span class="fc" id="L1316">        final double kdB = 10.0 * Math.log10(k);</span>
 
-<span class="fc" id="L1317">        final int dims = getNumberOfDimensions();</span>
-<span class="fc" id="L1318">        final int dimsPlus1 = dims + 1;</span>
+<span class="fc" id="L1318">        final int dims = getNumberOfDimensions();</span>
+<span class="fc" id="L1319">        final int dimsPlus1 = dims + 1;</span>
 
-<span class="fc" id="L1320">        final double initialTransmittedPowerdBm = computeInitialTransmittedPowerdBm();</span>
+<span class="fc" id="L1321">        final double initialTransmittedPowerdBm = computeInitialTransmittedPowerdBm();</span>
 
-        //for numerical accuracy reasons, a logarithmic version of the previous
-        //formula will be used instead
-        //Pr (dBm) = 10 * log(Pte * k / d^n) = 10*log(k) + 10*log(Pte) - 10*n*log(d)
+        // for numerical accuracy reasons, a logarithmic version of the previous
+        // formula will be used instead
+        // Pr (dBm) = 10 * log(Pte * k / d^n) = 10*log(k) + 10*log(Pte) - 10*n*log(d)
 
-<span class="fc" id="L1326">        mFitter.setFunctionEvaluator(new LevenbergMarquardtMultiDimensionFunctionEvaluator() {</span>
+<span class="fc" id="L1327">        mFitter.setFunctionEvaluator(new LevenbergMarquardtMultiDimensionFunctionEvaluator() {</span>
 
             @Override
             public int getNumberOfDimensions() {
-<span class="fc" id="L1330">                return dimsPlus1;</span>
+<span class="fc" id="L1331">                return dimsPlus1;</span>
             }
 
             @Override
             public double[] createInitialParametersArray() {
-<span class="fc" id="L1335">                final double[] initial = new double[dimsPlus1];</span>
+<span class="fc" id="L1336">                final double[] initial = new double[dimsPlus1];</span>
 
-                //initial position
-<span class="fc" id="L1338">                computeInitialPosition(initial, dims);</span>
+                // initial position
+<span class="fc" id="L1339">                computeInitialPosition(initial, dims);</span>
 
-                //initial transmitted power
-<span class="fc" id="L1341">                initial[dims] = initialTransmittedPowerdBm;</span>
+                // initial transmitted power
+<span class="fc" id="L1342">                initial[dims] = initialTransmittedPowerdBm;</span>
 
-<span class="fc" id="L1343">                return initial;</span>
+<span class="fc" id="L1344">                return initial;</span>
             }
 
             @Override
             public double evaluate(
                     final int i, final double[] point, final double[] params,
                     final double[] derivatives) {
-<span class="fc" id="L1350">                double sqrDistance = 0.0;</span>
+<span class="fc" id="L1351">                double sqrDistance = 0.0;</span>
                 double diff;
-<span class="fc bfc" id="L1352" title="All 2 branches covered.">                for (int j = 0; j &lt; dims; j++) {</span>
-<span class="fc" id="L1353">                    diff = params[j] - point[j];</span>
-<span class="fc" id="L1354">                    sqrDistance += diff * diff;</span>
+<span class="fc bfc" id="L1353" title="All 2 branches covered.">                for (int j = 0; j &lt; dims; j++) {</span>
+<span class="fc" id="L1354">                    diff = params[j] - point[j];</span>
+<span class="fc" id="L1355">                    sqrDistance += diff * diff;</span>
 
-                    //n is mInitialPathLossExponent, which is typically 2.0
-<span class="fc" id="L1357">                    derivatives[j] = -10.0 * mInitialPathLossExponent * diff;</span>
+                    // n is mInitialPathLossExponent, which is typically 2.0
+<span class="fc" id="L1358">                    derivatives[j] = -10.0 * mInitialPathLossExponent * diff;</span>
                 }
 
-<span class="fc" id="L1360">                final double transmittedPowerdBm = params[dims];</span>
+<span class="fc" id="L1361">                final double transmittedPowerdBm = params[dims];</span>
 
-                //derivatives respect position coordinates are (2D case):
-                //f(x,y) = -5*n*log((x - xap)^2 + (y - yap)^2)
-                //df/dx = -5*n*2*(x - xap)/(ln(10)*((x - xap)^2 + (y - yap)^2)) = -10*n*diffX/(ln(10)*sqrDistance)
-                //df/dy = -5*n*2*(y - yap)/(ln(10)*((x - xap)^2 + (y - yap)^2)) = -10*n*diffY/(ln(10)*sqrDistance)
-<span class="fc" id="L1366">                final double ln10PerSqrDistance = Math.log(10.0) * sqrDistance;</span>
-<span class="fc bfc" id="L1367" title="All 2 branches covered.">                if (ln10PerSqrDistance != 0.0) {</span>
-<span class="fc bfc" id="L1368" title="All 2 branches covered.">                    for (int j = 0; j &lt; dims; j++) {</span>
-<span class="fc" id="L1369">                        derivatives[j] /= ln10PerSqrDistance;</span>
+                // derivatives respect position coordinates are (2D case):
+                // f(x,y) = -5*n*log((x - xap)^2 + (y - yap)^2)
+                // df/dx = -5*n*2*(x - xap)/(ln(10)*((x - xap)^2 + (y - yap)^2)) = -10*n*diffX/(ln(10)*sqrDistance)
+                // df/dy = -5*n*2*(y - yap)/(ln(10)*((x - xap)^2 + (y - yap)^2)) = -10*n*diffY/(ln(10)*sqrDistance)
+<span class="fc" id="L1367">                final double ln10PerSqrDistance = Math.log(10.0) * sqrDistance;</span>
+<span class="fc bfc" id="L1368" title="All 2 branches covered.">                if (ln10PerSqrDistance != 0.0) {</span>
+<span class="fc bfc" id="L1369" title="All 2 branches covered.">                    for (int j = 0; j &lt; dims; j++) {</span>
+<span class="fc" id="L1370">                        derivatives[j] /= ln10PerSqrDistance;</span>
                     }
                 }
 
-                //derivative respect transmitted power
-<span class="fc" id="L1374">                derivatives[dims] = 1.0;</span>
+                // derivative respect transmitted power
+<span class="fc" id="L1375">                derivatives[dims] = 1.0;</span>
 
-                //d^2 = (x - xap)^2 + (y - yap)^2
-                //d^n = (d^2)^n/2
+                // d^2 = (x - xap)^2 + (y - yap)^2
+                // d^n = (d^2)^n/2
 
-                //Pr = Pt*Gt*Gr*lambda^n/(4*pi*d)^n,    where Pr is the received power
-                //n is the path loss exponent
-                //lambda = c/f, where lambda is wavelength,
-                //Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the
-                //              received Gain
-                //Pr = Pte*c^n/((4*pi*f)^n * d^n)
-                //Pr (dBm) = 10*log(k) + 10*log(Pte) - 10*log(d^n) =
-                //10*log(k) + 10*log(Pte) - 10*log((d^2)^n/2) =
-                //10*log(k) + 10*log(Pte) - 10*n/2*log(d^2) =
-                //10*log(k) + 10*log(Pte) - 5*n*log(d^2) =
-<span class="fc" id="L1389">                return kdB + transmittedPowerdBm</span>
-<span class="fc" id="L1390">                        - 5.0 * mInitialPathLossExponent * Math.log10(sqrDistance);</span>
+                // Pr = Pt*Gt*Gr*lambda^n/(4*pi*d)^n,    where Pr is the received power
+                // n is the path loss exponent
+                // lambda = c/f, where lambda is wavelength,
+                // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the
+                //               received Gain
+                // Pr = Pte*c^n/((4*pi*f)^n * d^n)
+                // Pr (dBm) = 10*log(k) + 10*log(Pte) - 10*log(d^n) =
+                // 10*log(k) + 10*log(Pte) - 10*log((d^2)^n/2) =
+                // 10*log(k) + 10*log(Pte) - 10*n/2*log(d^2) =
+                // 10*log(k) + 10*log(Pte) - 5*n*log(d^2) =
+<span class="fc" id="L1390">                return kdB + transmittedPowerdBm</span>
+<span class="fc" id="L1391">                        - 5.0 * mInitialPathLossExponent * Math.log10(sqrDistance);</span>
             }
         });
 
-<span class="fc" id="L1394">        final int numReadings = mReadings.size();</span>
+<span class="fc" id="L1395">        final int numReadings = mReadings.size();</span>
         try {
-<span class="fc" id="L1396">            final Matrix x = new Matrix(numReadings, dimsPlus1);</span>
-<span class="fc" id="L1397">            final double[] y = new double[numReadings];</span>
-<span class="fc" id="L1398">            final double[] standardDeviations = new double[numReadings];</span>
-<span class="fc bfc" id="L1399" title="All 2 branches covered.">            for (int i = 0; i &lt; numReadings; i++) {</span>
-<span class="fc" id="L1400">                reading = mReadings.get(i);</span>
-<span class="fc" id="L1401">                final P position = reading.getPosition();</span>
+<span class="fc" id="L1397">            final Matrix x = new Matrix(numReadings, dimsPlus1);</span>
+<span class="fc" id="L1398">            final double[] y = new double[numReadings];</span>
+<span class="fc" id="L1399">            final double[] standardDeviations = new double[numReadings];</span>
+<span class="fc bfc" id="L1400" title="All 2 branches covered.">            for (int i = 0; i &lt; numReadings; i++) {</span>
+<span class="fc" id="L1401">                reading = mReadings.get(i);</span>
+<span class="fc" id="L1402">                final P position = reading.getPosition();</span>
 
-<span class="fc bfc" id="L1403" title="All 2 branches covered.">                for (int j = 0; j &lt; dims; j++) {</span>
-<span class="fc" id="L1404">                    x.setElementAt(i, j, position.getInhomogeneousCoordinate(j));</span>
+<span class="fc bfc" id="L1404" title="All 2 branches covered.">                for (int j = 0; j &lt; dims; j++) {</span>
+<span class="fc" id="L1405">                    x.setElementAt(i, j, position.getInhomogeneousCoordinate(j));</span>
                 }
-<span class="fc" id="L1406">                x.setElementAt(i, dims, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L1407">                x.setElementAt(i, dims, initialTransmittedPowerdBm);</span>
 
-<span class="fc bfc" id="L1408" title="All 2 branches covered.">                standardDeviations[i] = reading.getRssiStandardDeviation() != null ?</span>
-<span class="fc" id="L1409">                        reading.getRssiStandardDeviation() :</span>
-<span class="fc" id="L1410">                        DEFAULT_POWER_STANDARD_DEVIATION;</span>
-<span class="fc" id="L1411">                y[i] = reading.getRssi();</span>
+<span class="fc bfc" id="L1409" title="All 2 branches covered.">                standardDeviations[i] = reading.getRssiStandardDeviation() != null ?</span>
+<span class="fc" id="L1410">                        reading.getRssiStandardDeviation() :</span>
+<span class="fc" id="L1411">                        DEFAULT_POWER_STANDARD_DEVIATION;</span>
+<span class="fc" id="L1412">                y[i] = reading.getRssi();</span>
             }
 
-<span class="fc" id="L1414">            mFitter.setInputData(x, y, standardDeviations);</span>
-<span class="nc" id="L1415">        } catch (final AlgebraException ignore) {</span>
-            //never happens
-<span class="fc" id="L1417">        }</span>
-<span class="fc" id="L1418">    }</span>
+<span class="fc" id="L1415">            mFitter.setInputData(x, y, standardDeviations);</span>
+<span class="nc" id="L1416">        } catch (final AlgebraException ignore) {</span>
+            // never happens
+<span class="fc" id="L1418">        }</span>
+<span class="fc" id="L1419">    }</span>
 
     /**
      * Setups fitter to estimate position and path loss exponent.
@@ -1423,127 +1424,127 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      * @throws FittingException if Levenberg-Marquardt fitting fails.
      */
     private void setupFitterPositionAndPathLossExponent() throws FittingException {
-        //because all readings must belong to the same radio source, we
-        //obtain the frequency of the first radio source on the first reading
-<span class="fc" id="L1428">        RssiReadingLocated&lt;S, P&gt; reading = mReadings.get(0);</span>
-<span class="fc" id="L1429">        final double frequency = reading.getSource().getFrequency();</span>
+        // because all readings must belong to the same radio source, we
+        // obtain the frequency of the first radio source on the first reading
+<span class="fc" id="L1429">        RssiReadingLocated&lt;S, P&gt; reading = mReadings.get(0);</span>
+<span class="fc" id="L1430">        final double frequency = reading.getSource().getFrequency();</span>
 
-        //n = 2.0, is the path loss exponent (which is typically 2.0)
+        // n = 2.0, is the path loss exponent (which is typically 2.0)
 
-        //Pr = Pt*Gt*Gr*lambda^n/(4*pi*d)^n,    where Pr is the received power
+        // Pr = Pt*Gt*Gr*lambda^n/(4*pi*d)^n,    where Pr is the received power
         // lambda = c/f, where lambda is wavelength,
         // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the received Gain
-        //Pr = Pte*c^n/((4*pi*f)^n * d^n)
+        // Pr = Pte*c^n/((4*pi*f)^n * d^n)
 
 
-        //compute k as the constant part of the isotropic received power formula
-        //so that: Pr = Pte*k/d^n
-<span class="fc" id="L1441">        final double k = SPEED_OF_LIGHT / (4.0 * Math.PI * frequency);</span>
-<span class="fc" id="L1442">        final double kdB = 10.0 * Math.log10(k);</span>
+        // compute k as the constant part of the isotropic received power formula
+        // so that: Pr = Pte*k/d^n
+<span class="fc" id="L1442">        final double k = SPEED_OF_LIGHT / (4.0 * Math.PI * frequency);</span>
+<span class="fc" id="L1443">        final double kdB = 10.0 * Math.log10(k);</span>
 
-<span class="fc" id="L1444">        final int dims = getNumberOfDimensions();</span>
-<span class="fc" id="L1445">        final int dimsPlus1 = dims + 1;</span>
+<span class="fc" id="L1445">        final int dims = getNumberOfDimensions();</span>
+<span class="fc" id="L1446">        final int dimsPlus1 = dims + 1;</span>
 
-<span class="fc" id="L1447">        final double initialTransmittedPowerdBm = computeInitialTransmittedPowerdBm();</span>
+<span class="fc" id="L1448">        final double initialTransmittedPowerdBm = computeInitialTransmittedPowerdBm();</span>
 
-        //for numerical accuracy reasons, a logarithmic version of the previous
-        //formula will be used instead
-        //Pr (dBm) = 10 * log(Pte * k / d^n) = 10*log(k) + 10*log(Pte) - 10*n*log(d)
+        // for numerical accuracy reasons, a logarithmic version of the previous
+        // formula will be used instead
+        // Pr (dBm) = 10 * log(Pte * k / d^n) = 10*log(k) + 10*log(Pte) - 10*n*log(d)
 
-<span class="fc" id="L1453">        mFitter.setFunctionEvaluator(new LevenbergMarquardtMultiDimensionFunctionEvaluator() {</span>
+<span class="fc" id="L1454">        mFitter.setFunctionEvaluator(new LevenbergMarquardtMultiDimensionFunctionEvaluator() {</span>
             @Override
             public int getNumberOfDimensions() {
-<span class="fc" id="L1456">                return dimsPlus1;</span>
+<span class="fc" id="L1457">                return dimsPlus1;</span>
             }
 
             @Override
             public double[] createInitialParametersArray() {
-<span class="fc" id="L1461">                final double[] initial = new double[dimsPlus1];</span>
+<span class="fc" id="L1462">                final double[] initial = new double[dimsPlus1];</span>
 
-                //initial position
-<span class="fc" id="L1464">                computeInitialPosition(initial, dims);</span>
+                // initial position
+<span class="fc" id="L1465">                computeInitialPosition(initial, dims);</span>
 
-                //initial path loss exponent
-<span class="fc" id="L1467">                initial[dims] = mInitialPathLossExponent;</span>
-<span class="fc" id="L1468">                return initial;</span>
+                // initial path loss exponent
+<span class="fc" id="L1468">                initial[dims] = mInitialPathLossExponent;</span>
+<span class="fc" id="L1469">                return initial;</span>
             }
 
             @Override
             public double evaluate(
                     final int i, final double[] point, final double[] params,
                     final double[] derivatives) {
-<span class="fc" id="L1475">                double sqrDistance = 0.0;</span>
+<span class="fc" id="L1476">                double sqrDistance = 0.0;</span>
                 double diff;
-<span class="fc" id="L1477">                final double pathLossExponent = params[dims];</span>
-<span class="fc bfc" id="L1478" title="All 2 branches covered.">                for (int j = 0; j &lt; dims; j++) {</span>
-<span class="fc" id="L1479">                    diff = params[j] - point[j];</span>
-<span class="fc" id="L1480">                    sqrDistance += diff * diff;</span>
+<span class="fc" id="L1478">                final double pathLossExponent = params[dims];</span>
+<span class="fc bfc" id="L1479" title="All 2 branches covered.">                for (int j = 0; j &lt; dims; j++) {</span>
+<span class="fc" id="L1480">                    diff = params[j] - point[j];</span>
+<span class="fc" id="L1481">                    sqrDistance += diff * diff;</span>
 
-                    //n is mInitialPathLossExponent, which is typically 2.0
-<span class="fc" id="L1483">                    derivatives[j] = -10.0 * pathLossExponent * diff;</span>
+                    // n is mInitialPathLossExponent, which is typically 2.0
+<span class="fc" id="L1484">                    derivatives[j] = -10.0 * pathLossExponent * diff;</span>
                 }
 
-                //derivatives respect position coordinates are (2D case):
-                //f(x,y,n) = n*kdB -5*n*log((x - xap)^2 + (y - yap)^2)
-                //df/dx = -5*n*2*(x - xap)/(ln(10)*((x - xap)^2 + (y - yap)^2)) = -10*n*diffX/(ln(10)*sqrDistance)
-                //df/dy = -5*n*2*(y - yap)/(ln(10)*((x - xap)^2 + (y - yap)^2)) = -10*n*diffY/(ln(10)*sqrDistance)
-                //df/dn = kdB -5*log((x - xap)^2 + (y - yap)^2) = kdB - 5*log(sqrDistance)
-<span class="fc" id="L1491">                final double ln10PerSqrDistance = Math.log(10.0) * sqrDistance;</span>
-<span class="pc bpc" id="L1492" title="1 of 2 branches missed.">                if (ln10PerSqrDistance != 0.0) {</span>
-<span class="fc bfc" id="L1493" title="All 2 branches covered.">                    for (int j = 0; j &lt; dims; j++) {</span>
-<span class="fc" id="L1494">                        derivatives[j] /= ln10PerSqrDistance;</span>
+                // derivatives respect position coordinates are (2D case):
+                // f(x,y,n) = n*kdB -5*n*log((x - xap)^2 + (y - yap)^2)
+                // df/dx = -5*n*2*(x - xap)/(ln(10)*((x - xap)^2 + (y - yap)^2)) = -10*n*diffX/(ln(10)*sqrDistance)
+                // df/dy = -5*n*2*(y - yap)/(ln(10)*((x - xap)^2 + (y - yap)^2)) = -10*n*diffY/(ln(10)*sqrDistance)
+                // df/dn = kdB -5*log((x - xap)^2 + (y - yap)^2) = kdB - 5*log(sqrDistance)
+<span class="fc" id="L1492">                final double ln10PerSqrDistance = Math.log(10.0) * sqrDistance;</span>
+<span class="pc bpc" id="L1493" title="1 of 2 branches missed.">                if (ln10PerSqrDistance != 0.0) {</span>
+<span class="fc bfc" id="L1494" title="All 2 branches covered.">                    for (int j = 0; j &lt; dims; j++) {</span>
+<span class="fc" id="L1495">                        derivatives[j] /= ln10PerSqrDistance;</span>
                     }
                 }
 
-                //derivative respect to path loss exponent
-<span class="fc" id="L1499">                final double logSqrDistance = Math.log10(sqrDistance);</span>
-<span class="fc" id="L1500">                derivatives[dims] = kdB - 5 * logSqrDistance;</span>
+                // derivative respect to path loss exponent
+<span class="fc" id="L1500">                final double logSqrDistance = Math.log10(sqrDistance);</span>
+<span class="fc" id="L1501">                derivatives[dims] = kdB - 5 * logSqrDistance;</span>
 
-                //d^2 = (x - xap)^2 + (y - yap)^2
-                //d^n = (d^2)^n/2
-                //k = (c/(4*pi*f))^n
+                // d^2 = (x - xap)^2 + (y - yap)^2
+                // d^n = (d^2)^n/2
+                // k = (c/(4*pi*f))^n
 
-                //Pr = Pt*Gt*Gr*lambda^n/(4*pi*d)^n,    where Pr is the received power
-                //n is the path loss exponent
-                //lambda = c/f, where lambda is wavelength,
-                //Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the
-                //              received Gain
-                //Pr = Pte*c^n/((4*pi*f)^n * d^n)
-                //Pr (dBm) = 10*log(k^n) + 10*log(Pte) - 10*log(d^n) =
-                //10*log(k^n) + 10*log(Pte) - 10*log((d^2)^n/2) =
-                //10*n*log(k) + 10*log(Pte) - 10*n/2*log(d^2) =
-                //10*n*log(k) + 10*log(Pte) - 5*n*log(d^2) =
+                // Pr = Pt*Gt*Gr*lambda^n/(4*pi*d)^n,    where Pr is the received power
+                // n is the path loss exponent
+                // lambda = c/f, where lambda is wavelength,
+                // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the
+                //               received Gain
+                // Pr = Pte*c^n/((4*pi*f)^n * d^n)
+                // Pr (dBm) = 10*log(k^n) + 10*log(Pte) - 10*log(d^n) =
+                // 10*log(k^n) + 10*log(Pte) - 10*log((d^2)^n/2) =
+                // 10*n*log(k) + 10*log(Pte) - 10*n/2*log(d^2) =
+                // 10*n*log(k) + 10*log(Pte) - 5*n*log(d^2) =
 
-<span class="fc" id="L1517">                return pathLossExponent * kdB + initialTransmittedPowerdBm</span>
+<span class="fc" id="L1518">                return pathLossExponent * kdB + initialTransmittedPowerdBm</span>
                         - 5.0 * pathLossExponent * logSqrDistance;
             }
         });
 
-<span class="fc" id="L1522">        final int numReadings = mReadings.size();</span>
+<span class="fc" id="L1523">        final int numReadings = mReadings.size();</span>
         try {
-<span class="fc" id="L1524">            final Matrix x = new Matrix(numReadings, dimsPlus1);</span>
-<span class="fc" id="L1525">            final double[] y = new double[numReadings];</span>
-<span class="fc" id="L1526">            final double[] standardDeviations = new double[numReadings];</span>
-<span class="fc bfc" id="L1527" title="All 2 branches covered.">            for (int i = 0; i &lt; numReadings; i++) {</span>
-<span class="fc" id="L1528">                reading = mReadings.get(i);</span>
-<span class="fc" id="L1529">                final P position = reading.getPosition();</span>
+<span class="fc" id="L1525">            final Matrix x = new Matrix(numReadings, dimsPlus1);</span>
+<span class="fc" id="L1526">            final double[] y = new double[numReadings];</span>
+<span class="fc" id="L1527">            final double[] standardDeviations = new double[numReadings];</span>
+<span class="fc bfc" id="L1528" title="All 2 branches covered.">            for (int i = 0; i &lt; numReadings; i++) {</span>
+<span class="fc" id="L1529">                reading = mReadings.get(i);</span>
+<span class="fc" id="L1530">                final P position = reading.getPosition();</span>
 
-<span class="fc bfc" id="L1531" title="All 2 branches covered.">                for (int j = 0; j &lt; dims; j++) {</span>
-<span class="fc" id="L1532">                    x.setElementAt(i, j, position.getInhomogeneousCoordinate(j));</span>
+<span class="fc bfc" id="L1532" title="All 2 branches covered.">                for (int j = 0; j &lt; dims; j++) {</span>
+<span class="fc" id="L1533">                    x.setElementAt(i, j, position.getInhomogeneousCoordinate(j));</span>
                 }
-<span class="fc" id="L1534">                x.setElementAt(i, dims, mInitialPathLossExponent);</span>
+<span class="fc" id="L1535">                x.setElementAt(i, dims, mInitialPathLossExponent);</span>
 
-<span class="fc bfc" id="L1536" title="All 2 branches covered.">                standardDeviations[i] = reading.getRssiStandardDeviation() != null ?</span>
-<span class="fc" id="L1537">                        reading.getRssiStandardDeviation() :</span>
-<span class="fc" id="L1538">                        DEFAULT_POWER_STANDARD_DEVIATION;</span>
-<span class="fc" id="L1539">                y[i] = reading.getRssi();</span>
+<span class="fc bfc" id="L1537" title="All 2 branches covered.">                standardDeviations[i] = reading.getRssiStandardDeviation() != null ?</span>
+<span class="fc" id="L1538">                        reading.getRssiStandardDeviation() :</span>
+<span class="fc" id="L1539">                        DEFAULT_POWER_STANDARD_DEVIATION;</span>
+<span class="fc" id="L1540">                y[i] = reading.getRssi();</span>
             }
 
-<span class="fc" id="L1542">            mFitter.setInputData(x, y, standardDeviations);</span>
-<span class="nc" id="L1543">        } catch (final AlgebraException ignore) {</span>
-            //never happens
-<span class="fc" id="L1545">        }</span>
-<span class="fc" id="L1546">    }</span>
+<span class="fc" id="L1543">            mFitter.setInputData(x, y, standardDeviations);</span>
+<span class="nc" id="L1544">        } catch (final AlgebraException ignore) {</span>
+            // never happens
+<span class="fc" id="L1546">        }</span>
+<span class="fc" id="L1547">    }</span>
 
     /**
      * Setups fitter to estimate transmitted power and path loss exponent.
@@ -1551,106 +1552,106 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      * @throws FittingException if Levenberg-Marquardt fitting fails.
      */
     private void setupFitterTransmittedPowerAndPathLossExponent() throws FittingException {
-        //because all readings must belong to the same radio source, we
-        //obtain the frequency of the first radio source on the first reading
-<span class="fc" id="L1556">        RssiReadingLocated&lt;S, P&gt; reading = mReadings.get(0);</span>
-<span class="fc" id="L1557">        final double frequency = reading.getSource().getFrequency();</span>
+        // because all readings must belong to the same radio source, we
+        // obtain the frequency of the first radio source on the first reading
+<span class="fc" id="L1557">        RssiReadingLocated&lt;S, P&gt; reading = mReadings.get(0);</span>
+<span class="fc" id="L1558">        final double frequency = reading.getSource().getFrequency();</span>
 
-        //n = 2.0, is the path loss exponent
+        // n = 2.0, is the path loss exponent
 
-        //Pr = Pt*Gt*Gr*lambda^n/(4*pi*d)^n,    where Pr is the received power
+        // Pr = Pt*Gt*Gr*lambda^n/(4*pi*d)^n,    where Pr is the received power
         // lambda = c/f, where lambda is wavelength,
         // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the received Gain
-        //Pr = Pte*c^n/((4*pi*f)^n * d^n)
+        // Pr = Pte*c^n/((4*pi*f)^n * d^n)
 
 
-        //k is defined so that: Pr = Pte * k^n / d^n so that
-        //k = (c/(4*pi*f))
-<span class="fc" id="L1569">        final double k = SPEED_OF_LIGHT / (4.0 * Math.PI * frequency);</span>
-<span class="fc" id="L1570">        final double kdB = 10.0 * Math.log10(k);</span>
+        // k is defined so that: Pr = Pte * k^n / d^n so that
+        // k = (c/(4*pi*f))
+<span class="fc" id="L1570">        final double k = SPEED_OF_LIGHT / (4.0 * Math.PI * frequency);</span>
+<span class="fc" id="L1571">        final double kdB = 10.0 * Math.log10(k);</span>
 
-<span class="fc" id="L1572">        final double initialTransmittedPowerdBm = computeInitialTransmittedPowerdBm();</span>
+<span class="fc" id="L1573">        final double initialTransmittedPowerdBm = computeInitialTransmittedPowerdBm();</span>
 
-        //for numerical accuracy reasons, a logarithmic version of the previous
-        //formula will be used instead
-        //Pr (dBm) = 10 * log(Pte * k^n / d^n) = 10*n*log(k) + 10*log(Pte) - 10*n*log(d)
+        // for numerical accuracy reasons, a logarithmic version of the previous
+        // formula will be used instead
+        // Pr (dBm) = 10 * log(Pte * k^n / d^n) = 10*n*log(k) + 10*log(Pte) - 10*n*log(d)
 
-<span class="fc" id="L1578">        mFitter.setFunctionEvaluator(new LevenbergMarquardtMultiDimensionFunctionEvaluator() {</span>
+<span class="fc" id="L1579">        mFitter.setFunctionEvaluator(new LevenbergMarquardtMultiDimensionFunctionEvaluator() {</span>
             @Override
             public int getNumberOfDimensions() {
-<span class="fc" id="L1581">                return 2;</span>
+<span class="fc" id="L1582">                return 2;</span>
             }
 
             @Override
             public double[] createInitialParametersArray() {
-<span class="fc" id="L1586">                final double[] initial = new double[2];</span>
+<span class="fc" id="L1587">                final double[] initial = new double[2];</span>
 
-                //initial transmitted power
-<span class="fc" id="L1589">                initial[0] = initialTransmittedPowerdBm;</span>
+                // initial transmitted power
+<span class="fc" id="L1590">                initial[0] = initialTransmittedPowerdBm;</span>
 
-                //initial path loss exponent
-<span class="fc" id="L1592">                initial[1] = mInitialPathLossExponent;</span>
+                // initial path loss exponent
+<span class="fc" id="L1593">                initial[1] = mInitialPathLossExponent;</span>
 
-<span class="fc" id="L1594">                return initial;</span>
+<span class="fc" id="L1595">                return initial;</span>
             }
 
             @Override
             public double evaluate(
                     final int i, final double[] point, final double[] params,
                     final double[] derivatives) {
-<span class="fc" id="L1601">                final double sqrDistance = mInitialPosition.sqrDistanceTo(mReadings.get(i).getPosition());</span>
-<span class="fc" id="L1602">                final double transmittedPowerdBm = params[0];</span>
-<span class="fc" id="L1603">                final double pathLossExponent = params[1];</span>
+<span class="fc" id="L1602">                final double sqrDistance = mInitialPosition.sqrDistanceTo(mReadings.get(i).getPosition());</span>
+<span class="fc" id="L1603">                final double transmittedPowerdBm = params[0];</span>
+<span class="fc" id="L1604">                final double pathLossExponent = params[1];</span>
 
-                //derivative respect transmitted power
-<span class="fc" id="L1606">                derivatives[0] = 1.0;</span>
+                // derivative respect transmitted power
+<span class="fc" id="L1607">                derivatives[0] = 1.0;</span>
 
-                //derivative respect to path loss exponent
-<span class="fc" id="L1609">                final double logSqrDistance = Math.log10(sqrDistance);</span>
-<span class="fc" id="L1610">                derivatives[1] = kdB - 5 * logSqrDistance;</span>
+                // derivative respect to path loss exponent
+<span class="fc" id="L1610">                final double logSqrDistance = Math.log10(sqrDistance);</span>
+<span class="fc" id="L1611">                derivatives[1] = kdB - 5 * logSqrDistance;</span>
 
-                //d^2 = (x - xap)^2 + (y - yap)^2
-                //d^n = (d^2)^n/2
-                //k = (c/(4*pi*f))^n
+                // d^2 = (x - xap)^2 + (y - yap)^2
+                // d^n = (d^2)^n/2
+                // k = (c/(4*pi*f))^n
 
-                //Pr = Pt*Gt*Gr*lambda^n/(4*pi*d)^n,    where Pr is the received power
-                //n is the path loss exponent
-                //lambda = c/f, where lambda is wavelength,
-                //Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the
-                //                 received Gain
-                //Pr = Pte*c^n/((4*pi*f)^n * d^n)
-                //Pr (dBm) = 10*log(k^n) + 10*log(Pte) - 10*log(d^n) =
-                //10*log(k^n) + 10*log(Pte) - 10*log((d^2)^n/2) =
-                //10*n*log(k) + 10*log(Pte) - 10*n/2*log(d^2) =
-                //10*n*log(k) + 10*log(Pte) - 5*n*log(d^2) =
+                // Pr = Pt*Gt*Gr*lambda^n/(4*pi*d)^n,    where Pr is the received power
+                // n is the path loss exponent
+                // lambda = c/f, where lambda is wavelength,
+                // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the
+                //                  received Gain
+                // Pr = Pte*c^n/((4*pi*f)^n * d^n)
+                // Pr (dBm) = 10*log(k^n) + 10*log(Pte) - 10*log(d^n) =
+                // 10*log(k^n) + 10*log(Pte) - 10*log((d^2)^n/2) =
+                // 10*n*log(k) + 10*log(Pte) - 10*n/2*log(d^2) =
+                // 10*n*log(k) + 10*log(Pte) - 5*n*log(d^2) =
 
-<span class="fc" id="L1627">                return pathLossExponent * kdB + transmittedPowerdBm</span>
+<span class="fc" id="L1628">                return pathLossExponent * kdB + transmittedPowerdBm</span>
                         - 5.0 * pathLossExponent * logSqrDistance;
             }
         });
 
-<span class="fc" id="L1632">        final int numReadings = mReadings.size();</span>
+<span class="fc" id="L1633">        final int numReadings = mReadings.size();</span>
         try {
-<span class="fc" id="L1634">            final Matrix x = new Matrix(numReadings, 2);</span>
-<span class="fc" id="L1635">            final double[] y = new double[numReadings];</span>
-<span class="fc" id="L1636">            final double[] standardDeviations = new double[numReadings];</span>
-<span class="fc bfc" id="L1637" title="All 2 branches covered.">            for (int i = 0; i &lt; numReadings; i++) {</span>
-<span class="fc" id="L1638">                reading = mReadings.get(i);</span>
+<span class="fc" id="L1635">            final Matrix x = new Matrix(numReadings, 2);</span>
+<span class="fc" id="L1636">            final double[] y = new double[numReadings];</span>
+<span class="fc" id="L1637">            final double[] standardDeviations = new double[numReadings];</span>
+<span class="fc bfc" id="L1638" title="All 2 branches covered.">            for (int i = 0; i &lt; numReadings; i++) {</span>
+<span class="fc" id="L1639">                reading = mReadings.get(i);</span>
 
-<span class="fc" id="L1640">                x.setElementAt(i, 0, initialTransmittedPowerdBm);</span>
-<span class="fc" id="L1641">                x.setElementAt(i, 1, mInitialPathLossExponent);</span>
+<span class="fc" id="L1641">                x.setElementAt(i, 0, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L1642">                x.setElementAt(i, 1, mInitialPathLossExponent);</span>
 
-<span class="fc bfc" id="L1643" title="All 2 branches covered.">                standardDeviations[i] = reading.getRssiStandardDeviation() != null ?</span>
-<span class="fc" id="L1644">                        reading.getRssiStandardDeviation() :</span>
-<span class="fc" id="L1645">                        DEFAULT_POWER_STANDARD_DEVIATION;</span>
-<span class="fc" id="L1646">                y[i] = reading.getRssi();</span>
+<span class="fc bfc" id="L1644" title="All 2 branches covered.">                standardDeviations[i] = reading.getRssiStandardDeviation() != null ?</span>
+<span class="fc" id="L1645">                        reading.getRssiStandardDeviation() :</span>
+<span class="fc" id="L1646">                        DEFAULT_POWER_STANDARD_DEVIATION;</span>
+<span class="fc" id="L1647">                y[i] = reading.getRssi();</span>
             }
 
-<span class="fc" id="L1649">            mFitter.setInputData(x, y, standardDeviations);</span>
-<span class="nc" id="L1650">        } catch (AlgebraException ignore) {</span>
-            //never happens
-<span class="fc" id="L1652">        }</span>
-<span class="fc" id="L1653">    }</span>
+<span class="fc" id="L1650">            mFitter.setInputData(x, y, standardDeviations);</span>
+<span class="nc" id="L1651">        } catch (AlgebraException ignore) {</span>
+            // never happens
+<span class="fc" id="L1653">        }</span>
+<span class="fc" id="L1654">    }</span>
 
     /**
      * Setups fitter to estimate transmitted power, position and path
@@ -1659,21 +1660,20 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      * @throws FittingException if Levenberg-Marquardt fitting fails.
      */
     private void setupFitterPositionTransmittedPowerAndPathLossExponent() throws FittingException {
-        //because all readings must belong to the same radio source, we
-        //obtain the frequency of the first radio source on the first reading
-<span class="fc" id="L1664">        RssiReadingLocated&lt;S, P&gt; reading = mReadings.get(0);</span>
-<span class="fc" id="L1665">        final double frequency = reading.getSource().getFrequency();</span>
+        // because all readings must belong to the same radio source, we
+        // obtain the frequency of the first radio source on the first reading
+<span class="fc" id="L1665">        RssiReadingLocated&lt;S, P&gt; reading = mReadings.get(0);</span>
+<span class="fc" id="L1666">        final double frequency = reading.getSource().getFrequency();</span>
 
-        //n = 2.0, is the path loss exponent
+        // n = 2.0, is the path loss exponent
 
-        //Pr = Pt*Gt*Gr*lambda^n/(4*pi*d)^n,    where Pr is the received power
+        // Pr = Pt*Gt*Gr*lambda^n/(4*pi*d)^n,    where Pr is the received power
         // lambda = c/f, where lambda is wavelength,
         // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the received Gain
-        //Pr = Pte*c^n/((4*pi*f)^n * d^n)
+        // Pr = Pte*c^n/((4*pi*f)^n * d^n)
 
-
-        //k is defined so that: Pr = Pte * k^n / d^n so that
-        //k = (c/(4*pi*f))
+        // k is defined so that: Pr = Pte * k^n / d^n so that
+        // k = (c/(4*pi*f))
 <span class="fc" id="L1677">        final double k = SPEED_OF_LIGHT / (4.0 * Math.PI * frequency);</span>
 <span class="fc" id="L1678">        final double kdB = 10.0 * Math.log10(k);</span>
 
@@ -1683,9 +1683,9 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
 
 <span class="fc" id="L1684">        final double initialTransmittedPowerdBm = computeInitialTransmittedPowerdBm();</span>
 
-        //for numerical accuracy reasons, a logarithmic version of the previous
-        //formula will be used instead
-        //Pr (dBm) = 10 * log(Pte * k^n / d^n) = 10*n*log(k) + 10*log(Pte) - 10*n*log(d)
+        // for numerical accuracy reasons, a logarithmic version of the previous
+        // formula will be used instead
+        // Pr (dBm) = 10 * log(Pte * k^n / d^n) = 10*n*log(k) + 10*log(Pte) - 10*n*log(d)
 
 <span class="fc" id="L1690">        mFitter.setFunctionEvaluator(new LevenbergMarquardtMultiDimensionFunctionEvaluator() {</span>
 
@@ -1698,13 +1698,13 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
             public double[] createInitialParametersArray() {
 <span class="fc" id="L1699">                final double[] initial = new double[dimsPlus2];</span>
 
-                //initial position
+                // initial position
 <span class="fc" id="L1702">                computeInitialPosition(initial, dims);</span>
 
-                //initial transmitted power
+                // initial transmitted power
 <span class="fc" id="L1705">                initial[dims] = initialTransmittedPowerdBm;</span>
 
-                //initial path loss exponent
+                // initial path loss exponent
 <span class="fc" id="L1708">                initial[dimsPlus1] = mInitialPathLossExponent;</span>
 
 <span class="fc" id="L1710">                return initial;</span>
@@ -1721,17 +1721,17 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
 <span class="fc" id="L1721">                    diff = params[j] - point[j];</span>
 <span class="fc" id="L1722">                    sqrDistance += diff * diff;</span>
 
-                    //n is mInitialPathLossExponent, which is typically 2.0
+                    // n is mInitialPathLossExponent, which is typically 2.0
 <span class="fc" id="L1725">                    derivatives[j] = -10.0 * pathLossExponent * diff;</span>
                 }
 
 <span class="fc" id="L1728">                final double transmittedPowerdBm = params[dims];</span>
 
-                //derivatives respect position coordinates are (2D case):
-                //f(x,y,n) = n*kdB -5*n*log((x - xap)^2 + (y - yap)^2)
-                //df/dx = -5*n*2*(x - xap)/(ln(10)*((x - xap)^2 + (y - yap)^2)) = -10*n*diffX/(ln(10)*sqrDistance)
-                //df/dy = -5*n*2*(y - yap)/(ln(10)*((x - xap)^2 + (y - yap)^2)) = -10*n*diffY/(ln(10)*sqrDistance)
-                //df/dn = kdB -5*log((x - xap)^2 + (y - yap)^2) = kdB - 5*log(sqrDistance)
+                // derivatives respect position coordinates are (2D case):
+                // f(x,y,n) = n*kdB -5*n*log((x - xap)^2 + (y - yap)^2)
+                // df/dx = -5*n*2*(x - xap)/(ln(10)*((x - xap)^2 + (y - yap)^2)) = -10*n*diffX/(ln(10)*sqrDistance)
+                // df/dy = -5*n*2*(y - yap)/(ln(10)*((x - xap)^2 + (y - yap)^2)) = -10*n*diffY/(ln(10)*sqrDistance)
+                // df/dn = kdB -5*log((x - xap)^2 + (y - yap)^2) = kdB - 5*log(sqrDistance)
 <span class="fc" id="L1735">                final double ln10PerSqrDistance = Math.log(10.0) * sqrDistance;</span>
 <span class="pc bpc" id="L1736" title="1 of 2 branches missed.">                if (ln10PerSqrDistance != 0.0) {</span>
 <span class="fc bfc" id="L1737" title="All 2 branches covered.">                    for (int j = 0; j &lt; dims; j++) {</span>
@@ -1739,27 +1739,27 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
                     }
                 }
 
-                //derivative respect transmitted power
+                // derivative respect transmitted power
 <span class="fc" id="L1743">                derivatives[dims] = 1.0;</span>
 
-                //derivative respect to path loss exponent
+                // derivative respect to path loss exponent
 <span class="fc" id="L1746">                final double logSqrDistance = Math.log10(sqrDistance);</span>
 <span class="fc" id="L1747">                derivatives[dimsPlus1] = kdB - 5 * logSqrDistance;</span>
 
-                //d^2 = (x - xap)^2 + (y - yap)^2
-                //d^n = (d^2)^n/2
-                //k = (c/(4*pi*f))^n
+                // d^2 = (x - xap)^2 + (y - yap)^2
+                // d^n = (d^2)^n/2
+                // k = (c/(4*pi*f))^n
 
-                //Pr = Pt*Gt*Gr*lambda^n/(4*pi*d)^n,    where Pr is the received power
-                //n is the path loss exponent
-                //lambda = c/f, where lambda is wavelength,
-                //Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the
-                //          received Gain
-                //Pr = Pte*c^n/((4*pi*f)^n * d^n)
-                //Pr (dBm) = 10*log(k^n) + 10*log(Pte) - 10*log(d^n) =
-                //10*log(k^n) + 10*log(Pte) - 10*log((d^2)^n/2) =
-                //10*n*log(k) + 10*log(Pte) - 10*n/2*log(d^2) =
-                //10*n*log(k) + 10*log(Pte) - 5*n*log(d^2) =
+                // Pr = Pt*Gt*Gr*lambda^n/(4*pi*d)^n,    where Pr is the received power
+                // n is the path loss exponent
+                // lambda = c/f, where lambda is wavelength,
+                // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the
+                //           received Gain
+                // Pr = Pte*c^n/((4*pi*f)^n * d^n)
+                // Pr (dBm) = 10*log(k^n) + 10*log(Pte) - 10*log(d^n) =
+                // 10*log(k^n) + 10*log(Pte) - 10*log((d^2)^n/2) =
+                // 10*n*log(k) + 10*log(Pte) - 10*n/2*log(d^2) =
+                // 10*n*log(k) + 10*log(Pte) - 5*n*log(d^2) =
 
 <span class="fc" id="L1764">                return pathLossExponent * kdB + transmittedPowerdBm</span>
                         - 5.0 * pathLossExponent * logSqrDistance;
@@ -1789,7 +1789,7 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
 
 <span class="fc" id="L1790">            mFitter.setInputData(x, y, standardDeviations);</span>
 <span class="nc" id="L1791">        } catch (final AlgebraException ignore) {</span>
-            //never happens
+            // never happens
 <span class="fc" id="L1793">        }</span>
 <span class="fc" id="L1794">    }</span>
 
@@ -1802,7 +1802,7 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
      */
     private double computeInitialTransmittedPowerdBm() {
 <span class="fc bfc" id="L1804" title="All 2 branches covered.">        if (mInitialTransmittedPowerdBm == null) {</span>
-            //compute average transmitted power (in mW)
+            // compute average transmitted power (in mW)
 <span class="fc" id="L1806">            final int num = mReadings.size();</span>
 <span class="fc" id="L1807">            double result = 0.0;</span>
 <span class="fc bfc" id="L1808" title="All 2 branches covered.">            for (final RssiReadingLocated&lt;S, P&gt; reading : mReadings) {</span>
@@ -1811,7 +1811,7 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
 <span class="fc" id="L1811">            }</span>
 <span class="fc" id="L1812">            return result;</span>
         } else {
-            //convert initial value
+            // convert initial value
 <span class="fc" id="L1815">            return mInitialTransmittedPowerdBm;</span>
         }
     }
@@ -1826,7 +1826,7 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
 <span class="fc bfc" id="L1826" title="All 2 branches covered.">        if (mInitialPosition == null) {</span>
 <span class="fc" id="L1827">            final int num = mReadings.size();</span>
 
-            //compute average centroid of fingerprint positions
+            // compute average centroid of fingerprint positions
 <span class="fc bfc" id="L1830" title="All 2 branches covered.">            for (final RssiReadingLocated&lt;S, P&gt; reading : mReadings) {</span>
 <span class="fc" id="L1831">                final P position = reading.getPosition();</span>
 <span class="fc bfc" id="L1832" title="All 2 branches covered.">                for (int i = 0; i &lt; dims; i++) {</span>
@@ -1835,7 +1835,7 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
                 }
 <span class="fc" id="L1836">            }</span>
 <span class="fc" id="L1837">        } else {</span>
-            //copy initial position
+            // copy initial position
 <span class="fc bfc" id="L1839" title="All 2 branches covered.">            for (int i = 0; i &lt; dims; i++) {</span>
 <span class="fc" id="L1840">                result[i] = mInitialPosition.getInhomogeneousCoordinate(i);</span>
             }

@@ -20,13 +20,13 @@ import com.irurueta.navigation.indoor.RadioSource;
 import com.irurueta.navigation.indoor.RadioSourceLocated;
 import com.irurueta.navigation.indoor.RangingAndRssiFingerprint;
 import com.irurueta.navigation.indoor.RangingAndRssiReading;
+
 import java.util.List;
 
 /**
  * Robustly estimates 2D position, using RSSI readings first to obtain an initial coarse
  * position estimation, and then ranging readings to refine such estimation.
  */
-@SuppressWarnings(&quot;WeakerAccess&quot;)
 public class SequentialRobustRangingAndRssiPositionEstimator2D extends
         SequentialRobustRangingAndRssiPositionEstimator&lt;Point2D&gt; {
 
@@ -59,10 +59,11 @@ public class SequentialRobustRangingAndRssiPositionEstimator2D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public SequentialRobustRangingAndRssiPositionEstimator2D(
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint) {
-<span class="fc" id="L63">        super(fingerprint);</span>
-<span class="fc" id="L64">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L65">    }</span>
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint) {
+<span class="fc" id="L64">        super(fingerprint);</span>
+<span class="fc" id="L65">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L66">    }</span>
 
     /**
      * Constructor.
@@ -75,10 +76,11 @@ public class SequentialRobustRangingAndRssiPositionEstimator2D extends
      */
     public SequentialRobustRangingAndRssiPositionEstimator2D(
             final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint) {
-<span class="fc" id="L79">        super(sources, fingerprint);</span>
-<span class="fc" id="L80">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L81">    }</span>
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint) {
+<span class="fc" id="L81">        super(sources, fingerprint);</span>
+<span class="fc" id="L82">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L83">    }</span>
 
     /**
      * Constructor.
@@ -87,9 +89,9 @@ public class SequentialRobustRangingAndRssiPositionEstimator2D extends
      */
     public SequentialRobustRangingAndRssiPositionEstimator2D(
             final SequentialRobustRangingAndRssiPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L90">        super(listener);</span>
-<span class="fc" id="L91">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L92">    }</span>
+<span class="fc" id="L92">        super(listener);</span>
+<span class="fc" id="L93">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L94">    }</span>
 
     /**
      * Constructor.
@@ -102,9 +104,9 @@ public class SequentialRobustRangingAndRssiPositionEstimator2D extends
     public SequentialRobustRangingAndRssiPositionEstimator2D(
             final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
             final SequentialRobustRangingAndRssiPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L105">        super(sources, listener);</span>
-<span class="fc" id="L106">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L107">    }</span>
+<span class="fc" id="L107">        super(sources, listener);</span>
+<span class="fc" id="L108">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L109">    }</span>
 
     /**
      * Constructor.
@@ -115,11 +117,12 @@ public class SequentialRobustRangingAndRssiPositionEstimator2D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public SequentialRobustRangingAndRssiPositionEstimator2D(
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final SequentialRobustRangingAndRssiPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L120">        super(fingerprint, listener);</span>
-<span class="fc" id="L121">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L122">    }</span>
+<span class="fc" id="L123">        super(fingerprint, listener);</span>
+<span class="fc" id="L124">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L125">    }</span>
 
     /**
      * Constructor.
@@ -133,11 +136,12 @@ public class SequentialRobustRangingAndRssiPositionEstimator2D extends
      */
     public SequentialRobustRangingAndRssiPositionEstimator2D(
             final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final SequentialRobustRangingAndRssiPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L138">        super(sources, fingerprint, listener);</span>
-<span class="fc" id="L139">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L140">    }</span>
+<span class="fc" id="L142">        super(sources, fingerprint, listener);</span>
+<span class="fc" id="L143">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L144">    }</span>
 
     /**
      * Constructor.
@@ -154,9 +158,9 @@ public class SequentialRobustRangingAndRssiPositionEstimator2D extends
     public SequentialRobustRangingAndRssiPositionEstimator2D(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores) {
-<span class="fc" id="L157">        super(sourceQualityScores, fingerprintReadingQualityScores);</span>
-<span class="fc" id="L158">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L159">    }</span>
+<span class="fc" id="L161">        super(sourceQualityScores, fingerprintReadingQualityScores);</span>
+<span class="fc" id="L162">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L163">    }</span>
 
     /**
      * Constructor.
@@ -178,9 +182,9 @@ public class SequentialRobustRangingAndRssiPositionEstimator2D extends
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources) {
-<span class="fc" id="L181">        super(sourceQualityScores, fingerprintReadingQualityScores, sources);</span>
-<span class="fc" id="L182">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L183">    }</span>
+<span class="fc" id="L185">        super(sourceQualityScores, fingerprintReadingQualityScores, sources);</span>
+<span class="fc" id="L186">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L187">    }</span>
 
     /**
      * Constructor.
@@ -201,10 +205,11 @@ public class SequentialRobustRangingAndRssiPositionEstimator2D extends
     public SequentialRobustRangingAndRssiPositionEstimator2D(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint) {
-<span class="fc" id="L205">        super(sourceQualityScores, fingerprintReadingQualityScores, fingerprint);</span>
-<span class="fc" id="L206">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L207">    }</span>
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint) {
+<span class="fc" id="L210">        super(sourceQualityScores, fingerprintReadingQualityScores, fingerprint);</span>
+<span class="fc" id="L211">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L212">    }</span>
 
     /**
      * Constructor.
@@ -229,11 +234,12 @@ public class SequentialRobustRangingAndRssiPositionEstimator2D extends
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint) {
-<span class="fc" id="L233">        super(sourceQualityScores, fingerprintReadingQualityScores, sources,</span>
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint) {
+<span class="fc" id="L239">        super(sourceQualityScores, fingerprintReadingQualityScores, sources,</span>
                 fingerprint);
-<span class="fc" id="L235">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L236">    }</span>
+<span class="fc" id="L241">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L242">    }</span>
 
     /**
      * Constructor.
@@ -252,9 +258,9 @@ public class SequentialRobustRangingAndRssiPositionEstimator2D extends
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final SequentialRobustRangingAndRssiPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L255">        super(sourceQualityScores, fingerprintReadingQualityScores, listener);</span>
-<span class="fc" id="L256">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L257">    }</span>
+<span class="fc" id="L261">        super(sourceQualityScores, fingerprintReadingQualityScores, listener);</span>
+<span class="fc" id="L262">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L263">    }</span>
 
     /**
      * Constructor.
@@ -278,9 +284,9 @@ public class SequentialRobustRangingAndRssiPositionEstimator2D extends
             final double[] fingerprintReadingQualityScores,
             final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
             final SequentialRobustRangingAndRssiPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L281">        super(sourceQualityScores, fingerprintReadingQualityScores, sources, listener);</span>
-<span class="fc" id="L282">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L283">    }</span>
+<span class="fc" id="L287">        super(sourceQualityScores, fingerprintReadingQualityScores, sources, listener);</span>
+<span class="fc" id="L288">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L289">    }</span>
 
     /**
      * Constructor.
@@ -302,12 +308,13 @@ public class SequentialRobustRangingAndRssiPositionEstimator2D extends
     public SequentialRobustRangingAndRssiPositionEstimator2D(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final SequentialRobustRangingAndRssiPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L307">        super(sourceQualityScores, fingerprintReadingQualityScores, fingerprint,</span>
+<span class="fc" id="L314">        super(sourceQualityScores, fingerprintReadingQualityScores, fingerprint,</span>
                 listener);
-<span class="fc" id="L309">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L310">    }</span>
+<span class="fc" id="L316">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L317">    }</span>
 
     /**
      * Constructor.
@@ -333,21 +340,22 @@ public class SequentialRobustRangingAndRssiPositionEstimator2D extends
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final SequentialRobustRangingAndRssiPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L338">        super(sourceQualityScores, fingerprintReadingQualityScores, sources,</span>
+<span class="fc" id="L346">        super(sourceQualityScores, fingerprintReadingQualityScores, sources,</span>
                 fingerprint, listener);
-<span class="fc" id="L340">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
-<span class="fc" id="L341">    }</span>
+<span class="fc" id="L348">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L349">    }</span>
 
     /**
-     * Gets number of dimesnions of provided and estimated points.
+     * Gets number of dimensions of provided and estimated points.
      *
      * @return number of dimensions of provided and estimated points.
      */
     @Override
     public int getNumberOfDimensions() {
-<span class="fc" id="L350">        return Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
+<span class="fc" id="L358">        return Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
     }
 
     /**
@@ -358,7 +366,7 @@ public class SequentialRobustRangingAndRssiPositionEstimator2D extends
      */
     @Override
     public int getMinRequiredSources() {
-<span class="fc" id="L361">        return Point2D.POINT2D_HOMOGENEOUS_COORDINATES_LENGTH;</span>
+<span class="fc" id="L369">        return Point2D.POINT2D_HOMOGENEOUS_COORDINATES_LENGTH;</span>
     }
 
     /**
@@ -366,9 +374,9 @@ public class SequentialRobustRangingAndRssiPositionEstimator2D extends
      */
     @Override
     protected void buildEstimators() {
-<span class="fc" id="L369">        mRssiEstimator = RobustRssiPositionEstimator2D.create(mRssiRobustMethod);</span>
-<span class="fc" id="L370">        mRangingEstimator = RobustRangingPositionEstimator2D.create(</span>
+<span class="fc" id="L377">        mRssiEstimator = RobustRssiPositionEstimator2D.create(mRssiRobustMethod);</span>
+<span class="fc" id="L378">        mRangingEstimator = RobustRangingPositionEstimator2D.create(</span>
                 mRangingRobustMethod);
-<span class="fc" id="L372">    }</span>
+<span class="fc" id="L380">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

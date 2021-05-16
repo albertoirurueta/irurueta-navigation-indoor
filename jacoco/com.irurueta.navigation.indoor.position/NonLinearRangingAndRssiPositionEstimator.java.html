@@ -27,6 +27,7 @@ import com.irurueta.navigation.lateration.LaterationException;
 import com.irurueta.navigation.lateration.LaterationSolver;
 import com.irurueta.navigation.lateration.LaterationSolverListener;
 import com.irurueta.navigation.lateration.NonLinearLeastSquaresLaterationSolver;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +40,6 @@ import java.util.List;
  *
  * @param &lt;P&gt; a {@link Point} type.
  */
-@SuppressWarnings(&quot;WeakerAccess&quot;)
 public abstract class NonLinearRangingAndRssiPositionEstimator&lt;P extends Point&lt;?&gt;&gt; extends
         RangingAndRssiPositionEstimator&lt;P&gt; {
 
@@ -316,13 +316,14 @@ public abstract class NonLinearRangingAndRssiPositionEstimator&lt;P extends Poin
      * @throws IllegalArgumentException if provided value is null.
      */
     protected void internalSetFingerprint(
-            final Fingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint) {
-<span class="fc" id="L320">        super.internalSetFingerprint(fingerprint);</span>
-<span class="fc" id="L321">        buildPositionsDistancesAndDistanceStandardDeviations();</span>
-<span class="fc" id="L322">    }</span>
+            final Fingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint) {
+<span class="fc" id="L321">        super.internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L322">        buildPositionsDistancesAndDistanceStandardDeviations();</span>
+<span class="fc" id="L323">    }</span>
 
     /**
-     * Sets positions, distnaces and standard deviations of distances on internal
+     * Sets positions, distances and standard deviations of distances on internal
      * lateration solver.
      *
      * @param positions                  positions to be set.
@@ -338,24 +339,24 @@ public abstract class NonLinearRangingAndRssiPositionEstimator&lt;P extends Poin
      */
     @SuppressWarnings(&quot;Duplicates&quot;)
     private void init() {
-<span class="fc" id="L341">        mLaterationSolverListener = new LaterationSolverListener&lt;P&gt;() {</span>
+<span class="fc" id="L342">        mLaterationSolverListener = new LaterationSolverListener&lt;P&gt;() {</span>
             @Override
             public void onSolveStart(final LaterationSolver&lt;P&gt; solver) {
-<span class="pc bpc" id="L344" title="1 of 2 branches missed.">                if (mListener != null) {</span>
-<span class="fc" id="L345">                    mListener.onEstimateStart(</span>
+<span class="pc bpc" id="L345" title="1 of 2 branches missed.">                if (mListener != null) {</span>
+<span class="fc" id="L346">                    mListener.onEstimateStart(</span>
                             NonLinearRangingAndRssiPositionEstimator.this);
                 }
-<span class="fc" id="L348">            }</span>
+<span class="fc" id="L349">            }</span>
 
             @Override
             public void onSolveEnd(final LaterationSolver&lt;P&gt; solver) {
-<span class="pc bpc" id="L352" title="1 of 2 branches missed.">                if (mListener != null) {</span>
-<span class="fc" id="L353">                    mListener.onEstimateEnd(</span>
+<span class="pc bpc" id="L353" title="1 of 2 branches missed.">                if (mListener != null) {</span>
+<span class="fc" id="L354">                    mListener.onEstimateEnd(</span>
                             NonLinearRangingAndRssiPositionEstimator.this);
                 }
-<span class="fc" id="L356">            }</span>
+<span class="fc" id="L357">            }</span>
         };
-<span class="fc" id="L358">    }</span>
+<span class="fc" id="L359">    }</span>
 
     /**
      * Builds positions, distances and standard deviation of distances for the internal
@@ -363,28 +364,28 @@ public abstract class NonLinearRangingAndRssiPositionEstimator&lt;P extends Poin
      */
     @SuppressWarnings(&quot;Duplicates&quot;)
     private void buildPositionsDistancesAndDistanceStandardDeviations() {
-<span class="pc bpc" id="L366" title="1 of 2 branches missed.">        if (mTrilaterationSolver == null) {</span>
-<span class="nc" id="L367">            return;</span>
+<span class="pc bpc" id="L367" title="1 of 2 branches missed.">        if (mTrilaterationSolver == null) {</span>
+<span class="nc" id="L368">            return;</span>
         }
 
-<span class="fc" id="L370">        final int min = getMinRequiredSources();</span>
-<span class="fc bfc" id="L371" title="All 4 branches covered.">        if (mSources == null || mFingerprint == null ||</span>
-<span class="pc bpc" id="L372" title="1 of 2 branches missed.">                mSources.size() &lt; min ||</span>
-<span class="pc bpc" id="L373" title="1 of 2 branches missed.">                mFingerprint.getReadings() == null ||</span>
-<span class="fc bfc" id="L374" title="All 2 branches covered.">                mFingerprint.getReadings().size() &lt; min) {</span>
-<span class="fc" id="L375">            return;</span>
+<span class="fc" id="L371">        final int min = getMinRequiredSources();</span>
+<span class="fc bfc" id="L372" title="All 4 branches covered.">        if (mSources == null || mFingerprint == null ||</span>
+<span class="pc bpc" id="L373" title="1 of 2 branches missed.">                mSources.size() &lt; min ||</span>
+<span class="pc bpc" id="L374" title="1 of 2 branches missed.">                mFingerprint.getReadings() == null ||</span>
+<span class="fc bfc" id="L375" title="All 2 branches covered.">                mFingerprint.getReadings().size() &lt; min) {</span>
+<span class="fc" id="L376">            return;</span>
         }
 
-<span class="fc" id="L378">        final List&lt;P&gt; positions = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L379">        final List&lt;Double&gt; distances = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L380">        final List&lt;Double&gt; distanceStandardDeviations = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L381">        PositionEstimatorHelper.buildPositionsDistancesAndDistanceStandardDeviations(</span>
+<span class="fc" id="L379">        final List&lt;P&gt; positions = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L380">        final List&lt;Double&gt; distances = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L381">        final List&lt;Double&gt; distanceStandardDeviations = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L382">        PositionEstimatorHelper.buildPositionsDistancesAndDistanceStandardDeviations(</span>
                 mSources, mFingerprint, mUseRadioSourcePositionCovariance,
                 mFallbackDistanceStandardDeviation, positions, distances,
                 distanceStandardDeviations);
 
-<span class="fc" id="L386">        setPositionsDistancesAndDistanceStandardDeviations(positions, distances,</span>
+<span class="fc" id="L387">        setPositionsDistancesAndDistanceStandardDeviations(positions, distances,</span>
                 distanceStandardDeviations);
-<span class="fc" id="L388">    }</span>
+<span class="fc" id="L389">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

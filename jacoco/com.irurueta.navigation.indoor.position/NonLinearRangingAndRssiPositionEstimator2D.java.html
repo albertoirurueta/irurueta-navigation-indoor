@@ -23,6 +23,7 @@ import com.irurueta.navigation.indoor.RadioSource;
 import com.irurueta.navigation.indoor.RadioSourceLocated;
 import com.irurueta.navigation.indoor.RangingAndRssiReading;
 import com.irurueta.navigation.lateration.NonLinearLeastSquaresLateration2DSolver;
+
 import java.util.List;
 
 /**
@@ -32,7 +33,6 @@ import java.util.List;
  * getting ranging+RSSI readings at an unknown location of different radio sources whose
  * locations are known.
  */
-@SuppressWarnings(&quot;WeakerAccess&quot;)
 public class NonLinearRangingAndRssiPositionEstimator2D extends
         NonLinearRangingAndRssiPositionEstimator&lt;Point2D&gt; {
 
@@ -67,11 +67,12 @@ public class NonLinearRangingAndRssiPositionEstimator2D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public NonLinearRangingAndRssiPositionEstimator2D(
-            final Fingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint) {
-<span class="fc" id="L71">        super();</span>
-<span class="fc" id="L72">        init();</span>
-<span class="fc" id="L73">        internalSetFingerprint(fingerprint);</span>
-<span class="fc" id="L74">    }</span>
+            final Fingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint) {
+<span class="fc" id="L72">        super();</span>
+<span class="fc" id="L73">        init();</span>
+<span class="fc" id="L74">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L75">    }</span>
 
     /**
      * Constructor.
@@ -85,12 +86,13 @@ public class NonLinearRangingAndRssiPositionEstimator2D extends
      */
     public NonLinearRangingAndRssiPositionEstimator2D(
             final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
-            final Fingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint) {
-<span class="fc" id="L89">        super();</span>
-<span class="fc" id="L90">        init();</span>
-<span class="fc" id="L91">        internalSetSources(sources);</span>
-<span class="fc" id="L92">        internalSetFingerprint(fingerprint);</span>
-<span class="fc" id="L93">    }</span>
+            final Fingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint) {
+<span class="fc" id="L91">        super();</span>
+<span class="fc" id="L92">        init();</span>
+<span class="fc" id="L93">        internalSetSources(sources);</span>
+<span class="fc" id="L94">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L95">    }</span>
 
     /**
      * Constructor.
@@ -99,9 +101,9 @@ public class NonLinearRangingAndRssiPositionEstimator2D extends
      */
     public NonLinearRangingAndRssiPositionEstimator2D(
             final RangingAndRssiPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L102">        super(listener);</span>
-<span class="fc" id="L103">        init();</span>
-<span class="fc" id="L104">    }</span>
+<span class="fc" id="L104">        super(listener);</span>
+<span class="fc" id="L105">        init();</span>
+<span class="fc" id="L106">    }</span>
 
     /**
      * Constructor.
@@ -115,10 +117,10 @@ public class NonLinearRangingAndRssiPositionEstimator2D extends
     public NonLinearRangingAndRssiPositionEstimator2D(
             final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
             final RangingAndRssiPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L118">        super(listener);</span>
-<span class="fc" id="L119">        init();</span>
-<span class="fc" id="L120">        internalSetSources(sources);</span>
-<span class="fc" id="L121">    }</span>
+<span class="fc" id="L120">        super(listener);</span>
+<span class="fc" id="L121">        init();</span>
+<span class="fc" id="L122">        internalSetSources(sources);</span>
+<span class="fc" id="L123">    }</span>
 
     /**
      * Constructor.
@@ -129,12 +131,13 @@ public class NonLinearRangingAndRssiPositionEstimator2D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public NonLinearRangingAndRssiPositionEstimator2D(
-            final Fingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final Fingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final RangingAndRssiPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L134">        super(listener);</span>
-<span class="fc" id="L135">        init();</span>
-<span class="fc" id="L136">        internalSetFingerprint(fingerprint);</span>
-<span class="fc" id="L137">    }</span>
+<span class="fc" id="L137">        super(listener);</span>
+<span class="fc" id="L138">        init();</span>
+<span class="fc" id="L139">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L140">    }</span>
 
     /**
      * Constructor.
@@ -149,13 +152,14 @@ public class NonLinearRangingAndRssiPositionEstimator2D extends
      */
     public NonLinearRangingAndRssiPositionEstimator2D(
             final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
-            final Fingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final Fingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final RangingAndRssiPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L154">        super(listener);</span>
-<span class="fc" id="L155">        init();</span>
-<span class="fc" id="L156">        internalSetSources(sources);</span>
-<span class="fc" id="L157">        internalSetFingerprint(fingerprint);</span>
-<span class="fc" id="L158">    }</span>
+<span class="fc" id="L158">        super(listener);</span>
+<span class="fc" id="L159">        init();</span>
+<span class="fc" id="L160">        internalSetSources(sources);</span>
+<span class="fc" id="L161">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L162">    }</span>
 
     /**
      * Constructor.
@@ -163,9 +167,9 @@ public class NonLinearRangingAndRssiPositionEstimator2D extends
      * @param initialPosition initial position to start position estimation.
      */
     public NonLinearRangingAndRssiPositionEstimator2D(final Point2D initialPosition) {
-<span class="fc" id="L166">        super(initialPosition);</span>
-<span class="fc" id="L167">        init();</span>
-<span class="fc" id="L168">    }</span>
+<span class="fc" id="L170">        super(initialPosition);</span>
+<span class="fc" id="L171">        init();</span>
+<span class="fc" id="L172">    }</span>
 
     /**
      * Constructor.
@@ -179,10 +183,10 @@ public class NonLinearRangingAndRssiPositionEstimator2D extends
     public NonLinearRangingAndRssiPositionEstimator2D(
             final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
             final Point2D initialPosition) {
-<span class="fc" id="L182">        super(initialPosition);</span>
-<span class="fc" id="L183">        init();</span>
-<span class="fc" id="L184">        internalSetSources(sources);</span>
-<span class="fc" id="L185">    }</span>
+<span class="fc" id="L186">        super(initialPosition);</span>
+<span class="fc" id="L187">        init();</span>
+<span class="fc" id="L188">        internalSetSources(sources);</span>
+<span class="fc" id="L189">    }</span>
 
     /**
      * Constructor.
@@ -193,12 +197,13 @@ public class NonLinearRangingAndRssiPositionEstimator2D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public NonLinearRangingAndRssiPositionEstimator2D(
-            final Fingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final Fingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final Point2D initialPosition) {
-<span class="fc" id="L198">        super(initialPosition);</span>
-<span class="fc" id="L199">        init();</span>
-<span class="fc" id="L200">        internalSetFingerprint(fingerprint);</span>
-<span class="fc" id="L201">    }</span>
+<span class="fc" id="L203">        super(initialPosition);</span>
+<span class="fc" id="L204">        init();</span>
+<span class="fc" id="L205">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L206">    }</span>
 
     /**
      * Constructor.
@@ -213,13 +218,14 @@ public class NonLinearRangingAndRssiPositionEstimator2D extends
      */
     public NonLinearRangingAndRssiPositionEstimator2D(
             final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
-            final Fingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final Fingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final Point2D initialPosition) {
-<span class="fc" id="L218">        super(initialPosition);</span>
-<span class="fc" id="L219">        init();</span>
-<span class="fc" id="L220">        internalSetSources(sources);</span>
-<span class="fc" id="L221">        internalSetFingerprint(fingerprint);</span>
-<span class="fc" id="L222">    }</span>
+<span class="fc" id="L224">        super(initialPosition);</span>
+<span class="fc" id="L225">        init();</span>
+<span class="fc" id="L226">        internalSetSources(sources);</span>
+<span class="fc" id="L227">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L228">    }</span>
 
     /**
      * Constructor.
@@ -230,9 +236,9 @@ public class NonLinearRangingAndRssiPositionEstimator2D extends
     public NonLinearRangingAndRssiPositionEstimator2D(
             final Point2D initialPosition,
             final RangingAndRssiPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L233">        super(initialPosition, listener);</span>
-<span class="fc" id="L234">        init();</span>
-<span class="fc" id="L235">    }</span>
+<span class="fc" id="L239">        super(initialPosition, listener);</span>
+<span class="fc" id="L240">        init();</span>
+<span class="fc" id="L241">    }</span>
 
     /**
      * Constructor.
@@ -248,10 +254,10 @@ public class NonLinearRangingAndRssiPositionEstimator2D extends
             final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
             final Point2D initialPosition,
             final RangingAndRssiPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L251">        super(initialPosition, listener);</span>
-<span class="fc" id="L252">        init();</span>
-<span class="fc" id="L253">        internalSetSources(sources);</span>
-<span class="fc" id="L254">    }</span>
+<span class="fc" id="L257">        super(initialPosition, listener);</span>
+<span class="fc" id="L258">        init();</span>
+<span class="fc" id="L259">        internalSetSources(sources);</span>
+<span class="fc" id="L260">    }</span>
 
     /**
      * Constructor.
@@ -263,13 +269,14 @@ public class NonLinearRangingAndRssiPositionEstimator2D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public NonLinearRangingAndRssiPositionEstimator2D(
-            final Fingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final Fingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final Point2D initialPosition,
             final RangingAndRssiPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L269">        super(initialPosition, listener);</span>
-<span class="fc" id="L270">        init();</span>
-<span class="fc" id="L271">        internalSetFingerprint(fingerprint);</span>
-<span class="fc" id="L272">    }</span>
+<span class="fc" id="L276">        super(initialPosition, listener);</span>
+<span class="fc" id="L277">        init();</span>
+<span class="fc" id="L278">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L279">    }</span>
 
     /**
      * Constructor.
@@ -285,14 +292,15 @@ public class NonLinearRangingAndRssiPositionEstimator2D extends
      */
     public NonLinearRangingAndRssiPositionEstimator2D(
             final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
-            final Fingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final Fingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final Point2D initialPosition,
             final RangingAndRssiPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L291">        super(initialPosition, listener);</span>
-<span class="fc" id="L292">        init();</span>
-<span class="fc" id="L293">        internalSetSources(sources);</span>
-<span class="fc" id="L294">        internalSetFingerprint(fingerprint);</span>
-<span class="fc" id="L295">    }</span>
+<span class="fc" id="L299">        super(initialPosition, listener);</span>
+<span class="fc" id="L300">        init();</span>
+<span class="fc" id="L301">        internalSetSources(sources);</span>
+<span class="fc" id="L302">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L303">    }</span>
 
     /**
      * Gets estimated position.
@@ -300,13 +308,13 @@ public class NonLinearRangingAndRssiPositionEstimator2D extends
      * @return estimated position.
      */
     public Point2D getEstimatedPosition() {
-<span class="fc bfc" id="L303" title="All 2 branches covered.">        if (mEstimatedPositionCoordinates == null) {</span>
-<span class="fc" id="L304">            return null;</span>
+<span class="fc bfc" id="L311" title="All 2 branches covered.">        if (mEstimatedPositionCoordinates == null) {</span>
+<span class="fc" id="L312">            return null;</span>
         }
 
-<span class="fc" id="L307">        final InhomogeneousPoint2D result = new InhomogeneousPoint2D();</span>
-<span class="fc" id="L308">        getEstimatedPosition(result);</span>
-<span class="fc" id="L309">        return result;</span>
+<span class="fc" id="L315">        final InhomogeneousPoint2D result = new InhomogeneousPoint2D();</span>
+<span class="fc" id="L316">        getEstimatedPosition(result);</span>
+<span class="fc" id="L317">        return result;</span>
     }
 
     /**
@@ -323,31 +331,31 @@ public class NonLinearRangingAndRssiPositionEstimator2D extends
             final List&lt;Point2D&gt; positions, final List&lt;Double&gt; distances,
             final List&lt;Double&gt; distanceStandardDeviations) {
 
-<span class="fc" id="L326">        final int size = positions.size();</span>
-<span class="fc" id="L327">        Point2D[] positionsArray = new InhomogeneousPoint2D[size];</span>
-<span class="fc" id="L328">        positionsArray = positions.toArray(positionsArray);</span>
+<span class="fc" id="L334">        final int size = positions.size();</span>
+<span class="fc" id="L335">        Point2D[] positionsArray = new InhomogeneousPoint2D[size];</span>
+<span class="fc" id="L336">        positionsArray = positions.toArray(positionsArray);</span>
 
-<span class="fc" id="L330">        final double[] distancesArray = new double[size];</span>
-<span class="fc" id="L331">        final double[] distanceStandardDeviationsArray = new double[size];</span>
-<span class="fc bfc" id="L332" title="All 2 branches covered.">        for (int i = 0; i &lt; size; i++) {</span>
-<span class="fc" id="L333">            distancesArray[i] = distances.get(i);</span>
-<span class="fc" id="L334">            distanceStandardDeviationsArray[i] = distanceStandardDeviations.get(i);</span>
+<span class="fc" id="L338">        final double[] distancesArray = new double[size];</span>
+<span class="fc" id="L339">        final double[] distanceStandardDeviationsArray = new double[size];</span>
+<span class="fc bfc" id="L340" title="All 2 branches covered.">        for (int i = 0; i &lt; size; i++) {</span>
+<span class="fc" id="L341">            distancesArray[i] = distances.get(i);</span>
+<span class="fc" id="L342">            distanceStandardDeviationsArray[i] = distanceStandardDeviations.get(i);</span>
         }
 
         try {
-<span class="fc" id="L338">            mTrilaterationSolver.setPositionsDistancesAndStandardDeviations(</span>
+<span class="fc" id="L346">            mTrilaterationSolver.setPositionsDistancesAndStandardDeviations(</span>
                     positionsArray, distancesArray, distanceStandardDeviationsArray);
-<span class="nc" id="L340">        } catch (final LockedException e) {</span>
-<span class="nc" id="L341">            throw new IllegalArgumentException(e);</span>
-<span class="fc" id="L342">        }</span>
-<span class="fc" id="L343">    }</span>
+<span class="nc" id="L348">        } catch (final LockedException e) {</span>
+<span class="nc" id="L349">            throw new IllegalArgumentException(e);</span>
+<span class="fc" id="L350">        }</span>
+<span class="fc" id="L351">    }</span>
 
     /**
      * Initializes lateration solver.
      */
     private void init() {
-<span class="fc" id="L349">        mTrilaterationSolver = new NonLinearLeastSquaresLateration2DSolver(</span>
+<span class="fc" id="L357">        mTrilaterationSolver = new NonLinearLeastSquaresLateration2DSolver(</span>
                 mLaterationSolverListener);
-<span class="fc" id="L351">    }</span>
+<span class="fc" id="L359">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -23,6 +23,7 @@ import com.irurueta.navigation.indoor.RangingAndRssiFingerprint;
 import com.irurueta.navigation.indoor.RangingAndRssiReading;
 import com.irurueta.navigation.lateration.LMedSRobustLateration2DSolver;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -32,7 +33,6 @@ import java.util.List;
  * device by getting ranging+RSSI readings at an unknown location of different radio
  * sources whose 2D locations are known.
  */
-@SuppressWarnings(&quot;WeakerAccess&quot;)
 public class LMedSRobustRangingAndRssiPositionEstimator2D extends
         RobustRangingAndRssiPositionEstimator2D {
 
@@ -126,12 +126,13 @@ public class LMedSRobustRangingAndRssiPositionEstimator2D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public LMedSRobustRangingAndRssiPositionEstimator2D(
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L131">        super(listener);</span>
-<span class="fc" id="L132">        init();</span>
-<span class="fc" id="L133">        internalSetFingerprint(fingerprint);</span>
-<span class="fc" id="L134">    }</span>
+<span class="fc" id="L132">        super(listener);</span>
+<span class="fc" id="L133">        init();</span>
+<span class="fc" id="L134">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L135">    }</span>
 
     /**
      * Constructor.
@@ -145,13 +146,14 @@ public class LMedSRobustRangingAndRssiPositionEstimator2D extends
      */
     public LMedSRobustRangingAndRssiPositionEstimator2D(
             final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
-            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L150">        super(listener);</span>
-<span class="fc" id="L151">        init();</span>
-<span class="fc" id="L152">        internalSetSources(sources);</span>
-<span class="fc" id="L153">        internalSetFingerprint(fingerprint);</span>
-<span class="fc" id="L154">    }</span>
+<span class="fc" id="L152">        super(listener);</span>
+<span class="fc" id="L153">        init();</span>
+<span class="fc" id="L154">        internalSetSources(sources);</span>
+<span class="fc" id="L155">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L156">    }</span>
 
     /**
      * Returns threshold to be used to keep the algorithm iterating in case that
@@ -173,8 +175,8 @@ public class LMedSRobustRangingAndRssiPositionEstimator2D extends
      * accuracy has been reached.
      */
     public double getStopThreshold() {
-<span class="fc" id="L176">        return ((LMedSRobustLateration2DSolver) mLaterationSolver).</span>
-<span class="fc" id="L177">                getStopThreshold();</span>
+<span class="fc" id="L178">        return ((LMedSRobustLateration2DSolver) mLaterationSolver).</span>
+<span class="fc" id="L179">                getStopThreshold();</span>
     }
 
     /**
@@ -199,9 +201,9 @@ public class LMedSRobustRangingAndRssiPositionEstimator2D extends
      * @throws LockedException          if this solver is locked.
      */
     public void setStopThreshold(final double stopThreshold) throws LockedException {
-<span class="fc" id="L202">        ((LMedSRobustLateration2DSolver) mLaterationSolver).</span>
-<span class="fc" id="L203">                setStopThreshold(stopThreshold);</span>
-<span class="fc" id="L204">    }</span>
+<span class="fc" id="L204">        ((LMedSRobustLateration2DSolver) mLaterationSolver).</span>
+<span class="fc" id="L205">                setStopThreshold(stopThreshold);</span>
+<span class="fc" id="L206">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -210,15 +212,15 @@ public class LMedSRobustRangingAndRssiPositionEstimator2D extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L213">        return RobustEstimatorMethod.LMedS;</span>
+<span class="fc" id="L215">        return RobustEstimatorMethod.LMedS;</span>
     }
 
     /**
      * Initializes robust lateration solver.
      */
     private void init() {
-<span class="fc" id="L220">        mLaterationSolver = new LMedSRobustLateration2DSolver(</span>
+<span class="fc" id="L222">        mLaterationSolver = new LMedSRobustLateration2DSolver(</span>
                 mTrilaterationSolverListener);
-<span class="fc" id="L222">    }</span>
+<span class="fc" id="L224">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

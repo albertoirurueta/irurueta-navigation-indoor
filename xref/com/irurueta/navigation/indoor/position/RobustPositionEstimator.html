@@ -37,23 +37,23 @@
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> com.irurueta.numerical.robust.InliersData;
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> com.irurueta.numerical.robust.RobustEstimatorException;
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> com.irurueta.numerical.robust.RobustEstimatorMethod;
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> java.util.ArrayList;
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">import</strong> java.util.List;
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>  
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <em class="jxr_javadoccomment"> * Base class for robust position estimators using located radio sources and their</em>
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <em class="jxr_javadoccomment"> * readings at unknown locations.</em>
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <em class="jxr_javadoccomment"> * These kind of estimators can be used to robustly determine the position of a given</em>
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <em class="jxr_javadoccomment"> * device by getting readings at an unknown location of different radio sources whose</em>
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>  <em class="jxr_javadoccomment"> * locations are known.</em>
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>  <em class="jxr_javadoccomment"> * Implementations of this class should be able to detect and discard outliers in order</em>
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>  <em class="jxr_javadoccomment"> * to find the best solution.</em>
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>  <em class="jxr_javadoccomment"> * @param &lt;P&gt; a {@link Point} type.</em>
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>  <em class="jxr_javadoccomment"> * @param &lt;R&gt; a {@link Reading} type.</em>
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>  <em class="jxr_javadoccomment"> * @param &lt;L&gt; a {@link RobustPositionEstimatorListener} type.</em>
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>  @SuppressWarnings(<span class="jxr_string">"WeakerAccess"</span>)
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">import</strong> java.util.ArrayList;
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> java.util.List;
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>  
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <em class="jxr_javadoccomment"> * Base class for robust position estimators using located radio sources and their</em>
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <em class="jxr_javadoccomment"> * readings at unknown locations.</em>
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <em class="jxr_javadoccomment"> * These kind of estimators can be used to robustly determine the position of a given</em>
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>  <em class="jxr_javadoccomment"> * device by getting readings at an unknown location of different radio sources whose</em>
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>  <em class="jxr_javadoccomment"> * locations are known.</em>
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>  <em class="jxr_javadoccomment"> * Implementations of this class should be able to detect and discard outliers in order</em>
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <em class="jxr_javadoccomment"> * to find the best solution.</em>
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>  <em class="jxr_javadoccomment"> * @param &lt;P&gt; a {@link Point} type.</em>
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>  <em class="jxr_javadoccomment"> * @param &lt;R&gt; a {@link Reading} type.</em>
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>  <em class="jxr_javadoccomment"> * @param &lt;L&gt; a {@link RobustPositionEstimatorListener} type.</em>
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">class</strong> RobustPositionEstimator&lt;P <strong class="jxr_keyword">extends</strong> Point&lt;?&gt;,
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>          R <strong class="jxr_keyword">extends</strong> Reading&lt;? <strong class="jxr_keyword">extends</strong> RadioSource&gt;,
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>          L <strong class="jxr_keyword">extends</strong> RobustPositionEstimatorListener&lt;? <strong class="jxr_keyword">extends</strong> RobustPositionEstimator&lt;?, ?, ?&gt;&gt;&gt; {
@@ -700,7 +700,7 @@
 <a class="jxr_linenumber" name="L692" href="#L692">692</a>     }
 <a class="jxr_linenumber" name="L693" href="#L693">693</a> 
 <a class="jxr_linenumber" name="L694" href="#L694">694</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L695" href="#L695">695</a> <em class="jxr_javadoccomment">     * Gets number of dimesnions of provided points.</em>
+<a class="jxr_linenumber" name="L695" href="#L695">695</a> <em class="jxr_javadoccomment">     * Gets number of dimensions of provided points.</em>
 <a class="jxr_linenumber" name="L696" href="#L696">696</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L697" href="#L697">697</a> <em class="jxr_javadoccomment">     * @return number of dimensions of provided points.</em>
 <a class="jxr_linenumber" name="L698" href="#L698">698</a> <em class="jxr_javadoccomment">     */</em>

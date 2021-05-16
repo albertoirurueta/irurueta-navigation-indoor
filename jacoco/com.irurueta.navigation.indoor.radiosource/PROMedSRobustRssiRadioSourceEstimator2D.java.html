@@ -25,10 +25,11 @@ import com.irurueta.numerical.robust.PROMedSRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
- * Robustly estimate 2D position, transmitted power and pathloss exponent of a radio source
+ * Robustly estimate 2D position, transmitted power and path-loss exponent of a radio source
  * (e.g. WiFi access point or bluetooth beacon), by discarding outliers using PROMedS
  * algorithm and assuming that the radio source emits isotropically following the
  * expression below:
@@ -105,7 +106,7 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
      * lower than the one typically used in RANSAC, and yet the algorithm could
      * still produce even smaller thresholds in estimated results.
      */
-<span class="fc" id="L108">    private double mStopThreshold = DEFAULT_STOP_THRESHOLD;</span>
+<span class="fc" id="L109">    private double mStopThreshold = DEFAULT_STOP_THRESHOLD;</span>
 
     /**
      * Quality scores corresponding to each provided sample.
@@ -117,8 +118,8 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
      * Constructor.
      */
     public PROMedSRobustRssiRadioSourceEstimator2D() {
-<span class="fc" id="L120">        super();</span>
-<span class="fc" id="L121">    }</span>
+<span class="fc" id="L121">        super();</span>
+<span class="fc" id="L122">    }</span>
 
     /**
      * Constructor.
@@ -129,8 +130,8 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
      */
     public PROMedSRobustRssiRadioSourceEstimator2D(
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings) {
-<span class="fc" id="L132">        super(readings);</span>
-<span class="fc" id="L133">    }</span>
+<span class="fc" id="L133">        super(readings);</span>
+<span class="fc" id="L134">    }</span>
 
     /**
      * Constructor.
@@ -138,9 +139,9 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
      * @param listener listener in charge of attending events raised by this instance.
      */
     public PROMedSRobustRssiRadioSourceEstimator2D(
-<span class="fc" id="L141">            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {</span>
-<span class="fc" id="L142">        mListener = listener;</span>
-<span class="fc" id="L143">    }</span>
+<span class="fc" id="L142">            final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {</span>
+<span class="fc" id="L143">        mListener = listener;</span>
+<span class="fc" id="L144">    }</span>
 
     /**
      * Constructor.
@@ -153,8 +154,8 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
     public PROMedSRobustRssiRadioSourceEstimator2D(
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L156">        super(readings, listener);</span>
-<span class="fc" id="L157">    }</span>
+<span class="fc" id="L157">        super(readings, listener);</span>
+<span class="fc" id="L158">    }</span>
 
     /**
      * Constructor.
@@ -168,8 +169,8 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
     public PROMedSRobustRssiRadioSourceEstimator2D(
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition) {
-<span class="fc" id="L171">        super(readings, initialPosition);</span>
-<span class="fc" id="L172">    }</span>
+<span class="fc" id="L172">        super(readings, initialPosition);</span>
+<span class="fc" id="L173">    }</span>
 
     /**
      * Constructor.
@@ -178,8 +179,8 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
      *                        point position.
      */
     public PROMedSRobustRssiRadioSourceEstimator2D(final Point2D initialPosition) {
-<span class="fc" id="L181">        super(initialPosition);</span>
-<span class="fc" id="L182">    }</span>
+<span class="fc" id="L182">        super(initialPosition);</span>
+<span class="fc" id="L183">    }</span>
 
     /**
      * Constructor.
@@ -191,8 +192,8 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
     public PROMedSRobustRssiRadioSourceEstimator2D(
             final Point2D initialPosition,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L194">        super(initialPosition, listener);</span>
-<span class="fc" id="L195">    }</span>
+<span class="fc" id="L195">        super(initialPosition, listener);</span>
+<span class="fc" id="L196">    }</span>
 
     /**
      * Constructor.
@@ -208,8 +209,8 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L211">        super(readings, initialPosition, listener);</span>
-<span class="fc" id="L212">    }</span>
+<span class="fc" id="L212">        super(readings, initialPosition, listener);</span>
+<span class="fc" id="L213">    }</span>
 
     /**
      * Constructor.
@@ -220,8 +221,8 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
      */
     public PROMedSRobustRssiRadioSourceEstimator2D(
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L223">        super(initialTransmittedPowerdBm);</span>
-<span class="fc" id="L224">    }</span>
+<span class="fc" id="L224">        super(initialTransmittedPowerdBm);</span>
+<span class="fc" id="L225">    }</span>
 
     /**
      * Constructor.
@@ -236,8 +237,8 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
     public PROMedSRobustRssiRadioSourceEstimator2D(
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L239">        super(readings, initialTransmittedPowerdBm);</span>
-<span class="fc" id="L240">    }</span>
+<span class="fc" id="L240">        super(readings, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L241">    }</span>
 
     /**
      * Constructor.
@@ -250,8 +251,8 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
     public PROMedSRobustRssiRadioSourceEstimator2D(
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L253">        super(initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L254">    }</span>
+<span class="fc" id="L254">        super(initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L255">    }</span>
 
     /**
      * Constructor.
@@ -268,8 +269,8 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L271">        super(readings, initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L272">    }</span>
+<span class="fc" id="L272">        super(readings, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L273">    }</span>
 
     /**
      * Constructor.
@@ -286,8 +287,8 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
     public PROMedSRobustRssiRadioSourceEstimator2D(
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition, final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L289">        super(readings, initialPosition, initialTransmittedPowerdBm);</span>
-<span class="fc" id="L290">    }</span>
+<span class="fc" id="L290">        super(readings, initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L291">    }</span>
 
     /**
      * Constructor.
@@ -301,8 +302,8 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
     public PROMedSRobustRssiRadioSourceEstimator2D(
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L304">        super(initialPosition, initialTransmittedPowerdBm);</span>
-<span class="fc" id="L305">    }</span>
+<span class="fc" id="L305">        super(initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L306">    }</span>
 
     /**
      * Constructor.
@@ -318,8 +319,8 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L321">        super(initialPosition, initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L322">    }</span>
+<span class="fc" id="L322">        super(initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L323">    }</span>
 
     /**
      * Constructor.
@@ -338,8 +339,8 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition, Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L341">        super(readings, initialPosition, initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L342">    }</span>
+<span class="fc" id="L342">        super(readings, initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L343">    }</span>
 
     /**
      * Constructor.
@@ -358,9 +359,9 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition, Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-<span class="fc" id="L361">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L362">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent);
-<span class="fc" id="L363">    }</span>
+<span class="fc" id="L364">    }</span>
 
     /**
      * Constructor.
@@ -375,9 +376,9 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
     public PROMedSRobustRssiRadioSourceEstimator2D(
             final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-<span class="fc" id="L378">        super(initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L379">        super(initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent);
-<span class="fc" id="L380">    }</span>
+<span class="fc" id="L381">    }</span>
 
     /**
      * Constructor.
@@ -394,9 +395,9 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
             final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L397">        super(initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L398">        super(initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent, listener);
-<span class="fc" id="L399">    }</span>
+<span class="fc" id="L400">    }</span>
 
     /**
      * Constructor.
@@ -417,9 +418,9 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
             final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L420">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L421">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent, listener);
-<span class="fc" id="L422">    }</span>
+<span class="fc" id="L423">    }</span>
 
     /**
      * Constructor.
@@ -432,9 +433,9 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
      */
     public PROMedSRobustRssiRadioSourceEstimator2D(
             final double[] qualityScores) {
-<span class="fc" id="L435">        super();</span>
-<span class="fc" id="L436">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L437">    }</span>
+<span class="fc" id="L436">        super();</span>
+<span class="fc" id="L437">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L438">    }</span>
 
     /**
      * Constructor.
@@ -450,9 +451,9 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
     public PROMedSRobustRssiRadioSourceEstimator2D(
             final double[] qualityScores,
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings) {
-<span class="fc" id="L453">        super(readings);</span>
-<span class="fc" id="L454">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L455">    }</span>
+<span class="fc" id="L454">        super(readings);</span>
+<span class="fc" id="L455">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L456">    }</span>
 
     /**
      * Constructor.
@@ -467,9 +468,9 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
     public PROMedSRobustRssiRadioSourceEstimator2D(
             final double[] qualityScores,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L470">        super(listener);</span>
-<span class="fc" id="L471">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L472">    }</span>
+<span class="fc" id="L471">        super(listener);</span>
+<span class="fc" id="L472">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L473">    }</span>
 
     /**
      * Constructor.
@@ -487,9 +488,9 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
             final double[] qualityScores,
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L490">        super(readings, listener);</span>
-<span class="fc" id="L491">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L492">    }</span>
+<span class="fc" id="L491">        super(readings, listener);</span>
+<span class="fc" id="L492">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L493">    }</span>
 
     /**
      * Constructor.
@@ -508,9 +509,9 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
             final double[] qualityScores,
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition) {
-<span class="fc" id="L511">        super(readings, initialPosition);</span>
-<span class="fc" id="L512">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L513">    }</span>
+<span class="fc" id="L512">        super(readings, initialPosition);</span>
+<span class="fc" id="L513">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L514">    }</span>
 
     /**
      * Constructor.
@@ -523,9 +524,9 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
      */
     public PROMedSRobustRssiRadioSourceEstimator2D(
             final double[] qualityScores, final Point2D initialPosition) {
-<span class="fc" id="L526">        super(initialPosition);</span>
-<span class="fc" id="L527">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L528">    }</span>
+<span class="fc" id="L527">        super(initialPosition);</span>
+<span class="fc" id="L528">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L529">    }</span>
 
     /**
      * Constructor.
@@ -542,9 +543,9 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
     public PROMedSRobustRssiRadioSourceEstimator2D(
             final double[] qualityScores, final Point2D initialPosition,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L545">        super(initialPosition, listener);</span>
-<span class="fc" id="L546">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L547">    }</span>
+<span class="fc" id="L546">        super(initialPosition, listener);</span>
+<span class="fc" id="L547">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L548">    }</span>
 
     /**
      * Constructor.
@@ -565,9 +566,9 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L568">        super(readings, initialPosition, listener);</span>
-<span class="fc" id="L569">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L570">    }</span>
+<span class="fc" id="L569">        super(readings, initialPosition, listener);</span>
+<span class="fc" id="L570">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L571">    }</span>
 
     /**
      * Constructor.
@@ -584,9 +585,9 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
     public PROMedSRobustRssiRadioSourceEstimator2D(
             final double[] qualityScores,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L587">        super(initialTransmittedPowerdBm);</span>
-<span class="fc" id="L588">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L589">    }</span>
+<span class="fc" id="L588">        super(initialTransmittedPowerdBm);</span>
+<span class="fc" id="L589">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L590">    }</span>
 
     /**
      * Constructor.
@@ -606,9 +607,9 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
             final double[] qualityScores,
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L609">        super(readings, initialTransmittedPowerdBm);</span>
-<span class="fc" id="L610">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L611">    }</span>
+<span class="fc" id="L610">        super(readings, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L611">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L612">    }</span>
 
     /**
      * Constructor.
@@ -627,9 +628,9 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
             final double[] qualityScores,
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L630">        super(initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L631">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L632">    }</span>
+<span class="fc" id="L631">        super(initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L632">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L633">    }</span>
 
     /**
      * Constructor.
@@ -651,9 +652,9 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L654">        super(readings, initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L655">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L656">    }</span>
+<span class="fc" id="L655">        super(readings, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L656">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L657">    }</span>
 
     /**
      * Constructor.
@@ -676,9 +677,9 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L679">        super(readings, initialPosition, initialTransmittedPowerdBm);</span>
-<span class="fc" id="L680">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L681">    }</span>
+<span class="fc" id="L680">        super(readings, initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L681">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L682">    }</span>
 
     /**
      * Constructor.
@@ -698,9 +699,9 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
             final double[] qualityScores,
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L701">        super(initialPosition, initialTransmittedPowerdBm);</span>
-<span class="fc" id="L702">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L703">    }</span>
+<span class="fc" id="L702">        super(initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L703">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L704">    }</span>
 
     /**
      * Constructor.
@@ -722,9 +723,9 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L725">        super(initialPosition, initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L726">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L727">    }</span>
+<span class="fc" id="L726">        super(initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L727">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L728">    }</span>
 
     /**
      * Constructor.
@@ -748,9 +749,9 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L751">        super(readings, initialPosition, initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L752">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L753">    }</span>
+<span class="fc" id="L752">        super(readings, initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L753">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L754">    }</span>
 
     /**
      * Constructor.
@@ -774,10 +775,10 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-<span class="fc" id="L777">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L778">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent);
-<span class="fc" id="L779">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L780">    }</span>
+<span class="fc" id="L780">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L781">    }</span>
 
     /**
      * Constructor.
@@ -796,10 +797,10 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
             final double[] qualityScores, final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-<span class="fc" id="L799">        super(initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L800">        super(initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent);
-<span class="fc" id="L801">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L802">    }</span>
+<span class="fc" id="L802">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L803">    }</span>
 
     /**
      * Constructor.
@@ -821,10 +822,10 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L824">        super(initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L825">        super(initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent, listener);
-<span class="fc" id="L826">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L827">    }</span>
+<span class="fc" id="L827">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L828">    }</span>
 
     /**
      * Constructor.
@@ -851,10 +852,10 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L854">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L855">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent, listener);
-<span class="fc" id="L856">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L857">    }</span>
+<span class="fc" id="L857">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L858">    }</span>
 
     /**
      * Returns threshold to be used to keep the algorithm iterating in case that
@@ -876,7 +877,7 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
      * accuracy has been reached.
      */
     public double getStopThreshold() {
-<span class="fc" id="L879">        return mStopThreshold;</span>
+<span class="fc" id="L880">        return mStopThreshold;</span>
     }
 
     /**
@@ -901,15 +902,15 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
      * @throws LockedException          if this solver is locked.
      */
     public void setStopThreshold(final double stopThreshold) throws LockedException {
-<span class="fc bfc" id="L904" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L905">            throw new LockedException();</span>
+<span class="fc bfc" id="L905" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L906">            throw new LockedException();</span>
         }
-<span class="fc bfc" id="L907" title="All 2 branches covered.">        if (stopThreshold &lt;= MIN_STOP_THRESHOLD) {</span>
-<span class="fc" id="L908">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L908" title="All 2 branches covered.">        if (stopThreshold &lt;= MIN_STOP_THRESHOLD) {</span>
+<span class="fc" id="L909">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L911">        mStopThreshold = stopThreshold;</span>
-<span class="fc" id="L912">    }</span>
+<span class="fc" id="L912">        mStopThreshold = stopThreshold;</span>
+<span class="fc" id="L913">    }</span>
 
     /**
      * Returns quality scores corresponding to each pair of
@@ -922,7 +923,7 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
      */
     @Override
     public double[] getQualityScores() {
-<span class="fc" id="L925">        return mQualityScores;</span>
+<span class="fc" id="L926">        return mQualityScores;</span>
     }
 
     /**
@@ -940,11 +941,11 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
      *                                  estimation is already in progress.
      */
     public void setQualityScores(final double[] qualityScores) throws LockedException {
-<span class="pc bpc" id="L943" title="1 of 2 branches missed.">        if (isLocked()) {</span>
-<span class="nc" id="L944">            throw new LockedException();</span>
+<span class="pc bpc" id="L944" title="1 of 2 branches missed.">        if (isLocked()) {</span>
+<span class="nc" id="L945">            throw new LockedException();</span>
         }
-<span class="fc" id="L946">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L947">    }</span>
+<span class="fc" id="L947">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L948">    }</span>
 
     /**
      * Indicates whether solver is ready to find a solution.
@@ -953,12 +954,12 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
      */
     @Override
     public boolean isReady() {
-<span class="fc bfc" id="L956" title="All 4 branches covered.">        return super.isReady() &amp;&amp; mQualityScores != null &amp;&amp;</span>
-<span class="pc bpc" id="L957" title="1 of 2 branches missed.">                mQualityScores.length == mReadings.size();</span>
+<span class="fc bfc" id="L957" title="All 4 branches covered.">        return super.isReady() &amp;&amp; mQualityScores != null &amp;&amp;</span>
+<span class="pc bpc" id="L958" title="1 of 2 branches missed.">                mQualityScores.length == mReadings.size();</span>
     }
 
     /**
-     * Robustly estimates position, transmitted power and pathloss exponent for a
+     * Robustly estimates position, transmitted power and path-loss exponent for a
      * radio source.
      *
      * @throws LockedException          if instance is busy during estimation.
@@ -968,119 +969,119 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
      */
     @Override
     public void estimate() throws LockedException, NotReadyException, RobustEstimatorException {
-<span class="fc bfc" id="L971" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L972">            throw new LockedException();</span>
+<span class="fc bfc" id="L972" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L973">            throw new LockedException();</span>
         }
-<span class="fc bfc" id="L974" title="All 2 branches covered.">        if (!isReady()) {</span>
-<span class="fc" id="L975">            throw new NotReadyException();</span>
+<span class="fc bfc" id="L975" title="All 2 branches covered.">        if (!isReady()) {</span>
+<span class="fc" id="L976">            throw new NotReadyException();</span>
         }
 
-<span class="fc" id="L978">        final PROMedSRobustEstimator&lt;Solution&lt;Point2D&gt;&gt; innerEstimator =</span>
+<span class="fc" id="L979">        final PROMedSRobustEstimator&lt;Solution&lt;Point2D&gt;&gt; innerEstimator =</span>
                 new PROMedSRobustEstimator&lt;&gt;(
-<span class="fc" id="L980">                        new PROMedSRobustEstimatorListener&lt;Solution&lt;Point2D&gt;&gt;() {</span>
+<span class="fc" id="L981">                        new PROMedSRobustEstimatorListener&lt;Solution&lt;Point2D&gt;&gt;() {</span>
 
                             @Override
                             public double[] getQualityScores() {
-<span class="fc" id="L984">                                return mQualityScores;</span>
+<span class="fc" id="L985">                                return mQualityScores;</span>
                             }
 
                             @Override
                             public double getThreshold() {
-<span class="nc" id="L989">                                return mStopThreshold;</span>
+<span class="nc" id="L990">                                return mStopThreshold;</span>
                             }
 
                             @Override
                             public int getTotalSamples() {
-<span class="fc" id="L994">                                return mReadings.size();</span>
+<span class="fc" id="L995">                                return mReadings.size();</span>
                             }
 
                             @Override
                             public int getSubsetSize() {
-<span class="fc" id="L999">                                return Math.max(mPreliminarySubsetSize, getMinReadings());</span>
+<span class="fc" id="L1000">                                return Math.max(mPreliminarySubsetSize, getMinReadings());</span>
                             }
 
                             @Override
                             public void estimatePreliminarSolutions(
                                     final int[] samplesIndices,
                                     final List&lt;Solution&lt;Point2D&gt;&gt; solutions) {
-<span class="fc" id="L1006">                                solvePreliminarSolutions(samplesIndices, solutions);</span>
-<span class="fc" id="L1007">                            }</span>
+<span class="fc" id="L1007">                                solvePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L1008">                            }</span>
 
                             @Override
                             public double computeResidual(
                                     final Solution&lt;Point2D&gt; currentEstimation, int i) {
-<span class="fc" id="L1012">                                return residual(currentEstimation, i);</span>
+<span class="fc" id="L1013">                                return residual(currentEstimation, i);</span>
                             }
 
                             @Override
                             public boolean isReady() {
-<span class="fc" id="L1017">                                return PROMedSRobustRssiRadioSourceEstimator2D.this.isReady();</span>
+<span class="fc" id="L1018">                                return PROMedSRobustRssiRadioSourceEstimator2D.this.isReady();</span>
                             }
 
                             @Override
                             public void onEstimateStart(
                                     final RobustEstimator&lt;Solution&lt;Point2D&gt;&gt; estimator) {
-<span class="fc" id="L1023">                            }</span>
+<span class="fc" id="L1024">                            }</span>
 
                             @Override
                             public void onEstimateEnd(
                                     final RobustEstimator&lt;Solution&lt;Point2D&gt;&gt; estimator) {
-<span class="fc" id="L1028">                            }</span>
+<span class="fc" id="L1029">                            }</span>
 
                             @Override
                             public void onEstimateNextIteration(
                                     final RobustEstimator&lt;Solution&lt;Point2D&gt;&gt; estimator,
                                     final int iteration) {
-<span class="fc bfc" id="L1034" title="All 2 branches covered.">                                if (mListener != null) {</span>
-<span class="fc" id="L1035">                                    mListener.onEstimateNextIteration(</span>
+<span class="fc bfc" id="L1035" title="All 2 branches covered.">                                if (mListener != null) {</span>
+<span class="fc" id="L1036">                                    mListener.onEstimateNextIteration(</span>
                                             PROMedSRobustRssiRadioSourceEstimator2D.this,
                                             iteration);
                                 }
-<span class="fc" id="L1039">                            }</span>
+<span class="fc" id="L1040">                            }</span>
 
                             @Override
                             public void onEstimateProgressChange(
                                     final RobustEstimator&lt;Solution&lt;Point2D&gt;&gt; estimator,
                                     final float progress) {
-<span class="nc bnc" id="L1045" title="All 2 branches missed.">                                if (mListener != null) {</span>
-<span class="nc" id="L1046">                                    mListener.onEstimateProgressChange(</span>
+<span class="nc bnc" id="L1046" title="All 2 branches missed.">                                if (mListener != null) {</span>
+<span class="nc" id="L1047">                                    mListener.onEstimateProgressChange(</span>
                                             PROMedSRobustRssiRadioSourceEstimator2D.this,
                                             progress);
                                 }
-<span class="nc" id="L1050">                            }</span>
+<span class="nc" id="L1051">                            }</span>
                         });
 
         try {
-<span class="fc" id="L1054">            mLocked = true;</span>
+<span class="fc" id="L1055">            mLocked = true;</span>
 
-<span class="fc bfc" id="L1056" title="All 2 branches covered.">            if (mListener != null) {</span>
-<span class="fc" id="L1057">                mListener.onEstimateStart(this);</span>
+<span class="fc bfc" id="L1057" title="All 2 branches covered.">            if (mListener != null) {</span>
+<span class="fc" id="L1058">                mListener.onEstimateStart(this);</span>
             }
 
-<span class="fc" id="L1060">            mInliersData = null;</span>
+<span class="fc" id="L1061">            mInliersData = null;</span>
 
-            //inlier thresholds are disable to obtain a less restrictive amount of inliers
-<span class="fc" id="L1063">            innerEstimator.setUseInlierThresholds(false);</span>
+            // inlier thresholds are disable to obtain a less restrictive amount of inliers
+<span class="fc" id="L1064">            innerEstimator.setUseInlierThresholds(false);</span>
 
-<span class="fc" id="L1065">            innerEstimator.setConfidence(mConfidence);</span>
-<span class="fc" id="L1066">            innerEstimator.setMaxIterations(mMaxIterations);</span>
-<span class="fc" id="L1067">            innerEstimator.setProgressDelta(mProgressDelta);</span>
-<span class="fc" id="L1068">            final Solution&lt;Point2D&gt; result = innerEstimator.estimate();</span>
-<span class="fc" id="L1069">            mInliersData = innerEstimator.getInliersData();</span>
-<span class="fc" id="L1070">            attemptRefine(result);</span>
+<span class="fc" id="L1066">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L1067">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L1068">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L1069">            final Solution&lt;Point2D&gt; result = innerEstimator.estimate();</span>
+<span class="fc" id="L1070">            mInliersData = innerEstimator.getInliersData();</span>
+<span class="fc" id="L1071">            attemptRefine(result);</span>
 
-<span class="fc bfc" id="L1072" title="All 2 branches covered.">            if (mListener != null) {</span>
-<span class="fc" id="L1073">                mListener.onEstimateEnd(this);</span>
+<span class="fc bfc" id="L1073" title="All 2 branches covered.">            if (mListener != null) {</span>
+<span class="fc" id="L1074">                mListener.onEstimateEnd(this);</span>
             }
 
-<span class="nc" id="L1076">        } catch (final com.irurueta.numerical.LockedException e) {</span>
-<span class="nc" id="L1077">            throw new LockedException(e);</span>
-<span class="nc" id="L1078">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
-<span class="nc" id="L1079">            throw new NotReadyException(e);</span>
+<span class="nc" id="L1077">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L1078">            throw new LockedException(e);</span>
+<span class="nc" id="L1079">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L1080">            throw new NotReadyException(e);</span>
         } finally {
-<span class="fc" id="L1081">            mLocked = false;</span>
+<span class="fc" id="L1082">            mLocked = false;</span>
         }
-<span class="fc" id="L1083">    }</span>
+<span class="fc" id="L1084">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -1089,7 +1090,7 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L1092">        return RobustEstimatorMethod.PROMedS;</span>
+<span class="fc" id="L1093">        return RobustEstimatorMethod.PROMedS;</span>
     }
 
     /**
@@ -1102,12 +1103,12 @@ public class PROMedSRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt
      *                                  is smaller than 3 samples.
      */
     private void internalSetQualityScores(final double[] qualityScores) {
-<span class="fc bfc" id="L1105" title="All 2 branches covered.">        if (qualityScores == null ||</span>
-<span class="fc bfc" id="L1106" title="All 2 branches covered.">                qualityScores.length &lt; getMinReadings()) {</span>
-<span class="fc" id="L1107">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1106" title="All 2 branches covered.">        if (qualityScores == null ||</span>
+<span class="fc bfc" id="L1107" title="All 2 branches covered.">                qualityScores.length &lt; getMinReadings()) {</span>
+<span class="fc" id="L1108">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1110">        mQualityScores = qualityScores;</span>
-<span class="fc" id="L1111">    }</span>
+<span class="fc" id="L1111">        mQualityScores = qualityScores;</span>
+<span class="fc" id="L1112">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

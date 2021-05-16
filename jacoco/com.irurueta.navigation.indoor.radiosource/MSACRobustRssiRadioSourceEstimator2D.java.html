@@ -25,10 +25,11 @@ import com.irurueta.numerical.robust.MSACRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
- * Robustly estimate 2D position, transmitted power and pathloss exponent of a radio source
+ * Robustly estimate 2D position, transmitted power and path-loss exponent of a radio source
  * (e.g. WiFi access point or bluetooth beacon), by discarding outliers using MSAC
  * algorithm and assuming that the radio source emits isotropically following the
  * expression below:
@@ -81,14 +82,14 @@ public class MSACRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; e
      * Threshold to determine whether samples are inliers or not when
      * testing possible estimation solutions.
      */
-<span class="fc" id="L84">    private double mThreshold = DEFAULT_THRESHOLD;</span>
+<span class="fc" id="L85">    private double mThreshold = DEFAULT_THRESHOLD;</span>
 
     /**
      * Constructor.
      */
     public MSACRobustRssiRadioSourceEstimator2D() {
-<span class="fc" id="L90">        super();</span>
-<span class="fc" id="L91">    }</span>
+<span class="fc" id="L91">        super();</span>
+<span class="fc" id="L92">    }</span>
 
     /**
      * Constructor.
@@ -99,8 +100,8 @@ public class MSACRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; e
      */
     public MSACRobustRssiRadioSourceEstimator2D(
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings) {
-<span class="fc" id="L102">        super(readings);</span>
-<span class="fc" id="L103">    }</span>
+<span class="fc" id="L103">        super(readings);</span>
+<span class="fc" id="L104">    }</span>
 
     /**
      * Constructor.
@@ -109,8 +110,8 @@ public class MSACRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; e
      */
     public MSACRobustRssiRadioSourceEstimator2D(
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L112">        super(listener);</span>
-<span class="fc" id="L113">    }</span>
+<span class="fc" id="L113">        super(listener);</span>
+<span class="fc" id="L114">    }</span>
 
     /**
      * Constructor.
@@ -123,8 +124,8 @@ public class MSACRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; e
     public MSACRobustRssiRadioSourceEstimator2D(
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L126">        super(readings, listener);</span>
-<span class="fc" id="L127">    }</span>
+<span class="fc" id="L127">        super(readings, listener);</span>
+<span class="fc" id="L128">    }</span>
 
     /**
      * Constructor.
@@ -138,8 +139,8 @@ public class MSACRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; e
     public MSACRobustRssiRadioSourceEstimator2D(
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition) {
-<span class="fc" id="L141">        super(readings, initialPosition);</span>
-<span class="fc" id="L142">    }</span>
+<span class="fc" id="L142">        super(readings, initialPosition);</span>
+<span class="fc" id="L143">    }</span>
 
     /**
      * Constructor.
@@ -149,8 +150,8 @@ public class MSACRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; e
      */
     public MSACRobustRssiRadioSourceEstimator2D(
             final Point2D initialPosition) {
-<span class="fc" id="L152">        super(initialPosition);</span>
-<span class="fc" id="L153">    }</span>
+<span class="fc" id="L153">        super(initialPosition);</span>
+<span class="fc" id="L154">    }</span>
 
     /**
      * Constructor.
@@ -162,8 +163,8 @@ public class MSACRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; e
     public MSACRobustRssiRadioSourceEstimator2D(
             final Point2D initialPosition,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L165">        super(initialPosition, listener);</span>
-<span class="fc" id="L166">    }</span>
+<span class="fc" id="L166">        super(initialPosition, listener);</span>
+<span class="fc" id="L167">    }</span>
 
     /**
      * Constructor.
@@ -179,8 +180,8 @@ public class MSACRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; e
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L182">        super(readings, initialPosition, listener);</span>
-<span class="fc" id="L183">    }</span>
+<span class="fc" id="L183">        super(readings, initialPosition, listener);</span>
+<span class="fc" id="L184">    }</span>
 
     /**
      * Constructor.
@@ -191,8 +192,8 @@ public class MSACRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; e
      */
     public MSACRobustRssiRadioSourceEstimator2D(
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L194">        super(initialTransmittedPowerdBm);</span>
-<span class="fc" id="L195">    }</span>
+<span class="fc" id="L195">        super(initialTransmittedPowerdBm);</span>
+<span class="fc" id="L196">    }</span>
 
     /**
      * Constructor.
@@ -207,8 +208,8 @@ public class MSACRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; e
     public MSACRobustRssiRadioSourceEstimator2D(
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L210">        super(readings, initialTransmittedPowerdBm);</span>
-<span class="fc" id="L211">    }</span>
+<span class="fc" id="L211">        super(readings, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L212">    }</span>
 
     /**
      * Constructor.
@@ -221,8 +222,8 @@ public class MSACRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; e
     public MSACRobustRssiRadioSourceEstimator2D(
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L224">        super(initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L225">    }</span>
+<span class="fc" id="L225">        super(initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L226">    }</span>
 
     /**
      * Constructor.
@@ -239,8 +240,8 @@ public class MSACRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; e
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L242">        super(readings, initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L243">    }</span>
+<span class="fc" id="L243">        super(readings, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L244">    }</span>
 
     /**
      * Constructor.
@@ -257,8 +258,8 @@ public class MSACRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; e
     public MSACRobustRssiRadioSourceEstimator2D(
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition, final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L260">        super(readings, initialPosition, initialTransmittedPowerdBm);</span>
-<span class="fc" id="L261">    }</span>
+<span class="fc" id="L261">        super(readings, initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L262">    }</span>
 
     /**
      * Constructor.
@@ -272,8 +273,8 @@ public class MSACRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; e
     public MSACRobustRssiRadioSourceEstimator2D(
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L275">        super(initialPosition, initialTransmittedPowerdBm);</span>
-<span class="fc" id="L276">    }</span>
+<span class="fc" id="L276">        super(initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L277">    }</span>
 
     /**
      * Constructor.
@@ -289,8 +290,8 @@ public class MSACRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; e
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L292">        super(initialPosition, initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L293">    }</span>
+<span class="fc" id="L293">        super(initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L294">    }</span>
 
     /**
      * Constructor.
@@ -309,8 +310,8 @@ public class MSACRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; e
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L312">        super(readings, initialPosition, initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L313">    }</span>
+<span class="fc" id="L313">        super(readings, initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L314">    }</span>
 
     /**
      * Constructor.
@@ -329,9 +330,9 @@ public class MSACRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; e
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-<span class="fc" id="L332">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L333">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent);
-<span class="fc" id="L334">    }</span>
+<span class="fc" id="L335">    }</span>
 
     /**
      * Constructor.
@@ -346,9 +347,9 @@ public class MSACRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; e
     public MSACRobustRssiRadioSourceEstimator2D(
             final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-<span class="fc" id="L349">        super(initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L350">        super(initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent);
-<span class="fc" id="L351">    }</span>
+<span class="fc" id="L352">    }</span>
 
     /**
      * Constructor.
@@ -365,9 +366,9 @@ public class MSACRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; e
             final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L368">        super(initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L369">        super(initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent, listener);
-<span class="fc" id="L370">    }</span>
+<span class="fc" id="L371">    }</span>
 
     /**
      * Constructor.
@@ -388,9 +389,9 @@ public class MSACRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; e
             final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L391">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L392">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent, listener);
-<span class="fc" id="L393">    }</span>
+<span class="fc" id="L394">    }</span>
 
     /**
      * Returns threshold to determine whether samples are inliers or not.
@@ -398,7 +399,7 @@ public class MSACRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; e
      * @return threshold to determine whether samples are inliers or not.
      */
     public double getThreshold() {
-<span class="fc" id="L401">        return mThreshold;</span>
+<span class="fc" id="L402">        return mThreshold;</span>
     }
 
     /**
@@ -411,17 +412,17 @@ public class MSACRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; e
      *                                  estimation is already in progress.
      */
     public void setThreshold(final double threshold) throws LockedException {
-<span class="fc bfc" id="L414" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L415">            throw new LockedException();</span>
+<span class="fc bfc" id="L415" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L416">            throw new LockedException();</span>
         }
-<span class="fc bfc" id="L417" title="All 2 branches covered.">        if (threshold &lt;= MIN_THRESHOLD) {</span>
-<span class="fc" id="L418">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L418" title="All 2 branches covered.">        if (threshold &lt;= MIN_THRESHOLD) {</span>
+<span class="fc" id="L419">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L420">        mThreshold = threshold;</span>
-<span class="fc" id="L421">    }</span>
+<span class="fc" id="L421">        mThreshold = threshold;</span>
+<span class="fc" id="L422">    }</span>
 
     /**
-     * Robustly estimates position, transmitted power and pathloss exponent for a
+     * Robustly estimates position, transmitted power and path-loss exponent for a
      * radio source.
      *
      * @throws LockedException          if instance is busy during estimation.
@@ -431,110 +432,110 @@ public class MSACRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; e
      */
     @Override
     public void estimate() throws LockedException, NotReadyException, RobustEstimatorException {
-<span class="fc bfc" id="L434" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L435">            throw new LockedException();</span>
+<span class="fc bfc" id="L435" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L436">            throw new LockedException();</span>
         }
-<span class="fc bfc" id="L437" title="All 2 branches covered.">        if (!isReady()) {</span>
-<span class="fc" id="L438">            throw new NotReadyException();</span>
+<span class="fc bfc" id="L438" title="All 2 branches covered.">        if (!isReady()) {</span>
+<span class="fc" id="L439">            throw new NotReadyException();</span>
         }
 
-<span class="fc" id="L441">        final MSACRobustEstimator&lt;Solution&lt;Point2D&gt;&gt; innerEstimator =</span>
+<span class="fc" id="L442">        final MSACRobustEstimator&lt;Solution&lt;Point2D&gt;&gt; innerEstimator =</span>
                 new MSACRobustEstimator&lt;&gt;(
-<span class="fc" id="L443">                        new MSACRobustEstimatorListener&lt;Solution&lt;Point2D&gt;&gt;() {</span>
+<span class="fc" id="L444">                        new MSACRobustEstimatorListener&lt;Solution&lt;Point2D&gt;&gt;() {</span>
                             @Override
                             public double getThreshold() {
-<span class="fc" id="L446">                                return mThreshold;</span>
+<span class="fc" id="L447">                                return mThreshold;</span>
                             }
 
                             @Override
                             public int getTotalSamples() {
-<span class="fc" id="L451">                                return mReadings.size();</span>
+<span class="fc" id="L452">                                return mReadings.size();</span>
                             }
 
                             @Override
                             public int getSubsetSize() {
-<span class="fc" id="L456">                                return Math.max(mPreliminarySubsetSize, getMinReadings());</span>
+<span class="fc" id="L457">                                return Math.max(mPreliminarySubsetSize, getMinReadings());</span>
                             }
 
                             @Override
                             public void estimatePreliminarSolutions(
                                     final int[] samplesIndices,
                                     final List&lt;Solution&lt;Point2D&gt;&gt; solutions) {
-<span class="fc" id="L463">                                solvePreliminarSolutions(samplesIndices, solutions);</span>
-<span class="fc" id="L464">                            }</span>
+<span class="fc" id="L464">                                solvePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L465">                            }</span>
 
                             @Override
                             public double computeResidual(
                                     final Solution&lt;Point2D&gt; currentEstimation,
                                     final int i) {
-<span class="fc" id="L470">                                return residual(currentEstimation, i);</span>
+<span class="fc" id="L471">                                return residual(currentEstimation, i);</span>
                             }
 
                             @Override
                             public boolean isReady() {
-<span class="fc" id="L475">                                return MSACRobustRssiRadioSourceEstimator2D.this.isReady();</span>
+<span class="fc" id="L476">                                return MSACRobustRssiRadioSourceEstimator2D.this.isReady();</span>
                             }
 
                             @Override
                             public void onEstimateStart(
                                     final RobustEstimator&lt;Solution&lt;Point2D&gt;&gt; estimator) {
-<span class="fc" id="L481">                            }</span>
+<span class="fc" id="L482">                            }</span>
 
                             @Override
                             public void onEstimateEnd(
                                     final RobustEstimator&lt;Solution&lt;Point2D&gt;&gt; estimator) {
-<span class="fc" id="L486">                            }</span>
+<span class="fc" id="L487">                            }</span>
 
                             @Override
                             public void onEstimateNextIteration(
                                     final RobustEstimator&lt;Solution&lt;Point2D&gt;&gt; estimator,
                                     final int iteration) {
-<span class="fc bfc" id="L492" title="All 2 branches covered.">                                if (mListener != null) {</span>
-<span class="fc" id="L493">                                    mListener.onEstimateNextIteration(</span>
+<span class="fc bfc" id="L493" title="All 2 branches covered.">                                if (mListener != null) {</span>
+<span class="fc" id="L494">                                    mListener.onEstimateNextIteration(</span>
                                             MSACRobustRssiRadioSourceEstimator2D.this,
                                             iteration);
                                 }
-<span class="fc" id="L497">                            }</span>
+<span class="fc" id="L498">                            }</span>
 
                             @Override
                             public void onEstimateProgressChange(
                                     final RobustEstimator&lt;Solution&lt;Point2D&gt;&gt; estimator,
                                     final float progress) {
-<span class="fc bfc" id="L503" title="All 2 branches covered.">                                if (mListener != null) {</span>
-<span class="fc" id="L504">                                    mListener.onEstimateProgressChange(</span>
+<span class="fc bfc" id="L504" title="All 2 branches covered.">                                if (mListener != null) {</span>
+<span class="fc" id="L505">                                    mListener.onEstimateProgressChange(</span>
                                             MSACRobustRssiRadioSourceEstimator2D.this,
                                             progress);
                                 }
-<span class="fc" id="L508">                            }</span>
+<span class="fc" id="L509">                            }</span>
                         });
 
         try {
-<span class="fc" id="L512">            mLocked = true;</span>
+<span class="fc" id="L513">            mLocked = true;</span>
 
-<span class="fc bfc" id="L514" title="All 2 branches covered.">            if (mListener != null) {</span>
-<span class="fc" id="L515">                mListener.onEstimateStart(this);</span>
+<span class="fc bfc" id="L515" title="All 2 branches covered.">            if (mListener != null) {</span>
+<span class="fc" id="L516">                mListener.onEstimateStart(this);</span>
             }
 
-<span class="fc" id="L518">            mInliersData = null;</span>
-<span class="fc" id="L519">            innerEstimator.setConfidence(mConfidence);</span>
-<span class="fc" id="L520">            innerEstimator.setMaxIterations(mMaxIterations);</span>
-<span class="fc" id="L521">            innerEstimator.setProgressDelta(mProgressDelta);</span>
-<span class="fc" id="L522">            final Solution&lt;Point2D&gt; result = innerEstimator.estimate();</span>
-<span class="fc" id="L523">            mInliersData = innerEstimator.getInliersData();</span>
-<span class="fc" id="L524">            attemptRefine(result);</span>
+<span class="fc" id="L519">            mInliersData = null;</span>
+<span class="fc" id="L520">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L521">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L522">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L523">            final Solution&lt;Point2D&gt; result = innerEstimator.estimate();</span>
+<span class="fc" id="L524">            mInliersData = innerEstimator.getInliersData();</span>
+<span class="fc" id="L525">            attemptRefine(result);</span>
 
-<span class="fc bfc" id="L526" title="All 2 branches covered.">            if (mListener != null) {</span>
-<span class="fc" id="L527">                mListener.onEstimateEnd(this);</span>
+<span class="fc bfc" id="L527" title="All 2 branches covered.">            if (mListener != null) {</span>
+<span class="fc" id="L528">                mListener.onEstimateEnd(this);</span>
             }
 
-<span class="nc" id="L530">        } catch (final com.irurueta.numerical.LockedException e) {</span>
-<span class="nc" id="L531">            throw new LockedException(e);</span>
-<span class="nc" id="L532">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
-<span class="nc" id="L533">            throw new NotReadyException(e);</span>
+<span class="nc" id="L531">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L532">            throw new LockedException(e);</span>
+<span class="nc" id="L533">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L534">            throw new NotReadyException(e);</span>
         } finally {
-<span class="fc" id="L535">            mLocked = false;</span>
+<span class="fc" id="L536">            mLocked = false;</span>
         }
-<span class="fc" id="L537">    }</span>
+<span class="fc" id="L538">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -543,7 +544,7 @@ public class MSACRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; e
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L546">        return RobustEstimatorMethod.MSAC;</span>
+<span class="fc" id="L547">        return RobustEstimatorMethod.MSAC;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

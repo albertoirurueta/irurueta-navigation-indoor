@@ -17,51 +17,54 @@ package com.irurueta.navigation.indoor;
 
 import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.Point2D;
+
 import java.util.List;
 
 /**
  * Contains 2D located ranging and RSSI readings from several radio sources.
+ *
  * @param &lt;S&gt; a {@link RadioSource} type.
  * @param &lt;R&gt; a {@link RangingAndRssiReading} type.
  */
-@SuppressWarnings(&quot;WeakerAccess&quot;)
 public class RangingAndRssiFingerprintLocated2D&lt;S extends RadioSource,
         R extends RangingAndRssiReading&lt;S&gt;&gt; extends RangingAndRssiFingerprintLocated&lt;S, R, Point2D&gt; {
 
     /**
      * Constructor.
+     *
      * @param readings non-located ranging and RSSI readings defining the
      *                 fingerprint.
      * @param position position where readings were made.
      * @throws IllegalArgumentException if either readings or position are
-     * null.
+     *                                  null.
      */
     public RangingAndRssiFingerprintLocated2D(
             final List&lt;R&gt; readings, Point2D position) {
-<span class="fc" id="L41">        super(readings, position);</span>
-<span class="fc" id="L42">    }</span>
+<span class="fc" id="L43">        super(readings, position);</span>
+<span class="fc" id="L44">    }</span>
 
     /**
      * Constructor.
-     * @param readings non-located ranging and RSSI readings defining the
-     *                 fingerprint.
-     * @param position position where readings were made.
+     *
+     * @param readings           non-located ranging and RSSI readings defining the
+     *                           fingerprint.
+     * @param position           position where readings were made.
      * @param positionCovariance 2x2 covariance of inhomogeneous coordinates of current
      *                           position (if available).
      * @throws IllegalArgumentException if either readings or position are null, or
-     * covariance has invalid size.
+     *                                  covariance has invalid size.
      */
     public RangingAndRssiFingerprintLocated2D(
             final List&lt;R&gt; readings, Point2D position,
             final Matrix positionCovariance) {
-<span class="fc" id="L57">        super(readings, position, positionCovariance);</span>
-<span class="fc" id="L58">    }</span>
+<span class="fc" id="L60">        super(readings, position, positionCovariance);</span>
+<span class="fc" id="L61">    }</span>
 
     /**
      * Empty constructor.
      */
     public RangingAndRssiFingerprintLocated2D() {
-<span class="fc" id="L64">        super();</span>
-<span class="fc" id="L65">    }</span>
+<span class="fc" id="L67">        super();</span>
+<span class="fc" id="L68">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

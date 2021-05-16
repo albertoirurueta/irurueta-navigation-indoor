@@ -30,19 +30,20 @@ import com.irurueta.navigation.indoor.Utils;
 import com.irurueta.numerical.robust.InliersData;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This is an abstract class to robustly estimate position, transmitted power and pathloss
+ * This is an abstract class to robustly estimate position, transmitted power and path-loss
  * exponent of a radio source (e.g. WiFi access point or bluetooth beacon), by discarding
  * outliers and assuming that the ranging data is available to obtain position with
  * greater accuracy and that the radio source emits isotropically following the
  * expression below:
  * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,
  * where Pr is the received power (expressed in mW),
- * Gt is the Gain of the transmission antena
- * Gr is the Gain of the receiver antena
+ * Gt is the Gain of the transmission antenna
+ * Gr is the Gain of the receiver antenna
  * d is the distance between emitter and receiver
  * and lambda is the wavelength and is equal to: lambda = c / f,
  * where c is the speed of light
@@ -67,7 +68,6 @@ import java.util.List;
  * @param &lt;S&gt; a {@link RadioSource} type.
  * @param &lt;P&gt; a {@link Point} type.
  */
-@SuppressWarnings({&quot;WeakerAccess&quot;, &quot;Duplicates&quot;})
 public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends RadioSource,
         P extends Point&lt;P&gt;&gt; {
 
@@ -79,7 +79,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
             RobustEstimatorMethod.PROMedS;
 
     /**
-     * Default robust estimator method for pathloss exponent and transmitted power
+     * Default robust estimator method for path-loss exponent and transmitted power
      * estimation using RSSI data when no robust method is provided.
      */
 <span class="fc" id="L85">    public static final RobustEstimatorMethod DEFAULT_RSSI_ROBUST_METHOD =</span>
@@ -114,7 +114,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
     /**
      * Constant defining default confidence of the estimated result, which is
      * 99%. This means that with a probability of 99% estimation will be
-     * accurate because chosen subsamples will be inliers.
+     * accurate because chosen sub-samples will be inliers.
      */
     public static final double DEFAULT_CONFIDENCE = 0.99;
 
@@ -151,7 +151,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
     protected RobustRangingRadioSourceEstimator&lt;S, P&gt; mRangingEstimator;
 
     /**
-     * Internal robust estimator for pathloss exponent and transmitted power
+     * Internal robust estimator for path-loss exponent and transmitted power
      * estimation.
      */
     protected RobustRssiRadioSourceEstimator&lt;S, P&gt; mRssiEstimator;
@@ -162,7 +162,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
 <span class="fc" id="L162">    protected RobustEstimatorMethod mRangingRobustMethod = DEFAULT_PANGING_ROBUST_METHOD;</span>
 
     /**
-     * Robust method used for pathloss exponent and transmitted power estimation
+     * Robust method used for path-loss exponent and transmitted power estimation
      * using RSSI data.
      */
 <span class="fc" id="L168">    protected RobustEstimatorMethod mRssiRobustMethod = DEFAULT_RSSI_ROBUST_METHOD;</span>
@@ -186,7 +186,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
 
     /**
      * Threshold to determine when samples are inliers or not used during robust
-     * pathloss exponent and transmitted power estimation.
+     * path-loss exponent and transmitted power estimation.
      */
     protected Double mRssiThreshold;
 
@@ -238,8 +238,8 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
 <span class="fc" id="L238">    private double mRangingConfidence = DEFAULT_CONFIDENCE;</span>
 
     /**
-     * Amoung of confidence expressed as a value between 0.0 and 1.0 (which is equivalent
-     * to 100%) for robust pathloss exponent and transmitted power estimation. The amount
+     * Amount of confidence expressed as a value between 0.0 and 1.0 (which is equivalent
+     * to 100%) for robust path-loss exponent and transmitted power estimation. The amount
      * of confidence indicates the probability that the estimated result is correct.
      * Usually this value will be close to 1.0, but not exactly 1.0.
      */
@@ -253,7 +253,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
 <span class="fc" id="L253">    private int mRangingMaxIterations = DEFAULT_MAX_ITERATIONS;</span>
 
     /**
-     * Maximum allowed number of iterations for robust pathloss exponent and transmitted
+     * Maximum allowed number of iterations for robust path-loss exponent and transmitted
      * power estimation. When the maximum number of iterations is exceeded, an
      * approximate result might be available for retrieval.
      */
@@ -273,7 +273,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
 <span class="fc" id="L273">    private boolean mKeepCovariance = DEFAULT_KEEP_COVARIANCE;</span>
 
     /**
-     * Covariance of estimated position, power and/or pathloss exponent.
+     * Covariance of estimated position, power and/or path-loss exponent.
      * This is only available when result has been refined and covariance is kept.
      */
     private Matrix mCovariance;
@@ -357,7 +357,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
 
     /**
      * Variance of estimated path loss exponent.
-     * This value will only be available when pathloss
+     * This value will only be available when path-loss
      * exponent estimation is enabled.
      */
     private Double mEstimatedPathLossExponentVariance;
@@ -600,7 +600,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @param initialTransmittedPowerdBm initial transmitted power to start the
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's).
-     * @param listener                   in charge of attenging events raised by this instance.
+     * @param listener                   listener in charge of attending events raised by this instance.
      */
     public SequentialRobustMixedRadioSourceEstimator(
             final P initialPosition,
@@ -1227,10 +1227,10 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
 <span class="fc" id="L1227">    }</span>
 
     /**
-     * Gets robust method used for pathloss exponent and transmitted power estimation
+     * Gets robust method used for path-loss exponent and transmitted power estimation
      * using RSSI data.
      *
-     * @return robust method used for pathloss exponent and transmitted power
+     * @return robust method used for path-loss exponent and transmitted power
      * estimation.
      */
     public RobustEstimatorMethod getRssiRobustMethod() {
@@ -1238,10 +1238,10 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
     }
 
     /**
-     * Sets robust method used for pathloss exponent and transmitted power estimation
+     * Sets robust method used for path-loss exponent and transmitted power estimation
      * using RSSI data.
      *
-     * @param rssiRobustMethod robust method used for pathloss exponent and transmitted
+     * @param rssiRobustMethod robust method used for path-loss exponent and transmitted
      *                         power estimation.
      * @throws LockedException if estimator is locked.
      */
@@ -1340,7 +1340,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
 
     /**
      * Gets threshold to determine when samples are inliers or not, used during robust
-     * pathloss exponent and transmitted power estimation.
+     * path-loss exponent and transmitted power estimation.
      * If not defined, default threshold will be used.
      *
      * @return threshold for RSSI estimation or null.
@@ -1351,7 +1351,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
 
     /**
      * Sets threshold to determine when samples are inliers or not, used during robust
-     * pathloss exponent and transmitted power estimation.
+     * path-loss exponent and transmitted power estimation.
      * If not defined, default threshold will be used.
      *
      * @param rssiThreshold threshold for RSSI estimation or null.
@@ -1402,12 +1402,12 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
 
     /**
      * Returns amount of confidence expressed as a value between 0.0 and 1.0
-     * (which is equivalent to 100%) for pathloss exponent and transmitted power
+     * (which is equivalent to 100%) for path-loss exponent and transmitted power
      * estimation. The amount of confidence indicates the probability that the
      * estimated result is correct.
      * Usually this value will be close to 1.0, but not exactly 1.0.
      *
-     * @return amount of confidence for robust pathloss exponent and transmitted power
+     * @return amount of confidence for robust path-loss exponent and transmitted power
      * estimation as a value between 0.0 and 1.0.
      */
     public double getRssiConfidence() {
@@ -1416,12 +1416,12 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
 
     /**
      * Sets amount of confidence expressed as a value between 0.0 and 1.0
-     * (which is equivalent to 100%) for pathloss exponent and transmitted power
+     * (which is equivalent to 100%) for path-loss exponent and transmitted power
      * estimation. The amount of confidence indicates the probability that the
      * estimated result is correct. Usually this value will be close to 10.0, but
      * not exactly 1.0.
      *
-     * @param rssiConfidence confidence to be set for robust pathloss exponent and
+     * @param rssiConfidence confidence to be set for robust path-loss exponent and
      *                       transmitted power estimation as a value between 0.0 and
      *                       1.0.
      * @throws IllegalArgumentException if provided value is not between 0.0 and 1.0.
@@ -1471,12 +1471,12 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
 <span class="fc" id="L1471">    }</span>
 
     /**
-     * Returns maximum allowed number of iterations for robust pathloss exponent and
+     * Returns maximum allowed number of iterations for robust path-loss exponent and
      * transmitted power estimation. If maximum allowed number of iterations is achieved
      * without converging to a result when calling estimate(), a RobustEstimatorException
      * will be raised.
      *
-     * @return maximum allowed number of iterations for pathloss exponent and transmitted
+     * @return maximum allowed number of iterations for path-loss exponent and transmitted
      * power estimation.
      */
     public int getRssiMaxIterations() {
@@ -1484,12 +1484,12 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
     }
 
     /**
-     * Sets maximum allowed number of iterations for robust pathloss exponent and
+     * Sets maximum allowed number of iterations for robust path-loss exponent and
      * transmitted power estimation. When the maximum number of iterations is exceeded,
      * an approximate result might be available for retrieval.
      *
      * @param rssiMaxIterations maximum allowed number of iterations to be set for
-     *                          pathloss exponent and transmitted power estimation.
+     *                          path-loss exponent and transmitted power estimation.
      * @throws IllegalArgumentException if provided value is less than 1.
      * @throws LockedException          if this estimator is locked.
      */
@@ -1893,9 +1893,9 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
     /**
      * Gets covariance for estimated position and power.
      * Matrix contains information in the following order:
-     * Top-left submatrix contains covariance of position,
+     * Top-left sub-matrix contains covariance of position,
      * then follows transmitted power variance, and finally
-     * the last element contains pathloss exponent variance.
+     * the last element contains path-loss exponent variance.
      * This is only available when result has been refined and covariance is kept.
      *
      * @return covariance for estimated position and power.
@@ -1940,15 +1940,15 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
 
 <span class="fc" id="L1941">        checkReadings(readings);</span>
 
-        //if enough ranging data is available, we check validity both for ranging and RSSI readings
+        // if enough ranging data is available, we check validity both for ranging and RSSI readings
 <span class="pc bpc" id="L1944" title="1 of 4 branches missed.">        return ((!mRssiPositionEnabled &amp;&amp; mNumRangingReadings &gt;= getMinRangingReadings() &amp;&amp;</span>
 <span class="fc bfc" id="L1945" title="All 4 branches covered.">                mNumRssiReadings &gt;= getMinRssiReadings()) ||</span>
-                //if not enough ranging data is available, we check validity only for RSSI readings
+                // if not enough ranging data is available, we check validity only for RSSI readings
 <span class="pc bpc" id="L1947" title="1 of 6 branches missed.">                (mRssiPositionEnabled &amp;&amp; mNumRssiReadings &gt;= getMinRssiReadings()) ||</span>
-                //if only position is enabled, then only check for ranging readings
+                // if only position is enabled, then only check for ranging readings
                 (!mTransmittedPowerEstimationEnabled &amp;&amp; !mPathLossEstimationEnabled &amp;&amp;
 <span class="pc bpc" id="L1950" title="1 of 2 branches missed.">                        mNumRangingReadings &gt;= getMinRangingReadings())) &amp;&amp;</span>
-                //in both upper cases enough general readings must be available
+                // in both upper cases enough general readings must be available
 <span class="pc bpc" id="L1952" title="1 of 2 branches missed.">                readings.size() &gt;= getMinReadings();</span>
     }
 
@@ -2000,7 +2000,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
 
     /**
      * Gets minimum required number of readings to estimate
-     * power, position and pathloss exponent.
+     * power, position and path-loss exponent.
      * This value depends on the number of parameters to
      * be estimated, but for position only, this is 3
      * readings for 2D, and 4 readings for 3D.
@@ -2074,7 +2074,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
     }
 
     /**
-     * Robustly estimates position, transmitted power and pathloss exponent for a
+     * Robustly estimates position, transmitted power and path-loss exponent for a
      * radio source.
      *
      * @throws LockedException          if instance is busy during estimation.
@@ -2090,7 +2090,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
         try {
 <span class="fc" id="L2091">            mLocked = true;</span>
 
-            //when checking for readiness, inner estimators are created and setup
+            // when checking for readiness, inner estimators are created and setup
 <span class="fc bfc" id="L2094" title="All 2 branches covered.">            if (!isReady()) {</span>
 <span class="fc" id="L2095">                throw new NotReadyException();</span>
             }
@@ -2100,7 +2100,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
 <span class="fc" id="L2100">                mListener.onEstimateStart(this);</span>
             }
 
-            //estimate position
+            // estimate position
 <span class="fc bfc" id="L2104" title="All 2 branches covered.">            if (!mRssiPositionEnabled) {</span>
 <span class="fc" id="L2105">                mRangingEstimator.setPreliminarySubsetSize(mRangingPreliminarySubsetSize);</span>
 
@@ -2114,7 +2114,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
 <span class="fc" id="L2114">                mEstimatedPosition = null;</span>
             }
 
-            //estimate transmitted power and/or pathloss if enabled
+            // estimate transmitted power and/or path-loss if enabled
 <span class="pc bpc" id="L2118" title="1 of 6 branches missed.">            if (mTransmittedPowerEstimationEnabled || mPathLossEstimationEnabled ||</span>
                     mRssiPositionEnabled) {
 <span class="fc" id="L2120">                mRssiEstimator.setPositionEstimationEnabled(mRssiPositionEnabled);</span>
@@ -2132,37 +2132,37 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
 <span class="fc" id="L2132">                mInliersData = mRssiEstimator.getInliersData();</span>
 
 <span class="fc bfc" id="L2134" title="All 2 branches covered.">                if (mTransmittedPowerEstimationEnabled) {</span>
-                    //transmitted power estimation enabled
+                    // transmitted power estimation enabled
 <span class="fc" id="L2136">                    mEstimatedTransmittedPowerdBm =</span>
 <span class="fc" id="L2137">                            mRssiEstimator.getEstimatedTransmittedPowerdBm();</span>
 <span class="fc" id="L2138">                    mEstimatedTransmittedPowerVariance =</span>
 <span class="fc" id="L2139">                            mRssiEstimator.getEstimatedTransmittedPowerVariance();</span>
                 } else {
-                    //transmitted power estimation disabled
+                    // transmitted power estimation disabled
 <span class="fc" id="L2142">                    mEstimatedTransmittedPowerdBm = mInitialTransmittedPowerdBm;</span>
 <span class="fc" id="L2143">                    mEstimatedTransmittedPowerVariance = null;</span>
                 }
 
 <span class="fc bfc" id="L2146" title="All 2 branches covered.">                if (mPathLossEstimationEnabled) {</span>
-                    //pathloss exponent estimation enabled
+                    // path-loss exponent estimation enabled
 <span class="fc" id="L2148">                    mEstimatedPathLossExponent =</span>
 <span class="fc" id="L2149">                            mRssiEstimator.getEstimatedPathLossExponent();</span>
 <span class="fc" id="L2150">                    mEstimatedPathLossExponentVariance =</span>
 <span class="fc" id="L2151">                            mRssiEstimator.getEstimatedPathLossExponentVariance();</span>
                 } else {
-                    //pathloss exponent estimation disabled
+                    // path-loss exponent estimation disabled
 <span class="fc" id="L2154">                    mEstimatedPathLossExponent = mInitialPathLossExponent;</span>
 <span class="fc" id="L2155">                    mEstimatedPathLossExponentVariance = null;</span>
                 }
 
-                //build covariance matrix
+                // build covariance matrix
 <span class="fc bfc" id="L2159" title="All 2 branches covered.">                if (mRssiPositionEnabled) {</span>
-                    //if only RSSI estimation is done, we use directly the available estimated covariance
+                    // if only RSSI estimation is done, we use directly the available estimated covariance
 <span class="fc" id="L2161">                    mCovariance = mRssiEstimator.getCovariance();</span>
                 } else {
-                    //if both ranging and RSSI data is used, we build covariance matrix by setting
-                    //position covariance estimated by ranging estimator into top-left corner, and then
-                    //adding covariance terms related to pathloss exponent and transmitted power
+                    // if both ranging and RSSI data is used, we build covariance matrix by setting
+                    // position covariance estimated by ranging estimator into top-left corner, and then
+                    // adding covariance terms related to path loss exponent and transmitted power
 <span class="fc" id="L2166">                    final Matrix rssiCov = mRssiEstimator.getCovariance();</span>
 <span class="pc bpc" id="L2167" title="1 of 4 branches missed.">                    if (mEstimatedPositionCovariance != null &amp;&amp; rssiCov != null) {</span>
 <span class="fc" id="L2168">                        final int dims = getNumberOfDimensions();</span>
@@ -2252,7 +2252,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      */
     protected void setupRangingEstimator() throws LockedException {
 <span class="fc bfc" id="L2254" title="All 4 branches covered.">        if (mReadings != null &amp;&amp; !mRssiPositionEnabled) {</span>
-            //build ranging readings
+            // build ranging readings
 <span class="fc" id="L2256">            final List&lt;RangingReadingLocated&lt;S, P&gt;&gt; rangingReadings = new ArrayList&lt;&gt;();</span>
 <span class="fc bfc" id="L2257" title="All 2 branches covered.">            for (final ReadingLocated&lt;P&gt; reading : mReadings) {</span>
 <span class="fc bfc" id="L2258" title="All 2 branches covered.">                if (reading instanceof RangingReadingLocated) {</span>
@@ -2265,7 +2265,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
 <span class="fc" id="L2265">            mRangingEstimator.setReadings(rangingReadings);</span>
 
 <span class="pc bpc" id="L2267" title="1 of 4 branches missed.">            if (mQualityScores != null &amp;&amp; !rangingReadings.isEmpty()) {</span>
-                //build quality scores
+                // build quality scores
 <span class="fc" id="L2269">                final int numReadings = mReadings.size();</span>
 <span class="fc" id="L2270">                final int numRangingReadings = rangingReadings.size();</span>
 <span class="fc" id="L2271">                final double[] rangingQualityScores = new double[numRangingReadings];</span>
@@ -2282,8 +2282,8 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
 <span class="fc" id="L2282">                mRangingEstimator.setQualityScores(rangingQualityScores);</span>
             }
 
-            //enable RSSI position estimation only if not enough ranging readings are
-            //available
+            // enable RSSI position estimation only if not enough ranging readings are
+            // available
 <span class="fc" id="L2287">            mRssiPositionEnabled =</span>
 <span class="pc bpc" id="L2288" title="1 of 2 branches missed.">                    rangingReadings.size() &lt; mRangingEstimator.getMinReadings();</span>
         }
@@ -2304,20 +2304,20 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
             @Override
             public void onEstimateStart(
                     final RobustRangingRadioSourceEstimator&lt;S, P&gt; estimator) {
-                //not used
+                // not used
 <span class="fc" id="L2308">            }</span>
 
             @Override
             public void onEstimateEnd(
                     final RobustRangingRadioSourceEstimator&lt;S, P&gt; estimator) {
-                //not used
+                // not used
 <span class="fc" id="L2314">            }</span>
 
             @Override
             public void onEstimateNextIteration(
                     final RobustRangingRadioSourceEstimator&lt;S, P&gt; estimator,
                     final int iteration) {
-                //not used
+                // not used
 <span class="fc" id="L2321">            }</span>
 
             @Override
@@ -2342,7 +2342,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
 <span class="fc bfc" id="L2342" title="All 2 branches covered.">        if (mReadings != null) {</span>
 <span class="fc" id="L2343">            mRssiEstimator.setPositionEstimationEnabled(mRssiPositionEnabled);</span>
 
-            //build RSSI readings
+            // build RSSI readings
 <span class="fc" id="L2346">            final List&lt;RssiReadingLocated&lt;S, P&gt;&gt; rssiReadings = new ArrayList&lt;&gt;();</span>
 <span class="fc bfc" id="L2347" title="All 2 branches covered.">            for (final ReadingLocated&lt;P&gt; reading : mReadings) {</span>
 <span class="fc bfc" id="L2348" title="All 2 branches covered.">                if (reading instanceof RssiReadingLocated) {</span>
@@ -2355,7 +2355,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
 <span class="fc" id="L2355">            mRssiEstimator.setReadings(rssiReadings);</span>
 
 <span class="pc bpc" id="L2357" title="1 of 4 branches missed.">            if (mQualityScores != null &amp;&amp; !rssiReadings.isEmpty()) {</span>
-                //build quality scores
+                // build quality scores
 <span class="fc" id="L2359">                final int numReadings = mReadings.size();</span>
 <span class="fc" id="L2360">                final int numRssiReadings = rssiReadings.size();</span>
 <span class="fc" id="L2361">                final double[] rssiQualityScores = new double[numRssiReadings];</span>
@@ -2379,8 +2379,8 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
 <span class="fc" id="L2379">        mRssiEstimator.setResultRefined(mRefineResult);</span>
 <span class="fc" id="L2380">        mRssiEstimator.setCovarianceKept(mKeepCovariance);</span>
 
-        //initial position is not set because position estimated from ranging measures
-        //will be later used
+        // initial position is not set because position estimated from ranging measures
+        // will be later used
 <span class="fc" id="L2384">        mRssiEstimator.setInitialTransmittedPowerdBm(mInitialTransmittedPowerdBm);</span>
 <span class="fc" id="L2385">        mRssiEstimator.setInitialPathLossExponent(mInitialPathLossExponent);</span>
 
@@ -2391,29 +2391,35 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
 <span class="fc" id="L2391">        mRssiEstimator.setListener(new RobustRssiRadioSourceEstimatorListener&lt;S, P&gt;() {</span>
             @Override
             public void onEstimateStart(
-<span class="fc" id="L2394">                    final RobustRssiRadioSourceEstimator&lt;S, P&gt; estimator) { /* not used */ }</span>
+                    final RobustRssiRadioSourceEstimator&lt;S, P&gt; estimator) {
+                // not used
+<span class="fc" id="L2396">            }</span>
 
             @Override
             public void onEstimateEnd(
-<span class="fc" id="L2398">                    final RobustRssiRadioSourceEstimator&lt;S, P&gt; estimator) { /* not used */ }</span>
+                    final RobustRssiRadioSourceEstimator&lt;S, P&gt; estimator) {
+                // not used
+<span class="fc" id="L2402">            }</span>
 
             @Override
             public void onEstimateNextIteration(
                     final RobustRssiRadioSourceEstimator&lt;S, P&gt; estimator,
-<span class="fc" id="L2403">                    final int iteration) { /* not used */ }</span>
+                    final int iteration) {
+                // not used
+<span class="fc" id="L2409">            }</span>
 
             @Override
             public void onEstimateProgressChange(
                     final RobustRssiRadioSourceEstimator&lt;S, P&gt; estimator,
                     final float progress) {
-<span class="nc bnc" id="L2409" title="All 2 branches missed.">                if (mListener != null) {</span>
-<span class="nc" id="L2410">                    mListener.onEstimateProgressChange(</span>
+<span class="nc bnc" id="L2415" title="All 2 branches missed.">                if (mListener != null) {</span>
+<span class="nc" id="L2416">                    mListener.onEstimateProgressChange(</span>
                             SequentialRobustMixedRadioSourceEstimator.this,
                             0.5f + 0.5f * progress);
                 }
-<span class="nc" id="L2414">            }</span>
+<span class="nc" id="L2420">            }</span>
         });
-<span class="fc" id="L2416">    }</span>
+<span class="fc" id="L2422">    }</span>
 
     /**
      * Internally sets signal readings belonging to the same radio source.
@@ -2424,12 +2430,12 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      */
     private void internalSetReadings(
             final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings) {
-<span class="fc bfc" id="L2427" title="All 2 branches covered.">        if (!areValidReadings(readings)) {</span>
-<span class="fc" id="L2428">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L2433" title="All 2 branches covered.">        if (!areValidReadings(readings)) {</span>
+<span class="fc" id="L2434">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L2431">        mReadings = readings;</span>
-<span class="fc" id="L2432">    }</span>
+<span class="fc" id="L2437">        mReadings = readings;</span>
+<span class="fc" id="L2438">    }</span>
 
     /**
      * Sets quality scores corresponding to each provided sample.
@@ -2441,13 +2447,13 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      *                                  is smaller than required minimum.
      */
     private void internalSetQualityScores(final double[] qualityScores) {
-<span class="fc bfc" id="L2444" title="All 2 branches covered.">        if (qualityScores == null ||</span>
-<span class="fc bfc" id="L2445" title="All 2 branches covered.">                qualityScores.length &lt; getMinReadings()) {</span>
-<span class="fc" id="L2446">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L2450" title="All 2 branches covered.">        if (qualityScores == null ||</span>
+<span class="fc bfc" id="L2451" title="All 2 branches covered.">                qualityScores.length &lt; getMinReadings()) {</span>
+<span class="fc" id="L2452">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L2449">        mQualityScores = qualityScores;</span>
-<span class="fc" id="L2450">    }</span>
+<span class="fc" id="L2455">        mQualityScores = qualityScores;</span>
+<span class="fc" id="L2456">    }</span>
 
     /**
      * Creates a ranging reading from a ranging and RSSI reading.
@@ -2457,10 +2463,10 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      */
     private RangingReadingLocated&lt;S, P&gt; createRangingReading(
             final RangingAndRssiReadingLocated&lt;S, P&gt; reading) {
-<span class="fc" id="L2460">        return new RangingReadingLocated&lt;&gt;(reading.getSource(),</span>
-<span class="fc" id="L2461">                reading.getDistance(), reading.getPosition(),</span>
-<span class="fc" id="L2462">                reading.getDistanceStandardDeviation(),</span>
-<span class="fc" id="L2463">                reading.getPositionCovariance());</span>
+<span class="fc" id="L2466">        return new RangingReadingLocated&lt;&gt;(reading.getSource(),</span>
+<span class="fc" id="L2467">                reading.getDistance(), reading.getPosition(),</span>
+<span class="fc" id="L2468">                reading.getDistanceStandardDeviation(),</span>
+<span class="fc" id="L2469">                reading.getPositionCovariance());</span>
     }
 
     /**
@@ -2471,10 +2477,10 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      */
     private RssiReadingLocated&lt;S, P&gt; createRssiReading(
             final RangingAndRssiReadingLocated&lt;S, P&gt; reading) {
-<span class="fc" id="L2474">        return new RssiReadingLocated&lt;&gt;(reading.getSource(),</span>
-<span class="fc" id="L2475">                reading.getRssi(), reading.getPosition(),</span>
-<span class="fc" id="L2476">                reading.getRssiStandardDeviation(),</span>
-<span class="fc" id="L2477">                reading.getPositionCovariance());</span>
+<span class="fc" id="L2480">        return new RssiReadingLocated&lt;&gt;(reading.getSource(),</span>
+<span class="fc" id="L2481">                reading.getRssi(), reading.getPosition(),</span>
+<span class="fc" id="L2482">                reading.getRssiStandardDeviation(),</span>
+<span class="fc" id="L2483">                reading.getPositionCovariance());</span>
     }
 
     /**
@@ -2484,26 +2490,26 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @param readings readings to be checked.
      */
     private void checkReadings(final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings) {
-<span class="fc" id="L2487">        mNumRangingReadings = mNumRssiReadings = 0;</span>
+<span class="fc" id="L2493">        mNumRangingReadings = mNumRssiReadings = 0;</span>
 
-<span class="fc bfc" id="L2489" title="All 2 branches covered.">        if (readings == null) {</span>
-<span class="fc" id="L2490">            return;</span>
+<span class="fc bfc" id="L2495" title="All 2 branches covered.">        if (readings == null) {</span>
+<span class="fc" id="L2496">            return;</span>
         }
 
-<span class="fc bfc" id="L2493" title="All 2 branches covered.">        for (final ReadingLocated&lt;P&gt; reading : readings) {</span>
-<span class="fc bfc" id="L2494" title="All 2 branches covered.">            if (reading instanceof RangingReadingLocated) {</span>
-<span class="fc" id="L2495">                mNumRangingReadings++;</span>
-
-<span class="fc bfc" id="L2497" title="All 2 branches covered.">            } else if (reading instanceof RssiReadingLocated) {</span>
-<span class="fc" id="L2498">                mNumRssiReadings++;</span>
-
-<span class="pc bpc" id="L2500" title="1 of 2 branches missed.">            } else if (reading instanceof RangingAndRssiReadingLocated) {</span>
+<span class="fc bfc" id="L2499" title="All 2 branches covered.">        for (final ReadingLocated&lt;P&gt; reading : readings) {</span>
+<span class="fc bfc" id="L2500" title="All 2 branches covered.">            if (reading instanceof RangingReadingLocated) {</span>
 <span class="fc" id="L2501">                mNumRangingReadings++;</span>
-<span class="fc" id="L2502">                mNumRssiReadings++;</span>
-            }
-<span class="fc" id="L2504">        }</span>
 
-<span class="fc bfc" id="L2506" title="All 2 branches covered.">        mRssiPositionEnabled = mNumRangingReadings &lt; getMinRangingReadings();</span>
-<span class="fc" id="L2507">    }</span>
+<span class="fc bfc" id="L2503" title="All 2 branches covered.">            } else if (reading instanceof RssiReadingLocated) {</span>
+<span class="fc" id="L2504">                mNumRssiReadings++;</span>
+
+<span class="pc bpc" id="L2506" title="1 of 2 branches missed.">            } else if (reading instanceof RangingAndRssiReadingLocated) {</span>
+<span class="fc" id="L2507">                mNumRangingReadings++;</span>
+<span class="fc" id="L2508">                mNumRssiReadings++;</span>
+            }
+<span class="fc" id="L2510">        }</span>
+
+<span class="fc bfc" id="L2512" title="All 2 branches covered.">        mRssiPositionEnabled = mNumRangingReadings &lt; getMinRangingReadings();</span>
+<span class="fc" id="L2513">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

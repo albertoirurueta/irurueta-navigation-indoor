@@ -35,19 +35,19 @@
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.lateration.LaterationSolver;
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.lateration.LaterationSolverListener;
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.lateration.NonLinearLeastSquaresLaterationSolver;
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> java.util.ArrayList;
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> java.util.List;
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>  
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <em class="jxr_javadoccomment"> * Estimates position non-linearly using located radio sources and their ranging readings</em>
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <em class="jxr_javadoccomment"> * at unknown locations.</em>
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <em class="jxr_javadoccomment"> * These kind of estimators can be used to determine the position of a given device by</em>
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <em class="jxr_javadoccomment"> * getting ranging readings at an unknown location of different radio sources whose</em>
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <em class="jxr_javadoccomment"> * locations are known.</em>
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>  <em class="jxr_javadoccomment"> * @param &lt;P&gt; a {@link Point} type.</em>
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>  @SuppressWarnings(<span class="jxr_string">"WeakerAccess"</span>)
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> java.util.ArrayList;
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> java.util.List;
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>  
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <em class="jxr_javadoccomment"> * Estimates position non-linearly using located radio sources and their ranging readings</em>
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <em class="jxr_javadoccomment"> * at unknown locations.</em>
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <em class="jxr_javadoccomment"> * These kind of estimators can be used to determine the position of a given device by</em>
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <em class="jxr_javadoccomment"> * getting ranging readings at an unknown location of different radio sources whose</em>
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <em class="jxr_javadoccomment"> * locations are known.</em>
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>  <em class="jxr_javadoccomment"> * @param &lt;P&gt; a {@link Point} type.</em>
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">class</strong> NonLinearRangingPositionEstimator&lt;P <strong class="jxr_keyword">extends</strong> Point&lt;?&gt;&gt; <strong class="jxr_keyword">extends</strong>
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>          RangingPositionEstimator&lt;P&gt; {
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>  
@@ -329,7 +329,7 @@
 <a class="jxr_linenumber" name="L321" href="#L321">321</a>     }
 <a class="jxr_linenumber" name="L322" href="#L322">322</a> 
 <a class="jxr_linenumber" name="L323" href="#L323">323</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L324" href="#L324">324</a> <em class="jxr_javadoccomment">     * Sets positions, distnaces and standard deviations of distances on internal</em>
+<a class="jxr_linenumber" name="L324" href="#L324">324</a> <em class="jxr_javadoccomment">     * Sets positions, distances and standard deviations of distances on internal</em>
 <a class="jxr_linenumber" name="L325" href="#L325">325</a> <em class="jxr_javadoccomment">     * lateration solver.</em>
 <a class="jxr_linenumber" name="L326" href="#L326">326</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L327" href="#L327">327</a> <em class="jxr_javadoccomment">     * @param positions                  positions to be set.</em>

@@ -28,7 +28,6 @@ import com.irurueta.navigation.indoor.RangingAndRssiReading;
  *
  * @param &lt;P&gt; a {@link Point} type.
  */
-@SuppressWarnings(&quot;WeakerAccess&quot;)
 public abstract class RangingAndRssiPositionEstimator&lt;
         P extends Point&lt;?&gt;&gt; extends PositionEstimator&lt;P,
         RangingAndRssiReading&lt;? extends RadioSource&gt;,
@@ -38,8 +37,8 @@ public abstract class RangingAndRssiPositionEstimator&lt;
      * Constructor.
      */
     public RangingAndRssiPositionEstimator() {
-<span class="fc" id="L41">        super();</span>
-<span class="fc" id="L42">    }</span>
+<span class="fc" id="L40">        super();</span>
+<span class="fc" id="L41">    }</span>
 
     /**
      * Constructor.
@@ -48,7 +47,7 @@ public abstract class RangingAndRssiPositionEstimator&lt;
      */
     public RangingAndRssiPositionEstimator(
             final RangingAndRssiPositionEstimatorListener&lt;P&gt; listener) {
-<span class="fc" id="L51">        super(listener);</span>
-<span class="fc" id="L52">    }</span>
+<span class="fc" id="L50">        super(listener);</span>
+<span class="fc" id="L51">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

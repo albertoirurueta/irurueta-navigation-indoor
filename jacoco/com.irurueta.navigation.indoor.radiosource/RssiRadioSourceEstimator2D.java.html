@@ -25,22 +25,23 @@ import com.irurueta.navigation.indoor.RadioSourceWithPowerAndLocated;
 import com.irurueta.navigation.indoor.RssiReadingLocated;
 import com.irurueta.navigation.indoor.WifiAccessPoint;
 import com.irurueta.navigation.indoor.WifiAccessPointWithPowerAndLocated2D;
+
 import java.util.List;
 
 /**
- * Estimates 2D position, transmitted power and pathloss exponent
+ * Estimates 2D position, transmitted power and path-loss exponent
  * of a radio source assuming that the radio source emits
  * isotropically following the expression below:
  * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,
  * where Pr is the received power (expressed in mW),
- * Gt is the Gain of the transmission antena
- * Gr is the Gain of the receiver antena
+ * Gt is the Gain of the transmission antenna
+ * Gr is the Gain of the receiver antenna
  * d is the distance between emitter and receiver
  * and lambda is the wavelength and is equal to: lambda = c / f,
  * where c is the speed of light
  * and f is the carrier frequency of the radio signal.
- * Because usually information about the antena of the radio source cannot be
- * retrieved (because many measurements are made on unkown access points where
+ * Because usually information about the antenna of the radio source cannot be
+ * retrieved (because many measurements are made on unknown access points where
  * physical access is not possible), this implementation will estimate the
  * equivalent transmitted power as: Pte = Pt * Gt * Gr.
  * If Readings contain RSSI standard deviations, those values will be used,
@@ -49,7 +50,7 @@ import java.util.List;
  * IMPORTANT: Implementations of this class can choose to estimate a
  * combination of radio source position, transmitted power and path loss
  * exponent. However enabling all three estimations usually achieves
- * inacurate results. When using this class, estimation must be of at least
+ * inaccurate results. When using this class, estimation must be of at least
  * one parameter (position, transmitted power or path loss exponent) when
  * initial values are provided for the other two, and at most it should consist
  * of two parameters (either position and transmitted power, position and
@@ -65,8 +66,8 @@ public class RssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends
     /**
      * Constructor.
      */
-<span class="fc" id="L68">    public RssiRadioSourceEstimator2D() {</span>
-<span class="fc" id="L69">    }</span>
+<span class="fc" id="L69">    public RssiRadioSourceEstimator2D() {</span>
+<span class="fc" id="L70">    }</span>
 
     /**
      * Constructor.
@@ -78,8 +79,8 @@ public class RssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends
      */
     public RssiRadioSourceEstimator2D(
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings) {
-<span class="fc" id="L81">        super(readings);</span>
-<span class="fc" id="L82">    }</span>
+<span class="fc" id="L82">        super(readings);</span>
+<span class="fc" id="L83">    }</span>
 
     /**
      * Constructor.
@@ -88,8 +89,8 @@ public class RssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends
      */
     public RssiRadioSourceEstimator2D(
             final RssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L91">        super(listener);</span>
-<span class="fc" id="L92">    }</span>
+<span class="fc" id="L92">        super(listener);</span>
+<span class="fc" id="L93">    }</span>
 
     /**
      * Constructor.
@@ -103,8 +104,8 @@ public class RssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends
     public RssiRadioSourceEstimator2D(
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final RssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L106">        super(readings, listener);</span>
-<span class="fc" id="L107">    }</span>
+<span class="fc" id="L107">        super(readings, listener);</span>
+<span class="fc" id="L108">    }</span>
 
     /**
      * Constructor.
@@ -113,8 +114,8 @@ public class RssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends
      *                        point position.
      */
     public RssiRadioSourceEstimator2D(final Point2D initialPosition) {
-<span class="fc" id="L116">        super(initialPosition);</span>
-<span class="fc" id="L117">    }</span>
+<span class="fc" id="L117">        super(initialPosition);</span>
+<span class="fc" id="L118">    }</span>
 
     /**
      * Constructor.
@@ -129,8 +130,8 @@ public class RssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends
     public RssiRadioSourceEstimator2D(
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition) {
-<span class="fc" id="L132">        super(readings, initialPosition);</span>
-<span class="fc" id="L133">    }</span>
+<span class="fc" id="L133">        super(readings, initialPosition);</span>
+<span class="fc" id="L134">    }</span>
 
     /**
      * Constructor.
@@ -142,8 +143,8 @@ public class RssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends
     public RssiRadioSourceEstimator2D(
             final Point2D initialPosition,
             final RssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L145">        super(initialPosition, listener);</span>
-<span class="fc" id="L146">    }</span>
+<span class="fc" id="L146">        super(initialPosition, listener);</span>
+<span class="fc" id="L147">    }</span>
 
     /**
      * Constructor.
@@ -160,8 +161,8 @@ public class RssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition,
             final RssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L163">        super(readings, initialPosition, listener);</span>
-<span class="fc" id="L164">    }</span>
+<span class="fc" id="L164">        super(readings, initialPosition, listener);</span>
+<span class="fc" id="L165">    }</span>
 
     /**
      * Constructor.
@@ -172,8 +173,8 @@ public class RssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends
      */
     public RssiRadioSourceEstimator2D(
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L175">        super(initialTransmittedPowerdBm);</span>
-<span class="fc" id="L176">    }</span>
+<span class="fc" id="L176">        super(initialTransmittedPowerdBm);</span>
+<span class="fc" id="L177">    }</span>
 
     /**
      * Constructor.
@@ -189,8 +190,8 @@ public class RssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends
     public RssiRadioSourceEstimator2D(
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L192">        super(readings, initialTransmittedPowerdBm);</span>
-<span class="fc" id="L193">    }</span>
+<span class="fc" id="L193">        super(readings, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L194">    }</span>
 
     /**
      * Constructor.
@@ -203,8 +204,8 @@ public class RssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends
     public RssiRadioSourceEstimator2D(
             final Double initialTransmittedPowerdBm,
             final RssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L206">        super(initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L207">    }</span>
+<span class="fc" id="L207">        super(initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L208">    }</span>
 
     /**
      * Constructor.
@@ -222,8 +223,8 @@ public class RssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Double initialTransmittedPowerdBm,
             final RssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L225">        super(readings, initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L226">    }</span>
+<span class="fc" id="L226">        super(readings, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L227">    }</span>
 
     /**
      * Constructor.
@@ -242,8 +243,8 @@ public class RssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L245">        super(readings, initialPosition, initialTransmittedPowerdBm);</span>
-<span class="fc" id="L246">    }</span>
+<span class="fc" id="L246">        super(readings, initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L247">    }</span>
 
     /**
      * Constructor.
@@ -257,8 +258,8 @@ public class RssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends
     public RssiRadioSourceEstimator2D(
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L260">        super(initialPosition, initialTransmittedPowerdBm);</span>
-<span class="fc" id="L261">    }</span>
+<span class="fc" id="L261">        super(initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L262">    }</span>
 
     /**
      * Constructor.
@@ -274,8 +275,8 @@ public class RssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final RssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L277">        super(initialPosition, initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L278">    }</span>
+<span class="fc" id="L278">        super(initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L279">    }</span>
 
     /**
      * Constructor.
@@ -296,9 +297,9 @@ public class RssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final RssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L299">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L300">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
                 listener);
-<span class="fc" id="L301">    }</span>
+<span class="fc" id="L302">    }</span>
 
     /**
      * Constructor.
@@ -319,9 +320,9 @@ public class RssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-<span class="fc" id="L322">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L323">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent);
-<span class="fc" id="L324">    }</span>
+<span class="fc" id="L325">    }</span>
 
     /**
      * Constructor.
@@ -337,9 +338,9 @@ public class RssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-<span class="fc" id="L340">        super(initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L341">        super(initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent);
-<span class="fc" id="L342">    }</span>
+<span class="fc" id="L343">    }</span>
 
     /**
      * Constructor.
@@ -357,9 +358,9 @@ public class RssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final RssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L360">        super(initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L361">        super(initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent, listener);
-<span class="fc" id="L362">    }</span>
+<span class="fc" id="L363">    }</span>
 
     /**
      * Constructor.
@@ -382,13 +383,13 @@ public class RssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final RssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L385">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L386">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent, listener);
-<span class="fc" id="L387">    }</span>
+<span class="fc" id="L388">    }</span>
 
     /**
      * Gets minimum required number of readings to estimate
-     * power, position and pathloss exponent.
+     * power, position and path-loss exponent.
      * This value depends on the number of parameters to
      * be estimated, but for position only, this is 3
      * readings.
@@ -397,17 +398,17 @@ public class RssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends
      */
     @Override
     public int getMinReadings() {
-<span class="fc" id="L400">        int minReadings = 0;</span>
-<span class="fc bfc" id="L401" title="All 2 branches covered.">        if (isPositionEstimationEnabled()) {</span>
-<span class="fc" id="L402">            minReadings += Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
+<span class="fc" id="L401">        int minReadings = 0;</span>
+<span class="fc bfc" id="L402" title="All 2 branches covered.">        if (isPositionEstimationEnabled()) {</span>
+<span class="fc" id="L403">            minReadings += Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
         }
-<span class="fc bfc" id="L404" title="All 2 branches covered.">        if (isTransmittedPowerEstimationEnabled()) {</span>
-<span class="fc" id="L405">            minReadings++;</span>
+<span class="fc bfc" id="L405" title="All 2 branches covered.">        if (isTransmittedPowerEstimationEnabled()) {</span>
+<span class="fc" id="L406">            minReadings++;</span>
         }
-<span class="fc bfc" id="L407" title="All 2 branches covered.">        if (isPathLossEstimationEnabled()) {</span>
-<span class="fc" id="L408">            minReadings++;</span>
+<span class="fc bfc" id="L408" title="All 2 branches covered.">        if (isPathLossEstimationEnabled()) {</span>
+<span class="fc" id="L409">            minReadings++;</span>
         }
-<span class="fc" id="L410">        return ++minReadings;</span>
+<span class="fc" id="L411">        return ++minReadings;</span>
     }
 
     /**
@@ -418,7 +419,7 @@ public class RssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends
      */
     @Override
     public int getNumberOfDimensions() {
-<span class="fc" id="L421">        return Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
+<span class="fc" id="L422">        return Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
     }
 
     /**
@@ -428,13 +429,13 @@ public class RssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends
      */
     @Override
     public Point2D getEstimatedPosition() {
-<span class="fc bfc" id="L431" title="All 2 branches covered.">        if (mEstimatedPositionCoordinates == null) {</span>
-<span class="fc" id="L432">            return null;</span>
+<span class="fc bfc" id="L432" title="All 2 branches covered.">        if (mEstimatedPositionCoordinates == null) {</span>
+<span class="fc" id="L433">            return null;</span>
         }
 
-<span class="fc" id="L435">        final InhomogeneousPoint2D result = new InhomogeneousPoint2D();</span>
-<span class="fc" id="L436">        getEstimatedPosition(result);</span>
-<span class="fc" id="L437">        return result;</span>
+<span class="fc" id="L436">        final InhomogeneousPoint2D result = new InhomogeneousPoint2D();</span>
+<span class="fc" id="L437">        getEstimatedPosition(result);</span>
+<span class="fc" id="L438">        return result;</span>
 
     }
 
@@ -446,52 +447,52 @@ public class RssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends
     @Override
     @SuppressWarnings(&quot;unchecked&quot;)
     public RadioSourceWithPowerAndLocated&lt;Point2D&gt; getEstimatedRadioSource() {
-<span class="fc" id="L449">        final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings = getReadings();</span>
-<span class="pc bpc" id="L450" title="1 of 4 branches missed.">        if (readings == null || readings.isEmpty()) {</span>
-<span class="fc" id="L451">            return null;</span>
+<span class="fc" id="L450">        final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings = getReadings();</span>
+<span class="pc bpc" id="L451" title="1 of 4 branches missed.">        if (readings == null || readings.isEmpty()) {</span>
+<span class="fc" id="L452">            return null;</span>
         }
-<span class="fc" id="L453">        final S source = readings.get(0).getSource();</span>
+<span class="fc" id="L454">        final S source = readings.get(0).getSource();</span>
 
-<span class="fc" id="L455">        final Point2D estimatedPosition = getEstimatedPosition();</span>
-<span class="fc bfc" id="L456" title="All 2 branches covered.">        if (estimatedPosition == null) {</span>
-<span class="fc" id="L457">            return null;</span>
+<span class="fc" id="L456">        final Point2D estimatedPosition = getEstimatedPosition();</span>
+<span class="fc bfc" id="L457" title="All 2 branches covered.">        if (estimatedPosition == null) {</span>
+<span class="fc" id="L458">            return null;</span>
         }
 
-<span class="fc" id="L460">        final Matrix estimatedPositionCovariance = getEstimatedPositionCovariance();</span>
+<span class="fc" id="L461">        final Matrix estimatedPositionCovariance = getEstimatedPositionCovariance();</span>
 
-<span class="fc" id="L462">        final Double transmittedPowerVariance =</span>
-<span class="fc" id="L463">                getEstimatedTransmittedPowerVariance();</span>
-<span class="fc bfc" id="L464" title="All 2 branches covered.">        final Double transmittedPowerStandardDeviation = transmittedPowerVariance != null ?</span>
-<span class="fc" id="L465">                Math.sqrt(transmittedPowerVariance) : null;</span>
+<span class="fc" id="L463">        final Double transmittedPowerVariance =</span>
+<span class="fc" id="L464">                getEstimatedTransmittedPowerVariance();</span>
+<span class="fc bfc" id="L465" title="All 2 branches covered.">        final Double transmittedPowerStandardDeviation = transmittedPowerVariance != null ?</span>
+<span class="fc" id="L466">                Math.sqrt(transmittedPowerVariance) : null;</span>
 
-<span class="fc" id="L467">        final Double pathlossExponentVariance =</span>
-<span class="fc" id="L468">                getEstimatedPathLossExponentVariance();</span>
-<span class="fc bfc" id="L469" title="All 2 branches covered.">        final Double pathlossExponentStandardDeviation = pathlossExponentVariance != null ?</span>
-<span class="fc" id="L470">                Math.sqrt(pathlossExponentVariance) : null;</span>
+<span class="fc" id="L468">        final Double pathlossExponentVariance =</span>
+<span class="fc" id="L469">                getEstimatedPathLossExponentVariance();</span>
+<span class="fc bfc" id="L470" title="All 2 branches covered.">        final Double pathlossExponentStandardDeviation = pathlossExponentVariance != null ?</span>
+<span class="fc" id="L471">                Math.sqrt(pathlossExponentVariance) : null;</span>
 
-<span class="fc bfc" id="L472" title="All 2 branches covered.">        if (source instanceof WifiAccessPoint) {</span>
-<span class="fc" id="L473">            final WifiAccessPoint accessPoint = (WifiAccessPoint) source;</span>
-<span class="fc" id="L474">            return new WifiAccessPointWithPowerAndLocated2D(accessPoint.getBssid(),</span>
-<span class="fc" id="L475">                    source.getFrequency(), accessPoint.getSsid(),</span>
-<span class="fc" id="L476">                    getEstimatedTransmittedPowerdBm(),</span>
+<span class="fc bfc" id="L473" title="All 2 branches covered.">        if (source instanceof WifiAccessPoint) {</span>
+<span class="fc" id="L474">            final WifiAccessPoint accessPoint = (WifiAccessPoint) source;</span>
+<span class="fc" id="L475">            return new WifiAccessPointWithPowerAndLocated2D(accessPoint.getBssid(),</span>
+<span class="fc" id="L476">                    source.getFrequency(), accessPoint.getSsid(),</span>
+<span class="fc" id="L477">                    getEstimatedTransmittedPowerdBm(),</span>
                     transmittedPowerStandardDeviation,
-<span class="fc" id="L478">                    getEstimatedPathLossExponent(),</span>
+<span class="fc" id="L479">                    getEstimatedPathLossExponent(),</span>
                     pathlossExponentStandardDeviation,
                     estimatedPosition,
                     estimatedPositionCovariance);
-<span class="pc bpc" id="L482" title="1 of 2 branches missed.">        } else if (source instanceof Beacon) {</span>
-<span class="fc" id="L483">            final Beacon beacon = (Beacon) source;</span>
-<span class="fc" id="L484">            return new BeaconWithPowerAndLocated2D(beacon.getIdentifiers(),</span>
-<span class="fc" id="L485">                    getEstimatedTransmittedPowerdBm(), beacon.getFrequency(),</span>
-<span class="fc" id="L486">                    beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(),</span>
-<span class="fc" id="L487">                    beacon.getManufacturer(), beacon.getServiceUuid(),</span>
-<span class="fc" id="L488">                    beacon.getBluetoothName(),</span>
-<span class="fc" id="L489">                    getEstimatedPathLossExponent(),</span>
+<span class="pc bpc" id="L483" title="1 of 2 branches missed.">        } else if (source instanceof Beacon) {</span>
+<span class="fc" id="L484">            final Beacon beacon = (Beacon) source;</span>
+<span class="fc" id="L485">            return new BeaconWithPowerAndLocated2D(beacon.getIdentifiers(),</span>
+<span class="fc" id="L486">                    getEstimatedTransmittedPowerdBm(), beacon.getFrequency(),</span>
+<span class="fc" id="L487">                    beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(),</span>
+<span class="fc" id="L488">                    beacon.getManufacturer(), beacon.getServiceUuid(),</span>
+<span class="fc" id="L489">                    beacon.getBluetoothName(),</span>
+<span class="fc" id="L490">                    getEstimatedPathLossExponent(),</span>
                     transmittedPowerStandardDeviation,
                     pathlossExponentStandardDeviation,
                     estimatedPosition, estimatedPositionCovariance);
         } else {
-<span class="nc" id="L494">            return null;</span>
+<span class="nc" id="L495">            return null;</span>
         }
     }
 }

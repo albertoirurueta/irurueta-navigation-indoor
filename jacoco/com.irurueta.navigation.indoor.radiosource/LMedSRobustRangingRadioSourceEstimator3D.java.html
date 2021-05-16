@@ -25,6 +25,7 @@ import com.irurueta.numerical.robust.LMedSRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -34,7 +35,6 @@ import java.util.List;
  *
  * @param &lt;S&gt; a {@link RadioSource} type.
  */
-@SuppressWarnings({&quot;WeakerAccess&quot;, &quot;Duplicates&quot;})
 public class LMedSRobustRangingRadioSourceEstimator3D&lt;S extends RadioSource&gt; extends
         RobustRangingRadioSourceEstimator3D&lt;S&gt; {
 
@@ -185,7 +185,7 @@ public class LMedSRobustRangingRadioSourceEstimator3D&lt;S extends RadioSource&g
      * best estimated threshold using median of residuals is not small enough.
      * Once a solution is found that generates a threshold below this value, the
      * algorithm will stop.
-     * The stop threshold can be used to prevent the LMedS algrithm to iterate
+     * The stop threshold can be used to prevent the LMedS algorithm to iterate
      * too many times in cases where samples have a very similar accuracy.
      * For instance, in cases where proportion of outliers is very small (close
      * to 0%), and samples are very accurate (i.e. 1e-6), the algorithm would
@@ -243,105 +243,108 @@ public class LMedSRobustRangingRadioSourceEstimator3D&lt;S extends RadioSource&g
      * @throws RobustEstimatorException if estimation fails for any reason
      *                                  (i.e. numerical instability, no solution available, etc).
      */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
     @Override
     public void estimate() throws LockedException, NotReadyException,
             RobustEstimatorException {
-<span class="fc bfc" id="L249" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L250">            throw new LockedException();</span>
+<span class="fc bfc" id="L250" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L251">            throw new LockedException();</span>
         }
-<span class="fc bfc" id="L252" title="All 2 branches covered.">        if (!isReady()) {</span>
-<span class="fc" id="L253">            throw new NotReadyException();</span>
+<span class="fc bfc" id="L253" title="All 2 branches covered.">        if (!isReady()) {</span>
+<span class="fc" id="L254">            throw new NotReadyException();</span>
         }
 
-<span class="fc" id="L256">        final LMedSRobustEstimator&lt;Solution&lt;Point3D&gt;&gt; innerEstimator =</span>
+<span class="fc" id="L257">        final LMedSRobustEstimator&lt;Solution&lt;Point3D&gt;&gt; innerEstimator =</span>
                 new LMedSRobustEstimator&lt;&gt;(
-<span class="fc" id="L258">                        new LMedSRobustEstimatorListener&lt;Solution&lt;Point3D&gt;&gt;() {</span>
+<span class="fc" id="L259">                        new LMedSRobustEstimatorListener&lt;Solution&lt;Point3D&gt;&gt;() {</span>
                             @Override
                             public int getTotalSamples() {
-<span class="fc" id="L261">                                return mReadings.size();</span>
+<span class="fc" id="L262">                                return mReadings.size();</span>
                             }
 
                             @Override
                             public int getSubsetSize() {
-<span class="fc" id="L266">                                return Math.max(mPreliminarySubsetSize, getMinReadings());</span>
+<span class="fc" id="L267">                                return Math.max(mPreliminarySubsetSize, getMinReadings());</span>
                             }
 
                             @Override
                             public void estimatePreliminarSolutions(
                                     final int[] sampleIndices,
                                     final List&lt;Solution&lt;Point3D&gt;&gt; solutions) {
-<span class="fc" id="L273">                                solvePreliminarSolutions(sampleIndices, solutions);</span>
-<span class="fc" id="L274">                            }</span>
+<span class="fc" id="L274">                                solvePreliminarySolutions(sampleIndices, solutions);</span>
+<span class="fc" id="L275">                            }</span>
 
                             @Override
                             public double computeResidual(
                                     final Solution&lt;Point3D&gt; currentEstimation, final int i) {
-<span class="fc" id="L279">                                return residual(currentEstimation, i);</span>
+<span class="fc" id="L280">                                return residual(currentEstimation, i);</span>
                             }
 
                             @Override
                             public boolean isReady() {
-<span class="fc" id="L284">                                return LMedSRobustRangingRadioSourceEstimator3D.this.isReady();</span>
+<span class="fc" id="L285">                                return LMedSRobustRangingRadioSourceEstimator3D.this.isReady();</span>
                             }
 
                             @Override
                             public void onEstimateStart(
                                     final RobustEstimator&lt;Solution&lt;Point3D&gt;&gt; estimator) {
-<span class="fc" id="L290">                            }</span>
+<span class="fc" id="L291">                            }</span>
 
                             @Override
                             public void onEstimateEnd(
                                     final RobustEstimator&lt;Solution&lt;Point3D&gt;&gt; estimator) {
-<span class="fc" id="L295">                            }</span>
+<span class="fc" id="L296">                            }</span>
 
                             @Override
                             public void onEstimateNextIteration(
                                     final RobustEstimator&lt;Solution&lt;Point3D&gt;&gt; estimator,
                                     final int iteration) {
-<span class="fc bfc" id="L301" title="All 2 branches covered.">                                if (mListener != null) {</span>
-<span class="fc" id="L302">                                    mListener.onEstimateNextIteration(LMedSRobustRangingRadioSourceEstimator3D.this,</span>
+<span class="fc bfc" id="L302" title="All 2 branches covered.">                                if (mListener != null) {</span>
+<span class="fc" id="L303">                                    mListener.onEstimateNextIteration(</span>
+                                            LMedSRobustRangingRadioSourceEstimator3D.this,
                                             iteration);
                                 }
-<span class="fc" id="L305">                            }</span>
+<span class="fc" id="L307">                            }</span>
 
                             @Override
                             public void onEstimateProgressChange(
                                     final RobustEstimator&lt;Solution&lt;Point3D&gt;&gt; estimator,
                                     final float progress) {
-<span class="fc bfc" id="L311" title="All 2 branches covered.">                                if (mListener != null) {</span>
-<span class="fc" id="L312">                                    mListener.onEstimateProgressChange(LMedSRobustRangingRadioSourceEstimator3D.this,</span>
+<span class="fc bfc" id="L313" title="All 2 branches covered.">                                if (mListener != null) {</span>
+<span class="fc" id="L314">                                    mListener.onEstimateProgressChange(</span>
+                                            LMedSRobustRangingRadioSourceEstimator3D.this,
                                             progress);
                                 }
-<span class="fc" id="L315">                            }</span>
+<span class="fc" id="L318">                            }</span>
                         });
 
         try {
-<span class="fc" id="L319">            mLocked = true;</span>
+<span class="fc" id="L322">            mLocked = true;</span>
 
-<span class="fc bfc" id="L321" title="All 2 branches covered.">            if (mListener != null) {</span>
-<span class="fc" id="L322">                mListener.onEstimateStart(this);</span>
+<span class="fc bfc" id="L324" title="All 2 branches covered.">            if (mListener != null) {</span>
+<span class="fc" id="L325">                mListener.onEstimateStart(this);</span>
             }
 
-<span class="fc" id="L325">            mInliersData = null;</span>
-<span class="fc" id="L326">            innerEstimator.setConfidence(mConfidence);</span>
-<span class="fc" id="L327">            innerEstimator.setMaxIterations(mMaxIterations);</span>
-<span class="fc" id="L328">            innerEstimator.setProgressDelta(mProgressDelta);</span>
-<span class="fc" id="L329">            final Solution&lt;Point3D&gt; result = innerEstimator.estimate();</span>
-<span class="fc" id="L330">            mInliersData = innerEstimator.getInliersData();</span>
-<span class="fc" id="L331">            attemptRefine(result);</span>
+<span class="fc" id="L328">            mInliersData = null;</span>
+<span class="fc" id="L329">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L330">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L331">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L332">            final Solution&lt;Point3D&gt; result = innerEstimator.estimate();</span>
+<span class="fc" id="L333">            mInliersData = innerEstimator.getInliersData();</span>
+<span class="fc" id="L334">            attemptRefine(result);</span>
 
-<span class="fc bfc" id="L333" title="All 2 branches covered.">            if (mListener != null) {</span>
-<span class="fc" id="L334">                mListener.onEstimateEnd(this);</span>
+<span class="fc bfc" id="L336" title="All 2 branches covered.">            if (mListener != null) {</span>
+<span class="fc" id="L337">                mListener.onEstimateEnd(this);</span>
             }
 
-<span class="nc" id="L337">        } catch (final com.irurueta.numerical.LockedException e) {</span>
-<span class="nc" id="L338">            throw new LockedException(e);</span>
-<span class="nc" id="L339">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
-<span class="nc" id="L340">            throw new NotReadyException(e);</span>
+<span class="nc" id="L340">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L341">            throw new LockedException(e);</span>
+<span class="nc" id="L342">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L343">            throw new NotReadyException(e);</span>
         } finally {
-<span class="fc" id="L342">            mLocked = false;</span>
+<span class="fc" id="L345">            mLocked = false;</span>
         }
-<span class="fc" id="L344">    }</span>
+<span class="fc" id="L347">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -350,7 +353,7 @@ public class LMedSRobustRangingRadioSourceEstimator3D&lt;S extends RadioSource&g
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L353">        return RobustEstimatorMethod.LMedS;</span>
+<span class="fc" id="L356">        return RobustEstimatorMethod.LMedS;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

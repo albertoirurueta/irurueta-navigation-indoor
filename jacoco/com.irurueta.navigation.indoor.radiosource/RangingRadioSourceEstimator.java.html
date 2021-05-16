@@ -26,6 +26,7 @@ import com.irurueta.navigation.lateration.HomogeneousLinearLeastSquaresLateratio
 import com.irurueta.navigation.lateration.InhomogeneousLinearLeastSquaresLaterationSolver;
 import com.irurueta.navigation.lateration.LaterationException;
 import com.irurueta.navigation.lateration.NonLinearLeastSquaresLaterationSolver;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +37,6 @@ import java.util.List;
  * measures travel time of signal and converts the result into distances by taking into
  * account the speed of light as the propagation speed.
  */
-@SuppressWarnings(&quot;WeakerAccess&quot;)
 public abstract class RangingRadioSourceEstimator&lt;S extends RadioSource, P extends Point&lt;P&gt;&gt;
         extends RadioSourceEstimator&lt;P, RangingReadingLocated&lt;S, P&gt;,
         RangingRadioSourceEstimatorListener&lt;S, P&gt;&gt; {
@@ -323,7 +323,7 @@ public abstract class RangingRadioSourceEstimator&lt;S extends RadioSource, P ex
      */
     @Override
     public boolean isReady() {
-        //readings must be valid
+        // readings must be valid
 <span class="fc" id="L327">        return areValidReadings(mReadings);</span>
     }
 
@@ -357,7 +357,7 @@ public abstract class RangingRadioSourceEstimator&lt;S extends RadioSource, P ex
 <span class="pc bpc" id="L357" title="1 of 12 branches missed.">            if (((mUseHomogeneousLinearSolver &amp;&amp; mHomogeneousLinearSolver != null) ||</span>
                     (!mUseHomogeneousLinearSolver &amp;&amp; mInhomogeneousLinearSolver != null)) &amp;&amp;
                     (mInitialPosition == null || !mNonLinearSolverEnabled)) {
-                //if no initial position is provided, use linear solver to estimate one
+                // if no initial position is provided, use linear solver to estimate one
 <span class="fc bfc" id="L361" title="All 2 branches covered.">                if (mUseHomogeneousLinearSolver) {</span>
 <span class="fc" id="L362">                    mHomogeneousLinearSolver.solve();</span>
 <span class="fc" id="L363">                    mInitialPosition = mHomogeneousLinearSolver.getEstimatedPosition();</span>
@@ -371,13 +371,13 @@ public abstract class RangingRadioSourceEstimator&lt;S extends RadioSource, P ex
 <span class="fc" id="L371">                mNonLinearSolver.setInitialPosition(mInitialPosition);</span>
 <span class="fc" id="L372">                mNonLinearSolver.solve();</span>
 
-                //get position and covariance
+                // get position and covariance
 <span class="fc" id="L375">                mEstimatedPositionCoordinates =</span>
 <span class="fc" id="L376">                        mNonLinearSolver.getEstimatedPositionCoordinates();</span>
 <span class="fc" id="L377">                mEstimatedPositionCovariance = mEstimatedCovariance =</span>
 <span class="fc" id="L378">                        mNonLinearSolver.getCovariance();</span>
             } else {
-                //non linear solver disabled
+                // non linear solver disabled
 <span class="fc bfc" id="L381" title="All 2 branches covered.">                if (mUseHomogeneousLinearSolver) {</span>
 <span class="fc" id="L382">                    mEstimatedPositionCoordinates =</span>
 <span class="pc bpc" id="L383" title="1 of 2 branches missed.">                            mHomogeneousLinearSolver != null ?</span>
@@ -480,10 +480,10 @@ public abstract class RangingRadioSourceEstimator&lt;S extends RadioSource, P ex
             }
 
 <span class="fc bfc" id="L482" title="All 2 branches covered.">            if (mUseReadingPositionCovariances) {</span>
-                //assuming that ranging measure and position measure are statistically independent, the
-                //resulting variance would be the sum of their variances, when the resulting standard
-                //deviation is the square root of the resulting variance (which is the sum of the square of
-                //the standard deviations)
+                // assuming that ranging measure and position measure are statistically independent, the
+                // resulting variance would be the sum of their variances, when the resulting standard
+                // deviation is the square root of the resulting variance (which is the sum of the square of
+                // the standard deviations)
 <span class="fc" id="L487">                distanceStandardDeviation = Math.sqrt(Math.pow(distanceStandardDeviation, 2.0) +</span>
 <span class="fc" id="L488">                        Math.pow(positionDistanceStandardDeviation, 2.0));</span>
             }

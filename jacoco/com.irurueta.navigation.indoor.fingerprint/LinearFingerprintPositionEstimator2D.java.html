@@ -22,6 +22,7 @@ import com.irurueta.navigation.indoor.RadioSourceLocated;
 import com.irurueta.navigation.indoor.RssiFingerprint;
 import com.irurueta.navigation.indoor.RssiFingerprintLocated;
 import com.irurueta.navigation.indoor.RssiReading;
+
 import java.util.List;
 
 /**
@@ -37,8 +38,8 @@ public class LinearFingerprintPositionEstimator2D extends
     /**
      * Constructor.
      */
-<span class="fc" id="L40">    public LinearFingerprintPositionEstimator2D() {</span>
-<span class="fc" id="L41">    }</span>
+<span class="fc" id="L41">    public LinearFingerprintPositionEstimator2D() {</span>
+<span class="fc" id="L42">    }</span>
 
     /**
      * Constructor.
@@ -47,8 +48,8 @@ public class LinearFingerprintPositionEstimator2D extends
      */
     public LinearFingerprintPositionEstimator2D(
             final FingerprintPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L50">        super(listener);</span>
-<span class="fc" id="L51">    }</span>
+<span class="fc" id="L51">        super(listener);</span>
+<span class="fc" id="L52">    }</span>
 
     /**
      * Constructor.
@@ -70,8 +71,8 @@ public class LinearFingerprintPositionEstimator2D extends
             final RssiFingerprint&lt;? extends RadioSource,
                     ? extends RssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
             final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources) {
-<span class="fc" id="L73">        super(locatedFingerprints, fingerprint, sources);</span>
-<span class="fc" id="L74">    }</span>
+<span class="fc" id="L74">        super(locatedFingerprints, fingerprint, sources);</span>
+<span class="fc" id="L75">    }</span>
 
     /**
      * Constructor.
@@ -95,8 +96,8 @@ public class LinearFingerprintPositionEstimator2D extends
                     ? extends RssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
             final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
             final FingerprintPositionEstimatorListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L98">        super(locatedFingerprints, fingerprint, sources, listener);</span>
-<span class="fc" id="L99">    }</span>
+<span class="fc" id="L99">        super(locatedFingerprints, fingerprint, sources, listener);</span>
+<span class="fc" id="L100">    }</span>
 
     /**
      * Gets number of dimensions of points.
@@ -105,7 +106,7 @@ public class LinearFingerprintPositionEstimator2D extends
      */
     @Override
     public int getNumberOfDimensions() {
-<span class="fc" id="L108">        return Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
+<span class="fc" id="L109">        return Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
     }
 
     /**
@@ -115,13 +116,13 @@ public class LinearFingerprintPositionEstimator2D extends
      */
     @Override
     public Point2D getEstimatedPosition() {
-<span class="fc bfc" id="L118" title="All 2 branches covered.">        if (mEstimatedPositionCoordinates == null) {</span>
-<span class="fc" id="L119">            return null;</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        if (mEstimatedPositionCoordinates == null) {</span>
+<span class="fc" id="L120">            return null;</span>
         }
 
-<span class="fc" id="L122">        Point2D result = new InhomogeneousPoint2D();</span>
-<span class="fc" id="L123">        getEstimatedPosition(result);</span>
-<span class="fc" id="L124">        return result;</span>
+<span class="fc" id="L123">        Point2D result = new InhomogeneousPoint2D();</span>
+<span class="fc" id="L124">        getEstimatedPosition(result);</span>
+<span class="fc" id="L125">        return result;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

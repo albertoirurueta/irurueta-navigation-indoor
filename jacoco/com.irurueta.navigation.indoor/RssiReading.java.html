@@ -18,6 +18,7 @@ package com.irurueta.navigation.indoor;
 /**
  * Contains a signal strength reading associated to a given radio source
  * (e.g. WiFi access point or bluetooth beacon).
+ *
  * @param &lt;S&gt; a {@link RadioSource} type.
  */
 public class RssiReading&lt;S extends RadioSource&gt; extends Reading&lt;S&gt; {
@@ -34,64 +35,69 @@ public class RssiReading&lt;S extends RadioSource&gt; extends Reading&lt;S&gt; {
 
     /**
      * Constructor.
+     *
      * @param source radio source associated to this reading.
-     * @param rssi received signal strength indicator in dBm.
+     * @param rssi   received signal strength indicator in dBm.
      * @throws IllegalArgumentException if radio source data is null.
      */
     public RssiReading(final S source, final double rssi) {
-<span class="fc" id="L42">        super(source);</span>
-<span class="fc" id="L43">        mRssi = rssi;</span>
-<span class="fc" id="L44">    }</span>
+<span class="fc" id="L44">        super(source);</span>
+<span class="fc" id="L45">        mRssi = rssi;</span>
+<span class="fc" id="L46">    }</span>
 
     /**
      * Constructor.
-     * @param source radio source associated to this reading.
-     * @param rssi received signal strength indicator in dBm.
+     *
+     * @param source                radio source associated to this reading.
+     * @param rssi                  received signal strength indicator in dBm.
      * @param rssiStandardDeviation standard deviation of RSSI, if available.
      * @throws IllegalArgumentException if radio source data is null or
-     * standard deviation is zero or negative.
+     *                                  standard deviation is zero or negative.
      */
     public RssiReading(final S source, final double rssi,
-            final Double rssiStandardDeviation) {
-<span class="fc" id="L56">        this(source, rssi);</span>
+                       final Double rssiStandardDeviation) {
+<span class="fc" id="L59">        this(source, rssi);</span>
 
-<span class="fc bfc" id="L58" title="All 4 branches covered.">        if (rssiStandardDeviation != null &amp;&amp; rssiStandardDeviation &lt;= 0.0) {</span>
-<span class="fc" id="L59">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L61" title="All 4 branches covered.">        if (rssiStandardDeviation != null &amp;&amp; rssiStandardDeviation &lt;= 0.0) {</span>
+<span class="fc" id="L62">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L62">        mRssiStandardDeviation = rssiStandardDeviation;</span>
-<span class="fc" id="L63">    }</span>
+<span class="fc" id="L65">        mRssiStandardDeviation = rssiStandardDeviation;</span>
+<span class="fc" id="L66">    }</span>
 
     /**
      * Empty constructor.
      */
     protected RssiReading() {
-<span class="fc" id="L69">        super();</span>
-<span class="fc" id="L70">    }</span>
+<span class="fc" id="L72">        super();</span>
+<span class="fc" id="L73">    }</span>
 
     /**
      * Contains radio source reading type.
+     *
      * @return reading type.
      */
     @Override
     public ReadingType getType() {
-<span class="fc" id="L78">        return ReadingType.RSSI_READING;</span>
+<span class="fc" id="L82">        return ReadingType.RSSI_READING;</span>
     }
 
     /**
      * Gets received signal strength indicator of this 802.11 network, in dBm.
+     *
      * @return received signal strength indicator.
      */
     public double getRssi() {
-<span class="fc" id="L86">        return mRssi;</span>
+<span class="fc" id="L91">        return mRssi;</span>
     }
 
     /**
      * Gets standard deviation of RSSI, if available.
+     *
      * @return standard deviation of RSSI, if available.
      */
     public Double getRssiStandardDeviation() {
-<span class="fc" id="L94">        return mRssiStandardDeviation;</span>
+<span class="fc" id="L100">        return mRssiStandardDeviation;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

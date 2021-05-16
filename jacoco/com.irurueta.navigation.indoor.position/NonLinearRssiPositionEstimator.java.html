@@ -39,7 +39,6 @@ import java.util.List;
  *
  * @param &lt;P&gt; a {@link Point} type.
  */
-@SuppressWarnings(&quot;WeakerAccess&quot;)
 public abstract class NonLinearRssiPositionEstimator&lt;P extends Point&lt;?&gt;&gt; extends
         RssiPositionEstimator&lt;P&gt; {
 
@@ -76,16 +75,16 @@ public abstract class NonLinearRssiPositionEstimator&lt;P extends Point&lt;?&gt;
      * Distance standard deviation fallback value to use when none can be
      * determined from provided radio sources and fingerprint readings.
      */
-<span class="fc" id="L79">    private double mFallbackDistanceStandardDeviation =</span>
+<span class="fc" id="L78">    private double mFallbackDistanceStandardDeviation =</span>
             FALLBACK_DISTANCE_STANDARD_DEVIATION;
 
     /**
      * Constructor.
      */
     public NonLinearRssiPositionEstimator() {
-<span class="fc" id="L86">        super();</span>
-<span class="fc" id="L87">        init();</span>
-<span class="fc" id="L88">    }</span>
+<span class="fc" id="L85">        super();</span>
+<span class="fc" id="L86">        init();</span>
+<span class="fc" id="L87">    }</span>
 
     /**
      * Constructor.
@@ -93,9 +92,9 @@ public abstract class NonLinearRssiPositionEstimator&lt;P extends Point&lt;?&gt;
      * @param listener listener in charge of handling events.
      */
     public NonLinearRssiPositionEstimator(final RssiPositionEstimatorListener&lt;P&gt; listener) {
-<span class="fc" id="L96">        super(listener);</span>
-<span class="fc" id="L97">        init();</span>
-<span class="fc" id="L98">    }</span>
+<span class="fc" id="L95">        super(listener);</span>
+<span class="fc" id="L96">        init();</span>
+<span class="fc" id="L97">    }</span>
 
     /**
      * Constructor.
@@ -103,9 +102,9 @@ public abstract class NonLinearRssiPositionEstimator&lt;P extends Point&lt;?&gt;
      * @param initialPosition initial position to start position estimation.
      */
     public NonLinearRssiPositionEstimator(final P initialPosition) {
-<span class="fc" id="L106">        this();</span>
-<span class="fc" id="L107">        mInitialPosition = initialPosition;</span>
-<span class="fc" id="L108">    }</span>
+<span class="fc" id="L105">        this();</span>
+<span class="fc" id="L106">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L107">    }</span>
 
     /**
      * Constructor.
@@ -115,9 +114,9 @@ public abstract class NonLinearRssiPositionEstimator&lt;P extends Point&lt;?&gt;
      */
     public NonLinearRssiPositionEstimator(
             final P initialPosition, final RssiPositionEstimatorListener&lt;P&gt; listener) {
-<span class="fc" id="L118">        this(listener);</span>
-<span class="fc" id="L119">        mInitialPosition = initialPosition;</span>
-<span class="fc" id="L120">    }</span>
+<span class="fc" id="L117">        this(listener);</span>
+<span class="fc" id="L118">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L119">    }</span>
 
     /**
      * Gets initial position to start position estimation.
@@ -127,7 +126,7 @@ public abstract class NonLinearRssiPositionEstimator&lt;P extends Point&lt;?&gt;
      * @return initial position to start position estimation.
      */
     public P getInitialPosition() {
-<span class="fc" id="L130">        return mInitialPosition;</span>
+<span class="fc" id="L129">        return mInitialPosition;</span>
     }
 
     /**
@@ -139,11 +138,11 @@ public abstract class NonLinearRssiPositionEstimator&lt;P extends Point&lt;?&gt;
      * @throws LockedException if estimator is locked.
      */
     public void setInitialPosition(final P initialPosition) throws LockedException {
-<span class="fc bfc" id="L142" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L143">            throw new LockedException();</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L142">            throw new LockedException();</span>
         }
-<span class="fc" id="L145">        mInitialPosition = initialPosition;</span>
-<span class="fc" id="L146">    }</span>
+<span class="fc" id="L144">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L145">    }</span>
 
     /**
      * Indicates whether located radio source position covariance must be taken into
@@ -153,7 +152,7 @@ public abstract class NonLinearRssiPositionEstimator&lt;P extends Point&lt;?&gt;
      * otherwise.
      */
     public boolean isRadioSourcePositionCovarianceUsed() {
-<span class="fc" id="L156">        return mUseRadioSourcePositionCovariance;</span>
+<span class="fc" id="L155">        return mUseRadioSourcePositionCovariance;</span>
     }
 
     /**
@@ -166,11 +165,11 @@ public abstract class NonLinearRssiPositionEstimator&lt;P extends Point&lt;?&gt;
      */
     public void setRadioSourcePositionCovarianceUsed(
             final boolean useRadioSourcePositionCovariance) throws LockedException {
-<span class="fc bfc" id="L169" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L170">            throw new LockedException();</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L169">            throw new LockedException();</span>
         }
-<span class="fc" id="L172">        mUseRadioSourcePositionCovariance = useRadioSourcePositionCovariance;</span>
-<span class="fc" id="L173">    }</span>
+<span class="fc" id="L171">        mUseRadioSourcePositionCovariance = useRadioSourcePositionCovariance;</span>
+<span class="fc" id="L172">    }</span>
 
     /**
      * Gets distance standard deviation fallback value to use when none can be
@@ -179,7 +178,7 @@ public abstract class NonLinearRssiPositionEstimator&lt;P extends Point&lt;?&gt;
      * @return distance standard deviation to use as fallback.
      */
     public double getFallbackDistanceStandardDeviation() {
-<span class="fc" id="L182">        return mFallbackDistanceStandardDeviation;</span>
+<span class="fc" id="L181">        return mFallbackDistanceStandardDeviation;</span>
     }
 
     /**
@@ -192,11 +191,11 @@ public abstract class NonLinearRssiPositionEstimator&lt;P extends Point&lt;?&gt;
      */
     public void setFallbackDistanceStandardDeviation(
             final double fallbackDistanceStandardDeviation) throws LockedException {
-<span class="pc bpc" id="L195" title="1 of 2 branches missed.">        if (isLocked()) {</span>
-<span class="nc" id="L196">            throw new LockedException();</span>
+<span class="pc bpc" id="L194" title="1 of 2 branches missed.">        if (isLocked()) {</span>
+<span class="nc" id="L195">            throw new LockedException();</span>
         }
-<span class="fc" id="L198">        mFallbackDistanceStandardDeviation = fallbackDistanceStandardDeviation;</span>
-<span class="fc" id="L199">    }</span>
+<span class="fc" id="L197">        mFallbackDistanceStandardDeviation = fallbackDistanceStandardDeviation;</span>
+<span class="fc" id="L198">    }</span>
 
     /**
      * Gets minimum required number of located radio sources to perform lateration.
@@ -205,7 +204,7 @@ public abstract class NonLinearRssiPositionEstimator&lt;P extends Point&lt;?&gt;
      */
     @Override
     public int getMinRequiredSources() {
-<span class="fc" id="L208">        return mTrilaterationSolver.getMinRequiredPositionsAndDistances();</span>
+<span class="fc" id="L207">        return mTrilaterationSolver.getMinRequiredPositionsAndDistances();</span>
     }
 
     /**
@@ -215,7 +214,7 @@ public abstract class NonLinearRssiPositionEstimator&lt;P extends Point&lt;?&gt;
      */
     @Override
     public boolean isReady() {
-<span class="fc" id="L218">        return mTrilaterationSolver.isReady();</span>
+<span class="fc" id="L217">        return mTrilaterationSolver.isReady();</span>
     }
 
     /**
@@ -226,7 +225,7 @@ public abstract class NonLinearRssiPositionEstimator&lt;P extends Point&lt;?&gt;
      */
     @Override
     public boolean isLocked() {
-<span class="fc" id="L229">        return mTrilaterationSolver.isLocked();</span>
+<span class="fc" id="L228">        return mTrilaterationSolver.isLocked();</span>
     }
 
     /**
@@ -237,7 +236,7 @@ public abstract class NonLinearRssiPositionEstimator&lt;P extends Point&lt;?&gt;
      * @return standard deviations used internally.
      */
     public double[] getDistanceStandardDeviations() {
-<span class="fc" id="L240">        return mTrilaterationSolver.getDistanceStandardDeviations();</span>
+<span class="fc" id="L239">        return mTrilaterationSolver.getDistanceStandardDeviations();</span>
     }
 
     /**
@@ -252,15 +251,15 @@ public abstract class NonLinearRssiPositionEstimator&lt;P extends Point&lt;?&gt;
     public void estimate() throws LockedException, NotReadyException,
             PositionEstimationException {
         try {
-<span class="fc" id="L255">            mTrilaterationSolver.setInitialPosition(mInitialPosition);</span>
+<span class="fc" id="L254">            mTrilaterationSolver.setInitialPosition(mInitialPosition);</span>
 
-<span class="fc" id="L257">            mTrilaterationSolver.solve();</span>
-<span class="fc" id="L258">            mEstimatedPositionCoordinates =</span>
-<span class="fc" id="L259">                    mTrilaterationSolver.getEstimatedPositionCoordinates();</span>
-<span class="nc" id="L260">        } catch (final LaterationException e) {</span>
-<span class="nc" id="L261">            throw new PositionEstimationException(e);</span>
-<span class="fc" id="L262">        }</span>
-<span class="fc" id="L263">    }</span>
+<span class="fc" id="L256">            mTrilaterationSolver.solve();</span>
+<span class="fc" id="L257">            mEstimatedPositionCoordinates =</span>
+<span class="fc" id="L258">                    mTrilaterationSolver.getEstimatedPositionCoordinates();</span>
+<span class="nc" id="L259">        } catch (final LaterationException e) {</span>
+<span class="nc" id="L260">            throw new PositionEstimationException(e);</span>
+<span class="fc" id="L261">        }</span>
+<span class="fc" id="L262">    }</span>
 
     /**
      * Gets known positions of radio sources used internally to solve lateration.
@@ -269,7 +268,7 @@ public abstract class NonLinearRssiPositionEstimator&lt;P extends Point&lt;?&gt;
      */
     @Override
     public P[] getPositions() {
-<span class="fc" id="L272">        return mTrilaterationSolver.getPositions();</span>
+<span class="fc" id="L271">        return mTrilaterationSolver.getPositions();</span>
     }
 
     /**
@@ -281,7 +280,7 @@ public abstract class NonLinearRssiPositionEstimator&lt;P extends Point&lt;?&gt;
      */
     @Override
     public double[] getDistances() {
-<span class="fc" id="L284">        return mTrilaterationSolver.getDistances();</span>
+<span class="fc" id="L283">        return mTrilaterationSolver.getDistances();</span>
     }
 
     /**
@@ -290,7 +289,7 @@ public abstract class NonLinearRssiPositionEstimator&lt;P extends Point&lt;?&gt;
      * @return estimated covariance matrix for estimated position.
      */
     public Matrix getCovariance() {
-<span class="fc" id="L293">        return mTrilaterationSolver.getCovariance();</span>
+<span class="fc" id="L292">        return mTrilaterationSolver.getCovariance();</span>
     }
 
     /**
@@ -301,9 +300,9 @@ public abstract class NonLinearRssiPositionEstimator&lt;P extends Point&lt;?&gt;
      *                                  provided sources is less than the required minimum.
      */
     protected void internalSetSources(final List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; sources) {
-<span class="fc" id="L304">        super.internalSetSources(sources);</span>
-<span class="fc" id="L305">        buildPositionsDistancesAndDistanceStandardDeviations();</span>
-<span class="fc" id="L306">    }</span>
+<span class="fc" id="L303">        super.internalSetSources(sources);</span>
+<span class="fc" id="L304">        buildPositionsDistancesAndDistanceStandardDeviations();</span>
+<span class="fc" id="L305">    }</span>
 
     /**
      * Internally sets fingerprint containing readings at an unknown location for provided
@@ -315,12 +314,12 @@ public abstract class NonLinearRssiPositionEstimator&lt;P extends Point&lt;?&gt;
      */
     protected void internalSetFingerprint(
             final Fingerprint&lt;? extends RadioSource, ? extends RssiReading&lt;? extends RadioSource&gt;&gt; fingerprint) {
-<span class="fc" id="L318">        super.internalSetFingerprint(fingerprint);</span>
-<span class="fc" id="L319">        buildPositionsDistancesAndDistanceStandardDeviations();</span>
-<span class="fc" id="L320">    }</span>
+<span class="fc" id="L317">        super.internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L318">        buildPositionsDistancesAndDistanceStandardDeviations();</span>
+<span class="fc" id="L319">    }</span>
 
     /**
-     * Sets positions, distnaces and standard deviations of distances on internal
+     * Sets positions, distances and standard deviations of distances on internal
      * lateration solver.
      *
      * @param positions                  positions to be set.
@@ -336,24 +335,24 @@ public abstract class NonLinearRssiPositionEstimator&lt;P extends Point&lt;?&gt;
      */
     @SuppressWarnings(&quot;Duplicates&quot;)
     private void init() {
-<span class="fc" id="L339">        mLaterationSolverListener = new LaterationSolverListener&lt;P&gt;() {</span>
+<span class="fc" id="L338">        mLaterationSolverListener = new LaterationSolverListener&lt;P&gt;() {</span>
             @Override
             public void onSolveStart(final LaterationSolver&lt;P&gt; solver) {
-<span class="pc bpc" id="L342" title="1 of 2 branches missed.">                if (mListener != null) {</span>
-<span class="fc" id="L343">                    mListener.onEstimateStart(</span>
+<span class="pc bpc" id="L341" title="1 of 2 branches missed.">                if (mListener != null) {</span>
+<span class="fc" id="L342">                    mListener.onEstimateStart(</span>
                             NonLinearRssiPositionEstimator.this);
                 }
-<span class="fc" id="L346">            }</span>
+<span class="fc" id="L345">            }</span>
 
             @Override
             public void onSolveEnd(final LaterationSolver&lt;P&gt; solver) {
-<span class="pc bpc" id="L350" title="1 of 2 branches missed.">                if (mListener != null) {</span>
-<span class="fc" id="L351">                    mListener.onEstimateEnd(</span>
+<span class="pc bpc" id="L349" title="1 of 2 branches missed.">                if (mListener != null) {</span>
+<span class="fc" id="L350">                    mListener.onEstimateEnd(</span>
                             NonLinearRssiPositionEstimator.this);
                 }
-<span class="fc" id="L354">            }</span>
+<span class="fc" id="L353">            }</span>
         };
-<span class="fc" id="L356">    }</span>
+<span class="fc" id="L355">    }</span>
 
     /**
      * Builds positions, distances and standard deviation of distances for the internal
@@ -361,28 +360,28 @@ public abstract class NonLinearRssiPositionEstimator&lt;P extends Point&lt;?&gt;
      */
     @SuppressWarnings(&quot;Duplicates&quot;)
     private void buildPositionsDistancesAndDistanceStandardDeviations() {
-<span class="pc bpc" id="L364" title="1 of 2 branches missed.">        if (mTrilaterationSolver == null) {</span>
-<span class="nc" id="L365">            return;</span>
+<span class="pc bpc" id="L363" title="1 of 2 branches missed.">        if (mTrilaterationSolver == null) {</span>
+<span class="nc" id="L364">            return;</span>
         }
 
-<span class="fc" id="L368">        final int min = getMinRequiredSources();</span>
-<span class="fc bfc" id="L369" title="All 4 branches covered.">        if (mSources == null || mFingerprint == null ||</span>
-<span class="pc bpc" id="L370" title="1 of 2 branches missed.">                mSources.size() &lt; min ||</span>
-<span class="pc bpc" id="L371" title="1 of 2 branches missed.">                mFingerprint.getReadings() == null ||</span>
-<span class="fc bfc" id="L372" title="All 2 branches covered.">                mFingerprint.getReadings().size() &lt; min) {</span>
-<span class="fc" id="L373">            return;</span>
+<span class="fc" id="L367">        final int min = getMinRequiredSources();</span>
+<span class="fc bfc" id="L368" title="All 4 branches covered.">        if (mSources == null || mFingerprint == null ||</span>
+<span class="pc bpc" id="L369" title="1 of 2 branches missed.">                mSources.size() &lt; min ||</span>
+<span class="pc bpc" id="L370" title="1 of 2 branches missed.">                mFingerprint.getReadings() == null ||</span>
+<span class="fc bfc" id="L371" title="All 2 branches covered.">                mFingerprint.getReadings().size() &lt; min) {</span>
+<span class="fc" id="L372">            return;</span>
         }
 
-<span class="fc" id="L376">        final List&lt;P&gt; positions = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L377">        final List&lt;Double&gt; distances = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L378">        final List&lt;Double&gt; distanceStandardDeviations = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L379">        PositionEstimatorHelper.buildPositionsDistancesAndDistanceStandardDeviations(</span>
+<span class="fc" id="L375">        final List&lt;P&gt; positions = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L376">        final List&lt;Double&gt; distances = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L377">        final List&lt;Double&gt; distanceStandardDeviations = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L378">        PositionEstimatorHelper.buildPositionsDistancesAndDistanceStandardDeviations(</span>
                 mSources, mFingerprint, mUseRadioSourcePositionCovariance,
                 mFallbackDistanceStandardDeviation, positions, distances,
                 distanceStandardDeviations);
 
-<span class="fc" id="L384">        setPositionsDistancesAndDistanceStandardDeviations(positions, distances,</span>
+<span class="fc" id="L383">        setPositionsDistancesAndDistanceStandardDeviations(positions, distances,</span>
                 distanceStandardDeviations);
-<span class="fc" id="L386">    }</span>
+<span class="fc" id="L385">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

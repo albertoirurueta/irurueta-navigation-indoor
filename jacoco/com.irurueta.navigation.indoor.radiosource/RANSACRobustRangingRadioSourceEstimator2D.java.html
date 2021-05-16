@@ -25,6 +25,7 @@ import com.irurueta.numerical.robust.RANSACRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -34,7 +35,6 @@ import java.util.List;
  *
  * @param &lt;S&gt; a {@link RadioSource} type.
  */
-@SuppressWarnings({&quot;WeakerAccess&quot;, &quot;Duplicates&quot;})
 public class RANSACRobustRangingRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends
         RobustRangingRadioSourceEstimator2D&lt;S&gt; {
 
@@ -64,7 +64,7 @@ public class RANSACRobustRangingRadioSourceEstimator2D&lt;S extends RadioSource&
      * Threshold to determine whether samples are inliers or not when testing possible solutions.
      * The threshold refers to the amount of error on received power (RSSI) expressed
      * in dBm's between received value that should have been received on estimated
-     * isotropical model and actual measured value.
+     * iso-tropical model and actual measured value.
      */
 <span class="fc" id="L69">    private double mThreshold = DEFAULT_THRESHOLD;</span>
 
@@ -265,116 +265,117 @@ public class RANSACRobustRangingRadioSourceEstimator2D&lt;S extends RadioSource&
      * @throws RobustEstimatorException if estimation fails for any reason
      *                                  (i.e. numerical instability, no solution available, etc).
      */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
     @Override
     public void estimate() throws LockedException, NotReadyException, RobustEstimatorException {
-<span class="fc bfc" id="L270" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L271">            throw new LockedException();</span>
+<span class="fc bfc" id="L271" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L272">            throw new LockedException();</span>
         }
-<span class="fc bfc" id="L273" title="All 2 branches covered.">        if (!isReady()) {</span>
-<span class="fc" id="L274">            throw new NotReadyException();</span>
+<span class="fc bfc" id="L274" title="All 2 branches covered.">        if (!isReady()) {</span>
+<span class="fc" id="L275">            throw new NotReadyException();</span>
         }
 
-<span class="fc" id="L277">        final RANSACRobustEstimator&lt;Solution&lt;Point2D&gt;&gt; innerEstimator =</span>
+<span class="fc" id="L278">        final RANSACRobustEstimator&lt;Solution&lt;Point2D&gt;&gt; innerEstimator =</span>
                 new RANSACRobustEstimator&lt;&gt;(
-<span class="fc" id="L279">                        new RANSACRobustEstimatorListener&lt;Solution&lt;Point2D&gt;&gt;() {</span>
+<span class="fc" id="L280">                        new RANSACRobustEstimatorListener&lt;Solution&lt;Point2D&gt;&gt;() {</span>
                             @Override
                             public double getThreshold() {
-<span class="fc" id="L282">                                return mThreshold;</span>
+<span class="fc" id="L283">                                return mThreshold;</span>
                             }
 
                             @Override
                             public int getTotalSamples() {
-<span class="fc" id="L287">                                return mReadings.size();</span>
+<span class="fc" id="L288">                                return mReadings.size();</span>
                             }
 
                             @Override
                             public int getSubsetSize() {
-<span class="fc" id="L292">                                return Math.max(mPreliminarySubsetSize, getMinReadings());</span>
+<span class="fc" id="L293">                                return Math.max(mPreliminarySubsetSize, getMinReadings());</span>
                             }
 
                             @Override
                             public void estimatePreliminarSolutions(
                                     final int[] samplesIndices,
                                     final List&lt;Solution&lt;Point2D&gt;&gt; solutions) {
-<span class="fc" id="L299">                                solvePreliminarSolutions(samplesIndices, solutions);</span>
-<span class="fc" id="L300">                            }</span>
+<span class="fc" id="L300">                                solvePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L301">                            }</span>
 
                             @Override
                             public double computeResidual(
                                     final Solution&lt;Point2D&gt; currentEstimation,
                                     final int i) {
-<span class="fc" id="L306">                                return residual(currentEstimation, i);</span>
+<span class="fc" id="L307">                                return residual(currentEstimation, i);</span>
                             }
 
                             @Override
                             public boolean isReady() {
-<span class="fc" id="L311">                                return RANSACRobustRangingRadioSourceEstimator2D.this.isReady();</span>
+<span class="fc" id="L312">                                return RANSACRobustRangingRadioSourceEstimator2D.this.isReady();</span>
                             }
 
                             @Override
                             public void onEstimateStart(
                                     final RobustEstimator&lt;Solution&lt;Point2D&gt;&gt; estimator) {
-<span class="fc" id="L317">                            }</span>
+<span class="fc" id="L318">                            }</span>
 
                             @Override
                             public void onEstimateEnd(
                                     final RobustEstimator&lt;Solution&lt;Point2D&gt;&gt; estimator) {
-<span class="fc" id="L322">                            }</span>
+<span class="fc" id="L323">                            }</span>
 
                             @Override
                             public void onEstimateNextIteration(
                                     final RobustEstimator&lt;Solution&lt;Point2D&gt;&gt; estimator,
                                     final int iteration) {
-<span class="fc bfc" id="L328" title="All 2 branches covered.">                                if (mListener != null) {</span>
-<span class="fc" id="L329">                                    mListener.onEstimateNextIteration(</span>
+<span class="fc bfc" id="L329" title="All 2 branches covered.">                                if (mListener != null) {</span>
+<span class="fc" id="L330">                                    mListener.onEstimateNextIteration(</span>
                                             RANSACRobustRangingRadioSourceEstimator2D.this,
                                             iteration);
                                 }
-<span class="fc" id="L333">                            }</span>
+<span class="fc" id="L334">                            }</span>
 
                             @Override
                             public void onEstimateProgressChange(
                                     final RobustEstimator&lt;Solution&lt;Point2D&gt;&gt; estimator,
                                     final float progress) {
-<span class="fc bfc" id="L339" title="All 2 branches covered.">                                if (mListener != null) {</span>
-<span class="fc" id="L340">                                    mListener.onEstimateProgressChange(</span>
+<span class="fc bfc" id="L340" title="All 2 branches covered.">                                if (mListener != null) {</span>
+<span class="fc" id="L341">                                    mListener.onEstimateProgressChange(</span>
                                             RANSACRobustRangingRadioSourceEstimator2D.this,
                                             progress);
                                 }
-<span class="fc" id="L344">                            }</span>
+<span class="fc" id="L345">                            }</span>
                         });
 
         try {
-<span class="fc" id="L348">            mLocked = true;</span>
+<span class="fc" id="L349">            mLocked = true;</span>
 
-<span class="fc bfc" id="L350" title="All 2 branches covered.">            if (mListener != null) {</span>
-<span class="fc" id="L351">                mListener.onEstimateStart(this);</span>
+<span class="fc bfc" id="L351" title="All 2 branches covered.">            if (mListener != null) {</span>
+<span class="fc" id="L352">                mListener.onEstimateStart(this);</span>
             }
 
-<span class="fc" id="L354">            mInliersData = null;</span>
-<span class="fc bfc" id="L355" title="All 4 branches covered.">            innerEstimator.setComputeAndKeepInliersEnabled(</span>
+<span class="fc" id="L355">            mInliersData = null;</span>
+<span class="fc bfc" id="L356" title="All 4 branches covered.">            innerEstimator.setComputeAndKeepInliersEnabled(</span>
                     mComputeAndKeepInliers || mRefineResult);
-<span class="fc bfc" id="L357" title="All 4 branches covered.">            innerEstimator.setComputeAndKeepResidualsEnabled(</span>
+<span class="fc bfc" id="L358" title="All 4 branches covered.">            innerEstimator.setComputeAndKeepResidualsEnabled(</span>
                     mComputeAndKeepResiduals || mRefineResult);
-<span class="fc" id="L359">            innerEstimator.setConfidence(mConfidence);</span>
-<span class="fc" id="L360">            innerEstimator.setMaxIterations(mMaxIterations);</span>
-<span class="fc" id="L361">            innerEstimator.setProgressDelta(mProgressDelta);</span>
-<span class="fc" id="L362">            Solution&lt;Point2D&gt; result = innerEstimator.estimate();</span>
-<span class="fc" id="L363">            mInliersData = innerEstimator.getInliersData();</span>
-<span class="fc" id="L364">            attemptRefine(result);</span>
+<span class="fc" id="L360">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L361">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L362">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L363">            Solution&lt;Point2D&gt; result = innerEstimator.estimate();</span>
+<span class="fc" id="L364">            mInliersData = innerEstimator.getInliersData();</span>
+<span class="fc" id="L365">            attemptRefine(result);</span>
 
-<span class="fc bfc" id="L366" title="All 2 branches covered.">            if (mListener != null) {</span>
-<span class="fc" id="L367">                mListener.onEstimateEnd(this);</span>
+<span class="fc bfc" id="L367" title="All 2 branches covered.">            if (mListener != null) {</span>
+<span class="fc" id="L368">                mListener.onEstimateEnd(this);</span>
             }
 
-<span class="nc" id="L370">        } catch (final com.irurueta.numerical.LockedException e) {</span>
-<span class="nc" id="L371">            throw new LockedException(e);</span>
-<span class="nc" id="L372">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
-<span class="nc" id="L373">            throw new NotReadyException(e);</span>
+<span class="nc" id="L371">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L372">            throw new LockedException(e);</span>
+<span class="nc" id="L373">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L374">            throw new NotReadyException(e);</span>
         } finally {
-<span class="fc" id="L375">            mLocked = false;</span>
+<span class="fc" id="L376">            mLocked = false;</span>
         }
-<span class="fc" id="L377">    }</span>
+<span class="fc" id="L378">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -383,7 +384,7 @@ public class RANSACRobustRangingRadioSourceEstimator2D&lt;S extends RadioSource&
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L386">        return RobustEstimatorMethod.RANSAC;</span>
+<span class="fc" id="L387">        return RobustEstimatorMethod.RANSAC;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -22,6 +22,7 @@ import com.irurueta.navigation.indoor.Fingerprint;
 import com.irurueta.navigation.indoor.RadioSource;
 import com.irurueta.navigation.indoor.RadioSourceLocated;
 import com.irurueta.navigation.indoor.Reading;
+
 import java.util.List;
 
 /**
@@ -35,7 +36,6 @@ import java.util.List;
  * @param &lt;R&gt; a {@link Reading} type.
  * @param &lt;L&gt; a {@link PositionEstimatorListener} type.
  */
-@SuppressWarnings(&quot;WeakerAccess&quot;)
 public abstract class PositionEstimator&lt;P extends Point&lt;?&gt;,
         R extends Reading&lt;? extends RadioSource&gt;,
         L extends PositionEstimatorListener&lt;? extends PositionEstimator&lt;?, ?, ?&gt;&gt;&gt; {
@@ -76,7 +76,7 @@ public abstract class PositionEstimator&lt;P extends Point&lt;?&gt;,
 <span class="fc" id="L76">    }</span>
 
     /**
-     * Gets located radio sources ussed for lateration.
+     * Gets located radio sources used for lateration.
      *
      * @return located radio sources used for lateration.
      */

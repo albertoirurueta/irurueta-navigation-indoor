@@ -25,10 +25,11 @@ import com.irurueta.numerical.robust.RANSACRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
- * Robustly estimate 3D position, transmitted power and pathloss exponent of a radio source
+ * Robustly estimate 3D position, transmitted power and path-loss exponent of a radio source
  * (e.g. WiFi access point or bluetooth beacon), by discarding outliers using RANSAC
  * algorithm and assuming that the access point emits isotropically following the
  * expression below:
@@ -91,26 +92,26 @@ public class RANSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
      * Threshold to determine whether samples are inliers or not when testing possible solutions.
      * The threshold refers to the amount of error on received power (RSSI) expressed
      * in dBm's between received value that should have been received on estimated
-     * isotropical model and actual measured value.
+     * iso-tropical model and actual measured value.
      */
-<span class="fc" id="L96">    private double mThreshold = DEFAULT_THRESHOLD;</span>
+<span class="fc" id="L97">    private double mThreshold = DEFAULT_THRESHOLD;</span>
 
     /**
      * Indicates whether inliers must be computed and kept.
      */
-<span class="fc" id="L101">    private boolean mComputeAndKeepInliers = DEFAULT_COMPUTE_AND_KEEP_INLIERS;</span>
+<span class="fc" id="L102">    private boolean mComputeAndKeepInliers = DEFAULT_COMPUTE_AND_KEEP_INLIERS;</span>
 
     /**
      * Indicates whether residuals must be computed and kept.
      */
-<span class="fc" id="L106">    private boolean mComputeAndKeepResiduals = DEFAULT_COMPUTE_AND_KEEP_RESIDUALS;</span>
+<span class="fc" id="L107">    private boolean mComputeAndKeepResiduals = DEFAULT_COMPUTE_AND_KEEP_RESIDUALS;</span>
 
     /**
      * Constructor.
      */
     public RANSACRobustRssiRadioSourceEstimator3D() {
-<span class="fc" id="L112">        super();</span>
-<span class="fc" id="L113">    }</span>
+<span class="fc" id="L113">        super();</span>
+<span class="fc" id="L114">    }</span>
 
     /**
      * Constructor.
@@ -121,8 +122,8 @@ public class RANSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
      */
     public RANSACRobustRssiRadioSourceEstimator3D(
             final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings) {
-<span class="fc" id="L124">        super(readings);</span>
-<span class="fc" id="L125">    }</span>
+<span class="fc" id="L125">        super(readings);</span>
+<span class="fc" id="L126">    }</span>
 
     /**
      * Constructor.
@@ -131,8 +132,8 @@ public class RANSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
      */
     public RANSACRobustRssiRadioSourceEstimator3D(
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
-<span class="fc" id="L134">        super(listener);</span>
-<span class="fc" id="L135">    }</span>
+<span class="fc" id="L135">        super(listener);</span>
+<span class="fc" id="L136">    }</span>
 
     /**
      * Constructor.
@@ -145,8 +146,8 @@ public class RANSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
     public RANSACRobustRssiRadioSourceEstimator3D(
             final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
-<span class="fc" id="L148">        super(readings, listener);</span>
-<span class="fc" id="L149">    }</span>
+<span class="fc" id="L149">        super(readings, listener);</span>
+<span class="fc" id="L150">    }</span>
 
     /**
      * Constructor.
@@ -160,8 +161,8 @@ public class RANSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
     public RANSACRobustRssiRadioSourceEstimator3D(
             final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
             final Point3D initialPosition) {
-<span class="fc" id="L163">        super(readings, initialPosition);</span>
-<span class="fc" id="L164">    }</span>
+<span class="fc" id="L164">        super(readings, initialPosition);</span>
+<span class="fc" id="L165">    }</span>
 
     /**
      * Constructor.
@@ -170,8 +171,8 @@ public class RANSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
      *                        source position.
      */
     public RANSACRobustRssiRadioSourceEstimator3D(final Point3D initialPosition) {
-<span class="fc" id="L173">        super(initialPosition);</span>
-<span class="fc" id="L174">    }</span>
+<span class="fc" id="L174">        super(initialPosition);</span>
+<span class="fc" id="L175">    }</span>
 
     /**
      * Constructor.
@@ -183,8 +184,8 @@ public class RANSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
     public RANSACRobustRssiRadioSourceEstimator3D(
             final Point3D initialPosition,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
-<span class="fc" id="L186">        super(initialPosition, listener);</span>
-<span class="fc" id="L187">    }</span>
+<span class="fc" id="L187">        super(initialPosition, listener);</span>
+<span class="fc" id="L188">    }</span>
 
     /**
      * Constructor.
@@ -200,8 +201,8 @@ public class RANSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
             final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
             final Point3D initialPosition,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
-<span class="fc" id="L203">        super(readings, initialPosition, listener);</span>
-<span class="fc" id="L204">    }</span>
+<span class="fc" id="L204">        super(readings, initialPosition, listener);</span>
+<span class="fc" id="L205">    }</span>
 
     /**
      * Constructor.
@@ -212,8 +213,8 @@ public class RANSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
      */
     public RANSACRobustRssiRadioSourceEstimator3D(
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L215">        super(initialTransmittedPowerdBm);</span>
-<span class="fc" id="L216">    }</span>
+<span class="fc" id="L216">        super(initialTransmittedPowerdBm);</span>
+<span class="fc" id="L217">    }</span>
 
     /**
      * Constructor.
@@ -228,8 +229,8 @@ public class RANSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
     public RANSACRobustRssiRadioSourceEstimator3D(
             final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L231">        super(readings, initialTransmittedPowerdBm);</span>
-<span class="fc" id="L232">    }</span>
+<span class="fc" id="L232">        super(readings, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L233">    }</span>
 
     /**
      * Constructor.
@@ -242,8 +243,8 @@ public class RANSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
     public RANSACRobustRssiRadioSourceEstimator3D(
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
-<span class="fc" id="L245">        super(initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L246">    }</span>
+<span class="fc" id="L246">        super(initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L247">    }</span>
 
     /**
      * Constructor.
@@ -260,8 +261,8 @@ public class RANSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
             final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
-<span class="fc" id="L263">        super(readings, initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L264">    }</span>
+<span class="fc" id="L264">        super(readings, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L265">    }</span>
 
     /**
      * Constructor.
@@ -279,8 +280,8 @@ public class RANSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
             final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
             final Point3D initialPosition,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L282">        super(readings, initialPosition, initialTransmittedPowerdBm);</span>
-<span class="fc" id="L283">    }</span>
+<span class="fc" id="L283">        super(readings, initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L284">    }</span>
 
     /**
      * Constructor.
@@ -294,8 +295,8 @@ public class RANSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
     public RANSACRobustRssiRadioSourceEstimator3D(
             final Point3D initialPosition,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L297">        super(initialPosition, initialTransmittedPowerdBm);</span>
-<span class="fc" id="L298">    }</span>
+<span class="fc" id="L298">        super(initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L299">    }</span>
 
     /**
      * Constructor.
@@ -311,8 +312,8 @@ public class RANSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
             final Point3D initialPosition,
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
-<span class="fc" id="L314">        super(initialPosition, initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L315">    }</span>
+<span class="fc" id="L315">        super(initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L316">    }</span>
 
     /**
      * Constructor.
@@ -332,8 +333,8 @@ public class RANSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
             final Point3D initialPosition,
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
-<span class="fc" id="L335">        super(readings, initialPosition, initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L336">    }</span>
+<span class="fc" id="L336">        super(readings, initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L337">    }</span>
 
     /**
      * Constructor.
@@ -353,9 +354,9 @@ public class RANSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
             final Point3D initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-<span class="fc" id="L356">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L357">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent);
-<span class="fc" id="L358">    }</span>
+<span class="fc" id="L359">    }</span>
 
     /**
      * Constructor.
@@ -371,9 +372,9 @@ public class RANSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
             final Point3D initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-<span class="fc" id="L374">        super(initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L375">        super(initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent);
-<span class="fc" id="L376">    }</span>
+<span class="fc" id="L377">    }</span>
 
     /**
      * Constructor.
@@ -391,9 +392,9 @@ public class RANSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
-<span class="fc" id="L394">        super(initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L395">        super(initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent, listener);
-<span class="fc" id="L396">    }</span>
+<span class="fc" id="L397">    }</span>
 
     /**
      * Constructor.
@@ -415,41 +416,41 @@ public class RANSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
-<span class="fc" id="L418">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L419">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent, listener);
-<span class="fc" id="L420">    }</span>
+<span class="fc" id="L421">    }</span>
 
     /**
      * Gets threshold to determine whether samples are inliers or not when testing possible solutions.
      * The threshold refers to the amount of error on received power (RSSI) expressed
      * in dBm's between received value that should have been received on estimated
-     * isotropical model and actual measured value.
+     * iso-tropical model and actual measured value.
      *
      * @return threshold to determine whether samples are inliers or not.
      */
     public double getThreshold() {
-<span class="fc" id="L431">        return mThreshold;</span>
+<span class="fc" id="L432">        return mThreshold;</span>
     }
 
     /**
      * Sets threshold to determine whether samples are inliers or not when testing possible solutions.
      * The threshold refers to the amount of error on received power (RSSI) expressed
      * in dBm's between received value that should have been received on estimated
-     * isotropical model and actual measured value.
+     * iso-tropical model and actual measured value.
      *
      * @param threshold threshold to determine whether samples are inliers or not.
      * @throws IllegalArgumentException if provided value is equal or less than zero.
      * @throws LockedException          if this estimator is locked.
      */
     public void setThreshold(final double threshold) throws LockedException {
-<span class="fc bfc" id="L445" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L446">            throw new LockedException();</span>
+<span class="fc bfc" id="L446" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L447">            throw new LockedException();</span>
         }
-<span class="fc bfc" id="L448" title="All 2 branches covered.">        if (threshold &lt;= MIN_THRESHOLD) {</span>
-<span class="fc" id="L449">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L449" title="All 2 branches covered.">        if (threshold &lt;= MIN_THRESHOLD) {</span>
+<span class="fc" id="L450">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L451">        mThreshold = threshold;</span>
-<span class="fc" id="L452">    }</span>
+<span class="fc" id="L452">        mThreshold = threshold;</span>
+<span class="fc" id="L453">    }</span>
 
     /**
      * Indicates whether inliers must be computed and kept.
@@ -458,7 +459,7 @@ public class RANSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
      * only need to be computed but not kept.
      */
     public boolean isComputeAndKeepInliersEnabled() {
-<span class="fc" id="L461">        return mComputeAndKeepInliers;</span>
+<span class="fc" id="L462">        return mComputeAndKeepInliers;</span>
     }
 
     /**
@@ -470,11 +471,11 @@ public class RANSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
      */
     public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers)
             throws LockedException {
-<span class="fc bfc" id="L473" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L474">            throw new LockedException();</span>
+<span class="fc bfc" id="L474" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L475">            throw new LockedException();</span>
         }
-<span class="fc" id="L476">        mComputeAndKeepInliers = computeAndKeepInliers;</span>
-<span class="fc" id="L477">    }</span>
+<span class="fc" id="L477">        mComputeAndKeepInliers = computeAndKeepInliers;</span>
+<span class="fc" id="L478">    }</span>
 
     /**
      * Indicates whether residuals must be computed and kept.
@@ -483,7 +484,7 @@ public class RANSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
      * only need to be computed but not kept.
      */
     public boolean isComputeAndKeepResidualsEnabled() {
-<span class="fc" id="L486">        return mComputeAndKeepResiduals;</span>
+<span class="fc" id="L487">        return mComputeAndKeepResiduals;</span>
     }
 
     /**
@@ -495,14 +496,14 @@ public class RANSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
      */
     public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals)
             throws LockedException {
-<span class="fc bfc" id="L498" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L499">            throw new LockedException();</span>
+<span class="fc bfc" id="L499" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L500">            throw new LockedException();</span>
         }
-<span class="fc" id="L501">        mComputeAndKeepResiduals = computeAndKeepResiduals;</span>
-<span class="fc" id="L502">    }</span>
+<span class="fc" id="L502">        mComputeAndKeepResiduals = computeAndKeepResiduals;</span>
+<span class="fc" id="L503">    }</span>
 
     /**
-     * Robustly estimates position, transmitted power and pathloss exponent for a
+     * Robustly estimates position, transmitted power and path-loss exponent for a
      * radio source.
      *
      * @throws LockedException          if instance is busy during estimation.
@@ -512,112 +513,112 @@ public class RANSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
      */
     @Override
     public void estimate() throws LockedException, NotReadyException, RobustEstimatorException {
-<span class="fc bfc" id="L515" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L516">            throw new LockedException();</span>
+<span class="fc bfc" id="L516" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L517">            throw new LockedException();</span>
         }
-<span class="fc bfc" id="L518" title="All 2 branches covered.">        if (!isReady()) {</span>
-<span class="fc" id="L519">            throw new NotReadyException();</span>
+<span class="fc bfc" id="L519" title="All 2 branches covered.">        if (!isReady()) {</span>
+<span class="fc" id="L520">            throw new NotReadyException();</span>
         }
 
-<span class="fc" id="L522">        final RANSACRobustEstimator&lt;Solution&lt;Point3D&gt;&gt; innerEstimator =</span>
+<span class="fc" id="L523">        final RANSACRobustEstimator&lt;Solution&lt;Point3D&gt;&gt; innerEstimator =</span>
                 new RANSACRobustEstimator&lt;&gt;(
-<span class="fc" id="L524">                        new RANSACRobustEstimatorListener&lt;Solution&lt;Point3D&gt;&gt;() {</span>
+<span class="fc" id="L525">                        new RANSACRobustEstimatorListener&lt;Solution&lt;Point3D&gt;&gt;() {</span>
                             @Override
                             public double getThreshold() {
-<span class="fc" id="L527">                                return mThreshold;</span>
+<span class="fc" id="L528">                                return mThreshold;</span>
                             }
 
                             @Override
                             public int getTotalSamples() {
-<span class="fc" id="L532">                                return mReadings.size();</span>
+<span class="fc" id="L533">                                return mReadings.size();</span>
                             }
 
                             @Override
                             public int getSubsetSize() {
-<span class="fc" id="L537">                                return Math.max(mPreliminarySubsetSize, getMinReadings());</span>
+<span class="fc" id="L538">                                return Math.max(mPreliminarySubsetSize, getMinReadings());</span>
                             }
 
                             @Override
                             public void estimatePreliminarSolutions(
                                     final int[] samplesIndices,
                                     final List&lt;Solution&lt;Point3D&gt;&gt; solutions) {
-<span class="fc" id="L544">                                solvePreliminarSolutions(samplesIndices, solutions);</span>
-<span class="fc" id="L545">                            }</span>
+<span class="fc" id="L545">                                solvePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L546">                            }</span>
 
                             @Override
                             public double computeResidual(
                                     final Solution&lt;Point3D&gt; currentEstimation,
                                     final int i) {
-<span class="fc" id="L551">                                return residual(currentEstimation, i);</span>
+<span class="fc" id="L552">                                return residual(currentEstimation, i);</span>
                             }
 
                             @Override
                             public boolean isReady() {
-<span class="fc" id="L556">                                return RANSACRobustRssiRadioSourceEstimator3D.this.isReady();</span>
+<span class="fc" id="L557">                                return RANSACRobustRssiRadioSourceEstimator3D.this.isReady();</span>
                             }
 
                             @Override
                             public void onEstimateStart(
                                     final RobustEstimator&lt;Solution&lt;Point3D&gt;&gt; estimator) {
-<span class="fc" id="L562">                            }</span>
+<span class="fc" id="L563">                            }</span>
 
                             @Override
                             public void onEstimateEnd(
                                     final RobustEstimator&lt;Solution&lt;Point3D&gt;&gt; estimator) {
-<span class="fc" id="L567">                            }</span>
+<span class="fc" id="L568">                            }</span>
 
                             @Override
                             public void onEstimateNextIteration(
                                     final RobustEstimator&lt;Solution&lt;Point3D&gt;&gt; estimator,
                                     final int iteration) {
-<span class="fc bfc" id="L573" title="All 2 branches covered.">                                if (mListener != null) {</span>
-<span class="fc" id="L574">                                    mListener.onEstimateNextIteration(</span>
+<span class="fc bfc" id="L574" title="All 2 branches covered.">                                if (mListener != null) {</span>
+<span class="fc" id="L575">                                    mListener.onEstimateNextIteration(</span>
                                             RANSACRobustRssiRadioSourceEstimator3D.this, iteration);
                                 }
-<span class="fc" id="L577">                            }</span>
+<span class="fc" id="L578">                            }</span>
 
                             @Override
                             public void onEstimateProgressChange(
                                     final RobustEstimator&lt;Solution&lt;Point3D&gt;&gt; estimator,
                                     final float progress) {
-<span class="fc bfc" id="L583" title="All 2 branches covered.">                                if (mListener != null) {</span>
-<span class="fc" id="L584">                                    mListener.onEstimateProgressChange(</span>
+<span class="fc bfc" id="L584" title="All 2 branches covered.">                                if (mListener != null) {</span>
+<span class="fc" id="L585">                                    mListener.onEstimateProgressChange(</span>
                                             RANSACRobustRssiRadioSourceEstimator3D.this, progress);
                                 }
-<span class="fc" id="L587">                            }</span>
+<span class="fc" id="L588">                            }</span>
                         });
 
         try {
-<span class="fc" id="L591">            mLocked = true;</span>
+<span class="fc" id="L592">            mLocked = true;</span>
 
-<span class="fc bfc" id="L593" title="All 2 branches covered.">            if (mListener != null) {</span>
-<span class="fc" id="L594">                mListener.onEstimateStart(this);</span>
+<span class="fc bfc" id="L594" title="All 2 branches covered.">            if (mListener != null) {</span>
+<span class="fc" id="L595">                mListener.onEstimateStart(this);</span>
             }
 
-<span class="fc" id="L597">            mInliersData = null;</span>
-<span class="fc bfc" id="L598" title="All 4 branches covered.">            innerEstimator.setComputeAndKeepInliersEnabled(</span>
+<span class="fc" id="L598">            mInliersData = null;</span>
+<span class="fc bfc" id="L599" title="All 4 branches covered.">            innerEstimator.setComputeAndKeepInliersEnabled(</span>
                     mComputeAndKeepInliers || mRefineResult);
-<span class="fc bfc" id="L600" title="All 4 branches covered.">            innerEstimator.setComputeAndKeepResidualsEnabled(</span>
+<span class="fc bfc" id="L601" title="All 4 branches covered.">            innerEstimator.setComputeAndKeepResidualsEnabled(</span>
                     mComputeAndKeepResiduals || mRefineResult);
-<span class="fc" id="L602">            innerEstimator.setConfidence(mConfidence);</span>
-<span class="fc" id="L603">            innerEstimator.setMaxIterations(mMaxIterations);</span>
-<span class="fc" id="L604">            innerEstimator.setProgressDelta(mProgressDelta);</span>
-<span class="fc" id="L605">            final Solution&lt;Point3D&gt; result = innerEstimator.estimate();</span>
-<span class="fc" id="L606">            mInliersData = innerEstimator.getInliersData();</span>
-<span class="fc" id="L607">            attemptRefine(result);</span>
+<span class="fc" id="L603">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L604">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L605">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L606">            final Solution&lt;Point3D&gt; result = innerEstimator.estimate();</span>
+<span class="fc" id="L607">            mInliersData = innerEstimator.getInliersData();</span>
+<span class="fc" id="L608">            attemptRefine(result);</span>
 
-<span class="fc bfc" id="L609" title="All 2 branches covered.">            if (mListener != null) {</span>
-<span class="fc" id="L610">                mListener.onEstimateEnd(this);</span>
+<span class="fc bfc" id="L610" title="All 2 branches covered.">            if (mListener != null) {</span>
+<span class="fc" id="L611">                mListener.onEstimateEnd(this);</span>
             }
 
-<span class="nc" id="L613">        } catch (final com.irurueta.numerical.LockedException e) {</span>
-<span class="nc" id="L614">            throw new LockedException(e);</span>
-<span class="nc" id="L615">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
-<span class="nc" id="L616">            throw new NotReadyException(e);</span>
+<span class="nc" id="L614">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L615">            throw new LockedException(e);</span>
+<span class="nc" id="L616">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L617">            throw new NotReadyException(e);</span>
         } finally {
-<span class="fc" id="L618">            mLocked = false;</span>
+<span class="fc" id="L619">            mLocked = false;</span>
         }
-<span class="fc" id="L620">    }</span>
+<span class="fc" id="L621">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -626,7 +627,7 @@ public class RANSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L629">        return RobustEstimatorMethod.RANSAC;</span>
+<span class="fc" id="L630">        return RobustEstimatorMethod.RANSAC;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -26,25 +26,26 @@ import com.irurueta.navigation.indoor.RssiReadingLocated;
 import com.irurueta.navigation.indoor.WifiAccessPoint;
 import com.irurueta.navigation.indoor.WifiAccessPointWithPowerAndLocated2D;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 
 /**
  * This is an abstract class to robustly estimate 2D position, transmitted power and
- * pathloss exponent of a radio source (e.g. WiFi access point or bluetooth beacon),
+ * path-loss exponent of a radio source (e.g. WiFi access point or bluetooth beacon),
  * by discarding outliers and assuming that the radio source emits isotropically
  * following the expression below:
  * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,
  * where Pr is the received power (expressed in mW),
- * Gt is the Gain of the transmission antena
- * Gr is the Gain of the receiver antena
+ * Gt is the Gain of the transmission antenna
+ * Gr is the Gain of the receiver antenna
  * d is the distance between emitter and receiver
  * and lambda is the wavelength and is equal to: lambda = c / f,
  * where c is the speed of light
  * and f is the carrier frequency of the radio signal.
- * Because usually information about the antena of the radio source cannot be
- * retrieved (because many measurements are made on unkown devices where
+ * Because usually information about the antenna of the radio source cannot be
+ * retrieved (because many measurements are made on unknown devices where
  * physical access is not possible), this implementation will estimate the
  * equivalent transmitted power as: Pte = Pt * Gt * Gr.
  * If RssiReadings contain RSSI standard deviations, those values will be used,
@@ -71,21 +72,21 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
     /**
      * Radio source estimator used internally.
      */
-<span class="fc" id="L74">    protected RssiRadioSourceEstimator2D&lt;S&gt; mInnerEstimator =</span>
+<span class="fc" id="L75">    protected final RssiRadioSourceEstimator2D&lt;S&gt; mInnerEstimator =</span>
             new RssiRadioSourceEstimator2D&lt;&gt;();
 
     /**
      * Subset of readings used by inner estimator.
      */
-<span class="fc" id="L80">    private final List&lt;RssiReadingLocated&lt;S, Point2D&gt;&gt; mInnerReadings = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L81">    private final List&lt;RssiReadingLocated&lt;S, Point2D&gt;&gt; mInnerReadings = new ArrayList&lt;&gt;();</span>
 
     /**
      * Constructor.
      */
     public RobustRssiRadioSourceEstimator2D() {
-<span class="fc" id="L86">        super();</span>
-<span class="fc" id="L87">        mPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L88">    }</span>
+<span class="fc" id="L87">        super();</span>
+<span class="fc" id="L88">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L89">    }</span>
 
     /**
      * Constructor.
@@ -96,9 +97,9 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
      */
     public RobustRssiRadioSourceEstimator2D(
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings) {
-<span class="fc" id="L99">        super(readings);</span>
-<span class="fc" id="L100">        mPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L101">    }</span>
+<span class="fc" id="L100">        super(readings);</span>
+<span class="fc" id="L101">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L102">    }</span>
 
     /**
      * Constructor.
@@ -107,13 +108,13 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
      */
     public RobustRssiRadioSourceEstimator2D(
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L110">        super(listener);</span>
-<span class="fc" id="L111">        mPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L112">    }</span>
+<span class="fc" id="L111">        super(listener);</span>
+<span class="fc" id="L112">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L113">    }</span>
 
     /**
      * Constructor.
-     * Sets signal readings bleonging to the same radio source.
+     * Sets signal readings belonging to the same radio source.
      *
      * @param readings signal readings belonging to the same radio source.
      * @param listener listener in charge of attending events raised by this instance.
@@ -122,9 +123,9 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
     public RobustRssiRadioSourceEstimator2D(
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L125">        super(readings, listener);</span>
-<span class="fc" id="L126">        mPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L127">    }</span>
+<span class="fc" id="L126">        super(readings, listener);</span>
+<span class="fc" id="L127">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L128">    }</span>
 
     /**
      * Constructor.
@@ -138,9 +139,9 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
     public RobustRssiRadioSourceEstimator2D(
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition) {
-<span class="fc" id="L141">        super(readings, initialPosition);</span>
-<span class="fc" id="L142">        mPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L143">    }</span>
+<span class="fc" id="L142">        super(readings, initialPosition);</span>
+<span class="fc" id="L143">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L144">    }</span>
 
     /**
      * Constructor.
@@ -150,9 +151,9 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
      */
     public RobustRssiRadioSourceEstimator2D(
             final Point2D initialPosition) {
-<span class="fc" id="L153">        super(initialPosition);</span>
-<span class="fc" id="L154">        mPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L155">    }</span>
+<span class="fc" id="L154">        super(initialPosition);</span>
+<span class="fc" id="L155">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L156">    }</span>
 
     /**
      * Constructor.
@@ -164,9 +165,9 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
     public RobustRssiRadioSourceEstimator2D(
             final Point2D initialPosition,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L167">        super(initialPosition, listener);</span>
-<span class="fc" id="L168">        mPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L169">    }</span>
+<span class="fc" id="L168">        super(initialPosition, listener);</span>
+<span class="fc" id="L169">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L170">    }</span>
 
     /**
      * Constructor.
@@ -182,9 +183,9 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L185">        super(readings, initialPosition, listener);</span>
-<span class="fc" id="L186">        mPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L187">    }</span>
+<span class="fc" id="L186">        super(readings, initialPosition, listener);</span>
+<span class="fc" id="L187">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L188">    }</span>
 
     /**
      * Constructor.
@@ -195,9 +196,9 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
      */
     public RobustRssiRadioSourceEstimator2D(
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L198">        super(initialTransmittedPowerdBm);</span>
-<span class="fc" id="L199">        mPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L200">    }</span>
+<span class="fc" id="L199">        super(initialTransmittedPowerdBm);</span>
+<span class="fc" id="L200">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L201">    }</span>
 
     /**
      * Constructor.
@@ -212,9 +213,9 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
     public RobustRssiRadioSourceEstimator2D(
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L215">        super(readings, initialTransmittedPowerdBm);</span>
-<span class="fc" id="L216">        mPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L217">    }</span>
+<span class="fc" id="L216">        super(readings, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L217">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L218">    }</span>
 
     /**
      * Constructor.
@@ -227,9 +228,9 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
     public RobustRssiRadioSourceEstimator2D(
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L230">        super(initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L231">        mPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L232">    }</span>
+<span class="fc" id="L231">        super(initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L232">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L233">    }</span>
 
     /**
      * Constructor.
@@ -246,9 +247,9 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L249">        super(readings, initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L250">        mPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L251">    }</span>
+<span class="fc" id="L250">        super(readings, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L251">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L252">    }</span>
 
     /**
      * Constructor.
@@ -266,9 +267,9 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L269">        super(readings, initialPosition, initialTransmittedPowerdBm);</span>
-<span class="fc" id="L270">        mPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L271">    }</span>
+<span class="fc" id="L270">        super(readings, initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L271">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L272">    }</span>
 
     /**
      * Constructor.
@@ -282,9 +283,9 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
     public RobustRssiRadioSourceEstimator2D(
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L285">        super(initialPosition, initialTransmittedPowerdBm);</span>
-<span class="fc" id="L286">        mPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L287">    }</span>
+<span class="fc" id="L286">        super(initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L287">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L288">    }</span>
 
     /**
      * Constructor.
@@ -300,9 +301,9 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L303">        super(initialPosition, initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L304">        mPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L305">    }</span>
+<span class="fc" id="L304">        super(initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L305">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L306">    }</span>
 
     /**
      * Constructor.
@@ -322,9 +323,9 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L325">        super(readings, initialPosition, initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L326">        mPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L327">    }</span>
+<span class="fc" id="L326">        super(readings, initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L327">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L328">    }</span>
 
     /**
      * Constructor.
@@ -344,10 +345,10 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-<span class="fc" id="L347">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L348">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent);
-<span class="fc" id="L349">        mPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L350">    }</span>
+<span class="fc" id="L350">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L351">    }</span>
 
     /**
      * Constructor.
@@ -363,10 +364,10 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-<span class="fc" id="L366">        super(initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L367">        super(initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent);
-<span class="fc" id="L368">        mPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L369">    }</span>
+<span class="fc" id="L369">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L370">    }</span>
 
     /**
      * Constructor.
@@ -384,10 +385,10 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L387">        super(initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L388">        super(initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent, listener);
-<span class="fc" id="L389">        mPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L390">    }</span>
+<span class="fc" id="L390">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L391">    }</span>
 
     /**
      * Constructor.
@@ -409,10 +410,10 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L412">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L413">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent, listener);
-<span class="fc" id="L414">        mPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L415">    }</span>
+<span class="fc" id="L415">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L416">    }</span>
 
     /**
      * Creates a robust 2D position radio source estimator.
@@ -423,18 +424,18 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
      */
     public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L426" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L427" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L428">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;();</span>
+<span class="fc" id="L429">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;();</span>
             case LMedS:
-<span class="fc" id="L430">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;();</span>
+<span class="fc" id="L431">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;();</span>
             case MSAC:
-<span class="fc" id="L432">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;();</span>
+<span class="fc" id="L433">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;();</span>
             case PROSAC:
-<span class="fc" id="L434">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;();</span>
+<span class="fc" id="L435">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;();</span>
             case PROMedS:
             default:
-<span class="fc" id="L437">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;();</span>
+<span class="fc" id="L438">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;();</span>
         }
     }
 
@@ -450,22 +451,22 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
     public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L453" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L454" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L455">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L456">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings);
             case LMedS:
-<span class="fc" id="L458">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L459">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings);
             case MSAC:
-<span class="fc" id="L461">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L462">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings);
             case PROSAC:
-<span class="fc" id="L464">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L465">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings);
             case PROMedS:
             default:
-<span class="fc" id="L468">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L469">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings);
         }
     }
@@ -481,22 +482,22 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
     public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L484" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L485" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L486">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L487">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         listener);
             case LMedS:
-<span class="fc" id="L489">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L490">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         listener);
             case MSAC:
-<span class="fc" id="L492">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L493">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         listener);
             case PROSAC:
-<span class="fc" id="L495">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L496">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         listener);
             case PROMedS:
             default:
-<span class="fc" id="L499">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L500">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         listener);
         }
     }
@@ -515,22 +516,22 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L518" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L519" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L520">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L521">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, listener);
             case LMedS:
-<span class="fc" id="L523">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L524">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, listener);
             case MSAC:
-<span class="fc" id="L526">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L527">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, listener);
             case PROSAC:
-<span class="fc" id="L529">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L530">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, listener);
             case PROMedS:
             default:
-<span class="fc" id="L533">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L534">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, listener);
         }
     }
@@ -550,22 +551,22 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L553" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L554" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L555">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L556">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition);
             case LMedS:
-<span class="fc" id="L558">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L559">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition);
             case MSAC:
-<span class="fc" id="L561">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L562">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition);
             case PROSAC:
-<span class="fc" id="L564">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L565">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition);
             case PROMedS:
             default:
-<span class="fc" id="L568">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L569">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition);
         }
     }
@@ -582,22 +583,22 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
     public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
             final Point2D initialPosition,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L585" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L586" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L587">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L588">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition);
             case LMedS:
-<span class="fc" id="L590">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L591">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition);
             case MSAC:
-<span class="fc" id="L593">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L594">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition);
             case PROSAC:
-<span class="fc" id="L596">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L597">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition);
             case PROMedS:
             default:
-<span class="fc" id="L600">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L601">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition);
         }
     }
@@ -616,22 +617,22 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Point2D initialPosition,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L619" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L620" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L621">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L622">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, listener);
             case LMedS:
-<span class="fc" id="L624">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L625">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, listener);
             case MSAC:
-<span class="fc" id="L627">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L628">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, listener);
             case PROSAC:
-<span class="fc" id="L630">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L631">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, listener);
             case PROMedS:
             default:
-<span class="fc" id="L634">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L635">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, listener);
         }
     }
@@ -653,22 +654,22 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Point2D initialPosition,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L656" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L657" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L658">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L659">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, listener);
             case LMedS:
-<span class="fc" id="L661">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L662">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, listener);
             case MSAC:
-<span class="fc" id="L664">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L665">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, listener);
             case PROSAC:
-<span class="fc" id="L667">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L668">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, listener);
             case PROMedS:
             default:
-<span class="fc" id="L671">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L672">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, listener);
         }
     }
@@ -686,22 +687,22 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
     public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
             final Double initialTransmittedPowerdBm,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L689" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L690" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L691">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L692">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialTransmittedPowerdBm);
             case LMedS:
-<span class="fc" id="L694">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L695">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialTransmittedPowerdBm);
             case MSAC:
-<span class="fc" id="L697">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L698">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialTransmittedPowerdBm);
             case PROSAC:
-<span class="fc" id="L700">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L701">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialTransmittedPowerdBm);
             case PROMedS:
             default:
-<span class="fc" id="L704">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L705">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialTransmittedPowerdBm);
         }
     }
@@ -722,22 +723,22 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Double initialTransmittedPowerdBm,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L725" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L726" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L727">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L728">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialTransmittedPowerdBm);
             case LMedS:
-<span class="fc" id="L730">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L731">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialTransmittedPowerdBm);
             case MSAC:
-<span class="fc" id="L733">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L734">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialTransmittedPowerdBm);
             case PROSAC:
-<span class="fc" id="L736">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L737">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialTransmittedPowerdBm);
             case PROMedS:
             default:
-<span class="fc" id="L740">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L741">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialTransmittedPowerdBm);
         }
     }
@@ -757,22 +758,22 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L760" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L761" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L762">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L763">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialTransmittedPowerdBm, listener);
             case LMedS:
-<span class="fc" id="L765">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L766">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialTransmittedPowerdBm, listener);
             case MSAC:
-<span class="fc" id="L768">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L769">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialTransmittedPowerdBm, listener);
             case PROSAC:
-<span class="fc" id="L771">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L772">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialTransmittedPowerdBm, listener);
             case PROMedS:
             default:
-<span class="fc" id="L775">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L776">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialTransmittedPowerdBm, listener);
         }
     }
@@ -795,22 +796,22 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L798" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L799" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L800">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L801">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialTransmittedPowerdBm, listener);
             case LMedS:
-<span class="fc" id="L803">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L804">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialTransmittedPowerdBm, listener);
             case MSAC:
-<span class="fc" id="L806">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L807">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialTransmittedPowerdBm, listener);
             case PROSAC:
-<span class="fc" id="L809">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L810">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialTransmittedPowerdBm, listener);
             case PROMedS:
             default:
-<span class="fc" id="L813">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L814">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialTransmittedPowerdBm, listener);
         }
     }
@@ -834,22 +835,22 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L837" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L838" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L839">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L840">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm);
             case LMedS:
-<span class="fc" id="L842">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L843">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm);
             case MSAC:
-<span class="fc" id="L845">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L846">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm);
             case PROSAC:
-<span class="fc" id="L848">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L849">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm);
             case PROMedS:
             default:
-<span class="fc" id="L852">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L853">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm);
         }
     }
@@ -870,22 +871,22 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L873" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L874" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L875">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L876">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm);
             case LMedS:
-<span class="fc" id="L878">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L879">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm);
             case MSAC:
-<span class="fc" id="L881">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L882">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm);
             case PROSAC:
-<span class="fc" id="L884">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L885">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm);
             case PROMedS:
             default:
-<span class="fc" id="L888">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L889">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm);
         }
     }
@@ -908,22 +909,22 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L911" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L912" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L913">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L914">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm, listener);
             case LMedS:
-<span class="fc" id="L916">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L917">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm, listener);
             case MSAC:
-<span class="fc" id="L919">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L920">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm, listener);
             case PROSAC:
-<span class="fc" id="L922">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L923">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm, listener);
             case PROMedS:
             default:
-<span class="fc" id="L926">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L927">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm, listener);
         }
     }
@@ -949,22 +950,22 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L952" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L953" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L954">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L955">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm, listener);
             case LMedS:
-<span class="fc" id="L957">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L958">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm, listener);
             case MSAC:
-<span class="fc" id="L960">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L961">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm, listener);
             case PROSAC:
-<span class="fc" id="L963">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L964">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm, listener);
             case PROMedS:
             default:
-<span class="fc" id="L967">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L968">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm, listener);
         }
     }
@@ -990,26 +991,26 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L993" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L994" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L995">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L996">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent);
             case LMedS:
-<span class="fc" id="L999">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1000">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent);
             case MSAC:
-<span class="fc" id="L1003">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1004">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent);
             case PROSAC:
-<span class="fc" id="L1007">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1008">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent);
             case PROMedS:
             default:
-<span class="fc" id="L1012">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1013">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent);
         }
@@ -1033,26 +1034,26 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L1036" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L1037" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L1038">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1039">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent);
             case LMedS:
-<span class="fc" id="L1042">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1043">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent);
             case MSAC:
-<span class="fc" id="L1046">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1047">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent);
             case PROSAC:
-<span class="fc" id="L1050">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1051">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent);
             case PROMedS:
             default:
-<span class="fc" id="L1055">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1056">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent);
         }
@@ -1078,26 +1079,26 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final double initialPathLossExponent,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L1081" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L1082" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L1083">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1084">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent, listener);
             case LMedS:
-<span class="fc" id="L1087">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1088">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent, listener);
             case MSAC:
-<span class="fc" id="L1091">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1092">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent, listener);
             case PROSAC:
-<span class="fc" id="L1095">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1096">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent, listener);
             case PROMedS:
             default:
-<span class="fc" id="L1100">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1101">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent, listener);
         }
@@ -1126,26 +1127,26 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final double initialPathLossExponent,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L1129" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L1130" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L1131">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1132">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent, listener);
             case LMedS:
-<span class="fc" id="L1135">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1136">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent, listener);
             case MSAC:
-<span class="fc" id="L1139">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1140">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent, listener);
             case PROSAC:
-<span class="fc" id="L1143">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1144">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent, listener);
             case PROMedS:
             default:
-<span class="fc" id="L1148">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1149">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent, listener);
         }
@@ -1163,19 +1164,19 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
      */
     public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
             final double[] qualityScores, final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L1166" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L1167" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L1168">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;();</span>
+<span class="fc" id="L1169">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;();</span>
             case LMedS:
-<span class="fc" id="L1170">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;();</span>
+<span class="fc" id="L1171">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;();</span>
             case MSAC:
-<span class="fc" id="L1172">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;();</span>
+<span class="fc" id="L1173">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;();</span>
             case PROSAC:
-<span class="fc" id="L1174">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1175">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores);
             case PROMedS:
             default:
-<span class="fc" id="L1178">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1179">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores);
         }
     }
@@ -1196,22 +1197,22 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final double[] qualityScores,
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L1199" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L1200" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L1201">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1202">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings);
             case LMedS:
-<span class="fc" id="L1204">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1205">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings);
             case MSAC:
-<span class="fc" id="L1207">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1208">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings);
             case PROSAC:
-<span class="fc" id="L1210">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1211">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, readings);
             case PROMedS:
             default:
-<span class="fc" id="L1214">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1215">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, readings);
         }
     }
@@ -1231,22 +1232,22 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final double[] qualityScores,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L1234" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L1235" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L1236">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1237">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         listener);
             case LMedS:
-<span class="fc" id="L1239">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1240">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         listener);
             case MSAC:
-<span class="fc" id="L1242">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1243">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         listener);
             case PROSAC:
-<span class="fc" id="L1245">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1246">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, listener);
             case PROMedS:
             default:
-<span class="fc" id="L1249">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1250">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, listener);
         }
     }
@@ -1269,22 +1270,22 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L1272" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L1273" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L1274">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1275">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, listener);
             case LMedS:
-<span class="fc" id="L1277">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1278">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, listener);
             case MSAC:
-<span class="fc" id="L1280">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1281">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, listener);
             case PROSAC:
-<span class="fc" id="L1283">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1284">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, readings, listener);
             case PROMedS:
             default:
-<span class="fc" id="L1287">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1288">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, readings, listener);
         }
     }
@@ -1308,22 +1309,22 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L1311" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L1312" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L1313">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1314">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition);
             case LMedS:
-<span class="fc" id="L1316">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1317">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition);
             case MSAC:
-<span class="fc" id="L1319">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1320">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition);
             case PROSAC:
-<span class="fc" id="L1322">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1323">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, readings, initialPosition);
             case PROMedS:
             default:
-<span class="fc" id="L1326">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1327">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, readings, initialPosition);
         }
     }
@@ -1343,22 +1344,22 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
     public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
             final double[] qualityScores, final Point2D initialPosition,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L1346" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L1347" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L1348">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1349">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition);
             case LMedS:
-<span class="fc" id="L1351">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1352">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition);
             case MSAC:
-<span class="fc" id="L1354">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1355">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition);
             case PROSAC:
-<span class="fc" id="L1357">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1358">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, initialPosition);
             case PROMedS:
             default:
-<span class="fc" id="L1361">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1362">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, initialPosition);
         }
     }
@@ -1381,22 +1382,22 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Point2D initialPosition,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L1384" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L1385" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L1386">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1387">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, listener);
             case LMedS:
-<span class="fc" id="L1389">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1390">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, listener);
             case MSAC:
-<span class="fc" id="L1392">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1393">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, listener);
             case PROSAC:
-<span class="fc" id="L1395">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1396">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, initialPosition, listener);
             case PROMedS:
             default:
-<span class="fc" id="L1399">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1400">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, initialPosition, listener);
         }
     }
@@ -1422,22 +1423,22 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Point2D initialPosition,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L1425" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L1426" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L1427">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1428">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, listener);
             case LMedS:
-<span class="fc" id="L1430">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1431">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, listener);
             case MSAC:
-<span class="fc" id="L1433">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1434">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, listener);
             case PROSAC:
-<span class="fc" id="L1436">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1437">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, readings, initialPosition, listener);
             case PROMedS:
             default:
-<span class="fc" id="L1440">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1441">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, readings, initialPosition, listener);
         }
     }
@@ -1459,22 +1460,22 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final double[] qualityScores,
             final Double initialTransmittedPowerdBm,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L1462" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L1463" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L1464">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1465">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialTransmittedPowerdBm);
             case LMedS:
-<span class="fc" id="L1467">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1468">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialTransmittedPowerdBm);
             case MSAC:
-<span class="fc" id="L1470">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1471">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialTransmittedPowerdBm);
             case PROSAC:
-<span class="fc" id="L1473">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1474">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, initialTransmittedPowerdBm);
             case PROMedS:
             default:
-<span class="fc" id="L1477">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1478">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, initialTransmittedPowerdBm);
         }
     }
@@ -1499,22 +1500,22 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Double initialTransmittedPowerdBm,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L1502" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L1503" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L1504">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1505">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialTransmittedPowerdBm);
             case LMedS:
-<span class="fc" id="L1507">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1508">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialTransmittedPowerdBm);
             case MSAC:
-<span class="fc" id="L1510">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1511">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialTransmittedPowerdBm);
             case PROSAC:
-<span class="fc" id="L1513">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1514">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, readings, initialTransmittedPowerdBm);
             case PROMedS:
             default:
-<span class="fc" id="L1517">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1518">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, readings, initialTransmittedPowerdBm);
         }
     }
@@ -1538,22 +1539,22 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L1541" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L1542" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L1543">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1544">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialTransmittedPowerdBm, listener);
             case LMedS:
-<span class="fc" id="L1546">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1547">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialTransmittedPowerdBm, listener);
             case MSAC:
-<span class="fc" id="L1549">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1550">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialTransmittedPowerdBm, listener);
             case PROSAC:
-<span class="fc" id="L1552">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1553">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, initialTransmittedPowerdBm, listener);
             case PROMedS:
             default:
-<span class="fc" id="L1556">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1557">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, initialTransmittedPowerdBm, listener);
         }
     }
@@ -1580,22 +1581,22 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L1583" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L1584" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L1585">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1586">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialTransmittedPowerdBm, listener);
             case LMedS:
-<span class="fc" id="L1588">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1589">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialTransmittedPowerdBm, listener);
             case MSAC:
-<span class="fc" id="L1591">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1592">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialTransmittedPowerdBm, listener);
             case PROSAC:
-<span class="fc" id="L1594">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1595">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, readings, initialTransmittedPowerdBm, listener);
             case PROMedS:
             default:
-<span class="fc" id="L1598">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1599">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, readings, initialTransmittedPowerdBm, listener);
         }
     }
@@ -1623,23 +1624,23 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L1626" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L1627" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L1628">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1629">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm);
             case LMedS:
-<span class="fc" id="L1631">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1632">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm);
             case MSAC:
-<span class="fc" id="L1634">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1635">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm);
             case PROSAC:
-<span class="fc" id="L1637">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1638">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, readings, initialPosition,
                         initialTransmittedPowerdBm);
             case PROMedS:
             default:
-<span class="fc" id="L1642">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1643">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, readings, initialPosition,
                         initialTransmittedPowerdBm);
         }
@@ -1665,22 +1666,22 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L1668" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L1669" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L1670">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1671">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm);
             case LMedS:
-<span class="fc" id="L1673">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1674">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm);
             case MSAC:
-<span class="fc" id="L1676">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1677">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm);
             case PROSAC:
-<span class="fc" id="L1679">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1680">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, initialPosition, initialTransmittedPowerdBm);
             case PROMedS:
             default:
-<span class="fc" id="L1683">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1684">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, initialPosition, initialTransmittedPowerdBm);
         }
     }
@@ -1707,23 +1708,23 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L1710" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L1711" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L1712">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1713">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm, listener);
             case LMedS:
-<span class="fc" id="L1715">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1716">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm, listener);
             case MSAC:
-<span class="fc" id="L1718">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1719">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm, listener);
             case PROSAC:
-<span class="fc" id="L1721">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1722">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, initialPosition, initialTransmittedPowerdBm,
                         listener);
             case PROMedS:
             default:
-<span class="fc" id="L1726">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1727">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, initialPosition, initialTransmittedPowerdBm,
                         listener);
         }
@@ -1754,23 +1755,23 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L1757" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L1758" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L1759">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1760">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm, listener);
             case LMedS:
-<span class="fc" id="L1762">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1763">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm, listener);
             case MSAC:
-<span class="fc" id="L1765">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1766">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm, listener);
             case PROSAC:
-<span class="fc" id="L1768">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1769">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, readings, initialPosition,
                         initialTransmittedPowerdBm, listener);
             case PROMedS:
             default:
-<span class="fc" id="L1773">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1774">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, readings, initialPosition,
                         initialTransmittedPowerdBm, listener);
         }
@@ -1801,26 +1802,26 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L1804" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L1805" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L1806">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1807">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent);
             case LMedS:
-<span class="fc" id="L1810">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1811">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent);
             case MSAC:
-<span class="fc" id="L1814">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1815">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent);
             case PROSAC:
-<span class="fc" id="L1818">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1819">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, readings, initialPosition,
                         initialTransmittedPowerdBm, initialPathLossExponent);
             case PROMedS:
             default:
-<span class="fc" id="L1823">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1824">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, readings, initialPosition,
                         initialTransmittedPowerdBm, initialPathLossExponent);
         }
@@ -1848,26 +1849,26 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L1851" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L1852" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L1853">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1854">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent);
             case LMedS:
-<span class="fc" id="L1857">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1858">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent);
             case MSAC:
-<span class="fc" id="L1861">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1862">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent);
             case PROSAC:
-<span class="fc" id="L1865">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1866">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, initialPosition,
                         initialTransmittedPowerdBm, initialPathLossExponent);
             case PROMedS:
             default:
-<span class="fc" id="L1870">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1871">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, initialPosition,
                         initialTransmittedPowerdBm, initialPathLossExponent);
         }
@@ -1897,27 +1898,27 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final double initialPathLossExponent,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L1900" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L1901" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L1902">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1903">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent, listener);
             case LMedS:
-<span class="fc" id="L1906">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1907">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent, listener);
             case MSAC:
-<span class="fc" id="L1910">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1911">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent, listener);
             case PROSAC:
-<span class="fc" id="L1914">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1915">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, initialPosition,
                         initialTransmittedPowerdBm, initialPathLossExponent,
                         listener);
             case PROMedS:
             default:
-<span class="fc" id="L1920">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1921">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, initialPosition,
                         initialTransmittedPowerdBm, initialPathLossExponent,
                         listener);
@@ -1951,27 +1952,27 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final double initialPathLossExponent,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L1954" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L1955" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L1956">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1957">                return new RANSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent, listener);
             case LMedS:
-<span class="fc" id="L1960">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1961">                return new LMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent, listener);
             case MSAC:
-<span class="fc" id="L1964">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1965">                return new MSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         readings, initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent, listener);
             case PROSAC:
-<span class="fc" id="L1968">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1969">                return new PROSACRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, readings, initialPosition,
                         initialTransmittedPowerdBm, initialPathLossExponent,
                         listener);
             case PROMedS:
             default:
-<span class="fc" id="L1974">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
+<span class="fc" id="L1975">                return new PROMedSRobustRssiRadioSourceEstimator2D&lt;&gt;(</span>
                         qualityScores, readings, initialPosition,
                         initialTransmittedPowerdBm, initialPathLossExponent,
                         listener);
@@ -1986,7 +1987,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
      * @return a new robust 2D position radio source estimator.
      */
     public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create() {
-<span class="fc" id="L1989">        return create(DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L1990">        return create(DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -2000,7 +2001,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
      */
     public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings) {
-<span class="fc" id="L2003">        return create(readings, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L2004">        return create(readings, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -2013,7 +2014,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
      */
     public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L2016">        return create(listener, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L2017">        return create(listener, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -2029,7 +2030,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
     public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L2032">        return create(readings, listener, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L2033">        return create(readings, listener, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -2046,7 +2047,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
     public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition) {
-<span class="fc" id="L2049">        return create(readings, initialPosition, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L2050">        return create(readings, initialPosition, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -2060,7 +2061,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
      */
     public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
             final Point2D initialPosition) {
-<span class="fc" id="L2063">        return create(initialPosition, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L2064">        return create(initialPosition, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -2076,7 +2077,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
     public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
             final Point2D initialPosition,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L2079">        return create(initialPosition, listener, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L2080">        return create(initialPosition, listener, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -2095,7 +2096,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L2098">        return create(readings, initialPosition, listener, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L2099">        return create(readings, initialPosition, listener, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -2110,7 +2111,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
      */
     public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L2113">        return create(initialTransmittedPowerdBm, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L2114">        return create(initialTransmittedPowerdBm, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -2128,7 +2129,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
     public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L2131">        return create(readings, initialTransmittedPowerdBm, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L2132">        return create(readings, initialTransmittedPowerdBm, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -2145,7 +2146,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
     public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L2148">        return create(initialTransmittedPowerdBm, listener, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L2149">        return create(initialTransmittedPowerdBm, listener, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -2165,7 +2166,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L2168">        return create(readings, initialTransmittedPowerdBm, listener,</span>
+<span class="fc" id="L2169">        return create(readings, initialTransmittedPowerdBm, listener,</span>
                 DEFAULT_ROBUST_METHOD);
     }
 
@@ -2187,7 +2188,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L2190">        return create(readings, initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L2191">        return create(readings, initialPosition, initialTransmittedPowerdBm,</span>
                 DEFAULT_ROBUST_METHOD);
     }
 
@@ -2206,7 +2207,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
     public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L2209">        return create(initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L2210">        return create(initialPosition, initialTransmittedPowerdBm,</span>
                 DEFAULT_ROBUST_METHOD);
     }
 
@@ -2227,7 +2228,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L2230">        return create(initialPosition, initialTransmittedPowerdBm, listener,</span>
+<span class="fc" id="L2231">        return create(initialPosition, initialTransmittedPowerdBm, listener,</span>
                 DEFAULT_ROBUST_METHOD);
     }
 
@@ -2251,7 +2252,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L2254">        return create(readings, initialPosition, initialTransmittedPowerdBm, listener,</span>
+<span class="fc" id="L2255">        return create(readings, initialPosition, initialTransmittedPowerdBm, listener,</span>
                 DEFAULT_ROBUST_METHOD);
     }
 
@@ -2275,7 +2276,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-<span class="fc" id="L2278">        return create(readings, initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L2279">        return create(readings, initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent, DEFAULT_ROBUST_METHOD);
     }
 
@@ -2296,7 +2297,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-<span class="fc" id="L2299">        return create(initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L2300">        return create(initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent, DEFAULT_ROBUST_METHOD);
     }
 
@@ -2319,7 +2320,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L2322">        return create(initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L2323">        return create(initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent, listener, DEFAULT_ROBUST_METHOD);
     }
 
@@ -2345,7 +2346,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L2348">        return create(readings, initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L2349">        return create(readings, initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent, listener, DEFAULT_ROBUST_METHOD);
     }
 
@@ -2361,7 +2362,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
      */
     public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
             final double[] qualityScores) {
-<span class="fc" id="L2364">        return create(qualityScores, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L2365">        return create(qualityScores, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -2379,7 +2380,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
     public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
             final double[] qualityScores,
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings) {
-<span class="fc" id="L2382">        return create(qualityScores, readings, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L2383">        return create(qualityScores, readings, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -2396,7 +2397,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
     public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
             final double[] qualityScores,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L2399">        return create(qualityScores, listener, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L2400">        return create(qualityScores, listener, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -2416,7 +2417,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final double[] qualityScores,
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L2419">        return create(qualityScores, readings, listener, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L2420">        return create(qualityScores, readings, listener, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -2437,7 +2438,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final double[] qualityScores,
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition) {
-<span class="fc" id="L2440">        return create(qualityScores, readings, initialPosition,</span>
+<span class="fc" id="L2441">        return create(qualityScores, readings, initialPosition,</span>
                 DEFAULT_ROBUST_METHOD);
     }
 
@@ -2456,7 +2457,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
     public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
             final double[] qualityScores,
             final Point2D initialPosition) {
-<span class="fc" id="L2459">        return create(qualityScores, initialPosition, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L2460">        return create(qualityScores, initialPosition, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -2476,7 +2477,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final double[] qualityScores,
             final Point2D initialPosition,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L2479">        return create(qualityScores, initialPosition, listener, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L2480">        return create(qualityScores, initialPosition, listener, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -2499,7 +2500,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L2502">        return create(qualityScores, readings, initialPosition, listener,</span>
+<span class="fc" id="L2503">        return create(qualityScores, readings, initialPosition, listener,</span>
                 DEFAULT_ROBUST_METHOD);
     }
 
@@ -2519,7 +2520,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
     public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator2D&lt;S&gt; create(
             final double[] qualityScores,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L2522">        return create(qualityScores, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L2523">        return create(qualityScores, initialTransmittedPowerdBm,</span>
                 DEFAULT_ROBUST_METHOD);
     }
 
@@ -2542,7 +2543,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final double[] qualityScores,
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L2545">        return create(qualityScores, readings, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L2546">        return create(qualityScores, readings, initialTransmittedPowerdBm,</span>
                 DEFAULT_ROBUST_METHOD);
     }
 
@@ -2564,7 +2565,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final double[] qualityScores,
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L2567">        return create(qualityScores, initialTransmittedPowerdBm, listener,</span>
+<span class="fc" id="L2568">        return create(qualityScores, initialTransmittedPowerdBm, listener,</span>
                 DEFAULT_ROBUST_METHOD);
     }
 
@@ -2589,7 +2590,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L2592">        return create(qualityScores, readings, initialTransmittedPowerdBm, listener,</span>
+<span class="fc" id="L2593">        return create(qualityScores, readings, initialTransmittedPowerdBm, listener,</span>
                 DEFAULT_ROBUST_METHOD);
     }
 
@@ -2615,7 +2616,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L2618">        return create(qualityScores, readings, initialPosition,</span>
+<span class="fc" id="L2619">        return create(qualityScores, readings, initialPosition,</span>
                 initialTransmittedPowerdBm, DEFAULT_ROBUST_METHOD);
     }
 
@@ -2638,7 +2639,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final double[] qualityScores,
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L2641">        return create(qualityScores, initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L2642">        return create(qualityScores, initialPosition, initialTransmittedPowerdBm,</span>
                 DEFAULT_ROBUST_METHOD);
     }
 
@@ -2663,7 +2664,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L2666">        return create(qualityScores, initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L2667">        return create(qualityScores, initialPosition, initialTransmittedPowerdBm,</span>
                 listener, DEFAULT_ROBUST_METHOD);
     }
 
@@ -2691,7 +2692,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L2694">        return create(qualityScores, readings, initialPosition,</span>
+<span class="fc" id="L2695">        return create(qualityScores, readings, initialPosition,</span>
                 initialTransmittedPowerdBm, listener, DEFAULT_ROBUST_METHOD);
     }
 
@@ -2719,7 +2720,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-<span class="fc" id="L2722">        return create(qualityScores, readings, initialPosition,</span>
+<span class="fc" id="L2723">        return create(qualityScores, readings, initialPosition,</span>
                 initialTransmittedPowerdBm, initialPathLossExponent,
                 DEFAULT_ROBUST_METHOD);
     }
@@ -2745,7 +2746,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-<span class="fc" id="L2748">        return create(qualityScores, initialPosition,</span>
+<span class="fc" id="L2749">        return create(qualityScores, initialPosition,</span>
                 initialTransmittedPowerdBm, initialPathLossExponent,
                 DEFAULT_ROBUST_METHOD);
     }
@@ -2773,7 +2774,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L2776">        return create(qualityScores, initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L2777">        return create(qualityScores, initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent, listener, DEFAULT_ROBUST_METHOD);
     }
 
@@ -2803,14 +2804,14 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final RobustRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L2806">        return create(qualityScores, readings, initialPosition,</span>
+<span class="fc" id="L2807">        return create(qualityScores, readings, initialPosition,</span>
                 initialTransmittedPowerdBm, initialPathLossExponent, listener,
                 DEFAULT_ROBUST_METHOD);
     }
 
     /**
      * Gets minimum required number of readings to estimate
-     * power, position and pathloss exponent.
+     * power, position and path-loss exponent.
      * This value depends on the number of parameters to
      * be estimated, but for position only, this is 3
      * readings.
@@ -2819,17 +2820,17 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
      */
     @Override
     public int getMinReadings() {
-<span class="fc" id="L2822">        int minReadings = 0;</span>
-<span class="fc bfc" id="L2823" title="All 2 branches covered.">        if (isPositionEstimationEnabled()) {</span>
-<span class="fc" id="L2824">            minReadings += Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
+<span class="fc" id="L2823">        int minReadings = 0;</span>
+<span class="fc bfc" id="L2824" title="All 2 branches covered.">        if (isPositionEstimationEnabled()) {</span>
+<span class="fc" id="L2825">            minReadings += Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
         }
-<span class="fc bfc" id="L2826" title="All 2 branches covered.">        if (isTransmittedPowerEstimationEnabled()) {</span>
-<span class="fc" id="L2827">            minReadings++;</span>
+<span class="fc bfc" id="L2827" title="All 2 branches covered.">        if (isTransmittedPowerEstimationEnabled()) {</span>
+<span class="fc" id="L2828">            minReadings++;</span>
         }
-<span class="fc bfc" id="L2829" title="All 2 branches covered.">        if (isPathLossEstimationEnabled()) {</span>
-<span class="fc" id="L2830">            minReadings++;</span>
+<span class="fc bfc" id="L2830" title="All 2 branches covered.">        if (isPathLossEstimationEnabled()) {</span>
+<span class="fc" id="L2831">            minReadings++;</span>
         }
-<span class="fc" id="L2832">        return ++minReadings;</span>
+<span class="fc" id="L2833">        return ++minReadings;</span>
     }
 
     /**
@@ -2839,7 +2840,7 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
      */
     @Override
     public int getNumberOfDimensions() {
-<span class="fc" id="L2842">        return Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
+<span class="fc" id="L2843">        return Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
     }
 
     /**
@@ -2850,100 +2851,100 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
     @Override
     @SuppressWarnings(&quot;unchecked&quot;)
     public RadioSourceWithPowerAndLocated&lt;Point2D&gt; getEstimatedRadioSource() {
-<span class="fc" id="L2853">        final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings = getReadings();</span>
-<span class="pc bpc" id="L2854" title="1 of 4 branches missed.">        if (readings == null || readings.isEmpty()) {</span>
-<span class="fc" id="L2855">            return null;</span>
+<span class="fc" id="L2854">        final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings = getReadings();</span>
+<span class="pc bpc" id="L2855" title="1 of 4 branches missed.">        if (readings == null || readings.isEmpty()) {</span>
+<span class="fc" id="L2856">            return null;</span>
         }
-<span class="fc" id="L2857">        final S source = readings.get(0).getSource();</span>
+<span class="fc" id="L2858">        final S source = readings.get(0).getSource();</span>
 
-<span class="fc" id="L2859">        final Point2D estimatedPosition = getEstimatedPosition();</span>
-<span class="fc bfc" id="L2860" title="All 2 branches covered.">        if (estimatedPosition == null) {</span>
-<span class="fc" id="L2861">            return null;</span>
+<span class="fc" id="L2860">        final Point2D estimatedPosition = getEstimatedPosition();</span>
+<span class="fc bfc" id="L2861" title="All 2 branches covered.">        if (estimatedPosition == null) {</span>
+<span class="fc" id="L2862">            return null;</span>
         }
 
-<span class="fc" id="L2864">        final Matrix estimatedPositionCovariance = getEstimatedPositionCovariance();</span>
+<span class="fc" id="L2865">        final Matrix estimatedPositionCovariance = getEstimatedPositionCovariance();</span>
 
-<span class="fc" id="L2866">        final Double transmittedPowerVariance =</span>
-<span class="fc" id="L2867">                getEstimatedTransmittedPowerVariance();</span>
-<span class="fc bfc" id="L2868" title="All 2 branches covered.">        final Double transmittedPowerStandardDeviation = transmittedPowerVariance != null ?</span>
-<span class="fc" id="L2869">                Math.sqrt(transmittedPowerVariance) : null;</span>
+<span class="fc" id="L2867">        final Double transmittedPowerVariance =</span>
+<span class="fc" id="L2868">                getEstimatedTransmittedPowerVariance();</span>
+<span class="fc bfc" id="L2869" title="All 2 branches covered.">        final Double transmittedPowerStandardDeviation = transmittedPowerVariance != null ?</span>
+<span class="fc" id="L2870">                Math.sqrt(transmittedPowerVariance) : null;</span>
 
-<span class="fc" id="L2871">        final Double pathlossExponentVariance =</span>
-<span class="fc" id="L2872">                getEstimatedPathLossExponentVariance();</span>
-<span class="fc bfc" id="L2873" title="All 2 branches covered.">        final Double pathlossExponentStandardDeviation = pathlossExponentVariance != null ?</span>
-<span class="fc" id="L2874">                Math.sqrt(pathlossExponentVariance) : null;</span>
+<span class="fc" id="L2872">        final Double pathlossExponentVariance =</span>
+<span class="fc" id="L2873">                getEstimatedPathLossExponentVariance();</span>
+<span class="fc bfc" id="L2874" title="All 2 branches covered.">        final Double pathlossExponentStandardDeviation = pathlossExponentVariance != null ?</span>
+<span class="fc" id="L2875">                Math.sqrt(pathlossExponentVariance) : null;</span>
 
-<span class="fc bfc" id="L2876" title="All 2 branches covered.">        if (source instanceof WifiAccessPoint) {</span>
-<span class="fc" id="L2877">            final WifiAccessPoint accessPoint = (WifiAccessPoint) source;</span>
-<span class="fc" id="L2878">            return new WifiAccessPointWithPowerAndLocated2D(accessPoint.getBssid(),</span>
-<span class="fc" id="L2879">                    source.getFrequency(), accessPoint.getSsid(),</span>
-<span class="fc" id="L2880">                    getEstimatedTransmittedPowerdBm(),</span>
+<span class="fc bfc" id="L2877" title="All 2 branches covered.">        if (source instanceof WifiAccessPoint) {</span>
+<span class="fc" id="L2878">            final WifiAccessPoint accessPoint = (WifiAccessPoint) source;</span>
+<span class="fc" id="L2879">            return new WifiAccessPointWithPowerAndLocated2D(accessPoint.getBssid(),</span>
+<span class="fc" id="L2880">                    source.getFrequency(), accessPoint.getSsid(),</span>
+<span class="fc" id="L2881">                    getEstimatedTransmittedPowerdBm(),</span>
                     transmittedPowerStandardDeviation,
-<span class="fc" id="L2882">                    getEstimatedPathLossExponent(),</span>
+<span class="fc" id="L2883">                    getEstimatedPathLossExponent(),</span>
                     pathlossExponentStandardDeviation,
                     estimatedPosition,
                     estimatedPositionCovariance);
-<span class="pc bpc" id="L2886" title="1 of 2 branches missed.">        } else if (source instanceof Beacon) {</span>
-<span class="fc" id="L2887">            final Beacon beacon = (Beacon) source;</span>
-<span class="fc" id="L2888">            return new BeaconWithPowerAndLocated2D(beacon.getIdentifiers(),</span>
-<span class="fc" id="L2889">                    getEstimatedTransmittedPowerdBm(), beacon.getFrequency(),</span>
-<span class="fc" id="L2890">                    beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(),</span>
-<span class="fc" id="L2891">                    beacon.getManufacturer(), beacon.getServiceUuid(),</span>
-<span class="fc" id="L2892">                    beacon.getBluetoothName(),</span>
-<span class="fc" id="L2893">                    getEstimatedPathLossExponent(),</span>
+<span class="pc bpc" id="L2887" title="1 of 2 branches missed.">        } else if (source instanceof Beacon) {</span>
+<span class="fc" id="L2888">            final Beacon beacon = (Beacon) source;</span>
+<span class="fc" id="L2889">            return new BeaconWithPowerAndLocated2D(beacon.getIdentifiers(),</span>
+<span class="fc" id="L2890">                    getEstimatedTransmittedPowerdBm(), beacon.getFrequency(),</span>
+<span class="fc" id="L2891">                    beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(),</span>
+<span class="fc" id="L2892">                    beacon.getManufacturer(), beacon.getServiceUuid(),</span>
+<span class="fc" id="L2893">                    beacon.getBluetoothName(),</span>
+<span class="fc" id="L2894">                    getEstimatedPathLossExponent(),</span>
                     transmittedPowerStandardDeviation,
                     pathlossExponentStandardDeviation,
                     estimatedPosition, estimatedPositionCovariance);
         } else {
-<span class="nc" id="L2898">            return null;</span>
+<span class="nc" id="L2899">            return null;</span>
         }
     }
 
     /**
-     * Solves preliminar solution for a subset of samples.
+     * Solves preliminary solution for a subset of samples.
      *
      * @param samplesIndices indices of subset samples.
      * @param solutions      instance where solution will be stored.
      */
     @Override
-    protected void solvePreliminarSolutions(
+    protected void solvePreliminarySolutions(
             final int[] samplesIndices,
             final List&lt;Solution&lt;Point2D&gt;&gt; solutions) {
 
         try {
             int index;
 
-<span class="fc" id="L2916">            mInnerReadings.clear();</span>
-<span class="fc bfc" id="L2917" title="All 2 branches covered.">            for (final int samplesIndice : samplesIndices) {</span>
-<span class="fc" id="L2918">                index = samplesIndice;</span>
-<span class="fc" id="L2919">                mInnerReadings.add(mReadings.get(index));</span>
+<span class="fc" id="L2917">            mInnerReadings.clear();</span>
+<span class="fc bfc" id="L2918" title="All 2 branches covered.">            for (final int samplesIndex : samplesIndices) {</span>
+<span class="fc" id="L2919">                index = samplesIndex;</span>
+<span class="fc" id="L2920">                mInnerReadings.add(mReadings.get(index));</span>
             }
 
-            //initial transmitted power and position might or might not be available
-<span class="fc" id="L2923">            mInnerEstimator.setInitialTransmittedPowerdBm(</span>
+            // initial transmitted power and position might or might not be available
+<span class="fc" id="L2924">            mInnerEstimator.setInitialTransmittedPowerdBm(</span>
                     mInitialTransmittedPowerdBm);
-<span class="fc" id="L2925">            mInnerEstimator.setInitialPosition(mInitialPosition);</span>
-<span class="fc" id="L2926">            mInnerEstimator.setInitialPathLossExponent(mInitialPathLossExponent);</span>
+<span class="fc" id="L2926">            mInnerEstimator.setInitialPosition(mInitialPosition);</span>
+<span class="fc" id="L2927">            mInnerEstimator.setInitialPathLossExponent(mInitialPathLossExponent);</span>
 
-<span class="fc" id="L2928">            mInnerEstimator.setTransmittedPowerEstimationEnabled(mTransmittedPowerEstimationEnabled);</span>
-<span class="fc" id="L2929">            mInnerEstimator.setPositionEstimationEnabled(mPositionEstimationEnabled);</span>
-<span class="fc" id="L2930">            mInnerEstimator.setPathLossEstimationEnabled(mPathLossEstimationEnabled);</span>
+<span class="fc" id="L2929">            mInnerEstimator.setTransmittedPowerEstimationEnabled(mTransmittedPowerEstimationEnabled);</span>
+<span class="fc" id="L2930">            mInnerEstimator.setPositionEstimationEnabled(mPositionEstimationEnabled);</span>
+<span class="fc" id="L2931">            mInnerEstimator.setPathLossEstimationEnabled(mPathLossEstimationEnabled);</span>
 
-<span class="fc" id="L2932">            mInnerEstimator.setReadings(mInnerReadings);</span>
+<span class="fc" id="L2933">            mInnerEstimator.setReadings(mInnerReadings);</span>
 
-<span class="fc" id="L2934">            mInnerEstimator.estimate();</span>
+<span class="fc" id="L2935">            mInnerEstimator.estimate();</span>
 
-<span class="fc" id="L2936">            final Point2D estimatedPosition = mInnerEstimator.getEstimatedPosition();</span>
-<span class="fc" id="L2937">            final double estimatedTransmittedPowerdBm =</span>
-<span class="fc" id="L2938">                    mInnerEstimator.getEstimatedTransmittedPowerdBm();</span>
-<span class="fc" id="L2939">            final double estimatedPathLossExponent =</span>
-<span class="fc" id="L2940">                    mInnerEstimator.getEstimatedPathLossExponent();</span>
-<span class="fc" id="L2941">            solutions.add(new Solution&lt;&gt;(estimatedPosition,</span>
+<span class="fc" id="L2937">            final Point2D estimatedPosition = mInnerEstimator.getEstimatedPosition();</span>
+<span class="fc" id="L2938">            final double estimatedTransmittedPowerdBm =</span>
+<span class="fc" id="L2939">                    mInnerEstimator.getEstimatedTransmittedPowerdBm();</span>
+<span class="fc" id="L2940">            final double estimatedPathLossExponent =</span>
+<span class="fc" id="L2941">                    mInnerEstimator.getEstimatedPathLossExponent();</span>
+<span class="fc" id="L2942">            solutions.add(new Solution&lt;&gt;(estimatedPosition,</span>
                     estimatedTransmittedPowerdBm, estimatedPathLossExponent));
-<span class="nc" id="L2943">        } catch (final NavigationException ignore) {</span>
-            //if anything fails, no solution is added
-<span class="fc" id="L2945">        }</span>
-<span class="fc" id="L2946">    }</span>
+<span class="nc" id="L2944">        } catch (final NavigationException ignore) {</span>
+            // if anything fails, no solution is added
+<span class="fc" id="L2946">        }</span>
+<span class="fc" id="L2947">    }</span>
 
     /**
      * Attempts to refine estimated position and transmitted power contained in
@@ -2957,110 +2958,110 @@ public abstract class RobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&
      * @param result result to be refined.
      */
     protected void attemptRefine(final Solution&lt;Point2D&gt; result) {
-<span class="fc" id="L2960">        final Point2D initialPosition = result.getEstimatedPosition();</span>
-<span class="fc" id="L2961">        final double initialTransmittedPowerdBm =</span>
-<span class="fc" id="L2962">                result.getEstimatedTransmittedPowerdBm();</span>
-<span class="fc" id="L2963">        final double initialPathLossExponent = result.getEstimatedPathLossExponent();</span>
+<span class="fc" id="L2961">        final Point2D initialPosition = result.getEstimatedPosition();</span>
+<span class="fc" id="L2962">        final double initialTransmittedPowerdBm =</span>
+<span class="fc" id="L2963">                result.getEstimatedTransmittedPowerdBm();</span>
+<span class="fc" id="L2964">        final double initialPathLossExponent = result.getEstimatedPathLossExponent();</span>
 
-<span class="pc bpc" id="L2965" title="1 of 4 branches missed.">        if (mRefineResult &amp;&amp; mInliersData != null) {</span>
-<span class="fc" id="L2966">            final BitSet inliers = mInliersData.getInliers();</span>
-<span class="fc" id="L2967">            final int nSamples = mReadings.size();</span>
+<span class="pc bpc" id="L2966" title="1 of 4 branches missed.">        if (mRefineResult &amp;&amp; mInliersData != null) {</span>
+<span class="fc" id="L2967">            final BitSet inliers = mInliersData.getInliers();</span>
+<span class="fc" id="L2968">            final int nSamples = mReadings.size();</span>
 
-<span class="fc" id="L2969">            mInnerReadings.clear();</span>
+<span class="fc" id="L2970">            mInnerReadings.clear();</span>
 
-<span class="fc bfc" id="L2971" title="All 2 branches covered.">            for (int i = 0; i &lt; nSamples; i++) {</span>
-<span class="fc bfc" id="L2972" title="All 2 branches covered.">                if (inliers.get(i)) {</span>
-                    //sample is inlier
-<span class="fc" id="L2974">                    mInnerReadings.add(mReadings.get(i));</span>
+<span class="fc bfc" id="L2972" title="All 2 branches covered.">            for (int i = 0; i &lt; nSamples; i++) {</span>
+<span class="fc bfc" id="L2973" title="All 2 branches covered.">                if (inliers.get(i)) {</span>
+                    // sample is inlier
+<span class="fc" id="L2975">                    mInnerReadings.add(mReadings.get(i));</span>
                 }
             }
 
             try {
-<span class="fc" id="L2979">                mInnerEstimator.setInitialPosition(initialPosition);</span>
-<span class="fc" id="L2980">                mInnerEstimator.setInitialTransmittedPowerdBm(initialTransmittedPowerdBm);</span>
-<span class="fc" id="L2981">                mInnerEstimator.setInitialPathLossExponent(initialPathLossExponent);</span>
-<span class="fc" id="L2982">                mInnerEstimator.setTransmittedPowerEstimationEnabled(mTransmittedPowerEstimationEnabled);</span>
-<span class="fc" id="L2983">                mInnerEstimator.setPositionEstimationEnabled(mPositionEstimationEnabled);</span>
-<span class="fc" id="L2984">                mInnerEstimator.setPathLossEstimationEnabled(mPathLossEstimationEnabled);</span>
-<span class="fc" id="L2985">                mInnerEstimator.setReadings(mInnerReadings);</span>
+<span class="fc" id="L2980">                mInnerEstimator.setInitialPosition(initialPosition);</span>
+<span class="fc" id="L2981">                mInnerEstimator.setInitialTransmittedPowerdBm(initialTransmittedPowerdBm);</span>
+<span class="fc" id="L2982">                mInnerEstimator.setInitialPathLossExponent(initialPathLossExponent);</span>
+<span class="fc" id="L2983">                mInnerEstimator.setTransmittedPowerEstimationEnabled(mTransmittedPowerEstimationEnabled);</span>
+<span class="fc" id="L2984">                mInnerEstimator.setPositionEstimationEnabled(mPositionEstimationEnabled);</span>
+<span class="fc" id="L2985">                mInnerEstimator.setPathLossEstimationEnabled(mPathLossEstimationEnabled);</span>
+<span class="fc" id="L2986">                mInnerEstimator.setReadings(mInnerReadings);</span>
 
-<span class="fc" id="L2987">                mInnerEstimator.estimate();</span>
+<span class="fc" id="L2988">                mInnerEstimator.estimate();</span>
 
-<span class="fc" id="L2989">                final Matrix cov = mInnerEstimator.getEstimatedCovariance();</span>
-<span class="pc bpc" id="L2990" title="2 of 4 branches missed.">                if (mKeepCovariance &amp;&amp; cov != null) {</span>
-                    //keep covariance
-<span class="fc" id="L2992">                    mCovariance = cov;</span>
+<span class="fc" id="L2990">                final Matrix cov = mInnerEstimator.getEstimatedCovariance();</span>
+<span class="pc bpc" id="L2991" title="2 of 4 branches missed.">                if (mKeepCovariance &amp;&amp; cov != null) {</span>
+                    // keep covariance
+<span class="fc" id="L2993">                    mCovariance = cov;</span>
 
-<span class="fc" id="L2994">                    final int dims = getNumberOfDimensions();</span>
-<span class="fc" id="L2995">                    int pos = 0;</span>
-<span class="fc bfc" id="L2996" title="All 2 branches covered.">                    if (mPositionEstimationEnabled) {</span>
-                        //position estimation enabled
-<span class="fc" id="L2998">                        final int d = dims - 1;</span>
-<span class="fc bfc" id="L2999" title="All 2 branches covered.">                        if (mEstimatedPositionCovariance == null) {</span>
-<span class="fc" id="L3000">                            mEstimatedPositionCovariance = mCovariance.</span>
-<span class="fc" id="L3001">                                    getSubmatrix(0, 0, d, d);</span>
+<span class="fc" id="L2995">                    final int dims = getNumberOfDimensions();</span>
+<span class="fc" id="L2996">                    int pos = 0;</span>
+<span class="fc bfc" id="L2997" title="All 2 branches covered.">                    if (mPositionEstimationEnabled) {</span>
+                        // position estimation enabled
+<span class="fc" id="L2999">                        final int d = dims - 1;</span>
+<span class="fc bfc" id="L3000" title="All 2 branches covered.">                        if (mEstimatedPositionCovariance == null) {</span>
+<span class="fc" id="L3001">                            mEstimatedPositionCovariance = mCovariance.</span>
+<span class="fc" id="L3002">                                    getSubmatrix(0, 0, d, d);</span>
                         } else {
-<span class="fc" id="L3003">                            mCovariance.getSubmatrix(0, 0, d, d,</span>
+<span class="fc" id="L3004">                            mCovariance.getSubmatrix(0, 0, d, d,</span>
                                     mEstimatedPositionCovariance);
                         }
-<span class="fc" id="L3006">                        pos += dims;</span>
-<span class="fc" id="L3007">                    } else {</span>
-                        //position estimation disabled
-<span class="fc" id="L3009">                        mEstimatedPositionCovariance = null;</span>
+<span class="fc" id="L3007">                        pos += dims;</span>
+<span class="fc" id="L3008">                    } else {</span>
+                        // position estimation disabled
+<span class="fc" id="L3010">                        mEstimatedPositionCovariance = null;</span>
                     }
 
-<span class="fc bfc" id="L3012" title="All 2 branches covered.">                    if (mTransmittedPowerEstimationEnabled) {</span>
-                        //transmitted power estimation enabled
-<span class="fc" id="L3014">                        mEstimatedTransmittedPowerVariance = mCovariance.</span>
-<span class="fc" id="L3015">                                getElementAt(pos, pos);</span>
-<span class="fc" id="L3016">                        pos++;</span>
+<span class="fc bfc" id="L3013" title="All 2 branches covered.">                    if (mTransmittedPowerEstimationEnabled) {</span>
+                        // transmitted power estimation enabled
+<span class="fc" id="L3015">                        mEstimatedTransmittedPowerVariance = mCovariance.</span>
+<span class="fc" id="L3016">                                getElementAt(pos, pos);</span>
+<span class="fc" id="L3017">                        pos++;</span>
                     } else {
-                        //transmitted power estimation disabled
-<span class="fc" id="L3019">                        mEstimatedTransmittedPowerVariance = null;</span>
+                        // transmitted power estimation disabled
+<span class="fc" id="L3020">                        mEstimatedTransmittedPowerVariance = null;</span>
                     }
 
-<span class="fc bfc" id="L3022" title="All 2 branches covered.">                    if (mPathLossEstimationEnabled) {</span>
-                        //pathloss exponent estimation enabled
-<span class="fc" id="L3024">                        mEstimatedPathLossExponentVariance = mCovariance.</span>
-<span class="fc" id="L3025">                                getElementAt(pos, pos);</span>
+<span class="fc bfc" id="L3023" title="All 2 branches covered.">                    if (mPathLossEstimationEnabled) {</span>
+                        // path-loss exponent estimation enabled
+<span class="fc" id="L3025">                        mEstimatedPathLossExponentVariance = mCovariance.</span>
+<span class="fc" id="L3026">                                getElementAt(pos, pos);</span>
                     } else {
-                        //pathloss exponent estimation disabled
-<span class="fc" id="L3028">                        mEstimatedPathLossExponentVariance = null;</span>
+                        // path-loss exponent estimation disabled
+<span class="fc" id="L3029">                        mEstimatedPathLossExponentVariance = null;</span>
                     }
-<span class="fc" id="L3030">                } else {</span>
-<span class="nc" id="L3031">                    mCovariance = null;</span>
-<span class="nc" id="L3032">                    mEstimatedPositionCovariance = null;</span>
-<span class="nc" id="L3033">                    mEstimatedTransmittedPowerVariance = null;</span>
-<span class="nc" id="L3034">                    mEstimatedPathLossExponentVariance = null;</span>
+<span class="fc" id="L3031">                } else {</span>
+<span class="nc" id="L3032">                    mCovariance = null;</span>
+<span class="nc" id="L3033">                    mEstimatedPositionCovariance = null;</span>
+<span class="nc" id="L3034">                    mEstimatedTransmittedPowerVariance = null;</span>
+<span class="nc" id="L3035">                    mEstimatedPathLossExponentVariance = null;</span>
                 }
 
-<span class="fc" id="L3037">                mEstimatedPosition = mInnerEstimator.getEstimatedPosition();</span>
-<span class="fc" id="L3038">                mEstimatedTransmittedPowerdBm =</span>
-<span class="fc" id="L3039">                        mInnerEstimator.getEstimatedTransmittedPowerdBm();</span>
-<span class="fc" id="L3040">                mEstimatedPathLossExponent =</span>
-<span class="fc" id="L3041">                        mInnerEstimator.getEstimatedPathLossExponent();</span>
-<span class="nc" id="L3042">            } catch (final Exception e) {</span>
-                //refinement failed, so we return input value, and covariance
-                //becomes unavailable
-<span class="nc" id="L3045">                mCovariance = null;</span>
-<span class="nc" id="L3046">                mEstimatedPositionCovariance = null;</span>
-<span class="nc" id="L3047">                mEstimatedTransmittedPowerVariance = null;</span>
-<span class="nc" id="L3048">                mEstimatedPathLossExponentVariance = null;</span>
+<span class="fc" id="L3038">                mEstimatedPosition = mInnerEstimator.getEstimatedPosition();</span>
+<span class="fc" id="L3039">                mEstimatedTransmittedPowerdBm =</span>
+<span class="fc" id="L3040">                        mInnerEstimator.getEstimatedTransmittedPowerdBm();</span>
+<span class="fc" id="L3041">                mEstimatedPathLossExponent =</span>
+<span class="fc" id="L3042">                        mInnerEstimator.getEstimatedPathLossExponent();</span>
+<span class="nc" id="L3043">            } catch (final Exception e) {</span>
+                // refinement failed, so we return input value, and covariance
+                // becomes unavailable
+<span class="nc" id="L3046">                mCovariance = null;</span>
+<span class="nc" id="L3047">                mEstimatedPositionCovariance = null;</span>
+<span class="nc" id="L3048">                mEstimatedTransmittedPowerVariance = null;</span>
+<span class="nc" id="L3049">                mEstimatedPathLossExponentVariance = null;</span>
 
-<span class="nc" id="L3050">                mEstimatedPosition = initialPosition;</span>
-<span class="nc" id="L3051">                mEstimatedTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
-<span class="nc" id="L3052">                mEstimatedPathLossExponent = initialPathLossExponent;</span>
-<span class="fc" id="L3053">            }</span>
-<span class="fc" id="L3054">        } else {</span>
-<span class="fc" id="L3055">            mCovariance = null;</span>
-<span class="fc" id="L3056">            mEstimatedPositionCovariance = null;</span>
-<span class="fc" id="L3057">            mEstimatedTransmittedPowerVariance = null;</span>
-<span class="fc" id="L3058">            mEstimatedPathLossExponentVariance = null;</span>
+<span class="nc" id="L3051">                mEstimatedPosition = initialPosition;</span>
+<span class="nc" id="L3052">                mEstimatedTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="nc" id="L3053">                mEstimatedPathLossExponent = initialPathLossExponent;</span>
+<span class="fc" id="L3054">            }</span>
+<span class="fc" id="L3055">        } else {</span>
+<span class="fc" id="L3056">            mCovariance = null;</span>
+<span class="fc" id="L3057">            mEstimatedPositionCovariance = null;</span>
+<span class="fc" id="L3058">            mEstimatedTransmittedPowerVariance = null;</span>
+<span class="fc" id="L3059">            mEstimatedPathLossExponentVariance = null;</span>
 
-<span class="fc" id="L3060">            mEstimatedPosition = initialPosition;</span>
-<span class="fc" id="L3061">            mEstimatedTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
-<span class="fc" id="L3062">            mEstimatedPathLossExponent = initialPathLossExponent;</span>
+<span class="fc" id="L3061">            mEstimatedPosition = initialPosition;</span>
+<span class="fc" id="L3062">            mEstimatedTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L3063">            mEstimatedPathLossExponent = initialPathLossExponent;</span>
         }
-<span class="fc" id="L3064">    }</span>
+<span class="fc" id="L3065">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

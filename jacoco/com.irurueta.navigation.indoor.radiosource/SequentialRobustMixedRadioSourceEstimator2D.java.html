@@ -18,29 +18,20 @@ package com.irurueta.navigation.indoor.radiosource;
 import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.Point2D;
 import com.irurueta.navigation.LockedException;
-import com.irurueta.navigation.indoor.Beacon;
-import com.irurueta.navigation.indoor.BeaconWithPowerAndLocated2D;
-import com.irurueta.navigation.indoor.RadioSource;
-import com.irurueta.navigation.indoor.RadioSourceLocated;
-import com.irurueta.navigation.indoor.RangingAndRssiReadingLocated;
-import com.irurueta.navigation.indoor.RangingReadingLocated;
-import com.irurueta.navigation.indoor.ReadingLocated;
-import com.irurueta.navigation.indoor.RssiReadingLocated;
-import com.irurueta.navigation.indoor.WifiAccessPoint;
-import com.irurueta.navigation.indoor.WifiAccessPointLocated2D;
-import com.irurueta.navigation.indoor.WifiAccessPointWithPowerAndLocated2D;
+import com.irurueta.navigation.indoor.*;
+
 import java.util.List;
 
 /**
- * Robustly estimate 2D position, transmitted power and pathloss exponent of a radio
+ * Robustly estimate 2D position, transmitted power and path-loss exponent of a radio
  * source (e.g. WiFi access point or bluetooth beacon), by discarding
  * outliers and assuming that the ranging data is available to obtain position with
  * greater accuracy and that the radio source emits isotropically following the
  * expression below:
  * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,
  * where Pr is the received power (expressed in mW),
- * Gt is the Gain of the transmission antena
- * Gr is the Gain of the receiver antena
+ * Gt is the Gain of the transmission antenna
+ * Gr is the Gain of the receiver antenna
  * d is the distance between emitter and receiver
  * and lambda is the wavelength and is equal to: lambda = c / f,
  * where c is the speed of light
@@ -71,9 +62,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
     /**
      * Constructor.
      */
-<span class="fc" id="L74">    public SequentialRobustMixedRadioSourceEstimator2D() {</span>
-<span class="fc" id="L75">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L76">    }</span>
+<span class="fc" id="L65">    public SequentialRobustMixedRadioSourceEstimator2D() {</span>
+<span class="fc" id="L66">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L67">    }</span>
 
     /**
      * Constructor.
@@ -84,9 +75,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
      */
     public SequentialRobustMixedRadioSourceEstimator2D(
             final List&lt;? extends ReadingLocated&lt;Point2D&gt;&gt; readings) {
-<span class="fc" id="L87">        super(readings);</span>
-<span class="fc" id="L88">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L89">    }</span>
+<span class="fc" id="L78">        super(readings);</span>
+<span class="fc" id="L79">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L80">    }</span>
 
     /**
      * Constructor.
@@ -95,9 +86,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
      */
     public SequentialRobustMixedRadioSourceEstimator2D(
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L98">        super(listener);</span>
-<span class="fc" id="L99">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L100">    }</span>
+<span class="fc" id="L89">        super(listener);</span>
+<span class="fc" id="L90">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L91">    }</span>
 
     /**
      * Constructor.
@@ -110,9 +101,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
     public SequentialRobustMixedRadioSourceEstimator2D(
             final List&lt;? extends ReadingLocated&lt;Point2D&gt;&gt; readings,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L113">        super(readings, listener);</span>
-<span class="fc" id="L114">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L115">    }</span>
+<span class="fc" id="L104">        super(readings, listener);</span>
+<span class="fc" id="L105">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L106">    }</span>
 
     /**
      * Constructor.
@@ -126,9 +117,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
     public SequentialRobustMixedRadioSourceEstimator2D(
             final List&lt;? extends ReadingLocated&lt;Point2D&gt;&gt; readings,
             final Point2D initialPosition) {
-<span class="fc" id="L129">        super(readings, initialPosition);</span>
-<span class="fc" id="L130">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L131">    }</span>
+<span class="fc" id="L120">        super(readings, initialPosition);</span>
+<span class="fc" id="L121">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L122">    }</span>
 
     /**
      * Constructor.
@@ -138,9 +129,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
      */
     public SequentialRobustMixedRadioSourceEstimator2D(
             final Point2D initialPosition) {
-<span class="fc" id="L141">        super(initialPosition);</span>
-<span class="fc" id="L142">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L143">    }</span>
+<span class="fc" id="L132">        super(initialPosition);</span>
+<span class="fc" id="L133">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L134">    }</span>
 
     /**
      * Constructor.
@@ -152,9 +143,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
     public SequentialRobustMixedRadioSourceEstimator2D(
             final Point2D initialPosition,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L155">        super(initialPosition, listener);</span>
-<span class="fc" id="L156">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L157">    }</span>
+<span class="fc" id="L146">        super(initialPosition, listener);</span>
+<span class="fc" id="L147">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L148">    }</span>
 
     /**
      * Constructor.
@@ -170,9 +161,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
             final List&lt;? extends ReadingLocated&lt;Point2D&gt;&gt; readings,
             final Point2D initialPosition,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L173">        super(readings, initialPosition, listener);</span>
-<span class="fc" id="L174">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L175">    }</span>
+<span class="fc" id="L164">        super(readings, initialPosition, listener);</span>
+<span class="fc" id="L165">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L166">    }</span>
 
     /**
      * Constructor.
@@ -183,9 +174,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
      */
     public SequentialRobustMixedRadioSourceEstimator2D(
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L186">        super(initialTransmittedPowerdBm);</span>
-<span class="fc" id="L187">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L188">    }</span>
+<span class="fc" id="L177">        super(initialTransmittedPowerdBm);</span>
+<span class="fc" id="L178">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L179">    }</span>
 
     /**
      * Constructor.
@@ -200,9 +191,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
     public SequentialRobustMixedRadioSourceEstimator2D(
             final List&lt;? extends ReadingLocated&lt;Point2D&gt;&gt; readings,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L203">        super(readings, initialTransmittedPowerdBm);</span>
-<span class="fc" id="L204">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L205">    }</span>
+<span class="fc" id="L194">        super(readings, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L195">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L196">    }</span>
 
     /**
      * Constructor.
@@ -215,9 +206,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
     public SequentialRobustMixedRadioSourceEstimator2D(
             final Double initialTransmittedPowerdBm,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L218">        super(initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L219">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L220">    }</span>
+<span class="fc" id="L209">        super(initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L210">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L211">    }</span>
 
     /**
      * Constructor.
@@ -234,9 +225,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
             final List&lt;? extends ReadingLocated&lt;Point2D&gt;&gt; readings,
             final Double initialTransmittedPowerdBm,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L237">        super(readings, initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L238">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L239">    }</span>
+<span class="fc" id="L228">        super(readings, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L229">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L230">    }</span>
 
     /**
      * Constructor.
@@ -254,9 +245,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
             final List&lt;? extends ReadingLocated&lt;Point2D&gt;&gt; readings,
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L257">        super(readings, initialPosition, initialTransmittedPowerdBm);</span>
-<span class="fc" id="L258">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L259">    }</span>
+<span class="fc" id="L248">        super(readings, initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L249">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L250">    }</span>
 
     /**
      * Constructor.
@@ -270,9 +261,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
     public SequentialRobustMixedRadioSourceEstimator2D(
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L273">        super(initialPosition, initialTransmittedPowerdBm);</span>
-<span class="fc" id="L274">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L275">    }</span>
+<span class="fc" id="L264">        super(initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L265">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L266">    }</span>
 
     /**
      * Constructor.
@@ -282,15 +273,15 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
      * @param initialTransmittedPowerdBm initial transmitted power to start the
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's).
-     * @param listener                   in charge of attenging events raised by this instance.
+     * @param listener                   in charge of attending events raised by this instance.
      */
     public SequentialRobustMixedRadioSourceEstimator2D(
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L291">        super(initialPosition, initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L292">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L293">    }</span>
+<span class="fc" id="L282">        super(initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L283">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L284">    }</span>
 
     /**
      * Constructor.
@@ -309,9 +300,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
             final List&lt;? extends ReadingLocated&lt;Point2D&gt;&gt; readings,
             final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L312">        super(readings, initialPosition, initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L313">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L314">    }</span>
+<span class="fc" id="L303">        super(readings, initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L304">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L305">    }</span>
 
     /**
      * Constructor.
@@ -331,10 +322,10 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-<span class="fc" id="L334">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L325">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent);
-<span class="fc" id="L336">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L337">    }</span>
+<span class="fc" id="L327">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L328">    }</span>
 
     /**
      * Constructor.
@@ -350,9 +341,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-<span class="fc" id="L353">        super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);</span>
-<span class="fc" id="L354">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L355">    }</span>
+<span class="fc" id="L344">        super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);</span>
+<span class="fc" id="L345">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L346">    }</span>
 
     /**
      * Constructor.
@@ -370,10 +361,10 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L373">        super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent,</span>
+<span class="fc" id="L364">        super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent,</span>
                 listener);
-<span class="fc" id="L375">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L376">    }</span>
+<span class="fc" id="L366">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L367">    }</span>
 
     /**
      * Constructors.
@@ -395,10 +386,10 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L398">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L389">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent, listener);
-<span class="fc" id="L400">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L401">    }</span>
+<span class="fc" id="L391">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L392">    }</span>
 
     /**
      * Constructor.
@@ -411,9 +402,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
      */
     public SequentialRobustMixedRadioSourceEstimator2D(
             final double[] qualityScores) {
-<span class="fc" id="L414">        super(qualityScores);</span>
-<span class="fc" id="L415">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L416">    }</span>
+<span class="fc" id="L405">        super(qualityScores);</span>
+<span class="fc" id="L406">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L407">    }</span>
 
     /**
      * Constructor.
@@ -429,9 +420,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
     public SequentialRobustMixedRadioSourceEstimator2D(
             final double[] qualityScores,
             final List&lt;? extends ReadingLocated&lt;Point2D&gt;&gt; readings) {
-<span class="fc" id="L432">        super(qualityScores, readings);</span>
-<span class="fc" id="L433">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L434">    }</span>
+<span class="fc" id="L423">        super(qualityScores, readings);</span>
+<span class="fc" id="L424">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L425">    }</span>
 
     /**
      * Constructor.
@@ -446,9 +437,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
     public SequentialRobustMixedRadioSourceEstimator2D(
             final double[] qualityScores,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L449">        super(qualityScores, listener);</span>
-<span class="fc" id="L450">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L451">    }</span>
+<span class="fc" id="L440">        super(qualityScores, listener);</span>
+<span class="fc" id="L441">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L442">    }</span>
 
     /**
      * Constructor.
@@ -466,9 +457,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
             final double[] qualityScores,
             final List&lt;? extends ReadingLocated&lt;Point2D&gt;&gt; readings,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L469">        super(qualityScores, readings, listener);</span>
-<span class="fc" id="L470">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L471">    }</span>
+<span class="fc" id="L460">        super(qualityScores, readings, listener);</span>
+<span class="fc" id="L461">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L462">    }</span>
 
     /**
      * Constructor.
@@ -487,9 +478,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
             final double[] qualityScores,
             final List&lt;? extends ReadingLocated&lt;Point2D&gt;&gt; readings,
             final Point2D initialPosition) {
-<span class="fc" id="L490">        super(qualityScores, readings, initialPosition);</span>
-<span class="fc" id="L491">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L492">    }</span>
+<span class="fc" id="L481">        super(qualityScores, readings, initialPosition);</span>
+<span class="fc" id="L482">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L483">    }</span>
 
     /**
      * Constructor.
@@ -505,9 +496,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
     public SequentialRobustMixedRadioSourceEstimator2D(
             final double[] qualityScores,
             final Point2D initialPosition) {
-<span class="fc" id="L508">        super(qualityScores, initialPosition);</span>
-<span class="fc" id="L509">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L510">    }</span>
+<span class="fc" id="L499">        super(qualityScores, initialPosition);</span>
+<span class="fc" id="L500">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L501">    }</span>
 
     /**
      * Constructor.
@@ -525,9 +516,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
             final double[] qualityScores,
             final Point2D initialPosition,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L528">        super(qualityScores, initialPosition, listener);</span>
-<span class="fc" id="L529">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L530">    }</span>
+<span class="fc" id="L519">        super(qualityScores, initialPosition, listener);</span>
+<span class="fc" id="L520">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L521">    }</span>
 
     /**
      * Constructor.
@@ -548,9 +539,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
             final List&lt;? extends ReadingLocated&lt;Point2D&gt;&gt; readings,
             final Point2D initialPosition,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L551">        super(qualityScores, readings, initialPosition, listener);</span>
-<span class="fc" id="L552">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L553">    }</span>
+<span class="fc" id="L542">        super(qualityScores, readings, initialPosition, listener);</span>
+<span class="fc" id="L543">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L544">    }</span>
 
     /**
      * Constructor.
@@ -567,9 +558,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
     public SequentialRobustMixedRadioSourceEstimator2D(
             final double[] qualityScores,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L570">        super(qualityScores, initialTransmittedPowerdBm);</span>
-<span class="fc" id="L571">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L572">    }</span>
+<span class="fc" id="L561">        super(qualityScores, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L562">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L563">    }</span>
 
     /**
      * Constructor.
@@ -589,9 +580,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
             final double[] qualityScores,
             final List&lt;? extends ReadingLocated&lt;Point2D&gt;&gt; readings,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L592">        super(qualityScores, readings, initialTransmittedPowerdBm);</span>
-<span class="fc" id="L593">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L594">    }</span>
+<span class="fc" id="L583">        super(qualityScores, readings, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L584">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L585">    }</span>
 
     /**
      * Constructor.
@@ -610,9 +601,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
             final double[] qualityScores,
             final Double initialTransmittedPowerdBm,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L613">        super(qualityScores, initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L614">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L615">    }</span>
+<span class="fc" id="L604">        super(qualityScores, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L605">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L606">    }</span>
 
     /**
      * Constructor.
@@ -634,9 +625,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
             final List&lt;? extends ReadingLocated&lt;Point2D&gt;&gt; readings,
             final Double initialTransmittedPowerdBm,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L637">        super(qualityScores, readings, initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L638">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L639">    }</span>
+<span class="fc" id="L628">        super(qualityScores, readings, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L629">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L630">    }</span>
 
     /**
      * Constructor.
@@ -659,9 +650,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
             final List&lt;? extends ReadingLocated&lt;Point2D&gt;&gt; readings,
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L662">        super(qualityScores, readings, initialPosition, initialTransmittedPowerdBm);</span>
-<span class="fc" id="L663">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L664">    }</span>
+<span class="fc" id="L653">        super(qualityScores, readings, initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L654">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L655">    }</span>
 
     /**
      * Constructor.
@@ -681,9 +672,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
             final double[] qualityScores,
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm) {
-<span class="fc" id="L684">        super(qualityScores, initialPosition, initialTransmittedPowerdBm);</span>
-<span class="fc" id="L685">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L686">    }</span>
+<span class="fc" id="L675">        super(qualityScores, initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L676">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L677">    }</span>
 
     /**
      * Constructor.
@@ -705,9 +696,9 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L708">        super(qualityScores, initialPosition, initialTransmittedPowerdBm, listener);</span>
-<span class="fc" id="L709">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L710">    }</span>
+<span class="fc" id="L699">        super(qualityScores, initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L700">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L701">    }</span>
 
     /**
      * Constructor.
@@ -732,10 +723,10 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L735">        super(qualityScores, readings, initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L726">        super(qualityScores, readings, initialPosition, initialTransmittedPowerdBm,</span>
                 listener);
-<span class="fc" id="L737">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L738">    }</span>
+<span class="fc" id="L728">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L729">    }</span>
 
     /**
      * Constructor.
@@ -760,10 +751,10 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-<span class="fc" id="L763">        super(qualityScores, readings, initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L754">        super(qualityScores, readings, initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent);
-<span class="fc" id="L765">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L766">    }</span>
+<span class="fc" id="L756">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L757">    }</span>
 
     /**
      * Constructor.
@@ -785,10 +776,10 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-<span class="fc" id="L788">        super(qualityScores, initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L779">        super(qualityScores, initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent);
-<span class="fc" id="L790">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L791">    }</span>
+<span class="fc" id="L781">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L782">    }</span>
 
     /**
      * Constructor.
@@ -812,10 +803,10 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L815">        super(qualityScores, initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L806">        super(qualityScores, initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent, listener);
-<span class="fc" id="L817">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L818">    }</span>
+<span class="fc" id="L808">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L809">    }</span>
 
     /**
      * Constructors.
@@ -842,14 +833,14 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
-<span class="fc" id="L845">        super(qualityScores, readings, initialPosition, initialTransmittedPowerdBm,</span>
+<span class="fc" id="L836">        super(qualityScores, readings, initialPosition, initialTransmittedPowerdBm,</span>
                 initialPathLossExponent, listener);
-<span class="fc" id="L847">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
-<span class="fc" id="L848">    }</span>
+<span class="fc" id="L838">        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L839">    }</span>
 
     /**
      * Gets minimum required number of readings to estimate
-     * power, position and pathloss exponent.
+     * power, position and path-loss exponent.
      * This value depends on the number of parameters to
      * be estimated, but for position only, this is 3
      * readings.
@@ -858,14 +849,14 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
      */
     @Override
     public int getMinReadings() {
-<span class="fc" id="L861">        int minReadings = Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
-<span class="fc bfc" id="L862" title="All 2 branches covered.">        if (isTransmittedPowerEstimationEnabled()) {</span>
-<span class="fc" id="L863">            minReadings++;</span>
+<span class="fc" id="L852">        int minReadings = Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
+<span class="fc bfc" id="L853" title="All 2 branches covered.">        if (isTransmittedPowerEstimationEnabled()) {</span>
+<span class="fc" id="L854">            minReadings++;</span>
         }
-<span class="fc bfc" id="L865" title="All 2 branches covered.">        if (isPathLossEstimationEnabled()) {</span>
-<span class="fc" id="L866">            minReadings++;</span>
+<span class="fc bfc" id="L856" title="All 2 branches covered.">        if (isPathLossEstimationEnabled()) {</span>
+<span class="fc" id="L857">            minReadings++;</span>
         }
-<span class="fc" id="L868">        return ++minReadings;</span>
+<span class="fc" id="L859">        return ++minReadings;</span>
     }
 
     /**
@@ -875,7 +866,7 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
      */
     @Override
     public int getNumberOfDimensions() {
-<span class="fc" id="L878">        return Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
+<span class="fc" id="L869">        return Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
     }
 
     /**
@@ -886,71 +877,71 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
     @Override
     @SuppressWarnings(&quot;unchecked&quot;)
     public RadioSourceLocated&lt;Point2D&gt; getEstimatedRadioSource() {
-<span class="fc" id="L889">        final List&lt;? extends ReadingLocated&lt;Point2D&gt;&gt; readings = getReadings();</span>
-<span class="pc bpc" id="L890" title="2 of 4 branches missed.">        if (readings == null || readings.isEmpty()) {</span>
-<span class="nc" id="L891">            return null;</span>
+<span class="fc" id="L880">        final List&lt;? extends ReadingLocated&lt;Point2D&gt;&gt; readings = getReadings();</span>
+<span class="pc bpc" id="L881" title="2 of 4 branches missed.">        if (readings == null || readings.isEmpty()) {</span>
+<span class="nc" id="L882">            return null;</span>
         }
 
         final S source;
-<span class="fc" id="L895">        final ReadingLocated&lt;Point2D&gt; reading = readings.get(0);</span>
-<span class="fc bfc" id="L896" title="All 2 branches covered.">        if (reading instanceof RangingReadingLocated) {</span>
-<span class="fc" id="L897">            source = ((RangingReadingLocated&lt;S, Point2D&gt;) reading).getSource();</span>
-<span class="fc bfc" id="L898" title="All 2 branches covered.">        } else if (reading instanceof RssiReadingLocated) {</span>
-<span class="fc" id="L899">            source = ((RssiReadingLocated&lt;S, Point2D&gt;) reading).getSource();</span>
-<span class="pc bpc" id="L900" title="1 of 2 branches missed.">        } else if (reading instanceof RangingAndRssiReadingLocated) {</span>
-<span class="fc" id="L901">            source = ((RangingAndRssiReadingLocated&lt;S, Point2D&gt;) reading).getSource();</span>
+<span class="fc" id="L886">        final ReadingLocated&lt;Point2D&gt; reading = readings.get(0);</span>
+<span class="fc bfc" id="L887" title="All 2 branches covered.">        if (reading instanceof RangingReadingLocated) {</span>
+<span class="fc" id="L888">            source = ((RangingReadingLocated&lt;S, Point2D&gt;) reading).getSource();</span>
+<span class="fc bfc" id="L889" title="All 2 branches covered.">        } else if (reading instanceof RssiReadingLocated) {</span>
+<span class="fc" id="L890">            source = ((RssiReadingLocated&lt;S, Point2D&gt;) reading).getSource();</span>
+<span class="pc bpc" id="L891" title="1 of 2 branches missed.">        } else if (reading instanceof RangingAndRssiReadingLocated) {</span>
+<span class="fc" id="L892">            source = ((RangingAndRssiReadingLocated&lt;S, Point2D&gt;) reading).getSource();</span>
         } else {
-<span class="nc" id="L903">            return null;</span>
+<span class="nc" id="L894">            return null;</span>
         }
 
-<span class="fc" id="L906">        final Point2D estimatedPosition = getEstimatedPosition();</span>
-<span class="pc bpc" id="L907" title="1 of 2 branches missed.">        if (estimatedPosition == null) {</span>
-<span class="nc" id="L908">            return null;</span>
+<span class="fc" id="L897">        final Point2D estimatedPosition = getEstimatedPosition();</span>
+<span class="pc bpc" id="L898" title="1 of 2 branches missed.">        if (estimatedPosition == null) {</span>
+<span class="nc" id="L899">            return null;</span>
         }
 
-<span class="fc" id="L911">        final Matrix estimatedPositionCovariance = getEstimatedPositionCovariance();</span>
+<span class="fc" id="L902">        final Matrix estimatedPositionCovariance = getEstimatedPositionCovariance();</span>
 
-<span class="fc" id="L913">        final Double transmittedPowerdBm = getEstimatedTransmittedPowerdBm();</span>
+<span class="fc" id="L904">        final Double transmittedPowerdBm = getEstimatedTransmittedPowerdBm();</span>
 
-<span class="fc" id="L915">        final Double transmittedPowerVariance =</span>
-<span class="fc" id="L916">                getEstimatedTransmittedPowerVariance();</span>
-<span class="fc bfc" id="L917" title="All 2 branches covered.">        final Double transmittedPowerStandardDeviation = transmittedPowerVariance != null ?</span>
-<span class="fc" id="L918">                Math.sqrt(transmittedPowerVariance) : null;</span>
+<span class="fc" id="L906">        final Double transmittedPowerVariance =</span>
+<span class="fc" id="L907">                getEstimatedTransmittedPowerVariance();</span>
+<span class="fc bfc" id="L908" title="All 2 branches covered.">        final Double transmittedPowerStandardDeviation = transmittedPowerVariance != null ?</span>
+<span class="fc" id="L909">                Math.sqrt(transmittedPowerVariance) : null;</span>
 
-<span class="fc" id="L920">        final Double pathlossExponentVariance =</span>
-<span class="fc" id="L921">                getEstimatedPathLossExponentVariance();</span>
-<span class="fc bfc" id="L922" title="All 2 branches covered.">        final Double pathlossExponentStandardDeviation = pathlossExponentVariance != null ?</span>
-<span class="fc" id="L923">                Math.sqrt(pathlossExponentVariance) : null;</span>
+<span class="fc" id="L911">        final Double pathlossExponentVariance =</span>
+<span class="fc" id="L912">                getEstimatedPathLossExponentVariance();</span>
+<span class="fc bfc" id="L913" title="All 2 branches covered.">        final Double pathlossExponentStandardDeviation = pathlossExponentVariance != null ?</span>
+<span class="fc" id="L914">                Math.sqrt(pathlossExponentVariance) : null;</span>
 
-<span class="fc bfc" id="L925" title="All 2 branches covered.">        if (source instanceof WifiAccessPoint) {</span>
-<span class="fc" id="L926">            final WifiAccessPoint accessPoint = (WifiAccessPoint) source;</span>
-<span class="fc bfc" id="L927" title="All 2 branches covered.">            if (transmittedPowerdBm != null) {</span>
-<span class="fc" id="L928">                return new WifiAccessPointWithPowerAndLocated2D(accessPoint.getBssid(),</span>
-<span class="fc" id="L929">                        source.getFrequency(), accessPoint.getSsid(),</span>
-<span class="fc" id="L930">                        transmittedPowerdBm,</span>
+<span class="fc bfc" id="L916" title="All 2 branches covered.">        if (source instanceof WifiAccessPoint) {</span>
+<span class="fc" id="L917">            final WifiAccessPoint accessPoint = (WifiAccessPoint) source;</span>
+<span class="fc bfc" id="L918" title="All 2 branches covered.">            if (transmittedPowerdBm != null) {</span>
+<span class="fc" id="L919">                return new WifiAccessPointWithPowerAndLocated2D(accessPoint.getBssid(),</span>
+<span class="fc" id="L920">                        source.getFrequency(), accessPoint.getSsid(),</span>
+<span class="fc" id="L921">                        transmittedPowerdBm,</span>
                         transmittedPowerStandardDeviation,
-<span class="fc" id="L932">                        getEstimatedPathLossExponent(),</span>
+<span class="fc" id="L923">                        getEstimatedPathLossExponent(),</span>
                         pathlossExponentStandardDeviation,
                         estimatedPosition,
                         estimatedPositionCovariance);
             } else {
-<span class="fc" id="L937">                return new WifiAccessPointLocated2D(accessPoint.getBssid(),</span>
-<span class="fc" id="L938">                        source.getFrequency(), accessPoint.getSsid(),</span>
+<span class="fc" id="L928">                return new WifiAccessPointLocated2D(accessPoint.getBssid(),</span>
+<span class="fc" id="L929">                        source.getFrequency(), accessPoint.getSsid(),</span>
                         estimatedPosition, estimatedPositionCovariance);
             }
-<span class="pc bpc" id="L941" title="1 of 2 branches missed.">        } else if (source instanceof Beacon) {</span>
-<span class="fc" id="L942">            final Beacon beacon = (Beacon) source;</span>
-<span class="fc" id="L943">            return new BeaconWithPowerAndLocated2D(beacon.getIdentifiers(),</span>
-<span class="fc" id="L944">                    beacon.getTransmittedPower(), beacon.getFrequency(),</span>
-<span class="fc" id="L945">                    beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(),</span>
-<span class="fc" id="L946">                    beacon.getManufacturer(), beacon.getServiceUuid(),</span>
-<span class="fc" id="L947">                    beacon.getBluetoothName(),</span>
-<span class="fc" id="L948">                    getEstimatedPathLossExponent(),</span>
+<span class="pc bpc" id="L932" title="1 of 2 branches missed.">        } else if (source instanceof Beacon) {</span>
+<span class="fc" id="L933">            final Beacon beacon = (Beacon) source;</span>
+<span class="fc" id="L934">            return new BeaconWithPowerAndLocated2D(beacon.getIdentifiers(),</span>
+<span class="fc" id="L935">                    beacon.getTransmittedPower(), beacon.getFrequency(),</span>
+<span class="fc" id="L936">                    beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(),</span>
+<span class="fc" id="L937">                    beacon.getManufacturer(), beacon.getServiceUuid(),</span>
+<span class="fc" id="L938">                    beacon.getBluetoothName(),</span>
+<span class="fc" id="L939">                    getEstimatedPathLossExponent(),</span>
                     transmittedPowerStandardDeviation,
                     pathlossExponentStandardDeviation,
                     estimatedPosition, estimatedPositionCovariance);
         } else {
-<span class="nc" id="L953">            return null;</span>
+<span class="nc" id="L944">            return null;</span>
         }
     }
 
@@ -959,10 +950,10 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
      */
     @Override
     protected void buildRangingEstimatorIfNeeded() {
-<span class="pc bpc" id="L962" title="1 of 4 branches missed.">        if (mRangingEstimator == null || mRangingEstimator.getMethod() != mRangingRobustMethod) {</span>
-<span class="fc" id="L963">            mRangingEstimator = RobustRangingRadioSourceEstimator2D.create(mRangingRobustMethod);</span>
+<span class="pc bpc" id="L953" title="1 of 4 branches missed.">        if (mRangingEstimator == null || mRangingEstimator.getMethod() != mRangingRobustMethod) {</span>
+<span class="fc" id="L954">            mRangingEstimator = RobustRangingRadioSourceEstimator2D.create(mRangingRobustMethod);</span>
         }
-<span class="fc" id="L965">    }</span>
+<span class="fc" id="L956">    }</span>
 
     /**
      * build RSSI estimator.
@@ -971,14 +962,14 @@ public class SequentialRobustMixedRadioSourceEstimator2D&lt;S extends RadioSourc
      */
     @Override
     protected void buildRssiEstimatorIfNeeded() throws LockedException {
-<span class="pc bpc" id="L974" title="1 of 4 branches missed.">        if (mRssiEstimator == null || mRssiEstimator.getMethod() != mRssiRobustMethod) {</span>
-<span class="fc" id="L975">            mRssiEstimator = RobustRssiRadioSourceEstimator2D.create(mRssiRobustMethod);</span>
+<span class="pc bpc" id="L965" title="1 of 4 branches missed.">        if (mRssiEstimator == null || mRssiEstimator.getMethod() != mRssiRobustMethod) {</span>
+<span class="fc" id="L966">            mRssiEstimator = RobustRssiRadioSourceEstimator2D.create(mRssiRobustMethod);</span>
 
             // rssi estimator will never need position estimator, but to
             // ensure it is ready we need to provide an initial position
-<span class="fc" id="L979">            mRssiEstimator.setPositionEstimationEnabled(false);</span>
-<span class="fc" id="L980">            mRssiEstimator.setInitialPosition(Point2D.create());</span>
+<span class="fc" id="L970">            mRssiEstimator.setPositionEstimationEnabled(false);</span>
+<span class="fc" id="L971">            mRssiEstimator.setInitialPosition(Point2D.create());</span>
         }
-<span class="fc" id="L982">    }</span>
+<span class="fc" id="L973">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

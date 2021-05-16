@@ -20,6 +20,7 @@ import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.indoor.RadioSource;
 import com.irurueta.navigation.indoor.RangingReadingLocated;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -49,14 +50,14 @@ public abstract class RobustRangingRadioSourceEstimator&lt;S extends RadioSource
      * the amount of standard deviation of each ranging measure by the amount of position standard deviation
      * assuming that both measures are statistically independent.
      */
-<span class="fc" id="L52">    protected boolean mUseReadingPositionCovariances = DEFAULT_USE_READING_POSITION_COVARIANCES;</span>
+<span class="fc" id="L53">    protected boolean mUseReadingPositionCovariances = DEFAULT_USE_READING_POSITION_COVARIANCES;</span>
 
     /**
      * Constructor.
      */
     public RobustRangingRadioSourceEstimator() {
-<span class="fc" id="L58">        super();</span>
-<span class="fc" id="L59">    }</span>
+<span class="fc" id="L59">        super();</span>
+<span class="fc" id="L60">    }</span>
 
     /**
      * Constructor.
@@ -68,8 +69,8 @@ public abstract class RobustRangingRadioSourceEstimator&lt;S extends RadioSource
      */
     public RobustRangingRadioSourceEstimator(
             final List&lt;? extends RangingReadingLocated&lt;S, P&gt;&gt; readings) {
-<span class="fc" id="L71">        super(readings);</span>
-<span class="fc" id="L72">    }</span>
+<span class="fc" id="L72">        super(readings);</span>
+<span class="fc" id="L73">    }</span>
 
     /**
      * Constructor.
@@ -78,8 +79,8 @@ public abstract class RobustRangingRadioSourceEstimator&lt;S extends RadioSource
      */
     public RobustRangingRadioSourceEstimator(
             final RobustRangingRadioSourceEstimatorListener&lt;S, P&gt; listener) {
-<span class="fc" id="L81">        super(listener);</span>
-<span class="fc" id="L82">    }</span>
+<span class="fc" id="L82">        super(listener);</span>
+<span class="fc" id="L83">    }</span>
 
     /**
      * Constructor.
@@ -92,8 +93,8 @@ public abstract class RobustRangingRadioSourceEstimator&lt;S extends RadioSource
     public RobustRangingRadioSourceEstimator(
             final List&lt;? extends RangingReadingLocated&lt;S, P&gt;&gt; readings,
             final RobustRangingRadioSourceEstimatorListener&lt;S, P&gt; listener) {
-<span class="fc" id="L95">        super(readings, listener);</span>
-<span class="fc" id="L96">    }</span>
+<span class="fc" id="L96">        super(readings, listener);</span>
+<span class="fc" id="L97">    }</span>
 
     /**
      * Constructor.
@@ -101,9 +102,9 @@ public abstract class RobustRangingRadioSourceEstimator&lt;S extends RadioSource
      * @param initialPosition initial position to start the estimation or radio
      *                        source position.
      */
-<span class="fc" id="L104">    public RobustRangingRadioSourceEstimator(final P initialPosition) {</span>
-<span class="fc" id="L105">        mInitialPosition = initialPosition;</span>
-<span class="fc" id="L106">    }</span>
+<span class="fc" id="L105">    public RobustRangingRadioSourceEstimator(final P initialPosition) {</span>
+<span class="fc" id="L106">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L107">    }</span>
 
     /**
      * Constructor.
@@ -117,9 +118,9 @@ public abstract class RobustRangingRadioSourceEstimator&lt;S extends RadioSource
     public RobustRangingRadioSourceEstimator(
             final List&lt;? extends RangingReadingLocated&lt;S, P&gt;&gt; readings,
             final P initialPosition) {
-<span class="fc" id="L120">        super(readings);</span>
-<span class="fc" id="L121">        mInitialPosition = initialPosition;</span>
-<span class="fc" id="L122">    }</span>
+<span class="fc" id="L121">        super(readings);</span>
+<span class="fc" id="L122">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L123">    }</span>
 
     /**
      * Constructor.
@@ -131,9 +132,9 @@ public abstract class RobustRangingRadioSourceEstimator&lt;S extends RadioSource
     public RobustRangingRadioSourceEstimator(
             final P initialPosition,
             final RobustRangingRadioSourceEstimatorListener&lt;S, P&gt; listener) {
-<span class="fc" id="L134">        super(listener);</span>
-<span class="fc" id="L135">        mInitialPosition = initialPosition;</span>
-<span class="fc" id="L136">    }</span>
+<span class="fc" id="L135">        super(listener);</span>
+<span class="fc" id="L136">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L137">    }</span>
 
     /**
      * Constructor.
@@ -149,9 +150,9 @@ public abstract class RobustRangingRadioSourceEstimator&lt;S extends RadioSource
             final List&lt;? extends RangingReadingLocated&lt;S, P&gt;&gt; readings,
             final P initialPosition,
             final RobustRangingRadioSourceEstimatorListener&lt;S, P&gt; listener) {
-<span class="fc" id="L152">        super(readings, listener);</span>
-<span class="fc" id="L153">        mInitialPosition = initialPosition;</span>
-<span class="fc" id="L154">    }</span>
+<span class="fc" id="L153">        super(readings, listener);</span>
+<span class="fc" id="L154">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L155">    }</span>
 
     /**
      * Gets initial position to start the non-linear estimation of radio source position.
@@ -160,7 +161,7 @@ public abstract class RobustRangingRadioSourceEstimator&lt;S extends RadioSource
      * @return initial position.
      */
     public P getInitialPosition() {
-<span class="fc" id="L163">        return mInitialPosition;</span>
+<span class="fc" id="L164">        return mInitialPosition;</span>
     }
 
     /**
@@ -172,11 +173,11 @@ public abstract class RobustRangingRadioSourceEstimator&lt;S extends RadioSource
      * @throws LockedException if estimator is locked.
      */
     public void setInitialPosition(final P initialPosition) throws LockedException {
-<span class="fc bfc" id="L175" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L176">            throw new LockedException();</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L177">            throw new LockedException();</span>
         }
-<span class="fc" id="L178">        mInitialPosition = initialPosition;</span>
-<span class="fc" id="L179">    }</span>
+<span class="fc" id="L179">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L180">    }</span>
 
     /**
      * Indicates whether position covariances of readings must be taken into account to increase
@@ -186,7 +187,7 @@ public abstract class RobustRangingRadioSourceEstimator&lt;S extends RadioSource
      * @return true to take into account reading position covariances, false otherwise.
      */
     public boolean getUseReadingPositionCovariance() {
-<span class="fc" id="L189">        return mUseReadingPositionCovariances;</span>
+<span class="fc" id="L190">        return mUseReadingPositionCovariances;</span>
     }
 
     /**
@@ -200,11 +201,11 @@ public abstract class RobustRangingRadioSourceEstimator&lt;S extends RadioSource
      */
     public void setUseReadingPositionCovariances(boolean useReadingPositionCovariances)
             throws LockedException {
-<span class="pc bpc" id="L203" title="1 of 2 branches missed.">        if (isLocked()) {</span>
-<span class="nc" id="L204">            throw new LockedException();</span>
+<span class="pc bpc" id="L204" title="1 of 2 branches missed.">        if (isLocked()) {</span>
+<span class="nc" id="L205">            throw new LockedException();</span>
         }
-<span class="fc" id="L206">        mUseReadingPositionCovariances = useReadingPositionCovariances;</span>
-<span class="fc" id="L207">    }</span>
+<span class="fc" id="L207">        mUseReadingPositionCovariances = useReadingPositionCovariances;</span>
+<span class="fc" id="L208">    }</span>
 
     /**
      * Indicates whether this instance is ready to start the estimation.
@@ -214,7 +215,7 @@ public abstract class RobustRangingRadioSourceEstimator&lt;S extends RadioSource
     @Override
     public boolean isReady() {
         //readings must be valid
-<span class="fc" id="L217">        return areValidReadings(mReadings);</span>
+<span class="fc" id="L218">        return areValidReadings(mReadings);</span>
     }
 
     /**
@@ -245,12 +246,12 @@ public abstract class RobustRangingRadioSourceEstimator&lt;S extends RadioSource
     public abstract RobustEstimatorMethod getMethod();
 
     /**
-     * Solves preliminar solution for a subset of samples.
+     * Solves preliminary solution for a subset of samples.
      *
      * @param samplesIndices indices of subset samples.
      * @param solutions      instance where solution will be stored.
      */
-    protected abstract void solvePreliminarSolutions(
+    protected abstract void solvePreliminarySolutions(
             final int[] samplesIndices,
             final List&lt;Solution&lt;P&gt;&gt; solutions);
 
@@ -262,14 +263,14 @@ public abstract class RobustRangingRadioSourceEstimator&lt;S extends RadioSource
      * @return difference between measured and expected RSSI value.
      */
     protected double residual(final Solution&lt;P&gt; currentEstimation, final int i) {
-<span class="fc" id="L265">        final RangingReadingLocated&lt;S, P&gt; reading = mReadings.get(i);</span>
-<span class="fc" id="L266">        final double distance = reading.getDistance();</span>
+<span class="fc" id="L266">        final RangingReadingLocated&lt;S, P&gt; reading = mReadings.get(i);</span>
+<span class="fc" id="L267">        final double distance = reading.getDistance();</span>
 
-        //get distance from estimated radio source position and reading position
-<span class="fc" id="L269">        final P readingPosition = reading.getPosition();</span>
-<span class="fc" id="L270">        final P radioSourcePosition = currentEstimation.getEstimatedPosition();</span>
+        // get distance from estimated radio source position and reading position
+<span class="fc" id="L270">        final P readingPosition = reading.getPosition();</span>
+<span class="fc" id="L271">        final P radioSourcePosition = currentEstimation.getEstimatedPosition();</span>
 
-<span class="fc" id="L272">        return Math.abs(radioSourcePosition.distanceTo(readingPosition) - distance);</span>
+<span class="fc" id="L273">        return Math.abs(radioSourcePosition.distanceTo(readingPosition) - distance);</span>
     }
 
     /**
@@ -289,9 +290,9 @@ public abstract class RobustRangingRadioSourceEstimator&lt;S extends RadioSource
          *
          * @param estimatedPosition estimated position for a subset of samples.
          */
-<span class="fc" id="L292">        public Solution(final P estimatedPosition) {</span>
-<span class="fc" id="L293">            mEstimatedPosition = estimatedPosition;</span>
-<span class="fc" id="L294">        }</span>
+<span class="fc" id="L293">        public Solution(final P estimatedPosition) {</span>
+<span class="fc" id="L294">            mEstimatedPosition = estimatedPosition;</span>
+<span class="fc" id="L295">        }</span>
 
         /**
          * Gets estimated position for a subset of samples.
@@ -299,7 +300,7 @@ public abstract class RobustRangingRadioSourceEstimator&lt;S extends RadioSource
          * @return estimated position for a subset of samples.
          */
         public P getEstimatedPosition() {
-<span class="fc" id="L302">            return mEstimatedPosition;</span>
+<span class="fc" id="L303">            return mEstimatedPosition;</span>
         }
     }
 }

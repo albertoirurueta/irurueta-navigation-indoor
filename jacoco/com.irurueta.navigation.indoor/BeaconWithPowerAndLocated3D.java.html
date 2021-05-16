@@ -17,6 +17,7 @@ package com.irurueta.navigation.indoor;
 
 import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.Point3D;
+
 import java.util.List;
 
 /**
@@ -37,15 +38,15 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final List&lt;BeaconIdentifier&gt; identifiers,
             final double transmittedPower,
             final Point3D position) {
-<span class="fc" id="L40">        super(identifiers, transmittedPower, position);</span>
-<span class="fc" id="L41">    }</span>
+<span class="fc" id="L41">        super(identifiers, transmittedPower, position);</span>
+<span class="fc" id="L42">    }</span>
 
     /**
      * Constructor.
      *
      * @param identifiers      list of the multi-part identifiers of the beacon.
      * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
-     * @param bluetoothAddress the bluetooth mac addres.
+     * @param bluetoothAddress the bluetooth mac address.
      * @param beaconTypeCode   the two byte value indicating the type of beacon.
      * @param manufacturer     a two byte code indicating the beacon manufacturer.
      * @param serviceUuid      a 32 bit service uuid for the beacon.
@@ -62,10 +63,10 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final int serviceUuid,
             final String bluetoothName,
             final Point3D position) {
-<span class="fc" id="L65">        super(identifiers, transmittedPower, bluetoothAddress,</span>
+<span class="fc" id="L66">        super(identifiers, transmittedPower, bluetoothAddress,</span>
                 beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, position);
-<span class="fc" id="L68">    }</span>
+<span class="fc" id="L69">    }</span>
 
     /**
      * Constructor.
@@ -82,16 +83,16 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final double transmittedPower,
             final Double transmittedPowerStandardDeviation,
             final Point3D position) {
-<span class="fc" id="L85">        super(identifiers, transmittedPower, transmittedPowerStandardDeviation,</span>
+<span class="fc" id="L86">        super(identifiers, transmittedPower, transmittedPowerStandardDeviation,</span>
                 position);
-<span class="fc" id="L87">    }</span>
+<span class="fc" id="L88">    }</span>
 
     /**
      * Constructor.
      *
      * @param identifiers                       list of the multi-part identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
-     * @param bluetoothAddress                  the bluetooth mac addres.
+     * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
@@ -111,11 +112,11 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final String bluetoothName,
             final Double transmittedPowerStandardDeviation,
             final Point3D position) {
-<span class="fc" id="L114">        super(identifiers, transmittedPower, bluetoothAddress,</span>
+<span class="fc" id="L115">        super(identifiers, transmittedPower, bluetoothAddress,</span>
                 beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, transmittedPowerStandardDeviation,
                 position);
-<span class="fc" id="L118">    }</span>
+<span class="fc" id="L119">    }</span>
 
     /**
      * Constructor.
@@ -133,15 +134,15 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final double transmittedPower,
             final Point3D position,
             final Matrix positionCovariance) {
-<span class="fc" id="L136">        super(identifiers, transmittedPower, position, positionCovariance);</span>
-<span class="fc" id="L137">    }</span>
+<span class="fc" id="L137">        super(identifiers, transmittedPower, position, positionCovariance);</span>
+<span class="fc" id="L138">    }</span>
 
     /**
      * Constructor.
      *
      * @param identifiers        list of the multi-part identifiers of the beacon.
      * @param transmittedPower   calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
-     * @param bluetoothAddress   the bluetooth mac addres.
+     * @param bluetoothAddress   the bluetooth mac address.
      * @param beaconTypeCode     the two byte value indicating the type of beacon.
      * @param manufacturer       a two byte code indicating the beacon manufacturer.
      * @param serviceUuid        a 32 bit service uuid for the beacon.
@@ -162,10 +163,10 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final String bluetoothName,
             final Point3D position,
             final Matrix positionCovariance) {
-<span class="fc" id="L165">        super(identifiers, transmittedPower, bluetoothAddress,</span>
+<span class="fc" id="L166">        super(identifiers, transmittedPower, bluetoothAddress,</span>
                 beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, position, positionCovariance);
-<span class="fc" id="L168">    }</span>
+<span class="fc" id="L169">    }</span>
 
     /**
      * Constructor.
@@ -185,16 +186,16 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final Double transmittedPowerStandardDeviation,
             final Point3D position,
             final Matrix positionCovariance) {
-<span class="fc" id="L188">        super(identifiers, transmittedPower, transmittedPowerStandardDeviation,</span>
+<span class="fc" id="L189">        super(identifiers, transmittedPower, transmittedPowerStandardDeviation,</span>
                 position, positionCovariance);
-<span class="fc" id="L190">    }</span>
+<span class="fc" id="L191">    }</span>
 
     /**
      * Constructor.
      *
      * @param identifiers                       list of the multi-part identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
-     * @param bluetoothAddress                  the bluetooth mac addres.
+     * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
@@ -217,11 +218,11 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final Double transmittedPowerStandardDeviation,
             final Point3D position,
             final Matrix positionCovariance) {
-<span class="fc" id="L220">        super(identifiers, transmittedPower, bluetoothAddress,</span>
+<span class="fc" id="L221">        super(identifiers, transmittedPower, bluetoothAddress,</span>
                 beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, transmittedPowerStandardDeviation, position,
                 positionCovariance);
-<span class="fc" id="L224">    }</span>
+<span class="fc" id="L225">    }</span>
 
     /**
      * Constructor.
@@ -229,7 +230,7 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
      * @param identifiers      list of the multi-part identifiers of the beacon.
      * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency        frequency used by this Beacon.
-     * @param bluetoothAddress the bluetooth mac addres.
+     * @param bluetoothAddress the bluetooth mac address.
      * @param beaconTypeCode   the two byte value indicating the type of beacon.
      * @param manufacturer     a two byte code indicating the beacon manufacturer.
      * @param serviceUuid      a 32 bit service uuid for the beacon.
@@ -247,10 +248,10 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final int serviceUuid,
             final String bluetoothName,
             final Point3D position) {
-<span class="fc" id="L250">        super(identifiers, transmittedPower, frequency, bluetoothAddress,</span>
+<span class="fc" id="L251">        super(identifiers, transmittedPower, frequency, bluetoothAddress,</span>
                 beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, position);
-<span class="fc" id="L253">    }</span>
+<span class="fc" id="L254">    }</span>
 
     /**
      * Constructor.
@@ -268,9 +269,9 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final double frequency,
             final Double transmittedPowerStandardDeviation,
             final Point3D position) {
-<span class="fc" id="L271">        super(identifiers, transmittedPower, frequency, transmittedPowerStandardDeviation,</span>
+<span class="fc" id="L272">        super(identifiers, transmittedPower, frequency, transmittedPowerStandardDeviation,</span>
                 position);
-<span class="fc" id="L273">    }</span>
+<span class="fc" id="L274">    }</span>
 
     /**
      * Constructor.
@@ -278,7 +279,7 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
      * @param identifiers                       list of the multi-part identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency                         frequency used by this Beacon.
-     * @param bluetoothAddress                  the bluetooth mac addres.
+     * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
@@ -298,10 +299,10 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final String bluetoothName,
             final Double transmittedPowerStandardDeviation,
             final Point3D position) {
-<span class="fc" id="L301">        super(identifiers, transmittedPower, frequency, bluetoothAddress,</span>
+<span class="fc" id="L302">        super(identifiers, transmittedPower, frequency, bluetoothAddress,</span>
                 beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, transmittedPowerStandardDeviation, position);
-<span class="fc" id="L304">    }</span>
+<span class="fc" id="L305">    }</span>
 
     /**
      * Constructor.
@@ -309,7 +310,7 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
      * @param identifiers        list of the multi-part identifiers of the beacon.
      * @param transmittedPower   calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency          frequency used by this Beacon.
-     * @param bluetoothAddress   the bluetooth mac addres.
+     * @param bluetoothAddress   the bluetooth mac address.
      * @param beaconTypeCode     the two byte value indicating the type of beacon.
      * @param manufacturer       a two byte code indicating the beacon manufacturer.
      * @param serviceUuid        a 32 bit service uuid for the beacon.
@@ -331,10 +332,10 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final String bluetoothName,
             final Point3D position,
             final Matrix positionCovariance) {
-<span class="fc" id="L334">        super(identifiers, transmittedPower, frequency, bluetoothAddress,</span>
+<span class="fc" id="L335">        super(identifiers, transmittedPower, frequency, bluetoothAddress,</span>
                 beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, position, positionCovariance);
-<span class="fc" id="L337">    }</span>
+<span class="fc" id="L338">    }</span>
 
     /**
      * Constructor.
@@ -356,9 +357,9 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final Double transmittedPowerStandardDeviation,
             final Point3D position,
             final Matrix positionCovariance) {
-<span class="fc" id="L359">        super(identifiers, transmittedPower, frequency, transmittedPowerStandardDeviation,</span>
+<span class="fc" id="L360">        super(identifiers, transmittedPower, frequency, transmittedPowerStandardDeviation,</span>
                 position, positionCovariance);
-<span class="fc" id="L361">    }</span>
+<span class="fc" id="L362">    }</span>
 
     /**
      * Constructor.
@@ -366,7 +367,7 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
      * @param identifiers                       list of the multi-part identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency                         frequency used by this Beacon.
-     * @param bluetoothAddress                  the bluetooth mac addres.
+     * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
@@ -390,11 +391,11 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final Double transmittedPowerStandardDeviation,
             final Point3D position,
             final Matrix positionCovariance) {
-<span class="fc" id="L393">        super(identifiers, transmittedPower, frequency, bluetoothAddress,</span>
+<span class="fc" id="L394">        super(identifiers, transmittedPower, frequency, bluetoothAddress,</span>
                 beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, transmittedPowerStandardDeviation, position,
                 positionCovariance);
-<span class="fc" id="L397">    }</span>
+<span class="fc" id="L398">    }</span>
 
     /**
      * Constructor.
@@ -410,15 +411,15 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final double transmittedPower,
             final double pathLossExponent,
             final Point3D position) {
-<span class="fc" id="L413">        super(identifiers, transmittedPower, pathLossExponent, position);</span>
-<span class="fc" id="L414">    }</span>
+<span class="fc" id="L414">        super(identifiers, transmittedPower, pathLossExponent, position);</span>
+<span class="fc" id="L415">    }</span>
 
     /**
      * Constructor.
      *
      * @param identifiers      list of the multi-part identifiers of the beacon.
      * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
-     * @param bluetoothAddress the bluetooth mac addres.
+     * @param bluetoothAddress the bluetooth mac address.
      * @param beaconTypeCode   the two byte value indicating the type of beacon.
      * @param manufacturer     a two byte code indicating the beacon manufacturer.
      * @param serviceUuid      a 32 bit service uuid for the beacon.
@@ -437,10 +438,10 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final String bluetoothName,
             final double pathLossExponent,
             final Point3D position) {
-<span class="fc" id="L440">        super(identifiers, transmittedPower, bluetoothAddress,</span>
+<span class="fc" id="L441">        super(identifiers, transmittedPower, bluetoothAddress,</span>
                 beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, pathLossExponent, position);
-<span class="fc" id="L443">    }</span>
+<span class="fc" id="L444">    }</span>
 
     /**
      * Constructor.
@@ -459,16 +460,16 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final Double transmittedPowerStandardDeviation,
             final double pathLossExponent,
             final Point3D position) {
-<span class="fc" id="L462">        super(identifiers, transmittedPower, transmittedPowerStandardDeviation,</span>
+<span class="fc" id="L463">        super(identifiers, transmittedPower, transmittedPowerStandardDeviation,</span>
                 pathLossExponent, position);
-<span class="fc" id="L464">    }</span>
+<span class="fc" id="L465">    }</span>
 
     /**
      * Constructor.
      *
      * @param identifiers                       list of the multi-part identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
-     * @param bluetoothAddress                  the bluetooth mac addres.
+     * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
@@ -490,11 +491,11 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final double pathLossExponent,
             final Double transmittedPowerStandardDeviation,
             final Point3D position) {
-<span class="fc" id="L493">        super(identifiers, transmittedPower, bluetoothAddress,</span>
+<span class="fc" id="L494">        super(identifiers, transmittedPower, bluetoothAddress,</span>
                 beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, pathLossExponent, transmittedPowerStandardDeviation,
                 position);
-<span class="fc" id="L497">    }</span>
+<span class="fc" id="L498">    }</span>
 
     /**
      * Constructor.
@@ -514,16 +515,16 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final double pathLossExponent,
             final Point3D position,
             final Matrix positionCovariance) {
-<span class="fc" id="L517">        super(identifiers, transmittedPower, pathLossExponent, position,</span>
+<span class="fc" id="L518">        super(identifiers, transmittedPower, pathLossExponent, position,</span>
                 positionCovariance);
-<span class="fc" id="L519">    }</span>
+<span class="fc" id="L520">    }</span>
 
     /**
      * Constructor.
      *
      * @param identifiers        list of the multi-part identifiers of the beacon.
      * @param transmittedPower   calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
-     * @param bluetoothAddress   the bluetooth mac addres.
+     * @param bluetoothAddress   the bluetooth mac address.
      * @param beaconTypeCode     the two byte value indicating the type of beacon.
      * @param manufacturer       a two byte code indicating the beacon manufacturer.
      * @param serviceUuid        a 32 bit service uuid for the beacon.
@@ -546,10 +547,10 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final double pathLossExponent,
             final Point3D position,
             final Matrix positionCovariance) {
-<span class="fc" id="L549">        super(identifiers, transmittedPower, bluetoothAddress,</span>
+<span class="fc" id="L550">        super(identifiers, transmittedPower, bluetoothAddress,</span>
                 beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, pathLossExponent, position, positionCovariance);
-<span class="fc" id="L552">    }</span>
+<span class="fc" id="L553">    }</span>
 
     /**
      * Constructor.
@@ -571,16 +572,16 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final double pathLossExponent,
             final Point3D position,
             final Matrix positionCovariance) {
-<span class="fc" id="L574">        super(identifiers, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent,</span>
+<span class="fc" id="L575">        super(identifiers, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent,</span>
                 position, positionCovariance);
-<span class="fc" id="L576">    }</span>
+<span class="fc" id="L577">    }</span>
 
     /**
      * Constructor.
      *
      * @param identifiers                       list of the multi-part identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
-     * @param bluetoothAddress                  the bluetooth mac addres.
+     * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
@@ -605,11 +606,11 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final Double transmittedPowerStandardDeviation,
             final Point3D position,
             final Matrix positionCovariance) {
-<span class="fc" id="L608">        super(identifiers, transmittedPower, bluetoothAddress,</span>
+<span class="fc" id="L609">        super(identifiers, transmittedPower, bluetoothAddress,</span>
                 beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, pathLossExponent, transmittedPowerStandardDeviation, position,
                 positionCovariance);
-<span class="fc" id="L612">    }</span>
+<span class="fc" id="L613">    }</span>
 
     /**
      * Constructor.
@@ -617,7 +618,7 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
      * @param identifiers      list of the multi-part identifiers of the beacon.
      * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency        frequency used by this Beacon.
-     * @param bluetoothAddress the bluetooth mac addres.
+     * @param bluetoothAddress the bluetooth mac address.
      * @param beaconTypeCode   the two byte value indicating the type of beacon.
      * @param manufacturer     a two byte code indicating the beacon manufacturer.
      * @param serviceUuid      a 32 bit service uuid for the beacon.
@@ -637,10 +638,10 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final String bluetoothName,
             final double pathLossExponent,
             final Point3D position) {
-<span class="fc" id="L640">        super(identifiers, transmittedPower, frequency, bluetoothAddress,</span>
+<span class="fc" id="L641">        super(identifiers, transmittedPower, frequency, bluetoothAddress,</span>
                 beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, pathLossExponent, position);
-<span class="fc" id="L643">    }</span>
+<span class="fc" id="L644">    }</span>
 
     /**
      * Constructor.
@@ -661,9 +662,9 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final double pathLossExponent,
             final Double transmittedPowerStandardDeviation,
             final Point3D position) {
-<span class="fc" id="L664">        super(identifiers, transmittedPower, frequency, pathLossExponent,</span>
+<span class="fc" id="L665">        super(identifiers, transmittedPower, frequency, pathLossExponent,</span>
                 transmittedPowerStandardDeviation, position);
-<span class="fc" id="L666">    }</span>
+<span class="fc" id="L667">    }</span>
 
     /**
      * Constructor.
@@ -671,7 +672,7 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
      * @param identifiers                       list of the multi-part identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency                         frequency used by this Beacon.
-     * @param bluetoothAddress                  the bluetooth mac addres.
+     * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
@@ -694,11 +695,11 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final double pathLossExponent,
             final Double transmittedPowerStandardDeviation,
             final Point3D position) {
-<span class="fc" id="L697">        super(identifiers, transmittedPower, frequency, bluetoothAddress,</span>
+<span class="fc" id="L698">        super(identifiers, transmittedPower, frequency, bluetoothAddress,</span>
                 beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, pathLossExponent, transmittedPowerStandardDeviation,
                 position);
-<span class="fc" id="L701">    }</span>
+<span class="fc" id="L702">    }</span>
 
     /**
      * Constructor.
@@ -706,7 +707,7 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
      * @param identifiers        list of the multi-part identifiers of the beacon.
      * @param transmittedPower   calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency          frequency used by this Beacon.
-     * @param bluetoothAddress   the bluetooth mac addres.
+     * @param bluetoothAddress   the bluetooth mac address.
      * @param beaconTypeCode     the two byte value indicating the type of beacon.
      * @param manufacturer       a two byte code indicating the beacon manufacturer.
      * @param serviceUuid        a 32 bit service uuid for the beacon.
@@ -730,10 +731,10 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final double pathLossExponent,
             final Point3D position,
             final Matrix positionCovariance) {
-<span class="fc" id="L733">        super(identifiers, transmittedPower, frequency, bluetoothAddress,</span>
+<span class="fc" id="L734">        super(identifiers, transmittedPower, frequency, bluetoothAddress,</span>
                 beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, pathLossExponent, position, positionCovariance);
-<span class="fc" id="L736">    }</span>
+<span class="fc" id="L737">    }</span>
 
     /**
      * Constructor.
@@ -757,9 +758,9 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final Double transmittedPowerStandardDeviation,
             final Point3D position,
             final Matrix positionCovariance) {
-<span class="fc" id="L760">        super(identifiers, transmittedPower, frequency, pathLossExponent,</span>
+<span class="fc" id="L761">        super(identifiers, transmittedPower, frequency, pathLossExponent,</span>
                 transmittedPowerStandardDeviation, position, positionCovariance);
-<span class="fc" id="L762">    }</span>
+<span class="fc" id="L763">    }</span>
 
     /**
      * Constructor.
@@ -767,7 +768,7 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
      * @param identifiers                       list of the multi-part identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency                         frequency used by this Beacon.
-     * @param bluetoothAddress                  the bluetooth mac addres.
+     * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
@@ -793,11 +794,11 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final Double transmittedPowerStandardDeviation,
             final Point3D position,
             final Matrix positionCovariance) {
-<span class="fc" id="L796">        super(identifiers, transmittedPower, frequency, bluetoothAddress,</span>
+<span class="fc" id="L797">        super(identifiers, transmittedPower, frequency, bluetoothAddress,</span>
                 beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, pathLossExponent, transmittedPowerStandardDeviation,
                 position, positionCovariance);
-<span class="fc" id="L800">    }</span>
+<span class="fc" id="L801">    }</span>
 
     /**
      * Constructor.
@@ -819,16 +820,16 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final double pathLossExponent,
             final Double pathLossExponentStandardDeviation,
             final Point3D position) {
-<span class="fc" id="L822">        super(identifiers, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent,</span>
+<span class="fc" id="L823">        super(identifiers, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent,</span>
                 pathLossExponentStandardDeviation, position);
-<span class="fc" id="L824">    }</span>
+<span class="fc" id="L825">    }</span>
 
     /**
      * Constructor.
      *
      * @param identifiers                       list of the multi-part identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
-     * @param bluetoothAddress                  the bluetooth mac addres.
+     * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
@@ -853,11 +854,11 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final Double transmittedPowerStandardDeviation,
             final Double pathLossExponentStandardDeviation,
             final Point3D position) {
-<span class="fc" id="L856">        super(identifiers, transmittedPower, bluetoothAddress,</span>
+<span class="fc" id="L857">        super(identifiers, transmittedPower, bluetoothAddress,</span>
                 beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, pathLossExponent, transmittedPowerStandardDeviation,
                 pathLossExponentStandardDeviation, position);
-<span class="fc" id="L860">    }</span>
+<span class="fc" id="L861">    }</span>
 
     /**
      * Constructor.
@@ -882,16 +883,16 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final Double pathLossExponentStandardDeviation,
             final Point3D position,
             final Matrix positionCovariance) {
-<span class="fc" id="L885">        super(identifiers, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent,</span>
+<span class="fc" id="L886">        super(identifiers, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent,</span>
                 pathLossExponentStandardDeviation, position, positionCovariance);
-<span class="fc" id="L887">    }</span>
+<span class="fc" id="L888">    }</span>
 
     /**
      * Constructor.
      *
      * @param identifiers                       list of the multi-part identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
-     * @param bluetoothAddress                  the bluetooth mac addres.
+     * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
@@ -920,11 +921,11 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final Double pathLossExponentStandardDeviation,
             final Point3D position,
             final Matrix positionCovariance) {
-<span class="fc" id="L923">        super(identifiers, transmittedPower, bluetoothAddress,</span>
+<span class="fc" id="L924">        super(identifiers, transmittedPower, bluetoothAddress,</span>
                 beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, pathLossExponent, transmittedPowerStandardDeviation,
                 pathLossExponentStandardDeviation, position, positionCovariance);
-<span class="fc" id="L927">    }</span>
+<span class="fc" id="L928">    }</span>
 
     /**
      * Constructor.
@@ -948,10 +949,10 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final Double transmittedPowerStandardDeviation,
             final Double pathLossExponentStandardDeviation,
             final Point3D position) {
-<span class="fc" id="L951">        super(identifiers, transmittedPower, frequency, pathLossExponent,</span>
+<span class="fc" id="L952">        super(identifiers, transmittedPower, frequency, pathLossExponent,</span>
                 transmittedPowerStandardDeviation,
                 pathLossExponentStandardDeviation, position);
-<span class="fc" id="L954">    }</span>
+<span class="fc" id="L955">    }</span>
 
     /**
      * Constructor.
@@ -959,7 +960,7 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
      * @param identifiers                       list of the multi-part identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency                         frequency used by this Beacon.
-     * @param bluetoothAddress                  the bluetooth mac addres.
+     * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
@@ -985,11 +986,11 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final Double transmittedPowerStandardDeviation,
             final Double pathLossExponentStandardDeviation,
             final Point3D position) {
-<span class="fc" id="L988">        super(identifiers, transmittedPower, frequency, bluetoothAddress,</span>
+<span class="fc" id="L989">        super(identifiers, transmittedPower, frequency, bluetoothAddress,</span>
                 beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, pathLossExponent, transmittedPowerStandardDeviation,
                 pathLossExponentStandardDeviation, position);
-<span class="fc" id="L992">    }</span>
+<span class="fc" id="L993">    }</span>
 
     /**
      * Constructor.
@@ -1015,10 +1016,10 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final Double transmittedPowerStandardDeviation,
             final Double pathLossExponentStandardDeviation,
             final Point3D position, Matrix positionCovariance) {
-<span class="fc" id="L1018">        super(identifiers, transmittedPower, frequency, pathLossExponent,</span>
+<span class="fc" id="L1019">        super(identifiers, transmittedPower, frequency, pathLossExponent,</span>
                 transmittedPowerStandardDeviation, pathLossExponentStandardDeviation,
                 position, positionCovariance);
-<span class="fc" id="L1021">    }</span>
+<span class="fc" id="L1022">    }</span>
 
     /**
      * Constructor.
@@ -1026,7 +1027,7 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
      * @param identifiers                       list of the multi-part identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency                         frequency used by this Beacon.
-     * @param bluetoothAddress                  the bluetooth mac addres.
+     * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
@@ -1056,17 +1057,17 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated&lt;Po
             final Double pathLossExponentStandardDeviation,
             final Point3D position,
             final Matrix positionCovariance) {
-<span class="fc" id="L1059">        super(identifiers, transmittedPower, frequency, bluetoothAddress,</span>
+<span class="fc" id="L1060">        super(identifiers, transmittedPower, frequency, bluetoothAddress,</span>
                 beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, pathLossExponent, transmittedPowerStandardDeviation,
                 pathLossExponentStandardDeviation, position, positionCovariance);
-<span class="fc" id="L1063">    }</span>
+<span class="fc" id="L1064">    }</span>
 
     /**
      * Empty constructor.
      */
     protected BeaconWithPowerAndLocated3D() {
-<span class="fc" id="L1069">        super();</span>
-<span class="fc" id="L1070">    }</span>
+<span class="fc" id="L1070">        super();</span>
+<span class="fc" id="L1071">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

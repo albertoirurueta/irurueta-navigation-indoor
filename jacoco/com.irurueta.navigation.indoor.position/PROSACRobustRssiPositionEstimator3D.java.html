@@ -23,6 +23,7 @@ import com.irurueta.navigation.indoor.RssiFingerprint;
 import com.irurueta.navigation.indoor.RssiReading;
 import com.irurueta.navigation.lateration.PROSACRobustLateration3DSolver;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -32,7 +33,6 @@ import java.util.List;
  * device by getting RSSI readings at an unknown location of different radio sources whose
  * 3D locations are known.
  */
-@SuppressWarnings(&quot;WeakerAccess&quot;)
 public class PROSACRobustRssiPositionEstimator3D extends RobustRssiPositionEstimator3D {
 
     /**
@@ -424,11 +424,11 @@ public class PROSACRobustRssiPositionEstimator3D extends RobustRssiPositionEstim
      */
     public void setFingerprintReadingsQualityScores(
             final double[] fingerprintReadingsQualityScores) throws LockedException {
-<span class="pc bpc" id="L427" title="1 of 2 branches missed.">        if (isLocked()) {</span>
+<span class="fc bfc" id="L427" title="All 2 branches covered.">        if (isLocked()) {</span>
 <span class="fc" id="L428">            throw new LockedException();</span>
         }
-<span class="nc" id="L430">        internalSetFingerprintReadingsQualityScores(fingerprintReadingsQualityScores);</span>
-<span class="nc" id="L431">    }</span>
+<span class="fc" id="L430">        internalSetFingerprintReadingsQualityScores(fingerprintReadingsQualityScores);</span>
+<span class="fc" id="L431">    }</span>
 
     /**
      * Gets threshold to determine whether samples are inliers or not when testing possible solutions.
@@ -549,7 +549,7 @@ public class PROSACRobustRssiPositionEstimator3D extends RobustRssiPositionEstim
      * or not.
      *
      * @param fingerprintReadingsQualityScores quality scores to be set.
-     * @throws IllegalArgumentException if provided quality scores lengt is
+     * @throws IllegalArgumentException if provided quality scores length is
      *                                  smaller than 3 samples.
      */
     private void internalSetFingerprintReadingsQualityScores(

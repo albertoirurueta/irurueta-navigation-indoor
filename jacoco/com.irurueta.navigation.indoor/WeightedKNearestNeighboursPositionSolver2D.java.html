@@ -23,7 +23,6 @@ import com.irurueta.geometry.Point2D;
  * Neighbours (WkNN) algorithm.
  * WkNN algorithm is based on https://github.com/ajnas/WiFiPS.
  */
-@SuppressWarnings(&quot;WeakerAccess&quot;)
 public class WeightedKNearestNeighboursPositionSolver2D extends
         WeightedKNearestNeighboursPositionSolver&lt;Point2D&gt; {
 
@@ -31,8 +30,8 @@ public class WeightedKNearestNeighboursPositionSolver2D extends
      * Constructor.
      */
     public WeightedKNearestNeighboursPositionSolver2D() {
-<span class="fc" id="L34">        super();</span>
-<span class="fc" id="L35">    }</span>
+<span class="fc" id="L33">        super();</span>
+<span class="fc" id="L34">    }</span>
 
     /**
      * Constructor.
@@ -48,8 +47,8 @@ public class WeightedKNearestNeighboursPositionSolver2D extends
     public WeightedKNearestNeighboursPositionSolver2D(
             final RssiFingerprintLocated&lt;WifiAccessPoint, RssiReading&lt;WifiAccessPoint&gt;, Point2D&gt;[] fingerprints,
             final double[] distances) {
-<span class="fc" id="L51">        super(fingerprints, distances);</span>
-<span class="fc" id="L52">    }</span>
+<span class="fc" id="L50">        super(fingerprints, distances);</span>
+<span class="fc" id="L51">    }</span>
 
     /**
      * Constructor.
@@ -58,8 +57,8 @@ public class WeightedKNearestNeighboursPositionSolver2D extends
      */
     public WeightedKNearestNeighboursPositionSolver2D(
             final WeightedKNearestNeighboursPositionSolverListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L61">        super(listener);</span>
-<span class="fc" id="L62">    }</span>
+<span class="fc" id="L60">        super(listener);</span>
+<span class="fc" id="L61">    }</span>
 
     /**
      * Constructor.
@@ -77,8 +76,8 @@ public class WeightedKNearestNeighboursPositionSolver2D extends
             final RssiFingerprintLocated&lt;WifiAccessPoint, RssiReading&lt;WifiAccessPoint&gt;, Point2D&gt;[] fingerprints,
             final double[] distances,
             final WeightedKNearestNeighboursPositionSolverListener&lt;Point2D&gt; listener) {
-<span class="fc" id="L80">        super(fingerprints, distances, listener);</span>
-<span class="fc" id="L81">    }</span>
+<span class="fc" id="L79">        super(fingerprints, distances, listener);</span>
+<span class="fc" id="L80">    }</span>
 
     /**
      * Gets estimated position.
@@ -87,13 +86,13 @@ public class WeightedKNearestNeighboursPositionSolver2D extends
      */
     @Override
     public Point2D getEstimatedPosition() {
-<span class="fc bfc" id="L90" title="All 2 branches covered.">        if (mEstimatedPositionCoordinates == null) {</span>
-<span class="fc" id="L91">            return null;</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        if (mEstimatedPositionCoordinates == null) {</span>
+<span class="fc" id="L90">            return null;</span>
         }
 
-<span class="fc" id="L94">        final Point2D result = new InhomogeneousPoint2D();</span>
-<span class="fc" id="L95">        getEstimatedPosition(result);</span>
-<span class="fc" id="L96">        return result;</span>
+<span class="fc" id="L93">        final Point2D result = new InhomogeneousPoint2D();</span>
+<span class="fc" id="L94">        getEstimatedPosition(result);</span>
+<span class="fc" id="L95">        return result;</span>
     }
 
     /**
@@ -103,7 +102,7 @@ public class WeightedKNearestNeighboursPositionSolver2D extends
      */
     @Override
     public int getNumberOfDimensions() {
-<span class="fc" id="L106">        return Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
+<span class="fc" id="L105">        return Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
