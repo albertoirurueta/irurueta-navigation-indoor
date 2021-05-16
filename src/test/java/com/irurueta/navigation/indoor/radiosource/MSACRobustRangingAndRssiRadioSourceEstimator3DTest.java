@@ -22,29 +22,40 @@ import com.irurueta.geometry.InhomogeneousPoint3D;
 import com.irurueta.geometry.Point3D;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
-import com.irurueta.navigation.indoor.*;
+import com.irurueta.navigation.indoor.Beacon;
+import com.irurueta.navigation.indoor.BeaconIdentifier;
+import com.irurueta.navigation.indoor.BeaconWithPowerAndLocated3D;
+import com.irurueta.navigation.indoor.RangingAndRssiReadingLocated;
+import com.irurueta.navigation.indoor.RangingAndRssiReadingLocated3D;
+import com.irurueta.navigation.indoor.Utils;
+import com.irurueta.navigation.indoor.WifiAccessPoint;
+import com.irurueta.navigation.indoor.WifiAccessPointWithPowerAndLocated3D;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.text.MessageFormat;
 import java.text.NumberFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
 
-@SuppressWarnings("Duplicates")
 public class MSACRobustRangingAndRssiRadioSourceEstimator3DTest implements
         RobustRangingAndRssiRadioSourceEstimatorListener<WifiAccessPoint, Point3D> {
 
     private static final Logger LOGGER = Logger.getLogger(
             MSACRobustRangingAndRssiRadioSourceEstimator3DTest.class.getName());
 
-    private static final double FREQUENCY = 2.4e9; //(Hz)
+    private static final double FREQUENCY = 2.4e9; // (Hz)
 
     private static final int MIN_READINGS = 100;
     private static final int MAX_READINGS = 500;
@@ -73,30 +84,10 @@ public class MSACRobustRangingAndRssiRadioSourceEstimator3DTest implements
 
     private static final double STD_OUTLIER_ERROR = 10.0;
 
-
     private int estimateStart;
     private int estimateEnd;
     private int estimateNextIteration;
     private int estimateProgressChange;
-
-    public MSACRobustRangingAndRssiRadioSourceEstimator3DTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
 
     @Test
     public void testConstructor() {
@@ -149,7 +140,6 @@ public class MSACRobustRangingAndRssiRadioSourceEstimator3DTest implements
                 RangingAndRssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with readings
         final List<RangingAndRssiReadingLocated3D<WifiAccessPoint>> readings = new ArrayList<>();
@@ -226,7 +216,6 @@ public class MSACRobustRangingAndRssiRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with listener
         estimator = new MSACRobustRangingAndRssiRadioSourceEstimator3D<>(this);
 
@@ -273,7 +262,6 @@ public class MSACRobustRangingAndRssiRadioSourceEstimator3DTest implements
                 RangingAndRssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with readings and listener
         estimator = new MSACRobustRangingAndRssiRadioSourceEstimator3D<>(
@@ -338,7 +326,6 @@ public class MSACRobustRangingAndRssiRadioSourceEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with readings and initial position
         final InhomogeneousPoint3D initialPosition = new InhomogeneousPoint3D(
@@ -409,7 +396,6 @@ public class MSACRobustRangingAndRssiRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position
         estimator = new MSACRobustRangingAndRssiRadioSourceEstimator3D<>(
                 initialPosition);
@@ -458,7 +444,6 @@ public class MSACRobustRangingAndRssiRadioSourceEstimator3DTest implements
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
 
-
         // test constructor with initial position and listener
         estimator = new MSACRobustRangingAndRssiRadioSourceEstimator3D<>(
                 initialPosition, this);
@@ -506,7 +491,6 @@ public class MSACRobustRangingAndRssiRadioSourceEstimator3DTest implements
                 RangingAndRssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with readings, initial position and listener
         estimator = new MSACRobustRangingAndRssiRadioSourceEstimator3D<>(
@@ -573,7 +557,6 @@ public class MSACRobustRangingAndRssiRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial transmitter power
         estimator = new MSACRobustRangingAndRssiRadioSourceEstimator3D<>(
                 MAX_RSSI);
@@ -622,7 +605,6 @@ public class MSACRobustRangingAndRssiRadioSourceEstimator3DTest implements
                 RangingAndRssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with readings and initial transmitted power
         estimator = new MSACRobustRangingAndRssiRadioSourceEstimator3D<>(
@@ -691,7 +673,6 @@ public class MSACRobustRangingAndRssiRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial transmitted power and listener
         estimator = new MSACRobustRangingAndRssiRadioSourceEstimator3D<>(
                 MAX_RSSI, this);
@@ -740,7 +721,6 @@ public class MSACRobustRangingAndRssiRadioSourceEstimator3DTest implements
                 RangingAndRssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with readings, initial transmitted power and listener
         estimator = new MSACRobustRangingAndRssiRadioSourceEstimator3D<>(
@@ -808,7 +788,6 @@ public class MSACRobustRangingAndRssiRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with readings, initial position and initial transmitted power
         estimator = new MSACRobustRangingAndRssiRadioSourceEstimator3D<>(
                 readings, initialPosition, MAX_RSSI);
@@ -875,7 +854,6 @@ public class MSACRobustRangingAndRssiRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position and initial transmitted power
         estimator = new MSACRobustRangingAndRssiRadioSourceEstimator3D<>(
                 initialPosition, MAX_RSSI);
@@ -925,7 +903,6 @@ public class MSACRobustRangingAndRssiRadioSourceEstimator3DTest implements
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
 
-
         // test constructor with initial position, initial transmitted power and listener
         estimator = new MSACRobustRangingAndRssiRadioSourceEstimator3D<>(
                 initialPosition, MAX_RSSI, this);
@@ -974,7 +951,6 @@ public class MSACRobustRangingAndRssiRadioSourceEstimator3DTest implements
                 RangingAndRssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with readings, initial position, initial transmitted power
         // and listener
@@ -1043,7 +1019,6 @@ public class MSACRobustRangingAndRssiRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with readings, initial position and initial transmitted power
         estimator = new MSACRobustRangingAndRssiRadioSourceEstimator3D<>(
                 readings, initialPosition, MAX_RSSI, MIN_PATH_LOSS_EXPONENT);
@@ -1110,7 +1085,6 @@ public class MSACRobustRangingAndRssiRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position and initial transmitted power
         estimator = new MSACRobustRangingAndRssiRadioSourceEstimator3D<>(
                 initialPosition, MAX_RSSI, MIN_PATH_LOSS_EXPONENT);
@@ -1160,7 +1134,6 @@ public class MSACRobustRangingAndRssiRadioSourceEstimator3DTest implements
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
 
-
         // test constructor with initial position, initial transmitted power and listener
         estimator = new MSACRobustRangingAndRssiRadioSourceEstimator3D<>(
                 initialPosition, MAX_RSSI, MIN_PATH_LOSS_EXPONENT, this);
@@ -1209,7 +1182,6 @@ public class MSACRobustRangingAndRssiRadioSourceEstimator3DTest implements
                 RangingAndRssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with readings, initial position, initial transmitted power
         // and listener
@@ -1326,16 +1298,14 @@ public class MSACRobustRangingAndRssiRadioSourceEstimator3DTest implements
         // check
         assertEquals(estimator.getMinReadings(), 5);
 
-
-        // position and pathloss
+        // position and path-loss
         estimator.setTransmittedPowerEstimationEnabled(false);
         estimator.setPathLossEstimationEnabled(true);
 
         // check
         assertEquals(estimator.getMinReadings(), 5);
 
-
-        // position, transmitted power and patloss
+        // position, transmitted power and path-loss
         estimator.setTransmittedPowerEstimationEnabled(true);
         estimator.setPathLossEstimationEnabled(true);
 
@@ -2816,8 +2786,7 @@ public class MSACRobustRangingAndRssiRadioSourceEstimator3DTest implements
 
     @Test
     public void testEstimateWithInlierErrorWithInitialPositionAndPower()
-            throws LockedException, NotReadyException, RobustEstimatorException,
-            AlgebraException {
+            throws LockedException, NotReadyException, RobustEstimatorException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);

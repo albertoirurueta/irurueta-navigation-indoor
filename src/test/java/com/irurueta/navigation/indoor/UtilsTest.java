@@ -29,10 +29,6 @@ import com.irurueta.numerical.MultiDimensionFunctionEvaluatorListener;
 import com.irurueta.numerical.SingleDimensionFunctionEvaluatorListener;
 import com.irurueta.statistics.MultivariateNormalDist;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.Random;
@@ -41,7 +37,6 @@ import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
 
-@SuppressWarnings("Duplicates")
 public class UtilsTest {
 
     private static final Logger LOGGER = Logger.getLogger(
@@ -51,7 +46,7 @@ public class UtilsTest {
     private static final double ABSOLUTE_ERROR = 1e-6;
     private static final double LARGE_ABSOLUTE_ERROR = 1e-3;
 
-    private static final double FREQUENCY = 2.4e9; //(Hz)
+    private static final double FREQUENCY = 2.4e9; // (Hz)
 
     private static final double MIN_RSSI = -100.0;
     private static final double MAX_RSSI = 100.0;
@@ -67,30 +62,11 @@ public class UtilsTest {
 
     private static final double TX_POWER_VARIANCE = 0.1;
     private static final double RX_POWER_VARIANCE = 0.5;
-    private static final double PATHLOSS_EXPONENT_VARIANCE = 0.001;
+    private static final double PATH_LOSS_EXPONENT_VARIANCE = 0.001;
 
     private static final double SPEED_OF_LIGHT = 299792458.0;
 
     private static final int TIMES = 50;
-
-    public UtilsTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
 
     @Test
     public void testdBmToPowerAndPowerTodBm() {
@@ -135,7 +111,7 @@ public class UtilsTest {
                     Math.pow(10.0, (pathLossExponent * kdB + txPowerdBm - rxPowerdBm) /
                             (10.0 * pathLossExponent));
 
-            DerivativeEstimator derivativeEstimator = new DerivativeEstimator(
+            final DerivativeEstimator derivativeEstimator = new DerivativeEstimator(
                     new SingleDimensionFunctionEvaluatorListener() {
                         @Override
                         public double evaluate(double point) {
@@ -200,7 +176,7 @@ public class UtilsTest {
 
             final MultivariateNormalDist dist = Utils.propagateVariancesToDistanceVariance(
                     txPowerdBm, rxPowerdBm, pathLossExponent, FREQUENCY,
-                    TX_POWER_VARIANCE, RX_POWER_VARIANCE, PATHLOSS_EXPONENT_VARIANCE);
+                    TX_POWER_VARIANCE, RX_POWER_VARIANCE, PATH_LOSS_EXPONENT_VARIANCE);
 
             final double k = RssiRadioSourceEstimator.SPEED_OF_LIGHT / (4.0 * Math.PI * FREQUENCY);
             final double kdB = 10.0 * Math.log10(k);
@@ -384,7 +360,7 @@ public class UtilsTest {
 
             final MultivariateNormalDist dist = Utils.propagateVariancesToDistanceVariance(
                     txPowerdBm, rxPowerdBm, pathLossExponent, FREQUENCY,
-                    0.0, 0.0, PATHLOSS_EXPONENT_VARIANCE);
+                    0.0, 0.0, PATH_LOSS_EXPONENT_VARIANCE);
 
             assertEquals(dist.getMean()[0], distance, ABSOLUTE_ERROR);
 
@@ -483,7 +459,6 @@ public class UtilsTest {
                     getElementAt(0, 0);
             assertEquals(rssiVariance, 0.0, ABSOLUTE_ERROR);
 
-
             // test with variance values
             dist = Utils.propagateVariancesToRssiVarianceFirstOrderNonLinear2D(
                     fingerprintRssi, pathLossExponent, fingerprintPosition,
@@ -495,7 +470,6 @@ public class UtilsTest {
             rssiVariance = dist.getCovariance().
                     getElementAt(0, 0);
             assertEquals(rssiVariance, 0.0, ABSOLUTE_ERROR);
-
 
             assertNull(Utils.propagateVariancesToRssiVarianceFirstOrderNonLinear2D(
                     fingerprintRssi, pathLossExponent, null, radioSourcePosition,
@@ -570,7 +544,6 @@ public class UtilsTest {
             double rssiVariance = dist.getCovariance().
                     getElementAt(0, 0);
             assertEquals(rssiVariance, 0.0, ABSOLUTE_ERROR);
-
 
             // test with variance values
             dist = Utils.propagateVariancesToRssiVarianceFirstOrderNonLinear3D(
@@ -658,7 +631,6 @@ public class UtilsTest {
             double rssiVariance = dist.getCovariance().
                     getElementAt(0, 0);
             assertEquals(rssiVariance, 0.0, ABSOLUTE_ERROR);
-
 
             // test with variance values
             dist = Utils.propagateVariancesToRssiVarianceSecondOrderNonLinear2D(
@@ -752,13 +724,11 @@ public class UtilsTest {
                     + 20.0 * pathLossExponent * diffY1a * diffZ1a / (ln10 * d1a4) * diffYi1 * diffZi1
                     + 20.0 * pathLossExponent * diffX1a * diffZ1a / (ln10 * d1a4) * diffXi1 * diffZi1;
 
-
             assertEquals(dist.getMean()[0], rssi, ABSOLUTE_ERROR);
 
             double rssiVariance = dist.getCovariance().
                     getElementAt(0, 0);
             assertEquals(rssiVariance, 0.0, ABSOLUTE_ERROR);
-
 
             // test with variance values
             dist = Utils.propagateVariancesToRssiVarianceSecondOrderNonLinear3D(
@@ -771,7 +741,6 @@ public class UtilsTest {
             rssiVariance = dist.getCovariance().
                     getElementAt(0, 0);
             assertEquals(rssiVariance, 0.0, ABSOLUTE_ERROR);
-
 
             assertNull(Utils.propagateVariancesToRssiVarianceSecondOrderNonLinear3D(
                     fingerprintRssi, pathLossExponent, null, radioSourcePosition,
@@ -857,7 +826,6 @@ public class UtilsTest {
                     getElementAt(0, 0);
             assertEquals(rssiVariance, 0.0, ABSOLUTE_ERROR);
 
-
             // test with variance values
             dist = Utils.propagateVariancesToRssiVarianceThirdOrderNonLinear2D(
                     fingerprintRssi, pathLossExponent, fingerprintPosition,
@@ -869,7 +837,6 @@ public class UtilsTest {
             rssiVariance = dist.getCovariance().
                     getElementAt(0, 0);
             assertEquals(rssiVariance, 0.0, ABSOLUTE_ERROR);
-
 
             assertNull(Utils.propagateVariancesToRssiVarianceThirdOrderNonLinear2D(
                     fingerprintRssi, pathLossExponent, null, radioSourcePosition,
@@ -993,7 +960,6 @@ public class UtilsTest {
                     getElementAt(0, 0);
             assertEquals(rssiVariance, 0.0, ABSOLUTE_ERROR);
 
-
             // test with variance values
             dist = Utils.propagateVariancesToRssiVarianceThirdOrderNonLinear3D(
                     fingerprintRssi, pathLossExponent, fingerprintPosition,
@@ -1005,7 +971,6 @@ public class UtilsTest {
             rssiVariance = dist.getCovariance().
                     getElementAt(0, 0);
             assertEquals(rssiVariance, 0.0, ABSOLUTE_ERROR);
-
 
             assertNull(Utils.propagateVariancesToRssiVarianceThirdOrderNonLinear3D(
                     fingerprintRssi, pathLossExponent, null, radioSourcePosition,
@@ -1076,7 +1041,6 @@ public class UtilsTest {
                     getElementAt(0, 0);
             assertEquals(diffRssiVariance, 0.0, ABSOLUTE_ERROR);
 
-
             // test with variance values
             dist = Utils.propagateVariancesToRssiDifferenceVariance2D(
                     pathLossExponent, fingerprintPosition,
@@ -1089,7 +1053,6 @@ public class UtilsTest {
             diffRssiVariance = dist.getCovariance().
                     getElementAt(0, 0);
             assertEquals(diffRssiVariance, 0.0, ABSOLUTE_ERROR);
-
 
             assertNull(Utils.propagateVariancesToRssiDifferenceVariance2D(
                     pathLossExponent, null, radioSourcePosition,
@@ -1166,7 +1129,6 @@ public class UtilsTest {
                     getElementAt(0, 0);
             assertEquals(diffRssiVariance, 0.0, ABSOLUTE_ERROR);
 
-
             // test with variance values
             dist = Utils.propagateVariancesToRssiDifferenceVariance3D(
                     pathLossExponent, fingerprintPosition,
@@ -1179,7 +1141,6 @@ public class UtilsTest {
             diffRssiVariance = dist.getCovariance().
                     getElementAt(0, 0);
             assertEquals(diffRssiVariance, 0.0, ABSOLUTE_ERROR);
-
 
             assertNull(Utils.propagateVariancesToRssiDifferenceVariance3D(
                     pathLossExponent, null, radioSourcePosition,
@@ -1200,10 +1161,10 @@ public class UtilsTest {
 
     private double receivedPower(
             final double equivalentTransmittedPower, final double distance, final double pathLossExponent) {
-        //Pr = Pt*Gt*Gr*lambda^2/(4*pi*d)^2,    where Pr is the received power
+        // Pr = Pt*Gt*Gr*lambda^2/(4*pi*d)^2,    where Pr is the received power
         // lambda = c/f, where lambda is wavelength,
         // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the received Gain
-        //Pr = Pte*c^2/((4*pi*f)^2 * d^2)
+        // Pr = Pte*c^2/((4*pi*f)^2 * d^2)
         final double k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI * FREQUENCY), pathLossExponent);
         return equivalentTransmittedPower * k /
                 Math.pow(distance, pathLossExponent);

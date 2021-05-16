@@ -22,7 +22,7 @@ import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.indoor.*;
 import com.irurueta.numerical.EvaluationException;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.*;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,25 +55,6 @@ public class NonLinearFingerprintPositionEstimator2DTest
     private static final double SPEED_OF_LIGHT = 299792458.0;
 
     private static final int TIMES = 100;
-
-    public NonLinearFingerprintPositionEstimator2DTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
 
     @Test
     public void testCreate() {
@@ -131,7 +112,6 @@ public class NonLinearFingerprintPositionEstimator2DTest
         assertNull(estimator.getInitialPosition());
         assertNull(estimator.getListener());
 
-
         // test create with listener
 
         // first order
@@ -185,7 +165,6 @@ public class NonLinearFingerprintPositionEstimator2DTest
         assertNull(estimator.getInitialPosition());
         assertSame(estimator.getListener(), this);
 
-
         // test create with located fingerprints, fingerprint and sources
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
@@ -213,7 +192,6 @@ public class NonLinearFingerprintPositionEstimator2DTest
 
         final RssiFingerprint<RadioSource, RssiReading<RadioSource>> fingerprint =
                 new RssiFingerprint<>(readings);
-
 
         final List<RadioSourceLocated<Point2D>> sources = new ArrayList<>();
         for (int i = 0; i < Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH; i++) {
@@ -274,7 +252,6 @@ public class NonLinearFingerprintPositionEstimator2DTest
         assertNull(estimator.getInitialPosition());
         assertNull(estimator.getListener());
 
-
         // test create with located fingerprints, fingerprint, sources and listener
 
         // first order
@@ -331,7 +308,6 @@ public class NonLinearFingerprintPositionEstimator2DTest
         assertSame(estimator.getSources(), sources);
         assertNull(estimator.getInitialPosition());
         assertSame(estimator.getListener(), this);
-
 
         // test create with located fingerprints, fingerprint, sources and initial position
         final Point2D initialPosition = Point2D.create();
@@ -390,7 +366,6 @@ public class NonLinearFingerprintPositionEstimator2DTest
         assertSame(estimator.getSources(), sources);
         assertSame(estimator.getInitialPosition(), initialPosition);
         assertNull(estimator.getListener());
-
 
         // test create with located fingerprints, fingerprint, sources, initial position
         // and listener
@@ -452,8 +427,8 @@ public class NonLinearFingerprintPositionEstimator2DTest
     }
 
     @Test
-    public void testEstimateOrderComparison() throws EvaluationException,
-            LockedException, NotReadyException, FingerprintEstimationException {
+    public void testEstimateOrderComparison() throws LockedException, NotReadyException,
+            FingerprintEstimationException {
         double avgRssiErrorFirstOrder = 0.0;
         double avgRssiErrorSecondOrder = 0.0;
         double avgRssiErrorThirdOrder = 0.0;
@@ -646,10 +621,10 @@ public class NonLinearFingerprintPositionEstimator2DTest
 
     private double receivedPower(final double equivalentTransmittedPower,
                                  final double distance) {
-        //Pr = Pt*Gt*Gr*lambda^2/(4*pi*d)^2,    where Pr is the received power
+        // Pr = Pt*Gt*Gr*lambda^2/(4*pi*d)^2,    where Pr is the received power
         // lambda = c/f, where lambda is wavelength,
         // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the received Gain
-        //Pr = Pte*c^2/((4*pi*f)^2 * d^2)
+        // Pr = Pte*c^2/((4*pi*f)^2 * d^2)
         final double k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI * FREQUENCY),
                 BaseFingerprintPositionEstimator.DEFAULT_PATH_LOSS_EXPONENT);
         return equivalentTransmittedPower * k /

@@ -25,11 +25,7 @@ import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.indoor.*;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.text.MessageFormat;
@@ -46,14 +42,13 @@ import static com.irurueta.navigation.indoor.Utils.dBmToPower;
 import static com.irurueta.navigation.indoor.Utils.powerTodBm;
 import static org.junit.Assert.*;
 
-@SuppressWarnings("Duplicates")
 public class MixedRadioSourceEstimator3DTest implements
         MixedRadioSourceEstimatorListener<WifiAccessPoint, Point3D> {
 
     private static final Logger LOGGER = Logger.getLogger(
             MixedRadioSourceEstimator3DTest.class.getName());
 
-    private static final double FREQUENCY = 2.4e9; //(Hz)
+    private static final double FREQUENCY = 2.4e9; // (Hz)
 
     private static final int MIN_READINGS = 50;
     private static final int MAX_READINGS = 100;
@@ -81,23 +76,13 @@ public class MixedRadioSourceEstimator3DTest implements
     private int estimateStart;
     private int estimateEnd;
 
-    public MixedRadioSourceEstimator3DTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
+    @Test
+    public void testConstants() {
+        assertEquals(299792458.0, MixedRadioSourceEstimator.SPEED_OF_LIGHT, 0.0);
+        assertEquals(2.0, MixedRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
+        assertTrue(MixedRadioSourceEstimator.DEFAULT_TRANSMITTED_POWER_ESTIMATION_ENABLED);
+        assertFalse(MixedRadioSourceEstimator.DEFAULT_PATHLOSS_ESTIMATION_ENABLED);
+        assertTrue(MixedRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES);
     }
 
     @Test
@@ -141,7 +126,6 @@ public class MixedRadioSourceEstimator3DTest implements
         assertNull(estimator.getEstimatedPositionCovariance());
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
-
 
         // test constructor with readings
         final List<RangingAndRssiReadingLocated3D<WifiAccessPoint>> readings = new ArrayList<>();
@@ -207,7 +191,6 @@ public class MixedRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with listener
         estimator = new MixedRadioSourceEstimator3D<>(this);
 
@@ -244,7 +227,6 @@ public class MixedRadioSourceEstimator3DTest implements
         assertNull(estimator.getEstimatedPositionCovariance());
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
-
 
         // test constructor with readings and listener
         estimator = new MixedRadioSourceEstimator3D<>(readings,
@@ -302,7 +284,6 @@ public class MixedRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position
         final InhomogeneousPoint3D initialPosition = new InhomogeneousPoint3D(
                 randomizer.nextDouble(MIN_POS, MAX_POS),
@@ -343,7 +324,6 @@ public class MixedRadioSourceEstimator3DTest implements
         assertNull(estimator.getEstimatedPositionCovariance());
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
-
 
         // test constructor with readings and initial position
         estimator = new MixedRadioSourceEstimator3D<>(readings,
@@ -400,7 +380,6 @@ public class MixedRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position and listener
         estimator = new MixedRadioSourceEstimator3D<>(initialPosition,
                 this);
@@ -438,7 +417,6 @@ public class MixedRadioSourceEstimator3DTest implements
         assertNull(estimator.getEstimatedPositionCovariance());
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
-
 
         // test constructor with readings, initial position and listener
         estimator = new MixedRadioSourceEstimator3D<>(readings,
@@ -494,7 +472,6 @@ public class MixedRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial transmitted power
         estimator = new MixedRadioSourceEstimator3D<>(MAX_RSSI);
 
@@ -532,7 +509,6 @@ public class MixedRadioSourceEstimator3DTest implements
         assertNull(estimator.getEstimatedPositionCovariance());
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
-
 
         // test constructor with readings and initial transmitted power
         estimator = new MixedRadioSourceEstimator3D<>(readings,
@@ -591,7 +567,6 @@ public class MixedRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial transmitted power and listener
         estimator = new MixedRadioSourceEstimator3D<>(MAX_RSSI,
                 this);
@@ -630,7 +605,6 @@ public class MixedRadioSourceEstimator3DTest implements
         assertNull(estimator.getEstimatedPositionCovariance());
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
-
 
         // test constructor with readings, initial transmitted power and listener
         estimator = new MixedRadioSourceEstimator3D<>(readings,
@@ -689,7 +663,6 @@ public class MixedRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with readings, initial position and
         // initial transmitted power
         estimator = new MixedRadioSourceEstimator3D<>(readings,
@@ -746,7 +719,6 @@ public class MixedRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position and initial transmitted power
         estimator = new MixedRadioSourceEstimator3D<>(
                 initialPosition, MAX_RSSI);
@@ -785,7 +757,6 @@ public class MixedRadioSourceEstimator3DTest implements
         assertNull(estimator.getEstimatedPositionCovariance());
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
-
 
         // test constructor with initial position, initial transmitted power and
         // listener
@@ -826,7 +797,6 @@ public class MixedRadioSourceEstimator3DTest implements
         assertNull(estimator.getEstimatedPositionCovariance());
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
-
 
         // test constructor with readings, initial position, initial
         // transmitted power and listener
@@ -885,7 +855,6 @@ public class MixedRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with readings, initial position, initial
         // transmitted power and initial path loss exponent
         estimator = new MixedRadioSourceEstimator3D<>(readings,
@@ -942,7 +911,6 @@ public class MixedRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position and initial transmitted power
         estimator = new MixedRadioSourceEstimator3D<>(
                 initialPosition, MAX_RSSI, MIN_PATH_LOSS_EXPONENT);
@@ -980,7 +948,6 @@ public class MixedRadioSourceEstimator3DTest implements
         assertNull(estimator.getEstimatedPositionCovariance());
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
-
 
         // test constructor with initial position, initial transmitted power and
         // listener
@@ -1021,7 +988,6 @@ public class MixedRadioSourceEstimator3DTest implements
         assertNull(estimator.getEstimatedPositionCovariance());
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
-
 
         // test constructor with readings, initial position, initial
         // transmitted power and listener
@@ -1097,7 +1063,6 @@ public class MixedRadioSourceEstimator3DTest implements
         // check
         assertEquals(estimator.getMinReadings(), 4);
 
-
         // transmitted power and position
         estimator.setTransmittedPowerEstimationEnabled(true);
         estimator.setPathLossEstimationEnabled(false);
@@ -1105,16 +1070,14 @@ public class MixedRadioSourceEstimator3DTest implements
         // check
         assertEquals(estimator.getMinReadings(), 5);
 
-
-        // pathloss and position
+        // path-loss and position
         estimator.setTransmittedPowerEstimationEnabled(false);
         estimator.setPathLossEstimationEnabled(true);
 
         // check
         assertEquals(estimator.getMinReadings(), 5);
 
-
-        // position, transmitted power and patloss
+        // position, transmitted power and path-loss
         estimator.setTransmittedPowerEstimationEnabled(true);
         estimator.setPathLossEstimationEnabled(true);
 
@@ -1298,7 +1261,6 @@ public class MixedRadioSourceEstimator3DTest implements
 
         assertTrue(estimator.areValidReadings(readings));
 
-
         // test with only ranging readings
         readings = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
@@ -1316,7 +1278,6 @@ public class MixedRadioSourceEstimator3DTest implements
 
         assertFalse(estimator.areValidReadings(readings));
 
-
         // test with only rssi readings
         readings = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
@@ -1333,7 +1294,6 @@ public class MixedRadioSourceEstimator3DTest implements
         estimator.setPathLossEstimationEnabled(false);
 
         assertFalse(estimator.areValidReadings(readings));
-
 
         // test with ranging readings and rssi readings
         readings = new ArrayList<>();
@@ -1359,7 +1319,6 @@ public class MixedRadioSourceEstimator3DTest implements
         estimator.setPathLossEstimationEnabled(false);
 
         assertTrue(estimator.areValidReadings(readings));
-
 
         // test with null or empty readings
         assertFalse(estimator.areValidReadings(null));
@@ -5488,7 +5447,6 @@ public class MixedRadioSourceEstimator3DTest implements
                 final double errorDistance = Math.abs(errorRandomizer.nextDouble());
                 final double errorRssi = errorRandomizer.nextDouble();
 
-
                 readings.add(new RangingAndRssiReadingLocated3D<>(accessPoint,
                         distance + errorDistance, rssi + errorRssi,
                         readingsPositions[i], ERROR_STD, ERROR_STD,
@@ -6095,7 +6053,6 @@ public class MixedRadioSourceEstimator3DTest implements
         }
 
         assertTrue(numValidPosition > 0);
-
 
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);

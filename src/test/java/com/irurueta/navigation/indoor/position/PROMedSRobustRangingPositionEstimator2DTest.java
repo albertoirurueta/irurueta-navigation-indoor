@@ -133,7 +133,6 @@ public class PROMedSRobustRangingPositionEstimator2DTest implements
         assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertTrue(estimator.getEvenlyDistributeReadings());
 
-
         // constructor with sources
         final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
@@ -198,7 +197,6 @@ public class PROMedSRobustRangingPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprints
         final RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
                 new RangingFingerprint<>();
@@ -253,7 +251,6 @@ public class PROMedSRobustRangingPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources and fingerprint
         estimator = new PROMedSRobustRangingPositionEstimator2D(sources, fingerprint);
@@ -320,7 +317,6 @@ public class PROMedSRobustRangingPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with listener
         estimator = new PROMedSRobustRangingPositionEstimator2D(this);
 
@@ -363,7 +359,6 @@ public class PROMedSRobustRangingPositionEstimator2DTest implements
         assertEquals(estimator.getNumberOfDimensions(), 2);
         assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertTrue(estimator.getEvenlyDistributeReadings());
-
 
         // constructor with sources and listener
         estimator = new PROMedSRobustRangingPositionEstimator2D(sources, this);
@@ -424,7 +419,6 @@ public class PROMedSRobustRangingPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint and listener
         estimator = new PROMedSRobustRangingPositionEstimator2D(fingerprint,
                 this);
@@ -479,7 +473,6 @@ public class PROMedSRobustRangingPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint and listener
         estimator = new PROMedSRobustRangingPositionEstimator2D(sources, fingerprint,
@@ -547,7 +540,6 @@ public class PROMedSRobustRangingPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with quality scores
         final double[] sourceQualityScores = new double[3];
@@ -623,7 +615,6 @@ public class PROMedSRobustRangingPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with quality scores and sources
         estimator = new PROMedSRobustRangingPositionEstimator2D(sourceQualityScores,
@@ -716,7 +707,6 @@ public class PROMedSRobustRangingPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with quality scores and fingerprints
         estimator = new PROMedSRobustRangingPositionEstimator2D(sourceQualityScores,
                 fingerprintReadingsQualityScores, fingerprint);
@@ -799,7 +789,6 @@ public class PROMedSRobustRangingPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with quality scores, sources and fingerprint
         estimator = new PROMedSRobustRangingPositionEstimator2D(sourceQualityScores,
@@ -897,7 +886,6 @@ public class PROMedSRobustRangingPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with quality scores and listener
         estimator = new PROMedSRobustRangingPositionEstimator2D(sourceQualityScores,
                 fingerprintReadingsQualityScores, this);
@@ -972,7 +960,6 @@ public class PROMedSRobustRangingPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with quality scores, sources and listener
         estimator = new PROMedSRobustRangingPositionEstimator2D(sourceQualityScores,
@@ -1063,7 +1050,6 @@ public class PROMedSRobustRangingPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with quality scores, fingerprint and listener
         estimator = new PROMedSRobustRangingPositionEstimator2D(sourceQualityScores,
                 fingerprintReadingsQualityScores, fingerprint, this);
@@ -1145,7 +1131,6 @@ public class PROMedSRobustRangingPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint and listener
         estimator = new PROMedSRobustRangingPositionEstimator2D(sourceQualityScores,
@@ -1563,6 +1548,7 @@ public class PROMedSRobustRangingPositionEstimator2DTest implements
         }
     }
 
+    @Test
     public void testGetSetFingerprintReadingsQualityScores() throws LockedException {
         final PROMedSRobustRangingPositionEstimator2D estimator =
                 new PROMedSRobustRangingPositionEstimator2D();

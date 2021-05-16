@@ -64,7 +64,7 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
     private static final Logger LOGGER = Logger.getLogger(
             PROSACRobustMixedPositionEstimator2DTest.class.getName());
 
-    private static final double FREQUENCY = 2.4e9; //(Hz)
+    private static final double FREQUENCY = 2.4e9; // (Hz)
 
     private static final int MIN_SOURCES = 100;
     private static final int MAX_SOURCES = 500;
@@ -97,7 +97,7 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
 
     private static final double TX_POWER_VARIANCE = 0.1;
     private static final double RX_POWER_VARIANCE = 0.5;
-    private static final double PATHLOSS_EXPONENT_VARIANCE = 0.001;
+    private static final double PATH_LOSS_EXPONENT_VARIANCE = 0.001;
 
     private int estimateStart;
     private int estimateEnd;
@@ -149,7 +149,6 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
         assertEquals(estimator.getNumberOfDimensions(), 2);
         assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROSAC);
         assertTrue(estimator.getEvenlyDistributeReadings());
-
 
         // constructor with sources
         final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
@@ -215,7 +214,6 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprints
         final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
                 new Fingerprint<>();
@@ -270,7 +268,6 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources and fingerprint
         estimator = new PROSACRobustMixedPositionEstimator2D(sources,
@@ -338,7 +335,6 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with listener
         estimator = new PROSACRobustMixedPositionEstimator2D(this);
 
@@ -381,7 +377,6 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
         assertEquals(estimator.getNumberOfDimensions(), 2);
         assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROSAC);
         assertTrue(estimator.getEvenlyDistributeReadings());
-
 
         // constructor with sources and listener
         estimator = new PROSACRobustMixedPositionEstimator2D(sources,
@@ -443,7 +438,6 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint and listener
         estimator = new PROSACRobustMixedPositionEstimator2D(fingerprint,
                 this);
@@ -498,7 +492,6 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint and listener
         estimator = new PROSACRobustMixedPositionEstimator2D(sources,
@@ -566,7 +559,6 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with quality scores
         final double[] sourceQualityScores = new double[3];
@@ -645,7 +637,6 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with quality scores and sources
         estimator = new PROSACRobustMixedPositionEstimator2D(
@@ -737,7 +728,6 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with quality scores and fingerprints
         estimator = new PROSACRobustMixedPositionEstimator2D(
                 sourceQualityScores, fingerprintReadingsQualityScores, fingerprint);
@@ -819,7 +809,6 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with quality scores, sources and fingerprint
         estimator = new PROSACRobustMixedPositionEstimator2D(
@@ -919,7 +908,6 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with quality scores and listener
         estimator = new PROSACRobustMixedPositionEstimator2D(
                 sourceQualityScores, fingerprintReadingsQualityScores, this);
@@ -994,7 +982,6 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with quality scores, sources and listener
         estimator = new PROSACRobustMixedPositionEstimator2D(
@@ -1090,7 +1077,6 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with quality scores, fingerprint and listener
         estimator = new PROSACRobustMixedPositionEstimator2D(
                 sourceQualityScores,
@@ -1175,7 +1161,6 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint and listener
         estimator = new PROSACRobustMixedPositionEstimator2D(
@@ -1733,7 +1718,7 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -1934,7 +1919,7 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -2136,7 +2121,7 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -2218,7 +2203,6 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
                 readings.add(new RssiReading<>(accessPoint,
                         rssi + errorRssi1 + errorRssi2 + inlierError,
                         Math.sqrt(RX_POWER_VARIANCE)));
-
             }
 
             final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
@@ -2347,7 +2331,7 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -2427,7 +2411,6 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
                     readings.add(new RssiReading<>(accessPoint,
                             rssi + errorRssi1 + errorRssi2 + inlierError,
                             Math.sqrt(RX_POWER_VARIANCE)));
-
                 }
             }
 
@@ -2554,7 +2537,7 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -2750,7 +2733,7 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -2826,7 +2809,6 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
                 readings.add(new RssiReading<>(accessPoint,
                         rssi + errorRssi1 + errorRssi2,
                         Math.sqrt(RX_POWER_VARIANCE)));
-
             }
 
             final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
@@ -2946,7 +2928,7 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -3022,7 +3004,6 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
                 readings.add(new RssiReading<>(accessPoint,
                         rssi + errorRssi1 + errorRssi2,
                         Math.sqrt(RX_POWER_VARIANCE)));
-
             }
 
             final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
@@ -3141,7 +3122,7 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -3335,7 +3316,7 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -3411,8 +3392,6 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
                 readings.add(new RssiReading<>(accessPoint,
                         rssi + errorRssi1 + errorRssi2,
                         Math.sqrt(RX_POWER_VARIANCE)));
-
-
             }
 
             final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
@@ -3531,7 +3510,7 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -3725,7 +3704,7 @@ public class PROSACRobustMixedPositionEstimator2DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 

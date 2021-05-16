@@ -17,6 +17,7 @@ package com.irurueta.navigation.indoor;
 
 import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.Point;
+
 import java.util.List;
 
 /**
@@ -26,7 +27,6 @@ import java.util.List;
  * @param <P> a {@link Point} type.
  * @param <R> a {@link RangingReading} type.
  */
-@SuppressWarnings("WeakerAccess")
 public class RangingAndRssiFingerprintLocated<S extends RadioSource,
         R extends RangingAndRssiReading<S>, P extends Point<?>> extends
         RangingAndRssiFingerprint<S, R> implements FingerprintLocated<P> {

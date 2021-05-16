@@ -25,9 +25,13 @@ import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.indoor.*;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.*;
+import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -61,8 +65,8 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator2DTest implement
     private static final double MIN_RSSI_STANDARD_DEVIATION = 1e-2;
     private static final double MAX_RSSI_STANDARD_DEVIATION = 5e-1;
 
-    private static final double MIN_PATHLOSS_STANDARD_DEVIATION = 1e-2;
-    private static final double MAX_PATHLOSS_STANDARD_DEVIATION = 5e-2;
+    private static final double MIN_PATH_LOSS_STANDARD_DEVIATION = 1e-2;
+    private static final double MAX_PATH_LOSS_STANDARD_DEVIATION = 5e-2;
 
     private static final double MIN_POSITION_STANDARD_DEVIATION = 1e-1;
     private static final double MAX_POSITION_STANDARD_DEVIATION = 5e-1;
@@ -79,25 +83,6 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator2DTest implement
 
     private int estimateStart;
     private int estimateEnd;
-
-    public NonLinearFingerprintPositionAndRadioSourceEstimator2DTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
 
     @Test
     public void testConstructor() {
@@ -134,12 +119,11 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator2DTest implement
         assertTrue(estimator.isFingerprintPositionCovariancePropagated());
         assertTrue(estimator.isRadioSourcePositionCovariancePropagated());
 
-
-        //test constructor with listener
+        // test constructor with listener
         estimator = new NonLinearFingerprintPositionAndRadioSourceEstimator2D(
                 this);
 
-        //check default values
+        // check default values
         assertNull(estimator.getLocatedFingerprints());
         assertNull(estimator.getFingerprint());
         assertEquals(estimator.getMinNearestFingerprints(), -1);
@@ -168,7 +152,6 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator2DTest implement
         assertTrue(estimator.isFingerprintPositionCovariancePropagated());
         assertTrue(estimator.isRadioSourcePositionCovariancePropagated());
 
-
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         final List<RssiReading<RadioSource>> readings = new ArrayList<>();
@@ -192,7 +175,6 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator2DTest implement
 
         final RssiFingerprint<RadioSource, RssiReading<RadioSource>> fingerprint =
                 new RssiFingerprint<>(readings);
-
 
         // test constructor with located fingerprints and fingerprint
         estimator = new NonLinearFingerprintPositionAndRadioSourceEstimator2D(
@@ -243,7 +225,6 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator2DTest implement
         }
         assertNull(estimator);
 
-
         // test constructor with located fingerprints, fingerprint and listener
         estimator = new NonLinearFingerprintPositionAndRadioSourceEstimator2D(
                 locatedFingerprints, fingerprint, this);
@@ -292,7 +273,6 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator2DTest implement
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with located fingerprints, fingerprint and initial position
         final Point2D initialPosition = Point2D.create();
@@ -345,7 +325,6 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator2DTest implement
         }
         assertNull(estimator);
 
-
         // test constructor with located fingerprints, fingerprint, initial position
         // and listener
         estimator = new NonLinearFingerprintPositionAndRadioSourceEstimator2D(
@@ -395,7 +374,6 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator2DTest implement
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with located fingerprints, fingerprint and
         // initial located sources
@@ -449,7 +427,6 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator2DTest implement
         }
         assertNull(estimator);
 
-
         // test constructor with located fingerprints, fingerprint and initial located sources
         estimator = new NonLinearFingerprintPositionAndRadioSourceEstimator2D(
                 locatedFingerprints, fingerprint, initialLocatedSources, this);
@@ -498,7 +475,6 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator2DTest implement
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with located fingerprints, fingerprint, initial position and
         // initial located sources
@@ -552,7 +528,6 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator2DTest implement
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with located fingerprints, fingerprint, initial position,
         // initial located sources and listener
@@ -1017,7 +992,6 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator2DTest implement
 
         final double percentage = (double) numValid / (double) TIMES;
 
-
         LOGGER.log(Level.INFO, "Valid percentage: {0}%",
                 percentage * 100.0);
         LOGGER.log(Level.INFO, "Avg. position error: {0} m",
@@ -1414,7 +1388,6 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator2DTest implement
         avgSourceAccuracy /= numValid;
 
         final double percentage = (double) numValid / (double) TIMES;
-
 
         LOGGER.log(Level.INFO, "Valid percentage: {0}%",
                 percentage * 100.0);
@@ -2245,8 +2218,8 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator2DTest implement
                 final double positionVariance = positionStd * positionStd;
                 final Matrix positionCovariance = Matrix.diagonal(
                         new double[]{positionVariance, positionVariance});
-                final double pathLossStd = randomizer.nextDouble(MIN_PATHLOSS_STANDARD_DEVIATION,
-                        MAX_PATHLOSS_STANDARD_DEVIATION);
+                final double pathLossStd = randomizer.nextDouble(MIN_PATH_LOSS_STANDARD_DEVIATION,
+                        MAX_PATH_LOSS_STANDARD_DEVIATION);
 
                 final WifiAccessPointWithPowerAndLocated2D accessPoint =
                         new WifiAccessPointWithPowerAndLocated2D(
@@ -3239,8 +3212,8 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator2DTest implement
                 final double positionVariance = positionStd * positionStd;
                 final Matrix positionCovariance = Matrix.diagonal(
                         new double[]{positionVariance, positionVariance});
-                final double pathLossStd = randomizer.nextDouble(MIN_PATHLOSS_STANDARD_DEVIATION,
-                        MAX_PATHLOSS_STANDARD_DEVIATION);
+                final double pathLossStd = randomizer.nextDouble(MIN_PATH_LOSS_STANDARD_DEVIATION,
+                        MAX_PATH_LOSS_STANDARD_DEVIATION);
 
                 final WifiAccessPointWithPowerAndLocated2D accessPoint =
                         new WifiAccessPointWithPowerAndLocated2D(
@@ -3510,10 +3483,10 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator2DTest implement
             // find closest located fingerprint to actual position and leave only
             // dims - 1 readings for last radio source
             final int minNearestFingerprints = 6;
-            final RadioSourceNoMeanKNearestFinder<Point2D, RadioSource> noMeanfinder =
+            final RadioSourceNoMeanKNearestFinder<Point2D, RadioSource> noMeanFinder =
                     new RadioSourceNoMeanKNearestFinder<>(locatedFingerprints);
             final List<RssiFingerprintLocated<RadioSource, RssiReading<RadioSource>, Point2D>> nearestFingerprints =
-                    noMeanfinder.findKNearestTo(fingerprint, minNearestFingerprints);
+                    noMeanFinder.findKNearestTo(fingerprint, minNearestFingerprints);
             final RadioSourceLocated<Point2D> lastSource = sources.get(sources.size() - 1);
             int numReadingsLastSource = 0;
             locatedFingerprints.clear();
@@ -4264,10 +4237,10 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator2DTest implement
 
     private double receivedPower(final double equivalentTransmittedPower,
                                  final double distance, final double pathLossExponent) {
-        //Pr = Pt*Gt*Gr*lambda^2/(4*pi*d)^2,    where Pr is the received power
+        // Pr = Pt*Gt*Gr*lambda^2/(4*pi*d)^2,    where Pr is the received power
         // lambda = c/f, where lambda is wavelength,
         // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the received Gain
-        //Pr = Pte*c^2/((4*pi*f)^2 * d^2)
+        // Pr = Pte*c^2/((4*pi*f)^2 * d^2)
         final double k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI * FREQUENCY), pathLossExponent);
         return equivalentTransmittedPower * k /
                 Math.pow(distance, pathLossExponent);

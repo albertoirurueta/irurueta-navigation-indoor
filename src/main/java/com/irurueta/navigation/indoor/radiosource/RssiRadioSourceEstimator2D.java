@@ -25,22 +25,23 @@ import com.irurueta.navigation.indoor.RadioSourceWithPowerAndLocated;
 import com.irurueta.navigation.indoor.RssiReadingLocated;
 import com.irurueta.navigation.indoor.WifiAccessPoint;
 import com.irurueta.navigation.indoor.WifiAccessPointWithPowerAndLocated2D;
+
 import java.util.List;
 
 /**
- * Estimates 2D position, transmitted power and pathloss exponent
+ * Estimates 2D position, transmitted power and path-loss exponent
  * of a radio source assuming that the radio source emits
  * isotropically following the expression below:
  * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,
  * where Pr is the received power (expressed in mW),
- * Gt is the Gain of the transmission antena
- * Gr is the Gain of the receiver antena
+ * Gt is the Gain of the transmission antenna
+ * Gr is the Gain of the receiver antenna
  * d is the distance between emitter and receiver
  * and lambda is the wavelength and is equal to: lambda = c / f,
  * where c is the speed of light
  * and f is the carrier frequency of the radio signal.
- * Because usually information about the antena of the radio source cannot be
- * retrieved (because many measurements are made on unkown access points where
+ * Because usually information about the antenna of the radio source cannot be
+ * retrieved (because many measurements are made on unknown access points where
  * physical access is not possible), this implementation will estimate the
  * equivalent transmitted power as: Pte = Pt * Gt * Gr.
  * If Readings contain RSSI standard deviations, those values will be used,
@@ -49,7 +50,7 @@ import java.util.List;
  * IMPORTANT: Implementations of this class can choose to estimate a
  * combination of radio source position, transmitted power and path loss
  * exponent. However enabling all three estimations usually achieves
- * inacurate results. When using this class, estimation must be of at least
+ * inaccurate results. When using this class, estimation must be of at least
  * one parameter (position, transmitted power or path loss exponent) when
  * initial values are provided for the other two, and at most it should consist
  * of two parameters (either position and transmitted power, position and
@@ -388,7 +389,7 @@ public class RssiRadioSourceEstimator2D<S extends RadioSource> extends
 
     /**
      * Gets minimum required number of readings to estimate
-     * power, position and pathloss exponent.
+     * power, position and path-loss exponent.
      * This value depends on the number of parameters to
      * be estimated, but for position only, this is 3
      * readings.

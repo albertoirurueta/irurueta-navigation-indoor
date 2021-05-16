@@ -33,11 +33,7 @@ import com.irurueta.navigation.indoor.WifiAccessPoint;
 import com.irurueta.navigation.indoor.WifiAccessPointWithPowerAndLocated2D;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.text.MessageFormat;
@@ -54,14 +50,13 @@ import static com.irurueta.navigation.indoor.Utils.dBmToPower;
 import static com.irurueta.navigation.indoor.Utils.powerTodBm;
 import static org.junit.Assert.*;
 
-@SuppressWarnings("Duplicates")
 public class RangingAndRssiRadioSourceEstimator2DTest implements
         RangingAndRssiRadioSourceEstimatorListener<WifiAccessPoint, Point2D> {
 
     private static final Logger LOGGER = Logger.getLogger(
             RangingAndRssiRadioSourceEstimator2DTest.class.getName());
 
-    private static final double FREQUENCY = 2.4e9; //(Hz)
+    private static final double FREQUENCY = 2.4e9; // (Hz)
 
     private static final int MIN_READINGS = 50;
     private static final int MAX_READINGS = 100;
@@ -89,23 +84,13 @@ public class RangingAndRssiRadioSourceEstimator2DTest implements
     private int estimateStart;
     private int estimateEnd;
 
-    public RangingAndRssiRadioSourceEstimator2DTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
+    @Test
+    public void testConstants() {
+        assertEquals(299792458.0, RangingAndRssiRadioSourceEstimator.SPEED_OF_LIGHT, 0.0);
+        assertEquals(2.0, RangingAndRssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
+        assertTrue(RangingAndRssiRadioSourceEstimator.DEFAULT_TRANSMITTED_POWER_ESTIMATION_ENABLED);
+        assertFalse(RangingAndRssiRadioSourceEstimator.DEFAULT_PATHLOSS_ESTIMATION_ENABLED);
+        assertTrue(RangingAndRssiRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES);
     }
 
     @Test
@@ -147,7 +132,6 @@ public class RangingAndRssiRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with readings
         final List<RangingAndRssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
@@ -211,7 +195,6 @@ public class RangingAndRssiRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with listener
         estimator = new RangingAndRssiRadioSourceEstimator2D<>(this);
 
@@ -247,7 +230,6 @@ public class RangingAndRssiRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with readings and listener
         estimator = new RangingAndRssiRadioSourceEstimator2D<>(readings,
@@ -304,7 +286,6 @@ public class RangingAndRssiRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position
         final InhomogeneousPoint2D initialPosition = new InhomogeneousPoint2D(
                 randomizer.nextDouble(MIN_POS, MAX_POS),
@@ -343,7 +324,6 @@ public class RangingAndRssiRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with readings and initial position
         estimator = new RangingAndRssiRadioSourceEstimator2D<>(readings,
@@ -398,7 +378,6 @@ public class RangingAndRssiRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position and listener
         estimator = new RangingAndRssiRadioSourceEstimator2D<>(initialPosition,
                 this);
@@ -435,7 +414,6 @@ public class RangingAndRssiRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with readings, initial position and listener
         estimator = new RangingAndRssiRadioSourceEstimator2D<>(readings,
@@ -492,7 +470,6 @@ public class RangingAndRssiRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial transmitted power
         estimator = new RangingAndRssiRadioSourceEstimator2D<>(MAX_RSSI);
 
@@ -529,7 +506,6 @@ public class RangingAndRssiRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with readings and initial transmitted power
         estimator = new RangingAndRssiRadioSourceEstimator2D<>(readings,
@@ -587,7 +563,6 @@ public class RangingAndRssiRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial transmitted power and listener
         estimator = new RangingAndRssiRadioSourceEstimator2D<>(MAX_RSSI,
                 this);
@@ -625,7 +600,6 @@ public class RangingAndRssiRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with readings, initial transmitted power and listener
         estimator = new RangingAndRssiRadioSourceEstimator2D<>(readings,
@@ -683,7 +657,6 @@ public class RangingAndRssiRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with readings, initial position and
         // initial transmitted power
         estimator = new RangingAndRssiRadioSourceEstimator2D<>(readings,
@@ -739,7 +712,6 @@ public class RangingAndRssiRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position and initial transmitted power
         estimator = new RangingAndRssiRadioSourceEstimator2D<>(
                 initialPosition, MAX_RSSI);
@@ -777,7 +749,6 @@ public class RangingAndRssiRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with initial position, initial transmitted power and
         // listener
@@ -817,7 +788,6 @@ public class RangingAndRssiRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with readings, initial position, initial
         // transmitted power and listener
@@ -875,7 +845,6 @@ public class RangingAndRssiRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with readings, initial position, initial
         // transmitted power and initial path loss exponent
         estimator = new RangingAndRssiRadioSourceEstimator2D<>(readings,
@@ -931,7 +900,6 @@ public class RangingAndRssiRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position and initial transmitted power
         estimator = new RangingAndRssiRadioSourceEstimator2D<>(
                 initialPosition, MAX_RSSI, MIN_PATH_LOSS_EXPONENT);
@@ -968,7 +936,6 @@ public class RangingAndRssiRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with initial position, initial transmitted power and
         // listener
@@ -1008,7 +975,6 @@ public class RangingAndRssiRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with readings, initial position, initial
         // transmitted power and listener
@@ -1083,7 +1049,6 @@ public class RangingAndRssiRadioSourceEstimator2DTest implements
         // check
         assertEquals(estimator.getMinReadings(), 3);
 
-
         // transmitted power and position
         estimator.setTransmittedPowerEstimationEnabled(true);
         estimator.setPathLossEstimationEnabled(false);
@@ -1091,16 +1056,14 @@ public class RangingAndRssiRadioSourceEstimator2DTest implements
         // check
         assertEquals(estimator.getMinReadings(), 4);
 
-
-        // pathloss and position
+        // path-loss and position
         estimator.setTransmittedPowerEstimationEnabled(false);
         estimator.setPathLossEstimationEnabled(true);
 
         // check
         assertEquals(estimator.getMinReadings(), 4);
 
-
-        // position, transmitted power and patloss
+        // position, transmitted power and path-loss
         estimator.setTransmittedPowerEstimationEnabled(true);
         estimator.setPathLossEstimationEnabled(true);
 

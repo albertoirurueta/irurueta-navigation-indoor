@@ -22,6 +22,7 @@ import com.irurueta.navigation.indoor.RadioSource;
 import com.irurueta.navigation.indoor.RssiFingerprint;
 import com.irurueta.navigation.indoor.RssiFingerprintLocated;
 import com.irurueta.navigation.indoor.RssiReading;
+
 import java.util.List;
 
 /**
@@ -34,7 +35,6 @@ import java.util.List;
  * @param <P> a {@link Point} type.
  * @param <L> a {@link BaseFingerprintEstimatorListener} type.
  */
-@SuppressWarnings("WeakerAccess")
 public abstract class BaseFingerprintPositionEstimator<P extends Point<?>,
         L extends BaseFingerprintEstimatorListener<?>> {
 

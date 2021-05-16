@@ -145,7 +145,6 @@ public class PROSACRobustRssiPositionEstimator3DTest implements
         assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROSAC);
         assertTrue(estimator.getEvenlyDistributeReadings());
 
-
         // constructor with sources
         final List<WifiAccessPointLocated3D> sources = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
@@ -210,7 +209,6 @@ public class PROSACRobustRssiPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprints
         final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
                 new RssiFingerprint<>();
@@ -265,7 +263,6 @@ public class PROSACRobustRssiPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources and fingerprint
         estimator = new PROSACRobustRssiPositionEstimator3D(sources, fingerprint);
@@ -332,7 +329,6 @@ public class PROSACRobustRssiPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with listener
         estimator = new PROSACRobustRssiPositionEstimator3D(this);
 
@@ -375,7 +371,6 @@ public class PROSACRobustRssiPositionEstimator3DTest implements
         assertEquals(estimator.getNumberOfDimensions(), 3);
         assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROSAC);
         assertTrue(estimator.getEvenlyDistributeReadings());
-
 
         // constructor with sources and listener
         estimator = new PROSACRobustRssiPositionEstimator3D(sources, this);
@@ -436,7 +431,6 @@ public class PROSACRobustRssiPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint and listener
         estimator = new PROSACRobustRssiPositionEstimator3D(fingerprint, this);
 
@@ -490,7 +484,6 @@ public class PROSACRobustRssiPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint and listener
         estimator = new PROSACRobustRssiPositionEstimator3D(sources, fingerprint,
@@ -558,7 +551,6 @@ public class PROSACRobustRssiPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with quality scores
         final double[] sourceQualityScores = new double[4];
@@ -634,7 +626,6 @@ public class PROSACRobustRssiPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with quality scores and sources
         estimator = new PROSACRobustRssiPositionEstimator3D(sourceQualityScores,
@@ -723,7 +714,6 @@ public class PROSACRobustRssiPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with quality scores and fingerprints
         estimator = new PROSACRobustRssiPositionEstimator3D(sourceQualityScores,
                 fingerprintReadingsQualityScores, fingerprint);
@@ -803,7 +793,6 @@ public class PROSACRobustRssiPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with quality scores, sources and fingerprint
         estimator = new PROSACRobustRssiPositionEstimator3D(sourceQualityScores,
@@ -899,7 +888,6 @@ public class PROSACRobustRssiPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with quality scores and listener
         estimator = new PROSACRobustRssiPositionEstimator3D(sourceQualityScores,
                 fingerprintReadingsQualityScores, this);
@@ -973,7 +961,6 @@ public class PROSACRobustRssiPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with quality scores, sources and listener
         estimator = new PROSACRobustRssiPositionEstimator3D(sourceQualityScores,
@@ -1062,7 +1049,6 @@ public class PROSACRobustRssiPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with quality scores, fingerprint and listener
         estimator = new PROSACRobustRssiPositionEstimator3D(sourceQualityScores,
                 fingerprintReadingsQualityScores, fingerprint, this);
@@ -1143,7 +1129,6 @@ public class PROSACRobustRssiPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint and listener
         estimator = new PROSACRobustRssiPositionEstimator3D(sourceQualityScores,
@@ -1587,6 +1572,7 @@ public class PROSACRobustRssiPositionEstimator3DTest implements
         }
     }
 
+    @Test
     public void testGetSetFingerprintReadingsQualityScores() throws LockedException {
         final PROSACRobustRssiPositionEstimator3D estimator =
                 new PROSACRobustRssiPositionEstimator3D();
@@ -1595,7 +1581,7 @@ public class PROSACRobustRssiPositionEstimator3DTest implements
         assertNull(estimator.getFingerprintReadingsQualityScores());
 
         // set new value
-        final double[] qualityScores = new double[3];
+        final double[] qualityScores = new double[4];
         estimator.setFingerprintReadingsQualityScores(qualityScores);
 
         // check
@@ -3333,10 +3319,10 @@ public class PROSACRobustRssiPositionEstimator3DTest implements
 
     private double receivedPower(final double equivalentTransmittedPower,
                                  final double distance, final double pathLossExponent) {
-        //Pr = Pt*Gt*Gr*lambda^2/(4*pi*d)^2,    where Pr is the received power
+        // Pr = Pt*Gt*Gr*lambda^2/(4*pi*d)^2,    where Pr is the received power
         // lambda = c/f, where lambda is wavelength,
         // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the received Gain
-        //Pr = Pte*c^2/((4*pi*f)^2 * d^2)
+        // Pr = Pte*c^2/((4*pi*f)^2 * d^2)
         final double k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI * FREQUENCY), pathLossExponent);
         return equivalentTransmittedPower * k /
                 Math.pow(distance, pathLossExponent);

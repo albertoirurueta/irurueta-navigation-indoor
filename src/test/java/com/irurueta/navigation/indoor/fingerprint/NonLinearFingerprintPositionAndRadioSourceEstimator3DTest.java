@@ -25,9 +25,13 @@ import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.indoor.*;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.*;
+import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -61,8 +65,8 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
     private static final double MIN_RSSI_STANDARD_DEVIATION = 1e-2;
     private static final double MAX_RSSI_STANDARD_DEVIATION = 5e-1;
 
-    private static final double MIN_PATHLOSS_STANDARD_DEVIATION = 1e-2;
-    private static final double MAX_PATHLOSS_STANDARD_DEVIATION = 5e-2;
+    private static final double MIN_PATH_LOSS_STANDARD_DEVIATION = 1e-2;
+    private static final double MAX_PATH_LOSS_STANDARD_DEVIATION = 5e-2;
 
     private static final double MIN_POSITION_STANDARD_DEVIATION = 1e-1;
     private static final double MAX_POSITION_STANDARD_DEVIATION = 5e-1;
@@ -80,27 +84,13 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
     private int estimateStart;
     private int estimateEnd;
 
-    public NonLinearFingerprintPositionAndRadioSourceEstimator3DTest() { }
-
-    @BeforeClass
-    public static void setUpClass() { }
-
-    @AfterClass
-    public static void tearDownClass() { }
-
-    @Before
-    public void setUp() { }
-
-    @After
-    public void tearDown() { }
-
     @Test
     public void testConstructor() {
-        //test empty constructor
+        // test empty constructor
         NonLinearFingerprintPositionAndRadioSourceEstimator3D estimator =
                 new NonLinearFingerprintPositionAndRadioSourceEstimator3D();
 
-        //check default values
+        // check default values
         assertNull(estimator.getLocatedFingerprints());
         assertNull(estimator.getFingerprint());
         assertEquals(estimator.getMinNearestFingerprints(), -1);
@@ -130,11 +120,11 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
         assertTrue(estimator.isRadioSourcePositionCovariancePropagated());
 
 
-        //test constructor with listener
+        // test constructor with listener
         estimator = new NonLinearFingerprintPositionAndRadioSourceEstimator3D(
                 this);
 
-        //check default values
+        // check default values
         assertNull(estimator.getLocatedFingerprints());
         assertNull(estimator.getFingerprint());
         assertEquals(estimator.getMinNearestFingerprints(), -1);
@@ -228,12 +218,14 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
             estimator = new NonLinearFingerprintPositionAndRadioSourceEstimator3D(
                     null, fingerprint);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) { }
+        } catch (final IllegalArgumentException ignore) {
+        }
         try {
             estimator = new NonLinearFingerprintPositionAndRadioSourceEstimator3D(
                     locatedFingerprints, null);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) { }
+        } catch (final IllegalArgumentException ignore) {
+        }
         assertNull(estimator);
 
 
@@ -276,12 +268,14 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
             estimator = new NonLinearFingerprintPositionAndRadioSourceEstimator3D(
                     null, fingerprint, this);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) { }
+        } catch (final IllegalArgumentException ignore) {
+        }
         try {
             estimator = new NonLinearFingerprintPositionAndRadioSourceEstimator3D(
                     locatedFingerprints, null, this);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) { }
+        } catch (final IllegalArgumentException ignore) {
+        }
         assertNull(estimator);
 
 
@@ -326,12 +320,14 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
             estimator = new NonLinearFingerprintPositionAndRadioSourceEstimator3D(
                     null, fingerprint, initialPosition);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) { }
+        } catch (final IllegalArgumentException ignore) {
+        }
         try {
             estimator = new NonLinearFingerprintPositionAndRadioSourceEstimator3D(
                     locatedFingerprints, null, initialPosition);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) { }
+        } catch (final IllegalArgumentException ignore) {
+        }
         assertNull(estimator);
 
 
@@ -375,12 +371,14 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
             estimator = new NonLinearFingerprintPositionAndRadioSourceEstimator3D(
                     null, fingerprint, initialPosition);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) { }
+        } catch (final IllegalArgumentException ignore) {
+        }
         try {
             estimator = new NonLinearFingerprintPositionAndRadioSourceEstimator3D(
                     locatedFingerprints, null, initialPosition);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) { }
+        } catch (final IllegalArgumentException ignore) {
+        }
         assertNull(estimator);
 
 
@@ -426,12 +424,14 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
             estimator = new NonLinearFingerprintPositionAndRadioSourceEstimator3D(
                     null, fingerprint, initialLocatedSources);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) { }
+        } catch (final IllegalArgumentException ignore) {
+        }
         try {
             estimator = new NonLinearFingerprintPositionAndRadioSourceEstimator3D(
                     locatedFingerprints, null, initialLocatedSources);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) { }
+        } catch (final IllegalArgumentException ignore) {
+        }
         assertNull(estimator);
 
 
@@ -474,12 +474,14 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
             estimator = new NonLinearFingerprintPositionAndRadioSourceEstimator3D(
                     null, fingerprint, initialLocatedSources);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) { }
+        } catch (final IllegalArgumentException ignore) {
+        }
         try {
             estimator = new NonLinearFingerprintPositionAndRadioSourceEstimator3D(
                     locatedFingerprints, null, initialLocatedSources);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) { }
+        } catch (final IllegalArgumentException ignore) {
+        }
         assertNull(estimator);
 
 
@@ -525,13 +527,15 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
                     null, fingerprint, initialPosition,
                     initialLocatedSources);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) { }
+        } catch (final IllegalArgumentException ignore) {
+        }
         try {
             estimator = new NonLinearFingerprintPositionAndRadioSourceEstimator3D(
                     locatedFingerprints, null, initialPosition,
                     initialLocatedSources);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) { }
+        } catch (final IllegalArgumentException ignore) {
+        }
         assertNull(estimator);
 
 
@@ -577,13 +581,15 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
                     null, fingerprint, initialPosition,
                     initialLocatedSources, this);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) { }
+        } catch (final IllegalArgumentException ignore) {
+        }
         try {
             estimator = new NonLinearFingerprintPositionAndRadioSourceEstimator3D(
                     locatedFingerprints, null, initialPosition,
                     initialLocatedSources, this);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) { }
+        } catch (final IllegalArgumentException ignore) {
+        }
         assertNull(estimator);
     }
 
@@ -641,15 +647,18 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
         try {
             estimator.setMinMaxNearestFingerprints(-1, 3);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) { }
+        } catch (final IllegalArgumentException ignore) {
+        }
         try {
             estimator.setMinMaxNearestFingerprints(0, 3);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) { }
+        } catch (final IllegalArgumentException ignore) {
+        }
         try {
             estimator.setMinMaxNearestFingerprints(2, 1);
             fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) { }
+        } catch (final IllegalArgumentException ignore) {
+        }
     }
 
     @Test
@@ -841,7 +850,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
             // build sources
             final int numSources = 1;
             final List<RadioSourceLocated<Point3D>> sources = new ArrayList<>();
-            for(int i = 0; i < numSources; i++) {
+            for (int i = 0; i < numSources; i++) {
                 final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double z = randomizer.nextDouble(MIN_POS, MAX_POS);
@@ -907,7 +916,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
             // create estimator
             final NonLinearFingerprintPositionAndRadioSourceEstimator3D estimator =
                     new NonLinearFingerprintPositionAndRadioSourceEstimator3D(
-                            locatedFingerprints, fingerprint,this);
+                            locatedFingerprints, fingerprint, this);
             estimator.setUseNoMeanNearestFingerprintFinder(true);
 
             reset();
@@ -994,7 +1003,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
         avgPositionAccuracy /= numValid;
         avgSourceAccuracy /= numValid;
 
-        final double percentage = (double)numValid / (double)TIMES;
+        final double percentage = (double) numValid / (double) TIMES;
 
 
         LOGGER.log(Level.INFO, "Valid percentage: {0}%",
@@ -1029,7 +1038,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
             // build sources
             final int numSources = 1;
             final List<RadioSourceLocated<Point3D>> sources = new ArrayList<>();
-            for(int i = 0; i < numSources; i++) {
+            for (int i = 0; i < numSources; i++) {
                 final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double z = randomizer.nextDouble(MIN_POS, MAX_POS);
@@ -1194,7 +1203,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
         avgPositionAccuracy /= numValid;
         avgSourceAccuracy /= numValid;
 
-        final double percentage = (double)numValid / (double)TIMES;
+        final double percentage = (double) numValid / (double) TIMES;
 
         LOGGER.log(Level.INFO, "Valid percentage: {0}%",
                 percentage * 100.0);
@@ -1231,7 +1240,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
             final int numSources = 1;
             final List<RadioSourceLocated<Point3D>> sources = new ArrayList<>();
             final List<RadioSourceLocated<Point3D>> initialSources = new ArrayList<>();
-            for(int i = 0; i < numSources; i++) {
+            for (int i = 0; i < numSources; i++) {
                 final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double z = randomizer.nextDouble(MIN_POS, MAX_POS);
@@ -1313,7 +1322,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
             final NonLinearFingerprintPositionAndRadioSourceEstimator3D estimator =
                     new NonLinearFingerprintPositionAndRadioSourceEstimator3D(
                             locatedFingerprints, fingerprint, initialPosition,
-                            initialSources,this);
+                            initialSources, this);
             estimator.setUseNoMeanNearestFingerprintFinder(true);
 
             reset();
@@ -1400,7 +1409,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
         avgPositionAccuracy /= numValid;
         avgSourceAccuracy /= numValid;
 
-        final double percentage = (double)numValid / (double)TIMES;
+        final double percentage = (double) numValid / (double) TIMES;
 
 
         LOGGER.log(Level.INFO, "Valid percentage: {0}%",
@@ -1436,7 +1445,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
             final int numSources = 1;
             final List<RadioSourceLocated<Point3D>> locatedSources = new ArrayList<>();
             final List<RadioSource> sources = new ArrayList<>();
-            for(int i = 0; i < numSources; i++) {
+            for (int i = 0; i < numSources; i++) {
                 final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double z = randomizer.nextDouble(MIN_POS, MAX_POS);
@@ -1609,7 +1618,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
         avgPositionAccuracy /= numValid;
         avgSourceAccuracy /= numValid;
 
-        final double percentage = (double)numValid / (double)TIMES;
+        final double percentage = (double) numValid / (double) TIMES;
 
         LOGGER.log(Level.INFO, "Valid percentage: {0}%",
                 percentage * 100.0);
@@ -1645,7 +1654,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
             // build sources
             final int numSources = 1;
             final List<RadioSourceLocated<Point3D>> sources = new ArrayList<>();
-            for(int i = 0; i < numSources; i++) {
+            for (int i = 0; i < numSources; i++) {
                 final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double z = randomizer.nextDouble(MIN_POS, MAX_POS);
@@ -1802,7 +1811,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
         avgPositionAccuracy /= numValid;
         avgSourceAccuracy /= numValid;
 
-        final double percentage = (double)numValid / (double)TIMES;
+        final double percentage = (double) numValid / (double) TIMES;
 
         LOGGER.log(Level.INFO, "Valid percentage: {0}%",
                 percentage * 100.0);
@@ -1836,7 +1845,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
             // build sources
             final int numSources = 1;
             final List<RadioSourceLocated<Point3D>> sources = new ArrayList<>();
-            for(int i = 0; i < numSources; i++) {
+            for (int i = 0; i < numSources; i++) {
                 final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double z = randomizer.nextDouble(MIN_POS, MAX_POS);
@@ -1999,7 +2008,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
         avgPositionAccuracy /= numValid;
         avgSourceAccuracy /= numValid;
 
-        final double percentage = (double)numValid / (double)TIMES;
+        final double percentage = (double) numValid / (double) TIMES;
 
         LOGGER.log(Level.INFO, "Valid percentage: {0}%",
                 percentage * 100.0);
@@ -2035,7 +2044,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
             // build sources
             final int numSources = 1;
             final List<RadioSourceLocated<Point3D>> sources = new ArrayList<>();
-            for(int i = 0; i < numSources; i++) {
+            for (int i = 0; i < numSources; i++) {
                 final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double z = randomizer.nextDouble(MIN_POS, MAX_POS);
@@ -2194,7 +2203,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
         avgPositionAccuracy /= numValid;
         avgSourceAccuracy /= numValid;
 
-        final double percentage = (double)numValid / (double)TIMES;
+        final double percentage = (double) numValid / (double) TIMES;
 
         LOGGER.log(Level.INFO, "Valid percentage: {0}%",
                 percentage * 100.0);
@@ -2228,7 +2237,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
             // build sources
             final int numSources = 1;
             final List<RadioSourceLocated<Point3D>> sources = new ArrayList<>();
-            for(int i = 0; i < numSources; i++) {
+            for (int i = 0; i < numSources; i++) {
                 final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double z = randomizer.nextDouble(MIN_POS, MAX_POS);
@@ -2240,9 +2249,9 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
                         MAX_POSITION_STANDARD_DEVIATION);
                 final double positionVariance = positionStd * positionStd;
                 final Matrix positionCovariance = Matrix.diagonal(
-                        new double[] { positionVariance, positionVariance, positionVariance });
-                final double pathLossStd = randomizer.nextDouble(MIN_PATHLOSS_STANDARD_DEVIATION,
-                        MAX_PATHLOSS_STANDARD_DEVIATION);
+                        new double[]{positionVariance, positionVariance, positionVariance});
+                final double pathLossStd = randomizer.nextDouble(MIN_PATH_LOSS_STANDARD_DEVIATION,
+                        MAX_PATH_LOSS_STANDARD_DEVIATION);
 
                 final WifiAccessPointWithPowerAndLocated3D accessPoint =
                         new WifiAccessPointWithPowerAndLocated3D(
@@ -2268,7 +2277,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
                         MAX_POSITION_STANDARD_DEVIATION);
                 final double positionVariance = positionStd * positionStd;
                 final Matrix positionCovariance = Matrix.diagonal(
-                        new double[] { positionVariance, positionVariance, positionVariance });
+                        new double[]{positionVariance, positionVariance, positionVariance});
 
                 final List<RssiReading<RadioSource>> readings = new ArrayList<>();
                 for (final RadioSourceLocated<Point3D> source : sources) {
@@ -2414,7 +2423,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
         avgPositionAccuracy /= numValid;
         avgSourceAccuracy /= numValid;
 
-        final double percentage = (double)numValid / (double)TIMES;
+        final double percentage = (double) numValid / (double) TIMES;
 
         LOGGER.log(Level.INFO, "Valid percentage: {0}%",
                 percentage * 100.0);
@@ -2448,7 +2457,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
             // build sources
             final int numSources = 1;
             final List<RadioSourceLocated<Point3D>> sources = new ArrayList<>();
-            for(int i = 0; i < numSources; i++) {
+            for (int i = 0; i < numSources; i++) {
                 final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double z = randomizer.nextDouble(MIN_POS, MAX_POS);
@@ -2612,7 +2621,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
         avgPositionAccuracy /= numValid;
         avgSourceAccuracy /= numValid;
 
-        final double percentage = (double)numValid / (double)TIMES;
+        final double percentage = (double) numValid / (double) TIMES;
 
         LOGGER.log(Level.INFO, "Valid percentage: {0}%",
                 percentage * 100.0);
@@ -2649,7 +2658,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
             // build sources
             final int numSources = 1;
             final List<RadioSourceLocated<Point3D>> sources = new ArrayList<>();
-            for(int i = 0; i < numSources; i++) {
+            for (int i = 0; i < numSources; i++) {
                 final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double z = randomizer.nextDouble(MIN_POS, MAX_POS);
@@ -2814,7 +2823,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
         avgPositionAccuracy /= numValid;
         avgSourceAccuracy /= numValid;
 
-        final double percentage = (double)numValid / (double)TIMES;
+        final double percentage = (double) numValid / (double) TIMES;
 
         LOGGER.log(Level.INFO, "Valid percentage: {0}%",
                 percentage * 100.0);
@@ -2848,7 +2857,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
             // build sources
             final int numSources = 2;
             final List<RadioSourceLocated<Point3D>> sources = new ArrayList<>();
-            for(int i = 0; i < numSources; i++) {
+            for (int i = 0; i < numSources; i++) {
                 final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double z = randomizer.nextDouble(MIN_POS, MAX_POS);
@@ -2914,7 +2923,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
             // create estimator
             final NonLinearFingerprintPositionAndRadioSourceEstimator3D estimator =
                     new NonLinearFingerprintPositionAndRadioSourceEstimator3D(
-                            locatedFingerprints, fingerprint,this);
+                            locatedFingerprints, fingerprint, this);
             estimator.setUseNoMeanNearestFingerprintFinder(true);
 
             reset();
@@ -3002,7 +3011,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
         avgPositionAccuracy /= numValid;
         avgSourceAccuracy /= numValid;
 
-        final double percentage = (double)numValid / (double)TIMES;
+        final double percentage = (double) numValid / (double) TIMES;
 
 
         LOGGER.log(Level.INFO, "Valid percentage: {0}%",
@@ -3037,7 +3046,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
             // build sources
             final int numSources = 2;
             final List<RadioSourceLocated<Point3D>> sources = new ArrayList<>();
-            for(int i = 0; i < numSources; i++) {
+            for (int i = 0; i < numSources; i++) {
                 final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double z = randomizer.nextDouble(MIN_POS, MAX_POS);
@@ -3201,7 +3210,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
         avgPositionAccuracy /= numValid;
         avgSourceAccuracy /= numValid;
 
-        final double percentage = (double)numValid / (double)TIMES;
+        final double percentage = (double) numValid / (double) TIMES;
 
         LOGGER.log(Level.INFO, "Valid percentage: {0}%",
                 percentage * 100.0);
@@ -3235,7 +3244,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
             // build sources
             final int numSources = 2;
             final List<RadioSourceLocated<Point3D>> sources = new ArrayList<>();
-            for(int i = 0; i < numSources; i++) {
+            for (int i = 0; i < numSources; i++) {
                 final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double z = randomizer.nextDouble(MIN_POS, MAX_POS);
@@ -3247,9 +3256,9 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
                         MAX_POSITION_STANDARD_DEVIATION);
                 final double positionVariance = positionStd * positionStd;
                 final Matrix positionCovariance = Matrix.diagonal(
-                        new double[] { positionVariance, positionVariance, positionVariance });
-                final double pathLossStd = randomizer.nextDouble(MIN_PATHLOSS_STANDARD_DEVIATION,
-                        MAX_PATHLOSS_STANDARD_DEVIATION);
+                        new double[]{positionVariance, positionVariance, positionVariance});
+                final double pathLossStd = randomizer.nextDouble(MIN_PATH_LOSS_STANDARD_DEVIATION,
+                        MAX_PATH_LOSS_STANDARD_DEVIATION);
 
                 final WifiAccessPointWithPowerAndLocated3D accessPoint =
                         new WifiAccessPointWithPowerAndLocated3D(
@@ -3275,7 +3284,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
                         MAX_POSITION_STANDARD_DEVIATION);
                 final double positionVariance = positionStd * positionStd;
                 final Matrix positionCovariance = Matrix.diagonal(
-                        new double[] { positionVariance, positionVariance, positionVariance });
+                        new double[]{positionVariance, positionVariance, positionVariance});
 
                 final List<RssiReading<RadioSource>> readings = new ArrayList<>();
                 for (final RadioSourceLocated<Point3D> source : sources) {
@@ -3423,7 +3432,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
         avgPositionAccuracy /= numValid;
         avgSourceAccuracy /= numValid;
 
-        final double percentage = (double)numValid / (double)TIMES;
+        final double percentage = (double) numValid / (double) TIMES;
 
         LOGGER.log(Level.INFO, "Valid percentage: {0}%",
                 percentage * 100.0);
@@ -3457,7 +3466,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
             // build sources
             final int numSources = 2;
             final List<RadioSourceLocated<Point3D>> sources = new ArrayList<>();
-            for(int i = 0; i < numSources; i++) {
+            for (int i = 0; i < numSources; i++) {
                 final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double z = randomizer.nextDouble(MIN_POS, MAX_POS);
@@ -3524,19 +3533,19 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
             // find closest located fingerprint to actual position and leave only
             // dims - 1 readings for last radio source
             final int minNearestFingerprints = 9;
-            final RadioSourceNoMeanKNearestFinder<Point3D, RadioSource> noMeanfinder =
+            final RadioSourceNoMeanKNearestFinder<Point3D, RadioSource> noMeanFinder =
                     new RadioSourceNoMeanKNearestFinder<>(locatedFingerprints);
             final List<RssiFingerprintLocated<RadioSource, RssiReading<RadioSource>, Point3D>> nearestFingerprints =
-                    noMeanfinder.findKNearestTo(fingerprint, minNearestFingerprints);
+                    noMeanFinder.findKNearestTo(fingerprint, minNearestFingerprints);
             final RadioSourceLocated<Point3D> lastSource = sources.get(sources.size() - 1);
             int numReadingsLastSource = 0;
             locatedFingerprints.clear();
 
-            for(final RssiFingerprintLocated<RadioSource, RssiReading<RadioSource>, Point3D> nearFingerprint : nearestFingerprints) {
+            for (final RssiFingerprintLocated<RadioSource, RssiReading<RadioSource>, Point3D> nearFingerprint : nearestFingerprints) {
                 final List<RssiReading<RadioSource>> nearReadings = nearFingerprint.getReadings();
 
                 final List<RssiReading<RadioSource>> readingsToRemove = new ArrayList<>();
-                for(final RssiReading<RadioSource> nearReading : nearReadings) {
+                for (final RssiReading<RadioSource> nearReading : nearReadings) {
                     if (nearReading.getSource().equals(lastSource)) {
                         numReadingsLastSource++;
 
@@ -3549,7 +3558,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
                 nearReadings.removeAll(readingsToRemove);
 
                 locatedFingerprints.add(
-                        (RssiFingerprintLocated3D<RadioSource, RssiReading<RadioSource>>)nearFingerprint);
+                        (RssiFingerprintLocated3D<RadioSource, RssiReading<RadioSource>>) nearFingerprint);
             }
 
 
@@ -3561,7 +3570,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
                             sources,
                             this);
             estimator.setUseNoMeanNearestFingerprintFinder(true);
-            estimator.setMinMaxNearestFingerprints(minNearestFingerprints,-1);
+            estimator.setMinMaxNearestFingerprints(minNearestFingerprints, -1);
 
             reset();
 
@@ -3662,7 +3671,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
         avgPositionAccuracy /= numValid;
         avgSourceAccuracy /= numValid;
 
-        final double percentage = (double)numValid / (double)TIMES;
+        final double percentage = (double) numValid / (double) TIMES;
 
         LOGGER.log(Level.INFO, "Valid percentage: {0}%",
                 percentage * 100.0);
@@ -3696,7 +3705,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
             // build sources
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
             final List<RadioSourceLocated<Point3D>> sources = new ArrayList<>();
-            for(int i = 0; i < numSources; i++) {
+            for (int i = 0; i < numSources; i++) {
                 final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double z = randomizer.nextDouble(MIN_POS, MAX_POS);
@@ -3883,7 +3892,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
             // build sources
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
             final List<RadioSourceLocated<Point3D>> sources = new ArrayList<>();
-            for(int i = 0; i < numSources; i++) {
+            for (int i = 0; i < numSources; i++) {
                 final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double z = randomizer.nextDouble(MIN_POS, MAX_POS);
@@ -4084,7 +4093,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
             final List<RadioSourceLocated<Point3D>> sources = new ArrayList<>();
             final List<RadioSourceLocated<Point3D>> initialSources = new ArrayList<>();
-            for(int i = 0; i < numSources; i++) {
+            for (int i = 0; i < numSources; i++) {
                 final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
                 final double z = randomizer.nextDouble(MIN_POS, MAX_POS);
@@ -4273,13 +4282,13 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
     @Override
     public void onEstimateStart(final FingerprintPositionAndRadioSourceEstimator<Point3D> estimator) {
         estimateStart++;
-        checkLocked((NonLinearFingerprintPositionAndRadioSourceEstimator3D)estimator);
+        checkLocked((NonLinearFingerprintPositionAndRadioSourceEstimator3D) estimator);
     }
 
     @Override
     public void onEstimateEnd(final FingerprintPositionAndRadioSourceEstimator<Point3D> estimator) {
         estimateEnd++;
-        checkLocked((NonLinearFingerprintPositionAndRadioSourceEstimator3D)estimator);
+        checkLocked((NonLinearFingerprintPositionAndRadioSourceEstimator3D) estimator);
     }
 
     private void reset() {
@@ -4288,10 +4297,10 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
 
     private double receivedPower(final double equivalentTransmittedPower,
                                  final double distance, final double pathLossExponent) {
-        //Pr = Pt*Gt*Gr*lambda^2/(4*pi*d)^2,    where Pr is the received power
+        // Pr = Pt*Gt*Gr*lambda^2/(4*pi*d)^2,    where Pr is the received power
         // lambda = c/f, where lambda is wavelength,
         // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the received Gain
-        //Pr = Pte*c^2/((4*pi*f)^2 * d^2)
+        // Pr = Pte*c^2/((4*pi*f)^2 * d^2)
         final double k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI * FREQUENCY), pathLossExponent);
         return equivalentTransmittedPower * k /
                 Math.pow(distance, pathLossExponent);
@@ -4301,59 +4310,73 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator3DTest implement
         try {
             estimator.setLocatedFingerprints(null);
             fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) { }
+        } catch (final LockedException ignore) {
+        }
         try {
             estimator.setFingerprint(null);
             fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) { }
+        } catch (final LockedException ignore) {
+        }
         try {
-            estimator.setMinMaxNearestFingerprints(-1 , -1);
+            estimator.setMinMaxNearestFingerprints(-1, -1);
             fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) { }
+        } catch (final LockedException ignore) {
+        }
         try {
             estimator.setPathLossExponent(2.0);
             fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) { }
+        } catch (final LockedException ignore) {
+        }
         try {
             estimator.setListener(this);
             fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) { }
+        } catch (final LockedException ignore) {
+        }
         try {
             estimator.setUseNoMeanNearestFingerprintFinder(true);
             fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) { }
+        } catch (final LockedException ignore) {
+        }
         try {
             estimator.setInitialLocatedSources(null);
             fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) { }
+        } catch (final LockedException ignore) {
+        }
         try {
             estimator.setInitialPosition(null);
             fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) { }
+        } catch (final LockedException ignore) {
+        }
         try {
             estimator.setUseSourcesPathLossExponentWhenAvailable(true);
             fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) { }
+        } catch (final LockedException ignore) {
+        }
         try {
             estimator.setFallbackRssiStandardDeviation(1.0);
             fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) { }
+        } catch (final LockedException ignore) {
+        }
         try {
             estimator.setFingerprintRssiStandardDeviationPropagated(true);
             fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) { }
+        } catch (final LockedException ignore) {
+        }
         try {
             estimator.setPathlossExponentStandardDeviationPropagated(true);
             fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) { }
+        } catch (final LockedException ignore) {
+        }
         try {
             estimator.setFingerprintPositionCovariancePropagated(true);
             fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) { }
+        } catch (final LockedException ignore) {
+        }
         try {
             estimator.setRadioSourcePositionCovariancePropagated(true);
             fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) { }
+        } catch (final LockedException ignore) {
+        }
         try {
             estimator.estimate();
             fail("LockedException expected but not thrown");

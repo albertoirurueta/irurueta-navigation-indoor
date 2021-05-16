@@ -17,6 +17,7 @@ package com.irurueta.navigation.indoor;
 
 import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.Point2D;
+
 import java.util.List;
 
 /**
@@ -25,7 +26,6 @@ import java.util.List;
  * @param <S> a {@link RadioSource} type.
  * @param <R> a {@link RssiReading} type.
  */
-@SuppressWarnings("WeakerAccess")
 public class RangingFingerprintLocated2D<S extends RadioSource,
         R extends RangingReading<S>> extends RangingFingerprintLocated<S, R, Point2D> {
 

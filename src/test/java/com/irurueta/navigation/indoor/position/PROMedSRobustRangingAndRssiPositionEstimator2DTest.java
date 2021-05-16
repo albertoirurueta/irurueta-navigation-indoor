@@ -94,7 +94,7 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2DTest implements
 
     private static final double TX_POWER_VARIANCE = 0.1;
     private static final double RX_POWER_VARIANCE = 0.5;
-    private static final double PATHLOSS_EXPONENT_VARIANCE = 0.001;
+    private static final double PATH_LOSS_EXPONENT_VARIANCE = 0.001;
 
     private int estimateStart;
     private int estimateEnd;
@@ -146,7 +146,6 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2DTest implements
         assertEquals(estimator.getNumberOfDimensions(), 2);
         assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertTrue(estimator.getEvenlyDistributeReadings());
-
 
         // constructor with sources
         final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
@@ -212,7 +211,6 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprints
         final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
                 new RangingAndRssiFingerprint<>();
@@ -267,7 +265,6 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources and fingerprint
         estimator = new PROMedSRobustRangingAndRssiPositionEstimator2D(sources,
@@ -335,7 +332,6 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with listener
         estimator = new PROMedSRobustRangingAndRssiPositionEstimator2D(this);
 
@@ -378,7 +374,6 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2DTest implements
         assertEquals(estimator.getNumberOfDimensions(), 2);
         assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertTrue(estimator.getEvenlyDistributeReadings());
-
 
         // constructor with sources and listener
         estimator = new PROMedSRobustRangingAndRssiPositionEstimator2D(sources,
@@ -440,7 +435,6 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint and listener
         estimator = new PROMedSRobustRangingAndRssiPositionEstimator2D(fingerprint,
                 this);
@@ -495,7 +489,6 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint and listener
         estimator = new PROMedSRobustRangingAndRssiPositionEstimator2D(sources,
@@ -563,7 +556,6 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with quality scores
         final double[] sourceQualityScores = new double[3];
@@ -642,7 +634,6 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with quality scores and sources
         estimator = new PROMedSRobustRangingAndRssiPositionEstimator2D(
@@ -734,7 +725,6 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with quality scores and fingerprints
         estimator = new PROMedSRobustRangingAndRssiPositionEstimator2D(
                 sourceQualityScores, fingerprintReadingsQualityScores, fingerprint);
@@ -816,7 +806,6 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with quality scores, sources and fingerprint
         estimator = new PROMedSRobustRangingAndRssiPositionEstimator2D(
@@ -916,7 +905,6 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with quality scores and listener
         estimator = new PROMedSRobustRangingAndRssiPositionEstimator2D(
                 sourceQualityScores, fingerprintReadingsQualityScores, this);
@@ -991,7 +979,6 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with quality scores, sources and listener
         estimator = new PROMedSRobustRangingAndRssiPositionEstimator2D(
@@ -1087,7 +1074,6 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with quality scores, fingerprint and listener
         estimator = new PROMedSRobustRangingAndRssiPositionEstimator2D(
                 sourceQualityScores,
@@ -1172,7 +1158,6 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint and listener
         estimator = new PROMedSRobustRangingAndRssiPositionEstimator2D(
@@ -1700,7 +1685,7 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -1859,7 +1844,7 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -2028,7 +2013,7 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -2193,7 +2178,7 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -2362,7 +2347,7 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -2516,7 +2501,7 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -2670,7 +2655,7 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -2823,7 +2808,7 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -2976,7 +2961,7 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -3129,7 +3114,7 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -3282,7 +3267,7 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 

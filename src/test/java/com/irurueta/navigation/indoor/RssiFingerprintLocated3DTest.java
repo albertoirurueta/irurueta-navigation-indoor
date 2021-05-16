@@ -18,10 +18,6 @@ package com.irurueta.navigation.indoor;
 import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.geometry.InhomogeneousPoint3D;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -30,25 +26,6 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class RssiFingerprintLocated3DTest {
-
-    public RssiFingerprintLocated3DTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
 
     @Test
     public void testConstructor() throws WrongSizeException {
@@ -60,7 +37,6 @@ public class RssiFingerprintLocated3DTest {
         assertTrue(f.getReadings().isEmpty());
         assertNull(f.getPosition());
         assertNull(f.getPositionCovariance());
-
 
         // test with readings and position
         final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -85,7 +61,6 @@ public class RssiFingerprintLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(f);
-
 
         // test with readings, position and covariance
         final Matrix cov = new Matrix(3, 3);

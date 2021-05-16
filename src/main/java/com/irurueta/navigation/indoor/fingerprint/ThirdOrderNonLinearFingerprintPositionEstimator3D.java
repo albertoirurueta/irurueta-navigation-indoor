@@ -25,6 +25,7 @@ import com.irurueta.navigation.indoor.RssiFingerprintLocated;
 import com.irurueta.navigation.indoor.RssiReading;
 import com.irurueta.navigation.indoor.Utils;
 import com.irurueta.statistics.MultivariateNormalDist;
+
 import java.util.List;
 
 /**
@@ -38,7 +39,6 @@ import java.util.List;
  * otherwise the average point of selected nearest fingerprints is used as a starting
  * point.
  */
-@SuppressWarnings("WeakerAccess")
 public class ThirdOrderNonLinearFingerprintPositionEstimator3D extends
         NonLinearFingerprintPositionEstimator3D {
 
@@ -177,247 +177,247 @@ public class ThirdOrderNonLinearFingerprintPositionEstimator3D extends
     protected double evaluate(
             final int i, final double[] point, final double[] params,
             final double[] derivatives) {
-        //Demonstration in 3D:
-        //--------------------
-        //Taylor series expansion can be expressed as:
-        //f(x) = f(a) + 1/1!*f'(a)*(x - a) + 1/2!*f''(a)*(x - a)^2 + 1/3!*f'''(a)*(x - a)^3 ...
+        // Demonstration in 3D:
+        // --------------------
+        // Taylor series expansion can be expressed as:
+        // f(x) = f(a) + 1/1!*f'(a)*(x - a) + 1/2!*f''(a)*(x - a)^2 + 1/3!*f'''(a)*(x - a)^3 ...
 
-        //where f'(x) is the derivative of f respect x, which can also be expressed as:
-        //f'(x) = diff(f(x))/diff(x)
+        // where f'(x) is the derivative of f respect x, which can also be expressed as:
+        // f'(x) = diff(f(x))/diff(x)
 
-        //and f'(a) is the derivative of f respect x evaluated at a, which can be expressed
-        //as f'(a) = diff(f(a))/diff(x)
+        // and f'(a) is the derivative of f respect x evaluated at a, which can be expressed
+        // as f'(a) = diff(f(a))/diff(x)
 
-        //consequently f''(a) is the second derivative respect x evaluated at a, which can
-        //be expressed as:
-        //f''(x) = diff(f(x))/diff(x^2)
+        // consequently f''(a) is the second derivative respect x evaluated at a, which can
+        // be expressed as:
+        // f''(x) = diff(f(x))/diff(x^2)
 
-        //and:
-        //f''(a) = diff(f(a))/diff(x^2)
+        // and:
+        // f''(a) = diff(f(a))/diff(x^2)
 
-        //and finally f'''(a) is the third derivative respect x evaluated at a, which can
-        //be expressed as:
-        //f'''(x) = diff(f(x))/diff(x^3)
+        // and finally f'''(a) is the third derivative respect x evaluated at a, which can
+        // be expressed as:
+        // f'''(x) = diff(f(x))/diff(x^3)
 
-        //and:
-        //f'''(a) = diff(f(a))/diff(x^3)
+        // and:
+        // f'''(a) = diff(f(a))/diff(x^3)
 
-        //Received power expressed in dBm is:
-        //k = (c/(4*pi*f))
-        //Pr = Pte*k^n / d^n
+        // Received power expressed in dBm is:
+        // k = (c/(4*pi*f))
+        // Pr = Pte*k^n / d^n
 
-        //where c is the speed of light, pi is 3.14159..., f is the frequency of the radio source,
-        //Pte is the equivalent transmitted power by the radio source, n is the path-loss exponent
+        // where c is the speed of light, pi is 3.14159..., f is the frequency of the radio source,
+        // Pte is the equivalent transmitted power by the radio source, n is the path-loss exponent
         // (typically 2.0), and d is the distance from a point to the location of the radio source.
 
-        //Hence:
-        //Pr(dBm) = 10*log(Pte*k^n/d^n) = 10*n*log(k) + 10*log(Pte) - 10*n*log(d) =
+        // Hence:
+        // Pr(dBm) = 10*log(Pte*k^n/d^n) = 10*n*log(k) + 10*log(Pte) - 10*n*log(d) =
         //          10*n*log(k) + 10*log(Pte) - 5*n*log(d^2)
 
-        //The former 2 terms are constant, and only the last term depends on distance
+        // The former 2 terms are constant, and only the last term depends on distance
 
-        //Hence, assuming the constant K = 10*n*log(k) + Pte(dBm), where Pte(dBm) = 10*log(Pte),
-        //assuming that transmitted power by the radio source Pte is known (so that K is also known),
-        //and assuming that the location of the radio source is known and it is located at pa = (xa, ya)
-        //so that d^2 = (x - xa)^2 + (y - ya)^2 then the received power at an unknown point pi = (xi, yi) is:
+        // Hence, assuming the constant K = 10*n*log(k) + Pte(dBm), where Pte(dBm) = 10*log(Pte),
+        // assuming that transmitted power by the radio source Pte is known (so that K is also known),
+        // and assuming that the location of the radio source is known and it is located at pa = (xa, ya)
+        // so that d^2 = (x - xa)^2 + (y - ya)^2 then the received power at an unknown point pi = (xi, yi) is:
 
-        //Pr(pi) = Pr(xi,yi) = K - 5*n*log(d^2) = K - 5*n*log((xi - xa)^2 + (yi - ya)^2)
+        // Pr(pi) = Pr(xi,yi) = K - 5*n*log(d^2) = K - 5*n*log((xi - xa)^2 + (yi - ya)^2)
 
-        //Suppose that received power at point p1=(x1,y1) is known on a located fingerprint
-        //containing readings Pr(p1).
+        // Suppose that received power at point p1=(x1,y1) is known on a located fingerprint
+        // containing readings Pr(p1).
 
-        //Then, for an unknown point pi=(xi,yi) close to fingerprint 1 located at p1 where we
-        //have measured received power Pr(pi), we can get the following third-order Taylor
-        //approximation:
+        // Then, for an unknown point pi=(xi,yi) close to fingerprint 1 located at p1 where we
+        // have measured received power Pr(pi), we can get the following third-order Taylor
+        // approximation:
 
-        //Pr(pi = (xi,yi)) = Pr(p1) +
-        //  diff(Pr(p1))/diff(x)*(xi - x1) +
-        //  diff(Pr(p1))/diff(y)*(yi - y1) +
-        //  diff(Pr(p1))/diff(z)*(zi - z1) +
-        //  1/2*(diff(Pr(p1))/diff(x^2)*(xi - x1)^2 +
-        //      diff(Pr(p1))/diff(y^2)*(yi - y1)^2 +
-        //      diff(Pr(p1))/diff(z^2)*(zi - z1)^2 +
-        //      2*diff(Pr(p1))/diff(x*y)*(xi - x1)*(yi - y1)) +
-        //      2*diff(Pr(p1))/diff(y*z)*(yi - y1)*(zi - z1) +
-        //      2*diff(Pr(p1))/diff(x*z)*(xi - x1)*(zi - z1)
-        //  1/6*(diff(Pr(p1))/diff(x^3)*(xi - x1)^3 +
-        //      diff(Pr(p1))/diff(y^3)*(yi - y1)^3 +
-        //      diff(Pr(p1))/diff(z^3)*(zi - z1)^3 +
-        //      3*diff(Pr(p1))/diff(x^2*y)*(xi - x1)^2*(yi - y1) +
-        //      3*diff(Pr(p1))/diff(x^2*z)*(xi - x1)^2*(zi - z1) +
-        //      3*diff(Pr(p1))/diff(x*y^2)*(xi - x1)*(yi - y1)^2 +
-        //      3*diff(Pr(p1))/diff(x*z^2)*(xi - x1)*(zi - z1)^2 +
-        //      3*diff(Pr(p1))/diff(y^2*z)*(yi - y1)^2*(zi - z1) +
-        //      3*diff(Pr(p1))/diff(y*z^2)*(yi - y1)*(zi - z1)^2 +
-        //      6*diff(Pr(p1))/diff(x*y*z)*(xi - x1)*(yi - y1)*(zi - z1)
+        // Pr(pi = (xi,yi)) = Pr(p1) +
+        //   diff(Pr(p1))/diff(x)*(xi - x1) +
+        //   diff(Pr(p1))/diff(y)*(yi - y1) +
+        //   diff(Pr(p1))/diff(z)*(zi - z1) +
+        //   1/2*(diff(Pr(p1))/diff(x^2)*(xi - x1)^2 +
+        //       diff(Pr(p1))/diff(y^2)*(yi - y1)^2 +
+        //       diff(Pr(p1))/diff(z^2)*(zi - z1)^2 +
+        //       2*diff(Pr(p1))/diff(x*y)*(xi - x1)*(yi - y1)) +
+        //       2*diff(Pr(p1))/diff(y*z)*(yi - y1)*(zi - z1) +
+        //       2*diff(Pr(p1))/diff(x*z)*(xi - x1)*(zi - z1)
+        //   1/6*(diff(Pr(p1))/diff(x^3)*(xi - x1)^3 +
+        //       diff(Pr(p1))/diff(y^3)*(yi - y1)^3 +
+        //       diff(Pr(p1))/diff(z^3)*(zi - z1)^3 +
+        //       3*diff(Pr(p1))/diff(x^2*y)*(xi - x1)^2*(yi - y1) +
+        //       3*diff(Pr(p1))/diff(x^2*z)*(xi - x1)^2*(zi - z1) +
+        //       3*diff(Pr(p1))/diff(x*y^2)*(xi - x1)*(yi - y1)^2 +
+        //       3*diff(Pr(p1))/diff(x*z^2)*(xi - x1)*(zi - z1)^2 +
+        //       3*diff(Pr(p1))/diff(y^2*z)*(yi - y1)^2*(zi - z1) +
+        //       3*diff(Pr(p1))/diff(y*z^2)*(yi - y1)*(zi - z1)^2 +
+        //       6*diff(Pr(p1))/diff(x*y*z)*(xi - x1)*(yi - y1)*(zi - z1)
 
-        //where the first order derivatives of Pr(p = (x,y)) are:
-        //diff(Pr(x,y,z))/diff(x) = -5*n/(ln(10)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)*2*(x - xa)
-        //diff(Pr(x,y,z))/diff(x) = -10*n*(x - xa)/(ln(10)*((x - xa)^2 + (y - ya)^2 + (z - za)^2))
+        // where the first order derivatives of Pr(p = (x,y)) are:
+        // diff(Pr(x,y,z))/diff(x) = -5*n/(ln(10)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)*2*(x - xa)
+        // diff(Pr(x,y,z))/diff(x) = -10*n*(x - xa)/(ln(10)*((x - xa)^2 + (y - ya)^2 + (z - za)^2))
 
-        //diff(Pr(x,y,z))/diff(y) = -5*n/(ln(10)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)*2*(y - ya)
-        //diff(Pr(x,y,z))/diff(y) = -10*n*(y - ya)/(ln(10)*((x - xa)^2 + (y - ya)^2 + (z - za)^2))
+        // diff(Pr(x,y,z))/diff(y) = -5*n/(ln(10)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)*2*(y - ya)
+        // diff(Pr(x,y,z))/diff(y) = -10*n*(y - ya)/(ln(10)*((x - xa)^2 + (y - ya)^2 + (z - za)^2))
 
-        //diff(Pr(x,y,z))/diff(z) = -5*n/(ln(10)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)*2*(z - za)
-        //diff(Pr(x,y,z))/diff(z) = -10*n*(z - za)/(ln(10)*((x - xa)^2 + (y - ya)^2 + (z - za)^2))
+        // diff(Pr(x,y,z))/diff(z) = -5*n/(ln(10)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)*2*(z - za)
+        // diff(Pr(x,y,z))/diff(z) = -10*n*(z - za)/(ln(10)*((x - xa)^2 + (y - ya)^2 + (z - za)^2))
 
-        //If we evaluate first order derivatives at p1 = (x1,y1), we get:
-        //diff(Pr(p1))/diff(x) = -10*n*(x1 - xa)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
-        //diff(Pr(p1))/diff(y) = -10*n*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
-        //diff(Pr(p1))/diff(z) = -10*n*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
+        // If we evaluate first order derivatives at p1 = (x1,y1), we get:
+        // diff(Pr(p1))/diff(x) = -10*n*(x1 - xa)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
+        // diff(Pr(p1))/diff(y) = -10*n*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
+        // diff(Pr(p1))/diff(z) = -10*n*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
 
-        //where square distance from fingerprint 1 to radio source a can be expressed as:
-        //d1a^2 = (x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2
+        // where square distance from fingerprint 1 to radio source a can be expressed as:
+        // d1a^2 = (x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2
 
-        //where both the fingerprint and radio source positions are known, and hence d1a is known.
+        // where both the fingerprint and radio source positions are known, and hence d1a is known.
 
-        //Then first order derivatives can be expressed as:
-        //diff(Pr(p1))/diff(x) = -10*n*(x1 - xa)/(ln(10)*d1a^2)
-        //diff(Pr(p1))/diff(y) = -10*n*(y1 - ya)/(ln(10)*d1a^2)
-        //diff(Pr(p1))/diff(z) = -10*n*(z1 - za)/(ln(10)*d1a^2)
+        // Then first order derivatives can be expressed as:
+        // diff(Pr(p1))/diff(x) = -10*n*(x1 - xa)/(ln(10)*d1a^2)
+        // diff(Pr(p1))/diff(y) = -10*n*(y1 - ya)/(ln(10)*d1a^2)
+        // diff(Pr(p1))/diff(z) = -10*n*(z1 - za)/(ln(10)*d1a^2)
 
-        //To obtain second order derivatives we take into account that:
-        //(f(x)/g(x))' = (f'(x)*g(x) - f(x)*g'(x))/g(x)^2
+        // To obtain second order derivatives we take into account that:
+        // (f(x)/g(x))' = (f'(x)*g(x) - f(x)*g'(x))/g(x)^2
 
-        //hence, second order derivatives of Pr(p = (x,y,z)) are:
-        //diff(Pr(x,y,z))/diff(x^2) = -10*n/ln(10)*(1*((x - xa)^2 + (y - ya)^2 + (z - za)^2) - (x - xa)*2*(x - xa))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2
-        //diff(Pr(x,y,z))/diff(x^2) = -10*n*((y - ya)^2 + (z - za)^2 - (x - xa)^2)/(ln(10)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2)
+        // hence, second order derivatives of Pr(p = (x,y,z)) are:
+        // diff(Pr(x,y,z))/diff(x^2) = -10*n/ln(10)*(1*((x - xa)^2 + (y - ya)^2 + (z - za)^2) - (x - xa)*2*(x - xa))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2
+        // diff(Pr(x,y,z))/diff(x^2) = -10*n*((y - ya)^2 + (z - za)^2 - (x - xa)^2)/(ln(10)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2)
 
-        //diff(Pr(x,y,z))/diff(y^2) = -10*n/ln(10)*(1*((x - xa)^2 + (y - ya)^2 + (z - za)^2) - (y - ya)*2*(y - ya))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2
-        //diff(Pr(x,y,z))/diff(y^2) = -10*n*((x - xa)^2 - (y - ya)^2 + (z - za)^2)/(ln(10)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2)
+        // diff(Pr(x,y,z))/diff(y^2) = -10*n/ln(10)*(1*((x - xa)^2 + (y - ya)^2 + (z - za)^2) - (y - ya)*2*(y - ya))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2
+        // diff(Pr(x,y,z))/diff(y^2) = -10*n*((x - xa)^2 - (y - ya)^2 + (z - za)^2)/(ln(10)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2)
 
-        //diff(Pr(x,y,z))/diff(z^2) = -10*n/ln(10)*(1*((x - xa)^2 + (y - ya)^2 + (z - za)^2) - (z - za)*2*(z - za))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2
-        //diff(Pr(x,y,z))/diff(z^2) = -10*n*((x - xa)^2 + (y - ya)^2 - (z - za)^2)/(ln(10)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2)
+        // diff(Pr(x,y,z))/diff(z^2) = -10*n/ln(10)*(1*((x - xa)^2 + (y - ya)^2 + (z - za)^2) - (z - za)*2*(z - za))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2
+        // diff(Pr(x,y,z))/diff(z^2) = -10*n*((x - xa)^2 + (y - ya)^2 - (z - za)^2)/(ln(10)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2)
 
-        //diff(Pr(x,y,z))/diff(x*y) = -10*n/ln(10)*(0*((x - xa)^2 + (y - ya)^2 + (z - za)^2) - (x - xa)*2*(y - ya))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2
-        //diff(Pr(x,y,z))/diff(x*y) = 20*n*(x - xa)*(y - ya)/(ln(10)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2)
+        // diff(Pr(x,y,z))/diff(x*y) = -10*n/ln(10)*(0*((x - xa)^2 + (y - ya)^2 + (z - za)^2) - (x - xa)*2*(y - ya))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2
+        // diff(Pr(x,y,z))/diff(x*y) = 20*n*(x - xa)*(y - ya)/(ln(10)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2)
 
-        //diff(Pr(x,y,z))/diff(x*z) = -10*n/ln(10)*(0*((x - xa)^2 + (y - ya)^2 + (z - za)^2) - (x - xa)*2*(z - za))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2
-        //diff(Pr(x,y,z))/diff(x*z) = 20*n*(x - xa)*(z - za)/(ln(10)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2)
+        // diff(Pr(x,y,z))/diff(x*z) = -10*n/ln(10)*(0*((x - xa)^2 + (y - ya)^2 + (z - za)^2) - (x - xa)*2*(z - za))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2
+        // diff(Pr(x,y,z))/diff(x*z) = 20*n*(x - xa)*(z - za)/(ln(10)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2)
 
-        //diff(Pr(x,y,z))/diff(y*z) = -10*n/ln(10)*(0*((x - xa)^2 + (y - ya)^2 + (z - za)^2) - (y - ya)*2*(z - za))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2
-        //diff(Pr(x,y,z))/diff(y*z) = 20*n*(y - ya)*(z - za)/(ln(10)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2)
+        // diff(Pr(x,y,z))/diff(y*z) = -10*n/ln(10)*(0*((x - xa)^2 + (y - ya)^2 + (z - za)^2) - (y - ya)*2*(z - za))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2
+        // diff(Pr(x,y,z))/diff(y*z) = 20*n*(y - ya)*(z - za)/(ln(10)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2)
 
-        //If we evaluate second order derivatives at p1 = (x1,y1,z1), we get:
-        //diff(Pr(p1))/diff(x^2) = -10*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)
-        //diff(Pr(p1))/diff(y^2) = -10*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)
-        //diff(Pr(p1))/diff(z^2) = -10*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)
-        //diff(Pr(p1))/diff(x*y) = 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)
-        //diff(Pr(p1))/diff(x*z) = 20*n*(x1 - xa)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)
-        //diff(Pr(p1))/diff(y*z) = 20*n*(y1 - ya)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)
+        // If we evaluate second order derivatives at p1 = (x1,y1,z1), we get:
+        // diff(Pr(p1))/diff(x^2) = -10*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)
+        // diff(Pr(p1))/diff(y^2) = -10*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)
+        // diff(Pr(p1))/diff(z^2) = -10*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)
+        // diff(Pr(p1))/diff(x*y) = 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)
+        // diff(Pr(p1))/diff(x*z) = 20*n*(x1 - xa)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)
+        // diff(Pr(p1))/diff(y*z) = 20*n*(y1 - ya)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)
 
-        //and expressing the second order derivatives in terms of distance between
-        //fingerprint 1 and radio source a d1a, we get:
-        //diff(Pr(p1))/diff(x^2) = -10*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*d1a^4)
-        //diff(Pr(p1))/diff(y^2) = -10*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*d1a^4)
-        //diff(Pr(p1))/diff(z^2) = -10*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*d1a^4)
-        //diff(Pr(p1))/diff(x*y) = 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4)
-        //diff(Pr(p1))/diff(x*z) = 20*n*(x1 - xa)*(z1 - za)/(ln(10)*d1a^4)
-        //diff(Pr(p1))/diff(y*z) = 20*n*(y1 - ya)*(z1 - za)/(ln(10)*d1a^4)
+        // and expressing the second order derivatives in terms of distance between
+        // fingerprint 1 and radio source a d1a, we get:
+        // diff(Pr(p1))/diff(x^2) = -10*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*d1a^4)
+        // diff(Pr(p1))/diff(y^2) = -10*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*d1a^4)
+        // diff(Pr(p1))/diff(z^2) = -10*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*d1a^4)
+        // diff(Pr(p1))/diff(x*y) = 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4)
+        // diff(Pr(p1))/diff(x*z) = 20*n*(x1 - xa)*(z1 - za)/(ln(10)*d1a^4)
+        // diff(Pr(p1))/diff(y*z) = 20*n*(y1 - ya)*(z1 - za)/(ln(10)*d1a^4)
 
-        //Finally, third order derivatives of Pr(p = (x,y,z)) are:
-        //diff(Pr(x,y,z))/diff(x^3) = -10*n/ln(10)*(-2*(x - xa)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2 - ((y - ya)^2 + (z - za)^2 - (x - xa)^2)*2*((x - xa)^2 + (y - ya)^2 + (z - za)^2)*2*(x - xa))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^4
-        //diff(Pr(x,y,z))/diff(y^2) = -10*n/ln(10)*(-2*(y - ya)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2 - ((x - xa)^2 - (y - ya)^2 + (z - za)^2)*2*((x - xa)^2 + (y - ya)^2 + (z - za)^2)*2*(y - ya))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^4
-        //diff(Pr(x,y,z))/diff(z^3) = -10*n/ln(10)*(-2*(z - za)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2 - ((x - xa)^2 + (y - ya)^2 - (z - za)^2)*2*((x - xa)^2 + (y - ya)^2 + (z - za)^2)*2*(z - za))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^4
-        //diff(Pr(x,y,z))/diff(x^2*y) = -10*n/ln(10)*(2*(y - ya)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2 - ((y - ya)^2 + (z - za)^2 - (x - xa)^2)*2*((x - xa)^2 + (y - ya)^2 + (z - za)^2)*2*(y - ya))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^4
-        //diff(Pr(x,y,z))/diff(x^2*z) = -10*n/ln(10)*(2*(z - za)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2 - ((y - ya)^2 + (z - za)^2 - (x - xa)^2)*2*((x - xa)^2 + (y - ya)^2 + (z - za)^2)*2*(z - za))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^4
-        //diff(Pr(x,y,z))/diff(x*y^2) = -10*n/ln(10)*(2*(x - xa)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2 - ((x - xa)^2 - (y - ya)^2 + (z - za)^2)*2*((x - xa)^2 + (y - ya)^2 + (z - za)^2)*2*(x - xa))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^4
-        //diff(Pr(x,y,z))/diff(x*z^2) = -10*n/ln(10)*(2*(x - xa)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2 - ((x - xa)^2 + (y - ya)^2 - (z - za)^2)*2*((x - xa)^2 + (y - ya)^2 + (z - za)^2)*2*(x - xa))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^4
-        //diff(Pr(x,y,z))/diff(y^2*z) = -10*n/ln(10)*(2*(z - za)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2 - ((x - xa)^2 - (y - ya)^2 + (z - za)^2)*2*((x - xa)^2 + (y - ya)^2 + (z - za)^2)*2*(z - za))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^4
-        //diff(Pr(x,y,z))/diff(y*z^2) = -10*n/ln(10)*(2*(y - ya)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2 - ((x - xa)^2 + (y - ya)^2 - (z - za)^2)*2*((x - xa)^2 + (y - ya)^2 + (z - za)^2)*2*(y - ya))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^4
-        //diff(Pr(x,y,z))/diff(x*y*z) = 20*n/ln(10)*(-(x - xa)*(y - ya)*2*((x - xa)^2 + (y - ya)^2 + (z - za)^2)*2*(z - za))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^4
+        // Finally, third order derivatives of Pr(p = (x,y,z)) are:
+        // diff(Pr(x,y,z))/diff(x^3) = -10*n/ln(10)*(-2*(x - xa)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2 - ((y - ya)^2 + (z - za)^2 - (x - xa)^2)*2*((x - xa)^2 + (y - ya)^2 + (z - za)^2)*2*(x - xa))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^4
+        // diff(Pr(x,y,z))/diff(y^2) = -10*n/ln(10)*(-2*(y - ya)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2 - ((x - xa)^2 - (y - ya)^2 + (z - za)^2)*2*((x - xa)^2 + (y - ya)^2 + (z - za)^2)*2*(y - ya))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^4
+        // diff(Pr(x,y,z))/diff(z^3) = -10*n/ln(10)*(-2*(z - za)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2 - ((x - xa)^2 + (y - ya)^2 - (z - za)^2)*2*((x - xa)^2 + (y - ya)^2 + (z - za)^2)*2*(z - za))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^4
+        // diff(Pr(x,y,z))/diff(x^2*y) = -10*n/ln(10)*(2*(y - ya)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2 - ((y - ya)^2 + (z - za)^2 - (x - xa)^2)*2*((x - xa)^2 + (y - ya)^2 + (z - za)^2)*2*(y - ya))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^4
+        // diff(Pr(x,y,z))/diff(x^2*z) = -10*n/ln(10)*(2*(z - za)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2 - ((y - ya)^2 + (z - za)^2 - (x - xa)^2)*2*((x - xa)^2 + (y - ya)^2 + (z - za)^2)*2*(z - za))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^4
+        // diff(Pr(x,y,z))/diff(x*y^2) = -10*n/ln(10)*(2*(x - xa)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2 - ((x - xa)^2 - (y - ya)^2 + (z - za)^2)*2*((x - xa)^2 + (y - ya)^2 + (z - za)^2)*2*(x - xa))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^4
+        // diff(Pr(x,y,z))/diff(x*z^2) = -10*n/ln(10)*(2*(x - xa)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2 - ((x - xa)^2 + (y - ya)^2 - (z - za)^2)*2*((x - xa)^2 + (y - ya)^2 + (z - za)^2)*2*(x - xa))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^4
+        // diff(Pr(x,y,z))/diff(y^2*z) = -10*n/ln(10)*(2*(z - za)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2 - ((x - xa)^2 - (y - ya)^2 + (z - za)^2)*2*((x - xa)^2 + (y - ya)^2 + (z - za)^2)*2*(z - za))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^4
+        // diff(Pr(x,y,z))/diff(y*z^2) = -10*n/ln(10)*(2*(y - ya)*((x - xa)^2 + (y - ya)^2 + (z - za)^2)^2 - ((x - xa)^2 + (y - ya)^2 - (z - za)^2)*2*((x - xa)^2 + (y - ya)^2 + (z - za)^2)*2*(y - ya))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^4
+        // diff(Pr(x,y,z))/diff(x*y*z) = 20*n/ln(10)*(-(x - xa)*(y - ya)*2*((x - xa)^2 + (y - ya)^2 + (z - za)^2)*2*(z - za))/((x - xa)^2 + (y - ya)^2 + (z - za)^2)^4
 
-        //evaluating at p1 = (x1, y1, z1), we get:
-        //diff(Pr(p1))/diff(x^3) = -10*n/ln(10)*(-2*(x1 - xa)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-        //diff(Pr(p1))/diff(y^2) = -10*n/ln(10)*(-2*(y1 - ya)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-        //diff(Pr(p1))/diff(z^3) = -10*n/ln(10)*(-2*(z1 - za)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-        //diff(Pr(p1))/diff(x^2*y) = -10*n/ln(10)*(2*(y1 - ya)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-        //diff(Pr(p1))/diff(x^2*z) = -10*n/ln(10)*(2*(z1 - za)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-        //diff(Pr(p1))/diff(x*y^2) = -10*n/ln(10)*(2*(x1 - xa)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-        //diff(Pr(p1))/diff(x*z^2) = -10*n/ln(10)*(2*(x1 - xa)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-        //diff(Pr(p1))/diff(y^2*z) = -10*n/ln(10)*(2*(z1 - za)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-        //diff(Pr(p1))/diff(y*z^2) = -10*n/ln(10)*(2*(y1 - ya)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-        //diff(Pr(p1))/diff(x*y*z) = 20*n/ln(10)*(-(x1 - xa)*(y1 - ya)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+        // evaluating at p1 = (x1, y1, z1), we get:
+        // diff(Pr(p1))/diff(x^3) = -10*n/ln(10)*(-2*(x1 - xa)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+        // diff(Pr(p1))/diff(y^2) = -10*n/ln(10)*(-2*(y1 - ya)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+        // diff(Pr(p1))/diff(z^3) = -10*n/ln(10)*(-2*(z1 - za)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+        // diff(Pr(p1))/diff(x^2*y) = -10*n/ln(10)*(2*(y1 - ya)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+        // diff(Pr(p1))/diff(x^2*z) = -10*n/ln(10)*(2*(z1 - za)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+        // diff(Pr(p1))/diff(x*y^2) = -10*n/ln(10)*(2*(x1 - xa)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+        // diff(Pr(p1))/diff(x*z^2) = -10*n/ln(10)*(2*(x1 - xa)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+        // diff(Pr(p1))/diff(y^2*z) = -10*n/ln(10)*(2*(z1 - za)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+        // diff(Pr(p1))/diff(y*z^2) = -10*n/ln(10)*(2*(y1 - ya)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+        // diff(Pr(p1))/diff(x*y*z) = 20*n/ln(10)*(-(x1 - xa)*(y1 - ya)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
 
-        //and substituting the distance between fingerprint and radio source d1a, we get:
-        //diff(Pr(p1))/diff(x^3) = -10*n/ln(10)*(-2*(x1 - xa)*d1a^4 - ((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*4*d1a^2*(x1 - xa))/d1a^8
-        //diff(Pr(p1))/diff(y^3) = -10*n/ln(10)*(-2*(y1 - ya)*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*4*d1a^2*(y1 - ya))/d1a^8
-        //diff(Pr(p1))/diff(z^3) = -10*n/ln(10)*(-2*(z1 - za)*d1a^4 - ((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*4*d1a^2*(z1 - za))/d1a^8
-        //diff(Pr(p1))/diff(x^2*y) = -10*n/ln(10)*(2*(y1 - ya)*d1a^4 - ((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*4*d1a^2*(y1 - ya))/d1a^8
-        //diff(Pr(p1))/diff(x^2*z) = -10*n/ln(10)*(2*(z1 - za)*d1a^4 - ((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*4*d1a^2*(z1 - za))/d1a^8
-        //diff(Pr(p1))/diff(x*y^2) = -10*n/ln(10)*(2*(x1 - xa)*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*4*d1a^2*(x1 - xa))/d1a^8
-        //diff(Pr(p1))/diff(x*z^2) = -10*n/ln(10)*(2*(x1 - xa)*d1a^4 - ((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*4*d1a^2*(x1 - xa))/d1a^8
-        //diff(Pr(p1))/diff(y^2*z) = -10*n/ln(10)*(2*(z1 - za)*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*4*d1a^2*(z1 - za))/d1a^8
-        //diff(Pr(p1))/diff(y*z^2) = -10*n/ln(10)*(2*(y1 - ya)*d1a^4 - ((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*4*d1a^2*(y1 - ya))/d1a^8
-        //diff(Pr(p1))/diff(x*y*z) = -80*n/ln(10)*((x1 - xa)*(y1 - ya)*(z1 - za)*d1a^2)/d1a^8
-
-
-        //Hence, the third order Taylor expansion can be expressed as:
-        //Pr(pi = (xi,yi)) = Pr(p1) +
-        //  diff(Pr(p1))/diff(x)*(xi - x1) +
-        //  diff(Pr(p1))/diff(y)*(yi - y1) +
-        //  diff(Pr(p1))/diff(z)*(zi - z1) +
-        //  1/2*(diff(Pr(p1))/diff(x^2)*(xi - x1)^2 +
-        //      diff(Pr(p1))/diff(y^2)*(yi - y1)^2 +
-        //      diff(Pr(p1))/diff(z^2)*(zi - z1)^2 +
-        //      2*diff(Pr(p1))/diff(x*y)*(xi - x1)*(yi - y1)) +
-        //      2*diff(Pr(p1))/diff(y*z)*(yi - y1)*(zi - z1) +
-        //      2*diff(Pr(p1))/diff(x*z)*(xi - x1)*(zi - z1)
-        //  1/6*(diff(Pr(p1))/diff(x^3)*(xi - x1)^3 +
-        //      diff(Pr(p1))/diff(y^3)*(yi - y1)^3 +
-        //      diff(Pr(p1))/diff(z^3)*(zi - z1)^3 +
-        //      3*diff(Pr(p1))/diff(x^2*y)*(xi - x1)^2*(yi - y1) +
-        //      3*diff(Pr(p1))/diff(x^2*z)*(xi - x1)^2*(zi - z1) +
-        //      3*diff(Pr(p1))/diff(x*y^2)*(xi - x1)*(yi - y1)^2 +
-        //      3*diff(Pr(p1))/diff(x*z^2)*(xi - x1)*(zi - z1)^2 +
-        //      3*diff(Pr(p1))/diff(y^2*z)*(yi - y1)^2*(zi - z1) +
-        //      3*diff(Pr(p1))/diff(y*z^2)*(yi - y1)*(zi - z1)^2 +
-        //      6*diff(Pr(p1))/diff(x*y*z)*(xi - x1)*(yi - y1)*(zi - z1)
+        // and substituting the distance between fingerprint and radio source d1a, we get:
+        // diff(Pr(p1))/diff(x^3) = -10*n/ln(10)*(-2*(x1 - xa)*d1a^4 - ((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*4*d1a^2*(x1 - xa))/d1a^8
+        // diff(Pr(p1))/diff(y^3) = -10*n/ln(10)*(-2*(y1 - ya)*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*4*d1a^2*(y1 - ya))/d1a^8
+        // diff(Pr(p1))/diff(z^3) = -10*n/ln(10)*(-2*(z1 - za)*d1a^4 - ((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*4*d1a^2*(z1 - za))/d1a^8
+        // diff(Pr(p1))/diff(x^2*y) = -10*n/ln(10)*(2*(y1 - ya)*d1a^4 - ((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*4*d1a^2*(y1 - ya))/d1a^8
+        // diff(Pr(p1))/diff(x^2*z) = -10*n/ln(10)*(2*(z1 - za)*d1a^4 - ((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*4*d1a^2*(z1 - za))/d1a^8
+        // diff(Pr(p1))/diff(x*y^2) = -10*n/ln(10)*(2*(x1 - xa)*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*4*d1a^2*(x1 - xa))/d1a^8
+        // diff(Pr(p1))/diff(x*z^2) = -10*n/ln(10)*(2*(x1 - xa)*d1a^4 - ((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*4*d1a^2*(x1 - xa))/d1a^8
+        // diff(Pr(p1))/diff(y^2*z) = -10*n/ln(10)*(2*(z1 - za)*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*4*d1a^2*(z1 - za))/d1a^8
+        // diff(Pr(p1))/diff(y*z^2) = -10*n/ln(10)*(2*(y1 - ya)*d1a^4 - ((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*4*d1a^2*(y1 - ya))/d1a^8
+        // diff(Pr(p1))/diff(x*y*z) = -80*n/ln(10)*((x1 - xa)*(y1 - ya)*(z1 - za)*d1a^2)/d1a^8
 
 
-        //Pr(pi = (xi,yi)) = Pr(p1) +
-        //  -10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1) +
-        //  -10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1) +
-        //  -10*n*(z1 - za)/(ln(10)*d1a^2)*(zi - z1) +
-        //  -5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*d1a^4)*(xi - x1)^2 +
-        //  -5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*d1a^4)*(yi - y1)^2 +
-        //  -5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*d1a^4)*(zi - z1)^2 +
-        //  20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4)*(xi - x1)*(yi - y1) +
-        //  20*n*(y1 - ya)*(z1 - za)/(ln(10)*d1a^4)*(yi - y1)*(zi - z1) +
-        //  20*n*(x1 - xa)*(z1 - za)/(ln(10)*d1a^4)*(xi - x1)*(zi - z1) +
-        //  -10/6*n/ln(10)*(-2*(x1 - xa)*d1a^4 - ((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*4*d1a^2*(x1 - xa))/d1a^8*(xi - x1)^3 +
-        //  -10/6*n/ln(10)*(-2*(y1 - ya)*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*4*d1a^2*(y1 - ya))/d1a^8*(yi - y1)^3 +
-        //  -10/6*n/ln(10)*(-2*(z1 - za)*d1a^4 - ((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*4*d1a^2*(z1 - za))/d1a^8*(zi - z1)^3 +
-        //  -5*n/ln(10)*(2*(y1 - ya)*d1a^4 - ((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*4*d1a^2*(y1 - ya))/d1a^8*(xi - x1)^2*(yi - y1) +
-        //  -5*n/ln(10)*(2*(z1 - za)*d1a^4 - ((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*4*d1a^2*(z1 - za))/d1a^8*(xi - x1)^2*(zi - z1) +
-        //  -5*n/ln(10)*(2*(x1 - xa)*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*4*d1a^2*(x1 - xa))/d1a^8*(xi - x1)*(yi - y1)^2 +
-        //  -5*n/ln(10)*(2*(x1 - xa)*d1a^4 - ((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*4*d1a^2*(x1 - xa))/d1a^8*(xi - x1)*(zi - z1)^2 +
-        //  -5*n/ln(10)*(2*(z1 - za)*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*4*d1a^2*(z1 - za))/d1a^8*(yi - y1)^2*(zi - z1) +
-        //  -5*n/ln(10)*(2*(y1 - ya)*d1a^4 - ((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*4*d1a^2*(y1 - ya))/d1a^8*(yi - y1)*(zi - z1)^2 +
-        //  -80*n/ln(10)*((x1 - xa)*(y1 - ya)*(z1 - za)*d1a^2)/d1a^8*(xi - x1)*(yi - y1)*(zi - z1)
+        // Hence, the third order Taylor expansion can be expressed as:
+        // Pr(pi = (xi,yi)) = Pr(p1) +
+        //   diff(Pr(p1))/diff(x)*(xi - x1) +
+        //   diff(Pr(p1))/diff(y)*(yi - y1) +
+        //   diff(Pr(p1))/diff(z)*(zi - z1) +
+        //   1/2*(diff(Pr(p1))/diff(x^2)*(xi - x1)^2 +
+        //       diff(Pr(p1))/diff(y^2)*(yi - y1)^2 +
+        //       diff(Pr(p1))/diff(z^2)*(zi - z1)^2 +
+        //       2*diff(Pr(p1))/diff(x*y)*(xi - x1)*(yi - y1)) +
+        //       2*diff(Pr(p1))/diff(y*z)*(yi - y1)*(zi - z1) +
+        //       2*diff(Pr(p1))/diff(x*z)*(xi - x1)*(zi - z1)
+        //   1/6*(diff(Pr(p1))/diff(x^3)*(xi - x1)^3 +
+        //       diff(Pr(p1))/diff(y^3)*(yi - y1)^3 +
+        //       diff(Pr(p1))/diff(z^3)*(zi - z1)^3 +
+        //       3*diff(Pr(p1))/diff(x^2*y)*(xi - x1)^2*(yi - y1) +
+        //       3*diff(Pr(p1))/diff(x^2*z)*(xi - x1)^2*(zi - z1) +
+        //       3*diff(Pr(p1))/diff(x*y^2)*(xi - x1)*(yi - y1)^2 +
+        //       3*diff(Pr(p1))/diff(x*z^2)*(xi - x1)*(zi - z1)^2 +
+        //       3*diff(Pr(p1))/diff(y^2*z)*(yi - y1)^2*(zi - z1) +
+        //       3*diff(Pr(p1))/diff(y*z^2)*(yi - y1)*(zi - z1)^2 +
+        //       6*diff(Pr(p1))/diff(x*y*z)*(xi - x1)*(yi - y1)*(zi - z1)
 
-        //The equation above can be solved using a non-linear fitter such as Levenberg-Marquardt
 
-        //This method implements received power at point pi = (xi, yi) and its derivatives
+        // Pr(pi = (xi,yi)) = Pr(p1) +
+        //   -10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1) +
+        //   -10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1) +
+        //   -10*n*(z1 - za)/(ln(10)*d1a^2)*(zi - z1) +
+        //   -5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*d1a^4)*(xi - x1)^2 +
+        //   -5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*d1a^4)*(yi - y1)^2 +
+        //   -5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*d1a^4)*(zi - z1)^2 +
+        //   20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4)*(xi - x1)*(yi - y1) +
+        //   20*n*(y1 - ya)*(z1 - za)/(ln(10)*d1a^4)*(yi - y1)*(zi - z1) +
+        //   20*n*(x1 - xa)*(z1 - za)/(ln(10)*d1a^4)*(xi - x1)*(zi - z1) +
+        //   -10/6*n/ln(10)*(-2*(x1 - xa)*d1a^4 - ((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*4*d1a^2*(x1 - xa))/d1a^8*(xi - x1)^3 +
+        //   -10/6*n/ln(10)*(-2*(y1 - ya)*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*4*d1a^2*(y1 - ya))/d1a^8*(yi - y1)^3 +
+        //   -10/6*n/ln(10)*(-2*(z1 - za)*d1a^4 - ((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*4*d1a^2*(z1 - za))/d1a^8*(zi - z1)^3 +
+        //   -5*n/ln(10)*(2*(y1 - ya)*d1a^4 - ((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*4*d1a^2*(y1 - ya))/d1a^8*(xi - x1)^2*(yi - y1) +
+        //   -5*n/ln(10)*(2*(z1 - za)*d1a^4 - ((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*4*d1a^2*(z1 - za))/d1a^8*(xi - x1)^2*(zi - z1) +
+        //   -5*n/ln(10)*(2*(x1 - xa)*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*4*d1a^2*(x1 - xa))/d1a^8*(xi - x1)*(yi - y1)^2 +
+        //   -5*n/ln(10)*(2*(x1 - xa)*d1a^4 - ((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*4*d1a^2*(x1 - xa))/d1a^8*(xi - x1)*(zi - z1)^2 +
+        //   -5*n/ln(10)*(2*(z1 - za)*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*4*d1a^2*(z1 - za))/d1a^8*(yi - y1)^2*(zi - z1) +
+        //   -5*n/ln(10)*(2*(y1 - ya)*d1a^4 - ((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*4*d1a^2*(y1 - ya))/d1a^8*(yi - y1)*(zi - z1)^2 +
+        //   -80*n/ln(10)*((x1 - xa)*(y1 - ya)*(z1 - za)*d1a^2)/d1a^8*(xi - x1)*(yi - y1)*(zi - z1)
+
+        // The equation above can be solved using a non-linear fitter such as Levenberg-Marquardt
+
+        // This method implements received power at point pi = (xi, yi) and its derivatives
 
         final double xi = params[0];
         final double yi = params[1];
         final double zi = params[2];
 
-        //received power
+        // received power
         final double pr = point[0];
 
-        //fingerprint coordinates
+        // fingerprint coordinates
         final double x1 = point[1];
         final double y1 = point[2];
         final double z1 = point[3];
 
-        //radio source coordinates
+        // radio source coordinates
         final double xa = point[4];
         final double ya = point[5];
         final double za = point[6];
 
-        //path loss exponent
+        // path loss exponent
         final double n = point[7];
 
         final double ln10 = Math.log(10.0);
@@ -467,27 +467,27 @@ public class ThirdOrderNonLinearFingerprintPositionEstimator3D extends
         final double value19 = -80.0 * n / ln10 * (diffX1a * diffY1a * diffZ1a * d1a2) / d1a8;
 
 
-        //hence:
-        //Pr(pi) = Pr(p1) +
-        //  value1*(xi - x1) +
-        //  value2*(yi - y1) +
-        //  value3*(zi - z1) +
-        //  value4*(xi - x1)^2 +
-        //  value5*(yi - y1)^2 +
-        //  value6*(zi - z1)^2 +
-        //  value7*(xi - x1)*(yi - y1) +
-        //  value8*(yi - y1)*(zi - z1) +
-        //  value9*(xi - x1)*(zi - z1) +
-        //  value10*(xi - x1)^3 +
-        //  value11*(yi - y1)^3 +
-        //  value12*(zi - z1)^3 +
-        //  value13*(xi - x1)^2*(yi - y1) +
-        //  value14*(xi - x1)^2*(zi - z1) +
-        //  value15*(xi - x1)*(yi - y1)^2 +
-        //  value16*(xi - x1)*(zi - z1)^2 +
-        //  value17*(yi - y1)^2*(zi - z1) +
-        //  value18*(yi - y1)*(zi - z1)^2 +
-        //  value19*(xi - x1)*(yi - y1)*(zi - z1)
+        // hence:
+        // Pr(pi) = Pr(p1) +
+        //   value1*(xi - x1) +
+        //   value2*(yi - y1) +
+        //   value3*(zi - z1) +
+        //   value4*(xi - x1)^2 +
+        //   value5*(yi - y1)^2 +
+        //   value6*(zi - z1)^2 +
+        //   value7*(xi - x1)*(yi - y1) +
+        //   value8*(yi - y1)*(zi - z1) +
+        //   value9*(xi - x1)*(zi - z1) +
+        //   value10*(xi - x1)^3 +
+        //   value11*(yi - y1)^3 +
+        //   value12*(zi - z1)^3 +
+        //   value13*(xi - x1)^2*(yi - y1) +
+        //   value14*(xi - x1)^2*(zi - z1) +
+        //   value15*(xi - x1)*(yi - y1)^2 +
+        //   value16*(xi - x1)*(zi - z1)^2 +
+        //   value17*(yi - y1)^2*(zi - z1) +
+        //   value18*(yi - y1)*(zi - z1)^2 +
+        //   value19*(xi - x1)*(yi - y1)*(zi - z1)
 
         final double result = pr
                 + value1 * diffXi1
@@ -510,18 +510,18 @@ public class ThirdOrderNonLinearFingerprintPositionEstimator3D extends
                 + value18 * diffYi1 * diffZi12
                 + value19 * diffXi1 * diffYi1 * diffZi1;
 
-        //derivative respect xi
+        // derivative respect xi
 
-        //diff(Pr(pi))/diff(xi) = value1 +
-        //  2*value4*(xi - x1) +
-        //  value7*(yi - y1) +
-        //  value9*(zi - z1) +
-        //  3*value10*(xi - x1)^2 +
-        //  2*value13*(xi - x1)*(yi - y1) +
-        //  2*value14*(xi - x1)*(zi - z1) +
-        //  value15*(yi - y1)^2 +
-        //  value16*(zi - z1)^2 +
-        //  value19*(yi - y1)*(zi - z1)
+        // diff(Pr(pi))/diff(xi) = value1 +
+        //   2*value4*(xi - x1) +
+        //   value7*(yi - y1) +
+        //   value9*(zi - z1) +
+        //   3*value10*(xi - x1)^2 +
+        //   2*value13*(xi - x1)*(yi - y1) +
+        //   2*value14*(xi - x1)*(zi - z1) +
+        //   value15*(yi - y1)^2 +
+        //   value16*(zi - z1)^2 +
+        //   value19*(yi - y1)*(zi - z1)
 
         derivatives[0] = value1 + 2.0 * value4 * diffXi1 + value7 * diffYi1 +
                 value9 * diffZi1 + 3.0 * value10 * diffXi12 +
@@ -530,18 +530,18 @@ public class ThirdOrderNonLinearFingerprintPositionEstimator3D extends
                 value15 * diffYi12 + value16 * diffZi12 +
                 value19 * diffYi1 * diffZi1;
 
-        //derivative respect yi
+        // derivative respect yi
 
-        //diff(Pr(pi))/diff(yi) = value2 +
-        //  2*value5*(yi - y1) +
-        //  value7*(xi - x1) +
-        //  value8*(zi - z1) +
-        //  3*value11*(yi - y1)^2 +
-        //  value13*(xi - x1)^2 +
-        //  2*value15*(xi - x1)*(yi - y1) +
-        //  2*value17*(yi - y1)*(zi - z1) +
-        //  value18*(zi - z1)^2 +
-        //  value19*(xi - x1)*(zi - z1)
+        // diff(Pr(pi))/diff(yi) = value2 +
+        //   2*value5*(yi - y1) +
+        //   value7*(xi - x1) +
+        //   value8*(zi - z1) +
+        //   3*value11*(yi - y1)^2 +
+        //   value13*(xi - x1)^2 +
+        //   2*value15*(xi - x1)*(yi - y1) +
+        //   2*value17*(yi - y1)*(zi - z1) +
+        //   value18*(zi - z1)^2 +
+        //   value19*(xi - x1)*(zi - z1)
 
         derivatives[1] = value2 + 2.0 * value5 * diffYi1 + value7 * diffXi1 +
                 value8 * diffZi1 + 3.0 * value11 * diffYi12 +
@@ -549,18 +549,18 @@ public class ThirdOrderNonLinearFingerprintPositionEstimator3D extends
                 2.0 * value17 * diffYi1 * diffZi1 +
                 value18 * diffZi12 + value19 * diffXi1 * diffZi1;
 
-        //derivative respect zi
+        // derivative respect zi
 
-        //diff(Pr(pi))/diff(zi) = value3 +
-        //  2*value6*(zi - z1) +
-        //  value8*(yi - y1) +
-        //  value9*(xi - x1) +
-        //  3*value12*(zi - z1)^2 +
-        //  value14*(xi - x1)^2 +
-        //  2*value16*(xi - x1)*(zi - z1) +
-        //  value17*(yi - y1)^2 +
-        //  2*value18*(yi - y1)*(zi - z1) +
-        //  value19*(xi - x1)*(yi - y1)
+        // diff(Pr(pi))/diff(zi) = value3 +
+        //   2*value6*(zi - z1) +
+        //   value8*(yi - y1) +
+        //   value9*(xi - x1) +
+        //   3*value12*(zi - z1)^2 +
+        //   value14*(xi - x1)^2 +
+        //   2*value16*(xi - x1)*(zi - z1) +
+        //   value17*(yi - y1)^2 +
+        //   2*value18*(yi - y1)*(zi - z1) +
+        //   value19*(xi - x1)*(yi - y1)
 
         derivatives[2] = value3 + 2.0 * value6 * diffZi1 + value8 * diffYi1 +
                 value9 * diffXi1 + 3.0 * value12 * diffZi12 +

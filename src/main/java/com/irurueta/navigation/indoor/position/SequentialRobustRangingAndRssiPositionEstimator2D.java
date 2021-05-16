@@ -20,13 +20,13 @@ import com.irurueta.navigation.indoor.RadioSource;
 import com.irurueta.navigation.indoor.RadioSourceLocated;
 import com.irurueta.navigation.indoor.RangingAndRssiFingerprint;
 import com.irurueta.navigation.indoor.RangingAndRssiReading;
+
 import java.util.List;
 
 /**
  * Robustly estimates 2D position, using RSSI readings first to obtain an initial coarse
  * position estimation, and then ranging readings to refine such estimation.
  */
-@SuppressWarnings("WeakerAccess")
 public class SequentialRobustRangingAndRssiPositionEstimator2D extends
         SequentialRobustRangingAndRssiPositionEstimator<Point2D> {
 
@@ -59,7 +59,8 @@ public class SequentialRobustRangingAndRssiPositionEstimator2D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public SequentialRobustRangingAndRssiPositionEstimator2D(
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint) {
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint) {
         super(fingerprint);
         mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();
     }
@@ -75,7 +76,8 @@ public class SequentialRobustRangingAndRssiPositionEstimator2D extends
      */
     public SequentialRobustRangingAndRssiPositionEstimator2D(
             final List<? extends RadioSourceLocated<Point2D>> sources,
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint) {
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint) {
         super(sources, fingerprint);
         mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();
     }
@@ -115,7 +117,8 @@ public class SequentialRobustRangingAndRssiPositionEstimator2D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public SequentialRobustRangingAndRssiPositionEstimator2D(
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint,
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint,
             final SequentialRobustRangingAndRssiPositionEstimatorListener<Point2D> listener) {
         super(fingerprint, listener);
         mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();
@@ -133,7 +136,8 @@ public class SequentialRobustRangingAndRssiPositionEstimator2D extends
      */
     public SequentialRobustRangingAndRssiPositionEstimator2D(
             final List<? extends RadioSourceLocated<Point2D>> sources,
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint,
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint,
             final SequentialRobustRangingAndRssiPositionEstimatorListener<Point2D> listener) {
         super(sources, fingerprint, listener);
         mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();
@@ -201,7 +205,8 @@ public class SequentialRobustRangingAndRssiPositionEstimator2D extends
     public SequentialRobustRangingAndRssiPositionEstimator2D(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint) {
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint) {
         super(sourceQualityScores, fingerprintReadingQualityScores, fingerprint);
         mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();
     }
@@ -229,7 +234,8 @@ public class SequentialRobustRangingAndRssiPositionEstimator2D extends
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<Point2D>> sources,
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint) {
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint) {
         super(sourceQualityScores, fingerprintReadingQualityScores, sources,
                 fingerprint);
         mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();
@@ -302,7 +308,8 @@ public class SequentialRobustRangingAndRssiPositionEstimator2D extends
     public SequentialRobustRangingAndRssiPositionEstimator2D(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint,
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint,
             final SequentialRobustRangingAndRssiPositionEstimatorListener<Point2D> listener) {
         super(sourceQualityScores, fingerprintReadingQualityScores, fingerprint,
                 listener);
@@ -333,7 +340,8 @@ public class SequentialRobustRangingAndRssiPositionEstimator2D extends
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<Point2D>> sources,
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint,
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint,
             final SequentialRobustRangingAndRssiPositionEstimatorListener<Point2D> listener) {
         super(sourceQualityScores, fingerprintReadingQualityScores, sources,
                 fingerprint, listener);
@@ -341,7 +349,7 @@ public class SequentialRobustRangingAndRssiPositionEstimator2D extends
     }
 
     /**
-     * Gets number of dimesnions of provided and estimated points.
+     * Gets number of dimensions of provided and estimated points.
      *
      * @return number of dimensions of provided and estimated points.
      */

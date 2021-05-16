@@ -19,10 +19,6 @@ import com.irurueta.algebra.AlgebraException;
 import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.InhomogeneousPoint2D;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -32,25 +28,6 @@ import java.util.Random;
 import static org.junit.Assert.*;
 
 public class BeaconLocated2DTest {
-
-    public BeaconLocated2DTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
 
     @Test
     public void testConstructor() throws AlgebraException {
@@ -72,7 +49,6 @@ public class BeaconLocated2DTest {
         assertNull(b.getPositionCovariance());
         assertEquals(b.getType(), RadioSourceType.BEACON);
         assertEquals(b.getFrequency(), Beacon.DEFAULT_FREQUENCY, 0.0);
-
 
         // test constructor with identifiers, transmitted power and position
         final List<BeaconIdentifier> identifiers = new ArrayList<>();
@@ -109,7 +85,6 @@ public class BeaconLocated2DTest {
         }
         assertNull(b);
 
-
         // test constructor with all data and position
         b = new BeaconLocated2D(identifiers, -50.0, "address", 1,
                 2, 3, "name", position);
@@ -145,7 +120,6 @@ public class BeaconLocated2DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with identifiers, transmitted power, position and
         // position covariance
@@ -209,7 +183,6 @@ public class BeaconLocated2DTest {
         }
         assertNull(b);
 
-
         // test constructor with all data, position and position covariance
         b = new BeaconLocated2D(identifiers, -50.0, "address", 1,
                 2, 3, "name", position, cov);
@@ -272,7 +245,6 @@ public class BeaconLocated2DTest {
         }
         assertNull(b);
 
-
         // test constructor with identifiers, transmitted power, frequency and position
         b = new BeaconLocated2D(identifiers, -50.0, 5.0e9, position);
 
@@ -310,7 +282,6 @@ public class BeaconLocated2DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with all data, position and frequency
         b = new BeaconLocated2D(identifiers, -50.0, 5.0e9,
@@ -357,7 +328,6 @@ public class BeaconLocated2DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with identifiers, transmitted power, frequency, position and
         // position covariance
@@ -424,7 +394,6 @@ public class BeaconLocated2DTest {
         }
         assertNull(b);
 
-
         // test constructor with all data, position, position covariance and frequency
         b = new BeaconLocated2D(identifiers, -50.0, 5.0e9,
                 "address", 1, 2, 3,
@@ -465,7 +434,6 @@ public class BeaconLocated2DTest {
         assertNull(b.getPositionCovariance());
         assertEquals(b.getType(), RadioSourceType.BEACON);
         assertEquals(b.getFrequency(), 5.0e9, 0.0);
-
 
         // force IllegalArgumentException
         b = null;

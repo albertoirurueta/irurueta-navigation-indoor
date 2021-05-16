@@ -30,6 +30,7 @@ import com.irurueta.navigation.indoor.WifiAccessPointLocated3D;
 import com.irurueta.navigation.lateration.HomogeneousLinearLeastSquaresLateration3DSolver;
 import com.irurueta.navigation.lateration.InhomogeneousLinearLeastSquaresLateration3DSolver;
 import com.irurueta.navigation.lateration.NonLinearLeastSquaresLateration3DSolver;
+
 import java.util.List;
 
 /**
@@ -41,7 +42,7 @@ import java.util.List;
  *
  * @param <S> a {@link RadioSource} type.
  */
-@SuppressWarnings({"WeakerAccess", "Duplicates"})
+@SuppressWarnings("DuplicatedCode")
 public class RangingRadioSourceEstimator3D<S extends RadioSource> extends
         RangingRadioSourceEstimator<S, Point3D> {
 
@@ -253,7 +254,7 @@ public class RangingRadioSourceEstimator3D<S extends RadioSource> extends
         if (mAccuracy == null && mUseReadingPositionCovariances) {
             mAccuracy = new Accuracy3D();
 
-            //to work with standard deviations, we need a unitary factor
+            // to work with standard deviations, we need a unitary factor
             mAccuracy.setStandardDeviationFactor(1.0);
         }
     }

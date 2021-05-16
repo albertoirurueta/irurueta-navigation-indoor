@@ -42,7 +42,7 @@ import org.junit.Test;
 public class NonLinearRssiPositionEstimator2DTest implements
         RssiPositionEstimatorListener<Point2D> {
 
-    private static final double FREQUENCY = 2.4e9; //(Hz)
+    private static final double FREQUENCY = 2.4e9; // (Hz)
 
     private static final int MIN_SOURCES = 3;
     private static final int MAX_SOURCES = 10;
@@ -133,7 +133,6 @@ public class NonLinearRssiPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint
         final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
                 new RssiFingerprint<>();
@@ -167,7 +166,6 @@ public class NonLinearRssiPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources and fingerprint
         estimator = new NonLinearRssiPositionEstimator2D(sources, fingerprint);
@@ -212,7 +210,6 @@ public class NonLinearRssiPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with listener
         estimator = new NonLinearRssiPositionEstimator2D(this);
 
@@ -234,7 +231,6 @@ public class NonLinearRssiPositionEstimator2DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertNull(estimator.getCovariance());
-
 
         // constructor with sources and listener
         estimator = new NonLinearRssiPositionEstimator2D(sources, this);
@@ -274,7 +270,6 @@ public class NonLinearRssiPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint and listener
         estimator = new NonLinearRssiPositionEstimator2D(fingerprint, this);
 
@@ -307,7 +302,6 @@ public class NonLinearRssiPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint and listener
         estimator = new NonLinearRssiPositionEstimator2D(sources, fingerprint,
@@ -356,7 +350,6 @@ public class NonLinearRssiPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with initial position
         final InhomogeneousPoint2D initialPosition = new InhomogeneousPoint2D();
         estimator = new NonLinearRssiPositionEstimator2D(initialPosition);
@@ -379,7 +372,6 @@ public class NonLinearRssiPositionEstimator2DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertNull(estimator.getCovariance());
-
 
         // constructor with sources and initial position
         estimator = new NonLinearRssiPositionEstimator2D(sources, initialPosition);
@@ -421,7 +413,6 @@ public class NonLinearRssiPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint and initial position
         estimator = new NonLinearRssiPositionEstimator2D(fingerprint, initialPosition);
 
@@ -454,7 +445,6 @@ public class NonLinearRssiPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint and initial position
         estimator = new NonLinearRssiPositionEstimator2D(sources, fingerprint,
@@ -502,7 +492,6 @@ public class NonLinearRssiPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with initial position and listener
         estimator = new NonLinearRssiPositionEstimator2D(initialPosition,
                 this);
@@ -525,7 +514,6 @@ public class NonLinearRssiPositionEstimator2DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertNull(estimator.getCovariance());
-
 
         // constructor with sources, initial position and listener
         estimator = new NonLinearRssiPositionEstimator2D(sources, initialPosition,
@@ -568,7 +556,6 @@ public class NonLinearRssiPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint, initial position and listener
         estimator = new NonLinearRssiPositionEstimator2D(fingerprint, initialPosition,
                 this);
@@ -602,7 +589,6 @@ public class NonLinearRssiPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint, initial position and listener
         estimator = new NonLinearRssiPositionEstimator2D(sources, fingerprint,
@@ -787,7 +773,6 @@ public class NonLinearRssiPositionEstimator2DTest implements
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
-
             final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
             final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
             for (int i = 0; i < numSources; i++) {
@@ -882,7 +867,6 @@ public class NonLinearRssiPositionEstimator2DTest implements
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
-
             final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
             final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
             for (int i = 0; i < numSources; i++) {
@@ -912,7 +896,6 @@ public class NonLinearRssiPositionEstimator2DTest implements
 
             final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
                     new RssiFingerprint<>(readings);
-
 
             final NonLinearRssiPositionEstimator2D estimator =
                     new NonLinearRssiPositionEstimator2D(sources, fingerprint, position,

@@ -17,6 +17,7 @@ package com.irurueta.navigation.indoor;
 
 import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.Point;
+
 import java.io.Serializable;
 
 /**

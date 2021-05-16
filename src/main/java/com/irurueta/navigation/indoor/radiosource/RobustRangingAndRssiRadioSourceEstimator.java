@@ -21,28 +21,29 @@ import com.irurueta.navigation.indoor.RadioSource;
 import com.irurueta.navigation.indoor.RangingAndRssiReadingLocated;
 import com.irurueta.navigation.indoor.Utils;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
- * This is an abstract class to robustly estimate position, transmitted power and pathloss
+ * This is an abstract class to robustly estimate position, transmitted power and path-loss
  * exponent of a radio source (e.g. WiFi access point or bluetooth beacon), by discarding
  * outliers and assuming that the ranging data is available to obtain position with
  * greater accuracy and that the radio source emits isotropically following the
  * expression below:
  * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,
  * where Pr is the received power (expressed in mW),
- * Gt is the Gain of the transmission antena
- * Gr is the Gain of the receiver antena
+ * Gt is the Gain of the transmission antenna
+ * Gr is the Gain of the receiver antenna
  * d is the distance between emitter and receiver
  * and lambda is the wavelength and is equal to: lambda = c / f,
  * where c is the speed of light
  * and f is the carrier frequency of the radio signal.
- * Because usually information about the antena of the radio source cannot be
- * retrieved (because many measurements are made on unkown devices where
+ * Because usually information about the antenna of the radio source cannot be
+ * retrieved (because many measurements are made on unknown devices where
  * physical access is not possible), this implementation will estimate the
  * equivalent transmitted power as: Pte = Pt * Gt * Gr.
  * If Readings contain RSSI standard deviations, those values will be used,
- * otherwise it will be asumed an RSSI standard deviation of 1 dB.
+ * otherwise it will be assumed an RSSI standard deviation of 1 dB.
  * <p>
  * Although RobustRssiRadioSourceEstimator can estimate the same parameters of a radio
  * source, when ranging measures are available along with RSSI measurements,
@@ -134,7 +135,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
 
     /**
      * Variance of estimated path loss exponent.
-     * This value will only be available when pathloss
+     * This value will only be available when path-loss
      * exponent estimation is enabled.
      */
     protected Double mEstimatedPathLossExponentVariance;
@@ -792,12 +793,12 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
     public abstract RobustEstimatorMethod getMethod();
 
     /**
-     * Solves preliminar solution for a subset of samples.
+     * Solves preliminary solution for a subset of samples.
      *
      * @param samplesIndices indices of subset samples.
      * @param solutions      instance where solution will be stored.
      */
-    protected abstract void solvePreliminarSolutions(
+    protected abstract void solvePreliminarySolutions(
             final int[] samplesIndices,
             final List<RobustRangingAndRssiRadioSourceEstimator.Solution<P>> solutions);
 
@@ -809,25 +810,25 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @return difference between measured and expected RSSI value.
      */
     protected double residual(final Solution<P> currentEstimation, final int i) {
-        //Model fitted internally is equal to:
-        //Pr (dBm) = 10 * log(Pte * k^n / d^n) = 10*n*log(k) + 10*log(Pte) - 5*n*log(d^2)
-        //where:
-        //Pr is received, expressed in dBm
-        //Pte is equivalent transmitted power, expressed in dBm
-        //k is a constant equal to k = c^2 / (pi * f)^2, where c is speed of light
-        //and d is equal to distance between fingerprint and estimated position
+        // Model fitted internally is equal to:
+        // Pr (dBm) = 10 * log(Pte * k^n / d^n) = 10*n*log(k) + 10*log(Pte) - 5*n*log(d^2)
+        // where:
+        // Pr is received, expressed in dBm
+        // Pte is equivalent transmitted power, expressed in dBm
+        // k is a constant equal to k = c^2 / (pi * f)^2, where c is speed of light
+        // and d is equal to distance between fingerprint and estimated position
         final RangingAndRssiReadingLocated<S, P> reading = mReadings.get(i);
         final double frequency = reading.getSource().getFrequency();
 
         final double pathLossExponent = currentEstimation.getEstimatedPathLossExponent();
 
-        //compute k as the constant part of the isotropic received power formula
-        //so that: Pr = Pte*k^n/d^n
+        // compute k as the constant part of the isotropic received power formula
+        // so that: Pr = Pte*k^n/d^n
         final double k = RssiRadioSourceEstimator.SPEED_OF_LIGHT /
                 (4.0 * Math.PI * frequency);
         final double kdB = 10.0 * pathLossExponent * Math.log10(k);
 
-        //get distance from estimated radio source position and reading position
+        // get distance from estimated radio source position and reading position
         final P readingPosition = reading.getPosition();
         final P radioSourcePosition = currentEstimation.getEstimatedPosition();
 
@@ -836,8 +837,8 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
         final double transmittedPowerdBm = currentEstimation.
                 getEstimatedTransmittedPowerdBm();
 
-        //compute expected received power assuming isotropic transmission
-        //and compare agains measured RSSI at fingerprint location
+        // compute expected received power assuming isotropic transmission
+        // and compare against measured RSSI at fingerprint location
         final double expectedRSSI = kdB + transmittedPowerdBm -
                 5.0 * pathLossExponent * Math.log10(sqrDistance);
         final double rssi = reading.getRssi();

@@ -27,6 +27,7 @@ import com.irurueta.navigation.lateration.LaterationException;
 import com.irurueta.navigation.lateration.LaterationSolver;
 import com.irurueta.navigation.lateration.LaterationSolverListener;
 import com.irurueta.navigation.lateration.NonLinearLeastSquaresLaterationSolver;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +40,6 @@ import java.util.List;
  *
  * @param <P> a {@link Point} type.
  */
-@SuppressWarnings("WeakerAccess")
 public abstract class NonLinearRangingAndRssiPositionEstimator<P extends Point<?>> extends
         RangingAndRssiPositionEstimator<P> {
 
@@ -316,13 +316,14 @@ public abstract class NonLinearRangingAndRssiPositionEstimator<P extends Point<?
      * @throws IllegalArgumentException if provided value is null.
      */
     protected void internalSetFingerprint(
-            final Fingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint) {
+            final Fingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint) {
         super.internalSetFingerprint(fingerprint);
         buildPositionsDistancesAndDistanceStandardDeviations();
     }
 
     /**
-     * Sets positions, distnaces and standard deviations of distances on internal
+     * Sets positions, distances and standard deviations of distances on internal
      * lateration solver.
      *
      * @param positions                  positions to be set.

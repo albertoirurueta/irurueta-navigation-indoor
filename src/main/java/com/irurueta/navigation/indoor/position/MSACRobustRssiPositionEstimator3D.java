@@ -23,6 +23,7 @@ import com.irurueta.navigation.indoor.RssiFingerprint;
 import com.irurueta.navigation.indoor.RssiReading;
 import com.irurueta.navigation.lateration.MSACRobustLateration3DSolver;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -32,7 +33,6 @@ import java.util.List;
  * device by getting readings at an unknown location of different radio sources whose
  * 3D locations are known.
  */
-@SuppressWarnings("WeakerAccess")
 public class MSACRobustRssiPositionEstimator3D extends RobustRssiPositionEstimator3D {
 
     /**
@@ -137,7 +137,7 @@ public class MSACRobustRssiPositionEstimator3D extends RobustRssiPositionEstimat
      *
      * @param sources     located radio sources used for lateration.
      * @param fingerprint fingerprint containing RSSI readings at an unknown location
-     *                    for provided lcoated radio sources.
+     *                    for provided located radio sources.
      * @param listener    listener in charge of handling events.
      */
     public MSACRobustRssiPositionEstimator3D(

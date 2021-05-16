@@ -59,7 +59,7 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
     private static final Logger LOGGER = Logger.getLogger(
             PROSACRobustRangingPositionEstimator3DTest.class.getName());
 
-    private static final double FREQUENCY = 2.4e9; //(Hz)
+    private static final double FREQUENCY = 2.4e9; // (Hz)
 
     private static final int MIN_SOURCES = 100;
     private static final int MAX_SOURCES = 500;
@@ -96,6 +96,8 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         // check default values
         assertEquals(estimator.getThreshold(),
                 PROSACRobustLateration3DSolver.DEFAULT_THRESHOLD, 0.0);
+        assertFalse(estimator.isComputeAndKeepInliersEnabled());
+        assertFalse(estimator.isComputeAndKeepResidualsEnabled());
         assertEquals(estimator.getMinRequiredSources(), 4);
         assertEquals(estimator.getPreliminarySubsetSize(), 4);
         assertNull(estimator.getSources());
@@ -133,7 +135,6 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROSAC);
         assertTrue(estimator.getEvenlyDistributeReadings());
 
-
         // constructor with sources
         final List<WifiAccessPointLocated3D> sources = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
@@ -145,6 +146,8 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         // check default values
         assertEquals(estimator.getThreshold(),
                 PROSACRobustLateration3DSolver.DEFAULT_THRESHOLD, 0.0);
+        assertFalse(estimator.isComputeAndKeepInliersEnabled());
+        assertFalse(estimator.isComputeAndKeepResidualsEnabled());
         assertEquals(estimator.getMinRequiredSources(), 4);
         assertEquals(estimator.getPreliminarySubsetSize(), 4);
         assertSame(estimator.getSources(), sources);
@@ -198,7 +201,6 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprints
         RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
                 new RangingFingerprint<>();
@@ -207,6 +209,8 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         // check default values
         assertEquals(estimator.getThreshold(),
                 PROSACRobustLateration3DSolver.DEFAULT_THRESHOLD, 0.0);
+        assertFalse(estimator.isComputeAndKeepInliersEnabled());
+        assertFalse(estimator.isComputeAndKeepResidualsEnabled());
         assertEquals(estimator.getMinRequiredSources(), 4);
         assertEquals(estimator.getPreliminarySubsetSize(), 4);
         assertNull(estimator.getSources());
@@ -254,13 +258,14 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with sources and fingerprint
         estimator = new PROSACRobustRangingPositionEstimator3D(sources, fingerprint);
 
         // check default values
         assertEquals(estimator.getThreshold(),
                 PROSACRobustLateration3DSolver.DEFAULT_THRESHOLD, 0.0);
+        assertFalse(estimator.isComputeAndKeepInliersEnabled());
+        assertFalse(estimator.isComputeAndKeepResidualsEnabled());
         assertEquals(estimator.getMinRequiredSources(), 4);
         assertEquals(estimator.getPreliminarySubsetSize(), 4);
         assertSame(estimator.getSources(), sources);
@@ -320,13 +325,14 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with listener
         estimator = new PROSACRobustRangingPositionEstimator3D(this);
 
         // check default values
         assertEquals(estimator.getThreshold(),
                 PROSACRobustLateration3DSolver.DEFAULT_THRESHOLD, 0.0);
+        assertFalse(estimator.isComputeAndKeepInliersEnabled());
+        assertFalse(estimator.isComputeAndKeepResidualsEnabled());
         assertEquals(estimator.getMinRequiredSources(), 4);
         assertEquals(estimator.getPreliminarySubsetSize(), 4);
         assertNull(estimator.getSources());
@@ -364,13 +370,14 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROSAC);
         assertTrue(estimator.getEvenlyDistributeReadings());
 
-
         // constructor with sources and listener
         estimator = new PROSACRobustRangingPositionEstimator3D(sources, this);
 
         // check default values
         assertEquals(estimator.getThreshold(),
                 PROSACRobustLateration3DSolver.DEFAULT_THRESHOLD, 0.0);
+        assertFalse(estimator.isComputeAndKeepInliersEnabled());
+        assertFalse(estimator.isComputeAndKeepResidualsEnabled());
         assertEquals(estimator.getMinRequiredSources(), 4);
         assertEquals(estimator.getPreliminarySubsetSize(), 4);
         assertSame(estimator.getSources(), sources);
@@ -424,7 +431,6 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint and listener
         estimator = new PROSACRobustRangingPositionEstimator3D(fingerprint,
                 this);
@@ -432,6 +438,8 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         // check default values
         assertEquals(estimator.getThreshold(),
                 PROSACRobustLateration3DSolver.DEFAULT_THRESHOLD, 0.0);
+        assertFalse(estimator.isComputeAndKeepInliersEnabled());
+        assertFalse(estimator.isComputeAndKeepResidualsEnabled());
         assertEquals(estimator.getMinRequiredSources(), 4);
         assertEquals(estimator.getPreliminarySubsetSize(), 4);
         assertNull(estimator.getSources());
@@ -480,7 +488,6 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with sources, fingerprint and listener
         estimator = new PROSACRobustRangingPositionEstimator3D(sources, fingerprint,
                 this);
@@ -488,6 +495,8 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         // check default values
         assertEquals(estimator.getThreshold(),
                 PROSACRobustLateration3DSolver.DEFAULT_THRESHOLD, 0.0);
+        assertFalse(estimator.isComputeAndKeepInliersEnabled());
+        assertFalse(estimator.isComputeAndKeepResidualsEnabled());
         assertEquals(estimator.getMinRequiredSources(), 4);
         assertEquals(estimator.getPreliminarySubsetSize(), 4);
         assertSame(estimator.getSources(), sources);
@@ -548,7 +557,6 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with quality scores
         final double[] sourceQualityScores = new double[4];
         final double[] fingerprintReadingsQualityScores = new double[4];
@@ -558,6 +566,8 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         // check default values
         assertEquals(estimator.getThreshold(),
                 PROSACRobustLateration3DSolver.DEFAULT_THRESHOLD, 0.0);
+        assertFalse(estimator.isComputeAndKeepInliersEnabled());
+        assertFalse(estimator.isComputeAndKeepResidualsEnabled());
         assertEquals(estimator.getMinRequiredSources(), 4);
         assertEquals(estimator.getPreliminarySubsetSize(), 4);
         assertNull(estimator.getSources());
@@ -624,7 +634,6 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with quality scores and sources
         estimator = new PROSACRobustRangingPositionEstimator3D(sourceQualityScores,
                 fingerprintReadingsQualityScores, sources);
@@ -632,6 +641,8 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         // check default values
         assertEquals(estimator.getThreshold(),
                 PROSACRobustLateration3DSolver.DEFAULT_THRESHOLD, 0.0);
+        assertFalse(estimator.isComputeAndKeepInliersEnabled());
+        assertFalse(estimator.isComputeAndKeepResidualsEnabled());
         assertEquals(estimator.getMinRequiredSources(), 4);
         assertEquals(estimator.getPreliminarySubsetSize(), 4);
         assertSame(estimator.getSources(), sources);
@@ -716,7 +727,6 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with quality scores and fingerprints
         estimator = new PROSACRobustRangingPositionEstimator3D(sourceQualityScores,
                 fingerprintReadingsQualityScores, fingerprint);
@@ -724,6 +734,8 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         // check default values
         assertEquals(estimator.getThreshold(),
                 PROSACRobustLateration3DSolver.DEFAULT_THRESHOLD, 0.0);
+        assertFalse(estimator.isComputeAndKeepInliersEnabled());
+        assertFalse(estimator.isComputeAndKeepResidualsEnabled());
         assertEquals(estimator.getMinRequiredSources(), 4);
         assertEquals(estimator.getPreliminarySubsetSize(), 4);
         assertNull(estimator.getSources());
@@ -800,7 +812,6 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with quality scores, sources and fingerprint
         estimator = new PROSACRobustRangingPositionEstimator3D(sourceQualityScores,
                 fingerprintReadingsQualityScores, sources, fingerprint);
@@ -808,6 +819,8 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         // check default values
         assertEquals(estimator.getThreshold(),
                 PROSACRobustLateration3DSolver.DEFAULT_THRESHOLD, 0.0);
+        assertFalse(estimator.isComputeAndKeepInliersEnabled());
+        assertFalse(estimator.isComputeAndKeepResidualsEnabled());
         assertEquals(estimator.getMinRequiredSources(), 4);
         assertEquals(estimator.getPreliminarySubsetSize(), 4);
         assertSame(estimator.getSources(), sources);
@@ -897,7 +910,6 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with quality scores and listener
         estimator = new PROSACRobustRangingPositionEstimator3D(sourceQualityScores,
                 fingerprintReadingsQualityScores, this);
@@ -905,6 +917,8 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         // check default values
         assertEquals(estimator.getThreshold(),
                 PROSACRobustLateration3DSolver.DEFAULT_THRESHOLD, 0.0);
+        assertFalse(estimator.isComputeAndKeepInliersEnabled());
+        assertFalse(estimator.isComputeAndKeepResidualsEnabled());
         assertEquals(estimator.getMinRequiredSources(), 4);
         assertEquals(estimator.getPreliminarySubsetSize(), 4);
         assertNull(estimator.getSources());
@@ -973,7 +987,6 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with quality scores, sources and listener
         estimator = new PROSACRobustRangingPositionEstimator3D(sourceQualityScores,
                 fingerprintReadingsQualityScores, sources, this);
@@ -981,6 +994,8 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         // check default values
         assertEquals(estimator.getThreshold(),
                 PROSACRobustLateration3DSolver.DEFAULT_THRESHOLD, 0.0);
+        assertFalse(estimator.isComputeAndKeepInliersEnabled());
+        assertFalse(estimator.isComputeAndKeepResidualsEnabled());
         assertEquals(estimator.getMinRequiredSources(), 4);
         assertEquals(estimator.getPreliminarySubsetSize(), 4);
         assertSame(estimator.getSources(), sources);
@@ -1063,7 +1078,6 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with quality scores, fingerprint and listener
         estimator = new PROSACRobustRangingPositionEstimator3D(sourceQualityScores,
                 fingerprintReadingsQualityScores, fingerprint, this);
@@ -1071,6 +1085,8 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         // check default values
         assertEquals(estimator.getThreshold(),
                 PROSACRobustLateration3DSolver.DEFAULT_THRESHOLD, 0.0);
+        assertFalse(estimator.isComputeAndKeepInliersEnabled());
+        assertFalse(estimator.isComputeAndKeepResidualsEnabled());
         assertEquals(estimator.getMinRequiredSources(), 4);
         assertEquals(estimator.getPreliminarySubsetSize(), 4);
         assertNull(estimator.getSources());
@@ -1146,7 +1162,6 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with sources, fingerprint and listener
         estimator = new PROSACRobustRangingPositionEstimator3D(sourceQualityScores,
                 fingerprintReadingsQualityScores, sources, fingerprint,
@@ -1155,6 +1170,8 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         // check default values
         assertEquals(estimator.getThreshold(),
                 PROSACRobustLateration3DSolver.DEFAULT_THRESHOLD, 0.0);
+        assertFalse(estimator.isComputeAndKeepInliersEnabled());
+        assertFalse(estimator.isComputeAndKeepResidualsEnabled());
         assertEquals(estimator.getMinRequiredSources(), 4);
         assertEquals(estimator.getPreliminarySubsetSize(), 4);
         assertSame(estimator.getSources(), sources);
@@ -1269,6 +1286,38 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
+    }
+
+    @Test
+    public void testIsSetComputeAndKeepInliersEnabled()
+            throws LockedException {
+        final PROSACRobustRangingPositionEstimator3D estimator =
+                new PROSACRobustRangingPositionEstimator3D();
+
+        // check default value
+        assertFalse(estimator.isComputeAndKeepInliersEnabled());
+
+        // set new value
+        estimator.setComputeAndKeepInliersEnabled(true);
+
+        // check
+        assertTrue(estimator.isComputeAndKeepInliersEnabled());
+    }
+
+    @Test
+    public void testIsComputeAndKeepResidualsEnabled()
+            throws LockedException {
+        final PROSACRobustRangingPositionEstimator3D estimator =
+                new PROSACRobustRangingPositionEstimator3D();
+
+        // check default value
+        assertFalse(estimator.isComputeAndKeepResidualsEnabled());
+
+        // set new value
+        estimator.setComputeAndKeepResidualsEnabled(true);
+
+        // check
+        assertTrue(estimator.isComputeAndKeepResidualsEnabled());
     }
 
     @Test
@@ -1563,6 +1612,7 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         }
     }
 
+    @Test
     public void testGetSetFingerprintReadingsQualityScores() throws LockedException {
         final PROSACRobustRangingPositionEstimator3D estimator =
                 new PROSACRobustRangingPositionEstimator3D();
@@ -1571,7 +1621,7 @@ public class PROSACRobustRangingPositionEstimator3DTest implements
         assertNull(estimator.getFingerprintReadingsQualityScores());
 
         // set new value
-        final double[] qualityScores = new double[3];
+        final double[] qualityScores = new double[4];
         estimator.setFingerprintReadingsQualityScores(qualityScores);
 
         // check

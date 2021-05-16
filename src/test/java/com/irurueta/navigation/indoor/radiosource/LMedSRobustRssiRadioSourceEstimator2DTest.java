@@ -33,11 +33,7 @@ import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.text.MessageFormat;
@@ -52,7 +48,6 @@ import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
 
-@SuppressWarnings("Duplicates")
 public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         RobustRssiRadioSourceEstimatorListener<WifiAccessPoint, Point2D> {
 
@@ -88,40 +83,20 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
     private static final double STD_OUTLIER_ERROR = 10.0;
 
-
     private int estimateStart;
     private int estimateEnd;
     private int estimateNextIteration;
     private int estimateProgressChange;
 
-    public LMedSRobustRssiRadioSourceEstimator2DTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
-
     @Test
     public void testConstructor() {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
-        //test empty constructor
+        // test empty constructor
         LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
 
-        //check
+        // check
         assertEquals(estimator.getStopThreshold(),
                 LMedSRobustRssiRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
                 0.0);
@@ -162,8 +137,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-
-        //test constructor with readings
+        // test constructor with readings
         final List<RssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
         final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
         for (int i = 0; i < 4; i++) {
@@ -176,7 +150,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         estimator = new LMedSRobustRssiRadioSourceEstimator2D<>(
                 readings);
 
-        //check
+        // check
         assertEquals(estimator.getStopThreshold(),
                 LMedSRobustRssiRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
                 0.0);
@@ -217,7 +191,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-        //force IllegalArgumentException
+        // force IllegalArgumentException
         estimator = null;
         try {
             estimator = new LMedSRobustRssiRadioSourceEstimator2D<>(
@@ -233,11 +207,10 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
-        //test constructor with listener
+        // test constructor with listener
         estimator = new LMedSRobustRssiRadioSourceEstimator2D<>(this);
 
-        //check
+        // check
         assertEquals(estimator.getStopThreshold(),
                 LMedSRobustRssiRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
                 0.0);
@@ -278,12 +251,11 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-
-        //test constructor with readings and listener
+        // test constructor with readings and listener
         estimator = new LMedSRobustRssiRadioSourceEstimator2D<>(
                 readings, this);
 
-        //check
+        // check
         assertEquals(estimator.getStopThreshold(),
                 LMedSRobustRssiRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
                 0.0);
@@ -324,7 +296,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-        //force IllegalArgumentException
+        // force IllegalArgumentException
         estimator = null;
         try {
             estimator = new LMedSRobustRssiRadioSourceEstimator2D<>(
@@ -340,8 +312,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
-        //test constructor with readings and initial position
+        // test constructor with readings and initial position
         final InhomogeneousPoint2D initialPosition = new InhomogeneousPoint2D(
                 randomizer.nextDouble(MIN_POS, MAX_POS),
                 randomizer.nextDouble(MIN_POS, MAX_POS));
@@ -389,7 +360,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-        //force IllegalArgumentException
+        // force IllegalArgumentException
         estimator = null;
         try {
             estimator = new LMedSRobustRssiRadioSourceEstimator2D<>(
@@ -405,12 +376,11 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
-        //test constructor with initial position
+        // test constructor with initial position
         estimator = new LMedSRobustRssiRadioSourceEstimator2D<>(
                 initialPosition);
 
-        //check
+        // check
         assertEquals(estimator.getStopThreshold(),
                 LMedSRobustRssiRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
                 0.0);
@@ -451,12 +421,11 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-
-        //test constructor with initial position and listener
+        // test constructor with initial position and listener
         estimator = new LMedSRobustRssiRadioSourceEstimator2D<>(
                 initialPosition, this);
 
-        //check
+        // check
         assertEquals(estimator.getStopThreshold(),
                 LMedSRobustRssiRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
                 0.0);
@@ -497,12 +466,11 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-
-        //test constructor with readings, initial position and listener
+        // test constructor with readings, initial position and listener
         estimator = new LMedSRobustRssiRadioSourceEstimator2D<>(
                 readings, initialPosition, this);
 
-        //check
+        // check
         assertEquals(estimator.getStopThreshold(),
                 LMedSRobustRssiRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
                 0.0);
@@ -543,7 +511,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-        //force IllegalArgumentException
+        // force IllegalArgumentException
         estimator = null;
         try {
             estimator = new LMedSRobustRssiRadioSourceEstimator2D<>(
@@ -559,12 +527,11 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
-        //test constructor with initial transmitter power
+        // test constructor with initial transmitter power
         estimator = new LMedSRobustRssiRadioSourceEstimator2D<>(
                 MAX_RSSI);
 
-        //check
+        // check
         assertEquals(estimator.getStopThreshold(),
                 LMedSRobustRssiRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
                 0.0);
@@ -606,12 +573,11 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-
-        //test constructor with readings and initial transmitted power
+        // test constructor with readings and initial transmitted power
         estimator = new LMedSRobustRssiRadioSourceEstimator2D<>(
                 readings, MAX_RSSI);
 
-        //check
+        // check
         assertEquals(estimator.getStopThreshold(),
                 LMedSRobustRssiRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
                 0.0);
@@ -653,7 +619,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-        //force IllegalArgumentException
+        // force IllegalArgumentException
         estimator = null;
         try {
             estimator = new LMedSRobustRssiRadioSourceEstimator2D<>(
@@ -669,12 +635,11 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
-        //test constructor with initial transmitted power and listener
+        // test constructor with initial transmitted power and listener
         estimator = new LMedSRobustRssiRadioSourceEstimator2D<>(
                 MAX_RSSI, this);
 
-        //check
+        // check
         assertEquals(estimator.getStopThreshold(),
                 LMedSRobustRssiRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
                 0.0);
@@ -716,12 +681,11 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-
-        //test constructor with readings, initial transmitted power and listener
+        // test constructor with readings, initial transmitted power and listener
         estimator = new LMedSRobustRssiRadioSourceEstimator2D<>(
                 readings, MAX_RSSI, this);
 
-        //check
+        // check
         assertEquals(estimator.getStopThreshold(),
                 LMedSRobustRssiRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
                 0.0);
@@ -763,7 +727,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-        //force IllegalArgumentException
+        // force IllegalArgumentException
         estimator = null;
         try {
             estimator = new LMedSRobustRssiRadioSourceEstimator2D<>(
@@ -779,12 +743,11 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
-        //test constructor with readings, initial position and initial transmitted power
+        // test constructor with readings, initial position and initial transmitted power
         estimator = new LMedSRobustRssiRadioSourceEstimator2D<>(
                 readings, initialPosition, MAX_RSSI);
 
-        //check
+        // check
         assertEquals(estimator.getStopThreshold(),
                 LMedSRobustRssiRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
                 0.0);
@@ -826,7 +789,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-        //force IllegalArgumentException
+        // force IllegalArgumentException
         estimator = null;
         try {
             estimator = new LMedSRobustRssiRadioSourceEstimator2D<>(
@@ -843,12 +806,11 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
-        //test constructor with initial position and initial transmitted power
+        // test constructor with initial position and initial transmitted power
         estimator = new LMedSRobustRssiRadioSourceEstimator2D<>(
                 initialPosition, MAX_RSSI);
 
-        //check
+        // check
         assertEquals(estimator.getStopThreshold(),
                 LMedSRobustRssiRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
                 0.0);
@@ -890,12 +852,11 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-
-        //test constructor with initial position, initial transmitted power and listener
+        // test constructor with initial position, initial transmitted power and listener
         estimator = new LMedSRobustRssiRadioSourceEstimator2D<>(
                 initialPosition, MAX_RSSI, this);
 
-        //check
+        // check
         assertEquals(estimator.getStopThreshold(),
                 LMedSRobustRssiRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
                 0.0);
@@ -937,13 +898,12 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-
-        //test constructor with readings, initial position, initial transmitted power
-        //and listener
+        // test constructor with readings, initial position, initial transmitted power
+        // and listener
         estimator = new LMedSRobustRssiRadioSourceEstimator2D<>(
                 readings, initialPosition, MAX_RSSI, this);
 
-        //check
+        // check
         assertEquals(estimator.getStopThreshold(),
                 LMedSRobustRssiRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
                 0.0);
@@ -985,7 +945,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-        //force IllegalArgumentException
+        // force IllegalArgumentException
         estimator = null;
         try {
             estimator = new LMedSRobustRssiRadioSourceEstimator2D<>(
@@ -1002,12 +962,11 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
-        //test constructor with readings, initial position and initial transmitted power
+        // test constructor with readings, initial position and initial transmitted power
         estimator = new LMedSRobustRssiRadioSourceEstimator2D<>(
                 readings, initialPosition, MAX_RSSI, MIN_PATH_LOSS_EXPONENT);
 
-        //check
+        // check
         assertEquals(estimator.getStopThreshold(),
                 LMedSRobustRssiRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
                 0.0);
@@ -1049,7 +1008,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-        //force IllegalArgumentException
+        // force IllegalArgumentException
         estimator = null;
         try {
             estimator = new LMedSRobustRssiRadioSourceEstimator2D<>(
@@ -1066,12 +1025,11 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
-        //test constructor with initial position and initial transmitted power
+        // test constructor with initial position and initial transmitted power
         estimator = new LMedSRobustRssiRadioSourceEstimator2D<>(
                 initialPosition, MAX_RSSI, MIN_PATH_LOSS_EXPONENT);
 
-        //check
+        // check
         assertEquals(estimator.getStopThreshold(),
                 LMedSRobustRssiRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
                 0.0);
@@ -1113,12 +1071,11 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-
-        //test constructor with initial position, initial transmitted power and listener
+        // test constructor with initial position, initial transmitted power and listener
         estimator = new LMedSRobustRssiRadioSourceEstimator2D<>(
                 initialPosition, MAX_RSSI, MIN_PATH_LOSS_EXPONENT, this);
 
-        //check
+        // check
         assertEquals(estimator.getStopThreshold(),
                 LMedSRobustRssiRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
                 0.0);
@@ -1160,13 +1117,12 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-
-        //test constructor with readings, initial position, initial transmitted power
-        //and listener
+        // test constructor with readings, initial position, initial transmitted power
+        // and listener
         estimator = new LMedSRobustRssiRadioSourceEstimator2D<>(
                 readings, initialPosition, MAX_RSSI, MIN_PATH_LOSS_EXPONENT, this);
 
-        //check
+        // check
         assertEquals(estimator.getStopThreshold(),
                 LMedSRobustRssiRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
                 0.0);
@@ -1208,7 +1164,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-        //force IllegalArgumentException
+        // force IllegalArgumentException
         estimator = null;
         try {
             estimator = new LMedSRobustRssiRadioSourceEstimator2D<>(
@@ -1232,18 +1188,18 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
 
-        //check default value
+        // check default value
         assertEquals(estimator.getStopThreshold(),
                 LMedSRobustRssiRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
                 0.0);
 
-        //set new value
+        // set new value
         estimator.setStopThreshold(0.5);
 
-        //check
+        // check
         assertEquals(estimator.getStopThreshold(), 0.5, 0.0);
 
-        //force IllegalArgumentException
+        // force IllegalArgumentException
         try {
             estimator.setStopThreshold(0.0);
             fail("IllegalArgumentException expected but not thrown");
@@ -1256,69 +1212,64 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
 
-        //check default value
+        // check default value
         assertEquals(estimator.getMinReadings(), 4);
 
-        //position only
+        // position only
         estimator.setPositionEstimationEnabled(true);
         estimator.setTransmittedPowerEstimationEnabled(false);
         estimator.setPathLossEstimationEnabled(false);
 
-        //check
+        // check
         assertEquals(estimator.getMinReadings(), 3);
 
-
-        //transmitted power only
+        // transmitted power only
         estimator.setPositionEstimationEnabled(false);
         estimator.setTransmittedPowerEstimationEnabled(true);
         estimator.setPathLossEstimationEnabled(false);
 
-        //check
+        // check
         assertEquals(estimator.getMinReadings(), 2);
 
 
-        //pathloss only
+        // path-loss only
         estimator.setPositionEstimationEnabled(false);
         estimator.setTransmittedPowerEstimationEnabled(false);
         estimator.setPathLossEstimationEnabled(true);
 
-        //check
+        // check
         assertEquals(estimator.getMinReadings(), 2);
 
-
-        //position and transmitted power
+        // position and transmitted power
         estimator.setPositionEstimationEnabled(true);
         estimator.setTransmittedPowerEstimationEnabled(true);
         estimator.setPathLossEstimationEnabled(false);
 
-        //check
+        // check
         assertEquals(estimator.getMinReadings(), 4);
 
-
-        //position and pathloss
+        // position and path-loss
         estimator.setPositionEstimationEnabled(true);
         estimator.setTransmittedPowerEstimationEnabled(false);
         estimator.setPathLossEstimationEnabled(true);
 
-        //check
+        // check
         assertEquals(estimator.getMinReadings(), 4);
 
-
-        //transmitted power and pathloss
+        // transmitted power and path-loss
         estimator.setPositionEstimationEnabled(false);
         estimator.setTransmittedPowerEstimationEnabled(true);
         estimator.setPathLossEstimationEnabled(true);
 
-        //check
+        // check
         assertEquals(estimator.getMinReadings(), 3);
 
-
-        //position, transmitted power and patloss
+        // position, transmitted power and path-loss
         estimator.setPositionEstimationEnabled(true);
         estimator.setTransmittedPowerEstimationEnabled(true);
         estimator.setPathLossEstimationEnabled(true);
 
-        //check
+        // check
         assertEquals(estimator.getMinReadings(), 5);
     }
 
@@ -1327,13 +1278,13 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
 
-        //check default value
+        // check default value
         assertNull(estimator.getInitialTransmittedPowerdBm());
 
-        //set new value
+        // set new value
         estimator.setInitialTransmittedPowerdBm(MAX_RSSI);
 
-        //check
+        // check
         assertEquals(estimator.getInitialTransmittedPowerdBm(), MAX_RSSI, 0.0);
     }
 
@@ -1342,14 +1293,14 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
 
-        //check default value
+        // check default value
         assertNull(estimator.getInitialTransmittedPower());
 
-        //set new value
+        // set new value
         final double power = Utils.dBmToPower(MAX_RSSI);
         estimator.setInitialTransmittedPower(power);
 
-        //check
+        // check
         assertEquals(estimator.getInitialTransmittedPower(), power, ABSOLUTE_ERROR);
     }
 
@@ -1360,16 +1311,16 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
 
-        //check default value
+        // check default value
         assertNull(estimator.getInitialPosition());
 
-        //set new value
+        // set new value
         final InhomogeneousPoint2D initialPosition = new InhomogeneousPoint2D(
                 randomizer.nextDouble(MIN_POS, MAX_POS),
                 randomizer.nextDouble(MIN_POS, MAX_POS));
         estimator.setInitialPosition(initialPosition);
 
-        //check
+        // check
         assertSame(estimator.getInitialPosition(), initialPosition);
     }
 
@@ -1380,17 +1331,17 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
 
-        //check default value
+        // check default value
         assertEquals(estimator.getInitialPathLossExponent(),
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT,
                 0.0);
 
-        //set new value
+        // set new value
         final double pathLossExponent = randomizer.nextDouble(
                 MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
         estimator.setInitialPathLossExponent(pathLossExponent);
 
-        //check
+        // check
         assertEquals(estimator.getInitialPathLossExponent(),
                 pathLossExponent, 0.0);
     }
@@ -1400,13 +1351,13 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
 
-        //check default value
+        // check default value
         assertTrue(estimator.isTransmittedPowerEstimationEnabled());
 
-        //set new value
+        // set new value
         estimator.setTransmittedPowerEstimationEnabled(false);
 
-        //check
+        // check
         assertFalse(estimator.isTransmittedPowerEstimationEnabled());
     }
 
@@ -1415,13 +1366,13 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
 
-        //check default value
+        // check default value
         assertTrue(estimator.isPositionEstimationEnabled());
 
-        //set new value
+        // set new value
         estimator.setPositionEstimationEnabled(false);
 
-        //check
+        // check
         assertFalse(estimator.isPositionEstimationEnabled());
     }
 
@@ -1430,13 +1381,13 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
 
-        //check default value
+        // check default value
         assertFalse(estimator.isPathLossEstimationEnabled());
 
-        //set new value
+        // set new value
         estimator.setPathLossEstimationEnabled(true);
 
-        //check
+        // check
         assertTrue(estimator.isPathLossEstimationEnabled());
     }
 
@@ -1445,18 +1396,18 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
 
-        //check default value
+        // check default value
         assertEquals(estimator.getProgressDelta(),
                 RobustRssiRadioSourceEstimator.DEFAULT_PROGRESS_DELTA,
                 0.0);
 
-        //set new value
+        // set new value
         estimator.setProgressDelta(0.5f);
 
-        //check
+        // check
         assertEquals(estimator.getProgressDelta(), 0.5f, 0.0);
 
-        //force IllegalArgumentException
+        // force IllegalArgumentException
         try {
             estimator.setProgressDelta(-1.0f);
             fail("IllegalArgumentException expected but not thrown");
@@ -1474,18 +1425,18 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
 
-        //check default value
+        // check default value
         assertEquals(estimator.getConfidence(),
                 RobustRssiRadioSourceEstimator.DEFAULT_CONFIDENCE,
                 0.0);
 
-        //set new value
+        // set new value
         estimator.setConfidence(0.5);
 
-        //check
+        // check
         assertEquals(estimator.getConfidence(), 0.5, 0.0);
 
-        //force IllegalArgumentException
+        // force IllegalArgumentException
         try {
             estimator.setConfidence(-1.0);
             fail("IllegalArgumentException expected but not thrown");
@@ -1503,17 +1454,17 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
 
-        //check default value
+        // check default value
         assertEquals(estimator.getMaxIterations(),
                 RobustRssiRadioSourceEstimator.DEFAULT_MAX_ITERATIONS);
 
-        //set new value
+        // set new value
         estimator.setMaxIterations(10);
 
-        //check
+        // check
         assertEquals(estimator.getMaxIterations(), 10);
 
-        //force IllegalArgumentException
+        // force IllegalArgumentException
         try {
             estimator.setMaxIterations(0);
             fail("IllegalArgumentException expected but not thrown");
@@ -1526,15 +1477,15 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
 
-        //check default value
+        // check default value
         assertEquals(estimator.isResultRefined(),
                 RobustRssiRadioSourceEstimator.DEFAULT_REFINE_RESULT);
 
-        //set new value
+        // set new value
         estimator.setResultRefined(
                 !RobustRssiRadioSourceEstimator.DEFAULT_REFINE_RESULT);
 
-        //check
+        // check
         assertEquals(estimator.isResultRefined(),
                 !RobustRssiRadioSourceEstimator.DEFAULT_REFINE_RESULT);
     }
@@ -1544,15 +1495,15 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
 
-        //check default value
+        // check default value
         assertEquals(estimator.isCovarianceKept(),
                 RobustRssiRadioSourceEstimator.DEFAULT_KEEP_COVARIANCE);
 
-        //set new value
+        // set new value
         estimator.setCovarianceKept(
                 !RobustRssiRadioSourceEstimator.DEFAULT_KEEP_COVARIANCE);
 
-        //check
+        // check
         assertEquals(estimator.isCovarianceKept(),
                 !RobustRssiRadioSourceEstimator.DEFAULT_KEEP_COVARIANCE);
     }
@@ -1595,11 +1546,11 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         estimator.setPathLossEstimationEnabled(false);
         estimator.setInitialPathLossExponent(MAX_PATH_LOSS_EXPONENT);
 
-        //check default value
+        // check default value
         assertNull(estimator.getReadings());
         assertFalse(estimator.isReady());
 
-        //set new value
+        // set new value
         final List<RssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
         final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
         for (int i = 0; i < 3; i++) {
@@ -1611,11 +1562,11 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
         estimator.setReadings(readings);
 
-        //check
+        // check
         assertSame(estimator.getReadings(), readings);
         assertTrue(estimator.isReady());
 
-        //force IllegalArgumentException
+        // force IllegalArgumentException
         try {
             estimator.setReadings(null);
             fail("IllegalArgumentException expected but not thrown");
@@ -1633,13 +1584,13 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
 
-        //check default value
+        // check default value
         assertNull(estimator.getListener());
 
-        //set new value
+        // set new value
         estimator.setListener(this);
 
-        //check
+        // check
         assertSame(estimator.getListener(), this);
     }
 
@@ -1648,13 +1599,13 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
 
-        //check default value
+        // check default value
         assertNull(estimator.getQualityScores());
 
-        //set new value
+        // set new value
         estimator.setQualityScores(new double[3]);
 
-        //check
+        // check
         assertNull(estimator.getQualityScores());
     }
 
@@ -1718,10 +1669,10 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    //outlier
+                    // outlier
                     error = errorRandomizer.nextDouble();
                 } else {
-                    //inlier
+                    // inlier
                     error = 0.0;
                 }
 
@@ -1755,7 +1706,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
             estimator.estimate();
 
-            //check
+            // check
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimateNextIteration > 0);
@@ -1822,7 +1773,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         LOGGER.log(Level.INFO, "Power error: {0} dB",
                 powerError);
 
-        //force NotReadyException
+        // force NotReadyException
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
         try {
@@ -1874,10 +1825,10 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    //outlier
+                    // outlier
                     error = errorRandomizer.nextDouble();
                 } else {
-                    //inlier
+                    // inlier
                     error = 0.0;
                 }
 
@@ -1911,7 +1862,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
             estimator.estimate();
 
-            //check
+            // check
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimateNextIteration > 0);
@@ -2009,7 +1960,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB",
                 powerStd);
 
-        //force NotReadyException
+        // force NotReadyException
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
         try {
@@ -2063,10 +2014,10 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    //outlier
+                    // outlier
                     error = errorRandomizer.nextDouble();
                 } else {
-                    //inlier
+                    // inlier
                     error = 0.0;
                 }
 
@@ -2102,7 +2053,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
             estimator.estimate();
 
-            //check
+            // check
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimateNextIteration > 0);
@@ -2198,7 +2149,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB",
                 powerStd);
 
-        //force NotReadyException
+        // force NotReadyException
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
         try {
@@ -2252,10 +2203,10 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    //outlier
+                    // outlier
                     error = errorRandomizer.nextDouble();
                 } else {
-                    //inlier
+                    // inlier
                     error = 0.0;
                 }
 
@@ -2295,7 +2246,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
             estimator.estimate();
 
-            //check
+            // check
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimateNextIteration > 0);
@@ -2393,7 +2344,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB",
                 powerStd);
 
-        //force NotReadyException
+        // force NotReadyException
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
         try {
@@ -2447,10 +2398,10 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    //outlier
+                    // outlier
                     error = errorRandomizer.nextDouble();
                 } else {
-                    //inlier
+                    // inlier
                     error = 0.0;
                 }
 
@@ -2488,7 +2439,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
             estimator.estimate();
 
-            //check
+            // check
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimateNextIteration > 0);
@@ -2586,7 +2537,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB",
                 powerStd);
 
-        //force NotReadyException
+        // force NotReadyException
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
         try {
@@ -2640,10 +2591,10 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    //outlier
+                    // outlier
                     error = errorRandomizer.nextDouble();
                 } else {
-                    //inlier
+                    // inlier
                     error = 0.0;
                 }
 
@@ -2686,7 +2637,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
             estimator.estimate();
 
-            //check
+            // check
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimateNextIteration > 0);
@@ -2784,7 +2735,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB",
                 powerStd);
 
-        //force NotReadyException
+        // force NotReadyException
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
         try {
@@ -2838,10 +2789,10 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    //outlier
+                    // outlier
                     error = errorRandomizer.nextDouble();
                 } else {
-                    //inlier
+                    // inlier
                     error = 0.0;
                 }
 
@@ -2886,7 +2837,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
             estimator.estimate();
 
-            //check
+            // check
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimateNextIteration > 0);
@@ -2964,7 +2915,6 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         assertTrue(numValidPosition > 0);
         assertTrue(numValidPower > 0);
 
-
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);
         LOGGER.log(Level.INFO, MessageFormat.format(
@@ -2983,7 +2933,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB",
                 powerStd);
 
-        //force NotReadyException
+        // force NotReadyException
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
         try {
@@ -3039,10 +2989,10 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    //outlier
+                    // outlier
                     error = errorRandomizer.nextDouble();
                 } else {
-                    //inlier
+                    // inlier
                     error = 0.0;
                 }
 
@@ -3076,7 +3026,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
             estimator.estimate();
 
-            //check
+            // check
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimateNextIteration > 0);
@@ -3196,7 +3146,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         LOGGER.log(Level.INFO, "Path loss standard deviation {0}",
                 pathLossStd);
 
-        //force NotReadyException
+        // force NotReadyException
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
         try {
@@ -3252,10 +3202,10 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    //outlier
+                    // outlier
                     error = errorRandomizer.nextDouble();
                 } else {
-                    //inlier
+                    // inlier
                     error = 0.0;
                 }
 
@@ -3292,7 +3242,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
             estimator.estimate();
 
-            //check
+            // check
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimateNextIteration > 0);
@@ -3411,7 +3361,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         LOGGER.log(Level.INFO, "Path loss standard deviation {0}",
                 pathLossStd);
 
-        //force NotReadyException
+        // force NotReadyException
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
         try {
@@ -3465,10 +3415,10 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    //outlier
+                    // outlier
                     error = errorRandomizer.nextDouble();
                 } else {
-                    //inlier
+                    // inlier
                     error = 0.0;
                 }
 
@@ -3503,7 +3453,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
             estimator.estimate();
 
-            //check
+            // check
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimateNextIteration > 0);
@@ -3605,7 +3555,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB",
                 powerStd);
 
-        //force NotReadyException
+        // force NotReadyException
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
         try {
@@ -3659,10 +3609,10 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    //outlier
+                    // outlier
                     error = errorRandomizer.nextDouble();
                 } else {
-                    //inlier
+                    // inlier
                     error = 0.0;
                 }
 
@@ -3692,7 +3642,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
             estimator.estimate();
 
-            //check
+            // check
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -3781,7 +3731,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB",
                 powerStd);
 
-        //force NotReadyException
+        // force NotReadyException
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
         try {
@@ -3833,10 +3783,10 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    //outlier
+                    // outlier
                     error = errorRandomizer.nextDouble();
                 } else {
-                    //inlier
+                    // inlier
                     error = 0.0;
                 }
 
@@ -3872,7 +3822,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
             estimator.estimate();
 
-            //check
+            // check
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimateNextIteration > 0);
@@ -3951,7 +3901,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         LOGGER.log(Level.INFO, "Position error: {0} meters",
                 positionError);
 
-        //force NotReadyException
+        // force NotReadyException
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
         try {
@@ -4003,10 +3953,10 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    //outlier
+                    // outlier
                     error = errorRandomizer.nextDouble();
                 } else {
-                    //inlier
+                    // inlier
                     error = 0.0;
                 }
 
@@ -4043,7 +3993,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
             estimator.estimate();
 
-            //check
+            // check
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimateNextIteration > 0);
@@ -4114,7 +4064,6 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         LOGGER.log(Level.INFO, "Percentage all valid: {0} %",
                 (double) numValid / (double) TIMES * 100.0);
 
-
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);
         LOGGER.log(Level.INFO, MessageFormat.format(
@@ -4126,7 +4075,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
                 "Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
-        //force NotReadyException
+        // force NotReadyException
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
         try {
@@ -4178,10 +4127,10 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    //outlier
+                    // outlier
                     error = errorRandomizer.nextDouble();
                 } else {
-                    //inlier
+                    // inlier
                     error = 0.0;
                 }
 
@@ -4217,10 +4166,10 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
             estimator.estimate();
 
-            //repeat again so that position covariance matrix is reused
+            // repeat again so that position covariance matrix is reused
             estimator.estimate();
 
-            //check
+            // check
             assertEquals(estimateStart, 2);
             assertEquals(estimateEnd, 2);
             assertTrue(estimateNextIteration > 0);
@@ -4296,7 +4245,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
                 "Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
-        //force NotReadyException
+        // force NotReadyException
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
         try {
@@ -4347,10 +4296,10 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    //outlier
+                    // outlier
                     error = errorRandomizer.nextDouble();
                 } else {
-                    //inlier
+                    // inlier
                     error = 0.0;
                 }
 
@@ -4386,7 +4335,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
             estimator.estimate();
 
-            //check
+            // check
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimateNextIteration > 0);
@@ -4450,7 +4399,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB",
                 powerStd);
 
-        //force NotReadyException
+        // force NotReadyException
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
         try {
@@ -4501,10 +4450,10 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    //outlier
+                    // outlier
                     error = errorRandomizer.nextDouble();
                 } else {
-                    //inlier
+                    // inlier
                     error = 0.0;
                 }
 
@@ -4541,7 +4490,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
             estimator.estimate();
 
-            //check
+            // check
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimateNextIteration > 0);
@@ -4605,7 +4554,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB",
                 powerStd);
 
-        //force NotReadyException
+        // force NotReadyException
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
         try {
@@ -4656,10 +4605,10 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    //outlier
+                    // outlier
                     error = errorRandomizer.nextDouble();
                 } else {
-                    //inlier
+                    // inlier
                     error = 0.0;
                 }
 
@@ -4695,7 +4644,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
             estimator.estimate();
 
-            //check
+            // check
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimateNextIteration > 0);
@@ -4756,7 +4705,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         LOGGER.log(Level.INFO, "Path loss standard deviation {0}",
                 pathLossStd);
 
-        //force NotReadyException
+        // force NotReadyException
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
         try {
@@ -4807,10 +4756,10 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    //outlier
+                    // outlier
                     error = errorRandomizer.nextDouble();
                 } else {
-                    //inlier
+                    // inlier
                     error = 0.0;
                 }
 
@@ -4847,7 +4796,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
             estimator.estimate();
 
-            //check
+            // check
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimateNextIteration > 0);
@@ -4907,7 +4856,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         LOGGER.log(Level.INFO, "Path loss standard deviation {0}",
                 pathLossStd);
 
-        //force NotReadyException
+        // force NotReadyException
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
         try {
@@ -4961,10 +4910,10 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    //outlier
+                    // outlier
                     error = errorRandomizer.nextDouble();
                 } else {
-                    //inlier
+                    // inlier
                     error = 0.0;
                 }
 
@@ -4999,7 +4948,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
             estimator.estimate();
 
-            //check
+            // check
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimateNextIteration > 0);
@@ -5094,7 +5043,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         LOGGER.log(Level.INFO, "Path loss standard deviation {0}",
                 pathLossStd);
 
-        //force NotReadyException
+        // force NotReadyException
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
         try {
@@ -5148,10 +5097,10 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    //outlier
+                    // outlier
                     error = errorRandomizer.nextDouble();
                 } else {
-                    //inlier
+                    // inlier
                     error = 0.0;
                 }
 
@@ -5188,7 +5137,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
             estimator.estimate();
 
-            //check
+            // check
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimateNextIteration > 0);
@@ -5285,7 +5234,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         LOGGER.log(Level.INFO, "Path loss standard deviation {0}",
                 pathLossStd);
 
-        //force NotReadyException
+        // force NotReadyException
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
         try {
@@ -5338,10 +5287,10 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    //outlier
+                    // outlier
                     error = errorRandomizer.nextDouble();
                 } else {
-                    //inlier
+                    // inlier
                     error = 0.0;
                 }
 
@@ -5376,7 +5325,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
             estimator.estimate();
 
-            //check
+            // check
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimateNextIteration > 0);
@@ -5459,7 +5408,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         LOGGER.log(Level.INFO, "Path loss standard deviation {0}",
                 pathLossStd);
 
-        //force NotReadyException
+        // force NotReadyException
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
         try {
@@ -5512,10 +5461,10 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    //outlier
+                    // outlier
                     error = errorRandomizer.nextDouble();
                 } else {
-                    //inlier
+                    // inlier
                     error = 0.0;
                 }
 
@@ -5552,7 +5501,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
             estimator.estimate();
 
-            //check
+            // check
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimateNextIteration > 0);
@@ -5635,7 +5584,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         LOGGER.log(Level.INFO, "Path loss standard deviation {0}",
                 pathLossStd);
 
-        //force NotReadyException
+        // force NotReadyException
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
         try {
@@ -5683,10 +5632,10 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    //outlier
+                    // outlier
                     error = errorRandomizer.nextDouble();
                 } else {
-                    //inlier
+                    // inlier
                     error = 0.0;
                 }
 
@@ -5722,7 +5671,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
 
             estimator.estimate();
 
-            //check
+            // check
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimateNextIteration > 0);
@@ -5789,7 +5738,7 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
         LOGGER.log(Level.INFO, "Power error: {0} dB",
                 powerError);
 
-        //force NotReadyException
+        // force NotReadyException
         final LMedSRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new LMedSRobustRssiRadioSourceEstimator2D<>();
         try {
@@ -5836,10 +5785,10 @@ public class LMedSRobustRssiRadioSourceEstimator2DTest implements
     private double receivedPower(
             final double equivalentTransmittedPower, final double distance, final double frequency,
             final double pathLossExponent) {
-        //Pr = Pt*Gt*Gr*lambda^2/(4*pi*d)^2,    where Pr is the received power
+        // Pr = Pt*Gt*Gr*lambda^2/(4*pi*d)^2,    where Pr is the received power
         // lambda = c/f, where lambda is wavelength,
         // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the received Gain
-        //Pr = Pte*c^2/((4*pi*f)^2 * d^2)
+        // Pr = Pte*c^2/((4*pi*f)^2 * d^2)
         final double k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI * frequency), pathLossExponent);
         return equivalentTransmittedPower * k /
                 Math.pow(distance, pathLossExponent);

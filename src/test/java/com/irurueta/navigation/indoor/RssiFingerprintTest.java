@@ -16,10 +16,6 @@
 package com.irurueta.navigation.indoor;
 
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -40,25 +36,6 @@ public class RssiFingerprintTest {
 
     private static final double FREQUENCY = 2.4e9;
 
-    public RssiFingerprintTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
-
     @Test
     public void testConstructor() {
         // test empty constructor
@@ -67,7 +44,6 @@ public class RssiFingerprintTest {
 
         // check default values
         assertTrue(f.getReadings().isEmpty());
-
 
         // test constructor with readings
         final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -83,6 +59,7 @@ public class RssiFingerprintTest {
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
+        //noinspection ConstantConditions
         assertNull(f);
     }
 

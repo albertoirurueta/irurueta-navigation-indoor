@@ -25,6 +25,7 @@ import com.irurueta.navigation.indoor.RadioSourceWithPowerAndLocated;
 import com.irurueta.navigation.indoor.RssiReadingLocated;
 import com.irurueta.navigation.indoor.WifiAccessPoint;
 import com.irurueta.navigation.indoor.WifiAccessPointWithPowerAndLocated3D;
+
 import java.util.List;
 
 /**
@@ -32,14 +33,14 @@ import java.util.List;
  * radio source emits isotropically following the expression below:
  * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,
  * where Pr is the received power (expressed in mW),
- * Gt is the Gain of the transmission antena
- * Gr is the Gain of the receiver antena
+ * Gt is the Gain of the transmission antenna
+ * Gr is the Gain of the receiver antenna
  * d is the distance between emitter and receiver
  * and lambda is the wavelength and is equal to: lambda = c / f,
  * where c is the speed of light
  * and f is the carrier frequency of the WiFi signal.
- * Because usually information about the antena of the radio source cannot be
- * retrieved (because many measurements are made on unkown radio sources where
+ * Because usually information about the antenna of the radio source cannot be
+ * retrieved (because many measurements are made on unknown radio sources where
  * physical access is not possible), this implementation will estimate the
  * equivalent transmitted power as: Pte = Pt * Gt * Gr.
  * If Readings contain RSSI standard deviations, those values will be used,
@@ -57,7 +58,6 @@ import java.util.List;
  *
  * @param <S> a {@link RadioSource} type.
  */
-@SuppressWarnings({"Duplicates", "WeakerAccess"})
 public class RssiRadioSourceEstimator3D<S extends RadioSource> extends
         RssiRadioSourceEstimator<S, Point3D> {
 
@@ -388,7 +388,7 @@ public class RssiRadioSourceEstimator3D<S extends RadioSource> extends
 
     /**
      * Gets minimum required number of readings to estimate
-     * power, position and pathloss exponent.
+     * power, position and path-loss exponent.
      * This value depends on the number of parameters to
      * be estimated, but for position only, this is 4
      * readings for 3D.
@@ -443,7 +443,7 @@ public class RssiRadioSourceEstimator3D<S extends RadioSource> extends
      * @return estimated located radio source with estimated transmitted power or null.
      */
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "DuplicatedCode"})
     public RadioSourceWithPowerAndLocated<Point3D> getEstimatedRadioSource() {
         final List<? extends RssiReadingLocated<S, Point3D>> readings = getReadings();
         if (readings == null || readings.isEmpty()) {

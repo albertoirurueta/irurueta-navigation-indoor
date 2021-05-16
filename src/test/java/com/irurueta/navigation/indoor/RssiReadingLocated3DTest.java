@@ -18,10 +18,6 @@ package com.irurueta.navigation.indoor;
 import com.irurueta.algebra.AlgebraException;
 import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.InhomogeneousPoint3D;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -29,25 +25,6 @@ import static org.junit.Assert.*;
 public class RssiReadingLocated3DTest {
 
     private static final double FREQUENCY = 2.4e9;
-
-    public RssiReadingLocated3DTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
 
     @Test
     public void testConstructor() throws AlgebraException {
@@ -61,7 +38,6 @@ public class RssiReadingLocated3DTest {
         assertEquals(reading.getRssi(), 0.0, 0.0);
         assertNull(reading.getRssiStandardDeviation());
         assertEquals(reading.getType(), ReadingType.RSSI_READING);
-
 
         // test constructor with access point, rssi and position
         final WifiAccessPoint ap = new WifiAccessPoint("bssid", FREQUENCY);
@@ -90,7 +66,6 @@ public class RssiReadingLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(reading);
-
 
         // test constructor with access point, rssi, position and rssi standard
         // deviation
@@ -126,7 +101,6 @@ public class RssiReadingLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(reading);
-
 
         // test constructor with access point, rssi, position and covariance
         final Matrix cov = new Matrix(3, 3);
@@ -169,7 +143,6 @@ public class RssiReadingLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(reading);
-
 
         // test constructor with access point, rssi, position, rssi standard
         // deviation, and position covariance

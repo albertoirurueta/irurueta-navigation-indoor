@@ -15,10 +15,6 @@
  */
 package com.irurueta.navigation.indoor;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -26,25 +22,6 @@ import static org.junit.Assert.*;
 public class RangingReadingTest {
 
     private static final double FREQUENCY = 2.4e9;
-
-    public RangingReadingTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
 
     @Test
     public void testConstructor() {
@@ -60,7 +37,6 @@ public class RangingReadingTest {
                 RangingReading.DEFAULT_NUM_MEASUREMENTS);
         assertEquals(reading.getNumSuccessfulMeasurements(),
                 RangingReading.DEFAULT_NUM_MEASUREMENTS);
-
 
         // test constructor with access point and distance
         final WifiAccessPoint ap = new WifiAccessPoint("bssid", FREQUENCY);
@@ -89,7 +65,6 @@ public class RangingReadingTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(reading);
-
 
         // test constructor with access point, distance and number of measurements
         reading = new RangingReading<>(ap, 1.2, 8,
@@ -131,7 +106,6 @@ public class RangingReadingTest {
         }
         assertNull(reading);
 
-
         // test constructor with access point, distance and distance standard deviation
         reading = new RangingReading<>(ap, 1.5, 0.1);
 
@@ -145,7 +119,6 @@ public class RangingReadingTest {
         assertEquals(reading.getNumSuccessfulMeasurements(),
                 RangingReading.DEFAULT_NUM_MEASUREMENTS);
 
-
         reading = new RangingReading<>(ap, 1.5, null);
 
         // check
@@ -157,7 +130,6 @@ public class RangingReadingTest {
                 RangingReading.DEFAULT_NUM_MEASUREMENTS);
         assertEquals(reading.getNumSuccessfulMeasurements(),
                 RangingReading.DEFAULT_NUM_MEASUREMENTS);
-
 
         // force IllegalArgumentException
         reading = null;
@@ -180,7 +152,6 @@ public class RangingReadingTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(reading);
-
 
         // test constructor with access point, distance, distance standard deviation an
         // number of measurements

@@ -31,6 +31,7 @@ import com.irurueta.navigation.indoor.RssiReading;
 import com.irurueta.numerical.robust.InliersData;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +45,7 @@ import java.util.List;
  *
  * @param <P> a {@link Point} type.
  */
-@SuppressWarnings({"WeakerAccess", "Duplicates"})
+@SuppressWarnings("DuplicatedCode")
 public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>> {
 
     /**
@@ -115,7 +116,7 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
     /**
      * Constant defining default confidence of the estimated result, which is
      * 99%. This means that with a probability of 99% estimation will be
-     * accurate because chosen subsamples will be inliers.
+     * accurate because chosen sub-samples will be inliers.
      */
     public static final double DEFAULT_CONFIDENCE = 0.99;
 
@@ -458,7 +459,7 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
      * Constructor.
      *
      * @param sources     located radio sources used for lateration.
-     * @param fingerprint fingerprint containing reagins at an unknown location
+     * @param fingerprint fingerprint containing readings at an unknown location
      *                    for provided located radio sources.
      * @throws IllegalArgumentException if either provided sources or fingerprint is
      *                                  null or the number of provided sources is less
@@ -1839,14 +1840,14 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
             int j = 0;
             for (final Reading<? extends RadioSource> reading : readings) {
                 if (reading instanceof RangingReading) {
-                    // noinspection unchecked
+                    //noinspection unchecked
                     rangingReadings.add(
                             (RangingReading<RadioSource>) reading);
                     fingerprintReadingsQualityScores[i] =
                             mFingerprintReadingsQualityScores[j];
                     i++;
                 } else if (reading instanceof RangingAndRssiReading) {
-                    // noinspection unchecked
+                    //noinspection unchecked
                     rangingReadings.add(createRangingReading(
                             (RangingAndRssiReading<RadioSource>) reading));
                     fingerprintReadingsQualityScores[i] =
@@ -1926,7 +1927,7 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
      */
     protected void setupRssiEstimator() throws LockedException {
         if (mFingerprint != null) {
-            //builds separated RSSI readings
+            // builds separated RSSI readings
             final List<? extends Reading<? extends RadioSource>> readings =
                     mFingerprint.getReadings();
 
@@ -1939,13 +1940,13 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
             int j = 0;
             for (final Reading<? extends RadioSource> reading : readings) {
                 if (reading instanceof RssiReading) {
-                    // noinspection unchecked
+                    //noinspection unchecked
                     rssiReadings.add((RssiReading<RadioSource>) reading);
                     fingerprintReadingsQualityScores[i] =
                             mFingerprintReadingsQualityScores[j];
                     i++;
                 } else if (reading instanceof RangingAndRssiReading) {
-                    // noinspection unchecked
+                    //noinspection unchecked
                     rssiReadings.add(createRssiReading(
                             (RangingAndRssiReading<RadioSource>) reading));
                     fingerprintReadingsQualityScores[i] =

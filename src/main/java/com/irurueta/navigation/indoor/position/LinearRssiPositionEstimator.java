@@ -27,6 +27,7 @@ import com.irurueta.navigation.lateration.InhomogeneousLinearLeastSquaresLaterat
 import com.irurueta.navigation.lateration.LaterationException;
 import com.irurueta.navigation.lateration.LaterationSolver;
 import com.irurueta.navigation.lateration.LaterationSolverListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +40,6 @@ import java.util.List;
  *
  * @param <P> a {@link Point} type.
  */
-@SuppressWarnings("WeakerAccess")
 public abstract class LinearRssiPositionEstimator<P extends Point<P>> extends
         RssiPositionEstimator<P> {
 

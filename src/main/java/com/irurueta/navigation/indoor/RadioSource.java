@@ -24,12 +24,14 @@ public interface RadioSource extends Serializable {
 
     /**
      * Gets frequency used by this radio source (expressed in Hz).
+     *
      * @return frequency used by this radio source (expressed in Hz).
      */
     double getFrequency();
 
     /**
      * Checks whether two radio sources are considered equal if they share the same identifiers.
+     *
      * @param obj radio source to be compared.
      * @return true if both radio sources are considered equal, false otherwise.
      */
@@ -37,6 +39,7 @@ public interface RadioSource extends Serializable {
 
     /**
      * Gets radio source type, which can be either a WiFi Access point or a bluetooth Beacon.
+     *
      * @return radio source type.
      */
     RadioSourceType getType();

@@ -25,28 +25,29 @@ import com.irurueta.numerical.robust.LMedSRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
- * Robustly estimate 2D position, transmitted power and pathloss
+ * Robustly estimate 2D position, transmitted power and path-loss
  * exponent of a radio source (e.g. WiFi access point or bluetooth beacon), by discarding
  * outliers using LMedS algorithm and assuming that the ranging data is available to
  * obtain position with greater accuracy and that the radio source emits isotropically
  * following the expression below:
  * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,
  * where Pr is the received power (expressed in mW),
- * Gt is the Gain of the transmission antena
- * Gr is the Gain of the receiver antena
+ * Gt is the Gain of the transmission antenna
+ * Gr is the Gain of the receiver antenna
  * d is the distance between emitter and receiver
  * and lambda is the wavelength and is equal to: lambda = c / f,
  * where c is the speed of light
  * and f is the carrier frequency of the radio signal.
- * Because usually information about the antena of the radio source cannot be
- * retrieved (because many measurements are made on unkown devices where
+ * Because usually information about the antenna of the radio source cannot be
+ * retrieved (because many measurements are made on unknown devices where
  * physical access is not possible), this implementation will estimate the
  * equivalent transmitted power as: Pte = Pt * Gt * Gr.
  * If Readings contain RSSI standard deviations, those values will be used,
- * otherwise it will be asumed an RSSI standard deviation of 1 dB.
+ * otherwise it will be assumed an RSSI standard deviation of 1 dB.
  *
  * @param <S> a {@link RadioSource} type.
  */
@@ -410,7 +411,7 @@ public class LMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSour
      * best estimated threshold using median of residuals is not small enough.
      * Once a solution is found that generates a threshold below this value, the
      * algorithm will stop.
-     * The stop threshold can be used to prevent the LMedS algrithm to iterate
+     * The stop threshold can be used to prevent the LMedS algorithm to iterate
      * too many times in cases where samples have a very similar accuracy.
      * For instance, in cases where proportion of outliers is very small (close
      * to 0%), and samples are very accurate (i.e. 1e-6), the algorithm would
@@ -461,7 +462,7 @@ public class LMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSour
     }
 
     /**
-     * Robustly estimates position, transmitted power and pathloss exponent for a
+     * Robustly estimates position, transmitted power and path-loss exponent for a
      * radio source.
      *
      * @throws LockedException          if instance is busy during estimation.
@@ -496,7 +497,7 @@ public class LMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSour
                             public void estimatePreliminarSolutions(
                                     final int[] samplesIndices,
                                     final List<RobustRangingAndRssiRadioSourceEstimator.Solution<Point2D>> solutions) {
-                                solvePreliminarSolutions(samplesIndices, solutions);
+                                solvePreliminarySolutions(samplesIndices, solutions);
                             }
 
                             @Override
@@ -513,17 +514,20 @@ public class LMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSour
 
                             @Override
                             public void onEstimateStart(
-                                    final RobustEstimator<RobustRangingAndRssiRadioSourceEstimator.Solution<Point2D>> estimator) {
+                                    final RobustEstimator<RobustRangingAndRssiRadioSourceEstimator
+                                            .Solution<Point2D>> estimator) {
                             }
 
                             @Override
                             public void onEstimateEnd(
-                                    final RobustEstimator<RobustRangingAndRssiRadioSourceEstimator.Solution<Point2D>> estimator) {
+                                    final RobustEstimator<RobustRangingAndRssiRadioSourceEstimator
+                                            .Solution<Point2D>> estimator) {
                             }
 
                             @Override
                             public void onEstimateNextIteration(
-                                    final RobustEstimator<RobustRangingAndRssiRadioSourceEstimator.Solution<Point2D>> estimator,
+                                    final RobustEstimator<RobustRangingAndRssiRadioSourceEstimator
+                                            .Solution<Point2D>> estimator,
                                     final int iteration) {
                                 if (mListener != null) {
                                     mListener.onEstimateNextIteration(
@@ -533,7 +537,8 @@ public class LMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSour
 
                             @Override
                             public void onEstimateProgressChange(
-                                    final RobustEstimator<RobustRangingAndRssiRadioSourceEstimator.Solution<Point2D>> estimator,
+                                    final RobustEstimator<RobustRangingAndRssiRadioSourceEstimator
+                                            .Solution<Point2D>> estimator,
                                     final float progress) {
                                 if (mListener != null) {
                                     mListener.onEstimateProgressChange(

@@ -133,7 +133,6 @@ public class LMedSRobustRangingPositionEstimator3DTest implements
         assertEquals(estimator.getMethod(), RobustEstimatorMethod.LMedS);
         assertTrue(estimator.getEvenlyDistributeReadings());
 
-
         // constructor with sources
         final List<WifiAccessPointLocated3D> sources = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
@@ -198,7 +197,6 @@ public class LMedSRobustRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprints
         final RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
                 new RangingFingerprint<>();
@@ -253,7 +251,6 @@ public class LMedSRobustRangingPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources and fingerprint
         estimator = new LMedSRobustRangingPositionEstimator3D(sources, fingerprint);
@@ -319,7 +316,6 @@ public class LMedSRobustRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with listener
         estimator = new LMedSRobustRangingPositionEstimator3D(this);
 
@@ -362,7 +358,6 @@ public class LMedSRobustRangingPositionEstimator3DTest implements
         assertEquals(estimator.getNumberOfDimensions(), 3);
         assertEquals(estimator.getMethod(), RobustEstimatorMethod.LMedS);
         assertTrue(estimator.getEvenlyDistributeReadings());
-
 
         // constructor with sources and listener
         estimator = new LMedSRobustRangingPositionEstimator3D(sources, this);
@@ -423,7 +418,6 @@ public class LMedSRobustRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint and listener
         estimator = new LMedSRobustRangingPositionEstimator3D(fingerprint, this);
 
@@ -477,7 +471,6 @@ public class LMedSRobustRangingPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint and listener
         estimator = new LMedSRobustRangingPositionEstimator3D(sources, fingerprint,
@@ -545,7 +538,6 @@ public class LMedSRobustRangingPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
     }
 
     @Test
@@ -1413,7 +1405,6 @@ public class LMedSRobustRangingPositionEstimator3DTest implements
 
         assertTrue(numValidPosition > 0);
 
-
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);
         LOGGER.log(Level.INFO, MessageFormat.format(
@@ -1665,7 +1656,6 @@ public class LMedSRobustRangingPositionEstimator3DTest implements
 
         assertTrue(numValidPosition > 0);
 
-
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);
         LOGGER.log(Level.INFO, MessageFormat.format(
@@ -1679,7 +1669,7 @@ public class LMedSRobustRangingPositionEstimator3DTest implements
     }
 
     @Test
-    public void testEstimateLineardisabledAndNotPreliminaryRefined()
+    public void testEstimateLinearDisabledAndNotPreliminaryRefined()
             throws LockedException, NotReadyException, RobustEstimatorException,
             NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1790,7 +1780,6 @@ public class LMedSRobustRangingPositionEstimator3DTest implements
         }
 
         assertTrue(numValidPosition > 0);
-
 
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);
@@ -1917,7 +1906,6 @@ public class LMedSRobustRangingPositionEstimator3DTest implements
         }
 
         assertTrue(numValidPosition > 0);
-
 
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);

@@ -39,7 +39,6 @@ import java.util.List;
  *
  * @param <P> a {@link Point} type.
  */
-@SuppressWarnings("WeakerAccess")
 public abstract class NonLinearRssiPositionEstimator<P extends Point<?>> extends
         RssiPositionEstimator<P> {
 
@@ -320,7 +319,7 @@ public abstract class NonLinearRssiPositionEstimator<P extends Point<?>> extends
     }
 
     /**
-     * Sets positions, distnaces and standard deviations of distances on internal
+     * Sets positions, distances and standard deviations of distances on internal
      * lateration solver.
      *
      * @param positions                  positions to be set.

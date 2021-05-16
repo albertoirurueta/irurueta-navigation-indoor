@@ -20,10 +20,6 @@ import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.InhomogeneousPoint2D;
 import com.irurueta.geometry.Point2D;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.Random;
@@ -38,25 +34,6 @@ public class WifiAccessPointLocated2DTest {
     private static final double MIN_POS = -50.0;
     private static final double MAX_POS = 50.0;
 
-    public WifiAccessPointLocated2DTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
-
     @Test
     public void testConstructor() throws AlgebraException {
         // test empty constructor
@@ -69,7 +46,6 @@ public class WifiAccessPointLocated2DTest {
         assertNull(ap.getPosition());
         assertNull(ap.getPositionCovariance());
         assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
-
 
         // test constructor with bssid, frequency and position
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -105,7 +81,6 @@ public class WifiAccessPointLocated2DTest {
         }
         assertNull(ap);
 
-
         // test constructor with bssid, frequency, ssid and position
         ap = new WifiAccessPointLocated2D(BSSID, FREQUENCY, SSID, position);
 
@@ -138,7 +113,6 @@ public class WifiAccessPointLocated2DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(ap);
-
 
         // test constructor with bssid, frequency, position and position covariance
         final Matrix cov = new Matrix(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH,
@@ -189,7 +163,6 @@ public class WifiAccessPointLocated2DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(ap);
-
 
         // test constructor with bssid, frequency, ssid, position and
         // position covariance

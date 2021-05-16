@@ -16,6 +16,7 @@
 package com.irurueta.navigation.indoor;
 
 import com.irurueta.geometry.Point;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -197,12 +198,12 @@ public class RadioSourceKNearestFinder<P extends Point<?>, S extends RadioSource
             final double sqrDist = f.sqrDistanceTo(fingerprint);
             if (sqrDist < maxSqrDist || nearestSqrDistances.size() < k) {
 
-                //find insertion point
+                // find insertion point
                 int pos = -1;
                 int i = 0;
                 for (final Double sd : nearestSqrDistances) {
                     if (sqrDist < sd) {
-                        //insertion point found
+                        // insertion point found
                         pos = i;
                         break;
                     }
@@ -217,13 +218,13 @@ public class RadioSourceKNearestFinder<P extends Point<?>, S extends RadioSource
                     nearestFingerprints.add(f);
                 }
 
-                //remove results exceeding required number of k neighbours to be found
+                // remove results exceeding required number of k neighbours to be found
                 if (nearestFingerprints.size() > k) {
                     nearestSqrDistances.remove(k);
                     nearestFingerprints.remove(k);
                 }
 
-                //update maxSqrDist to the largest squared distance value contained in result list distances
+                // update maxSqrDist to the largest squared distance value contained in result list distances
                 maxSqrDist = nearestSqrDistances.get(nearestSqrDistances.size() - 1);
             }
         }

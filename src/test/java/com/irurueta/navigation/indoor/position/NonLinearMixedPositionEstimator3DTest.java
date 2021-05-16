@@ -45,7 +45,7 @@ import org.junit.Test;
 public class NonLinearMixedPositionEstimator3DTest implements
         MixedPositionEstimatorListener<Point3D> {
 
-    private static final double FREQUENCY = 2.4e9; //(Hz)
+    private static final double FREQUENCY = 2.4e9; // (Hz)
 
     private static final int MIN_SOURCES = 4;
     private static final int MAX_SOURCES = 10;
@@ -136,7 +136,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint
         final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
                 new Fingerprint<>();
@@ -170,7 +169,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources and fingerprint
         estimator = new NonLinearMixedPositionEstimator3D(sources, fingerprint);
@@ -216,7 +214,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with listener
         estimator = new NonLinearMixedPositionEstimator3D(this);
 
@@ -238,7 +235,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertNull(estimator.getCovariance());
-
 
         // constructor with sources and listener
         estimator = new NonLinearMixedPositionEstimator3D(sources, this);
@@ -278,7 +274,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint and listener
         estimator = new NonLinearMixedPositionEstimator3D(fingerprint, this);
 
@@ -311,7 +306,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint and listener
         estimator = new NonLinearMixedPositionEstimator3D(sources, fingerprint,
@@ -360,7 +354,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with initial position
         final InhomogeneousPoint3D initialPosition = new InhomogeneousPoint3D();
         estimator = new NonLinearMixedPositionEstimator3D(initialPosition);
@@ -383,7 +376,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertNull(estimator.getCovariance());
-
 
         // constructor with sources and initial position
         estimator = new NonLinearMixedPositionEstimator3D(sources, initialPosition);
@@ -425,7 +417,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint and initial position
         estimator = new NonLinearMixedPositionEstimator3D(fingerprint, initialPosition);
 
@@ -458,7 +449,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint and initial position
         estimator = new NonLinearMixedPositionEstimator3D(sources, fingerprint,
@@ -506,7 +496,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with initial position and listener
         estimator = new NonLinearMixedPositionEstimator3D(initialPosition,
                 this);
@@ -529,7 +518,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertNull(estimator.getCovariance());
-
 
         // constructor with sources, initial position and listener
         estimator = new NonLinearMixedPositionEstimator3D(sources, initialPosition,
@@ -572,7 +560,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint, initial position and listener
         estimator = new NonLinearMixedPositionEstimator3D(fingerprint, initialPosition,
                 this);
@@ -606,7 +593,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint, initial position and listener
         estimator = new NonLinearMixedPositionEstimator3D(sources, fingerprint,
@@ -792,7 +778,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
-
             final List<WifiAccessPointWithPowerAndLocated3D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
             for (int i = 0; i < numSources; i++) {
@@ -823,7 +808,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
 
             final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
                     new Fingerprint<>(readings);
-
 
             final NonLinearMixedPositionEstimator3D estimator =
                     new NonLinearMixedPositionEstimator3D(sources, fingerprint,
@@ -889,7 +873,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
-
             final List<WifiAccessPointWithPowerAndLocated3D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
             for (int i = 0; i < numSources; i++) {
@@ -920,7 +903,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
 
             final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
                     new Fingerprint<>(readings);
-
 
             final NonLinearMixedPositionEstimator3D estimator =
                     new NonLinearMixedPositionEstimator3D(sources, fingerprint, position,
@@ -986,7 +968,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
-
             final List<WifiAccessPointWithPowerAndLocated3D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
             for (int i = 0; i < numSources; i++) {
@@ -1013,7 +994,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
 
             final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
                     new Fingerprint<>(readings);
-
 
             final NonLinearMixedPositionEstimator3D estimator =
                     new NonLinearMixedPositionEstimator3D(sources, fingerprint,
@@ -1079,7 +1059,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
-
             final List<WifiAccessPointWithPowerAndLocated3D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
             for (int i = 0; i < numSources; i++) {
@@ -1106,7 +1085,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
 
             final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
                     new Fingerprint<>(readings);
-
 
             final NonLinearMixedPositionEstimator3D estimator =
                     new NonLinearMixedPositionEstimator3D(sources, fingerprint, position,
@@ -1172,7 +1150,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
-
             final List<WifiAccessPointWithPowerAndLocated3D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
             for (int i = 0; i < numSources; i++) {
@@ -1203,7 +1180,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
 
             final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
                     new Fingerprint<>(readings);
-
 
             final NonLinearMixedPositionEstimator3D estimator =
                     new NonLinearMixedPositionEstimator3D(sources, fingerprint,
@@ -1269,7 +1245,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
-
             final List<WifiAccessPointWithPowerAndLocated3D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
             for (int i = 0; i < numSources; i++) {
@@ -1300,7 +1275,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
 
             final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
                     new Fingerprint<>(readings);
-
 
             final NonLinearMixedPositionEstimator3D estimator =
                     new NonLinearMixedPositionEstimator3D(sources, fingerprint, position,
@@ -1366,7 +1340,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
-
             final List<WifiAccessPointWithPowerAndLocated3D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
             for (int i = 0; i < numSources; i++) {
@@ -1399,7 +1372,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
 
             final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
                     new Fingerprint<>(readings);
-
 
             final NonLinearMixedPositionEstimator3D estimator =
                     new NonLinearMixedPositionEstimator3D(sources, fingerprint,
@@ -1465,7 +1437,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
-
             final List<WifiAccessPointWithPowerAndLocated3D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
             for (int i = 0; i < numSources; i++) {
@@ -1498,7 +1469,6 @@ public class NonLinearMixedPositionEstimator3DTest implements
 
             final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
                     new Fingerprint<>(readings);
-
 
             final NonLinearMixedPositionEstimator3D estimator =
                     new NonLinearMixedPositionEstimator3D(sources, fingerprint, position,

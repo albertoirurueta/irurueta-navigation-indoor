@@ -24,6 +24,7 @@ import com.irurueta.navigation.indoor.RadioSourceLocated;
 import com.irurueta.navigation.indoor.Reading;
 import com.irurueta.navigation.lateration.HomogeneousLinearLeastSquaresLateration3DSolver;
 import com.irurueta.navigation.lateration.InhomogeneousLinearLeastSquaresLateration3DSolver;
+
 import java.util.List;
 
 /**
@@ -33,7 +34,6 @@ import java.util.List;
  * getting ranging readings at an unknown location of different radio sources whose
  * locations are known.
  */
-@SuppressWarnings("WeakerAccess")
 public class LinearMixedPositionEstimator3D extends
         LinearMixedPositionEstimator<Point3D> {
 
@@ -77,9 +77,9 @@ public class LinearMixedPositionEstimator3D extends
     /**
      * Constructor.
      *
-     * @param sources       located radio sources used for lateration.
-     * @param fingerprint   fingerprint containing ranging readings at an unknown location
-     *                      for provided located radio sources.
+     * @param sources     located radio sources used for lateration.
+     * @param fingerprint fingerprint containing ranging readings at an unknown location
+     *                    for provided located radio sources.
      * @throws IllegalArgumentException if either provided sources or fingerprint is null
      *                                  or the number of provided sources is less than
      *                                  the required minimum.
@@ -107,8 +107,8 @@ public class LinearMixedPositionEstimator3D extends
     /**
      * Constructor.
      *
-     * @param sources   located radio sources used for lateration.
-     * @param listener  listener in charge of handling events.
+     * @param sources  located radio sources used for lateration.
+     * @param listener listener in charge of handling events.
      * @throws IllegalArgumentException if provided sources is null or the number of
      *                                  provided sources is less than the required
      *                                  minimum.
@@ -124,9 +124,9 @@ public class LinearMixedPositionEstimator3D extends
     /**
      * Constructor.
      *
-     * @param fingerprint   fingerprint containing ranging readings at an unknown
-     *                      location for provided location radio sources.
-     * @param listener      listener in charge of handling events.
+     * @param fingerprint fingerprint containing ranging readings at an unknown
+     *                    location for provided location radio sources.
+     * @param listener    listener in charge of handling events.
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public LinearMixedPositionEstimator3D(
@@ -140,10 +140,10 @@ public class LinearMixedPositionEstimator3D extends
     /**
      * Constructor.
      *
-     * @param sources       located radio sources used for lateration.
-     * @param fingerprint   fingerprint containing ranging readings at an unknown
-     *                      location for provided located radio sources.
-     * @param listener      listener in charge of handling events.
+     * @param sources     located radio sources used for lateration.
+     * @param fingerprint fingerprint containing ranging readings at an unknown
+     *                    location for provided located radio sources.
+     * @param listener    listener in charge of handling events.
      * @throws IllegalArgumentException if either provided sources or fingerprint is
      *                                  null or the number of provided sources is less
      *                                  than the required minimum.
@@ -160,11 +160,12 @@ public class LinearMixedPositionEstimator3D extends
 
     /**
      * Gets estimated position.
+     *
      * @return estimated position.
      */
     @Override
     public Point3D getEstimatedPosition() {
-        if(mEstimatedPositionCoordinates == null) {
+        if (mEstimatedPositionCoordinates == null) {
             return null;
         }
 
@@ -175,6 +176,7 @@ public class LinearMixedPositionEstimator3D extends
 
     /**
      * Sets positions and distances on internal lateration solver.
+     *
      * @param positions positions to be set.
      * @param distances distances to be set.
      * @throws IllegalArgumentException if something fails.

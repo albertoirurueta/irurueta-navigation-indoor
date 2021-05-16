@@ -20,7 +20,6 @@ import com.irurueta.navigation.indoor.IndoorException;
 /**
  * Exception raised if radio source estimation fails.
  */
-@SuppressWarnings("WeakerAccess")
 public class RadioSourceEstimationException extends IndoorException {
 
     /**

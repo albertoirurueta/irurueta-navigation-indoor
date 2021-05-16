@@ -26,7 +26,6 @@ import com.irurueta.navigation.NotReadyException;
  *
  * @param <P> a {@link Point} type.
  */
-@SuppressWarnings({"WeakerAccess", "Duplicates"})
 public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?>> {
 
     /**
@@ -263,19 +262,19 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
             final int num = mFingerprints.length;
             final int dims = getNumberOfDimensions();
             if (num == 1) {
-                //only one fingerprint available
+                // only one fingerprint available
                 mEstimatedPositionCoordinates = new double[dims];
                 for (int i = 0; i < dims; i++) {
                     final P p = mFingerprints[0].getPosition();
                     mEstimatedPositionCoordinates[i] = p.getInhomogeneousCoordinate(i);
                 }
             } else {
-                //multiple fingerprints available
+                // multiple fingerprints available
                 final double[] coords = new double[dims];
                 double sum = 0.0;
                 double w;
                 for (int i = 0; i < num; i++) {
-                    //weighted average and weight summation
+                    // weighted average and weight summation
                     w = 1.0 / mDistances[i];
                     sum += w;
 
@@ -285,7 +284,7 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
                     }
                 }
 
-                //normalize by weight summation
+                // normalize by weight summation
                 if (sum != 0.0) {
                     for (int j = 0; j < dims; j++) {
                         coords[j] /= sum;
@@ -368,7 +367,7 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
         mFingerprints = fingerprints;
         mDistances = distances;
 
-        //fix distances if needed
+        // fix distances if needed
         for (int i = 0; i < mDistances.length; i++) {
             if (mDistances[i] < mEpsilon) {
                 mDistances[i] = mEpsilon;

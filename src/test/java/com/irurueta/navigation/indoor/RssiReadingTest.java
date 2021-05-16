@@ -15,10 +15,6 @@
  */
 package com.irurueta.navigation.indoor;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -26,25 +22,6 @@ import static org.junit.Assert.*;
 public class RssiReadingTest {
 
     private static final double FREQUENCY = 2.4e9;
-
-    public RssiReadingTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
 
     @Test
     public void testConstructor() {
@@ -56,7 +33,6 @@ public class RssiReadingTest {
         assertEquals(reading.getRssi(), 0.0, 0.0);
         assertNull(reading.getRssiStandardDeviation());
         assertEquals(reading.getType(), ReadingType.RSSI_READING);
-
 
         // test constructor with access point and RSSI
         final WifiAccessPoint ap = new WifiAccessPoint("bssid", FREQUENCY);
@@ -76,7 +52,6 @@ public class RssiReadingTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(reading);
-
 
         // test constructor with access point, RSSI and RSSI standard deviation
         reading = new RssiReading<>(ap, -50.0, 5.5);

@@ -24,6 +24,7 @@ import com.irurueta.navigation.indoor.RadioSourceLocated;
 import com.irurueta.navigation.indoor.RangingReading;
 import com.irurueta.navigation.lateration.HomogeneousLinearLeastSquaresLateration3DSolver;
 import com.irurueta.navigation.lateration.InhomogeneousLinearLeastSquaresLateration3DSolver;
+
 import java.util.List;
 
 /**
@@ -33,7 +34,6 @@ import java.util.List;
  * getting ranging readings at an unknown location of different radio sources whose
  * locations are known.
  */
-@SuppressWarnings("WeakerAccess")
 public class LinearRangingPositionEstimator3D extends
         LinearRangingPositionEstimator<Point3D> {
 

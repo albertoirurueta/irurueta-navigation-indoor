@@ -18,29 +18,20 @@ package com.irurueta.navigation.indoor.radiosource;
 import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.Point2D;
 import com.irurueta.navigation.LockedException;
-import com.irurueta.navigation.indoor.Beacon;
-import com.irurueta.navigation.indoor.BeaconWithPowerAndLocated2D;
-import com.irurueta.navigation.indoor.RadioSource;
-import com.irurueta.navigation.indoor.RadioSourceLocated;
-import com.irurueta.navigation.indoor.RangingAndRssiReadingLocated;
-import com.irurueta.navigation.indoor.RangingReadingLocated;
-import com.irurueta.navigation.indoor.ReadingLocated;
-import com.irurueta.navigation.indoor.RssiReadingLocated;
-import com.irurueta.navigation.indoor.WifiAccessPoint;
-import com.irurueta.navigation.indoor.WifiAccessPointLocated2D;
-import com.irurueta.navigation.indoor.WifiAccessPointWithPowerAndLocated2D;
+import com.irurueta.navigation.indoor.*;
+
 import java.util.List;
 
 /**
- * Robustly estimate 2D position, transmitted power and pathloss exponent of a radio
+ * Robustly estimate 2D position, transmitted power and path-loss exponent of a radio
  * source (e.g. WiFi access point or bluetooth beacon), by discarding
  * outliers and assuming that the ranging data is available to obtain position with
  * greater accuracy and that the radio source emits isotropically following the
  * expression below:
  * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,
  * where Pr is the received power (expressed in mW),
- * Gt is the Gain of the transmission antena
- * Gr is the Gain of the receiver antena
+ * Gt is the Gain of the transmission antenna
+ * Gr is the Gain of the receiver antenna
  * d is the distance between emitter and receiver
  * and lambda is the wavelength and is equal to: lambda = c / f,
  * where c is the speed of light
@@ -282,7 +273,7 @@ public class SequentialRobustMixedRadioSourceEstimator2D<S extends RadioSource> 
      * @param initialTransmittedPowerdBm initial transmitted power to start the
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's).
-     * @param listener                   in charge of attenging events raised by this instance.
+     * @param listener                   in charge of attending events raised by this instance.
      */
     public SequentialRobustMixedRadioSourceEstimator2D(
             final Point2D initialPosition,
@@ -849,7 +840,7 @@ public class SequentialRobustMixedRadioSourceEstimator2D<S extends RadioSource> 
 
     /**
      * Gets minimum required number of readings to estimate
-     * power, position and pathloss exponent.
+     * power, position and path-loss exponent.
      * This value depends on the number of parameters to
      * be estimated, but for position only, this is 3
      * readings.

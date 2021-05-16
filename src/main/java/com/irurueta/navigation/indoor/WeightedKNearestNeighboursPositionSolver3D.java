@@ -23,7 +23,6 @@ import com.irurueta.geometry.Point3D;
  * Neighbours (WkNN) algorithm.
  * WkNN algorithm is based on https://github.com/ajnas/WiFiPS.
  */
-@SuppressWarnings("WeakerAccess")
 public class WeightedKNearestNeighboursPositionSolver3D extends
         WeightedKNearestNeighboursPositionSolver<Point3D> {
 

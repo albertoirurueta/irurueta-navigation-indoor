@@ -25,6 +25,7 @@ import com.irurueta.numerical.robust.LMedSRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -34,7 +35,6 @@ import java.util.List;
  *
  * @param <S> a {@link RadioSource} type.
  */
-@SuppressWarnings({"WeakerAccess", "Duplicates"})
 public class LMedSRobustRangingRadioSourceEstimator3D<S extends RadioSource> extends
         RobustRangingRadioSourceEstimator3D<S> {
 
@@ -185,7 +185,7 @@ public class LMedSRobustRangingRadioSourceEstimator3D<S extends RadioSource> ext
      * best estimated threshold using median of residuals is not small enough.
      * Once a solution is found that generates a threshold below this value, the
      * algorithm will stop.
-     * The stop threshold can be used to prevent the LMedS algrithm to iterate
+     * The stop threshold can be used to prevent the LMedS algorithm to iterate
      * too many times in cases where samples have a very similar accuracy.
      * For instance, in cases where proportion of outliers is very small (close
      * to 0%), and samples are very accurate (i.e. 1e-6), the algorithm would
@@ -243,6 +243,7 @@ public class LMedSRobustRangingRadioSourceEstimator3D<S extends RadioSource> ext
      * @throws RobustEstimatorException if estimation fails for any reason
      *                                  (i.e. numerical instability, no solution available, etc).
      */
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void estimate() throws LockedException, NotReadyException,
             RobustEstimatorException {
@@ -270,7 +271,7 @@ public class LMedSRobustRangingRadioSourceEstimator3D<S extends RadioSource> ext
                             public void estimatePreliminarSolutions(
                                     final int[] sampleIndices,
                                     final List<Solution<Point3D>> solutions) {
-                                solvePreliminarSolutions(sampleIndices, solutions);
+                                solvePreliminarySolutions(sampleIndices, solutions);
                             }
 
                             @Override
@@ -299,7 +300,8 @@ public class LMedSRobustRangingRadioSourceEstimator3D<S extends RadioSource> ext
                                     final RobustEstimator<Solution<Point3D>> estimator,
                                     final int iteration) {
                                 if (mListener != null) {
-                                    mListener.onEstimateNextIteration(LMedSRobustRangingRadioSourceEstimator3D.this,
+                                    mListener.onEstimateNextIteration(
+                                            LMedSRobustRangingRadioSourceEstimator3D.this,
                                             iteration);
                                 }
                             }
@@ -309,7 +311,8 @@ public class LMedSRobustRangingRadioSourceEstimator3D<S extends RadioSource> ext
                                     final RobustEstimator<Solution<Point3D>> estimator,
                                     final float progress) {
                                 if (mListener != null) {
-                                    mListener.onEstimateProgressChange(LMedSRobustRangingRadioSourceEstimator3D.this,
+                                    mListener.onEstimateProgressChange(
+                                            LMedSRobustRangingRadioSourceEstimator3D.this,
                                             progress);
                                 }
                             }

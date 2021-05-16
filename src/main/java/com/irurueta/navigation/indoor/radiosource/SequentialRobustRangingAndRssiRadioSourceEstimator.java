@@ -29,11 +29,12 @@ import com.irurueta.navigation.indoor.Utils;
 import com.irurueta.numerical.robust.InliersData;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This is an abstract class to robustly estimate position, transmitted power and pathloss
+ * This is an abstract class to robustly estimate position, transmitted power and path-loss
  * exponent of a radio source (e.g. WiFi access point or bluetooth beacon), by discarding
  * outliers and assuming that the ranging data is available to obtain position with
  * greater accuracy and that the radio source emits isotropically following the
@@ -65,7 +66,7 @@ import java.util.List;
  * @param <S> a {@link RadioSource} type.
  * @param <P> a {@link Point} type.
  */
-@SuppressWarnings({"WeakerAccess", "Duplicates"})
+@SuppressWarnings("DuplicatedCode")
 public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S extends RadioSource,
         P extends Point<P>> {
 
@@ -77,7 +78,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
             RobustEstimatorMethod.PROMedS;
 
     /**
-     * Default robust estimator method for pathloss exponent and transmitted power
+     * Default robust estimator method for path-loss exponent and transmitted power
      * estimation using RSSI data when no robust method is provided.
      */
     public static final RobustEstimatorMethod DEFAULT_RSSI_ROBUST_METHOD =
@@ -112,7 +113,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
     /**
      * Constant defining default confidence of the estimated result, which is
      * 99%. This means that with a probability of 99% estimation will be
-     * accurate because chosen subsamples will be inliers.
+     * accurate because chosen sub-samples will be inliers.
      */
     public static final double DEFAULT_CONFIDENCE = 0.99;
 
@@ -149,7 +150,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
     protected RobustRangingRadioSourceEstimator<S, P> mRangingEstimator;
 
     /**
-     * Internal robust estimator for pathloss exponent and transmitted power
+     * Internal robust estimator for path-loss exponent and transmitted power
      * estimation.
      */
     protected RobustRssiRadioSourceEstimator<S, P> mRssiEstimator;
@@ -160,7 +161,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
     protected RobustEstimatorMethod mRangingRobustMethod = DEFAULT_PANGING_ROBUST_METHOD;
 
     /**
-     * Robust method used for pathloss exponent and transmitted power estimation
+     * Robust method used for path-loss exponent and transmitted power estimation
      * using RSSI data.
      */
     protected RobustEstimatorMethod mRssiRobustMethod = DEFAULT_RSSI_ROBUST_METHOD;
@@ -184,7 +185,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
 
     /**
      * Threshold to determine when samples are inliers or not used during robust
-     * pathloss exponent and transmitted power estimation.
+     * path-loss exponent and transmitted power estimation.
      */
     protected Double mRssiThreshold;
 
@@ -230,7 +231,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
 
     /**
      * Amount of confidence expressed as a value between 0.0 and 1.0 (which is equivalent
-     * to 100%) for robust pathloss exponent and transmitted power estimation. The amount
+     * to 100%) for robust path-loss exponent and transmitted power estimation. The amount
      * of confidence indicates the probability that the estimated result is correct.
      * Usually this value will be close to 1.0, but not exactly 1.0.
      */
@@ -244,7 +245,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
     private int mRangingMaxIterations = DEFAULT_MAX_ITERATIONS;
 
     /**
-     * Maximum allowed number of iteratios for robust pathloss exponent and transmitted
+     * Maximum allowed number of iterations for robust path-loss exponent and transmitted
      * power estimation. When the maximum number of iterations is exceeded, an
      * approximate result might be available for retrieval.
      */
@@ -264,7 +265,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
     private boolean mKeepCovariance = DEFAULT_KEEP_COVARIANCE;
 
     /**
-     * Covariance of estimated position, power and/or pathloss exponent.
+     * Covariance of estimated position, power and/or path-loss exponent.
      * This is only available when result has been refined and covariance is kept.
      */
     private Matrix mCovariance;
@@ -348,7 +349,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
 
     /**
      * Variance of estimated path loss exponent.
-     * This value will only be available when pathloss
+     * This value will only be available when path-loss
      * exponent estimation is enabled.
      */
     private Double mEstimatedPathLossExponentVariance;
@@ -1208,10 +1209,10 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
     }
 
     /**
-     * Gets robust method used for pathloss exponent and transmitted power estimation
+     * Gets robust method used for path-loss exponent and transmitted power estimation
      * using RSSI data.
      *
-     * @return robust method used for pathloss exponent and transmitted power
+     * @return robust method used for path-loss exponent and transmitted power
      * estimation.
      */
     public RobustEstimatorMethod getRssiRobustMethod() {
@@ -1219,10 +1220,10 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
     }
 
     /**
-     * Sets robust method used for pathloss exponent and transmitted power estimation
+     * Sets robust method used for path-loss exponent and transmitted power estimation
      * using RSSI data.
      *
-     * @param rssiRobustMethod robust method used for pathloss exponent and transmitted
+     * @param rssiRobustMethod robust method used for path-loss exponent and transmitted
      *                         power estimation.
      * @throws LockedException if estimator is locked.
      */
@@ -1321,7 +1322,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
 
     /**
      * Gets threshold to determine when samples are inliers or not, used during robust
-     * pathloss exponent and transmitted power estimation.
+     * path-loss exponent and transmitted power estimation.
      * If not defined, default threshold will be used.
      *
      * @return threshold for RSSI estimation or null.
@@ -1332,7 +1333,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
 
     /**
      * Sets threshold to determine when samples are inliers or not, used during robust
-     * pathloss exponent and transmitted power estimation.
+     * path-loss exponent and transmitted power estimation.
      * If not defined, default threshold will be used.
      *
      * @param rssiThreshold threshold for RSSI estimation or null.
@@ -1381,13 +1382,13 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
     }
 
     /**
-     * Returns amoung of confidence expressed as a value between 0.0 and 1.0
-     * (which is equivalent to 100%) for pathloss exponent and transmitted power
+     * Returns amount of confidence expressed as a value between 0.0 and 1.0
+     * (which is equivalent to 100%) for path-loss exponent and transmitted power
      * estimation. The amount of confidence indicates the probability that the
      * estimated result is correct.
      * Usually this value will be close to 1.0, but not exactly 1.0.
      *
-     * @return amount of confidence for robust pathloss exponent and transmitted power
+     * @return amount of confidence for robust path-loss exponent and transmitted power
      * estimation as a value between 0.0 and 1.0.
      */
     public double getRssiConfidence() {
@@ -1396,12 +1397,12 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
 
     /**
      * Sets amount of confidence expressed as a value between 0.0 and 1.0
-     * (which is equivalent to 100%) for pathloss exponent and transmitted power
+     * (which is equivalent to 100%) for path-loss exponent and transmitted power
      * estimation. The amount of confidence indicates the probability that the
      * estimated result is correct. Usually this value will be close to 10.0, but
      * not exactly 1.0.
      *
-     * @param rssiConfidence confidence to be set for robust pathloss exponent and
+     * @param rssiConfidence confidence to be set for robust path-loss exponent and
      *                       transmitted power estimation as a value between 0.0 and
      *                       1.0.
      * @throws IllegalArgumentException if provided value is not between 0.0 and 1.0.
@@ -1451,12 +1452,12 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
     }
 
     /**
-     * Returns maximum allowed number of iterations for robust pathloss exponent and
+     * Returns maximum allowed number of iterations for robust path-loss exponent and
      * transmitted power estimation. If maximum allowed number of iterations is achieved
      * without converging to a result when calling estimate(), a RobustEstimatorException
      * will be raised.
      *
-     * @return maximum allowed number of iterations for pathloss exponent and transmitted
+     * @return maximum allowed number of iterations for path-loss exponent and transmitted
      * power estimation.
      */
     public int getRssiMaxIterations() {
@@ -1464,12 +1465,12 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
     }
 
     /**
-     * Sets maximum allowed number of iterations for robust pathloss exponent and
+     * Sets maximum allowed number of iterations for robust path-loss exponent and
      * transmitted power estimation. When the maximum number of iterations is exceeded,
      * an approximate result might be available for retrieval.
      *
      * @param rssiMaxIterations maximum allowed number of iterations to be set for
-     *                          pathloss exponent and transmitted power estimation.
+     *                          path-loss exponent and transmitted power estimation.
      * @throws IllegalArgumentException if provided value is less than 1.
      * @throws LockedException          if this estimator is locked.
      */
@@ -1871,9 +1872,9 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
     /**
      * Gets covariance for estimated position and power.
      * Matrix contains information in the following order:
-     * Top-left submatrix contains covariance of position,
+     * Top-left sub-matrix contains covariance of position,
      * then follows transmitted power variance, and finally
-     * the last element contains pathloss exponent variance.
+     * the last element contains path-loss exponent variance.
      * This is only available when result has been refined and covariance is kept.
      *
      * @return covariance for estimated position and power.
@@ -1991,7 +1992,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
     }
 
     /**
-     * Robustly estimates position, transmitted power and pathloss exponent for a
+     * Robustly estimates position, transmitted power and path-loss exponent for a
      * radio source.
      *
      * @throws LockedException          if instance is busy during estimation.
@@ -2007,7 +2008,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
         try {
             mLocked = true;
 
-            //when checking for readiness, inner estimators are created and setup
+            // when checking for readiness, inner estimators are created and setup
             if (!isReady()) {
                 throw new NotReadyException();
             }
@@ -2017,7 +2018,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
                 mListener.onEstimateStart(this);
             }
 
-            //estimate position
+            // estimate position
             mRangingEstimator.setPreliminarySubsetSize(mRangingPreliminarySubsetSize);
 
             mRangingEstimator.estimate();
@@ -2027,7 +2028,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
                     mRangingEstimator.getEstimatedPositionCovariance();
             mInliersData = mRangingEstimator.getInliersData();
 
-            //estimate transmitted power and/or pathloss if enabled
+            // estimate transmitted power and/or path-loss if enabled
             if (mTransmittedPowerEstimationEnabled || mPathLossEstimationEnabled) {
                 mRssiEstimator.setPositionEstimationEnabled(false);
                 mRssiEstimator.setInitialPosition(mEstimatedPosition);
@@ -2036,13 +2037,13 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
                 mRssiEstimator.estimate();
 
                 if (mTransmittedPowerEstimationEnabled) {
-                    //transmitted power estimation enabled
+                    // transmitted power estimation enabled
                     mEstimatedTransmittedPowerdBm =
                             mRssiEstimator.getEstimatedTransmittedPowerdBm();
                     mEstimatedTransmittedPowerVariance =
                             mRssiEstimator.getEstimatedTransmittedPowerVariance();
                 } else {
-                    //transmitted power estimation disabled
+                    // transmitted power estimation disabled
                     if (mInitialTransmittedPowerdBm != null) {
                         mEstimatedTransmittedPowerdBm = mInitialTransmittedPowerdBm;
                     }
@@ -2050,18 +2051,18 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
                 }
 
                 if (mPathLossEstimationEnabled) {
-                    //pathloss exponent estimation enabled
+                    // path-loss exponent estimation enabled
                     mEstimatedPathLossExponent =
                             mRssiEstimator.getEstimatedPathLossExponent();
                     mEstimatedPathLossExponentVariance =
                             mRssiEstimator.getEstimatedPathLossExponentVariance();
                 } else {
-                    //pathloss exponent estimation disabled
+                    // path-loss exponent estimation disabled
                     mEstimatedPathLossExponent = mInitialPathLossExponent;
                     mEstimatedPathLossExponentVariance = null;
                 }
 
-                //build covariance matrix
+                // build covariance matrix
                 final Matrix rssiCov = mRssiEstimator.getCovariance();
                 if (mEstimatedPositionCovariance != null && rssiCov != null) {
                     final int dims = getNumberOfDimensions();
@@ -2116,7 +2117,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
 
     /**
      * Gets minimum required number of readings to estimate
-     * power, position and pathloss exponent.
+     * power, position and path-loss exponent.
      * This value depends on the number of parameters to
      * be estimated, but for position only, this is 3
      * readings for 2D, and 4 readings for 3D.
@@ -2187,20 +2188,20 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
             @Override
             public void onEstimateStart(
                     final RobustRangingRadioSourceEstimator<S, P> estimator) {
-                //not used
+                // not used
             }
 
             @Override
             public void onEstimateEnd(
                     final RobustRangingRadioSourceEstimator<S, P> estimator) {
-                //not used
+                // not used
             }
 
             @Override
             public void onEstimateNextIteration(
                     final RobustRangingRadioSourceEstimator<S, P> estimator,
                     final int iteration) {
-                //not used
+                // not used
             }
 
             @Override
@@ -2223,7 +2224,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      */
     protected void setupRssiEstimator() throws LockedException {
         if (mReadings != null) {
-            //build RSSI readings
+            // build RSSI readings
             final List<RssiReadingLocated<S, P>> rssiReadings = new ArrayList<>();
             for (final RangingAndRssiReadingLocated<S, P> reading : mReadings) {
                 rssiReadings.add(createRssiReading(reading));
@@ -2241,8 +2242,8 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
         mRssiEstimator.setResultRefined(mRefineResult);
         mRssiEstimator.setCovarianceKept(mKeepCovariance);
 
-        //initial position is not set because position estimated from ranging measures
-        //will be later used
+        // initial position is not set because position estimated from ranging measures
+        // will be later used
         mRssiEstimator.setInitialTransmittedPowerdBm(mInitialTransmittedPowerdBm);
         mRssiEstimator.setInitialPathLossExponent(mInitialPathLossExponent);
 
@@ -2254,20 +2255,20 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
             @Override
             public void onEstimateStart(
                     final RobustRssiRadioSourceEstimator<S, P> estimator) {
-                //not used
+                // not used
             }
 
             @Override
             public void onEstimateEnd(
                     final RobustRssiRadioSourceEstimator<S, P> estimator) {
-                //not used
+                // not used
             }
 
             @Override
             public void onEstimateNextIteration(
                     final RobustRssiRadioSourceEstimator<S, P> estimator,
                     final int iteration) {
-                //not used
+                // not used
             }
 
             @Override

@@ -28,31 +28,31 @@ import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import java.util.List;
 
 /**
- * Robustly estimate 2D position, transmitted power and pathloss exponent of a radio source
+ * Robustly estimate 2D position, transmitted power and path-loss exponent of a radio source
  * (e.g. WiFi access point or bluetooth beacon), by discarding outliers using LMedS
  * algorithm and assuming that the radio source emits isotropically following the
  * expression below:
  * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,
  * where Pr is the received power (expressed in mW),
- * Gt is the Gain of the transmission antena
- * Gr is the Gain of the receiver antena
+ * Gt is the Gain of the transmission antenna
+ * Gr is the Gain of the receiver antenna
  * d is the distance between emitter and receiver
  * and lambda is the wavelength and is equal to: lambda = c / f,
  * where c is the speed of light
  * and f is the carrier frequency of the radio signal.
- * Because usually information about the antena of the radio source cannot be
- * retrieved (because many measurements are made on unkown devices where
+ * Because usually information about the antenna of the radio source cannot be
+ * retrieved (because many measurements are made on unknown devices where
  * physical access is not possible), this implementation will estimate the
  * equivalent transmitted power as: Pte = Pt * Gt * Gr.
  * If RssiReadings contain RSSI standard deviations, those values will be used,
- * otherwise it will be asumed an RSSI standard deviation of 1 dB.
+ * otherwise it will be assumed an RSSI standard deviation of 1 dB.
  * Implementations of this class should be able to detect and discard outliers in
  * order to find the best solution.
  * <p>
  * IMPORTANT: When using this class estimation can be done using a
  * combination of radio source position, transmitted power and path loss
  * exponent. However enabling all three estimations usually achieves
- * innacurate results. When using this class, estimation must be of at least
+ * inaccurate results. When using this class, estimation must be of at least
  * one parameter (position, transmitted power or path loss exponent) when
  * initial values are provided for the other two, and at most it should consist
  * of two parameters (either position and transmitted power, position and
@@ -471,7 +471,7 @@ public class LMedSRobustRssiRadioSourceEstimator2D<S extends RadioSource> extend
     }
 
     /**
-     * Robustly estimates position, transmitted power and pathloss exponent for a
+     * Robustly estimates position, transmitted power and path-loss exponent for a
      * radio source.
      *
      * @throws LockedException          if instance is busy during estimation.
@@ -505,7 +505,7 @@ public class LMedSRobustRssiRadioSourceEstimator2D<S extends RadioSource> extend
                             public void estimatePreliminarSolutions(
                                     final int[] samplesIndices,
                                     final List<Solution<Point2D>> solutions) {
-                                solvePreliminarSolutions(samplesIndices, solutions);
+                                solvePreliminarySolutions(samplesIndices, solutions);
                             }
 
                             @Override

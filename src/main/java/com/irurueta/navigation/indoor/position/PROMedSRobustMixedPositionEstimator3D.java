@@ -23,6 +23,7 @@ import com.irurueta.navigation.indoor.RadioSourceLocated;
 import com.irurueta.navigation.indoor.Reading;
 import com.irurueta.navigation.lateration.PROMedSRobustLateration3DSolver;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -33,7 +34,6 @@ import java.util.List;
  * device by getting ranging+RSSI readings at an unknown location of different radio
  * sources whose 3D locations are known.
  */
-@SuppressWarnings("WeakerAccess")
 public class PROMedSRobustMixedPositionEstimator3D extends
         RobustMixedPositionEstimator3D {
 
@@ -437,7 +437,7 @@ public class PROMedSRobustMixedPositionEstimator3D extends
      * best estimated threshold using median of residuals is not small enough.
      * Once a solution is found that generates a threshold below this value, the
      * algorithm will stop.
-     * The stop threshold can be used to prevent the LMedS algrithm to iterate
+     * The stop threshold can be used to prevent the LMedS algorithm to iterate
      * too many times in cases where samples have a very similar accuracy.
      * For instance, in cases where proportion of outliers is very small (close
      * to 0%), and samples are very accurate (i.e. 1e-6), the algorithm would
@@ -527,7 +527,7 @@ public class PROMedSRobustMixedPositionEstimator3D extends
      * or not.
      *
      * @param fingerprintReadingsQualityScores quality scores to be set.
-     * @throws IllegalArgumentException if provided quality scores lengt is
+     * @throws IllegalArgumentException if provided quality scores length is
      *                                  smaller than 3 samples.
      */
     private void internalSetFingerprintReadingsQualityScores(

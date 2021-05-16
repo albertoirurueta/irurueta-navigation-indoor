@@ -23,6 +23,7 @@ import com.irurueta.navigation.indoor.RadioSourceLocated;
 import com.irurueta.navigation.indoor.RssiFingerprint;
 import com.irurueta.navigation.indoor.RssiReading;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -34,7 +35,7 @@ import java.util.List;
  * Implementations of this class should be able to detect and discard outliers in order
  * to find the best solution.
  */
-@SuppressWarnings({"WeakerAccess", "Duplicates"})
+@SuppressWarnings("DuplicatedCode")
 public abstract class RobustRssiPositionEstimator2D extends
         RobustRssiPositionEstimator<Point2D> {
 

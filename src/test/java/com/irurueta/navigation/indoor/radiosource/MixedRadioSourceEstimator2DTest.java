@@ -25,11 +25,16 @@ import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.indoor.*;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.text.MessageFormat;
 import java.text.NumberFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,14 +42,13 @@ import static com.irurueta.navigation.indoor.Utils.dBmToPower;
 import static com.irurueta.navigation.indoor.Utils.powerTodBm;
 import static org.junit.Assert.*;
 
-@SuppressWarnings("Duplicates")
 public class MixedRadioSourceEstimator2DTest implements
         MixedRadioSourceEstimatorListener<WifiAccessPoint, Point2D> {
 
     private static final Logger LOGGER = Logger.getLogger(
             MixedRadioSourceEstimator2DTest.class.getName());
 
-    private static final double FREQUENCY = 2.4e9; //(Hz)
+    private static final double FREQUENCY = 2.4e9; // (Hz)
 
     private static final int MIN_READINGS = 50;
     private static final int MAX_READINGS = 100;
@@ -72,23 +76,13 @@ public class MixedRadioSourceEstimator2DTest implements
     private int estimateStart;
     private int estimateEnd;
 
-    public MixedRadioSourceEstimator2DTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
+    @Test
+    public void testConstants() {
+        assertEquals(299792458.0, MixedRadioSourceEstimator.SPEED_OF_LIGHT, 0.0);
+        assertEquals(2.0, MixedRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
+        assertTrue(MixedRadioSourceEstimator.DEFAULT_TRANSMITTED_POWER_ESTIMATION_ENABLED);
+        assertFalse(MixedRadioSourceEstimator.DEFAULT_PATHLOSS_ESTIMATION_ENABLED);
+        assertTrue(MixedRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES);
     }
 
     @Test
@@ -197,7 +191,6 @@ public class MixedRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with listener
         estimator = new MixedRadioSourceEstimator2D<>(this);
 
@@ -234,7 +227,6 @@ public class MixedRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedPositionCovariance());
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
-
 
         // test constructor with readings and listener
         estimator = new MixedRadioSourceEstimator2D<>(readings,
@@ -292,7 +284,6 @@ public class MixedRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position
         final InhomogeneousPoint2D initialPosition = new InhomogeneousPoint2D(
                 randomizer.nextDouble(MIN_POS, MAX_POS),
@@ -332,7 +323,6 @@ public class MixedRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedPositionCovariance());
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
-
 
         // test constructor with readings and initial position
         estimator = new MixedRadioSourceEstimator2D<>(readings,
@@ -389,7 +379,6 @@ public class MixedRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position and listener
         estimator = new MixedRadioSourceEstimator2D<>(initialPosition,
                 this);
@@ -427,7 +416,6 @@ public class MixedRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedPositionCovariance());
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
-
 
         // test constructor with readings, initial position and listener
         estimator = new MixedRadioSourceEstimator2D<>(readings,
@@ -485,7 +473,6 @@ public class MixedRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial transmitted power
         estimator = new MixedRadioSourceEstimator2D<>(MAX_RSSI);
 
@@ -523,7 +510,6 @@ public class MixedRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedPositionCovariance());
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
-
 
         // test constructor with readings and initial transmitted power
         estimator = new MixedRadioSourceEstimator2D<>(readings,
@@ -582,7 +568,6 @@ public class MixedRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial transmitted power and listener
         estimator = new MixedRadioSourceEstimator2D<>(MAX_RSSI,
                 this);
@@ -621,7 +606,6 @@ public class MixedRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedPositionCovariance());
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
-
 
         // test constructor with readings, initial transmitted power and listener
         estimator = new MixedRadioSourceEstimator2D<>(readings,
@@ -680,7 +664,6 @@ public class MixedRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with readings, initial position and
         // initial transmitted power
         estimator = new MixedRadioSourceEstimator2D<>(readings,
@@ -737,7 +720,6 @@ public class MixedRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position and initial transmitted power
         estimator = new MixedRadioSourceEstimator2D<>(
                 initialPosition, MAX_RSSI);
@@ -776,7 +758,6 @@ public class MixedRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedPositionCovariance());
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
-
 
         // test constructor with initial position, initial transmitted power and
         // listener
@@ -817,7 +798,6 @@ public class MixedRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedPositionCovariance());
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
-
 
         // test constructor with readings, initial position, initial
         // transmitted power and listener
@@ -876,7 +856,6 @@ public class MixedRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with readings, initial position, initial
         // transmitted power and initial path loss exponent
         estimator = new MixedRadioSourceEstimator2D<>(readings,
@@ -933,7 +912,6 @@ public class MixedRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position and initial transmitted power
         estimator = new MixedRadioSourceEstimator2D<>(
                 initialPosition, MAX_RSSI, MIN_PATH_LOSS_EXPONENT);
@@ -971,7 +949,6 @@ public class MixedRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedPositionCovariance());
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
-
 
         // test constructor with initial position, initial transmitted power and
         // listener
@@ -1012,7 +989,6 @@ public class MixedRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedPositionCovariance());
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
-
 
         // test constructor with readings, initial position, initial
         // transmitted power and listener
@@ -1086,7 +1062,6 @@ public class MixedRadioSourceEstimator2DTest implements
         // check
         assertEquals(estimator.getMinReadings(), 3);
 
-
         // transmitted power and position
         estimator.setTransmittedPowerEstimationEnabled(true);
         estimator.setPathLossEstimationEnabled(false);
@@ -1094,16 +1069,14 @@ public class MixedRadioSourceEstimator2DTest implements
         // check
         assertEquals(estimator.getMinReadings(), 4);
 
-
-        // pathloss and position
+        // path-loss and position
         estimator.setTransmittedPowerEstimationEnabled(false);
         estimator.setPathLossEstimationEnabled(true);
 
         // check
         assertEquals(estimator.getMinReadings(), 4);
 
-
-        // position, transmitted power and patloss
+        // position, transmitted power and path-loss
         estimator.setTransmittedPowerEstimationEnabled(true);
         estimator.setPathLossEstimationEnabled(true);
 
@@ -1285,7 +1258,6 @@ public class MixedRadioSourceEstimator2DTest implements
 
         assertTrue(estimator.areValidReadings(readings));
 
-
         // test with only ranging readings
         readings = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -1302,7 +1274,6 @@ public class MixedRadioSourceEstimator2DTest implements
 
         assertFalse(estimator.areValidReadings(readings));
 
-
         // test with only rssi readings
         readings = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -1318,7 +1289,6 @@ public class MixedRadioSourceEstimator2DTest implements
         estimator.setPathLossEstimationEnabled(false);
 
         assertFalse(estimator.areValidReadings(readings));
-
 
         // test with ranging readings and rssi readings
         readings = new ArrayList<>();
@@ -1342,7 +1312,6 @@ public class MixedRadioSourceEstimator2DTest implements
         estimator.setPathLossEstimationEnabled(false);
 
         assertTrue(estimator.areValidReadings(readings));
-
 
         // test with null or empty readings
         assertFalse(estimator.areValidReadings(null));
@@ -1407,7 +1376,7 @@ public class MixedRadioSourceEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateWithoutInitialPositionAndInitialTransmittedPowerAndWithoutError() 
+    public void testEstimateWithoutInitialPositionAndInitialTransmittedPowerAndWithoutError()
             throws LockedException, NotReadyException, IndoorException, AlgebraException {
 
         int numValidPosition = 0, numValidPower = 0;
@@ -1540,13 +1509,13 @@ public class MixedRadioSourceEstimator2DTest implements
                     estimator.getEstimatedPositionCoordinates(), 0.0);
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
-            
+
             break;
         }
 
         assertTrue(numValidPosition > 0);
         assertTrue(numValidPower > 0);
-        
+
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);
         LOGGER.log(Level.INFO, MessageFormat.format(
@@ -4072,7 +4041,7 @@ public class MixedRadioSourceEstimator2DTest implements
                     estimator.getEstimatedPositionCoordinates(), 0.0);
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
-            
+
             break;
         }
 
@@ -5666,7 +5635,7 @@ public class MixedRadioSourceEstimator2DTest implements
                     estimator.getEstimatedPositionCoordinates(), 0.0);
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
-            
+
             break;
         }
 
@@ -5835,7 +5804,7 @@ public class MixedRadioSourceEstimator2DTest implements
                     estimator.getEstimatedPositionCoordinates(), 0.0);
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
-            
+
             break;
         }
 
@@ -5994,7 +5963,6 @@ public class MixedRadioSourceEstimator2DTest implements
         }
 
         assertTrue(numValidPosition > 0);
-
 
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);

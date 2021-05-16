@@ -19,10 +19,6 @@ import com.irurueta.algebra.AlgebraException;
 import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.InhomogeneousPoint3D;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -32,26 +28,6 @@ import java.util.Random;
 import static org.junit.Assert.*;
 
 public class BeaconLocated3DTest {
-
-    public BeaconLocated3DTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
-
 
     @Test
     public void testConstructor() throws AlgebraException {
@@ -73,7 +49,6 @@ public class BeaconLocated3DTest {
         assertNull(b.getPositionCovariance());
         assertEquals(b.getType(), RadioSourceType.BEACON);
         assertEquals(b.getFrequency(), Beacon.DEFAULT_FREQUENCY, 0.0);
-
 
         // test constructor with identifiers, transmitted power and position
         final List<BeaconIdentifier> identifiers = new ArrayList<>();
@@ -110,7 +85,6 @@ public class BeaconLocated3DTest {
         }
         assertNull(b);
 
-
         // test constructor with all data and position
         b = new BeaconLocated3D(identifiers, -50.0, "address", 1,
                 2, 3, "name", position);
@@ -146,7 +120,6 @@ public class BeaconLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with identifiers, transmitted power, position and
         // position covariance
@@ -210,7 +183,6 @@ public class BeaconLocated3DTest {
         }
         assertNull(b);
 
-
         // test constructor with all data, position and position covariance
         b = new BeaconLocated3D(identifiers, -50.0, "address", 1,
                 2, 3, "name", position, cov);
@@ -273,7 +245,6 @@ public class BeaconLocated3DTest {
         }
         assertNull(b);
 
-
         // test constructor with identifiers, transmitted power, position and frequency
         b = new BeaconLocated3D(identifiers, -50.0, 5.0e9, position);
 
@@ -311,7 +282,6 @@ public class BeaconLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with all data and position
         b = new BeaconLocated3D(identifiers, -50.0, 5.0e9,
@@ -358,7 +328,6 @@ public class BeaconLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with identifiers, transmitted power, position and
         // position covariance
@@ -426,7 +395,6 @@ public class BeaconLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with all data, position and position covariance
         b = new BeaconLocated3D(identifiers, -50.0, 5.0e9,
@@ -501,7 +469,6 @@ public class BeaconLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
     }
 
     @Test

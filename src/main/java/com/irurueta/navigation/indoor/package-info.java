@@ -22,7 +22,7 @@
  * - Wifi Access Points
  * <p>
  * All radio sources can be located (either in 2D or 3D), can have power measurements
- * (RSSI and pathloss exponent), or can be both located and have power measurements.
+ * (RSSI and path-loss exponent), or can be both located and have power measurements.
  * <p>
  * Radio sources and positions can be estimated by making signal readings.
  * There are two kinds of readings:

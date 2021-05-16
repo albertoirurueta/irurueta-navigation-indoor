@@ -26,6 +26,7 @@ import com.irurueta.navigation.lateration.HomogeneousLinearLeastSquaresLateratio
 import com.irurueta.navigation.lateration.InhomogeneousLinearLeastSquaresLaterationSolver;
 import com.irurueta.navigation.lateration.LaterationException;
 import com.irurueta.navigation.lateration.NonLinearLeastSquaresLaterationSolver;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +37,6 @@ import java.util.List;
  * measures travel time of signal and converts the result into distances by taking into
  * account the speed of light as the propagation speed.
  */
-@SuppressWarnings("WeakerAccess")
 public abstract class RangingRadioSourceEstimator<S extends RadioSource, P extends Point<P>>
         extends RadioSourceEstimator<P, RangingReadingLocated<S, P>,
         RangingRadioSourceEstimatorListener<S, P>> {
@@ -323,7 +323,7 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
      */
     @Override
     public boolean isReady() {
-        //readings must be valid
+        // readings must be valid
         return areValidReadings(mReadings);
     }
 
@@ -357,7 +357,7 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
             if (((mUseHomogeneousLinearSolver && mHomogeneousLinearSolver != null) ||
                     (!mUseHomogeneousLinearSolver && mInhomogeneousLinearSolver != null)) &&
                     (mInitialPosition == null || !mNonLinearSolverEnabled)) {
-                //if no initial position is provided, use linear solver to estimate one
+                // if no initial position is provided, use linear solver to estimate one
                 if (mUseHomogeneousLinearSolver) {
                     mHomogeneousLinearSolver.solve();
                     mInitialPosition = mHomogeneousLinearSolver.getEstimatedPosition();
@@ -371,13 +371,13 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
                 mNonLinearSolver.setInitialPosition(mInitialPosition);
                 mNonLinearSolver.solve();
 
-                //get position and covariance
+                // get position and covariance
                 mEstimatedPositionCoordinates =
                         mNonLinearSolver.getEstimatedPositionCoordinates();
                 mEstimatedPositionCovariance = mEstimatedCovariance =
                         mNonLinearSolver.getCovariance();
             } else {
-                //non linear solver disabled
+                // non linear solver disabled
                 if (mUseHomogeneousLinearSolver) {
                     mEstimatedPositionCoordinates =
                             mHomogeneousLinearSolver != null ?
@@ -480,10 +480,10 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
             }
 
             if (mUseReadingPositionCovariances) {
-                //assuming that ranging measure and position measure are statistically independent, the
-                //resulting variance would be the sum of their variances, when the resulting standard
-                //deviation is the square root of the resulting variance (which is the sum of the square of
-                //the standard deviations)
+                // assuming that ranging measure and position measure are statistically independent, the
+                // resulting variance would be the sum of their variances, when the resulting standard
+                // deviation is the square root of the resulting variance (which is the sum of the square of
+                // the standard deviations)
                 distanceStandardDeviation = Math.sqrt(Math.pow(distanceStandardDeviation, 2.0) +
                         Math.pow(positionDistanceStandardDeviation, 2.0));
             }

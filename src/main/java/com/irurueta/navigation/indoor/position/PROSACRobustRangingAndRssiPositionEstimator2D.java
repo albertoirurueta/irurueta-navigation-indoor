@@ -23,6 +23,7 @@ import com.irurueta.navigation.indoor.RangingAndRssiFingerprint;
 import com.irurueta.navigation.indoor.RangingAndRssiReading;
 import com.irurueta.navigation.lateration.PROSACRobustLateration2DSolver;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -33,7 +34,6 @@ import java.util.List;
  * device by getting ranging+RSSI readings at an unknown location of different radio
  * sources whose 2D locations are known.
  */
-@SuppressWarnings("WeakerAccess")
 public class PROSACRobustRangingAndRssiPositionEstimator2D extends
         RobustRangingAndRssiPositionEstimator2D {
 
@@ -79,7 +79,8 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public PROSACRobustRangingAndRssiPositionEstimator2D(
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint) {
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint) {
         super();
         init();
         internalSetFingerprint(fingerprint);
@@ -96,7 +97,8 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends
      */
     public PROSACRobustRangingAndRssiPositionEstimator2D(
             final List<? extends RadioSourceLocated<Point2D>> sources,
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint) {
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint) {
         super();
         init();
         internalSetSources(sources);
@@ -139,7 +141,8 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public PROSACRobustRangingAndRssiPositionEstimator2D(
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint,
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener<Point2D> listener) {
         super(listener);
         init();
@@ -158,7 +161,8 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends
      */
     public PROSACRobustRangingAndRssiPositionEstimator2D(
             final List<? extends RadioSourceLocated<Point2D>> sources,
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint,
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener<Point2D> listener) {
         super(listener);
         init();
@@ -230,7 +234,8 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends
     public PROSACRobustRangingAndRssiPositionEstimator2D(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint) {
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint) {
         this(fingerprint);
         internalSetSourceQualityScores(sourceQualityScores);
         internalSetFingerprintReadingsQualityScores(fingerprintReadingQualityScores);
@@ -259,7 +264,8 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<Point2D>> sources,
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint) {
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint) {
         this(sources, fingerprint);
         internalSetSourceQualityScores(sourceQualityScores);
         internalSetFingerprintReadingsQualityScores(fingerprintReadingQualityScores);
@@ -334,7 +340,8 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends
     public PROSACRobustRangingAndRssiPositionEstimator2D(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint,
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener<Point2D> listener) {
         this(fingerprint, listener);
         internalSetSourceQualityScores(sourceQualityScores);
@@ -365,7 +372,8 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<Point2D>> sources,
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint,
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener<Point2D> listener) {
         this(sources, fingerprint, listener);
         internalSetSourceQualityScores(sourceQualityScores);
@@ -551,7 +559,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends
      * or not.
      *
      * @param fingerprintReadingsQualityScores quality scores to be set.
-     * @throws IllegalArgumentException if provided quality scores lengt is
+     * @throws IllegalArgumentException if provided quality scores length is
      *                                  smaller than 3 samples.
      */
     private void internalSetFingerprintReadingsQualityScores(

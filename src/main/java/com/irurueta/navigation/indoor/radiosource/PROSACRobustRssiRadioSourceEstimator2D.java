@@ -25,10 +25,11 @@ import com.irurueta.numerical.robust.PROSACRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
- * Robustly estimate 2D position, transmitted power and pathloss exponent of a radio source
+ * Robustly estimate 2D position, transmitted power and path-loss exponent of a radio source
  * (e.g. WiFi access point or bluetooth beacon), by discarding outliers using PROSAC
  * algorithm and assuming that the radio source emits isotropically following the
  * expression below:
@@ -991,7 +992,7 @@ public class PROSACRobustRssiRadioSourceEstimator2D<S extends RadioSource> exten
     }
 
     /**
-     * Robustly estimates position, transmitted power and pathloss exponent for a
+     * Robustly estimates position, transmitted power and path-loss exponent for a
      * radio source.
      *
      * @throws LockedException          if instance is busy during estimation.
@@ -1036,7 +1037,7 @@ public class PROSACRobustRssiRadioSourceEstimator2D<S extends RadioSource> exten
                             public void estimatePreliminarSolutions(
                                     final int[] samplesIndices,
                                     final List<Solution<Point2D>> solutions) {
-                                solvePreliminarSolutions(samplesIndices, solutions);
+                                solvePreliminarySolutions(samplesIndices, solutions);
                             }
 
                             @Override

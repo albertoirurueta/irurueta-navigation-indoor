@@ -24,6 +24,7 @@ import com.irurueta.navigation.indoor.ReadingLocated;
 import com.irurueta.numerical.robust.InliersData;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -35,7 +36,6 @@ import java.util.List;
  * @param <R> a {@link ReadingLocated} type.
  * @param <L> a {@link RobustRadioSourceEstimatorListener} type.
  */
-@SuppressWarnings({"WeakerAccess", "Duplicates"})
 public abstract class RobustRadioSourceEstimator<P extends Point<?>,
         R extends ReadingLocated<P>,
         L extends RobustRadioSourceEstimatorListener<? extends RobustRadioSourceEstimator<?, ?, ?>>> {
@@ -74,7 +74,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
     /**
      * Constant defining default confidence of the estimated result, which is
      * 99%. This means that with a probability of 99% estimation will be
-     * accurate because chosen subsamples will be inliers.
+     * accurate because chosen sub-samples will be inliers.
      */
     public static final double DEFAULT_CONFIDENCE = 0.99;
 
@@ -157,7 +157,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
     protected boolean mKeepCovariance = DEFAULT_KEEP_COVARIANCE;
 
     /**
-     * Covariance of estimated position, power and/or pathloss exponent.
+     * Covariance of estimated position, power and/or path-loss exponent.
      * This is only available when result has been refined and covariance is kept.
      */
     protected Matrix mCovariance;
@@ -489,11 +489,11 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
     }
 
     /**
-     * Gets covariance for estimated position, power and pathloss.
+     * Gets covariance for estimated position, power and path-loss.
      * Matrix contains information in the following order:
-     * Top-left submatrix contains covariance of position,
+     * Top-left sub-matrix contains covariance of position,
      * then follows transmitted power variance, and finally
-     * the last element contains pathloss exponent variance.
+     * the last element contains path-loss exponent variance.
      * This is only available when result has been refined and covariance is kept.
      *
      * @return covariance for estimated position and power.
@@ -543,7 +543,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
 
     /**
      * Gets minimum required number of readings to estimate
-     * power, position and pathloss exponent.
+     * power, position and path-loss exponent.
      * This value depends on the number of parameters to
      * be estimated, but for position only, this is 3
      * readings for 2D, and 4 readings for 3D.
@@ -560,7 +560,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
     public abstract int getNumberOfDimensions();
 
     /**
-     * Robustly estimates position, transmitted power and pathloss exponent for a
+     * Robustly estimates position, transmitted power and path-loss exponent for a
      * radio source.
      *
      * @throws LockedException          if instance is busy during estimation.

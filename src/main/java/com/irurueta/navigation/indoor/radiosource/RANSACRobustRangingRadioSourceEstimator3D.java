@@ -25,6 +25,7 @@ import com.irurueta.numerical.robust.RANSACRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -34,7 +35,6 @@ import java.util.List;
  *
  * @param <S> a {@link RadioSource} type.
  */
-@SuppressWarnings({"WeakerAccess", "Duplicates"})
 public class RANSACRobustRangingRadioSourceEstimator3D<S extends RadioSource> extends
         RobustRangingRadioSourceEstimator3D<S> {
 
@@ -64,7 +64,7 @@ public class RANSACRobustRangingRadioSourceEstimator3D<S extends RadioSource> ex
      * Threshold to determine whether samples are inliers or not when testing possible solutions.
      * The threshold refers to the amount of error on received power (RSSI) expressed
      * in dBm's between received value that should have been received on estimated
-     * isotropical model and actual measured value.
+     * iso-tropical model and actual measured value.
      */
     private double mThreshold = DEFAULT_THRESHOLD;
 
@@ -265,6 +265,7 @@ public class RANSACRobustRangingRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws RobustEstimatorException if estimation fails for any reason
      *                                  (i.e. numerical instability, no solution available, etc).
      */
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void estimate() throws LockedException, NotReadyException, RobustEstimatorException {
         if (isLocked()) {
@@ -296,7 +297,7 @@ public class RANSACRobustRangingRadioSourceEstimator3D<S extends RadioSource> ex
                             public void estimatePreliminarSolutions(
                                     final int[] samplesIndices,
                                     final List<Solution<Point3D>> solutions) {
-                                solvePreliminarSolutions(samplesIndices, solutions);
+                                solvePreliminarySolutions(samplesIndices, solutions);
                             }
 
                             @Override

@@ -16,6 +16,7 @@
 package com.irurueta.navigation.indoor;
 
 import com.irurueta.geometry.Point;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -29,7 +30,6 @@ import java.util.List;
  * @param <P> a {@link Point} type.
  * @param <S> a {@link RadioSource type}.
  */
-@SuppressWarnings("WeakerAccess")
 public class RadioSourceNoMeanKNearestFinder<P extends Point<?>, S extends RadioSource> {
 
     /**
@@ -152,14 +152,15 @@ public class RadioSourceNoMeanKNearestFinder<P extends Point<?>, S extends Radio
      * @throws IllegalArgumentException if either fingerprint or collection of fingerprints is null, or k is less than
      *                                  1.
      */
-    public static <P extends Point<?>, S extends RadioSource> List<RssiFingerprintLocated<S, RssiReading<S>, P>>
-    findKNearestTo(RssiFingerprint<S, RssiReading<S>> fingerprint,
+    @SuppressWarnings("DuplicatedCode")
+    public static <P extends Point<?>, S extends RadioSource> List<RssiFingerprintLocated<S,
+            RssiReading<S>, P>> findKNearestTo(RssiFingerprint<S, RssiReading<S>> fingerprint,
                    Collection<? extends RssiFingerprintLocated<S, RssiReading<S>, P>> fingerprints,
                    int k) {
 
-        List<RssiFingerprintLocated<S, RssiReading<S>, P>> result =
+        final List<RssiFingerprintLocated<S, RssiReading<S>, P>> result =
                 new ArrayList<>();
-        List<Double> nearestSqrDistances = new ArrayList<>();
+        final List<Double> nearestSqrDistances = new ArrayList<>();
         findKNearestTo(fingerprint, fingerprints, k, result, nearestSqrDistances);
 
         return result;
@@ -201,12 +202,12 @@ public class RadioSourceNoMeanKNearestFinder<P extends Point<?>, S extends Radio
             final double sqrDist = f.noMeanSqrDistanceTo(fingerprint);
             if (sqrDist < maxSqrDist || nearestSqrDistances.size() < k) {
 
-                //find insertion point
+                // find insertion point
                 int pos = -1;
                 int i = 0;
                 for (final Double sd : nearestSqrDistances) {
                     if (sqrDist < sd) {
-                        //insertion point found
+                        // insertion point found
                         pos = i;
                         break;
                     }
@@ -221,13 +222,13 @@ public class RadioSourceNoMeanKNearestFinder<P extends Point<?>, S extends Radio
                     nearestFingerprints.add(f);
                 }
 
-                //remove results exceeding required number of k neighbours to be found
+                // remove results exceeding required number of k neighbours to be found
                 if (nearestFingerprints.size() > k) {
                     nearestSqrDistances.remove(k);
                     nearestFingerprints.remove(k);
                 }
 
-                //update maxSqrDist to the largest squared distance value contained in result list distances
+                // update maxSqrDist to the largest squared distance value contained in result list distances
                 maxSqrDist = nearestSqrDistances.get(nearestSqrDistances.size() - 1);
             }
         }

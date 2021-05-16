@@ -23,6 +23,7 @@ import com.irurueta.navigation.indoor.RadioSource;
 import com.irurueta.navigation.indoor.RadioSourceLocated;
 import com.irurueta.navigation.indoor.RangingAndRssiReading;
 import com.irurueta.navigation.lateration.NonLinearLeastSquaresLateration3DSolver;
+
 import java.util.List;
 
 /**
@@ -32,7 +33,6 @@ import java.util.List;
  * getting ranging+RSSI readings at an unknown location of different radio sources whose
  * locations are known.
  */
-@SuppressWarnings("WeakerAccess")
 public class NonLinearRangingAndRssiPositionEstimator3D extends
         NonLinearRangingAndRssiPositionEstimator<Point3D> {
 
@@ -67,7 +67,8 @@ public class NonLinearRangingAndRssiPositionEstimator3D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public NonLinearRangingAndRssiPositionEstimator3D(
-            final Fingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint) {
+            final Fingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint) {
         super();
         init();
         internalSetFingerprint(fingerprint);
@@ -85,7 +86,8 @@ public class NonLinearRangingAndRssiPositionEstimator3D extends
      */
     public NonLinearRangingAndRssiPositionEstimator3D(
             final List<? extends RadioSourceLocated<Point3D>> sources,
-            final Fingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint) {
+            final Fingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint) {
         super();
         init();
         internalSetSources(sources);
@@ -129,7 +131,8 @@ public class NonLinearRangingAndRssiPositionEstimator3D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public NonLinearRangingAndRssiPositionEstimator3D(
-            final Fingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint,
+            final Fingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint,
             final RangingAndRssiPositionEstimatorListener<Point3D> listener) {
         super(listener);
         init();
@@ -149,7 +152,8 @@ public class NonLinearRangingAndRssiPositionEstimator3D extends
      */
     public NonLinearRangingAndRssiPositionEstimator3D(
             final List<? extends RadioSourceLocated<Point3D>> sources,
-            final Fingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint,
+            final Fingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint,
             final RangingAndRssiPositionEstimatorListener<Point3D> listener) {
         super(listener);
         init();
@@ -193,7 +197,8 @@ public class NonLinearRangingAndRssiPositionEstimator3D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public NonLinearRangingAndRssiPositionEstimator3D(
-            final Fingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint,
+            final Fingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint,
             final Point3D initialPosition) {
         super(initialPosition);
         init();
@@ -213,7 +218,8 @@ public class NonLinearRangingAndRssiPositionEstimator3D extends
      */
     public NonLinearRangingAndRssiPositionEstimator3D(
             final List<? extends RadioSourceLocated<Point3D>> sources,
-            final Fingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint,
+            final Fingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint,
             final Point3D initialPosition) {
         super(initialPosition);
         init();
@@ -263,7 +269,8 @@ public class NonLinearRangingAndRssiPositionEstimator3D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public NonLinearRangingAndRssiPositionEstimator3D(
-            final Fingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint,
+            final Fingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint,
             final Point3D initialPosition,
             final RangingAndRssiPositionEstimatorListener<Point3D> listener) {
         super(initialPosition, listener);
@@ -285,7 +292,8 @@ public class NonLinearRangingAndRssiPositionEstimator3D extends
      */
     public NonLinearRangingAndRssiPositionEstimator3D(
             final List<? extends RadioSourceLocated<Point3D>> sources,
-            final Fingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint,
+            final Fingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint,
             final Point3D initialPosition,
             final RangingAndRssiPositionEstimatorListener<Point3D> listener) {
         super(initialPosition, listener);

@@ -20,7 +20,7 @@ package com.irurueta.navigation.indoor.position;
  *
  * @param <E> a {@link PositionEstimator} type.
  */
-public interface PositionEstimatorListener<E extends PositionEstimator> {
+public interface PositionEstimatorListener<E extends PositionEstimator<?, ?, ?>> {
 
     /**
      * Called when estimation starts.

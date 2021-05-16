@@ -23,6 +23,7 @@ import com.irurueta.navigation.indoor.RadioSourceLocated;
 import com.irurueta.navigation.indoor.RssiFingerprint;
 import com.irurueta.navigation.indoor.RssiFingerprintLocated;
 import com.irurueta.navigation.indoor.RssiReading;
+
 import java.util.List;
 
 /**
@@ -32,7 +33,6 @@ import java.util.List;
  * @param <P> a {@link Point} type.
  * @param <L> a {@link BaseFingerprintPositionAndRadioSourceEstimatorListener} type.
  */
-@SuppressWarnings("WeakerAccess")
 public abstract class BaseFingerprintPositionAndRadioSourceEstimator<P extends Point<?>,
         L extends BaseFingerprintPositionAndRadioSourceEstimatorListener<?>> {
 
@@ -465,7 +465,7 @@ public abstract class BaseFingerprintPositionAndRadioSourceEstimator<P extends P
      *
      * @param fingerprint fingerprint containing readings at an unknown location for
      *                    provided located fingerprints.
-     * @throws IllegalArgumentException if provided vlaue is null.
+     * @throws IllegalArgumentException if provided value is null.
      */
     private void internalSetFingerprint(
             final RssiFingerprint<? extends RadioSource,

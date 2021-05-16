@@ -45,7 +45,7 @@ import org.junit.Test;
 public class NonLinearMixedPositionEstimator2DTest implements
         MixedPositionEstimatorListener<Point2D> {
 
-    private static final double FREQUENCY = 2.4e9; //(Hz)
+    private static final double FREQUENCY = 2.4e9; // (Hz)
 
     private static final int MIN_SOURCES = 3;
     private static final int MAX_SOURCES = 10;
@@ -136,7 +136,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint
         final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
                 new Fingerprint<>();
@@ -170,7 +169,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources and fingerprint
         estimator = new NonLinearMixedPositionEstimator2D(sources, fingerprint);
@@ -216,7 +214,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with listener
         estimator = new NonLinearMixedPositionEstimator2D(this);
 
@@ -238,7 +235,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertNull(estimator.getCovariance());
-
 
         // constructor with sources and listener
         estimator = new NonLinearMixedPositionEstimator2D(sources, this);
@@ -278,7 +274,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint and listener
         estimator = new NonLinearMixedPositionEstimator2D(fingerprint, this);
 
@@ -311,7 +306,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint and listener
         estimator = new NonLinearMixedPositionEstimator2D(sources, fingerprint,
@@ -360,7 +354,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with initial position
         final InhomogeneousPoint2D initialPosition = new InhomogeneousPoint2D();
         estimator = new NonLinearMixedPositionEstimator2D(initialPosition);
@@ -383,7 +376,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertNull(estimator.getCovariance());
-
 
         // constructor with sources and initial position
         estimator = new NonLinearMixedPositionEstimator2D(sources, initialPosition);
@@ -425,7 +417,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint and initial position
         estimator = new NonLinearMixedPositionEstimator2D(fingerprint, initialPosition);
 
@@ -458,7 +449,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint and initial position
         estimator = new NonLinearMixedPositionEstimator2D(sources, fingerprint,
@@ -506,7 +496,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with initial position and listener
         estimator = new NonLinearMixedPositionEstimator2D(initialPosition,
                 this);
@@ -529,7 +518,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertNull(estimator.getCovariance());
-
 
         // constructor with sources, initial position and listener
         estimator = new NonLinearMixedPositionEstimator2D(sources, initialPosition,
@@ -572,7 +560,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint, initial position and listener
         estimator = new NonLinearMixedPositionEstimator2D(fingerprint, initialPosition,
                 this);
@@ -606,7 +593,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint, initial position and listener
         estimator = new NonLinearMixedPositionEstimator2D(sources, fingerprint,
@@ -791,7 +777,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
-
             final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
             for (int i = 0; i < numSources; i++) {
@@ -821,7 +806,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
 
             final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
                     new Fingerprint<>(readings);
-
 
             final NonLinearMixedPositionEstimator2D estimator =
                     new NonLinearMixedPositionEstimator2D(sources, fingerprint,
@@ -886,7 +870,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
-
             final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
             for (int i = 0; i < numSources; i++) {
@@ -916,7 +899,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
 
             final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
                     new Fingerprint<>(readings);
-
 
             final NonLinearMixedPositionEstimator2D estimator =
                     new NonLinearMixedPositionEstimator2D(sources, fingerprint, position,
@@ -1008,7 +990,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
             final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
                     new Fingerprint<>(readings);
 
-
             final NonLinearMixedPositionEstimator2D estimator =
                     new NonLinearMixedPositionEstimator2D(sources, fingerprint,
                             this);
@@ -1072,7 +1053,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
-
             final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
             for (int i = 0; i < numSources; i++) {
@@ -1098,7 +1078,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
 
             final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
                     new Fingerprint<>(readings);
-
 
             final NonLinearMixedPositionEstimator2D estimator =
                     new NonLinearMixedPositionEstimator2D(sources, fingerprint, position,
@@ -1163,7 +1142,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
-
             final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
             for (int i = 0; i < numSources; i++) {
@@ -1193,7 +1171,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
 
             final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
                     new Fingerprint<>(readings);
-
 
             final NonLinearMixedPositionEstimator2D estimator =
                     new NonLinearMixedPositionEstimator2D(sources, fingerprint,
@@ -1258,7 +1235,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
-
             final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
             for (int i = 0; i < numSources; i++) {
@@ -1288,7 +1264,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
 
             final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
                     new Fingerprint<>(readings);
-
 
             final NonLinearMixedPositionEstimator2D estimator =
                     new NonLinearMixedPositionEstimator2D(sources, fingerprint, position,
@@ -1353,7 +1328,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
-
             final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
             for (int i = 0; i < numSources; i++) {
@@ -1385,7 +1359,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
 
             final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
                     new Fingerprint<>(readings);
-
 
             final NonLinearMixedPositionEstimator2D estimator =
                     new NonLinearMixedPositionEstimator2D(sources, fingerprint,
@@ -1450,7 +1423,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
-
             final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
             for (int i = 0; i < numSources; i++) {
@@ -1482,7 +1454,6 @@ public class NonLinearMixedPositionEstimator2DTest implements
 
             final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
                     new Fingerprint<>(readings);
-
 
             final NonLinearMixedPositionEstimator2D estimator =
                     new NonLinearMixedPositionEstimator2D(sources, fingerprint, position,

@@ -25,18 +25,19 @@ import com.irurueta.navigation.indoor.RadioSourceWithPowerAndLocated;
 import com.irurueta.navigation.indoor.RangingAndRssiReadingLocated;
 import com.irurueta.navigation.indoor.WifiAccessPoint;
 import com.irurueta.navigation.indoor.WifiAccessPointWithPowerAndLocated3D;
+
 import java.util.List;
 
 /**
- * Robustly estimates 3D position, transmitted power and pathloss exponent of a radio
- * source (e.g. WiFi access point or bluetooth beacon), by discarging
+ * Robustly estimates 3D position, transmitted power and path-loss exponent of a radio
+ * source (e.g. WiFi access point or bluetooth beacon), by discarding
  * outliers and assuming that the ranging data is available to obtain position with
  * greater accuracy and that the radio source emits isotropically following the
  * expression below:
  * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,
  * where Pr is the received power (expressed in mW),
- * Gt is the Gain of the transmission antena
- * Gr is the Gain of the receiver antena
+ * Gt is the Gain of the transmission antenna
+ * Gr is the Gain of the receiver antenna
  * d is the distance between emitter and receiver
  * and lambda is the wavelength and is equal to: lambda = c / f,
  * where c is the speed of light
@@ -47,19 +48,18 @@ import java.util.List;
  * remaining parameters are robustly estimated using former estimated position as
  * an initial guess.
  * <p>
- * Because usually information about the antena of the radio source cannot be
- * retrieved (because many measurements are made on unkown devices where
+ * Because usually information about the antenna of the radio source cannot be
+ * retrieved (because many measurements are made on unknown devices where
  * physical access is not possible), this implementation will estimate the
  * equivalent transmitted power as: Pte = Pt * Gt * Gr.
  * If Readings contain RSSI standard deviations, those values will be used,
- * otherwise it will be asumed an RSSI standard deviation of 1 dB.
+ * otherwise it will be assumed an RSSI standard deviation of 1 dB.
  * <p>
  * Implementations of this class might produce more stable positions of estimated
  * radio sources than implementations of RobustRangingAndRssiRadioSourceEstimator3D.
  *
  * @param <S> a {@link RadioSource} type.
  */
-@SuppressWarnings({"WeakerAccess", "Duplicates"})
 public class SequentialRobustRangingAndRssiRadioSourceEstimator3D<S extends RadioSource> extends
         SequentialRobustRangingAndRssiRadioSourceEstimator<S, Point3D> {
 
@@ -277,7 +277,7 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator3D<S extends Radi
      * @param initialTransmittedPowerdBm initial transmitted power to start the
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's).
-     * @param listener                   in charge of attenging events raised by this instance.
+     * @param listener                   listener in charge of attending events raised by this instance.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator3D(
             final Point3D initialPosition,
@@ -844,7 +844,7 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator3D<S extends Radi
 
     /**
      * Gets minimum required number of readings to estimate
-     * power, position and pathloss exponent.
+     * power, position and path-loss exponent.
      * This value depends on the number of parameters to
      * be estimated, but for position only, this is 3
      * readings.
@@ -879,7 +879,7 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator3D<S extends Radi
      * @return estimated located radio source with estimated transmitted power or null.
      */
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "DuplicatedCode"})
     public RadioSourceWithPowerAndLocated<Point3D> getEstimatedRadioSource() {
         final List<? extends RangingAndRssiReadingLocated<S, Point3D>> readings = getReadings();
         if (readings == null || readings.isEmpty()) {

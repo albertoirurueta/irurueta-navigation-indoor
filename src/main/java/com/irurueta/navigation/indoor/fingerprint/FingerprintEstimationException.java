@@ -21,7 +21,6 @@ import com.irurueta.navigation.indoor.IndoorException;
  * Base exception for this package.
  * Raised if estimation of position or radio source fails.
  */
-@SuppressWarnings("WeakerAccess")
 public class FingerprintEstimationException extends IndoorException {
 
     /**
@@ -33,6 +32,7 @@ public class FingerprintEstimationException extends IndoorException {
 
     /**
      * Constructor with String containing message.
+     *
      * @param message message indicating the cause of the exception.
      */
     public FingerprintEstimationException(final String message) {
@@ -41,8 +41,9 @@ public class FingerprintEstimationException extends IndoorException {
 
     /**
      * Constructor with message and cause.
+     *
      * @param message message describing the cause of the exception.
-     * @param cause instance containing the cause of the exception.
+     * @param cause   instance containing the cause of the exception.
      */
     public FingerprintEstimationException(final String message, final Throwable cause) {
         super(message, cause);
@@ -50,6 +51,7 @@ public class FingerprintEstimationException extends IndoorException {
 
     /**
      * Constructor with cause.
+     *
      * @param cause instance containing the cause of the exception.
      */
     public FingerprintEstimationException(final Throwable cause) {

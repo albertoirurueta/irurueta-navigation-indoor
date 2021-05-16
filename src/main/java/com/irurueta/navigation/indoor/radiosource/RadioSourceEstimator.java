@@ -21,6 +21,7 @@ import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.indoor.RadioSourceLocated;
 import com.irurueta.navigation.indoor.ReadingLocated;
+
 import java.util.List;
 
 /**
@@ -32,7 +33,6 @@ import java.util.List;
  * @param <R> a {@link ReadingLocated} type.
  * @param <L> a {@link RadioSourceEstimatorListener} type.
  */
-@SuppressWarnings("WeakerAccess")
 public abstract class RadioSourceEstimator<P extends Point<?>, R extends ReadingLocated<P>,
         L extends RadioSourceEstimatorListener<? extends RadioSourceEstimator<?, ?, ?>>> {
 
@@ -42,7 +42,7 @@ public abstract class RadioSourceEstimator<P extends Point<?>, R extends Reading
     protected double[] mEstimatedPositionCoordinates;
 
     /**
-     * Covariance of estimated parameters (position, transmitted power and pathloss exponent).
+     * Covariance of estimated parameters (position, transmitted power and path-loss exponent).
      * Size of this matrix will depend on which parameters estimation is enabled.
      */
     protected Matrix mEstimatedCovariance;
@@ -207,9 +207,9 @@ public abstract class RadioSourceEstimator<P extends Point<?>, R extends Reading
     /**
      * Gets covariance for estimated position and power.
      * Matrix contains information in the following order:
-     * Top-left submatrix contains covariance of position,
+     * Top-left sub-matrix contains covariance of position,
      * then follows transmitted power variance, and finally
-     * the last element contains pathloss exponent variance.
+     * the last element contains path-loss exponent variance.
      *
      * @return covariance for estimated parameters.
      */
@@ -238,7 +238,7 @@ public abstract class RadioSourceEstimator<P extends Point<?>, R extends Reading
 
     /**
      * Gets minimum required number of readings to estimate
-     * power, position and pathloss exponent.
+     * power, position and path-loss exponent.
      * This value depends on the number of parameters to
      * be estimated, but for position only, this is 3
      * readings for 2D, and 4 readings for 3D.
@@ -255,7 +255,7 @@ public abstract class RadioSourceEstimator<P extends Point<?>, R extends Reading
     public abstract int getNumberOfDimensions();
 
     /**
-     * Gets estimated radio sourceposition.
+     * Gets estimated radio source position.
      *
      * @return estimated radio source position.
      */

@@ -24,7 +24,6 @@ import com.irurueta.geometry.Point;
  *
  * @param <P> a {@link Point} type.
  */
-@SuppressWarnings("WeakerAccess")
 public class WifiAccessPointWithPowerAndLocated<P extends Point<?>>
         extends WifiAccessPointWithPower implements RadioSourceWithPowerAndLocated<P> {
 

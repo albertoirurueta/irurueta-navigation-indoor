@@ -29,6 +29,7 @@ import com.irurueta.navigation.lateration.RobustLaterationSolverListener;
 import com.irurueta.numerical.robust.InliersData;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +46,6 @@ import java.util.List;
  * @param <R> a {@link Reading} type.
  * @param <L> a {@link RobustPositionEstimatorListener} type.
  */
-@SuppressWarnings("WeakerAccess")
 public abstract class RobustPositionEstimator<P extends Point<?>,
         R extends Reading<? extends RadioSource>,
         L extends RobustPositionEstimatorListener<? extends RobustPositionEstimator<?, ?, ?>>> {
@@ -692,7 +692,7 @@ public abstract class RobustPositionEstimator<P extends Point<?>,
     }
 
     /**
-     * Gets number of dimesnions of provided points.
+     * Gets number of dimensions of provided points.
      *
      * @return number of dimensions of provided points.
      */

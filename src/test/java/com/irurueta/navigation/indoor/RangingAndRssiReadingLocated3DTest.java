@@ -18,35 +18,12 @@ package com.irurueta.navigation.indoor;
 import com.irurueta.algebra.AlgebraException;
 import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.InhomogeneousPoint3D;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class RangingAndRssiReadingLocated3DTest {
     private static final double FREQUENCY = 2.4e9;
-
-    public RangingAndRssiReadingLocated3DTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
 
     @Test
     public void testConstructor() throws AlgebraException {
@@ -67,7 +44,6 @@ public class RangingAndRssiReadingLocated3DTest {
                 RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS);
         assertEquals(reading.getNumSuccessfulMeasurements(),
                 RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS);
-
 
         // test constructor with access point, distance, rssi and position
         final WifiAccessPoint ap = new WifiAccessPoint("bssid", FREQUENCY);
@@ -167,7 +143,6 @@ public class RangingAndRssiReadingLocated3DTest {
         }
         assertNull(reading);
 
-
         // test constructor with access point, distance, rssi, position,
         // distance standard deviation and rssi standard deviation
         reading = new RangingAndRssiReadingLocated3D<>(ap, 1.5, -50.0,
@@ -238,7 +213,6 @@ public class RangingAndRssiReadingLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(reading);
-
 
         // test constructor with access point, distance, rssi, position, distance
         // standard deviation, rssi standard deviation and number of measurements
@@ -318,7 +292,6 @@ public class RangingAndRssiReadingLocated3DTest {
         }
         assertNull(reading);
 
-
         // test constructor with access point, distance, rssi, position and position covariance
         final Matrix cov = new Matrix(3, 3);
         reading = new RangingAndRssiReadingLocated3D<>(ap, 2.0, -50.0,
@@ -365,7 +338,6 @@ public class RangingAndRssiReadingLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(reading);
-
 
         // test constructor with access point, distance, rssi, position, position
         // covariance and number of measurements.
@@ -429,7 +401,6 @@ public class RangingAndRssiReadingLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(reading);
-
 
         // test constructor with access point, distance, rssi, position,
         // distance standard deviation, rssi standard deviation and position
@@ -509,7 +480,6 @@ public class RangingAndRssiReadingLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(reading);
-
 
         // test constructor with access point, distance, rssi, position,
         // distance standard deviation, rssi standard deviation, position covariance

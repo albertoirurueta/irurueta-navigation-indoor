@@ -23,6 +23,7 @@ import com.irurueta.navigation.indoor.RssiFingerprint;
 import com.irurueta.navigation.indoor.RssiReading;
 import com.irurueta.navigation.lateration.PROSACRobustLateration3DSolver;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -32,7 +33,6 @@ import java.util.List;
  * device by getting RSSI readings at an unknown location of different radio sources whose
  * 3D locations are known.
  */
-@SuppressWarnings("WeakerAccess")
 public class PROSACRobustRssiPositionEstimator3D extends RobustRssiPositionEstimator3D {
 
     /**
@@ -549,7 +549,7 @@ public class PROSACRobustRssiPositionEstimator3D extends RobustRssiPositionEstim
      * or not.
      *
      * @param fingerprintReadingsQualityScores quality scores to be set.
-     * @throws IllegalArgumentException if provided quality scores lengt is
+     * @throws IllegalArgumentException if provided quality scores length is
      *                                  smaller than 3 samples.
      */
     private void internalSetFingerprintReadingsQualityScores(

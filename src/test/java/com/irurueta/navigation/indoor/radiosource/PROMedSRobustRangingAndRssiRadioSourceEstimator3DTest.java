@@ -34,11 +34,7 @@ import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.text.MessageFormat;
@@ -53,14 +49,13 @@ import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
 
-@SuppressWarnings("Duplicates")
 public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         RobustRangingAndRssiRadioSourceEstimatorListener<WifiAccessPoint, Point3D> {
 
     private static final Logger LOGGER = Logger.getLogger(
             PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest.class.getName());
 
-    private static final double FREQUENCY = 2.4e9; //(Hz)
+    private static final double FREQUENCY = 2.4e9; // (Hz)
 
     private static final int MIN_READINGS = 100;
     private static final int MAX_READINGS = 500;
@@ -89,30 +84,10 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
 
     private static final double STD_OUTLIER_ERROR = 10.0;
 
-
     private int estimateStart;
     private int estimateEnd;
     private int estimateNextIteration;
     private int estimateProgressChange;
-
-    public PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
 
     @Test
     public void testConstructor() {
@@ -165,7 +140,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
                 RangingAndRssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with readings
         final List<RangingAndRssiReadingLocated3D<WifiAccessPoint>> readings =
@@ -243,7 +217,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with listener
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(this);
 
@@ -290,7 +263,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
                 RangingAndRssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with readings and listener
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
@@ -355,7 +327,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with readings and initial position
         final InhomogeneousPoint3D initialPosition = new InhomogeneousPoint3D(
@@ -425,7 +396,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
                 initialPosition);
@@ -474,7 +444,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
 
-
         // test constructor with initial position and listener
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
                 initialPosition, this);
@@ -522,7 +491,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
                 RangingAndRssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with readings, initial position and listener
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
@@ -590,7 +558,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial transmitted power
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
                 MAX_RSSI);
@@ -638,7 +605,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
                 RangingAndRssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with readings and initial transmitted power
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
@@ -704,7 +670,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial transmitted power and listener
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
                 MAX_RSSI, this);
@@ -752,7 +717,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
                 RangingAndRssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with readings, initial transmitted power and listener
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
@@ -817,7 +781,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with readings, initial position and initial transmitted power
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
@@ -885,7 +848,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position and initial transmitted power
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
                 initialPosition, MAX_RSSI);
@@ -934,7 +896,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
 
-
         // test constructor with initial position, initial transmitted power and listener
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
                 initialPosition, MAX_RSSI, this);
@@ -982,7 +943,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
                 RangingAndRssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with readings, initial position, initial transmitted
         // power and listener
@@ -1050,7 +1010,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with readings, initial position and initial transmitted power
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
@@ -1121,7 +1080,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position and initial transmitted power
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
                 initialPosition, MAX_RSSI, MIN_PATH_LOSS_EXPONENT);
@@ -1170,7 +1128,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
 
-
         // test constructor with initial position, initial transmitted power and listener
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
                 initialPosition, MAX_RSSI, MIN_PATH_LOSS_EXPONENT, this);
@@ -1218,7 +1175,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
                 RangingAndRssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with readings, initial position, initial transmitted
         // power and listener
@@ -1288,7 +1244,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with quality scores
         final double[] qualityScores = new double[5];
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
@@ -1353,7 +1308,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test with quality scores and readings
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
@@ -1431,7 +1385,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with quality scores and listener
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
                 qualityScores, this);
@@ -1497,7 +1450,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with quality scores, readings and listener
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
@@ -1574,7 +1526,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with quality scores, readings and initial position
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
@@ -1653,7 +1604,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with quality scores and initial position
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
                 qualityScores, initialPosition);
@@ -1718,7 +1668,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with quality scores, initial position and listener
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
                 qualityScores, initialPosition, this);
@@ -1782,7 +1731,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with quality scores, readings, initial position and listener
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
@@ -1861,7 +1809,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with quality scores and initial transmitted power
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
                 qualityScores, MAX_RSSI);
@@ -1925,7 +1872,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with quality scores, readings and initial transmitted power
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
@@ -2003,7 +1949,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with quality scores, initial transmitted power and listener
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
                 qualityScores, MAX_RSSI, this);
@@ -2071,7 +2016,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with quality scores, readings, initial transmitted power and listener
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
@@ -2151,7 +2095,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with quality scores, readings, initial position and initial transmitted power
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
                 qualityScores, readings, initialPosition, MAX_RSSI);
@@ -2229,7 +2172,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with quality scores, initial position, initial position and initial transmitted power
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
                 qualityScores, initialPosition, MAX_RSSI);
@@ -2294,7 +2236,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with quality scores, initial position, initial transmitted power and listener
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
                 qualityScores, initialPosition, MAX_RSSI, this);
@@ -2358,7 +2299,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with quality scores, readings, initial position, initial transmitted power and listener
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
@@ -2438,7 +2378,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with quality scores, readings, initial position and initial transmitted power
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
@@ -2522,7 +2461,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with quality scores, initial position, initial position and initial transmitted power
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
                 qualityScores, initialPosition, MAX_RSSI,
@@ -2590,7 +2528,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with quality scores, initial position, initial transmitted power and listener
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
                 qualityScores, initialPosition, MAX_RSSI, MIN_PATH_LOSS_EXPONENT,
@@ -2657,7 +2594,6 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with quality scores, readings, initial position, initial transmitted power and listener
         estimator = new PROMedSRobustRangingAndRssiRadioSourceEstimator3D<>(
@@ -2790,16 +2726,14 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3DTest implements
         // check
         assertEquals(estimator.getMinReadings(), 5);
 
-
-        // position and pathloss
+        // position and path-loss
         estimator.setTransmittedPowerEstimationEnabled(false);
         estimator.setPathLossEstimationEnabled(true);
 
         // check
         assertEquals(estimator.getMinReadings(), 5);
 
-
-        // position, transmitted power and patloss
+        // position, transmitted power and path-loss
         estimator.setTransmittedPowerEstimationEnabled(true);
         estimator.setPathLossEstimationEnabled(true);
 

@@ -25,6 +25,7 @@ import com.irurueta.navigation.indoor.RangingAndRssiReadingLocated;
 import com.irurueta.navigation.indoor.RangingReadingLocated;
 import com.irurueta.navigation.indoor.RssiReadingLocated;
 import com.irurueta.navigation.indoor.Utils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,18 +37,18 @@ import java.util.List;
  * expression below:
  * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,
  * where Pr is the received power (expressed in mW),
- * Gt is the Gain of the transmission antena
- * Gr is the Gain of the receiver antena
+ * Gt is the Gain of the transmission antenna
+ * Gr is the Gain of the receiver antenna
  * d is the distance between emitter and receiver
  * and lambda is the wavelength and is equal to: lambda = c / f,
  * where c is the speed of light
  * and f is the carrier frequency of the radio signal.
- * Because usually information about the antena of the radio source cannot be
- * retrieved (because many measurements are made on unkown devices where
+ * Because usually information about the antenna of the radio source cannot be
+ * retrieved (because many measurements are made on unknown devices where
  * physical access is not possible), this implementation will estimate the
  * equivalent transmitted power as: Pte = Pt * Gt * Gr.
  * If Readings contain RSSI standard deviations, those values will be used,
- * otherwise it will be asumed an RSSI standard deviation of 1 dB.
+ * otherwise it will be assumed an RSSI standard deviation of 1 dB.
  * <p>
  * Although RssiRadioSourceEstimator can estimate the same parameters of a radio
  * source, when ranging measures are available along with RSSI measurements,
@@ -56,12 +57,11 @@ import java.util.List;
  * <p>
  * Notice that implementations of this class assume that when retrieving the
  * covariance of all parameters the cross correlation among position
- * terms and pathloss or transmitted power is zero.
+ * terms and path-loss or transmitted power is zero.
  *
  * @param <S> a {@link RadioSource} type.
  * @param <P> a {@link Point} type.
  */
-@SuppressWarnings({"WeakerAccess", "Duplicates"})
 public abstract class RangingAndRssiRadioSourceEstimator<S extends RadioSource, P extends Point<P>>
         extends RadioSourceEstimator<P, RangingAndRssiReadingLocated<S, P>,
         RangingAndRssiRadioSourceEstimatorListener<S, P>> {
@@ -143,7 +143,7 @@ public abstract class RangingAndRssiRadioSourceEstimator<S extends RadioSource, 
 
     /**
      * Variance of estimated path loss exponent.
-     * This value will only be available when pathloss
+     * This value will only be available when path-loss
      * exponent estimation is enabled.
      */
     private Double mEstimatedPathLossExponentVariance;
@@ -527,7 +527,7 @@ public abstract class RangingAndRssiRadioSourceEstimator<S extends RadioSource, 
      * If not defined, average value of received power readings will be used.
      * <p>
      * If transmitted power estimation is enabled, estimation will start at this
-     * value and will converte the most appropriate value.
+     * value and will be converted to the most appropriate value.
      * If transmitted power estimation is disabled, this value will be assumed to be
      * exact and the estimated transmitted power will be equal to this value
      * (converted to dBm's).
@@ -545,7 +545,7 @@ public abstract class RangingAndRssiRadioSourceEstimator<S extends RadioSource, 
      * If not defined, average value of received power readings will be used.
      * <p>
      * If transmitted power estimation is enabled, estimation will start at this
-     * value and will converte the most appropriate value.
+     * value and will be converted to the most appropriate value.
      * If transmitted power estimation is disabled, this value will be assumed to be
      * exact and the estimated transmitted power will be equal to this value
      * (converted to dBm's).
@@ -569,7 +569,7 @@ public abstract class RangingAndRssiRadioSourceEstimator<S extends RadioSource, 
      * If not defined, average value of received power readings will be used.
      * <p>
      * If transmitted power estimation is enabled, estimation will start at this
-     * value and will converte the most appropriate value.
+     * value and will be converted to the most appropriate value.
      * If transmitted power estimation is disabled, this value will be assumed to be
      * exact and the estimated transmitted power will be equal to this value
      * (converted to dBm's).
@@ -588,7 +588,7 @@ public abstract class RangingAndRssiRadioSourceEstimator<S extends RadioSource, 
      * If not defined, average value of received power readings will be used.
      * <p>
      * If transmitted power estimation is enabled, estimation will start at this
-     * value and will converte the most appropriate value.
+     * value and will be converted to the most appropriate value.
      * If transmitted power estimation is disabled, this value will be assumed to be
      * exact and the estimated transmitted power will be equal to this value
      * (converted to dBm's).
@@ -805,7 +805,7 @@ public abstract class RangingAndRssiRadioSourceEstimator<S extends RadioSource, 
 
     /**
      * Gets minimum required number of readings to estimate
-     * power, position and pathloss exponent.
+     * power, position and path-loss exponent.
      * This value depends on the number of parameters to
      * be estimated, but for position only, this is 3
      * readings.
@@ -839,7 +839,7 @@ public abstract class RangingAndRssiRadioSourceEstimator<S extends RadioSource, 
     }
 
     /**
-     * Gets estimated radio sourceposition.
+     * Gets estimated radio source position.
      *
      * @return estimated radio source position.
      */
@@ -867,6 +867,7 @@ public abstract class RangingAndRssiRadioSourceEstimator<S extends RadioSource, 
      * @throws NotReadyException              if estimator is not ready.
      * @throws LockedException                if estimator is locked.
      */
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void estimate() throws RadioSourceEstimationException, NotReadyException,
             LockedException {
@@ -893,7 +894,7 @@ public abstract class RangingAndRssiRadioSourceEstimator<S extends RadioSource, 
                 rssiReadings.add(createRssiReading(reading));
             }
 
-            //estimate position using ranging data
+            // estimate position using ranging data
             mRangingInnerEstimator.setUseReadingPositionCovariances(
                     mUseReadingPositionCovariances);
             mRangingInnerEstimator.setHomogeneousLinearSolverUsed(
@@ -909,7 +910,7 @@ public abstract class RangingAndRssiRadioSourceEstimator<S extends RadioSource, 
                     mRangingInnerEstimator.getEstimatedPositionCovariance();
             final P estimatedPosition = mRangingInnerEstimator.getEstimatedPosition();
 
-            //estimate transmitted power and/or pathloss if enabled
+            // estimate transmitted power and/or path-loss if enabled
             if (mTransmittedPowerEstimationEnabled || mPathLossEstimationEnabled) {
                 mRssiInnerEstimator.setPositionEstimationEnabled(false);
                 mRssiInnerEstimator.setInitialPosition(estimatedPosition);
@@ -929,13 +930,13 @@ public abstract class RangingAndRssiRadioSourceEstimator<S extends RadioSource, 
                 mRssiInnerEstimator.estimate();
 
                 if (mTransmittedPowerEstimationEnabled) {
-                    //transmitted power estimation enabled
+                    // transmitted power estimation enabled
                     mEstimatedTransmittedPowerdBm =
                             mRssiInnerEstimator.getEstimatedTransmittedPowerdBm();
                     mEstimatedTransmittedPowerVariance =
                             mRssiInnerEstimator.getEstimatedTransmittedPowerVariance();
                 } else {
-                    //transmitted power estimation disabled
+                    // transmitted power estimation disabled
                     if (mInitialTransmittedPowerdBm != null) {
                         mEstimatedTransmittedPowerdBm = mInitialTransmittedPowerdBm;
                     }
@@ -943,18 +944,18 @@ public abstract class RangingAndRssiRadioSourceEstimator<S extends RadioSource, 
                 }
 
                 if (mPathLossEstimationEnabled) {
-                    //pathloss exponent estimation enabled
+                    // path-loss exponent estimation enabled
                     mEstimatedPathLossExponent =
                             mRssiInnerEstimator.getEstimatedPathLossExponent();
                     mEstimatedPathLossExponentVariance =
                             mRssiInnerEstimator.getEstimatedPathLossExponentVariance();
                 } else {
-                    //pathloss exponent estimation disabled
+                    // path-loss exponent estimation disabled
                     mEstimatedPathLossExponent = mInitialPathLossExponent;
                     mEstimatedPathLossExponentVariance = null;
                 }
 
-                //build covariance matrix
+                // build covariance matrix
                 final Matrix rssiCov = mRssiInnerEstimator.getEstimatedCovariance();
                 if (mEstimatedPositionCovariance != null && rssiCov != null) {
                     final int dims = getNumberOfDimensions();
@@ -1048,7 +1049,7 @@ public abstract class RangingAndRssiRadioSourceEstimator<S extends RadioSource, 
 
     /**
      * Gets estimated path loss exponent variance.
-     * This value will only be available when pathloss
+     * This value will only be available when path-loss
      * exponent estimation is enabled.
      *
      * @return estimated path loss exponent variance or null.

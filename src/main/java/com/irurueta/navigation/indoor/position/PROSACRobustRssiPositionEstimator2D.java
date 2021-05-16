@@ -23,6 +23,7 @@ import com.irurueta.navigation.indoor.RssiFingerprint;
 import com.irurueta.navigation.indoor.RssiReading;
 import com.irurueta.navigation.lateration.PROSACRobustLateration2DSolver;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -32,7 +33,6 @@ import java.util.List;
  * device by getting RSSI readings at an unknown location of different radio sources whose
  * 2D locations are known.
  */
-@SuppressWarnings("WeakerAccess")
 public class PROSACRobustRssiPositionEstimator2D extends RobustRssiPositionEstimator2D {
 
     /**

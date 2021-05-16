@@ -17,6 +17,7 @@ package com.irurueta.navigation.indoor;
 
 import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.Point2D;
+
 import java.util.List;
 
 /**
@@ -45,7 +46,7 @@ public class BeaconWithPowerAndLocated2D extends BeaconWithPowerAndLocated<Point
      *
      * @param identifiers      list of the multi-part identifiers of the beacon.
      * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
-     * @param bluetoothAddress the bluetooth mac addres.
+     * @param bluetoothAddress the bluetooth mac address.
      * @param beaconTypeCode   the two byte value indicating the type of beacon.
      * @param manufacturer     a two byte code indicating the beacon manufacturer.
      * @param serviceUuid      a 32 bit service uuid for the beacon.
@@ -91,7 +92,7 @@ public class BeaconWithPowerAndLocated2D extends BeaconWithPowerAndLocated<Point
      *
      * @param identifiers                       list of the multi-part identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
-     * @param bluetoothAddress                  the bluetooth mac addres.
+     * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
@@ -141,7 +142,7 @@ public class BeaconWithPowerAndLocated2D extends BeaconWithPowerAndLocated<Point
      *
      * @param identifiers        list of the multi-part identifiers of the beacon.
      * @param transmittedPower   calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
-     * @param bluetoothAddress   the bluetooth mac addres.
+     * @param bluetoothAddress   the bluetooth mac address.
      * @param beaconTypeCode     the two byte value indicating the type of beacon.
      * @param manufacturer       a two byte code indicating the beacon manufacturer.
      * @param serviceUuid        a 32 bit service uuid for the beacon.
@@ -194,7 +195,7 @@ public class BeaconWithPowerAndLocated2D extends BeaconWithPowerAndLocated<Point
      *
      * @param identifiers                       list of the multi-part identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
-     * @param bluetoothAddress                  the bluetooth mac addres.
+     * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
@@ -229,7 +230,7 @@ public class BeaconWithPowerAndLocated2D extends BeaconWithPowerAndLocated<Point
      * @param identifiers      list of the multi-part identifiers of the beacon.
      * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency        frequency used by this Beacon.
-     * @param bluetoothAddress the bluetooth mac addres.
+     * @param bluetoothAddress the bluetooth mac address.
      * @param beaconTypeCode   the two byte value indicating the type of beacon.
      * @param manufacturer     a two byte code indicating the beacon manufacturer.
      * @param serviceUuid      a 32 bit service uuid for the beacon.
@@ -279,7 +280,7 @@ public class BeaconWithPowerAndLocated2D extends BeaconWithPowerAndLocated<Point
      * @param identifiers                       list of the multi-part identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency                         frequency used by this Beacon.
-     * @param bluetoothAddress                  the bluetooth mac addres.
+     * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
@@ -311,7 +312,7 @@ public class BeaconWithPowerAndLocated2D extends BeaconWithPowerAndLocated<Point
      * @param identifiers        list of the multi-part identifiers of the beacon.
      * @param transmittedPower   calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency          frequency used by this Beacon.
-     * @param bluetoothAddress   the bluetooth mac addres.
+     * @param bluetoothAddress   the bluetooth mac address.
      * @param beaconTypeCode     the two byte value indicating the type of beacon.
      * @param manufacturer       a two byte code indicating the beacon manufacturer.
      * @param serviceUuid        a 32 bit service uuid for the beacon.
@@ -368,7 +369,7 @@ public class BeaconWithPowerAndLocated2D extends BeaconWithPowerAndLocated<Point
      * @param identifiers                       list of the multi-part identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency                         frequency used by this Beacon.
-     * @param bluetoothAddress                  the bluetooth mac addres.
+     * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
@@ -420,7 +421,7 @@ public class BeaconWithPowerAndLocated2D extends BeaconWithPowerAndLocated<Point
      *
      * @param identifiers      list of the multi-part identifiers of the beacon.
      * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
-     * @param bluetoothAddress the bluetooth mac addres.
+     * @param bluetoothAddress the bluetooth mac address.
      * @param beaconTypeCode   the two byte value indicating the type of beacon.
      * @param manufacturer     a two byte code indicating the beacon manufacturer.
      * @param serviceUuid      a 32 bit service uuid for the beacon.
@@ -470,7 +471,7 @@ public class BeaconWithPowerAndLocated2D extends BeaconWithPowerAndLocated<Point
      *
      * @param identifiers                       list of the multi-part identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
-     * @param bluetoothAddress                  the bluetooth mac addres.
+     * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
@@ -525,7 +526,7 @@ public class BeaconWithPowerAndLocated2D extends BeaconWithPowerAndLocated<Point
      *
      * @param identifiers        list of the multi-part identifiers of the beacon.
      * @param transmittedPower   calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
-     * @param bluetoothAddress   the bluetooth mac addres.
+     * @param bluetoothAddress   the bluetooth mac address.
      * @param beaconTypeCode     the two byte value indicating the type of beacon.
      * @param manufacturer       a two byte code indicating the beacon manufacturer.
      * @param serviceUuid        a 32 bit service uuid for the beacon.
@@ -582,7 +583,7 @@ public class BeaconWithPowerAndLocated2D extends BeaconWithPowerAndLocated<Point
      *
      * @param identifiers                       list of the multi-part identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
-     * @param bluetoothAddress                  the bluetooth mac addres.
+     * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
@@ -619,7 +620,7 @@ public class BeaconWithPowerAndLocated2D extends BeaconWithPowerAndLocated<Point
      * @param identifiers      list of the multi-part identifiers of the beacon.
      * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency        frequency used by this Beacon.
-     * @param bluetoothAddress the bluetooth mac addres.
+     * @param bluetoothAddress the bluetooth mac address.
      * @param beaconTypeCode   the two byte value indicating the type of beacon.
      * @param manufacturer     a two byte code indicating the beacon manufacturer.
      * @param serviceUuid      a 32 bit service uuid for the beacon.
@@ -673,7 +674,7 @@ public class BeaconWithPowerAndLocated2D extends BeaconWithPowerAndLocated<Point
      * @param identifiers                       list of the multi-part identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency                         frequency used by this Beacon.
-     * @param bluetoothAddress                  the bluetooth mac addres.
+     * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
@@ -708,7 +709,7 @@ public class BeaconWithPowerAndLocated2D extends BeaconWithPowerAndLocated<Point
      * @param identifiers        list of the multi-part identifiers of the beacon.
      * @param transmittedPower   calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency          frequency used by this Beacon.
-     * @param bluetoothAddress   the bluetooth mac addres.
+     * @param bluetoothAddress   the bluetooth mac address.
      * @param beaconTypeCode     the two byte value indicating the type of beacon.
      * @param manufacturer       a two byte code indicating the beacon manufacturer.
      * @param serviceUuid        a 32 bit service uuid for the beacon.
@@ -769,7 +770,7 @@ public class BeaconWithPowerAndLocated2D extends BeaconWithPowerAndLocated<Point
      * @param identifiers                       list of the multi-part identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency                         frequency used by this Beacon.
-     * @param bluetoothAddress                  the bluetooth mac addres.
+     * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
@@ -830,7 +831,7 @@ public class BeaconWithPowerAndLocated2D extends BeaconWithPowerAndLocated<Point
      *
      * @param identifiers                       list of the multi-part identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
-     * @param bluetoothAddress                  the bluetooth mac addres.
+     * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
@@ -893,7 +894,7 @@ public class BeaconWithPowerAndLocated2D extends BeaconWithPowerAndLocated<Point
      *
      * @param identifiers                       list of the multi-part identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
-     * @param bluetoothAddress                  the bluetooth mac addres.
+     * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
@@ -961,7 +962,7 @@ public class BeaconWithPowerAndLocated2D extends BeaconWithPowerAndLocated<Point
      * @param identifiers                       list of the multi-part identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency                         frequency used by this Beacon.
-     * @param bluetoothAddress                  the bluetooth mac addres.
+     * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
@@ -1029,7 +1030,7 @@ public class BeaconWithPowerAndLocated2D extends BeaconWithPowerAndLocated<Point
      * @param identifiers                       list of the multi-part identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency                         frequency used by this Beacon.
-     * @param bluetoothAddress                  the bluetooth mac addres.
+     * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.

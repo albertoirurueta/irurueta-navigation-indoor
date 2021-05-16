@@ -23,6 +23,7 @@ import com.irurueta.navigation.indoor.RadioSourceLocated;
 import com.irurueta.navigation.indoor.RangingAndRssiFingerprint;
 import com.irurueta.navigation.indoor.RangingAndRssiReading;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -34,7 +35,7 @@ import java.util.List;
  * Implementations of this class should be able to detect and discard outliers in order
  * to find the best solution.
  */
-@SuppressWarnings({"WeakerAccess", "Duplicates"})
+@SuppressWarnings("DuplicatedCode")
 public abstract class RobustRangingAndRssiPositionEstimator3D extends
         RobustRangingAndRssiPositionEstimator<Point3D> {
 
@@ -128,7 +129,8 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public static RobustRangingAndRssiPositionEstimator3D create(
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint,
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint,
             final RobustEstimatorMethod method) {
         switch (method) {
             case RANSAC:
@@ -158,7 +160,8 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
      */
     public static RobustRangingAndRssiPositionEstimator3D create(
             final List<? extends RadioSourceLocated<Point3D>> sources,
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint,
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint,
             final RobustEstimatorMethod method) {
         switch (method) {
             case RANSAC:
@@ -245,7 +248,8 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public static RobustRangingAndRssiPositionEstimator3D create(
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint,
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener<Point3D> listener,
             final RobustEstimatorMethod method) {
         switch (method) {
@@ -282,7 +286,8 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
      */
     public static RobustRangingAndRssiPositionEstimator3D create(
             final List<? extends RadioSourceLocated<Point3D>> sources,
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint,
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener<Point3D> listener,
             final RobustEstimatorMethod method) {
         switch (method) {
@@ -403,7 +408,8 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
     public static RobustRangingAndRssiPositionEstimator3D create(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint,
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint,
             final RobustEstimatorMethod method) {
         switch (method) {
             case RANSAC:
@@ -449,7 +455,8 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<Point3D>> sources,
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint,
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint,
             final RobustEstimatorMethod method) {
         switch (method) {
             case RANSAC:
@@ -578,7 +585,8 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
     public static RobustRangingAndRssiPositionEstimator3D create(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint,
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener<Point3D> listener,
             final RobustEstimatorMethod method) {
         switch (method) {
@@ -629,7 +637,8 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<Point3D>> sources,
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint,
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener<Point3D> listener,
             final RobustEstimatorMethod method) {
         switch (method) {
@@ -685,7 +694,8 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public static RobustRangingAndRssiPositionEstimator3D create(
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint) {
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint) {
         return create(fingerprint, DEFAULT_ROBUST_METHOD);
     }
 
@@ -701,7 +711,8 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
      */
     public static RobustRangingAndRssiPositionEstimator3D create(
             final List<? extends RadioSourceLocated<Point3D>> sources,
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint) {
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint) {
         return create(sources, fingerprint, DEFAULT_ROBUST_METHOD);
     }
 
@@ -741,7 +752,8 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public static RobustRangingAndRssiPositionEstimator3D create(
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint,
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener<Point3D> listener) {
         return create(fingerprint, listener, DEFAULT_ROBUST_METHOD);
     }
@@ -759,7 +771,8 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
      */
     public static RobustRangingAndRssiPositionEstimator3D create(
             final List<? extends RadioSourceLocated<Point3D>> sources,
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint,
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener<Point3D> listener) {
         return create(sources, fingerprint, listener, DEFAULT_ROBUST_METHOD);
     }
@@ -829,7 +842,8 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
     public static RobustRangingAndRssiPositionEstimator3D create(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint) {
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint) {
         return create(sourceQualityScores, fingerprintReadingQualityScores,
                 fingerprint, DEFAULT_ROBUST_METHOD);
     }
@@ -858,7 +872,8 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<Point3D>> sources,
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint) {
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint) {
         return create(sourceQualityScores, fingerprintReadingQualityScores,
                 sources, fingerprint, DEFAULT_ROBUST_METHOD);
     }
@@ -933,7 +948,8 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
     public static RobustRangingAndRssiPositionEstimator3D create(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint,
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener<Point3D> listener) {
         return create(sourceQualityScores, fingerprintReadingQualityScores,
                 fingerprint, listener, DEFAULT_ROBUST_METHOD);
@@ -964,7 +980,8 @@ public abstract class RobustRangingAndRssiPositionEstimator3D extends
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<Point3D>> sources,
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint,
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener<Point3D> listener) {
         return create(sourceQualityScores, fingerprintReadingQualityScores,
                 sources, fingerprint, listener, DEFAULT_ROBUST_METHOD);

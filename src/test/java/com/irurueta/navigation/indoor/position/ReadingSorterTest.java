@@ -35,14 +35,16 @@ import com.irurueta.navigation.indoor.RssiReading;
 import com.irurueta.navigation.indoor.WifiAccessPoint;
 import com.irurueta.navigation.indoor.WifiAccessPointLocated2D;
 import com.irurueta.statistics.UniformRandomizer;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import org.junit.Test;
 
 public class ReadingSorterTest {
 
-    private static final double FREQUENCY = 2.4e9; //(Hz)
+    private static final double FREQUENCY = 2.4e9; // (Hz)
 
     private static final int MIN_SOURCES = 3;
     private static final int MAX_SOURCES = 10;
@@ -198,15 +200,15 @@ public class ReadingSorterTest {
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>>> result =
-                sorter.getSortedSourcesAndReadings();
+        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>>>
+                result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(result.size(), 1);
 
         double previousQuality = Double.MAX_VALUE;
         for (int j = 0; j < numReadings; j++) {
-            final ReadingSorter.ReadingWithQualityScore<RangingAndRssiReading<WifiAccessPoint>> readingWithQualityScore =
-                    result.get(0).readingsWithQualityScores.get(j);
+            final ReadingSorter.ReadingWithQualityScore<RangingAndRssiReading<WifiAccessPoint>>
+                    readingWithQualityScore = result.get(0).readingsWithQualityScores.get(j);
             assertTrue(previousQuality >= readingWithQualityScore.qualityScore);
             previousQuality = readingWithQualityScore.qualityScore;
         }
@@ -433,14 +435,14 @@ public class ReadingSorterTest {
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>>> result =
-                sorter.getSortedSourcesAndReadings();
+        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>>>
+                result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(result.size(), 1);
 
         for (int j = 0; j < numReadings; j++) {
-            final ReadingSorter.ReadingWithQualityScore<RangingAndRssiReading<WifiAccessPoint>> readingWithQualityScore =
-                    result.get(0).readingsWithQualityScores.get(j);
+            final ReadingSorter.ReadingWithQualityScore<RangingAndRssiReading<WifiAccessPoint>>
+                    readingWithQualityScore = result.get(0).readingsWithQualityScores.get(j);
             assertSame(readingWithQualityScore.reading, readings.get(j));
         }
     }
@@ -619,8 +621,8 @@ public class ReadingSorterTest {
 
         double previousSourceQuality = Double.MAX_VALUE;
         for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingReading<WifiAccessPoint>> sourceWithQualityScore =
-                    result.get(i);
+            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingReading<WifiAccessPoint>>
+                    sourceWithQualityScore = result.get(i);
             assertTrue(previousSourceQuality >= sourceWithQualityScore.qualityScore);
             previousSourceQuality = sourceWithQualityScore.qualityScore;
 
@@ -673,22 +675,22 @@ public class ReadingSorterTest {
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>>> result =
-                sorter.getSortedSourcesAndReadings();
+        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>>>
+                result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(result.size(), numSources);
 
         double previousSourceQuality = Double.MAX_VALUE;
         for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>> sourceWithQualityScore =
-                    result.get(i);
+            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>>
+                    sourceWithQualityScore = result.get(i);
             assertTrue(previousSourceQuality >= sourceWithQualityScore.qualityScore);
             previousSourceQuality = sourceWithQualityScore.qualityScore;
 
             double previousReadingQuality = Double.MAX_VALUE;
             for (int j = 0; j < numReadings; j++) {
-                final ReadingSorter.ReadingWithQualityScore<RangingAndRssiReading<WifiAccessPoint>> readingWithQualityScore =
-                        sourceWithQualityScore.readingsWithQualityScores.get(j);
+                final ReadingSorter.ReadingWithQualityScore<RangingAndRssiReading<WifiAccessPoint>>
+                        readingWithQualityScore = sourceWithQualityScore.readingsWithQualityScores.get(j);
                 assertTrue(previousReadingQuality >= readingWithQualityScore.qualityScore);
                 previousReadingQuality = readingWithQualityScore.qualityScore;
             }
@@ -740,8 +742,8 @@ public class ReadingSorterTest {
 
         double previousSourceQuality = Double.MAX_VALUE;
         for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RssiReading<WifiAccessPoint>> sourceWithQualityScore =
-                    result.get(i);
+            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RssiReading<WifiAccessPoint>>
+                    sourceWithQualityScore = result.get(i);
             assertTrue(previousSourceQuality >= sourceWithQualityScore.qualityScore);
             previousSourceQuality = sourceWithQualityScore.qualityScore;
 
@@ -808,8 +810,8 @@ public class ReadingSorterTest {
 
         double previousSourceQuality = Double.MAX_VALUE;
         for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, Reading<WifiAccessPoint>> sourceWithQualityScore =
-                    result.get(i);
+            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, Reading<WifiAccessPoint>>
+                    sourceWithQualityScore = result.get(i);
             assertTrue(previousSourceQuality >= sourceWithQualityScore.qualityScore);
             previousSourceQuality = sourceWithQualityScore.qualityScore;
 
@@ -886,8 +888,8 @@ public class ReadingSorterTest {
 
         double previousSourceQuality = Double.MAX_VALUE;
         for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingReading<WifiAccessPoint>> sourceWithQualityScore =
-                    result.get(i);
+            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingReading<WifiAccessPoint>>
+                    sourceWithQualityScore = result.get(i);
             assertTrue(previousSourceQuality >= sourceWithQualityScore.qualityScore);
             previousSourceQuality = sourceWithQualityScore.qualityScore;
 
@@ -940,20 +942,21 @@ public class ReadingSorterTest {
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>>> result =
-                sorter.getSortedSourcesAndReadings();
+        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>>>
+                result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(result.size(), numSources);
 
         double previousSourceQuality = Double.MAX_VALUE;
         for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>> sourceWithQualityScore =
-                    result.get(i);
+            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>>
+                    sourceWithQualityScore = result.get(i);
             assertTrue(previousSourceQuality >= sourceWithQualityScore.qualityScore);
             previousSourceQuality = sourceWithQualityScore.qualityScore;
 
             for (int j = 0; j < numReadings; j++) {
-                final ReadingSorter.ReadingWithQualityScore<RangingAndRssiReading<WifiAccessPoint>> readingWithQualityScore =
+                final ReadingSorter.ReadingWithQualityScore<RangingAndRssiReading<WifiAccessPoint>>
+                        readingWithQualityScore =
                         sourceWithQualityScore.readingsWithQualityScores.get(j);
                 assertEquals(readingQualityScoreValue,
                         readingWithQualityScore.qualityScore, 0.0);
@@ -1007,8 +1010,8 @@ public class ReadingSorterTest {
 
         double previousSourceQuality = Double.MAX_VALUE;
         for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RssiReading<WifiAccessPoint>> sourceWithQualityScore =
-                    result.get(i);
+            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RssiReading<WifiAccessPoint>>
+                    sourceWithQualityScore = result.get(i);
             assertTrue(previousSourceQuality >= sourceWithQualityScore.qualityScore);
             previousSourceQuality = sourceWithQualityScore.qualityScore;
 
@@ -1075,8 +1078,8 @@ public class ReadingSorterTest {
 
         double previousSourceQuality = Double.MAX_VALUE;
         for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, Reading<WifiAccessPoint>> sourceWithQualityScore =
-                    result.get(i);
+            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, Reading<WifiAccessPoint>>
+                    sourceWithQualityScore = result.get(i);
             assertTrue(previousSourceQuality >= sourceWithQualityScore.qualityScore);
             previousSourceQuality = sourceWithQualityScore.qualityScore;
 
@@ -1150,8 +1153,8 @@ public class ReadingSorterTest {
         assertEquals(result.size(), numSources);
 
         for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingReading<WifiAccessPoint>> sourceWithQualityScore =
-                    result.get(i);
+            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingReading<WifiAccessPoint>>
+                    sourceWithQualityScore = result.get(i);
             assertSame(sourceWithQualityScore.source, sources.get(i));
             assertEquals(sourceWithQualityScore.qualityScore, sourceQualityScoreValue,
                     0.0);
@@ -1206,22 +1209,22 @@ public class ReadingSorterTest {
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>>> result =
-                sorter.getSortedSourcesAndReadings();
+        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>>>
+                result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(result.size(), numSources);
 
         for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>> sourceWithQualityScore =
-                    result.get(i);
+            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>>
+                    sourceWithQualityScore = result.get(i);
             assertSame(sourceWithQualityScore.source, sources.get(i));
             assertEquals(sourceWithQualityScore.qualityScore, sourceQualityScoreValue,
                     0.0);
 
             double previousReadingQuality = Double.MAX_VALUE;
             for (int j = 0; j < numReadings; j++) {
-                final ReadingSorter.ReadingWithQualityScore<RangingAndRssiReading<WifiAccessPoint>> readingWithQualityScore =
-                        sourceWithQualityScore.readingsWithQualityScores.get(j);
+                final ReadingSorter.ReadingWithQualityScore<RangingAndRssiReading<WifiAccessPoint>>
+                        readingWithQualityScore = sourceWithQualityScore.readingsWithQualityScores.get(j);
                 assertTrue(previousReadingQuality >= readingWithQualityScore.qualityScore);
                 previousReadingQuality = readingWithQualityScore.qualityScore;
             }
@@ -1273,8 +1276,8 @@ public class ReadingSorterTest {
         assertEquals(result.size(), numSources);
 
         for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RssiReading<WifiAccessPoint>> sourceWithQualityScore =
-                    result.get(i);
+            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RssiReading<WifiAccessPoint>>
+                    sourceWithQualityScore = result.get(i);
             assertSame(sourceWithQualityScore.source, sources.get(i));
             assertEquals(sourceWithQualityScore.qualityScore, sourceQualityScoreValue,
                     0.0);
@@ -1342,8 +1345,8 @@ public class ReadingSorterTest {
         assertEquals(result.size(), numSources);
 
         for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, Reading<WifiAccessPoint>> sourceWithQualityScore =
-                    result.get(i);
+            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, Reading<WifiAccessPoint>>
+                    sourceWithQualityScore = result.get(i);
             assertSame(sourceWithQualityScore.source, sources.get(i));
             assertEquals(sourceWithQualityScore.qualityScore, sourceQualityScoreValue,
                     0.0);
@@ -1376,7 +1379,7 @@ public class ReadingSorterTest {
     }
 
     @Test
-    public void testSortMultipleSourcesRanginReadingsSameSourceQualityScoresSameReadingQualityScores() {
+    public void testSortMultipleSourcesRangingReadingsSameSourceQualityScoresSameReadingQualityScores() {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
         final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
@@ -1421,8 +1424,8 @@ public class ReadingSorterTest {
         assertEquals(result.size(), numSources);
 
         for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingReading<WifiAccessPoint>> sourceWithQualityScore =
-                    result.get(i);
+            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingReading<WifiAccessPoint>>
+                    sourceWithQualityScore = result.get(i);
             assertSame(sourceWithQualityScore.source, sources.get(i));
             assertEquals(sourceWithQualityScore.qualityScore, sourceQualityScoreValue,
                     0.0);
@@ -1437,7 +1440,7 @@ public class ReadingSorterTest {
     }
 
     @Test
-    public void testSortMultipleSourcesRanginAndRssiReadingsSameSourceQualityScoresSameReadingQualityScores() {
+    public void testSortMultipleSourcesRangingAndRssiReadingsSameSourceQualityScoresSameReadingQualityScores() {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
         final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
@@ -1477,21 +1480,21 @@ public class ReadingSorterTest {
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>>> result =
-                sorter.getSortedSourcesAndReadings();
+        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>>>
+                result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(result.size(), numSources);
 
         for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>> sourceWithQualityScore =
-                    result.get(i);
+            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>>
+                    sourceWithQualityScore = result.get(i);
             assertSame(sourceWithQualityScore.source, sources.get(i));
             assertEquals(sourceWithQualityScore.qualityScore, sourceQualityScoreValue,
                     0.0);
 
             for (int j = 0; j < numReadings; j++) {
-                final ReadingSorter.ReadingWithQualityScore<RangingAndRssiReading<WifiAccessPoint>> readingWithQualityScore =
-                        sourceWithQualityScore.readingsWithQualityScores.get(j);
+                final ReadingSorter.ReadingWithQualityScore<RangingAndRssiReading<WifiAccessPoint>>
+                        readingWithQualityScore = sourceWithQualityScore.readingsWithQualityScores.get(j);
                 assertEquals(readingQualityScoreValue,
                         readingWithQualityScore.qualityScore, 0.0);
             }
@@ -1544,8 +1547,8 @@ public class ReadingSorterTest {
         assertEquals(result.size(), numSources);
 
         for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RssiReading<WifiAccessPoint>> sourceWithQualityScore =
-                    result.get(i);
+            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RssiReading<WifiAccessPoint>>
+                    sourceWithQualityScore = result.get(i);
             assertSame(sourceWithQualityScore.source, sources.get(i));
             assertEquals(sourceWithQualityScore.qualityScore, sourceQualityScoreValue,
                     0.0);
@@ -1613,8 +1616,8 @@ public class ReadingSorterTest {
         assertEquals(result.size(), numSources);
 
         for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, Reading<WifiAccessPoint>> sourceWithQualityScore =
-                    result.get(i);
+            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, Reading<WifiAccessPoint>>
+                    sourceWithQualityScore = result.get(i);
             assertSame(sourceWithQualityScore.source, sources.get(i));
             assertEquals(sourceWithQualityScore.qualityScore, sourceQualityScoreValue,
                     0.0);

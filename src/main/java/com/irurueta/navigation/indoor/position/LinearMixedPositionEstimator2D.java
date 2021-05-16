@@ -24,6 +24,7 @@ import com.irurueta.navigation.indoor.RadioSourceLocated;
 import com.irurueta.navigation.indoor.Reading;
 import com.irurueta.navigation.lateration.HomogeneousLinearLeastSquaresLateration2DSolver;
 import com.irurueta.navigation.lateration.InhomogeneousLinearLeastSquaresLateration2DSolver;
+
 import java.util.List;
 
 /**
@@ -33,7 +34,6 @@ import java.util.List;
  * getting ranging readings at an unknown location of different radio sources whose
  * locations are known.
  */
-@SuppressWarnings("WeakerAccess")
 public class LinearMixedPositionEstimator2D extends
         LinearMixedPositionEstimator<Point2D> {
 

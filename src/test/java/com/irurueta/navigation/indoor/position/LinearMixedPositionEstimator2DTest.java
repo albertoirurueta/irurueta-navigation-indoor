@@ -91,7 +91,6 @@ public class LinearMixedPositionEstimator2DTest implements
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
 
-
         // constructor with sources
         final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
@@ -129,7 +128,6 @@ public class LinearMixedPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint
         final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
                 new Fingerprint<>();
@@ -157,7 +155,6 @@ public class LinearMixedPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources and fingerprint
         estimator = new LinearMixedPositionEstimator2D(sources, fingerprint);
@@ -197,7 +194,6 @@ public class LinearMixedPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with listener
         estimator = new LinearMixedPositionEstimator2D(this);
 
@@ -213,7 +209,6 @@ public class LinearMixedPositionEstimator2DTest implements
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
-
 
         // constructor with sources and listener
         estimator = new LinearMixedPositionEstimator2D(sources, this);
@@ -247,7 +242,6 @@ public class LinearMixedPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint and listener
         estimator = new LinearMixedPositionEstimator2D(fingerprint,
                 this);
@@ -275,7 +269,6 @@ public class LinearMixedPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint and listener
         estimator = new LinearMixedPositionEstimator2D(sources, fingerprint,

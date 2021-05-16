@@ -23,6 +23,7 @@ import com.irurueta.navigation.indoor.RssiFingerprint;
 import com.irurueta.navigation.indoor.RssiReading;
 import com.irurueta.navigation.lateration.RANSACRobustLateration2DSolver;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -32,7 +33,6 @@ import java.util.List;
  * device by getting readings at an unknown location of different radio sources whose
  * 2D locations are known.
  */
-@SuppressWarnings("WeakerAccess")
 public class RANSACRobustRssiPositionEstimator2D extends RobustRssiPositionEstimator2D {
 
     /**
@@ -45,9 +45,10 @@ public class RANSACRobustRssiPositionEstimator2D extends RobustRssiPositionEstim
 
     /**
      * Constructor.
+     *
      * @param sources located radio sources used for lateration.
      * @throws IllegalArgumentException if provided sources is null or the number of
-     * provided sources is less than the required minimum.
+     *                                  provided sources is less than the required minimum.
      */
     public RANSACRobustRssiPositionEstimator2D(
             final List<? extends RadioSourceLocated<Point2D>> sources) {
@@ -73,11 +74,11 @@ public class RANSACRobustRssiPositionEstimator2D extends RobustRssiPositionEstim
     /**
      * Constructor.
      *
-     * @param sources       located radio sources used for lateration.
-     * @param fingerprint   fingerprint containing RSSI readings at an unknown location
-     *                      for provided located radio sources.
+     * @param sources     located radio sources used for lateration.
+     * @param fingerprint fingerprint containing RSSI readings at an unknown location
+     *                    for provided located radio sources.
      * @throws IllegalArgumentException if either provided sources or fingerprint is null
-     * or the number of provided sources is less than the required minimum.
+     *                                  or the number of provided sources is less than the required minimum.
      */
     public RANSACRobustRssiPositionEstimator2D(
             final List<? extends RadioSourceLocated<Point2D>> sources,
@@ -102,10 +103,10 @@ public class RANSACRobustRssiPositionEstimator2D extends RobustRssiPositionEstim
     /**
      * Constructor.
      *
-     * @param sources   located radio sources used for lateration.
-     * @param listener  listener in charge of handling events.
+     * @param sources  located radio sources used for lateration.
+     * @param listener listener in charge of handling events.
      * @throws IllegalArgumentException if provided sources is null or the number of
-     * provided sources is less than the required minimum.
+     *                                  provided sources is less than the required minimum.
      */
     public RANSACRobustRssiPositionEstimator2D(
             final List<? extends RadioSourceLocated<Point2D>> sources,
@@ -118,9 +119,9 @@ public class RANSACRobustRssiPositionEstimator2D extends RobustRssiPositionEstim
     /**
      * Constructor.
      *
-     * @param fingerprint   fingerprint containing RSSI readings at an unknown location
-     *                      for provided located radio sources.
-     * @param listener      listener in charge of handling events.
+     * @param fingerprint fingerprint containing RSSI readings at an unknown location
+     *                    for provided located radio sources.
+     * @param listener    listener in charge of handling events.
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public RANSACRobustRssiPositionEstimator2D(
@@ -134,12 +135,12 @@ public class RANSACRobustRssiPositionEstimator2D extends RobustRssiPositionEstim
     /**
      * Constructor.
      *
-     * @param sources       located radio sources used for lateration.
-     * @param fingerprint   fingerprint containing readings at an unknown location for
-     *                      provided located radio sources.
-     * @param listener      listener in charge of handling events.
+     * @param sources     located radio sources used for lateration.
+     * @param fingerprint fingerprint containing readings at an unknown location for
+     *                    provided located radio sources.
+     * @param listener    listener in charge of handling events.
      * @throws IllegalArgumentException if either provided sources or fingerprint is
-     * null or the number of provided sources is less than the required minimum.
+     *                                  null or the number of provided sources is less than the required minimum.
      */
     public RANSACRobustRssiPositionEstimator2D(
             final List<? extends RadioSourceLocated<Point2D>> sources,

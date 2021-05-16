@@ -21,6 +21,7 @@ import com.irurueta.geometry.Point3D;
 /**
  * Contains a 3D located signal strength reading associated to a given radio source
  * (e.g. WiFi access point or bluetooth beacon).
+ *
  * @param <S> a {@link RadioSource} type.
  */
 public class RssiReadingLocated3D<S extends RadioSource> extends
@@ -28,11 +29,12 @@ public class RssiReadingLocated3D<S extends RadioSource> extends
 
     /**
      * Constructor.
-     * @param source radio source associated to this reading.
-     * @param rssi received signal strength indicator in dBm.
+     *
+     * @param source   radio source associated to this reading.
+     * @param rssi     received signal strength indicator in dBm.
      * @param position position where reading was made.
      * @throws IllegalArgumentException if either radio source data or position
-     * are null.
+     *                                  are null.
      */
     public RssiReadingLocated3D(
             final S source, final double rssi, final Point3D position) {
@@ -41,12 +43,13 @@ public class RssiReadingLocated3D<S extends RadioSource> extends
 
     /**
      * Constructor.
-     * @param source radio source associated to this reading.
-     * @param rssi received signal strength indicator in dBm.
-     * @param position position where reading was made.
+     *
+     * @param source                radio source associated to this reading.
+     * @param rssi                  received signal strength indicator in dBm.
+     * @param position              position where reading was made.
      * @param rssiStandardDeviation standard deviation of RSSI, if available.
      * @throws IllegalArgumentException if either radio source data or position
-     * are null.
+     *                                  are null.
      */
     public RssiReadingLocated3D(
             final S source, final double rssi, final Point3D position,
@@ -56,13 +59,14 @@ public class RssiReadingLocated3D<S extends RadioSource> extends
 
     /**
      * Constructor.
-     * @param source radio source associated to this reading.
-     * @param rssi received signal strength indicator in dBm.
-     * @param position position where reading was made.
+     *
+     * @param source             radio source associated to this reading.
+     * @param rssi               received signal strength indicator in dBm.
+     * @param position           position where reading was made.
      * @param positionCovariance covariance of inhomogeneous coordinates of
      *                           current position (if available).
      * @throws IllegalArgumentException if either radio source or position are
-     * null, or covariance has invalid size.
+     *                                  null, or covariance has invalid size.
      */
     public RssiReadingLocated3D(
             final S source, final double rssi, final Point3D position,
@@ -72,14 +76,15 @@ public class RssiReadingLocated3D<S extends RadioSource> extends
 
     /**
      * Constructor.
-     * @param source radio source associated to this reading.
-     * @param rssi received signal strength indicator in dBm.
-     * @param position position where reading was made.
+     *
+     * @param source                radio source associated to this reading.
+     * @param rssi                  received signal strength indicator in dBm.
+     * @param position              position where reading was made.
      * @param rssiStandardDeviation standard deviation of RSSI, if available.
-     * @param positionCovariance covariance of inhomogeneous coordinates of
-     *                           current position (if available).
+     * @param positionCovariance    covariance of inhomogeneous coordinates of
+     *                              current position (if available).
      * @throws IllegalArgumentException if either radio source or position are
-     * null, or covariance has invalid size.
+     *                                  null, or covariance has invalid size.
      */
     public RssiReadingLocated3D(
             final S source, final double rssi, final Point3D position,

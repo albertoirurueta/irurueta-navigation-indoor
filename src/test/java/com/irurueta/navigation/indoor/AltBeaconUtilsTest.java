@@ -16,10 +16,6 @@
 package com.irurueta.navigation.indoor;
 
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.Random;
@@ -31,8 +27,8 @@ public class AltBeaconUtilsTest {
     private static final double MIN_FREQUENCY = 2.4e9;
     private static final double MAX_FREQUENCY = 2.45e9;
 
-    private static final double MIN_PATHLOSS = 1.6;
-    private static final double MAX_PATHLOSS = 2.0;
+    private static final double MIN_PATH_LOSS = 1.6;
+    private static final double MAX_PATH_LOSS = 2.0;
 
     private static final double MIN_K = 0.5;
     private static final double MAX_K = 0.6;
@@ -57,25 +53,6 @@ public class AltBeaconUtilsTest {
 
     private static final double ABSOLUTE_ERROR = 1e-6;
 
-    public AltBeaconUtilsTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
-
     @Test
     public void testGetK() {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -92,7 +69,7 @@ public class AltBeaconUtilsTest {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         final double frequency = randomizer.nextDouble(MIN_FREQUENCY, MAX_FREQUENCY);
-        final double pathLossExponent = randomizer.nextDouble(MIN_PATHLOSS, MAX_PATHLOSS);
+        final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS, MAX_PATH_LOSS);
 
         final double coefficient1 = AltBeaconUtils.getCoefficient1WithFrequency(frequency,
                 pathLossExponent);
@@ -109,7 +86,6 @@ public class AltBeaconUtilsTest {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         final double k = randomizer.nextDouble(MIN_K, MAX_K);
-
 
         final double frequency = AltBeaconUtils.getFrequency(k);
 
@@ -208,7 +184,7 @@ public class AltBeaconUtilsTest {
 
         final double ratio = AltBeaconUtils.getRatio(receivedPower, transmittedPower);
 
-        //check
+        // check
         assertEquals(ratio, receivedPower / transmittedPower,
                 ABSOLUTE_ERROR);
     }
@@ -282,7 +258,7 @@ public class AltBeaconUtilsTest {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         final double frequency = randomizer.nextDouble(MIN_FREQUENCY, MAX_FREQUENCY);
-        final double pathLossExponent = randomizer.nextDouble(MIN_PATHLOSS, MAX_PATHLOSS);
+        final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS, MAX_PATH_LOSS);
 
         final double coefficient1 = AltBeaconUtils.getCoefficient1WithFrequency(frequency,
                 pathLossExponent);
@@ -299,7 +275,7 @@ public class AltBeaconUtilsTest {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         final double frequency = randomizer.nextDouble(MIN_FREQUENCY, MAX_FREQUENCY);
-        final double pathLossExponent = randomizer.nextDouble(MIN_PATHLOSS, MAX_PATHLOSS);
+        final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS, MAX_PATH_LOSS);
 
         final double c1 = AltBeaconUtils.getCoefficient1WithFrequency(frequency,
                 pathLossExponent);
@@ -313,7 +289,7 @@ public class AltBeaconUtilsTest {
     public void testGetCoefficient2() {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
-        final double pathLossExponent = randomizer.nextDouble(MIN_PATHLOSS, MAX_PATHLOSS);
+        final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS, MAX_PATH_LOSS);
 
         final double c2 = AltBeaconUtils.getCoefficient2(pathLossExponent);
 

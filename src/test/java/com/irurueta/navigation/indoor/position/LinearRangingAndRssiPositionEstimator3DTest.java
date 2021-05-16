@@ -33,7 +33,7 @@ import static org.junit.Assert.*;
 public class LinearRangingAndRssiPositionEstimator3DTest implements
         RangingAndRssiPositionEstimatorListener<Point3D> {
 
-    private static final double FREQUENCY = 2.4e9; //(Hz)
+    private static final double FREQUENCY = 2.4e9; // (Hz)
 
     private static final int MIN_SOURCES = 4;
     private static final int MAX_SOURCES = 10;
@@ -78,7 +78,6 @@ public class LinearRangingAndRssiPositionEstimator3DTest implements
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
 
-
         // constructor with sources
         final List<WifiAccessPointLocated3D> sources = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
@@ -115,7 +114,6 @@ public class LinearRangingAndRssiPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with fingerprint
         final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
@@ -184,7 +182,6 @@ public class LinearRangingAndRssiPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with listener
         estimator = new LinearRangingAndRssiPositionEstimator3D(this);
 
@@ -200,7 +197,6 @@ public class LinearRangingAndRssiPositionEstimator3DTest implements
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
-
 
         // constructor with sources and listener
         estimator = new LinearRangingAndRssiPositionEstimator3D(sources, this);
@@ -234,7 +230,6 @@ public class LinearRangingAndRssiPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint and listener
         estimator = new LinearRangingAndRssiPositionEstimator3D(fingerprint,
                 this);
@@ -262,7 +257,6 @@ public class LinearRangingAndRssiPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint and listener
         estimator = new LinearRangingAndRssiPositionEstimator3D(sources, fingerprint,

@@ -32,10 +32,6 @@ import com.irurueta.navigation.indoor.WifiAccessPoint;
 import com.irurueta.navigation.indoor.WifiAccessPointLocated2D;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.text.MessageFormat;
@@ -50,14 +46,13 @@ import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
 
-@SuppressWarnings("Duplicates")
 public class RangingRadioSourceEstimator2DTest implements
         RangingRadioSourceEstimatorListener<WifiAccessPoint, Point2D> {
 
     private static final Logger LOGGER = Logger.getLogger(
             RangingRadioSourceEstimator3DTest.class.getName());
 
-    private static final double FREQUENCY = 2.4e9; //(Hz)
+    private static final double FREQUENCY = 2.4e9; // (Hz)
     private static final double TRANSMITTED_POWER_DBM = -50.0;
 
     private static final int MIN_READINGS = 50;
@@ -75,25 +70,6 @@ public class RangingRadioSourceEstimator2DTest implements
 
     private int estimateStart;
     private int estimateEnd;
-
-    public RangingRadioSourceEstimator2DTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
 
     @Test
     public void testConstructor() {
@@ -170,7 +146,6 @@ public class RangingRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with listener
         estimator = new RangingRadioSourceEstimator2D<>(this);
 
@@ -192,7 +167,6 @@ public class RangingRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getEstimatedCovariance());
         assertNull(estimator.getEstimatedPositionCovariance());
-
 
         // test constructor with readings and listener
         estimator = new RangingRadioSourceEstimator2D<>(readings, this);
@@ -234,7 +208,6 @@ public class RangingRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position
         final InhomogeneousPoint2D initialPosition = new InhomogeneousPoint2D(
                 randomizer.nextDouble(MIN_POS, MAX_POS),
@@ -259,7 +232,6 @@ public class RangingRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getEstimatedCovariance());
         assertNull(estimator.getEstimatedPositionCovariance());
-
 
         // test constructor with readings and initial position
         estimator = new RangingRadioSourceEstimator2D<>(readings, initialPosition);
@@ -300,7 +272,6 @@ public class RangingRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position and listener
         estimator = new RangingRadioSourceEstimator2D<>(initialPosition, this);
 
@@ -322,7 +293,6 @@ public class RangingRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getEstimatedCovariance());
         assertNull(estimator.getEstimatedPositionCovariance());
-
 
         // test constructor with readings, initial position and listener
         estimator = new RangingRadioSourceEstimator2D<>(readings, initialPosition,
@@ -933,7 +903,7 @@ public class RangingRadioSourceEstimator2DTest implements
                 continue;
             }
 
-            //check
+            // check
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -1758,7 +1728,6 @@ public class RangingRadioSourceEstimator2DTest implements
 
         assertTrue(numValidPosition > 0);
 
-
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);
         LOGGER.log(Level.INFO, MessageFormat.format(
@@ -1883,7 +1852,6 @@ public class RangingRadioSourceEstimator2DTest implements
         }
 
         assertTrue(numValidPosition > 0);
-
 
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);
@@ -2010,7 +1978,6 @@ public class RangingRadioSourceEstimator2DTest implements
 
         assertTrue(numValidPosition > 0);
 
-
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);
         LOGGER.log(Level.INFO, MessageFormat.format(
@@ -2125,7 +2092,6 @@ public class RangingRadioSourceEstimator2DTest implements
         }
 
         assertTrue(numValidPosition > 0);
-
 
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);
@@ -2242,7 +2208,6 @@ public class RangingRadioSourceEstimator2DTest implements
 
         assertTrue(numValidPosition > 0);
 
-
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);
         LOGGER.log(Level.INFO, MessageFormat.format(
@@ -2344,7 +2309,6 @@ public class RangingRadioSourceEstimator2DTest implements
 
         assertTrue(numValidPosition > 0);
 
-
         LOGGER.log(Level.INFO, "Position error: {0} meters",
                 positionError);
     }
@@ -2435,7 +2399,6 @@ public class RangingRadioSourceEstimator2DTest implements
 
         assertTrue(numValidPosition > 0);
 
-
         LOGGER.log(Level.INFO, "Position error: {0} meters",
                 positionError);
     }
@@ -2482,7 +2445,7 @@ public class RangingRadioSourceEstimator2DTest implements
         }
         try {
             estimator.setReadings(null);
-            fail("LockedExeption expected but not thrown");
+            fail("LockedException expected but not thrown");
         } catch (final LockedException ignore) {
         }
         try {

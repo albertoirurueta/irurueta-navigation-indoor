@@ -15,10 +15,6 @@
  */
 package com.irurueta.navigation.indoor;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -28,25 +24,6 @@ public class WifiAccessPointTest {
     private static final String BSSID = "bssid";
     private static final String SSID = "ssid";
     private static final double FREQUENCY = 2.4e9;
-
-    public WifiAccessPointTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
 
     @Test
     public void testConstructor() {

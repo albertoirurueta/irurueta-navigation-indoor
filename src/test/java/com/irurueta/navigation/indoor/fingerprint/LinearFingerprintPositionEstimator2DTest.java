@@ -22,7 +22,7 @@ import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.indoor.*;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.*;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,31 +65,12 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
     private int estimateStart;
     private int estimateEnd;
 
-    public LinearFingerprintPositionEstimator2DTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
-
     @Test
     public void testConstructor() {
-        //test empty constructor
+        // test empty constructor
         LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D();
 
-        //check default values
+        // check default values
         assertNull(estimator.getLocatedFingerprints());
         assertNull(estimator.getFingerprint());
         assertEquals(estimator.getMinNearestFingerprints(), 1);
@@ -107,11 +88,10 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
         assertTrue(estimator.getUseNoMeanNearestFingerprintFinder());
         assertFalse(estimator.isMeansFromFingerprintReadingsRemoved());
 
-
-        //test constructor with listener
+        // test constructor with listener
         estimator = new LinearFingerprintPositionEstimator2D(this);
 
-        //check default values
+        // check default values
         assertNull(estimator.getLocatedFingerprints());
         assertNull(estimator.getFingerprint());
         assertEquals(estimator.getMinNearestFingerprints(), 1);
@@ -128,7 +108,6 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
         assertTrue(estimator.getUseSourcesPathLossExponentWhenAvailable());
         assertTrue(estimator.getUseNoMeanNearestFingerprintFinder());
         assertFalse(estimator.isMeansFromFingerprintReadingsRemoved());
-
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
@@ -153,10 +132,8 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                 new ArrayList<>();
         locatedFingerprints.add(locatedFingerprint);
 
-
         final RssiFingerprint<RadioSource, RssiReading<RadioSource>> fingerprint =
                 new RssiFingerprint<>(readings);
-
 
         final List<RadioSourceLocated<Point2D>> sources = new ArrayList<>();
         for (int i = 0; i < Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH; i++) {
@@ -165,12 +142,11 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             sources.add(source);
         }
 
-
-        //test constructor with located fingerprints, fingerprint and sources
+        // test constructor with located fingerprints, fingerprint and sources
         estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints,
                 fingerprint, sources);
 
-        //check default values
+        // check default values
         assertSame(estimator.getLocatedFingerprints(), locatedFingerprints);
         assertSame(estimator.getFingerprint(), fingerprint);
         assertEquals(estimator.getMinNearestFingerprints(), 1);
@@ -188,7 +164,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
         assertTrue(estimator.getUseNoMeanNearestFingerprintFinder());
         assertFalse(estimator.isMeansFromFingerprintReadingsRemoved());
 
-        //force IllegalArgumentException
+        // force IllegalArgumentException
         estimator = null;
         try {
             estimator = new LinearFingerprintPositionEstimator2D(new ArrayList<RssiFingerprintLocated2D<RadioSource,
@@ -216,12 +192,11 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
         }
         assertNull(estimator);
 
-
-        //test constructor with located fingerprints, fingerprint, sources and listener
+        // test constructor with located fingerprints, fingerprint, sources and listener
         estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints,
                 fingerprint, sources, this);
 
-        //check default values
+        // check default values
         assertSame(estimator.getLocatedFingerprints(), locatedFingerprints);
         assertSame(estimator.getFingerprint(), fingerprint);
         assertEquals(estimator.getMinNearestFingerprints(), 1);
@@ -239,7 +214,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
         assertTrue(estimator.getUseNoMeanNearestFingerprintFinder());
         assertFalse(estimator.isMeansFromFingerprintReadingsRemoved());
 
-        //force IllegalArgumentException
+        // force IllegalArgumentException
         estimator = null;
         try {
             estimator = new LinearFingerprintPositionEstimator2D(new ArrayList<RssiFingerprintLocated2D<RadioSource,
@@ -272,10 +247,10 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
     public void testGetSetLocatedFingerprints() throws LockedException {
         final LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D();
 
-        //check default value
+        // check default value
         assertNull(estimator.getLocatedFingerprints());
 
-        //set new value
+        // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         final List<RssiReading<RadioSource>> readings = new ArrayList<>();
@@ -301,10 +276,10 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
         estimator.setLocatedFingerprints(locatedFingerprints);
 
-        //check correctness
+        // check correctness
         assertSame(estimator.getLocatedFingerprints(), locatedFingerprints);
 
-        //force IllegalArgumentException
+        // force IllegalArgumentException
         try {
             estimator.setLocatedFingerprints(null);
             fail("IllegalArgumentException expected but not thrown");
@@ -322,10 +297,10 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
     public void testGetSetFingerprint() throws LockedException {
         final LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D();
 
-        //check default value
+        // check default value
         assertNull(estimator.getFingerprint());
 
-        //set new value
+        // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         final List<RssiReading<RadioSource>> readings = new ArrayList<>();
@@ -343,10 +318,10 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                 new RssiFingerprint<>(readings);
         estimator.setFingerprint(fingerprint);
 
-        //check correctness
+        // check correctness
         assertSame(estimator.getFingerprint(), fingerprint);
 
-        //force IllegalArgumentException
+        // force IllegalArgumentException
         try {
             estimator.setFingerprint(null);
             fail("IllegalArgumentException expected but not thrown");
@@ -358,18 +333,18 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
     public void testGetSetMinMaxNearestFingerprints() throws LockedException {
         final LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D();
 
-        //check default values
+        // check default values
         assertEquals(estimator.getMinNearestFingerprints(), 1);
         assertEquals(estimator.getMaxNearestFingerprints(), -1);
 
-        //set new values
+        // set new values
         estimator.setMinMaxNearestFingerprints(2, 3);
 
-        //check
+        // check
         assertEquals(estimator.getMinNearestFingerprints(), 2);
         assertEquals(estimator.getMaxNearestFingerprints(), 3);
 
-        //force IllegalArgumentException
+        // force IllegalArgumentException
         try {
             estimator.setMinMaxNearestFingerprints(0, 3);
             fail("IllegalArgumentException expected but not thrown");
@@ -386,16 +361,16 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
     public void testGetSetPathLossExponent() throws LockedException {
         final LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D();
 
-        //check default value
+        // check default value
         assertEquals(estimator.getPathLossExponent(), 2.0, 0.0);
 
-        //set new value
+        // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double pathLossExponent = randomizer.nextDouble();
 
         estimator.setPathLossExponent(pathLossExponent);
 
-        //check correctness
+        // check correctness
         assertEquals(estimator.getPathLossExponent(), pathLossExponent, 0.0);
     }
 
@@ -403,13 +378,13 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
     public void testGetSetListener() throws LockedException {
         final LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D();
 
-        //check default value
+        // check default value
         assertNull(estimator.getListener());
 
-        //set new value
+        // set new value
         estimator.setListener(this);
 
-        //check
+        // check
         assertSame(estimator.getListener(), this);
     }
 
@@ -417,17 +392,17 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
     public void testGetSetSources() throws LockedException {
         final LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D();
 
-        //check default values
+        // check default values
         assertNull(estimator.getSources());
 
-        //set new value
+        // set new value
         final List<RadioSourceLocated<Point2D>> sources = new ArrayList<>();
         estimator.setSources(sources);
 
-        //check
+        // check
         assertSame(estimator.getSources(), sources);
 
-        //force IllegalArgumentException
+        // force IllegalArgumentException
         try {
             estimator.setSources(null);
             fail("IllegalArgumentException expected but not thrown");
@@ -440,13 +415,13 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             throws LockedException {
         final LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D();
 
-        //check default value
+        // check default value
         assertTrue(estimator.getUseSourcesPathLossExponentWhenAvailable());
 
-        //set new value
+        // set new value
         estimator.setUseSourcesPathLossExponentWhenAvailable(false);
 
-        //check
+        // check
         assertFalse(estimator.getUseSourcesPathLossExponentWhenAvailable());
     }
 
@@ -455,13 +430,13 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             throws LockedException {
         final LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D();
 
-        //check default value
+        // check default value
         assertTrue(estimator.getUseNoMeanNearestFingerprintFinder());
 
-        //set new value
+        // set new value
         estimator.setUseNoMeanNearestFingerprintFinder(false);
 
-        //check
+        // check
         assertFalse(estimator.getUseNoMeanNearestFingerprintFinder());
     }
 
@@ -470,13 +445,13 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             throws LockedException {
         final LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D();
 
-        //check default value
+        // check default value
         assertFalse(estimator.isMeansFromFingerprintReadingsRemoved());
 
-        //set new value
+        // set new value
         estimator.setMeansFromFingerprintReadingsRemoved(true);
 
-        //check
+        // check
         assertTrue(estimator.isMeansFromFingerprintReadingsRemoved());
     }
 
@@ -501,7 +476,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
-            //build sources
+            // build sources
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
             final List<RadioSourceLocated<Point2D>> sources = new ArrayList<>();
             for (int i = 0; i < numSources; i++) {
@@ -516,7 +491,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                 sources.add(accessPoint);
             }
 
-            //build located fingerprints
+            // build located fingerprints
             final int numFingerprints = randomizer.nextInt(MIN_FINGERPRINTS, MAX_FINGERPRINTS);
             final List<RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>>> locatedFingerprints =
                     new ArrayList<>();
@@ -587,11 +562,11 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
 
             // find closest fingerprint based on RSSI without mean
-            final RadioSourceNoMeanKNearestFinder<Point2D, RadioSource> noMeanfinder =
+            final RadioSourceNoMeanKNearestFinder<Point2D, RadioSource> noMeanFinder =
                     new RadioSourceNoMeanKNearestFinder<>(locatedFingerprints);
 
             final RssiFingerprintLocated<RadioSource, RssiReading<RadioSource>, Point2D> nearestFingerprintNoMean =
-                    noMeanfinder.findNearestTo(fingerprint);
+                    noMeanFinder.findNearestTo(fingerprint);
             final Point2D noMeanRssiClosestPosition = nearestFingerprintNoMean.getPosition();
 
             final double noMeanRssiClosestDistance = noMeanRssiClosestPosition.distanceTo(position);
@@ -610,7 +585,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             avgRssiDistance += rssiClosestDistance / TIMES;
 
 
-            //create estimator with means removed on finder and fingerprints
+            // create estimator with means removed on finder and fingerprints
             LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D(
                     locatedFingerprints, fingerprint, sources, this);
             estimator.setUseNoMeanNearestFingerprintFinder(true);
@@ -618,7 +593,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             reset();
 
-            //check is ready
+            // check is ready
             assertFalse(estimator.isLocked());
             assertTrue(estimator.isReady());
             assertNull(estimator.getEstimatedPosition());
@@ -626,10 +601,10 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertEquals(estimateStart, 0);
             assertEquals(estimateEnd, 0);
 
-            //estimate
+            // estimate
             estimator.estimate();
 
-            //check correctness
+            // check correctness
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimator.isReady());
@@ -645,8 +620,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(estimator.getNearestFingerprints().size(), 1);
 
-
-            //create estimator with means removed only on finder
+            // create estimator with means removed only on finder
             estimator = new LinearFingerprintPositionEstimator2D(
                     locatedFingerprints, fingerprint, sources, this);
             estimator.setUseNoMeanNearestFingerprintFinder(true);
@@ -654,17 +628,17 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             reset();
 
-            //check is ready
+            // check is ready
             assertFalse(estimator.isLocked());
             assertTrue(estimator.isReady());
             assertNull(estimator.getEstimatedPosition());
             assertEquals(estimateStart, 0);
             assertEquals(estimateEnd, 0);
 
-            //estimate
+            // estimate
             estimator.estimate();
 
-            //check correctness
+            // check correctness
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimator.isReady());
@@ -680,8 +654,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(estimator.getNearestFingerprints().size(), 1);
 
-
-            //create estimator with means removed only on readings
+            // create estimator with means removed only on readings
             estimator = new LinearFingerprintPositionEstimator2D(
                     locatedFingerprints, fingerprint, sources, this);
             estimator.setUseNoMeanNearestFingerprintFinder(false);
@@ -689,17 +662,17 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             reset();
 
-            //check is ready
+            // check is ready
             assertFalse(estimator.isLocked());
             assertTrue(estimator.isReady());
             assertNull(estimator.getEstimatedPosition());
             assertEquals(estimateStart, 0);
             assertEquals(estimateEnd, 0);
 
-            //estimate
+            // estimate
             estimator.estimate();
 
-            //check correctness
+            // check correctness
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimator.isReady());
@@ -715,8 +688,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(estimator.getNearestFingerprints().size(), 1);
 
-
-            //create estimator with means not removed
+            // create estimator with means not removed
             estimator = new LinearFingerprintPositionEstimator2D(
                     locatedFingerprints, fingerprint, sources, this);
             estimator.setUseNoMeanNearestFingerprintFinder(false);
@@ -724,17 +696,17 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             reset();
 
-            //check is ready
+            // check is ready
             assertFalse(estimator.isLocked());
             assertTrue(estimator.isReady());
             assertNull(estimator.getEstimatedPosition());
             assertEquals(estimateStart, 0);
             assertEquals(estimateEnd, 0);
 
-            //estimate
+            // estimate
             estimator.estimate();
 
-            //check correctness
+            // check correctness
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimator.isReady());
@@ -760,7 +732,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                     estimatedError
             };
 
-            //find minimum error
+            // find minimum error
             double minError = Double.MAX_VALUE;
             int bestErrorPos = -1;
             for (int i = 0; i < errors.length; i++) {
@@ -808,7 +780,6 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
         LOGGER.log(Level.INFO, "Percentage best estimated: {0}%",
                 (double) numBestIsEstimatedPosition / (double) TIMES * 100.0);
 
-
         LOGGER.log(Level.INFO, "Avg. closest fingerprint distance: {0} m",
                 avgClosestDistance);
         LOGGER.log(Level.INFO,
@@ -839,8 +810,8 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                 numBestIsEstimatedPosition
         };
 
-        //check that best result is obtained when means are removed to find
-        //closest fingerprints, but not removed for readings
+        // check that best result is obtained when means are removed to find
+        // closest fingerprints, but not removed for readings
         int bestNum = -Integer.MAX_VALUE;
         int bestPos = -1;
         for (int i = 0; i < numBest.length; i++) {
@@ -875,7 +846,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
-            //build sources
+            // build sources
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
             final List<RadioSourceLocated<Point2D>> sources = new ArrayList<>();
             for (int i = 0; i < numSources; i++) {
@@ -960,18 +931,16 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             final double closestDistance = closestPosition.distanceTo(position);
             avgClosestDistance += closestDistance / TIMES;
 
-
             // find closest fingerprint based on RSSI without mean
-            final RadioSourceNoMeanKNearestFinder<Point2D, RadioSource> noMeanfinder =
+            final RadioSourceNoMeanKNearestFinder<Point2D, RadioSource> noMeanFinder =
                     new RadioSourceNoMeanKNearestFinder<>(locatedFingerprints);
 
             final RssiFingerprintLocated<RadioSource, RssiReading<RadioSource>, Point2D> nearestFingerprintNoMean =
-                    noMeanfinder.findNearestTo(fingerprint);
+                    noMeanFinder.findNearestTo(fingerprint);
             final Point2D noMeanRssiClosestPosition = nearestFingerprintNoMean.getPosition();
 
             final double noMeanRssiClosestDistance = noMeanRssiClosestPosition.distanceTo(position);
             avgNoMeanRssiDistance += noMeanRssiClosestDistance / TIMES;
-
 
             // find closest fingerprint based on RSSI
             final RadioSourceKNearestFinder<Point2D, RadioSource> finder =
@@ -984,7 +953,6 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             final double rssiClosestDistance = rssiClosestPosition.distanceTo(position);
             avgRssiDistance += rssiClosestDistance / TIMES;
 
-
             // create estimator with means removed on finder and fingerprints
             LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D(
                     locatedFingerprints, fingerprint, sources, this);
@@ -993,7 +961,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             reset();
 
-            //check is ready
+            // check is ready
             assertFalse(estimator.isLocked());
             assertTrue(estimator.isReady());
             assertNull(estimator.getEstimatedPosition());
@@ -1001,10 +969,10 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertEquals(estimateStart, 0);
             assertEquals(estimateEnd, 0);
 
-            //estimate
+            // estimate
             estimator.estimate();
 
-            //check correctness
+            // check correctness
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimator.isReady());
@@ -1020,8 +988,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(estimator.getNearestFingerprints().size(), 1);
 
-
-            //create estimator with means removed only on finder
+            // create estimator with means removed only on finder
             estimator = new LinearFingerprintPositionEstimator2D(
                     locatedFingerprints, fingerprint, sources, this);
             estimator.setUseNoMeanNearestFingerprintFinder(true);
@@ -1029,17 +996,17 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             reset();
 
-            //check is ready
+            // check is ready
             assertFalse(estimator.isLocked());
             assertTrue(estimator.isReady());
             assertNull(estimator.getEstimatedPosition());
             assertEquals(estimateStart, 0);
             assertEquals(estimateEnd, 0);
 
-            //estimate
+            // estimate
             estimator.estimate();
 
-            //check correctness
+            // check correctness
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimator.isReady());
@@ -1055,8 +1022,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(estimator.getNearestFingerprints().size(), 1);
 
-
-            //create estimator with means removed only on readings
+            // create estimator with means removed only on readings
             estimator = new LinearFingerprintPositionEstimator2D(
                     locatedFingerprints, fingerprint, sources, this);
             estimator.setUseNoMeanNearestFingerprintFinder(false);
@@ -1064,17 +1030,17 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             reset();
 
-            //check is ready
+            // check is ready
             assertFalse(estimator.isLocked());
             assertTrue(estimator.isReady());
             assertNull(estimator.getEstimatedPosition());
             assertEquals(estimateStart, 0);
             assertEquals(estimateEnd, 0);
 
-            //estimate
+            // estimate
             estimator.estimate();
 
-            //check correctness
+            // check correctness
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimator.isReady());
@@ -1090,8 +1056,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(estimator.getNearestFingerprints().size(), 1);
 
-
-            //create estimator with means not removed
+            // create estimator with means not removed
             estimator = new LinearFingerprintPositionEstimator2D(
                     locatedFingerprints, fingerprint, sources, this);
             estimator.setUseNoMeanNearestFingerprintFinder(false);
@@ -1099,17 +1064,17 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             reset();
 
-            //check is ready
+            // check is ready
             assertFalse(estimator.isLocked());
             assertTrue(estimator.isReady());
             assertNull(estimator.getEstimatedPosition());
             assertEquals(estimateStart, 0);
             assertEquals(estimateEnd, 0);
 
-            //estimate
+            // estimate
             estimator.estimate();
 
-            //check correctness
+            // check correctness
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimator.isReady());
@@ -1134,7 +1099,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                     estimatedError
             };
 
-            //find minimum error
+            // find minimum error
             double minError = Double.MAX_VALUE;
             int bestErrorPos = -1;
             for (int i = 0; i < errors.length; i++) {
@@ -1164,7 +1129,6 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                     numBestIsEstimatedPosition++;
                     break;
             }
-
         }
 
         LOGGER.log(Level.INFO, "Results with bias");
@@ -1181,7 +1145,6 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                 (double) numBestIsNoMeanReadingsEstimatedPosition / (double) TIMES * 100.0);
         LOGGER.log(Level.INFO, "Percentage best estimated: {0}%",
                 (double) numBestIsEstimatedPosition / (double) TIMES * 100.0);
-
 
         LOGGER.log(Level.INFO, "Avg. closest fingerprint distance: {0} m",
                 avgClosestDistance);
@@ -1213,8 +1176,8 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                 numBestIsEstimatedPosition
         };
 
-        //check that best result is obtained when means are removed from both
-        //fingerprint finder and readings to account for possible biases between devices
+        // check that best result is obtained when means are removed from both
+        // fingerprint finder and readings to account for possible biases between devices
         int bestNum = -Integer.MAX_VALUE;
         int bestPos = -1;
         for (int i = 0; i < numBest.length; i++) {
@@ -1337,18 +1300,16 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             final double closestDistance = closestPosition.distanceTo(position);
             avgClosestDistance += closestDistance / TIMES;
 
-
             // find closest fingerprint based on RSSI without mean
-            final RadioSourceNoMeanKNearestFinder<Point2D, RadioSource> noMeanfinder =
+            final RadioSourceNoMeanKNearestFinder<Point2D, RadioSource> noMeanFinder =
                     new RadioSourceNoMeanKNearestFinder<>(locatedFingerprints);
 
             final RssiFingerprintLocated<RadioSource, RssiReading<RadioSource>, Point2D> nearestFingerprintNoMean =
-                    noMeanfinder.findNearestTo(fingerprint);
+                    noMeanFinder.findNearestTo(fingerprint);
             final Point2D noMeanRssiClosestPosition = nearestFingerprintNoMean.getPosition();
 
             final double noMeanRssiClosestDistance = noMeanRssiClosestPosition.distanceTo(position);
             avgNoMeanRssiDistance += noMeanRssiClosestDistance / TIMES;
-
 
             // find closest fingerprint based on RSSI
             final RadioSourceKNearestFinder<Point2D, RadioSource> finder =
@@ -1360,7 +1321,6 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             final double rssiClosestDistance = rssiClosestPosition.distanceTo(position);
             avgRssiDistance += rssiClosestDistance / TIMES;
-
 
             // create estimator with means removed on finder and fingerprints
             LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D(
@@ -1397,8 +1357,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(estimator.getNearestFingerprints().size(), 1);
 
-
-            //create estimator with means removed only on finder
+            // create estimator with means removed only on finder
             estimator = new LinearFingerprintPositionEstimator2D(
                     locatedFingerprints, fingerprint, sources, this);
             estimator.setUseNoMeanNearestFingerprintFinder(true);
@@ -1406,17 +1365,17 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             reset();
 
-            //check is ready
+            // check is ready
             assertFalse(estimator.isLocked());
             assertTrue(estimator.isReady());
             assertNull(estimator.getEstimatedPosition());
             assertEquals(estimateStart, 0);
             assertEquals(estimateEnd, 0);
 
-            //estimate
+            // estimate
             estimator.estimate();
 
-            //check correctness
+            // check correctness
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimator.isReady());
@@ -1432,8 +1391,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(estimator.getNearestFingerprints().size(), 1);
 
-
-            //create estimator with means removed only on readings
+            // create estimator with means removed only on readings
             estimator = new LinearFingerprintPositionEstimator2D(
                     locatedFingerprints, fingerprint, sources, this);
             estimator.setUseNoMeanNearestFingerprintFinder(false);
@@ -1441,17 +1399,17 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             reset();
 
-            //check is ready
+            // check is ready
             assertFalse(estimator.isLocked());
             assertTrue(estimator.isReady());
             assertNull(estimator.getEstimatedPosition());
             assertEquals(estimateStart, 0);
             assertEquals(estimateEnd, 0);
 
-            //estimate
+            // estimate
             estimator.estimate();
 
-            //check correctness
+            // check correctness
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimator.isReady());
@@ -1467,8 +1425,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(estimator.getNearestFingerprints().size(), 1);
 
-
-            //create estimator with means not removed
+            // create estimator with means not removed
             estimator = new LinearFingerprintPositionEstimator2D(
                     locatedFingerprints, fingerprint, sources, this);
             estimator.setUseNoMeanNearestFingerprintFinder(false);
@@ -1476,17 +1433,17 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             reset();
 
-            //check is ready
+            // check is ready
             assertFalse(estimator.isLocked());
             assertTrue(estimator.isReady());
             assertNull(estimator.getEstimatedPosition());
             assertEquals(estimateStart, 0);
             assertEquals(estimateEnd, 0);
 
-            //estimate
+            // estimate
             estimator.estimate();
 
-            //check correctness
+            // check correctness
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimator.isReady());
@@ -1512,7 +1469,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                     estimatedError
             };
 
-            //find minimum error
+            // find minimum error
             double minError = Double.MAX_VALUE;
             int bestErrorPos = -1;
             for (int i = 0; i < errors.length; i++) {
@@ -1542,7 +1499,6 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                     numBestIsEstimatedPosition++;
                     break;
             }
-
         }
 
         LOGGER.log(Level.INFO, "Results with error bias");
@@ -1559,7 +1515,6 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                 (double) numBestIsNoMeanReadingsEstimatedPosition / (double) TIMES * 100.0);
         LOGGER.log(Level.INFO, "Percentage best estimated: {0}%",
                 (double) numBestIsEstimatedPosition / (double) TIMES * 100.0);
-
 
         LOGGER.log(Level.INFO, "Avg. closest fingerprint distance: {0} m",
                 avgClosestDistance);
@@ -1591,8 +1546,8 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                 numBestIsEstimatedPosition
         };
 
-        //check that best result is obtained when means are removed from both
-        //fingerprint finder and readings to account for possible biases between devices
+        // check that best result is obtained when means are removed from both
+        // fingerprint finder and readings to account for possible biases between devices
         int bestNum = -Integer.MAX_VALUE;
         int bestPos = -1;
         for (int i = 0; i < numBest.length; i++) {
@@ -1715,18 +1670,16 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             final double closestDistance = closestPosition.distanceTo(position);
             avgClosestDistance += closestDistance / TIMES;
 
-
             // find closest fingerprint based on RSSI without mean
-            final RadioSourceNoMeanKNearestFinder<Point2D, RadioSource> noMeanfinder =
+            final RadioSourceNoMeanKNearestFinder<Point2D, RadioSource> noMeanFinder =
                     new RadioSourceNoMeanKNearestFinder<>(locatedFingerprints);
 
             final RssiFingerprintLocated<RadioSource, RssiReading<RadioSource>, Point2D> nearestFingerprintNoMean =
-                    noMeanfinder.findNearestTo(fingerprint);
+                    noMeanFinder.findNearestTo(fingerprint);
             final Point2D noMeanRssiClosestPosition = nearestFingerprintNoMean.getPosition();
 
             final double noMeanRssiClosestDistance = noMeanRssiClosestPosition.distanceTo(position);
             avgNoMeanRssiDistance += noMeanRssiClosestDistance / TIMES;
-
 
             // find closest fingerprint based on RSSI
             final RadioSourceKNearestFinder<Point2D, RadioSource> finder =
@@ -1739,7 +1692,6 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             final double rssiClosestDistance = rssiClosestPosition.distanceTo(position);
             avgRssiDistance += rssiClosestDistance / TIMES;
 
-
             // create estimator with means removed on finder and fingerprints
             LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D(
                     locatedFingerprints, fingerprint, sources, this);
@@ -1748,7 +1700,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             reset();
 
-            //check is ready
+            // check is ready
             assertFalse(estimator.isLocked());
             assertTrue(estimator.isReady());
             assertNull(estimator.getEstimatedPosition());
@@ -1756,10 +1708,10 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertEquals(estimateStart, 0);
             assertEquals(estimateEnd, 0);
 
-            //estimate
+            // estimate
             estimator.estimate();
 
-            //check correctness
+            // check correctness
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimator.isReady());
@@ -1775,8 +1727,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(estimator.getNearestFingerprints().size(), 1);
 
-
-            //create estimator with means removed only on finder
+            // create estimator with means removed only on finder
             estimator = new LinearFingerprintPositionEstimator2D(
                     locatedFingerprints, fingerprint, sources, this);
             estimator.setUseNoMeanNearestFingerprintFinder(true);
@@ -1784,17 +1735,17 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             reset();
 
-            //check is ready
+            // check is ready
             assertFalse(estimator.isLocked());
             assertTrue(estimator.isReady());
             assertNull(estimator.getEstimatedPosition());
             assertEquals(estimateStart, 0);
             assertEquals(estimateEnd, 0);
 
-            //estimate
+            // estimate
             estimator.estimate();
 
-            //check correctness
+            // check correctness
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimator.isReady());
@@ -1810,8 +1761,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(estimator.getNearestFingerprints().size(), 1);
 
-
-            //create estimator with means removed only on readings
+            // create estimator with means removed only on readings
             estimator = new LinearFingerprintPositionEstimator2D(
                     locatedFingerprints, fingerprint, sources, this);
             estimator.setUseNoMeanNearestFingerprintFinder(false);
@@ -1819,17 +1769,17 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             reset();
 
-            //check is ready
+            // check is ready
             assertFalse(estimator.isLocked());
             assertTrue(estimator.isReady());
             assertNull(estimator.getEstimatedPosition());
             assertEquals(estimateStart, 0);
             assertEquals(estimateEnd, 0);
 
-            //estimate
+            // estimate
             estimator.estimate();
 
-            //check correctness
+            // check correctness
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimator.isReady());
@@ -1845,8 +1795,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(estimator.getNearestFingerprints().size(), 1);
 
-
-            //create estimator with means not removed
+            // create estimator with means not removed
             estimator = new LinearFingerprintPositionEstimator2D(
                     locatedFingerprints, fingerprint, sources, this);
             estimator.setUseNoMeanNearestFingerprintFinder(false);
@@ -1854,17 +1803,17 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             reset();
 
-            //check is ready
+            // check is ready
             assertFalse(estimator.isLocked());
             assertTrue(estimator.isReady());
             assertNull(estimator.getEstimatedPosition());
             assertEquals(estimateStart, 0);
             assertEquals(estimateEnd, 0);
 
-            //estimate
+            // estimate
             estimator.estimate();
 
-            //check correctness
+            // check correctness
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimator.isReady());
@@ -1890,7 +1839,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                     estimatedError
             };
 
-            //find minimum error
+            // find minimum error
             double minError = Double.MAX_VALUE;
             int bestErrorPos = -1;
             for (int i = 0; i < errors.length; i++) {
@@ -1920,7 +1869,6 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                     numBestIsEstimatedPosition++;
                     break;
             }
-
         }
 
         LOGGER.log(Level.INFO, "Results with error and bias");
@@ -1937,7 +1885,6 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                 (double) numBestIsNoMeanReadingsEstimatedPosition / (double) TIMES * 100.0);
         LOGGER.log(Level.INFO, "Percentage best estimated: {0}%",
                 (double) numBestIsEstimatedPosition / (double) TIMES * 100.0);
-
 
         LOGGER.log(Level.INFO, "Avg. closest fingerprint distance: {0} m",
                 avgClosestDistance);
@@ -1969,8 +1916,8 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                 numBestIsEstimatedPosition
         };
 
-        //check that best result is obtained when means are removed from both
-        //fingerprint finder and readings to account for possible biases between devices
+        // check that best result is obtained when means are removed from both
+        // fingerprint finder and readings to account for possible biases between devices
         int bestNum = -Integer.MAX_VALUE;
         int bestPos = -1;
         for (int i = 0; i < numBest.length; i++) {
@@ -2096,18 +2043,16 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             final double closestDistance = closestPosition.distanceTo(position);
             avgClosestDistance += closestDistance / TIMES;
 
-
             // find closest fingerprint based on RSSI without mean
-            final RadioSourceNoMeanKNearestFinder<Point2D, RadioSource> noMeanfinder =
+            final RadioSourceNoMeanKNearestFinder<Point2D, RadioSource> noMeanFinder =
                     new RadioSourceNoMeanKNearestFinder<>(locatedFingerprints);
 
             final RssiFingerprintLocated<RadioSource, RssiReading<RadioSource>, Point2D> nearestFingerprintNoMean =
-                    noMeanfinder.findNearestTo(fingerprint);
+                    noMeanFinder.findNearestTo(fingerprint);
             final Point2D noMeanRssiClosestPosition = nearestFingerprintNoMean.getPosition();
 
             final double noMeanRssiClosestDistance = noMeanRssiClosestPosition.distanceTo(position);
             avgNoMeanRssiDistance += noMeanRssiClosestDistance / TIMES;
-
 
             // find closest fingerprint based on RSSI
             final RadioSourceKNearestFinder<Point2D, RadioSource> finder =
@@ -2120,7 +2065,6 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             final double rssiClosestDistance = rssiClosestPosition.distanceTo(position);
             avgRssiDistance += rssiClosestDistance / TIMES;
 
-
             // create estimator with means removed on finder and fingerprints
             LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D(
                     locatedFingerprints, fingerprint, sources, this);
@@ -2131,7 +2075,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             reset();
 
-            //check is ready
+            // check is ready
             assertFalse(estimator.isLocked());
             assertTrue(estimator.isReady());
             assertNull(estimator.getEstimatedPosition());
@@ -2139,10 +2083,10 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertEquals(estimateStart, 0);
             assertEquals(estimateEnd, 0);
 
-            //estimate
+            // estimate
             estimator.estimate();
 
-            //check correctness
+            // check correctness
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimator.isReady());
@@ -2158,8 +2102,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(estimator.getNearestFingerprints().size(), 1);
 
-
-            //create estimator with means removed only on finder
+            // create estimator with means removed only on finder
             estimator = new LinearFingerprintPositionEstimator2D(
                     locatedFingerprints, fingerprint, sources, this);
             estimator.setUseNoMeanNearestFingerprintFinder(true);
@@ -2169,17 +2112,17 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             reset();
 
-            //check is ready
+            // check is ready
             assertFalse(estimator.isLocked());
             assertTrue(estimator.isReady());
             assertNull(estimator.getEstimatedPosition());
             assertEquals(estimateStart, 0);
             assertEquals(estimateEnd, 0);
 
-            //estimate
+            // estimate
             estimator.estimate();
 
-            //check correctness
+            // check correctness
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimator.isReady());
@@ -2195,8 +2138,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(estimator.getNearestFingerprints().size(), 1);
 
-
-            //create estimator with means removed only on readings
+            // create estimator with means removed only on readings
             estimator = new LinearFingerprintPositionEstimator2D(
                     locatedFingerprints, fingerprint, sources, this);
             estimator.setUseNoMeanNearestFingerprintFinder(false);
@@ -2206,17 +2148,17 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             reset();
 
-            //check is ready
+            // check is ready
             assertFalse(estimator.isLocked());
             assertTrue(estimator.isReady());
             assertNull(estimator.getEstimatedPosition());
             assertEquals(estimateStart, 0);
             assertEquals(estimateEnd, 0);
 
-            //estimate
+            // estimate
             estimator.estimate();
 
-            //check correctness
+            // check correctness
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimator.isReady());
@@ -2232,8 +2174,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(estimator.getNearestFingerprints().size(), 1);
 
-
-            //create estimator with means not removed
+            // create estimator with means not removed
             estimator = new LinearFingerprintPositionEstimator2D(
                     locatedFingerprints, fingerprint, sources, this);
             estimator.setUseNoMeanNearestFingerprintFinder(false);
@@ -2243,17 +2184,17 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             reset();
 
-            //check is ready
+            // check is ready
             assertFalse(estimator.isLocked());
             assertTrue(estimator.isReady());
             assertNull(estimator.getEstimatedPosition());
             assertEquals(estimateStart, 0);
             assertEquals(estimateEnd, 0);
 
-            //estimate
+            // estimate
             estimator.estimate();
 
-            //check correctness
+            // check correctness
             assertEquals(estimateStart, 1);
             assertEquals(estimateEnd, 1);
             assertTrue(estimator.isReady());
@@ -2279,7 +2220,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                     estimatedError
             };
 
-            //find minimum error
+            // find minimum error
             double minError = Double.MAX_VALUE;
             int bestErrorPos = -1;
             for (int i = 0; i < errors.length; i++) {
@@ -2327,7 +2268,6 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
         LOGGER.log(Level.INFO, "Percentage best estimated: {0}%",
                 (double) numBestIsEstimatedPosition / (double) TIMES * 100.0);
 
-
         LOGGER.log(Level.INFO, "Avg. closest fingerprint distance: {0} m",
                 avgClosestDistance);
         LOGGER.log(Level.INFO,
@@ -2358,8 +2298,8 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                 numBestIsEstimatedPosition
         };
 
-        //check that best result is obtained when means are removed to find
-        //closest fingerprints, but not removed for readings
+        // check that best result is obtained when means are removed to find
+        // closest fingerprints, but not removed for readings
         int bestNum = -Integer.MAX_VALUE;
         int bestPos = -1;
         for (int i = 0; i < numBest.length; i++) {
@@ -2478,18 +2418,16 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             final double closestDistance = closestPosition.distanceTo(position);
             avgClosestDistance += closestDistance / TIMES;
 
-
             // find closest fingerprint based on RSSI without mean
-            final RadioSourceNoMeanKNearestFinder<Point2D, RadioSource> noMeanfinder =
+            final RadioSourceNoMeanKNearestFinder<Point2D, RadioSource> noMeanFinder =
                     new RadioSourceNoMeanKNearestFinder<>(locatedFingerprints);
 
             final RssiFingerprintLocated<RadioSource, RssiReading<RadioSource>, Point2D> nearestFingerprintNoMean =
-                    noMeanfinder.findNearestTo(fingerprint);
+                    noMeanFinder.findNearestTo(fingerprint);
             final Point2D noMeanRssiClosestPosition = nearestFingerprintNoMean.getPosition();
 
             final double noMeanRssiClosestDistance = noMeanRssiClosestPosition.distanceTo(position);
             avgNoMeanRssiDistance += noMeanRssiClosestDistance / TIMES;
-
 
             // find closest fingerprint based on RSSI
             final RadioSourceKNearestFinder<Point2D, RadioSource> finder =
@@ -2501,7 +2439,6 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             final double rssiClosestDistance = rssiClosestPosition.distanceTo(position);
             avgRssiDistance += rssiClosestDistance / TIMES;
-
 
             // create estimator with means removed on finder and fingerprints
             LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D(
@@ -2538,7 +2475,6 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(estimator.getNearestFingerprints().size(), 2);
 
-
             // create estimator with means removed only on finder
             estimator = new LinearFingerprintPositionEstimator2D(
                     locatedFingerprints, fingerprint, sources, this);
@@ -2573,7 +2509,6 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(estimator.getNearestFingerprints().size(), 2);
 
-
             // create estimator with means removed only on readings
             estimator = new LinearFingerprintPositionEstimator2D(
                     locatedFingerprints, fingerprint, sources, this);
@@ -2607,7 +2542,6 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(estimator.getNearestFingerprints().size(), 2);
-
 
             // create estimator with means not removed
             estimator = new LinearFingerprintPositionEstimator2D(
@@ -2653,7 +2587,7 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                     estimatedError
             };
 
-            //find minimum error
+            // find minimum error
             double minError = Double.MAX_VALUE;
             int bestErrorPos = -1;
             for (int i = 0; i < errors.length; i++) {
@@ -2683,7 +2617,6 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                     numBestIsEstimatedPosition++;
                     break;
             }
-
         }
 
         LOGGER.log(Level.INFO, "Results without error and without bias with a single radio source");
@@ -2700,7 +2633,6 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                 (double) numBestIsNoMeanReadingsEstimatedPosition / (double) TIMES * 100.0);
         LOGGER.log(Level.INFO, "Percentage best estimated: {0}%",
                 (double) numBestIsEstimatedPosition / (double) TIMES * 100.0);
-
 
         LOGGER.log(Level.INFO, "Avg. closest fingerprint distance: {0} m",
                 avgClosestDistance);
@@ -2742,10 +2674,10 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
     private double receivedPower(final double equivalentTransmittedPower,
                                  final double distance, final double pathLossExponent) {
-        //Pr = Pt*Gt*Gr*lambda^2/(4*pi*d)^2,    where Pr is the received power
+        // Pr = Pt*Gt*Gr*lambda^2/(4*pi*d)^2,    where Pr is the received power
         // lambda = c/f, where lambda is wavelength,
         // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the received Gain
-        //Pr = Pte*c^2/((4*pi*f)^2 * d^2)
+        // Pr = Pte*c^2/((4*pi*f)^2 * d^2)
         final double k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI * FREQUENCY), pathLossExponent);
         return equivalentTransmittedPower * k /
                 Math.pow(distance, pathLossExponent);

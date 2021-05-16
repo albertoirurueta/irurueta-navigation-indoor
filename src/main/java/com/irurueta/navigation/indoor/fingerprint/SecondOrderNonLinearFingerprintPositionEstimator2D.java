@@ -25,6 +25,7 @@ import com.irurueta.navigation.indoor.RssiFingerprintLocated;
 import com.irurueta.navigation.indoor.RssiReading;
 import com.irurueta.navigation.indoor.Utils;
 import com.irurueta.statistics.MultivariateNormalDist;
+
 import java.util.List;
 
 /**
@@ -38,7 +39,6 @@ import java.util.List;
  * otherwise the average point of selected nearest fingerprints is used as a starting
  * point.
  */
-@SuppressWarnings("WeakerAccess")
 public class SecondOrderNonLinearFingerprintPositionEstimator2D extends
         NonLinearFingerprintPositionEstimator2D {
 
@@ -185,30 +185,30 @@ public class SecondOrderNonLinearFingerprintPositionEstimator2D extends
     protected double evaluate(
             final int i, final double[] point, final double[] params,
             final double[] derivatives) {
-        //This method implements received power at point pi = (xi, yi) and its derivatives
+        // This method implements received power at point pi = (xi, yi) and its derivatives
 
-        //Pr(pi) = Pr(p1)
-        //  - 10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
-        //  - 10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
-        //  - 5*n*((y1 - ya)^2 - (x1 - xa)^2)/(ln(10)*d1a^4)*(xi - x1)^2
-        //  - 5*n*((x1 - xa)^2 - (y1 - ya)^2)/(ln(10)*d1a^4)*(yi - y1)^2
-        //  + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4))*(xi - x1)*(yi - y1)
+        // Pr(pi) = Pr(p1)
+        //   - 10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
+        //   - 10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
+        //   - 5*n*((y1 - ya)^2 - (x1 - xa)^2)/(ln(10)*d1a^4)*(xi - x1)^2
+        //   - 5*n*((x1 - xa)^2 - (y1 - ya)^2)/(ln(10)*d1a^4)*(yi - y1)^2
+        //   + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4))*(xi - x1)*(yi - y1)
 
         final double xi = params[0];
         final double yi = params[1];
 
-        //received power
+        // received power
         final double pr = point[0];
 
-        //fingerprint coordinates
+        // fingerprint coordinates
         final double x1 = point[1];
         final double y1 = point[2];
 
-        //radio source coordinates
+        // radio source coordinates
         final double xa = point[3];
         final double ya = point[4];
 
-        //path loss exponent
+        // path loss exponent
         final double n = point[5];
 
         final double ln10 = Math.log(10.0);
@@ -241,16 +241,16 @@ public class SecondOrderNonLinearFingerprintPositionEstimator2D extends
                 + value4 * diffYi12
                 + value5 * diffXi1 * diffYi1;
 
-        //derivative respect xi
-        //diff(Pr(pi))/diff(xi) = - 10*n*(x1 - xa)/(ln(10)*d1a^2)
-        //- 10*n*((y1 - ya)^2 - (x1 - xa)^2)/(ln(10)*d1a^4)*(xi - x1)
-        //+ 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4)*(yi - y1)
+        // derivative respect xi
+        // diff(Pr(pi))/diff(xi) = - 10*n*(x1 - xa)/(ln(10)*d1a^2)
+        // - 10*n*((y1 - ya)^2 - (x1 - xa)^2)/(ln(10)*d1a^4)*(xi - x1)
+        // + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4)*(yi - y1)
         derivatives[0] = value1 + 2.0 * value3 * diffXi1 + value5 * diffYi1;
 
-        //derivative respect yi
-        //diff(Pr(pi))/diff(yi) = - 10*n*(y1 - ya)/(ln(10)*d1a^2)
-        //- 10*n*((x1 - xa)^2 - (y1 - ya)^2)/(ln(10)*d1a^4)*(yi - y1)
-        //+ 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4)*(xi - x1)
+        // derivative respect yi
+        // diff(Pr(pi))/diff(yi) = - 10*n*(y1 - ya)/(ln(10)*d1a^2)
+        // - 10*n*((x1 - xa)^2 - (y1 - ya)^2)/(ln(10)*d1a^4)*(yi - y1)
+        // + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4)*(xi - x1)
         derivatives[1] = value2 + 2.0 * value4 * diffYi1 + value5 * diffXi1;
 
         return result;

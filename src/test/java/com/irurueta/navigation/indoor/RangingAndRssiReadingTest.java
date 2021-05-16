@@ -15,10 +15,6 @@
  */
 package com.irurueta.navigation.indoor;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -26,25 +22,6 @@ import static org.junit.Assert.*;
 public class RangingAndRssiReadingTest {
 
     private static final double FREQUENCY = 2.4e9;
-
-    public RangingAndRssiReadingTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
 
     @Test
     public void testConstructor() {
@@ -62,7 +39,6 @@ public class RangingAndRssiReadingTest {
                 RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS);
         assertEquals(reading.getNumSuccessfulMeasurements(),
                 RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS);
-
 
         // test constructor with access point, distance and RSSI
         final WifiAccessPoint ap = new WifiAccessPoint("bssid", FREQUENCY);
@@ -94,7 +70,6 @@ public class RangingAndRssiReadingTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(reading);
-
 
         // test constructor with access point, distance, RSSI and number of measurements.
         reading = new RangingAndRssiReading<>(ap, 1.2, -50.0,
@@ -137,7 +112,6 @@ public class RangingAndRssiReadingTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(reading);
-
 
         // test constructor with access point, distance, RSSI and standard deviations
         reading = new RangingAndRssiReading<>(ap, 1.5, -50.0,
@@ -182,7 +156,6 @@ public class RangingAndRssiReadingTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(reading);
-
 
         // test constructor with access point, distance, RSS, standard deviations and
         // number of measurements

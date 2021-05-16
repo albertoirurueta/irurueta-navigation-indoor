@@ -30,6 +30,7 @@ import com.irurueta.navigation.indoor.WifiAccessPointLocated2D;
 import com.irurueta.navigation.lateration.HomogeneousLinearLeastSquaresLateration2DSolver;
 import com.irurueta.navigation.lateration.InhomogeneousLinearLeastSquaresLateration2DSolver;
 import com.irurueta.navigation.lateration.NonLinearLeastSquaresLateration2DSolver;
+
 import java.util.List;
 
 /**
@@ -41,7 +42,7 @@ import java.util.List;
  *
  * @param <S> a {@link RadioSource} type.
  */
-@SuppressWarnings({"WeakerAccess", "Duplicates"})
+@SuppressWarnings("DuplicatedCode")
 public class RangingRadioSourceEstimator2D<S extends RadioSource> extends
         RangingRadioSourceEstimator<S, Point2D> {
 
@@ -253,7 +254,7 @@ public class RangingRadioSourceEstimator2D<S extends RadioSource> extends
         if (mAccuracy == null && mUseReadingPositionCovariances) {
             mAccuracy = new Accuracy2D();
 
-            //to work with standard deviations, we need a unitary factor
+            // to work with standard deviations, we need a unitary factor
             mAccuracy.setStandardDeviationFactor(1.0);
         }
     }

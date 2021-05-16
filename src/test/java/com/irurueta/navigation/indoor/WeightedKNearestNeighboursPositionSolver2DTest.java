@@ -22,10 +22,6 @@ import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -66,33 +62,14 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
     private static final int TIMES = 100;
     private static final int SHORT_TIMES = 25;
 
-    private static final double FREQUENCY = 2.4e9; //(Hz)
+    private static final double FREQUENCY = 2.4e9; // (Hz)
 
-    private static final double SPEED_OF_LIGHT = 3e8; //(m/s)
+    private static final double SPEED_OF_LIGHT = 3e8; // (m/s)
 
     private static final int MAX_K = 10;
 
     private int solveStart;
     private int solveEnd;
-
-    public WeightedKNearestNeighboursPositionSolver2DTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
 
     @Test
     public void testConstructor() {
@@ -111,7 +88,6 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
         assertEquals(solver.getEpsilon(),
                 WeightedKNearestNeighboursPositionSolver.DEFAULT_EPSILON, 0.0);
         assertNull(solver.getEstimatedPositionCoordinates());
-
 
         // test constructor with fingerprints and distances
         // noinspection unchecked
@@ -161,7 +137,6 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
         }
         assertNull(solver);
 
-
         // test constructor with listener
         solver = new WeightedKNearestNeighboursPositionSolver2D(this);
 
@@ -176,7 +151,6 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
         assertEquals(solver.getEpsilon(),
                 WeightedKNearestNeighboursPositionSolver.DEFAULT_EPSILON, 0.0);
         assertNull(solver.getEstimatedPositionCoordinates());
-
 
         // test constructor with fingerprints, distances and listener
         solver = new WeightedKNearestNeighboursPositionSolver2D(
@@ -249,7 +223,7 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
         assertNull(solver.getDistances());
 
         // set new values
-        // noinspection unchecked
+        //noinspection unchecked
         final RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>[] fingerprints =
                 new RssiFingerprintLocated[1];
         final double[] distances = new double[1];
@@ -271,7 +245,7 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            // noinspection unchecked
+            //noinspection unchecked
             solver.setFingerprintsAndDistances(
                     new RssiFingerprintLocated[0], new double[0]);
             fail("IllegalArgumentException expected but not thrown");
@@ -371,13 +345,13 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
 
             // find nearest fingerprint
             int k = 1;
-            final List<RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>> nearestFingerprintsList =
-                    new ArrayList<>();
+            final List<RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>>
+                    nearestFingerprintsList = new ArrayList<>();
             final List<Double> nearestDistancesList = new ArrayList<>();
             finder.findKNearestTo(fingerprint, k,
                     nearestFingerprintsList, nearestDistancesList);
 
-            // noinspection all
+            //noinspection unchecked
             final RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>[] nearestFingerprints =
                     new RssiFingerprintLocated[k];
             final double[] nearestDistances = new double[k];
@@ -559,13 +533,13 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
                     new RssiFingerprint<>(readings);
 
             // find nearest fingerprints
-            final List<RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>> nearestFingerprintsList =
-                    new ArrayList<>();
+            final List<RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>>
+                    nearestFingerprintsList = new ArrayList<>();
             final List<Double> nearestDistancesList = new ArrayList<>();
             finder.findKNearestTo(fingerprint, k,
                     nearestFingerprintsList, nearestDistancesList);
 
-            // noinspection all
+            //noinspection unchecked
             final RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>[] nearestFingerprints =
                     new RssiFingerprintLocated[k];
             final double[] nearestDistances = new double[k];
@@ -686,15 +660,15 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
             double bestDistance = Double.MAX_VALUE;
             int maxK = Math.min(numFingerprints, MAX_K);
             for (int k = 1; k < maxK; k++) {
-                final List<RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>> nearestFingerprintsList =
-                        new ArrayList<>();
+                final List<RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>>
+                        nearestFingerprintsList = new ArrayList<>();
                 final List<Double> nearestDistancesList = new ArrayList<>();
                 finder.findKNearestTo(fingerprint, k,
                         nearestFingerprintsList, nearestDistancesList);
 
                 //noinspection unchecked
-                final RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>[] nearestFingerprints =
-                        new RssiFingerprintLocated[k];
+                final RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>[]
+                        nearestFingerprints = new RssiFingerprintLocated[k];
                 final double[] nearestDistances = new double[k];
                 for (int i = 0; i < k; i++) {
                     nearestFingerprints[i] = nearestFingerprintsList.get(i);
@@ -726,7 +700,8 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
                 new Object[]{avgBestK, avgBestDistance});
     }
 
-    private void solveKFingerprintsUniformFingerprints(int k, double errorStd) throws NotReadyException, LockedException {
+    private void solveKFingerprintsUniformFingerprints(int k, double errorStd) throws NotReadyException,
+            LockedException {
         GaussianRandomizer errorRandomizer = null;
         if (errorStd > 0.0) {
             errorRandomizer = new GaussianRandomizer(new Random(), 0.0, errorStd);
@@ -797,13 +772,13 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
                     new RssiFingerprint<>(readings);
 
             // find nearest fingerprints
-            final List<RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>> nearestFingerprintsList =
-                    new ArrayList<>();
+            final List<RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>>
+                    nearestFingerprintsList = new ArrayList<>();
             final List<Double> nearestDistancesList = new ArrayList<>();
             finder.findKNearestTo(fingerprint, k,
                     nearestFingerprintsList, nearestDistancesList);
 
-            // noinspection unchecked
+            //noinspection unchecked
             final RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>[] nearestFingerprints =
                     new RssiFingerprintLocated[k];
             final double[] nearestDistances = new double[k];
@@ -850,7 +825,8 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
             avgDistance /= SHORT_TIMES;
             LOGGER.log(Level.INFO, "{0} of {1} estimated positions have improved with {2} neighbours",
                     new Object[]{numValid, SHORT_TIMES, k});
-            LOGGER.log(Level.INFO, "Average error distance: {0} meters, Average improved error distance: {1} meters",
+            LOGGER.log(Level.INFO,
+                    "Average error distance: {0} meters, Average improved error distance: {1} meters",
                     new Object[]{avgDistance, avgImprovedDistance});
         }
     }
@@ -924,15 +900,15 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
             int numFingerprints = fingerprints.size();
             int maxK = Math.min(numFingerprints, MAX_K);
             for (int k = 1; k < maxK; k++) {
-                final List<RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>> nearestFingerprintsList =
-                        new ArrayList<>();
+                final List<RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>>
+                        nearestFingerprintsList = new ArrayList<>();
                 final List<Double> nearestDistancesList = new ArrayList<>();
                 finder.findKNearestTo(fingerprint, k,
                         nearestFingerprintsList, nearestDistancesList);
 
                 // noinspection unchecked
-                final RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>[] nearestFingerprints =
-                        new RssiFingerprintLocated[k];
+                final RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>[]
+                        nearestFingerprints = new RssiFingerprintLocated[k];
                 final double[] nearestDistances = new double[k];
                 for (int i = 0; i < k; i++) {
                     nearestFingerprints[i] = nearestFingerprintsList.get(i);
@@ -995,10 +971,10 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
 
     private double receivedPower(
             final double equivalentTransmittedPower, final double distance, final double frequency) {
-        //Pr = Pt*Gt*Gr*lambda^2/(4*pi*d)^2,    where Pr is the received power
+        // Pr = Pt*Gt*Gr*lambda^2/(4*pi*d)^2,    where Pr is the received power
         // lambda = c/f, where lambda is wavelength,
         // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the received Gain
-        //Pr = Pte*c^2/((4*pi*f)^2 * d^2)
+        // Pr = Pte*c^2/((4*pi*f)^2 * d^2)
         final double k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI * frequency), 2.0);
         return equivalentTransmittedPower * k / (distance * distance);
     }

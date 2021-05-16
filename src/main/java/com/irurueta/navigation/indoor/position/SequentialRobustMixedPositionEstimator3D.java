@@ -21,9 +21,16 @@ import com.irurueta.navigation.indoor.Fingerprint;
 import com.irurueta.navigation.indoor.RadioSource;
 import com.irurueta.navigation.indoor.RadioSourceLocated;
 import com.irurueta.navigation.indoor.Reading;
+
 import java.util.List;
 
-@SuppressWarnings("WeakerAccess")
+/**
+ * Robustly estimates 3D position, using RSSI readings first to obtain an initial coarse
+ * position estimation, and then ranging readings to refine such estimation.
+ * <p>
+ * This implementation is like SequentialRobustRangingAndRssiPositionEstimator but
+ * allows mixing different kinds of readings (ranging, RSSI or ranging+RSSI).
+ */
 public class SequentialRobustMixedPositionEstimator3D extends
         SequentialRobustMixedPositionEstimator<Point3D> {
 
@@ -65,7 +72,7 @@ public class SequentialRobustMixedPositionEstimator3D extends
      * Constructor.
      *
      * @param sources     located radio sources used for lateration.
-     * @param fingerprint fingerprint containing reagins at an unknown location
+     * @param fingerprint fingerprint containing readings at an unknown location
      *                    for provided located radio sources.
      * @throws IllegalArgumentException if either provided sources or fingerprint is
      *                                  null or the number of provided sources is less
@@ -342,7 +349,7 @@ public class SequentialRobustMixedPositionEstimator3D extends
     }
 
     /**
-     * Gets number of dimesnions of provided and estimated points.
+     * Gets number of dimensions of provided and estimated points.
      *
      * @return number of dimensions of provided and estimated points.
      */

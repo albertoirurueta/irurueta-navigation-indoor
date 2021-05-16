@@ -27,6 +27,7 @@ import com.irurueta.navigation.indoor.RangingReadingLocated;
 import com.irurueta.navigation.indoor.WifiAccessPoint;
 import com.irurueta.navigation.indoor.WifiAccessPointLocated3D;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
@@ -37,14 +38,14 @@ import java.util.List;
  *
  * @param <S> a {@link RadioSource} type.
  */
-@SuppressWarnings({"WeakerAccess", "Duplicates"})
+@SuppressWarnings("DuplicatedCode")
 public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource> extends
         RobustRangingRadioSourceEstimator<S, Point3D> {
 
     /**
      * Radio source estimator used internally.
      */
-    protected RangingRadioSourceEstimator3D<S> mInnerEstimator =
+    protected final RangingRadioSourceEstimator3D<S> mInnerEstimator =
             new RangingRadioSourceEstimator3D<>();
 
     /**
@@ -768,21 +769,21 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
     }
 
     /**
-     * Solves preliminar solution for a subset of samples.
+     * Solves preliminary solution for a subset of samples.
      *
      * @param samplesIndices indices of subset samples.
      * @param solutions      instance where solution will be stored.
      */
     @Override
-    protected void solvePreliminarSolutions(
+    protected void solvePreliminarySolutions(
             final int[] samplesIndices,
             final List<Solution<Point3D>> solutions) {
         try {
             int index;
 
             mInnerReadings.clear();
-            for (final int samplesIndice : samplesIndices) {
-                index = samplesIndice;
+            for (final int samplesIndex : samplesIndices) {
+                index = samplesIndex;
                 mInnerReadings.add(mReadings.get(index));
             }
 
@@ -791,13 +792,13 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
 
             mInnerEstimator.setReadings(mInnerReadings);
 
-            // for preliminar solutions, non linear solver is not needed, and if no
+            // for preliminary solutions, non linear solver is not needed, and if no
             // initial position is used, we can obtain faster solutions disabling
             // non-linear solver and using a linear one only (because covariance is not
             // required)
             mInnerEstimator.setNonLinearSolverEnabled(mInitialPosition != null);
 
-            // indicastes whether readings position covariances must be taken into account
+            // indicates whether readings position covariances must be taken into account
             mInnerEstimator.setUseReadingPositionCovariances(mUseReadingPositionCovariances);
 
             mInnerEstimator.estimate();
@@ -831,7 +832,7 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
 
             for (int i = 0; i < nSamples; i++) {
                 if (inliers.get(i)) {
-                    //sample is inlier
+                    // sample is inlier
                     mInnerReadings.add(mReadings.get(i));
                 }
             }
@@ -847,7 +848,7 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
 
                 final Matrix cov = mInnerEstimator.getEstimatedCovariance();
                 if (mKeepCovariance && cov != null) {
-                    //keep covariance
+                    // keep covariance
                     mEstimatedPositionCovariance = mCovariance = cov;
 
                 } else {
@@ -857,8 +858,8 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
 
                 mEstimatedPosition = mInnerEstimator.getEstimatedPosition();
             } catch (final Exception e) {
-                //refinement failed, so we return input value, and covariance
-                //becomes unavailable
+                // refinement failed, so we return input value, and covariance
+                // becomes unavailable
                 mCovariance = null;
                 mEstimatedPositionCovariance = null;
 

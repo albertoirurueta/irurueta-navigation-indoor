@@ -19,10 +19,6 @@ import com.irurueta.algebra.AlgebraException;
 import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.InhomogeneousPoint3D;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -32,25 +28,6 @@ import java.util.Random;
 import static org.junit.Assert.*;
 
 public class BeaconWithPowerAndLocated3DTest {
-
-    public BeaconWithPowerAndLocated3DTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
 
     @Test
     public void testConstructor() throws AlgebraException {
@@ -76,7 +53,6 @@ public class BeaconWithPowerAndLocated3DTest {
         assertNull(b.getPathLossExponentStandardDeviation());
         assertEquals(b.getType(), RadioSourceType.BEACON);
         assertEquals(b.getFrequency(), Beacon.DEFAULT_FREQUENCY, 0.0);
-
 
         // test constructor with identifiers, transmitted power and position
         final List<BeaconIdentifier> identifiers = new ArrayList<>();
@@ -120,7 +96,6 @@ public class BeaconWithPowerAndLocated3DTest {
         }
         assertNull(b);
 
-
         // test constructor with all data and position
         b = new BeaconWithPowerAndLocated3D(identifiers, -50.0,
                 "address", 1, 2,
@@ -146,7 +121,7 @@ public class BeaconWithPowerAndLocated3DTest {
         assertEquals(b.getType(), RadioSourceType.BEACON);
         assertEquals(b.getFrequency(), Beacon.DEFAULT_FREQUENCY, 0.0);
 
-        //force IllegalArgumentException
+        // force IllegalArgumentException
         b = null;
         try {
             b = new BeaconWithPowerAndLocated3D(null,
@@ -165,7 +140,6 @@ public class BeaconWithPowerAndLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with identifiers, transmitted power, transmitted
         // power standard deviation and position
@@ -240,7 +214,6 @@ public class BeaconWithPowerAndLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with all data, transmitted power standard deviation
         // and position
@@ -326,7 +299,6 @@ public class BeaconWithPowerAndLocated3DTest {
         }
         assertNull(b);
 
-
         // test constructor with identifiers, transmitted power, position and
         // position covariance
         final Matrix cov = new Matrix(3, 3);
@@ -398,7 +370,6 @@ public class BeaconWithPowerAndLocated3DTest {
         }
         assertNull(b);
 
-
         // test constructor with all data, position and position covariance
         b = new BeaconWithPowerAndLocated3D(identifiers, -50.0,
                 "address", 1, 2,
@@ -451,7 +422,6 @@ public class BeaconWithPowerAndLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with identifiers, transmitted power, transmitted
         // power standard deviation, position and position covariance
@@ -533,7 +503,6 @@ public class BeaconWithPowerAndLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with all data, transmitted power standard deviation,
         // position and position covariance
@@ -627,7 +596,6 @@ public class BeaconWithPowerAndLocated3DTest {
         }
         assertNull(b);
 
-
         // test constructor with all data, position and frequency
         b = new BeaconWithPowerAndLocated3D(identifiers, -50.0, 5.0e9,
                 "address", 1, 2,
@@ -680,7 +648,6 @@ public class BeaconWithPowerAndLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with identifiers, transmitted power, transmitted
         // power standard deviation and position
@@ -762,7 +729,6 @@ public class BeaconWithPowerAndLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with all data, transmitted power standard deviation
         // and position
@@ -857,7 +823,6 @@ public class BeaconWithPowerAndLocated3DTest {
         }
         assertNull(b);
 
-
         // test constructor with all data, position and position covariance
         b = new BeaconWithPowerAndLocated3D(identifiers, -50.0,
                 5.0e9, "address", 1, 2,
@@ -918,7 +883,6 @@ public class BeaconWithPowerAndLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with identifiers, transmitted power, transmitted
         // power standard deviation, position and position covariance
@@ -1009,7 +973,6 @@ public class BeaconWithPowerAndLocated3DTest {
         }
         assertNull(b);
 
-
         // test constructor with all data, transmitted power standard deviation,
         // position and position covariance
         b = new BeaconWithPowerAndLocated3D(identifiers, -50.0,
@@ -1111,7 +1074,6 @@ public class BeaconWithPowerAndLocated3DTest {
         }
         assertNull(b);
 
-
         // test constructor with identifiers, tx power, path loss and position
         b = new BeaconWithPowerAndLocated3D(identifiers, -50.0,
                 1.6, position);
@@ -1151,8 +1113,7 @@ public class BeaconWithPowerAndLocated3DTest {
         }
         assertNull(b);
 
-
-        // test constructor with all data, pathloss and position
+        // test constructor with all data, path-loss and position
         b = new BeaconWithPowerAndLocated3D(identifiers, -50.0,
                 "address", 1, 2,
                 3, "name", 1.6, position);
@@ -1195,7 +1156,6 @@ public class BeaconWithPowerAndLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with identifiers, tx power, std dev, path loss and position
         b = new BeaconWithPowerAndLocated3D(identifiers, -50.0,
@@ -1269,8 +1229,7 @@ public class BeaconWithPowerAndLocated3DTest {
         }
         assertNull(b);
 
-
-        // test constructor with all data, tx power, std, position and pathloss
+        // test constructor with all data, tx power, std, position and path-loss
         b = new BeaconWithPowerAndLocated3D(identifiers, -50.0,
                 "address", 1, 2,
                 3, "name", 1.6,
@@ -1351,9 +1310,8 @@ public class BeaconWithPowerAndLocated3DTest {
         }
         assertNull(b);
 
-
         // test constructor with identifiers, tx, power, position, position covariance
-        // and pathloss
+        // and path-loss
         b = new BeaconWithPowerAndLocated3D(identifiers, -50.0,
                 1.6, position, cov);
 
@@ -1421,8 +1379,7 @@ public class BeaconWithPowerAndLocated3DTest {
         }
         assertNull(b);
 
-
-        // test constructor with all data, position, position covariance and pathloss
+        // test constructor with all data, position, position covariance and path-loss
         b = new BeaconWithPowerAndLocated3D(identifiers, -50.0,
                 "address", 1, 2,
                 3, "name", 1.6,
@@ -1474,7 +1431,6 @@ public class BeaconWithPowerAndLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with identifiers, tx power, tx power std deviation,
         // position, position covariance and path loss
@@ -1556,9 +1512,8 @@ public class BeaconWithPowerAndLocated3DTest {
         }
         assertNull(b);
 
-
         // test constructor with all data, tx power std deviation, position,
-        // position covariance and pathloss
+        // position covariance and path-loss
         b = new BeaconWithPowerAndLocated3D(identifiers, -50.0,
                 "address", 1, 2,
                 3, "name", 1.6,
@@ -1649,8 +1604,7 @@ public class BeaconWithPowerAndLocated3DTest {
         }
         assertNull(b);
 
-
-        // test constructor with all data, position, frequency and pathloss
+        // test constructor with all data, position, frequency and path-loss
         b = new BeaconWithPowerAndLocated3D(identifiers, -50.0, 5.0e9,
                 "address", 1, 2,
                 3, "name", 1.6,
@@ -1703,9 +1657,8 @@ public class BeaconWithPowerAndLocated3DTest {
         }
         assertNull(b);
 
-
         // test constructor with identifiers, tx power, tx power std deviation,
-        // position and pathloss
+        // position and path-loss
         b = new BeaconWithPowerAndLocated3D(identifiers, -50.0,
                 5.0e9, 1.6, Double.valueOf(1.0),
                 position);
@@ -1785,9 +1738,8 @@ public class BeaconWithPowerAndLocated3DTest {
         }
         assertNull(b);
 
-
         // test constructor with all data, tx power std deviation, position and
-        // pathloss
+        // path-loss
         b = new BeaconWithPowerAndLocated3D(identifiers, -50.0, 5.0e9,
                 "address", 1, 2,
                 3, "name", 1.6,
@@ -1877,7 +1829,6 @@ public class BeaconWithPowerAndLocated3DTest {
         }
         assertNull(b);
 
-
         // test constructor with all data, position, position covariance and path loss
         b = new BeaconWithPowerAndLocated3D(identifiers, -50.0,
                 5.0e9, "address", 1, 2,
@@ -1940,9 +1891,8 @@ public class BeaconWithPowerAndLocated3DTest {
         }
         assertNull(b);
 
-
         // test constructor with identifiers, tx power, tx power std deviation,
-        // position, position covariance and pathloss
+        // position, position covariance and path-loss
         b = new BeaconWithPowerAndLocated3D(identifiers, -50.0,
                 5.0e9, 1.6, Double.valueOf(1.0),
                 position, cov);
@@ -2030,9 +1980,8 @@ public class BeaconWithPowerAndLocated3DTest {
         }
         assertNull(b);
 
-
         // test constructor with all data, tx power std deviation, position,
-        // position covariance and pathloss
+        // position covariance and path-loss
         b = new BeaconWithPowerAndLocated3D(identifiers, -50.0,
                 5.0e9, "address", 1, 2,
                 3, "name", 1.6,
@@ -2132,7 +2081,6 @@ public class BeaconWithPowerAndLocated3DTest {
         }
         assertNull(b);
 
-
         // test constructor with identifiers, tx power, path loss, path loss
         // std deviation and position
         b = new BeaconWithPowerAndLocated3D(identifiers, -50.0,
@@ -2191,7 +2139,6 @@ public class BeaconWithPowerAndLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with all data, path loss, path loss std deviation and
         // position
@@ -2263,7 +2210,6 @@ public class BeaconWithPowerAndLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with identifiers, tx power, std dev, path loss,
         // path loss std deviation and position
@@ -2348,8 +2294,7 @@ public class BeaconWithPowerAndLocated3DTest {
         }
         assertNull(b);
 
-
-        // test constructor with all data, tx power, stds, position and pathloss
+        // test constructor with all data, tx power, stds, position and path-loss
         b = new BeaconWithPowerAndLocated3D(identifiers, -50.0,
                 "address", 1, 2,
                 3, "name", 1.6,
@@ -2445,9 +2390,8 @@ public class BeaconWithPowerAndLocated3DTest {
         }
         assertNull(b);
 
-
         // test constructor with identifiers, tx, power, position, path loss and
-        // pathloss std deviation
+        // path-loss std deviation
         b = new BeaconWithPowerAndLocated3D(identifiers, -50.0,
                 5.0e9, 1.6,
                 1.0,
@@ -2472,7 +2416,7 @@ public class BeaconWithPowerAndLocated3DTest {
         assertEquals(b.getType(), RadioSourceType.BEACON);
         assertEquals(b.getFrequency(), 5.0e9, 0.0);
 
-        // force IllegalArgumentexception
+        // force IllegalArgumentException
         b = null;
         try {
             b = new BeaconWithPowerAndLocated3D(null,
@@ -2516,8 +2460,7 @@ public class BeaconWithPowerAndLocated3DTest {
         }
         assertNull(b);
 
-
-        // test constructor with all data, position, path loss and pathloss std
+        // test constructor with all data, position, path loss and path-loss std
         // deviation
         b = new BeaconWithPowerAndLocated3D(identifiers, -50.0,
                 5.0e9, "address", 1, 2,
@@ -2593,9 +2536,8 @@ public class BeaconWithPowerAndLocated3DTest {
         }
         assertNull(b);
 
-
         // test constructor with identifiers, tx power, tx power std deviation,
-        // position, position covariance, pathloss and pathloss std deviation
+        // position, position covariance, path-loss and path-loss std deviation
         b = new BeaconWithPowerAndLocated3D(identifiers, -50.0,
                 5.0e9, 1.6,
                 1.0,
@@ -2665,9 +2607,8 @@ public class BeaconWithPowerAndLocated3DTest {
         }
         assertNull(b);
 
-
         // test constructor with all data, tx power std deviation, position,
-        // position covariance, pathloss and pathloss std deviation
+        // position covariance, path-loss and path-loss std deviation
         b = new BeaconWithPowerAndLocated3D(identifiers, -50.0,
                 5.0e9, "address", 1,
                 2, 3, "name",

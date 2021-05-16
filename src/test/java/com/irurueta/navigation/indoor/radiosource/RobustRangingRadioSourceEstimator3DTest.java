@@ -20,10 +20,6 @@ import com.irurueta.geometry.Point3D;
 import com.irurueta.navigation.indoor.RangingReadingLocated3D;
 import com.irurueta.navigation.indoor.WifiAccessPoint;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -34,23 +30,7 @@ import static org.junit.Assert.*;
 public class RobustRangingRadioSourceEstimator3DTest implements
         RobustRangingRadioSourceEstimatorListener<WifiAccessPoint, Point3D> {
 
-    private static final double FREQUENCY = 2.4e9; //(Hz)
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
+    private static final double FREQUENCY = 2.4e9; // (Hz)
 
     @Test
     public void testCreate() {
@@ -91,7 +71,6 @@ public class RobustRangingRadioSourceEstimator3DTest implements
 
         // check
         assertTrue(estimator instanceof PROMedSRobustRangingRadioSourceEstimator3D);
-
 
         // crete with readings and method
         final List<RangingReadingLocated3D<WifiAccessPoint>> readings = new ArrayList<>();
@@ -141,7 +120,6 @@ public class RobustRangingRadioSourceEstimator3DTest implements
         assertSame(estimator.getReadings(), readings);
         assertTrue(estimator instanceof PROMedSRobustRangingRadioSourceEstimator3D);
 
-
         // create with listener and method
 
         // RANSAC
@@ -183,7 +161,6 @@ public class RobustRangingRadioSourceEstimator3DTest implements
         // check
         assertSame(estimator.getListener(), this);
         assertTrue(estimator instanceof PROMedSRobustRangingRadioSourceEstimator3D);
-
 
         // create with readings, listener and method
 
@@ -232,7 +209,6 @@ public class RobustRangingRadioSourceEstimator3DTest implements
         assertSame(estimator.getListener(), this);
         assertTrue(estimator instanceof PROMedSRobustRangingRadioSourceEstimator3D);
 
-
         // create with initial position and method
         final InhomogeneousPoint3D initialPosition = new InhomogeneousPoint3D();
 
@@ -275,7 +251,6 @@ public class RobustRangingRadioSourceEstimator3DTest implements
         // check
         assertSame(estimator.getInitialPosition(), initialPosition);
         assertTrue(estimator instanceof PROMedSRobustRangingRadioSourceEstimator3D);
-
 
         // create with readings, initial position and method
 
@@ -324,7 +299,6 @@ public class RobustRangingRadioSourceEstimator3DTest implements
         assertSame(estimator.getInitialPosition(), initialPosition);
         assertTrue(estimator instanceof PROMedSRobustRangingRadioSourceEstimator3D);
 
-
         // create with initial position, listener and method
 
         // RANSAC
@@ -371,7 +345,6 @@ public class RobustRangingRadioSourceEstimator3DTest implements
         assertSame(estimator.getInitialPosition(), initialPosition);
         assertSame(estimator.getListener(), this);
         assertTrue(estimator instanceof PROMedSRobustRangingRadioSourceEstimator3D);
-
 
         // create with readings, initial position, listener and method
 
@@ -425,7 +398,6 @@ public class RobustRangingRadioSourceEstimator3DTest implements
         assertSame(estimator.getListener(), this);
         assertTrue(estimator instanceof PROMedSRobustRangingRadioSourceEstimator3D);
 
-
         // create with quality scores and method
         final double[] qualityScores = new double[4];
 
@@ -468,7 +440,6 @@ public class RobustRangingRadioSourceEstimator3DTest implements
         // check
         assertSame(estimator.getQualityScores(), qualityScores);
         assertTrue(estimator instanceof PROMedSRobustRangingRadioSourceEstimator3D);
-
 
         // crete with quality scores, readings and method
 
@@ -517,7 +488,6 @@ public class RobustRangingRadioSourceEstimator3DTest implements
         assertSame(estimator.getReadings(), readings);
         assertTrue(estimator instanceof PROMedSRobustRangingRadioSourceEstimator3D);
 
-
         // create with quality scores, listener and method
 
         // RANSAC
@@ -564,7 +534,6 @@ public class RobustRangingRadioSourceEstimator3DTest implements
         assertSame(estimator.getQualityScores(), qualityScores);
         assertSame(estimator.getListener(), this);
         assertTrue(estimator instanceof PROMedSRobustRangingRadioSourceEstimator3D);
-
 
         // create with quality scores, readings, listener and method
 
@@ -618,7 +587,6 @@ public class RobustRangingRadioSourceEstimator3DTest implements
         assertSame(estimator.getListener(), this);
         assertTrue(estimator instanceof PROMedSRobustRangingRadioSourceEstimator3D);
 
-
         // create with quality scores, initial position and method
 
         // RANSAC
@@ -665,7 +633,6 @@ public class RobustRangingRadioSourceEstimator3DTest implements
         assertSame(estimator.getQualityScores(), qualityScores);
         assertSame(estimator.getInitialPosition(), initialPosition);
         assertTrue(estimator instanceof PROMedSRobustRangingRadioSourceEstimator3D);
-
 
         // create with quality scores, readings, initial position and method
 
@@ -719,7 +686,6 @@ public class RobustRangingRadioSourceEstimator3DTest implements
         assertSame(estimator.getInitialPosition(), initialPosition);
         assertTrue(estimator instanceof PROMedSRobustRangingRadioSourceEstimator3D);
 
-
         // create with quality scores, initial position, listener and method
 
         // RANSAC
@@ -771,7 +737,6 @@ public class RobustRangingRadioSourceEstimator3DTest implements
         assertSame(estimator.getInitialPosition(), initialPosition);
         assertSame(estimator.getListener(), this);
         assertTrue(estimator instanceof PROMedSRobustRangingRadioSourceEstimator3D);
-
 
         // create with quality scores, readings, initial position, listener and method
 

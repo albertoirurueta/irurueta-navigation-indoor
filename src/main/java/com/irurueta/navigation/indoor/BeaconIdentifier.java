@@ -27,7 +27,6 @@ import java.util.regex.Pattern;
  * It can encapsulate an identifier that is a 16-byte UUID, or an integer.
  * Based on: https://github.com/AltBeacon/android-beacon-library/blob/master/src/main/java/org/altbeacon/beacon/Identifier.java
  */
-@SuppressWarnings("WeakerAccess")
 public class BeaconIdentifier implements Comparable<BeaconIdentifier>, Serializable {
     /**
      * Parses beacon identifiers in hexadecimal format.
@@ -102,7 +101,7 @@ public class BeaconIdentifier implements Comparable<BeaconIdentifier>, Serializa
      * </ul>
      *
      * @param stringValue string to be parsed.
-     * @return an identifier representinf the specified value.
+     * @return an identifier representing the specified value.
      * @throws NullPointerException     if string value is null.
      * @throws IllegalArgumentException if parsing fails for some other reason (invalid format, etc).
      * @see <a href="https://www.ietf.org/rfc/rfc4122.txt">RFC 4122 on UUIDs</a>
@@ -128,17 +127,17 @@ public class BeaconIdentifier implements Comparable<BeaconIdentifier>, Serializa
         }
 
         if (HEX_PATTERN.matcher(stringValue).matches()) {
-            //parse hexadecimal format
+            // parse hexadecimal format
             return parseHex(stringValue.substring(2), desiredByteLength);
         }
 
         if (UUID_PATTERN.matcher(stringValue).matches()) {
-            //parse UUID format
+            // parse UUID format
             return parseHex(stringValue.replace("-", ""), desiredByteLength);
         }
 
         if (DECIMAL_PATTERN.matcher(stringValue).matches()) {
-            //parse decimal format
+            // parse decimal format
             int value = Integer.parseInt(stringValue);
             if (desiredByteLength <= 0 || desiredByteLength == 2) {
                 return fromInt(value);
@@ -148,7 +147,7 @@ public class BeaconIdentifier implements Comparable<BeaconIdentifier>, Serializa
         }
 
         if (HEX_PATTERN_NO_PREFIX.matcher(stringValue).matches()) {
-            //parse hexadecimal format without prefix
+            // parse hexadecimal format without prefix
             return parseHex(stringValue, desiredByteLength);
         }
 
@@ -177,7 +176,7 @@ public class BeaconIdentifier implements Comparable<BeaconIdentifier>, Serializa
     }
 
     /**
-     * Creates an identifier backed by a two byte array (big endia).
+     * Creates an identifier backed by a two byte array (big endian).
      *
      * @param intValue an integer between 0 and 65535 (inclusive).
      * @return an identifier with the specified value.
@@ -326,7 +325,7 @@ public class BeaconIdentifier implements Comparable<BeaconIdentifier>, Serializa
     }
 
     /**
-     * Represents the vlaue as a hexadecimal String. The String is prefixed with <code>0x</code>. For example
+     * Represents the value as a hexadecimal String. The String is prefixed with <code>0x</code>. For example
      * 0x0034ab.
      *
      * @return value as hexadecimal String.
@@ -461,7 +460,7 @@ public class BeaconIdentifier implements Comparable<BeaconIdentifier>, Serializa
             while (sb.length() < extraCharsToAdd) {
                 sb.append("0");
             }
-            str = sb.toString() + str;
+            str = sb + str;
             len = str.length();
         }
 

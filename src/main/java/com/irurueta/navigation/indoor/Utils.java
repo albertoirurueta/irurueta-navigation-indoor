@@ -89,23 +89,23 @@ public class Utils {
         final double k = SPEED_OF_LIGHT / (4.0 * Math.PI * frequency);
         final double kdB = 10.0 * Math.log10(k);
 
-        //distance follows the following expression:
-        //d = 10.0^((pathLossExponent * kdB + txPower - rxPower)/(10.0 * pathLossExponent))
-        //where kdB is a constant having the following expression:
-        //kdB = 10.0 * log(c / (4 * pi * f)),
-        //where c is the speed of light and f is the frequency.
+        // distance follows the following expression:
+        // d = 10.0^((pathLossExponent * kdB + txPower - rxPower)/(10.0 * pathLossExponent))
+        // where kdB is a constant having the following expression:
+        // kdB = 10.0 * log(c / (4 * pi * f)),
+        // where c is the speed of light and f is the frequency.
 
-        //hence, if the only unknown is the received power (x = rxPower), we can express the distance as:
-        //d = f(x) = 10.0^((pathLossExponent * kdB + txPower - x)/(10.0 * pathLossExponent))
+        // hence, if the only unknown is the received power (x = rxPower), we can express the distance as:
+        // d = f(x) = 10.0^((pathLossExponent * kdB + txPower - x)/(10.0 * pathLossExponent))
 
-        //if we know the variance of received power var(x), then the variance of the distance will be:
-        //var(d) = var(f(x)) = (f'(E(x)))^2*var(x)
-        //where f'(x) is the derivative of f(x) evaluated at E(x) = rxPower
+        // if we know the variance of received power var(x), then the variance of the distance will be:
+        // var(d) = var(f(x)) = (f'(E(x)))^2*var(x)
+        // where f'(x) is the derivative of f(x) evaluated at E(x) = rxPower
 
-        //the derivative f'(x) has the following expression:
-        //f'(x) = -ln(10)/(10.0*pathLossExponent)*10^((pathLossExponent * kdB + txPower - x)/(10.0 * pathLossExponent))
+        // the derivative f'(x) has the following expression:
+        // f'(x) = -ln(10)/(10.0*pathLossExponent)*10^((pathLossExponent * kdB + txPower - x)/(10.0 * pathLossExponent))
 
-        //evaluate derivative at E(x) = rxPower:
+        // evaluate derivative at E(x) = rxPower:
         final double tenPathLossExponent = 10.0 * pathLossExponent;
         final double derivativeF = -Math.log(10.0) / tenPathLossExponent * Math.pow(10.0,
                 (pathLossExponent * kdB + txPower - rxPower) / tenPathLossExponent);
@@ -114,7 +114,7 @@ public class Utils {
     }
 
     /**
-     * Propagates provided variances (transmitted power variance, received power variance and pathloss variance) into
+     * Propagates provided variances (transmitted power variance, received power variance and path-loss variance) into
      * distance variance by considering the following formula for received power (expressed in dBm's):
      * rxPower = pathLossExponent * kdB + txPower - 5.0 * pathLossExponent * logSqrDistance,
      * where logSqrDistance is the logarithm in base 10 of the squared distance logSqrDistance = Math.log(d^2).
@@ -158,59 +158,58 @@ public class Utils {
                     final double k = RssiRadioSourceEstimator.SPEED_OF_LIGHT / (4.0 * Math.PI * frequency);
                     final double kdB = 10.0 * Math.log10(k);
 
-                    //received power in dBm's follows the equation:
-                    //rxPower = pathLossExponent * kdB + txPower - 5.0 * pathLossExponent * logSqrDistance
+                    // received power in dBm's follows the equation:
+                    // rxPower = pathLossExponent * kdB + txPower - 5.0 * pathLossExponent * logSqrDistance
 
-                    //hence, distance follows the following expression:
-                    //d = 10.0^((pathLossExponent * kdB + txPower - rxPower)/(10.0 * pathLossExponent))
-                    //where kdB is a constant having the following expression:
-                    //kdB = 10.0 * log(c / (4 * pi * f)),
-                    //where c is the speed of light and f is the frequency.
+                    // hence, distance follows the following expression:
+                    // d = 10.0^((pathLossExponent * kdB + txPower - rxPower)/(10.0 * pathLossExponent))
+                    // where kdB is a constant having the following expression:
+                    // kdB = 10.0 * log(c / (4 * pi * f)),
+                    // where c is the speed of light and f is the frequency.
 
                     final double logSqrDistance = (pathLossExponent * kdB + txPower - rxPower)
                             / (5.0 * pathLossExponent);
 
-                    //where logSqrDistance = Math.log10(sqrDistance)
-                    //and sqrDistance = distance * distance, hence
-                    //logSqrDistance = Math.log10(distance * distance) = 2 * Math.log10(distance)
+                    // where logSqrDistance = Math.log10(sqrDistance)
+                    // and sqrDistance = distance * distance, hence
+                    // logSqrDistance = Math.log10(distance * distance) = 2 * Math.log10(distance)
 
                     y[0] = Math.pow(10.0, logSqrDistance / 2.0);
 
 
-                    //compute gradient (is a jacobian having 1 row and 3 columns)
+                    // compute gradient (is a jacobian having 1 row and 3 columns)
 
-                    //derivative of distance respect to transmitted power is:
+                    // derivative of distance respect to transmitted power is:
 
-                    //if the only unknown is the transmitted power (x = txPower), then:
-                    //d = f(x) = 10.0^((pathLossExponent * kdB + x - rxPower)/(10.0 * pathLossExponent))
-                    //and the derivative is
-                    //f'(x) = ln(10)/(10.0 * pathLossExponent)*10.0^((pathLossExponent * kdB + x - rxPower)/(10.0 * pathLossExponent))
+                    // if the only unknown is the transmitted power (x = txPower), then:
+                    // d = f(x) = 10.0^((pathLossExponent * kdB + x - rxPower)/(10.0 * pathLossExponent))
+                    // and the derivative is
+                    // f'(x) = ln(10)/(10.0 * pathLossExponent)*10.0^((pathLossExponent * kdB + x - rxPower)/(10.0 * pathLossExponent))
                     final double tenPathLossExponent = 10.0 * pathLossExponent;
                     final double tenPowered = Math.pow(10.0,
                             (pathLossExponent * kdB + txPower - rxPower) / tenPathLossExponent);
                     final double derivativeTxPower = Math.log(10.0) / tenPathLossExponent * tenPowered;
 
-                    //derivative of distance respect to received power is:
+                    // derivative of distance respect to received power is:
 
-                    //if the only unknown is the received power (x = rxPower), then:
-                    //d = f(x) = 10.0^((pathLossExponent * kdB + txPower - x)/(10.0 * pathLossExponent))
-                    //and the derivative is
-                    //f'(x) = -ln(10)/(10.0*pathLossExponent)*10^((pathLossExponent * kdB + txPower - x)/(10.0 * pathLossExponent))
+                    // if the only unknown is the received power (x = rxPower), then:
+                    // d = f(x) = 10.0^((pathLossExponent * kdB + txPower - x)/(10.0 * pathLossExponent))
+                    // and the derivative is
+                    // f'(x) = -ln(10)/(10.0*pathLossExponent)*10^((pathLossExponent * kdB + txPower - x)/(10.0 * pathLossExponent))
                     final double derivativeRxPower = -Math.log(10.0) / tenPathLossExponent * tenPowered;
 
+                    // derivative respect to path loss exponent is:
 
-                    //derivative respect to path loss exponent is:
-
-                    //if the only unknown is the path loss exponent (x = pathLossExponent), then:
-                    //d = f(x) = 10.0^((x * kdB + txPower - rxPower)/(10.0 * x))
-                    //and the derivative is:
-                    //f'(x) = ln(10) * g'(x) * 10.0^(g(x))
-                    //where g(x) is:
-                    //g(x) = (x * kdB + txPower - rxPower) / (10.0 * x)
-                    //and the derivative of g(x) is:
-                    //g'(x) = (kdB * 10.0 * x - 10.0 * (x * kdB + txPower - rxPower)) / (10.0 * x)^2
-                    //Hence:
-                    //f'(x) = lng(10) * (kdB * 10.0 * x - 10.0 * (x * kdB + txPower - rxPower)) / (10.0 * x)^2 * 10.0^((x * kdB + txPower - rxPower)/(10.0 * x))
+                    // if the only unknown is the path loss exponent (x = pathLossExponent), then:
+                    // d = f(x) = 10.0^((x * kdB + txPower - rxPower)/(10.0 * x))
+                    // and the derivative is:
+                    // f'(x) = ln(10) * g'(x) * 10.0^(g(x))
+                    // where g(x) is:
+                    // g(x) = (x * kdB + txPower - rxPower) / (10.0 * x)
+                    // and the derivative of g(x) is:
+                    // g'(x) = (kdB * 10.0 * x - 10.0 * (x * kdB + txPower - rxPower)) / (10.0 * x)^2
+                    // Hence:
+                    // f'(x) = lng(10) * (kdB * 10.0 * x - 10.0 * (x * kdB + txPower - rxPower)) / (10.0 * x)^2 * 10.0^((x * kdB + txPower - rxPower)/(10.0 * x))
 
                     final double g = (pathLossExponent * kdB + txPower - rxPower) / (10.0 * pathLossExponent);
                     final double derivativeG = (kdB * 10.0 * pathLossExponent -
@@ -272,11 +271,11 @@ public class Utils {
             return null;
         }
 
-        //1st order Taylor expression of received power in 2D:
-        //Pr(pi) = Pr(p1)
-        //  - 10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
-        //  - 10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
-        //where d1a^2 = (x1 - xa)^2 + (y1 - ya)^2
+        // 1st order Taylor expression of received power in 2D:
+        // Pr(pi) = Pr(p1)
+        //   - 10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
+        //   - 10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
+        // where d1a^2 = (x1 - xa)^2 + (y1 - ya)^2
 
         final double x1 = fingerprintPosition.getInhomX();
         final double y1 = fingerprintPosition.getInhomY();
@@ -327,14 +326,14 @@ public class Utils {
                 public void evaluate(
                         final double[] x, final double[] y, final Matrix jacobian) {
 
-                    //Pr(pi) = Pr(p1)
-                    //  - 10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
-                    //  - 10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
-                    //where d1a^2 = (x1 - xa)^2 + (y1 - ya)^2
+                    // Pr(pi) = Pr(p1)
+                    //   - 10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
+                    //   - 10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
+                    // where d1a^2 = (x1 - xa)^2 + (y1 - ya)^2
 
-                    //Hence:
-                    //Pr(pi) = Pr(p1) -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/
-                    //      (ln(10)*((x1 - xa)^2 + (y1 - ya)^2))
+                    // Hence:
+                    // Pr(pi) = Pr(p1) -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/
+                    //       (ln(10)*((x1 - xa)^2 + (y1 - ya)^2))
 
                     final double diffX1a = x1 - xa;
                     final double diffY1a = y1 - ya;
@@ -354,109 +353,104 @@ public class Utils {
                     y[0] = fingerprintRssi
                             - 10.0 * pathLossExponent * crossDiff / (ln10 * d1a2);
 
-                    //compute gradient (is a jacobian having 1 row and 8 columns)
+                    // compute gradient (is a jacobian having 1 row and 8 columns)
 
-
-                    //derivative of rssi respect to fingerprint rssi
+                    // derivative of rssi respect to fingerprint rssi
                     final double derivativeFingerprintRssi = 1.0;
 
-                    //derivative of rssi respect to path-loss exponent
+                    // derivative of rssi respect to path-loss exponent
 
-                    //diff(Pr(pi))/diff(n) = -10*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
-                    //  -10*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
+                    // diff(Pr(pi))/diff(n) = -10*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
+                    //   -10*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
                     final double derivativePathLossExponent = -10.0 * crossDiff /
                             (ln10 * d1a2);
 
+                    // derivative of rssi respect to x1
 
-                    //derivative of rssi respect to x1
+                    // We have
+                    // Pr(pi) = Pr(p1) -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/
+                    //       (ln(10)*((x1 - xa)^2 + (y1 - ya)^2))
 
-                    //We have
-                    //Pr(pi) = Pr(p1) -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/
-                    //      (ln(10)*((x1 - xa)^2 + (y1 - ya)^2))
+                    // and we know that: (f(x)/g(x))' = (f'(x)*g(x) - f(x)*g'(x))/g(x)^2
+                    // and also that (f(x)*g(x))' = f'(x)*g(x) + f(x)*g'(x)
 
-                    //and we know that: (f(x)/g(x))' = (f'(x)*g(x) - f(x)*g'(x))/g(x)^2
-                    //and also that (f(x)*g(x))' = f'(x)*g(x) + f(x)*g'(x)
+                    // Hence
+                    // diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/diff(x1) =
+                    //   diff(x1*xi -xa*xi -x1^2 + xa*x1)/diff(x1) =
+                    //   diff(-x1^2 + (xi + xa)*x1 - xa*xi)/diff(x1) =
+                    //   -2*x1 + xi + xa
 
-                    //Hence
-                    //diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/diff(x1) =
-                    //  diff(x1*xi -xa*xi -x1^2 + xa*x1)/diff(x1) =
-                    //  diff(-x1^2 + (xi + xa)*x1 - xa*xi)/diff(x1) =
-                    //  -2*x1 + xi + xa
-
-                    //diff(Pr(pi))/diff(x1) = -10*n/ln(10)*((-2*x1 + xi + xa)*((x1 - xa)^2 + (y1 - ya)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2)^2
-                    //diff(Pr(pi))/diff(x1) = -10*n/ln(10)*((-2*x1 + xi + xa)*d1a^2 - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*2*(x1 - xa))/d1a^4
+                    // diff(Pr(pi))/diff(x1) = -10*n/ln(10)*((-2*x1 + xi + xa)*((x1 - xa)^2 + (y1 - ya)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2)^2
+                    // diff(Pr(pi))/diff(x1) = -10*n/ln(10)*((-2*x1 + xi + xa)*d1a^2 - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*2*(x1 - xa))/d1a^4
                     final double tmpX = 2.0 * crossDiff * diffX1a;
                     final double derivativeX1 = -10.0 * pathLossExponent / ln10 * ((-2.0 * x1 + xi + xa) * d1a2
                             - tmpX) / d1a4;
 
-                    //derivative of rssi respect to y1
+                    // derivative of rssi respect to y1
 
-                    //diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/diff(y1) =
-                    //  diff(y1*yi -ya*yi -y1^2 + ya*y1)/diff(y1) =
-                    //  diff(-y1^2 + (yi + ya)*y1 - ya*yi)/diff(y1) =
-                    //  -2*y1 + yi + ya
+                    // diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/diff(y1) =
+                    //   diff(y1*yi -ya*yi -y1^2 + ya*y1)/diff(y1) =
+                    //   diff(-y1^2 + (yi + ya)*y1 - ya*yi)/diff(y1) =
+                    //   -2*y1 + yi + ya
 
-                    //diff(Pr(pi))/diff(y1) = -10*n/ln(10)*((-2*y1 + yi + ya)*((x1 - xa)^2 + (y1 - ya)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2)^2
-                    //diff(Pr(pi))/diff(y1) = -10*n/ln(10)*((-2*y1 + yi + ya)*d1a^2 - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*2*(y1 - ya))/d1a^4
+                    // diff(Pr(pi))/diff(y1) = -10*n/ln(10)*((-2*y1 + yi + ya)*((x1 - xa)^2 + (y1 - ya)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2)^2
+                    // diff(Pr(pi))/diff(y1) = -10*n/ln(10)*((-2*y1 + yi + ya)*d1a^2 - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*2*(y1 - ya))/d1a^4
                     final double tmpY = 2.0 * crossDiff * diffY1a;
                     final double derivativeY1 = -10.0 * pathLossExponent / ln10 * ((-2.0 * y1 + yi + ya) * d1a2
                             - tmpY) / d1a4;
 
 
-                    //derivative of rssi respect to xa
+                    // derivative of rssi respect to xa
 
-                    //diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/diff(xa) =
-                    //  diff(x1*xi -xa*xi -x1^2 + xa*x1)/diff(xa) =
-                    //  x1 - xi
+                    // diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/diff(xa) =
+                    //   diff(x1*xi -xa*xi -x1^2 + xa*x1)/diff(xa) =
+                    //   x1 - xi
 
-                    //diff(Pr(pi))/diff(xa) = -10*n/ln(10)*((x1 - xi)*((x1 - xa)^2 + (y1 - ya)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*-2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2)^2
-                    //diff(Pr(pi))/diff(xa) = -10*n/ln(10)*(-(xi - x1)*d1a^2 + ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*2*(x1 - xa))/d1a^4
+                    // diff(Pr(pi))/diff(xa) = -10*n/ln(10)*((x1 - xi)*((x1 - xa)^2 + (y1 - ya)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*-2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2)^2
+                    // diff(Pr(pi))/diff(xa) = -10*n/ln(10)*(-(xi - x1)*d1a^2 + ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*2*(x1 - xa))/d1a^4
                     final double derivativeXa = -10.0 * pathLossExponent / ln10 * (-diffXi1 * d1a2
                             + tmpX) / d1a4;
 
+                    // derivative of rssi respect to ya
 
-                    //derivative of rssi respect to ya
+                    // diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/diff(ya) =
+                    //   diff(y1*yi -y1^2 -ya*yi + ya*y1)/diff(ya) =
+                    //   y1 - yi
 
-                    //diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/diff(ya) =
-                    //  diff(y1*yi -y1^2 -ya*yi + ya*y1)/diff(ya) =
-                    //  y1 - yi
-
-                    //diff(Pr(pi))/diff(ya) = -10*n/ln(10)*((y1 - yi)*((x1 - xa)^2 + (y1 - ya)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*-2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2)^2
-                    //diff(Pr(pi))/diff(ya) = -10*n/ln(10)*(-(yi - y1)*d1a^2 + ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*2*(y1 - ya))/d1a^4
+                    // diff(Pr(pi))/diff(ya) = -10*n/ln(10)*((y1 - yi)*((x1 - xa)^2 + (y1 - ya)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*-2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2)^2
+                    // diff(Pr(pi))/diff(ya) = -10*n/ln(10)*(-(yi - y1)*d1a^2 + ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*2*(y1 - ya))/d1a^4
                     final double derivativeYa = -10.0 * pathLossExponent / ln10 * (-diffYi1 * d1a2
                             + tmpY) / d1a4;
 
+                    // derivative of rssi respect to xi
 
-                    //derivative of rssi respect to xi
+                    // Pr(pi) = Pr(p1) -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/
+                    //       (ln(10)*((x1 - xa)^2 + (y1 - ya)^2))
 
-                    //Pr(pi) = Pr(p1) -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/
-                    //      (ln(10)*((x1 - xa)^2 + (y1 - ya)^2))
+                    // diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/diff(xi) =
+                    //   diff(x1*xi -xa*xi -x1^2 + xa*x1)/diff(xi) =
+                    //   x1 - xa
 
-                    //diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/diff(xi) =
-                    //  diff(x1*xi -xa*xi -x1^2 + xa*x1)/diff(xi) =
-                    //  x1 - xa
-
-                    //diff(Pr(pi))/diff(xi) = -10*n/ln(10)*((x1 - xa)*((x1 - xa)^2 + (y1 - ya)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*0)/(x1 - xa)^2 + (y1 - ya)^2)^2
-                    //diff(Pr(pi))/diff(xi) = -10*n/ln(10)*((x1 - xa)*d1a^2)/d1a^4
-                    //diff(Pr(pi))/diff(xi) = -10*n*(x1 - xa)/(ln(10)*d1a^2)
+                    // diff(Pr(pi))/diff(xi) = -10*n/ln(10)*((x1 - xa)*((x1 - xa)^2 + (y1 - ya)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*0)/(x1 - xa)^2 + (y1 - ya)^2)^2
+                    // diff(Pr(pi))/diff(xi) = -10*n/ln(10)*((x1 - xa)*d1a^2)/d1a^4
+                    // diff(Pr(pi))/diff(xi) = -10*n*(x1 - xa)/(ln(10)*d1a^2)
                     final double derivativeXi = -10.0 * pathLossExponent * diffX1a / (ln10 * d1a2);
 
+                    // derivative of rssi respect to yi
 
-                    //derivative of rssi respect to yi
+                    // Pr(pi) = Pr(p1) -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/
+                    //       (ln(10)*((x1 - xa)^2 + (y1 - ya)^2))
 
-                    //Pr(pi) = Pr(p1) -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/
-                    //      (ln(10)*((x1 - xa)^2 + (y1 - ya)^2))
+                    // diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/diff(yi) =
+                    //   diff(y1*yi -ya*yi -y1^2 + ya*y1)/diff(yi) =
+                    //   y1 - ya
 
-                    //diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/diff(yi) =
-                    //  diff(y1*yi -ya*yi -y1^2 + ya*y1)/diff(yi) =
-                    //  y1 - ya
-
-                    //diff(Pr(pi))/diff(yi) = -10*n/ln(10)*((y1 - ya)*((x1 - xa)^2 + (y1 - ya)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*0)/((x1 - xa)^2 + (y1 - ya)^2)^2
-                    //diff(Pr(pi))/diff(yi) = -10*n/ln(10)*((y1 - ya)*d1a^2)/d1a^4
-                    //diff(Pr(pi))/diff(yi) = -10*n*(y1 - ya)/(ln(10)*d1a^2)
+                    // diff(Pr(pi))/diff(yi) = -10*n/ln(10)*((y1 - ya)*((x1 - xa)^2 + (y1 - ya)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*0)/((x1 - xa)^2 + (y1 - ya)^2)^2
+                    // diff(Pr(pi))/diff(yi) = -10*n/ln(10)*((y1 - ya)*d1a^2)/d1a^4
+                    // diff(Pr(pi))/diff(yi) = -10*n*(y1 - ya)/(ln(10)*d1a^2)
                     final double derivativeYi = -10.0 * pathLossExponent * diffY1a / (ln10 * d1a2);
 
-                    //set derivatives fingerprintRssi, pathLossExponent, x1, y1, xa, ya, xi, yi
+                    // set derivatives fingerprintRssi, pathLossExponent, x1, y1, xa, ya, xi, yi
                     jacobian.setElementAtIndex(0, derivativeFingerprintRssi);
                     jacobian.setElementAtIndex(1, derivativePathLossExponent);
                     jacobian.setElementAtIndex(2, derivativeX1);
@@ -515,12 +509,12 @@ public class Utils {
             return null;
         }
 
-        //1st order Taylor expression of received power in 3D:
-        //Pr(pi) = Pr(p1)
-        //  - 10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
-        //  - 10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
-        //  - 10*n*(z1 - za)/(ln(10)*d1a^2)*(zi - z1)
-        //where d1a^2 = (x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2
+        // 1st order Taylor expression of received power in 3D:
+        // Pr(pi) = Pr(p1)
+        //   - 10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
+        //   - 10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
+        //   - 10*n*(z1 - za)/(ln(10)*d1a^2)*(zi - z1)
+        // where d1a^2 = (x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2
 
         final double x1 = fingerprintPosition.getInhomX();
         final double y1 = fingerprintPosition.getInhomY();
@@ -574,15 +568,15 @@ public class Utils {
                 public void evaluate(
                         final double[] x, final double[] y, final Matrix jacobian) {
 
-                    //Pr(pi) = Pr(p1)
-                    //  - 10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
-                    //  - 10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
-                    //  - 10*n*(z1 - za)/(ln(10)*d1a^2)*(zi - z1)
-                    //where d1a^2 = (x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2
+                    // Pr(pi) = Pr(p1)
+                    //   - 10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
+                    //   - 10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
+                    //   - 10*n*(z1 - za)/(ln(10)*d1a^2)*(zi - z1)
+                    // where d1a^2 = (x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2
 
-                    //Hence:
-                    //Pr(pi) = Pr(p1) -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/
-                    //      (ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
+                    // Hence:
+                    // Pr(pi) = Pr(p1) -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/
+                    //       (ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
 
                     final double diffX1a = x1 - xa;
                     final double diffY1a = y1 - ya;
@@ -605,151 +599,142 @@ public class Utils {
                     y[0] = fingerprintRssi
                             - 10.0 * pathLossExponent * crossDiff / (ln10 * d1a2);
 
-                    //compute gradient (is a jacobian having 1 row and 11 columns)
+                    // compute gradient (is a jacobian having 1 row and 11 columns)
 
 
-                    //derivative of rssi respect to fingerprint rssi
+                    // derivative of rssi respect to fingerprint rssi
                     final double derivativeFingerprintRssi = 1.0;
 
-                    //derivative of rssi respect to path-loss exponent
+                    // derivative of rssi respect to path-loss exponent
 
-                    //diff(Pr(pi))/diff(n) = -10*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
-                    //  -10*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
+                    // diff(Pr(pi))/diff(n) = -10*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
+                    //   -10*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
                     final double derivativePathLossExponent = -10.0 * crossDiff /
                             (ln10 * d1a2);
 
+                    // derivative of rssi respect to x1
 
-                    //derivative of rssi respect to x1
+                    // We have
+                    // Pr(pi) = Pr(p1) -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/
+                    //       (ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
 
-                    //We have
-                    //Pr(pi) = Pr(p1) -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/
-                    //      (ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
+                    // and we know that: (f(x)/g(x))' = (f'(x)*g(x) - f(x)*g'(x))/g(x)^2
+                    // and also that (f(x)*g(x))' = f'(x)*g(x) + f(x)*g'(x)
 
-                    //and we know that: (f(x)/g(x))' = (f'(x)*g(x) - f(x)*g'(x))/g(x)^2
-                    //and also that (f(x)*g(x))' = f'(x)*g(x) + f(x)*g'(x)
+                    // Hence
+                    // diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/diff(x1) =
+                    //   diff(x1*xi -xa*xi -x1^2 + xa*x1)/diff(x1) =
+                    //   diff(-x1^2 + (xi + xa)*x1 - xa*xi)/diff(x1) =
+                    //   -2*x1 + xi + xa
 
-                    //Hence
-                    //diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/diff(x1) =
-                    //  diff(x1*xi -xa*xi -x1^2 + xa*x1)/diff(x1) =
-                    //  diff(-x1^2 + (xi + xa)*x1 - xa*xi)/diff(x1) =
-                    //  -2*x1 + xi + xa
-
-                    //diff(Pr(pi))/diff(x1) = -10*n/ln(10)*((-2*x1 + xi + xa)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
-                    //diff(Pr(pi))/diff(x1) = -10*n/ln(10)*((-2*x1 + xi + xa)*d1a^2 - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(x1 - xa))/d1a^4
+                    // diff(Pr(pi))/diff(x1) = -10*n/ln(10)*((-2*x1 + xi + xa)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
+                    // diff(Pr(pi))/diff(x1) = -10*n/ln(10)*((-2*x1 + xi + xa)*d1a^2 - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(x1 - xa))/d1a^4
                     final double tmpX = 2.0 * crossDiff * diffX1a;
                     final double derivativeX1 = -10.0 * pathLossExponent / ln10 * ((-2.0 * x1 + xi + xa) * d1a2
                             - tmpX) / d1a4;
 
+                    // derivative of rssi respect to y1
 
-                    //derivative of rssi respect to y1
+                    // diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/diff(y1) =
+                    //   diff(y1*yi -ya*yi -y1^2 + ya*y1)/diff(y1) =
+                    //   diff(-y1^2 + (yi + ya)*y1 - ya*yi)/diff(y1) =
+                    //   -2*y1 + yi + ya
 
-                    //diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/diff(y1) =
-                    //  diff(y1*yi -ya*yi -y1^2 + ya*y1)/diff(y1) =
-                    //  diff(-y1^2 + (yi + ya)*y1 - ya*yi)/diff(y1) =
-                    //  -2*y1 + yi + ya
-
-                    //diff(Pr(pi))/diff(y1) = -10*n/ln(10)*((-2*y1 + yi + ya)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
-                    //diff(Pr(pi))/diff(y1) = -10*n/ln(10)*((-2*y1 + yi + ya)*d1a^2 - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(y1 - ya))/d1a^4
+                    // diff(Pr(pi))/diff(y1) = -10*n/ln(10)*((-2*y1 + yi + ya)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
+                    // diff(Pr(pi))/diff(y1) = -10*n/ln(10)*((-2*y1 + yi + ya)*d1a^2 - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(y1 - ya))/d1a^4
                     final double tmpY = 2.0 * crossDiff * diffY1a;
                     final double derivativeY1 = -10.0 * pathLossExponent / ln10 * ((-2.0 * y1 + yi + ya) * d1a2
                             - tmpY) / d1a4;
 
+                    // derivative of rssi respect to z1
 
-                    //derivative of rssi respect to z1
+                    // diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/diff(z1) =
+                    //   diff(z1*zi -za*zi -z1^2 + za*z1)/diff(z1) =
+                    //   diff(-z1^2 + (zi + za)*z1 - za*zi)/diff(z1) =
+                    //   -2*z1 + zi + za
 
-                    //diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/diff(z1) =
-                    //  diff(z1*zi -za*zi -z1^2 + za*z1)/diff(z1) =
-                    //  diff(-z1^2 + (zi + za)*z1 - za*zi)/diff(z1) =
-                    //  -2*z1 + zi + za
-
-                    //diff(Pr(pi))/diff(z1) = -10*n/ln(10)*((-2*z1 + zi + za)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
-                    //diff(Pr(pi))/diff(z1) = -10*n/ln(10)*((-2*z1 + zi + za)*d1a^2 - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(z1 - za))/d1a^4
+                    // diff(Pr(pi))/diff(z1) = -10*n/ln(10)*((-2*z1 + zi + za)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
+                    // diff(Pr(pi))/diff(z1) = -10*n/ln(10)*((-2*z1 + zi + za)*d1a^2 - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(z1 - za))/d1a^4
                     final double tmpZ = 2.0 * crossDiff * diffZ1a;
                     final double derivativeZ1 = -10.0 * pathLossExponent / ln10 * ((-2.0 * z1 + z1 + za) * d1a2
                             - tmpZ) / d1a4;
 
+                    // derivative of rssi respect to xa
 
-                    //derivative of rssi respect to xa
+                    // diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/diff(xa) =
+                    //   diff(x1*xi -xa*xi -x1^2 + xa*x1)/diff(xa) =
+                    //   x1 - xi
 
-                    //diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/diff(xa) =
-                    //  diff(x1*xi -xa*xi -x1^2 + xa*x1)/diff(xa) =
-                    //  x1 - xi
-
-                    //diff(Pr(pi))/diff(xa) = -10*n/ln(10)*((x1 - xi)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*-2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
-                    //diff(Pr(pi))/diff(xa) = -10*n/ln(10)*(-(xi - x1)*d1a^2 + ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(x1 - xa))/d1a^4
+                    // diff(Pr(pi))/diff(xa) = -10*n/ln(10)*((x1 - xi)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*-2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
+                    // diff(Pr(pi))/diff(xa) = -10*n/ln(10)*(-(xi - x1)*d1a^2 + ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(x1 - xa))/d1a^4
                     final double derivativeXa = -10.0 * pathLossExponent / ln10 * (-diffXi1 * d1a2
                             + tmpX) / d1a4;
 
+                    // derivative of rssi respect to ya
 
-                    //derivative of rssi respect to ya
+                    // diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/diff(ya) =
+                    //   diff(y1*yi -y1^2 -ya*yi + ya*y1)/diff(ya) =
+                    //   y1 - yi
 
-                    //diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/diff(ya) =
-                    //  diff(y1*yi -y1^2 -ya*yi + ya*y1)/diff(ya) =
-                    //  y1 - yi
-
-                    //diff(Pr(pi))/diff(ya) = -10*n/ln(10)*((y1 - yi)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*-2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
-                    //diff(Pr(pi))/diff(ya) = -10*n/ln(10)*(-(yi - y1)*d1a^2 + ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(y1 - ya))/d1a^4
+                    // diff(Pr(pi))/diff(ya) = -10*n/ln(10)*((y1 - yi)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*-2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
+                    // diff(Pr(pi))/diff(ya) = -10*n/ln(10)*(-(yi - y1)*d1a^2 + ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(y1 - ya))/d1a^4
                     final double derivativeYa = -10.0 * pathLossExponent / ln10 * (-diffYi1 * d1a2
                             + tmpY) / d1a4;
 
+                    // derivative of rssi respect to za
 
-                    //derivative of rssi respect to za
+                    // diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/diff(za) =
+                    //   diff(z1*zi -z1^2 -za*zi + za*z1)/diff(za) =
+                    //   z1 - zi
 
-                    //diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/diff(za) =
-                    //  diff(z1*zi -z1^2 -za*zi + za*z1)/diff(za) =
-                    //  z1 - zi
-
-                    //diff(Pr(pi))/diff(za) = -10*n/ln(10)*((z1 - zi)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*-2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
-                    //diff(Pr(pi))/diff(za) = -10*n/ln(10)*(-(zi - z1)*d1a^2 + ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(z1 - za))/d1a^4
+                    // diff(Pr(pi))/diff(za) = -10*n/ln(10)*((z1 - zi)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*-2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
+                    // diff(Pr(pi))/diff(za) = -10*n/ln(10)*(-(zi - z1)*d1a^2 + ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(z1 - za))/d1a^4
                     final double derivativeZa = -10.0 * pathLossExponent / ln10 * (-diffZi1 * d1a2 +
                             +tmpZ) / d1a4;
 
+                    // derivative of rssi respect to xi
 
-                    //derivative of rssi respect to xi
+                    // Pr(pi) = Pr(p1) -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/
+                    //       (ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
 
-                    //Pr(pi) = Pr(p1) -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/
-                    //      (ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
+                    // diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/diff(xi) =
+                    //   diff(x1*xi -xa*xi -x1^2 + xa*x1)/diff(xi) =
+                    //   x1 - xa
 
-                    //diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/diff(xi) =
-                    //  diff(x1*xi -xa*xi -x1^2 + xa*x1)/diff(xi) =
-                    //  x1 - xa
-
-                    //diff(Pr(pi))/diff(xi) = -10*n/ln(10)*((x1 - xa)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
-                    //diff(Pr(pi))/diff(xi) = -10*n/ln(10)*((x1 - xa)*d1a^2)/d1a^4
-                    //diff(Pr(pi))/diff(xi) = -10*n*(x1 - xa)/(ln(10)*d1a^2)
+                    // diff(Pr(pi))/diff(xi) = -10*n/ln(10)*((x1 - xa)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
+                    // diff(Pr(pi))/diff(xi) = -10*n/ln(10)*((x1 - xa)*d1a^2)/d1a^4
+                    // diff(Pr(pi))/diff(xi) = -10*n*(x1 - xa)/(ln(10)*d1a^2)
                     final double derivativeXi = -10.0 * pathLossExponent * diffX1a / (ln10 * d1a2);
 
+                    // derivative of rssi respect to yi
 
-                    //derivative of rssi respect to yi
+                    // Pr(pi) = Pr(p1) -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/
+                    //       (ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
 
-                    //Pr(pi) = Pr(p1) -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/
-                    //      (ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
+                    // diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/diff(yi) =
+                    //   diff(y1*yi -ya*yi -y1^2 + ya*y1)/diff(yi) =
+                    //   y1 - ya
 
-                    //diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/diff(yi) =
-                    //  diff(y1*yi -ya*yi -y1^2 + ya*y1)/diff(yi) =
-                    //  y1 - ya
-
-                    //diff(Pr(pi))/diff(yi) = -10*n/ln(10)*((y1 - ya)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
-                    //diff(Pr(pi))/diff(yi) = -10*n/ln(10)*((y1 - ya)*d1a^2)/d1a^4
-                    //diff(Pr(pi))/diff(yi) = -10*n*(y1 - ya)/(ln(10)*d1a^2)
+                    // diff(Pr(pi))/diff(yi) = -10*n/ln(10)*((y1 - ya)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
+                    // diff(Pr(pi))/diff(yi) = -10*n/ln(10)*((y1 - ya)*d1a^2)/d1a^4
+                    // diff(Pr(pi))/diff(yi) = -10*n*(y1 - ya)/(ln(10)*d1a^2)
                     final double derivativeYi = -10.0 * pathLossExponent * diffY1a / (ln10 * d1a2);
 
+                    // derivative of rssi respect to zi
 
-                    //derivative of rssi respect to zi
+                    // Pr(pi) = Pr(p1) -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/
+                    //       (ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
 
-                    //Pr(pi) = Pr(p1) -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/
-                    //      (ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
+                    // diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/diff(zi) =
+                    //   diff(z1*zi -za*zi -z1^2 + za*z1)/diff(zi) =
+                    //   z1 - za
 
-                    //diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/diff(zi) =
-                    //  diff(z1*zi -za*zi -z1^2 + za*z1)/diff(zi) =
-                    //  z1 - za
-
-                    //diff(Pr(pi))/diff(zi) = -10*n/ln(10)*((z1 - za)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
-                    //diff(Pr(pi))/diff(zi) = -10*n/ln(10)*((z1 - za)*d1a^2)/d1a^4
-                    //diff(Pr(pi))/diff(zi) = -10*n*(z1 - za)/(ln(10*d1a^2)
+                    // diff(Pr(pi))/diff(zi) = -10*n/ln(10)*((z1 - za)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
+                    // diff(Pr(pi))/diff(zi) = -10*n/ln(10)*((z1 - za)*d1a^2)/d1a^4
+                    // diff(Pr(pi))/diff(zi) = -10*n*(z1 - za)/(ln(10*d1a^2)
                     final double derivativeZi = -10.0 * pathLossExponent * diffZ1a / (ln10 * d1a2);
 
-                    //set derivatives fingerprintRssi, pathLossExponent, x1, y1, z1, xa, ya, za, xi, yi, zi
+                    // set derivatives fingerprintRssi, pathLossExponent, x1, y1, z1, xa, ya, za, xi, yi, zi
                     jacobian.setElementAtIndex(0, derivativeFingerprintRssi);
                     jacobian.setElementAtIndex(1, derivativePathLossExponent);
                     jacobian.setElementAtIndex(2, derivativeX1);
@@ -810,14 +795,14 @@ public class Utils {
             return null;
         }
 
-        //2nd order Taylor expression of received power in 2D:
-        //Pr(pi) = Pr(p1)
-        //  - 10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
-        //  - 10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
-        //  - 5*n*((y1 - ya)^2 - (x1 - xa)^2)/(ln(10)*d1a^4)*(xi - x1)^2
-        //  - 5*n*((x1 - xa)^2 - (y1 - ya)^2)/(ln(10)*d1a^4)*(yi - y1)^2
-        //  + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4))*(xi - x1)*(yi - y1)
-        //where d1a^2 = (x1 - xa)^2 + (y1 - ya)^2
+        // 2nd order Taylor expression of received power in 2D:
+        // Pr(pi) = Pr(p1)
+        //   - 10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
+        //   - 10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
+        //   - 5*n*((y1 - ya)^2 - (x1 - xa)^2)/(ln(10)*d1a^4)*(xi - x1)^2
+        //   - 5*n*((x1 - xa)^2 - (y1 - ya)^2)/(ln(10)*d1a^4)*(yi - y1)^2
+        //   + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4))*(xi - x1)*(yi - y1)
+        // where d1a^2 = (x1 - xa)^2 + (y1 - ya)^2
 
         final double x1 = fingerprintPosition.getInhomX();
         final double y1 = fingerprintPosition.getInhomY();
@@ -868,21 +853,21 @@ public class Utils {
                 public void evaluate(
                         final double[] x, final double[] y, final Matrix jacobian) {
 
-                    //Pr(pi) = Pr(p1)
-                    //  - 10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
-                    //  - 10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
-                    //  - 5*n*((y1 - ya)^2 - (x1 - xa)^2)/(ln(10)*d1a^4)*(xi - x1)^2
-                    //  - 5*n*((x1 - xa)^2 - (y1 - ya)^2)/(ln(10)*d1a^4)*(yi - y1)^2
-                    //  + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4))*(xi - x1)*(yi - y1)
-                    //where d1a^2 = (x1 - xa)^2 + (y1 - ya)^2
+                    // Pr(pi) = Pr(p1)
+                    //   - 10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
+                    //   - 10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
+                    //   - 5*n*((y1 - ya)^2 - (x1 - xa)^2)/(ln(10)*d1a^4)*(xi - x1)^2
+                    //   - 5*n*((x1 - xa)^2 - (y1 - ya)^2)/(ln(10)*d1a^4)*(yi - y1)^2
+                    //   + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4))*(xi - x1)*(yi - y1)
+                    // where d1a^2 = (x1 - xa)^2 + (y1 - ya)^2
 
-                    //Hence:
-                    //Pr(pi) = Pr(p1)
-                    //  - 10*n*(x1 - xa)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))*(xi - x1)
-                    //  - 10*n*(y1 - ya)/(ln(10)*(x1 - xa)^2 + (y1 - ya)^2)*(yi - y1)
-                    //  - 5*n*((y1 - ya)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(xi - x1)^2
-                    //  - 5*n*((x1 - xa)^2 - (y1 - ya)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(yi - y1)^2
-                    //  + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(xi - x1)*(yi - y1)
+                    // Hence:
+                    // Pr(pi) = Pr(p1)
+                    //   - 10*n*(x1 - xa)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))*(xi - x1)
+                    //   - 10*n*(y1 - ya)/(ln(10)*(x1 - xa)^2 + (y1 - ya)^2)*(yi - y1)
+                    //   - 5*n*((y1 - ya)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(xi - x1)^2
+                    //   - 5*n*((x1 - xa)^2 - (y1 - ya)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(yi - y1)^2
+                    //   + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(xi - x1)*(yi - y1)
 
                     final double diffX1a = x1 - xa;
                     final double diffY1a = y1 - ya;
@@ -909,71 +894,69 @@ public class Utils {
                             - 5.0 * pathLossExponent * (diffX1a2 - diffY1a2) / (ln10 * d1a4) * diffYi12
                             + 20.0 * pathLossExponent * diffX1a * diffY1a / (ln10 * d1a4) * diffXi1 * diffYi1;
 
-                    //compute gradient (is a jacobian having 1 row and 8 columns)
+                    // compute gradient (is a jacobian having 1 row and 8 columns)
 
 
-                    //derivative of rssi respect to fingerprint rssi
+                    // derivative of rssi respect to fingerprint rssi
                     final double derivativeFingerprintRssi = 1.0;
 
-                    //derivative of rssi respect to path-loss exponent
+                    // derivative of rssi respect to path-loss exponent
 
-                    //diff(Pr(pi))/diff(n) = -10*(x1 - xa)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))*(xi - x1)
-                    //  -10*(y1 - ya)/(ln(10)*(x1 - xa)^2 + (y1 - ya)^2)*(yi - y1)
-                    //  -5*((y1 - ya)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(xi - x1)^2
-                    //  -5*((x1 - xa)^2 - (y1 - ya)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(yi - y1)^2
-                    //  +20*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(xi - x1)*(yi - y1)
+                    // diff(Pr(pi))/diff(n) = -10*(x1 - xa)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))*(xi - x1)
+                    //   -10*(y1 - ya)/(ln(10)*(x1 - xa)^2 + (y1 - ya)^2)*(yi - y1)
+                    //   -5*((y1 - ya)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(xi - x1)^2
+                    //   -5*((x1 - xa)^2 - (y1 - ya)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(yi - y1)^2
+                    //   +20*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(xi - x1)*(yi - y1)
                     final double derivativePathLossExponent = -10.0 * diffX1a / (ln10 * d1a2) * diffXi1
                             - 10.0 * diffY1a / (ln10 * d1a2) * diffYi1
                             - 5.0 * (-diffX1a2 + diffY1a2) / (ln10 * d1a4) * diffXi12
                             - 5.0 * (diffX1a2 - diffY1a2) / (ln10 * d1a4) * diffYi12
                             + 20.0 * diffX1a * diffY1a / (ln10 * d1a4) * diffXi1 * diffYi1;
 
+                    // derivative of rssi respect to x1
 
-                    //derivative of rssi respect to x1
+                    // We have
+                    // Pr(pi) = Pr(p1)
+                    //   - 10*n*(x1 - xa)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))*(xi - x1)
+                    //   - 10*n*(y1 - ya)/(ln(10)*(x1 - xa)^2 + (y1 - ya)^2)*(yi - y1)
+                    //   - 5*n*((y1 - ya)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(xi - x1)^2
+                    //   - 5*n*((x1 - xa)^2 - (y1 - ya)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(yi - y1)^2
+                    //   + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(xi - x1)*(yi - y1)
 
-                    //We have
-                    //Pr(pi) = Pr(p1)
-                    //  - 10*n*(x1 - xa)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))*(xi - x1)
-                    //  - 10*n*(y1 - ya)/(ln(10)*(x1 - xa)^2 + (y1 - ya)^2)*(yi - y1)
-                    //  - 5*n*((y1 - ya)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(xi - x1)^2
-                    //  - 5*n*((x1 - xa)^2 - (y1 - ya)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(yi - y1)^2
-                    //  + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(xi - x1)*(yi - y1)
+                    // Pr(pi) = Pr(p1)
+                    //   - 10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))
+                    //   + 5*n*((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2)
+                    //   + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(xi - x1)*(yi - y1)
 
-                    //Pr(pi) = Pr(p1)
-                    //  - 10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))
-                    //  + 5*n*((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2)
-                    //  + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(xi - x1)*(yi - y1)
+                    // and we know that: (f(x)/g(x))' = (f'(x)*g(x) - f(x)*g'(x))/g(x)^2
+                    // and also that (f(x)*g(x))' = f'(x)*g(x) + f(x)*g'(x)
 
+                    // Hence
+                    // diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/diff(x1) =
+                    //   diff(x1*xi -xa*xi -x1^2 + xa*x1)/diff(x1) =
+                    //   diff(-x1^2 + (xi + xa)*x1 - xa*xi)/diff(x1) =
+                    //   -2*x1 + xi + xa
 
-                    //and we know that: (f(x)/g(x))' = (f'(x)*g(x) - f(x)*g'(x))/g(x)^2
-                    //and also that (f(x)*g(x))' = f'(x)*g(x) + f(x)*g'(x)
+                    // diff(((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2))/diff(x1) =
+                    //   2*(x1 - xa)*((xi - x1)^2 - (yi - y1)^2) - 2*(xi - x1)*((x1 - xa)^2 - (y1 - ya)^2)
 
-                    //Hence
-                    //diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/diff(x1) =
-                    //  diff(x1*xi -xa*xi -x1^2 + xa*x1)/diff(x1) =
-                    //  diff(-x1^2 + (xi + xa)*x1 - xa*xi)/diff(x1) =
-                    //  -2*x1 + xi + xa
+                    // diff((x1 - xa)*(y1 - ya))/diff(x1) =
+                    //   y1 - ya
 
-                    //diff(((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2))/diff(x1) =
-                    //  2*(x1 - xa)*((xi - x1)^2 - (yi - y1)^2) - 2*(xi - x1)*((x1 - xa)^2 - (y1 - ya)^2)
+                    // diff((xi - x1)*(yi - y1))/diff(x1) =
+                    //  -(yi - y1)
 
-                    //diff((x1 - xa)*(y1 - ya))/diff(x1) =
-                    //  y1 - ya
+                    // diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(x1) =
+                    //   (y1 - ya)*(xi - x1)*(yi - y1) - (x1 - xa)*(y1 - ya)*(yi - y1) =
+                    //   ((y1 - ya)*(xi - x1) - (x1 - xa)*(y1 - ya))*(yi - y1)
 
-                    //diff((xi - x1)*(yi - y1))/diff(x1) =
-                    // -(yi - y1)
+                    // diff(Pr(pi))/diff(x1) = -10*n/ln(10)*((-2*x1 + xi + xa)*((x1 - xa)^2 + (y1 - ya)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2)^2
+                    //   + 5*n/ln(10)*(2*((x1 - xa)*((xi - x1)^2 - (yi - y1)^2) - (xi - x1)*((x1 - xa)^2 - (y1 - ya)^2))*((x1 - xa)^2 + (y1 - ya)^2)^2 - ((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2))*2*((x1 - xa)^2 + (y1 - ya)^2)*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2)^4
+                    //   + 20*n/ln(10)*(((y1 - ya)*(xi - x1) - (x1 - xa)*(y1 - ya))*(yi - y1)*((x1 - xa)^2 + (y1 - ya)^2)^2 - (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*2*((x1 - xa)^2 + (y1 - ya)^2)*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2)^4
 
-                    //diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(x1) =
-                    //  (y1 - ya)*(xi - x1)*(yi - y1) - (x1 - xa)*(y1 - ya)*(yi - y1) =
-                    //  ((y1 - ya)*(xi - x1) - (x1 - xa)*(y1 - ya))*(yi - y1)
-
-                    //diff(Pr(pi))/diff(x1) = -10*n/ln(10)*((-2*x1 + xi + xa)*((x1 - xa)^2 + (y1 - ya)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2)^2
-                    //  + 5*n/ln(10)*(2*((x1 - xa)*((xi - x1)^2 - (yi - y1)^2) - (xi - x1)*((x1 - xa)^2 - (y1 - ya)^2))*((x1 - xa)^2 + (y1 - ya)^2)^2 - ((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2))*2*((x1 - xa)^2 + (y1 - ya)^2)*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2)^4
-                    //  + 20*n/ln(10)*(((y1 - ya)*(xi - x1) - (x1 - xa)*(y1 - ya))*(yi - y1)*((x1 - xa)^2 + (y1 - ya)^2)^2 - (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*2*((x1 - xa)^2 + (y1 - ya)^2)*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2)^4
-
-                    //diff(Pr(pi))/diff(x1) = -10*n/ln(10)*((-2*x1 + xi + xa)*d1a^2 - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*2*(x1 - xa))/d1a^4
-                    //  + 5*n/ln(10)*(2*((x1 - xa)*((xi - x1)^2 - (yi - y1)^2) - (xi - x1)*((x1 - xa)^2 - (y1 - ya)^2))*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2))*4*d1a^2*(x1 - xa))/d1a^8
-                    //  + 20*n/ln(10)*(((y1 - ya)*(xi - x1) - (x1 - xa)*(y1 - ya))*(yi - y1)*d1a^4 - (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*4*d1a^2*(x1 - xa))/d1a^8
+                    // diff(Pr(pi))/diff(x1) = -10*n/ln(10)*((-2*x1 + xi + xa)*d1a^2 - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*2*(x1 - xa))/d1a^4
+                    //   + 5*n/ln(10)*(2*((x1 - xa)*((xi - x1)^2 - (yi - y1)^2) - (xi - x1)*((x1 - xa)^2 - (y1 - ya)^2))*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2))*4*d1a^2*(x1 - xa))/d1a^8
+                    //   + 20*n/ln(10)*(((y1 - ya)*(xi - x1) - (x1 - xa)*(y1 - ya))*(yi - y1)*d1a^4 - (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*4*d1a^2*(x1 - xa))/d1a^8
                     final double crossDiff = diffX1a * diffXi1 + diffY1a * diffYi1;
                     final double tmpX = crossDiff * 2.0 * diffX1a;
                     final double tmpX2 = (diffX1a2 - diffY1a2) * (diffXi12 - diffYi12) * 4.0 * d1a2 * diffX1a;
@@ -982,52 +965,50 @@ public class Utils {
                             + 5.0 * pathLossExponent / ln10 * (2.0 * (diffX1a * (diffXi12 - diffYi12) - diffXi1 * (diffX1a2 - diffY1a2)) * d1a4 - tmpX2) / d1a8
                             + 20.0 * pathLossExponent / ln10 * ((diffY1a * diffXi1 - diffX1a * diffY1a) * diffYi1 * d1a4 - tmpX3) / d1a8;
 
+                    // derivative of rssi respect to y1
 
-                    //derivative of rssi respect to y1
+                    // We have
+                    // Pr(pi) = Pr(p1)
+                    //   - 10*n*(x1 - xa)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))*(xi - x1)
+                    //   - 10*n*(y1 - ya)/(ln(10)*(x1 - xa)^2 + (y1 - ya)^2)*(yi - y1)
+                    //   - 5*n*((y1 - ya)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(xi - x1)^2
+                    //   - 5*n*((x1 - xa)^2 - (y1 - ya)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(yi - y1)^2
+                    //   + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(xi - x1)*(yi - y1)
 
-                    //We have
-                    //Pr(pi) = Pr(p1)
-                    //  - 10*n*(x1 - xa)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))*(xi - x1)
-                    //  - 10*n*(y1 - ya)/(ln(10)*(x1 - xa)^2 + (y1 - ya)^2)*(yi - y1)
-                    //  - 5*n*((y1 - ya)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(xi - x1)^2
-                    //  - 5*n*((x1 - xa)^2 - (y1 - ya)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(yi - y1)^2
-                    //  + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(xi - x1)*(yi - y1)
+                    // Pr(pi) = Pr(p1)
+                    //   - 10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))
+                    //   + 5*n*((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2)
+                    //   + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(xi - x1)*(yi - y1)
 
-                    //Pr(pi) = Pr(p1)
-                    //  - 10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))
-                    //  + 5*n*((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2)
-                    //  + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(xi - x1)*(yi - y1)
+                    // and we know that: (f(x)/g(x))' = (f'(x)*g(x) - f(x)*g'(x))/g(x)^2
+                    // and also that (f(x)*g(x))' = f'(x)*g(x) + f(x)*g'(x)
 
+                    // Hence
+                    // diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/diff(y1) =
+                    //   diff(y1*yi -ya*yi -y1^2 + ya*y1)/diff(y1) =
+                    //   diff(-y1^2 + (yi + ya)*y1 - ya*yi)/diff(y1) =
+                    //   -2*y1 + yi + ya
 
-                    //and we know that: (f(x)/g(x))' = (f'(x)*g(x) - f(x)*g'(x))/g(x)^2
-                    //and also that (f(x)*g(x))' = f'(x)*g(x) + f(x)*g'(x)
+                    // diff(((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2))/diff(y1) =
+                    //   -2*(y1 - ya)*((xi - x1)^2 - (yi - y1)^2) + 2*(yi - y1)*((x1 - xa)^2 - (y1 - ya)^2)
 
-                    //Hence
-                    //diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/diff(y1) =
-                    //  diff(y1*yi -ya*yi -y1^2 + ya*y1)/diff(y1) =
-                    //  diff(-y1^2 + (yi + ya)*y1 - ya*yi)/diff(y1) =
-                    //  -2*y1 + yi + ya
+                    // diff((x1 - xa)*(y1 - ya))/diff(y1) =
+                    //   x1 - xa
 
-                    //diff(((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2))/diff(y1) =
-                    //  -2*(y1 - ya)*((xi - x1)^2 - (yi - y1)^2) + 2*(yi - y1)*((x1 - xa)^2 - (y1 - ya)^2)
+                    // diff((xi - x1)*(yi - y1))/diff(y1) =
+                    //  -(xi - x1)
 
-                    //diff((x1 - xa)*(y1 - ya))/diff(y1) =
-                    //  x1 - xa
+                    // diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(y1) =
+                    //   (x1 - xa)*(xi - x1)*(yi - y1) - (x1 - xa)*(y1 - ya)*(xi - x1) =
+                    //   ((x1 - xa)*(yi - y1) - (x1 - xa)*(y1 - ya))*(xi - x1)
 
-                    //diff((xi - x1)*(yi - y1))/diff(y1) =
-                    // -(xi - x1)
+                    // diff(Pr(pi))/diff(y1) = -10*n/ln(10)*((-2*y1 + yi + ya)*((x1 - xa)^2 + (y1 - ya)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2)^2
+                    //   + 5*n/ln(10)*(2*(-(y1 - ya)*((xi - x1)^2 - (yi - y1)^2) + (yi - y1)*((x1 - xa)^2 - (y1 - ya)^2))*((x1 - xa)^2 + (y1 - ya)^2)^2 - ((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2)*2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2)^4
+                    //   + 20*n/ln(10)*(((x1 - xa)*(yi - y1) - (x1 - xa)*(y1 - ya))*(xi - x1)*((x1 - xa)^2 + (y1 - ya)^2)^2 - (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*2*((x1 - xa)^2 + (y1 - ya)^2)*2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2)^4
 
-                    //diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(y1) =
-                    //  (x1 - xa)*(xi - x1)*(yi - y1) - (x1 - xa)*(y1 - ya)*(xi - x1) =
-                    //  ((x1 - xa)*(yi - y1) - (x1 - xa)*(y1 - ya))*(xi - x1)
-
-                    //diff(Pr(pi))/diff(y1) = -10*n/ln(10)*((-2*y1 + yi + ya)*((x1 - xa)^2 + (y1 - ya)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2)^2
-                    //  + 5*n/ln(10)*(2*(-(y1 - ya)*((xi - x1)^2 - (yi - y1)^2) + (yi - y1)*((x1 - xa)^2 - (y1 - ya)^2))*((x1 - xa)^2 + (y1 - ya)^2)^2 - ((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2)*2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2)^4
-                    //  + 20*n/ln(10)*(((x1 - xa)*(yi - y1) - (x1 - xa)*(y1 - ya))*(xi - x1)*((x1 - xa)^2 + (y1 - ya)^2)^2 - (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*2*((x1 - xa)^2 + (y1 - ya)^2)*2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2)^4
-
-                    //diff(Pr(pi))/diff(y1) = -10*n/ln(10)*((-2*y1 + yi + ya)*d1a^2 - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*2*(y1 - ya))/d1a^4
-                    //  + 5*n/ln(10)*(2*(-(y1 - ya)*((xi - x1)^2 - (yi - y1)^2) + (yi - y1)*((x1 - xa)^2 - (y1 - ya)^2))*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2)*4*d1a^2*(y1 - ya))/d1a^8
-                    //  + 20*n/ln(10)*(((x1 - xa)*(yi - y1) - (x1 - xa)*(y1 - ya))*(xi - x1)*d1a^4 - (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*4*d1a^2*(y1 - ya))/d1a^8
+                    // diff(Pr(pi))/diff(y1) = -10*n/ln(10)*((-2*y1 + yi + ya)*d1a^2 - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*2*(y1 - ya))/d1a^4
+                    //   + 5*n/ln(10)*(2*(-(y1 - ya)*((xi - x1)^2 - (yi - y1)^2) + (yi - y1)*((x1 - xa)^2 - (y1 - ya)^2))*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2)*4*d1a^2*(y1 - ya))/d1a^8
+                    //   + 20*n/ln(10)*(((x1 - xa)*(yi - y1) - (x1 - xa)*(y1 - ya))*(xi - x1)*d1a^4 - (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*4*d1a^2*(y1 - ya))/d1a^8
                     final double tmpY = crossDiff * 2.0 * diffY1a;
                     final double tmpY2 = (diffX1a2 - diffY1a2) * (diffXi12 - diffYi12) * 4.0 * d1a2 * diffY1a;
                     final double tmpY3 = diffX1a * diffY1a * diffXi1 * diffYi1 * 4.0 * d1a2 * diffY1a;
@@ -1035,128 +1016,123 @@ public class Utils {
                             + 5.0 * pathLossExponent / ln10 * (2.0 * (-diffY1a * (diffXi12 - diffYi12) + diffYi1 * (diffX1a2 - diffY1a2)) * d1a4 - tmpY2) / d1a8
                             + 20.0 * pathLossExponent / ln10 * ((diffX1a * diffYi1 - diffX1a * diffY1a) * diffXi1 * d1a4 - tmpY3) / d1a8;
 
+                    // derivative of rssi respect to xa
 
-                    //derivative of rssi respect to xa
+                    // Pr(pi) = Pr(p1)
+                    //   - 10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))
+                    //   + 5*n*((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2)
+                    //   + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(xi - x1)*(yi - y1)
 
-                    //Pr(pi) = Pr(p1)
-                    //  - 10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))
-                    //  + 5*n*((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2)
-                    //  + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(xi - x1)*(yi - y1)
+                    // diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/diff(xa) =
+                    //   -(xi - x1)
 
-                    //diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/diff(xa) =
-                    //  -(xi - x1)
+                    // diff(((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2))/diff(xa) =
+                    //   -2*(x1 - xa)*((xi - x1)^2 - (yi - y1)^2)
 
-                    //diff(((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2))/diff(xa) =
-                    //  -2*(x1 - xa)*((xi - x1)^2 - (yi - y1)^2)
+                    // diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(xa) =
+                    //   -(y1 - ya)*(xi - x1)*(yi - y1)
 
-                    //diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(xa) =
-                    //  -(y1 - ya)*(xi - x1)*(yi - y1)
+                    // diff(Pr(pi))/diff(xa) = -10*n/ln(10)*(-(xi - x1)*((x1 - xa)^2 + (y1 - ya)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*-2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2)^2
+                    //   + 5*n/ln(10)*(-2*(x1 - xa)*((xi - x1)^2 - (yi - y1)^2)*((x1 - xa)^2 + (y1 - ya)^2)^2 - ((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2)*-2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2)^4
+                    //   + 20*n*(-(y1 - ya)*(xi - x1)*(yi - y1)*((x1 - xa)^2 + (y1 - ya)^2)^2 - (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*2*((x1 - xa)^2 + (y1 - ya)^2)*-2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2)^4
 
-                    //diff(Pr(pi))/diff(xa) = -10*n/ln(10)*(-(xi - x1)*((x1 - xa)^2 + (y1 - ya)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*-2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2)^2
-                    //  + 5*n/ln(10)*(-2*(x1 - xa)*((xi - x1)^2 - (yi - y1)^2)*((x1 - xa)^2 + (y1 - ya)^2)^2 - ((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2)*-2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2)^4
-                    //  + 20*n*(-(y1 - ya)*(xi - x1)*(yi - y1)*((x1 - xa)^2 + (y1 - ya)^2)^2 - (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*2*((x1 - xa)^2 + (y1 - ya)^2)*-2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2)^4
-
-                    //diff(Pr(pi))/diff(xa) = -10*n/ln(10)*(-(xi - x1)*d1a^2 + ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*2*(x1 - xa))/d1a^4
-                    //  + 5*n/ln(10)*(-2*(x1 - xa)*((xi - x1)^2 - (yi - y1)^2)*d1a^4 + ((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2)*4*d1a^2*(x1 - xa))/d1a^8
-                    //  + 20*n/ln(10)*(-(y1 - ya)*(xi - x1)*(yi - y1)*d1a^4 + (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*4*d1a^2*(x1 - xa))/d1a^8
+                    // diff(Pr(pi))/diff(xa) = -10*n/ln(10)*(-(xi - x1)*d1a^2 + ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*2*(x1 - xa))/d1a^4
+                    //   + 5*n/ln(10)*(-2*(x1 - xa)*((xi - x1)^2 - (yi - y1)^2)*d1a^4 + ((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2)*4*d1a^2*(x1 - xa))/d1a^8
+                    //   + 20*n/ln(10)*(-(y1 - ya)*(xi - x1)*(yi - y1)*d1a^4 + (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*4*d1a^2*(x1 - xa))/d1a^8
                     final double derivativeXa = -10.0 * pathLossExponent / ln10 * (-diffXi1 * d1a2 + tmpX) / d1a4
                             + 5.0 * pathLossExponent / ln10 * (-2.0 * diffX1a * (diffXi12 - diffYi12) * d1a4 + tmpX2) / d1a8
                             + 20.0 * pathLossExponent / ln10 * (-diffY1a * diffXi1 * diffYi1 * d1a4 + tmpX3) / d1a8;
 
+                    // derivative of rssi respect to ya
 
-                    //derivative of rssi respect to ya
+                    // Pr(pi) = Pr(p1)
+                    //   - 10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))
+                    //   + 5*n*((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2)
+                    //   + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(xi - x1)*(yi - y1)
 
-                    //Pr(pi) = Pr(p1)
-                    //  - 10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))
-                    //  + 5*n*((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2)
-                    //  + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(xi - x1)*(yi - y1)
+                    // diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/diff(ya) =
+                    //   -(yi - y1)
 
-                    //diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/diff(ya) =
-                    //  -(yi - y1)
+                    // diff(((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2))/diff(ya) =
+                    //   2*(y1 - ya)*((xi - x1)^2 - (yi - y1)^2)
 
-                    //diff(((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2))/diff(ya) =
-                    //  2*(y1 - ya)*((xi - x1)^2 - (yi - y1)^2)
+                    // diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(ya) =
+                    //   -(x1 - xa)*(xi - x1)*(yi - y1)
 
-                    //diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(ya) =
-                    //  -(x1 - xa)*(xi - x1)*(yi - y1)
+                    // diff(Pr(pi))/diff(ya) = -10*n/ln(10)*(-(yi - y1)*((x1 - xa)^2 + (y1 - ya)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*-2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2)^2
+                    //   + 5*n/ln(10)*(2*(y1 - ya)*((xi - x1)^2 - (yi - y1)^2)*((x1 - xa)^2 + (y1 - ya)^2)^2 - ((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2)*-2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2)^4
+                    //   + 20*n/ln(10)*(-(x1 - xa)*(xi - x1)*(yi - y1)*((x1 - xa)^2 + (y1 - ya)^2)^2 - (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*2*((x1 - xa)^2 + (y1 - ya)^2)*-2(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2)^4
 
-                    //diff(Pr(pi))/diff(ya) = -10*n/ln(10)*(-(yi - y1)*((x1 - xa)^2 + (y1 - ya)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*-2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2)^2
-                    //  + 5*n/ln(10)*(2*(y1 - ya)*((xi - x1)^2 - (yi - y1)^2)*((x1 - xa)^2 + (y1 - ya)^2)^2 - ((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2)*-2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2)^4
-                    //  + 20*n/ln(10)*(-(x1 - xa)*(xi - x1)*(yi - y1)*((x1 - xa)^2 + (y1 - ya)^2)^2 - (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*2*((x1 - xa)^2 + (y1 - ya)^2)*-2(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2)^4
-
-                    //diff(Pr(pi))/diff(ya) = -10*n/ln(10)*(-(yi - y1)*d1a^2 + ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*2*(y1 - ya))/d1a^4
-                    //  + 5*n/ln(10)*(2*(y1 - ya)*((xi - x1)^2 - (yi - y1)^2)*d1a^4 + ((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2)*4*d1a^2*(y1 - ya))/d1a^8
-                    //  + 20*n/ln(10)*(-(x1 - xa)*(xi - x1)*(yi - y1)*d1a^4 + (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*4*d1a^2*(y1 - ya))/d1a^8
+                    // diff(Pr(pi))/diff(ya) = -10*n/ln(10)*(-(yi - y1)*d1a^2 + ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*2*(y1 - ya))/d1a^4
+                    //   + 5*n/ln(10)*(2*(y1 - ya)*((xi - x1)^2 - (yi - y1)^2)*d1a^4 + ((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2)*4*d1a^2*(y1 - ya))/d1a^8
+                    //   + 20*n/ln(10)*(-(x1 - xa)*(xi - x1)*(yi - y1)*d1a^4 + (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*4*d1a^2*(y1 - ya))/d1a^8
                     final double derivativeYa = -10.0 * pathLossExponent / ln10 * (-diffYi1 * d1a2 + tmpY) / d1a4
                             + 5.0 * pathLossExponent / ln10 * (2.0 * diffY1a * (diffXi12 - diffYi12) * d1a4 + tmpY2) / d1a8
                             + 20.0 * pathLossExponent / ln10 * (-diffX1a * diffXi1 * diffYi1 * d1a4 + tmpY3) / d1a8;
 
+                    // derivative of rssi respect to xi
 
-                    //derivative of rssi respect to xi
+                    // Pr(pi) = Pr(p1)
+                    //   - 10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))
+                    //   + 5*n*((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2)
+                    //   + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(xi - x1)*(yi - y1)
 
-                    //Pr(pi) = Pr(p1)
-                    //  - 10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))
-                    //  + 5*n*((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2)
-                    //  + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(xi - x1)*(yi - y1)
+                    // diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/diff(xi) =
+                    //   x1 - xa
 
-                    //diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/diff(xi) =
-                    //  x1 - xa
+                    // diff(((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2))/diff(xi) =
+                    //   2*((x1 - xa)^2 - (y1 - ya)^2)*(xi - x1)
 
-                    //diff(((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2))/diff(xi) =
-                    //  2*((x1 - xa)^2 - (y1 - ya)^2)*(xi - x1)
+                    // diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(xi) =
+                    //   (x1 - xa)*(y1 - ya)*(yi - y1)
 
-                    //diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(xi) =
-                    //  (x1 - xa)*(y1 - ya)*(yi - y1)
+                    // diff(Pr(pi))/diff(xi) = -10*n/ln(10)*((x1 - xa)*((x1 - xa)^2 + (y1 - ya)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*0)/((x1 - xa)^2 + (y1 - ya)^2)^2
+                    //   + 5*n/ln(10)*(2*((x1 - xa)^2 - (y1 - ya)^2)*(xi - x1)*((x1 - xa)^2 + (y1 - ya)^2)^2 - ((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2)*0)/((x1 - xa)^2 + (y1 - ya)^2)^4
+                    //   + 20*n/ln(10)*((x1 - xa)*(y1 - ya)*(yi - y1)*((x1 - xa)^2 + (y1 - ya)^2)^2 - (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*0)/((x1 - xa)^2 + (y1 - ya)^2)^4
 
-                    //diff(Pr(pi))/diff(xi) = -10*n/ln(10)*((x1 - xa)*((x1 - xa)^2 + (y1 - ya)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*0)/((x1 - xa)^2 + (y1 - ya)^2)^2
-                    //  + 5*n/ln(10)*(2*((x1 - xa)^2 - (y1 - ya)^2)*(xi - x1)*((x1 - xa)^2 + (y1 - ya)^2)^2 - ((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2)*0)/((x1 - xa)^2 + (y1 - ya)^2)^4
-                    //  + 20*n/ln(10)*((x1 - xa)*(y1 - ya)*(yi - y1)*((x1 - xa)^2 + (y1 - ya)^2)^2 - (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*0)/((x1 - xa)^2 + (y1 - ya)^2)^4
+                    // diff(Pr(pi))/diff(xi) = -10*n/ln(10)*((x1 - xa)*d1a^2)/d1a^4
+                    //   + 5*n/ln(10)*(2*((x1 - xa)^2 - (y1 - ya)^2)*(xi - x1)*d1a^4)/d1a^8
+                    //   + 20*n/ln(10)*((x1 - xa)*(y1 - ya)*(yi - y1)*d1a^4)/d1a^8
 
-                    //diff(Pr(pi))/diff(xi) = -10*n/ln(10)*((x1 - xa)*d1a^2)/d1a^4
-                    //  + 5*n/ln(10)*(2*((x1 - xa)^2 - (y1 - ya)^2)*(xi - x1)*d1a^4)/d1a^8
-                    //  + 20*n/ln(10)*((x1 - xa)*(y1 - ya)*(yi - y1)*d1a^4)/d1a^8
-
-                    //diff(Pr(pi))/diff(xi) = -10*n/ln(10)*(x1 - xa)/d1a^2
-                    //  + 10*n/ln(10)*(((x1 - xa)^2 - (y1 - ya)^2)*(xi - x1))/d1a^4
-                    //  + 20*n/ln(10)*(x1 - xa)*(y1 - ya)*(yi - y1)/d1a^4
+                    // diff(Pr(pi))/diff(xi) = -10*n/ln(10)*(x1 - xa)/d1a^2
+                    //   + 10*n/ln(10)*(((x1 - xa)^2 - (y1 - ya)^2)*(xi - x1))/d1a^4
+                    //   + 20*n/ln(10)*(x1 - xa)*(y1 - ya)*(yi - y1)/d1a^4
                     final double derivativeXi = -10.0 * pathLossExponent / ln10 * diffX1a / d1a2
                             + 10.0 * pathLossExponent / ln10 * ((diffX1a2 - diffY1a2) * diffXi1) / d1a4
                             + 20.0 * pathLossExponent / ln10 * diffX1a * diffY1a * diffYi1 / d1a4;
 
+                    // derivative of rssi respect to yi
 
-                    //derivative of rssi respect to yi
+                    // Pr(pi) = Pr(p1)
+                    //   - 10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))
+                    //   + 5*n*((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2)
+                    //   + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(xi - x1)*(yi - y1)
 
-                    //Pr(pi) = Pr(p1)
-                    //  - 10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))
-                    //  + 5*n*((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2)
-                    //  + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2))*(xi - x1)*(yi - y1)
+                    // diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/diff(yi) =
+                    //   y1 - ya
 
-                    //diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))/diff(yi) =
-                    //  y1 - ya
+                    // diff(((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2))/diff(yi) =
+                    //   2*((x1 - xa)^2 - (y1 - ya)^2)*(yi - y1)
 
-                    //diff(((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2))/diff(yi) =
-                    //  2*((x1 - xa)^2 - (y1 - ya)^2)*(yi - y1)
+                    // diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(yi) =
+                    //   (x1 - xa)*(y1 - ya)*(xi - x1)
 
-                    //diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(yi) =
-                    //  (x1 - xa)*(y1 - ya)*(xi - x1)
+                    // diff(Pr(pi))/diff(yi) = -10*n/ln(10)*((y1 - ya)*((x1 - xa)^2 + (y1 - ya)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*0)/((x1 - xa)^2 + (y1 - ya)^2)^2
+                    //   + 5*n/ln(10)*(2*((x1 - xa)^2 - (y1 - ya)^2)*(yi - y1)*((x1 - xa)^2 + (y1 - ya)^2)^2 - ((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2)*0)/((x1 - xa)^2 + (y1 - ya)^2)^4
+                    //   + 20*n/ln(10)*((x1 - xa)*(y1 - ya)*(xi - x1)*((x1 - xa)^2 + (y1 - ya)^2)^2 - (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*0)/((x1 - xa)^2 + (y1 - ya)^2)^4
 
-                    //diff(Pr(pi))/diff(yi) = -10*n/ln(10)*((y1 - ya)*((x1 - xa)^2 + (y1 - ya)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1))*0)/((x1 - xa)^2 + (y1 - ya)^2)^2
-                    //  + 5*n/ln(10)*(2*((x1 - xa)^2 - (y1 - ya)^2)*(yi - y1)*((x1 - xa)^2 + (y1 - ya)^2)^2 - ((x1 - xa)^2 - (y1 - ya)^2)*((xi - x1)^2 - (yi - y1)^2)*0)/((x1 - xa)^2 + (y1 - ya)^2)^4
-                    //  + 20*n/ln(10)*((x1 - xa)*(y1 - ya)*(xi - x1)*((x1 - xa)^2 + (y1 - ya)^2)^2 - (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*0)/((x1 - xa)^2 + (y1 - ya)^2)^4
+                    // diff(Pr(pi))/diff(yi) = -10*n/ln(10)*((y1 - ya)*d1a^2)/d1a^4
+                    //   + 5*n/ln(10)*(2*((x1 - xa)^2 - (y1 - ya)^2)*(yi - y1)*d1a^4)/d1a^8
+                    //   + 20*n/ln(10)*((x1 - xa)*(y1 - ya)*(xi - x1)*d1a^4)/d1a^8
 
-                    //diff(Pr(pi))/diff(yi) = -10*n/ln(10)*((y1 - ya)*d1a^2)/d1a^4
-                    //  + 5*n/ln(10)*(2*((x1 - xa)^2 - (y1 - ya)^2)*(yi - y1)*d1a^4)/d1a^8
-                    //  + 20*n/ln(10)*((x1 - xa)*(y1 - ya)*(xi - x1)*d1a^4)/d1a^8
-
-                    //diff(Pr(pi))/diff(yi) = -10*n/ln(10)*(y1 - ya)/d1a^2
-                    //  + 10*n/ln(10)*(((x1 - xa)^2 - (y1 - ya)^2)*(yi - y1))/d1a^4
-                    //  + 20*n/ln(10)*(x1 - xa)*(y1 - ya)*(xi - x1)/d1a^4
+                    // diff(Pr(pi))/diff(yi) = -10*n/ln(10)*(y1 - ya)/d1a^2
+                    //   + 10*n/ln(10)*(((x1 - xa)^2 - (y1 - ya)^2)*(yi - y1))/d1a^4
+                    //   + 20*n/ln(10)*(x1 - xa)*(y1 - ya)*(xi - x1)/d1a^4
                     final double derivativeYi = -10.0 * pathLossExponent / ln10 * diffY1a / d1a2
                             + 10.0 * pathLossExponent / ln10 * ((diffX1a2 - diffY1a2) * diffYi1) / d1a4
                             + 20.0 * pathLossExponent / ln10 * diffX1a * diffY1a * diffXi1 / d1a4;
 
-
-                    //set derivatives fingerprintRssi, pathLossExponent, x1, y1, xa, ya, xi, yi
+                    // set derivatives fingerprintRssi, pathLossExponent, x1, y1, xa, ya, xi, yi
                     jacobian.setElementAtIndex(0, derivativeFingerprintRssi);
                     jacobian.setElementAtIndex(1, derivativePathLossExponent);
                     jacobian.setElementAtIndex(2, derivativeX1);
@@ -1215,18 +1191,18 @@ public class Utils {
             return null;
         }
 
-        //2nd order Taylor expression of received power in 3D:
-        //Pr(pi) = Pr(p1)
-        // - 10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
-        // - 10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
-        // - 10*n*(z1 - za)/(ln(10)*d1a^2)*(zi - z1)
-        // - 5*n*((y1 - ya)^2 + (z1 - za)^2) - (x1 - xa)^2)/(ln(10)*d1a^4)*(xi - x1)^2
-        // - 5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*d1a^4)*(yi - y1)^2
-        // - 5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*d1a^4)*(zi - z1)^2
-        // + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4)*(xi - x1)*(yi - y1)
-        // + 20*n*(y1 - ya)*(z1 - za)/(ln(10)*d1a^4)*(yi - y1)*(zi - z1)
-        // + 20*n*(x1 - xa)*(z1 - za)/(ln(10)*d1a^4)*(xi - x1)*(zi - z1)
-        //where d1a^2 = (x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2
+        // 2nd order Taylor expression of received power in 3D:
+        // Pr(pi) = Pr(p1)
+        //  - 10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
+        //  - 10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
+        //  - 10*n*(z1 - za)/(ln(10)*d1a^2)*(zi - z1)
+        //  - 5*n*((y1 - ya)^2 + (z1 - za)^2) - (x1 - xa)^2)/(ln(10)*d1a^4)*(xi - x1)^2
+        //  - 5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*d1a^4)*(yi - y1)^2
+        //  - 5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*d1a^4)*(zi - z1)^2
+        //  + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4)*(xi - x1)*(yi - y1)
+        //  + 20*n*(y1 - ya)*(z1 - za)/(ln(10)*d1a^4)*(yi - y1)*(zi - z1)
+        //  + 20*n*(x1 - xa)*(z1 - za)/(ln(10)*d1a^4)*(xi - x1)*(zi - z1)
+        // where d1a^2 = (x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2
 
         final double x1 = fingerprintPosition.getInhomX();
         final double y1 = fingerprintPosition.getInhomY();
@@ -1280,29 +1256,29 @@ public class Utils {
                 public void evaluate(
                         final double[] x, final double[] y, final Matrix jacobian) {
 
-                    //Pr(pi) = Pr(p1)
-                    // - 10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
-                    // - 10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
-                    // - 10*n*(z1 - za)/(ln(10)*d1a^2)*(zi - z1)
-                    // - 5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*d1a^4)*(xi - x1)^2
-                    // - 5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*d1a^4)*(yi - y1)^2
-                    // - 5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*d1a^4)*(zi - z1)^2
-                    // + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4)*(xi - x1)*(yi - y1)
-                    // + 20*n*(y1 - ya)*(z1 - za)/(ln(10)*d1a^4)*(yi - y1)*(zi - z1)
-                    // + 20*n*(x1 - xa)*(z1 - za)/(ln(10)*d1a^4)*(xi - x1)*(zi - z1)
-                    //where d1a^2 = (x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2
+                    // Pr(pi) = Pr(p1)
+                    //  - 10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
+                    //  - 10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
+                    //  - 10*n*(z1 - za)/(ln(10)*d1a^2)*(zi - z1)
+                    //  - 5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*d1a^4)*(xi - x1)^2
+                    //  - 5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*d1a^4)*(yi - y1)^2
+                    //  - 5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*d1a^4)*(zi - z1)^2
+                    //  + 20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4)*(xi - x1)*(yi - y1)
+                    //  + 20*n*(y1 - ya)*(z1 - za)/(ln(10)*d1a^4)*(yi - y1)*(zi - z1)
+                    //  + 20*n*(x1 - xa)*(z1 - za)/(ln(10)*d1a^4)*(xi - x1)*(zi - z1)
+                    // where d1a^2 = (x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2
 
-                    //Hence:
-                    //Pr(pi) = Pr(p1)
-                    //  -10*n*(x1 - xa)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*(xi - x1)
-                    //  -10*n*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*(yi - y1)
-                    //  -10*n*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*(zi - z1)
-                    //  -5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)^2
-                    //  -5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)^2
-                    //  -5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(zi - z1)^2
-                    //  +20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(yi - y1)
-                    //  +20*n*(y1 - ya)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)*(zi - z1)
-                    //  +20*n*(x1 - xa)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(zi - z1)
+                    // Hence:
+                    // Pr(pi) = Pr(p1)
+                    //   -10*n*(x1 - xa)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*(xi - x1)
+                    //   -10*n*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*(yi - y1)
+                    //   -10*n*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*(zi - z1)
+                    //   -5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)^2
+                    //   -5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)^2
+                    //   -5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(zi - z1)^2
+                    //   +20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(yi - y1)
+                    //   +20*n*(y1 - ya)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)*(zi - z1)
+                    //   +20*n*(x1 - xa)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(zi - z1)
 
                     final double diffX1a = x1 - xa;
                     final double diffY1a = y1 - ya;
@@ -1327,16 +1303,16 @@ public class Utils {
                     final double ln10 = Math.log(10.0);
                     final double crossDiff = diffX1a * diffXi1 + diffY1a * diffYi1 + diffZ1a * diffZi1;
 
-                    //Pr(pi) = Pr(p1)
-                    //  -10*n*(x1 - xa)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*(xi - x1)
-                    //  -10*n*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*(yi - y1)
-                    //  -10*n*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*(zi - z1)
-                    //  -5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)^2
-                    //  -5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)^2
-                    //  -5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(zi - z1)^2
-                    //  +20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(yi - y1)
-                    //  +20*n*(y1 - ya)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)*(zi - z1)
-                    //  +20*n*(x1 - xa)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(zi - z1)
+                    // Pr(pi) = Pr(p1)
+                    //   -10*n*(x1 - xa)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*(xi - x1)
+                    //   -10*n*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*(yi - y1)
+                    //   -10*n*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*(zi - z1)
+                    //   -5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)^2
+                    //   -5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)^2
+                    //   -5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(zi - z1)^2
+                    //   +20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(yi - y1)
+                    //   +20*n*(y1 - ya)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)*(zi - z1)
+                    //   +20*n*(x1 - xa)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(zi - z1)
 
                     y[0] = fingerprintRssi
                             - 10.0 * pathLossExponent * diffX1a / (ln10 * d1a2) * diffXi1
@@ -1349,16 +1325,15 @@ public class Utils {
                             + 20.0 * pathLossExponent * diffY1a * diffZ1a / (ln10 * d1a4) * diffYi1 * diffZi1
                             + 20.0 * pathLossExponent * diffX1a * diffZ1a / (ln10 * d1a4) * diffXi1 * diffZi1;
 
-                    //compute gradient (is a jacobian having 1 row and 11 columns)
+                    // compute gradient (is a jacobian having 1 row and 11 columns)
 
-
-                    //derivative of rssi respect to fingerprint rssi
+                    // derivative of rssi respect to fingerprint rssi
                     final double derivativeFingerprintRssi = 1.0;
 
-                    //derivative of rssi respect to path-loss exponent
+                    // derivative of rssi respect to path-loss exponent
 
-                    //diff(Pr(pi))/diff(n) = -10*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
-                    //  -10*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
+                    // diff(Pr(pi))/diff(n) = -10*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
+                    //   -10*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
                     final double derivativePathLossExponent = -10.0 * diffX1a / (ln10 * d1a2) * diffXi1
                             - 10.0 * diffY1a / (ln10 * d1a2) * diffYi1
                             - 10.0 * diffZ1a / (ln10 * d1a2) * diffZi1
@@ -1369,78 +1344,76 @@ public class Utils {
                             + 20.0 * diffY1a * diffZ1a / (ln10 * d1a4) * diffYi1 * diffZi1
                             + 20.0 * diffX1a * diffZ1a / (ln10 * d1a4) * diffXi1 * diffZi1;
 
+                    // derivative of rssi respect to x1
 
-                    //derivative of rssi respect to x1
+                    // We have
+                    // Pr(pi) = Pr(p1)
+                    //   -10*n*(x1 - xa)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*(xi - x1)
+                    //   -10*n*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*(yi - y1)
+                    //   -10*n*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*(zi - z1)
+                    //   -5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)^2
+                    //   -5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)^2
+                    //   -5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(zi - z1)^2
+                    //   +20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(yi - y1)
+                    //   +20*n*(y1 - ya)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)*(zi - z1)
+                    //   +20*n*(x1 - xa)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(zi - z1)
 
-                    //We have
-                    //Pr(pi) = Pr(p1)
-                    //  -10*n*(x1 - xa)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*(xi - x1)
-                    //  -10*n*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*(yi - y1)
-                    //  -10*n*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*(zi - z1)
-                    //  -5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)^2
-                    //  -5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)^2
-                    //  -5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(zi - z1)^2
-                    //  +20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(yi - y1)
-                    //  +20*n*(y1 - ya)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)*(zi - z1)
-                    //  +20*n*(x1 - xa)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(zi - z1)
+                    // Pr(pi) = Pr(p1)
+                    //   -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
+                    //   -5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)^2
+                    //   -5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)^2
+                    //   -5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(zi - z1)^2
+                    //   +20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(yi - y1)
+                    //   +20*n*(y1 - ya)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)*(zi - z1)
+                    //   +20*n*(x1 - xa)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(zi - z1)
 
-                    //Pr(pi) = Pr(p1)
-                    //  -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
-                    //  -5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)^2
-                    //  -5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)^2
-                    //  -5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(zi - z1)^2
-                    //  +20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(yi - y1)
-                    //  +20*n*(y1 - ya)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)*(zi - z1)
-                    //  +20*n*(x1 - xa)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(zi - z1)
+                    // and we know that: (f(x)/g(x))' = (f'(x)*g(x) - f(x)*g'(x))/g(x)^2
+                    // and also that (f(x)*g(x))' = f'(x)*g(x) + f(x)*g'(x)
 
+                    // Hence
+                    // diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/diff(x1) =
+                    //   diff(x1*xi -xa*xi -x1^2 + xa*x1)/diff(x1) =
+                    //   diff(-x1^2 + (xi + xa)*x1 - xa*xi)/diff(x1) =
+                    //   -2*x1 + xi + xa
 
-                    //and we know that: (f(x)/g(x))' = (f'(x)*g(x) - f(x)*g'(x))/g(x)^2
-                    //and also that (f(x)*g(x))' = f'(x)*g(x) + f(x)*g'(x)
+                    // diff(((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)/diff(x1) =
+                    //   diff(-(x1 - xa)^2*(xi - x1)^2)/diff(x1) =
+                    //   -2*(x1 - xa)*(xi - x1)^2 - 2*(xi - x1)*(-(x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)
+                    //   -2*((x1 - xa)*(xi - x1)^2 + (xi - x1)*(-(x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
 
-                    //Hence
-                    //diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/diff(x1) =
-                    //  diff(x1*xi -xa*xi -x1^2 + xa*x1)/diff(x1) =
-                    //  diff(-x1^2 + (xi + xa)*x1 - xa*xi)/diff(x1) =
-                    //  -2*x1 + xi + xa
+                    // diff(((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)/diff(x1) =
+                    //   diff((x1 - xa)^2*(yi - y1)^2)/diff(x1) =
+                    //   2*(x1 - xa)*(yi - y1)^2
 
-                    //diff(((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)/diff(x1) =
-                    //  diff(-(x1 - xa)^2*(xi - x1)^2)/diff(x1) =
-                    //  -2*(x1 - xa)*(xi - x1)^2 - 2*(xi - x1)*(-(x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)
-                    //  -2*((x1 - xa)*(xi - x1)^2 + (xi - x1)*(-(x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
+                    // diff(((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(z1 - za)^2)/diff(x1) =
+                    //   diff((x1 - xa)^2*(z1 - za)^2)/diff(x1) =
+                    //   2*(x1 - xa)*(z1 - za)^2
 
-                    //diff(((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)/diff(x1) =
-                    //  diff((x1 - xa)^2*(yi - y1)^2)/diff(x1) =
-                    //  2*(x1 - xa)*(yi - y1)^2
+                    // diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(x1) =
+                    //   (y1 - ya)*(yi - y1)*((xi - x1) - (x1 - xa)) =
+                    //   (y1 - ya)*(yi - y1)*(-2*x1 + xi + xa)
 
-                    //diff(((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(z1 - za)^2)/diff(x1) =
-                    //  diff((x1 - xa)^2*(z1 - za)^2)/diff(x1) =
-                    //  2*(x1 - xa)*(z1 - za)^2
+                    // diff((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))/diff(x1) = 0
 
-                    //diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(x1) =
-                    //  (y1 - ya)*(yi - y1)*((xi - x1) - (x1 - xa)) =
-                    //  (y1 - ya)*(yi - y1)*(-2*x1 + xi + xa)
+                    // diff((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))/diff(x1) =
+                    //   (z1 - za)*(zi - z1)*((xi - x1) - (x1 - xa)) =
+                    //   (z1 - za)*(zi - z1)*(-2*x1 + xi + xa)
 
-                    //diff((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))/diff(x1) = 0
+                    // diff(Pr(pi))/diff(x1) = -10*n/ln(10)*((-2*x1 + xi + xa)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
+                    //   -5*n/ln(10)*(-2*((x1 - xa)*(xi - x1)^2 + (xi - x1)*(-(x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   -5*n/ln(10)*(2*(x1 - xa)*(yi - y1)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   -5*n/ln(10)*(2*(x1 - xa)*(z1 - za)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(z1 - za)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   +20*n/ln(10)*((y1 - ya)*(yi - y1)*(-2*x1 + xi + xa)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   +20*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   +20*n/ln(10)*((z1 - za)*(zi - z1)*(-2*x1 + xi + xa)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
 
-                    //diff((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))/diff(x1) =
-                    //  (z1 - za)*(zi - z1)*((xi - x1) - (x1 - xa)) =
-                    //  (z1 - za)*(zi - z1)*(-2*x1 + xi + xa)
-
-                    //diff(Pr(pi))/diff(x1) = -10*n/ln(10)*((-2*x1 + xi + xa)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
-                    //  -5*n/ln(10)*(-2*((x1 - xa)*(xi - x1)^2 + (xi - x1)*(-(x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  -5*n/ln(10)*(2*(x1 - xa)*(yi - y1)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  -5*n/ln(10)*(2*(x1 - xa)*(z1 - za)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(z1 - za)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  +20*n/ln(10)*((y1 - ya)*(yi - y1)*(-2*x1 + xi + xa)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  +20*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  +20*n/ln(10)*((z1 - za)*(zi - z1)*(-2*x1 + xi + xa)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-
-                    //diff(Pr(pi))/diff(x1) = -10*n/ln(10)*((-2*x1 + xi + xa)*d1a^2 - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(x1 - xa))/d1a^4
-                    //  -5*n/ln(10)*(-2*((x1 - xa)*(xi - x1)^2 + (xi - x1)*(-(x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*d1a^4 - (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*4*d1a^2*(x1 - xa))/d1a^8
-                    //  -5*n/ln(10)*(2*(x1 - xa)*(yi - y1)^2*d1a^4 - (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*4*d1a^2*(x1 - xa))/d1a^8
-                    //  -5*n/ln(10)*(2*(x1 - xa)*(z1 - za)^2*d1a^4 - (((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(z1 - za)^2)*4*d1a^2*(x1 - xa))/d1a^8
-                    //  +20*n/ln(10)*((y1 - ya)*(yi - y1)*(-2*x1 + xi + xa)*d1a^4 - (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*4*d1a^2*(x1 - xa))/d1a^8
-                    //  +20*n/ln(10)*(-(y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1)*4*d1a^2*(x1 - xa))/d1a^8
-                    //  +20*n/ln(10)*((z1 - za)*(zi - z1)*(-2*x1 + xi + xa)*d1a^4 - (x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1)*4*d1a^2*(x1 - xa))/d1a^8
+                    // diff(Pr(pi))/diff(x1) = -10*n/ln(10)*((-2*x1 + xi + xa)*d1a^2 - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(x1 - xa))/d1a^4
+                    //   -5*n/ln(10)*(-2*((x1 - xa)*(xi - x1)^2 + (xi - x1)*(-(x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*d1a^4 - (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*4*d1a^2*(x1 - xa))/d1a^8
+                    //   -5*n/ln(10)*(2*(x1 - xa)*(yi - y1)^2*d1a^4 - (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*4*d1a^2*(x1 - xa))/d1a^8
+                    //   -5*n/ln(10)*(2*(x1 - xa)*(z1 - za)^2*d1a^4 - (((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(z1 - za)^2)*4*d1a^2*(x1 - xa))/d1a^8
+                    //   +20*n/ln(10)*((y1 - ya)*(yi - y1)*(-2*x1 + xi + xa)*d1a^4 - (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*4*d1a^2*(x1 - xa))/d1a^8
+                    //   +20*n/ln(10)*(-(y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1)*4*d1a^2*(x1 - xa))/d1a^8
+                    //   +20*n/ln(10)*((z1 - za)*(zi - z1)*(-2*x1 + xi + xa)*d1a^4 - (x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1)*4*d1a^2*(x1 - xa))/d1a^8
                     final double tmp1 = (diffY1a2 + diffZ1a2 - diffX1a2) * diffXi12 * 4.0 * d1a2 * diffX1a;
                     final double tmp2 = diffX1a * diffY1a * diffXi1 * diffYi1 * 4.0 * d1a2 * diffX1a;
                     final double tmp3 = diffX1a * diffZ1a * diffXi1 * diffZi1 * 4.0 * d1a2 * diffX1a;
@@ -1452,62 +1425,61 @@ public class Utils {
                             + 20.0 * pathLossExponent / ln10 * (-diffY1a * diffZ1a * diffYi1 * diffZi1 * 4.0 * d1a2 * diffX1a) / d1a8
                             + 20.0 * pathLossExponent / ln10 * (diffZ1a * diffZi1 * (-2.0 * x1 + xi + xa) * d1a4 - tmp3) / d1a8;
 
+                    // derivative of rssi respect to y1
 
-                    //derivative of rssi respect to y1
+                    // We have
+                    // Pr(pi) = Pr(p1)
+                    //   -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
+                    //   -5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)^2
+                    //   -5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)^2
+                    //   -5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(zi - z1)^2
+                    //   +20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(yi - y1)
+                    //   +20*n*(y1 - ya)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)*(zi - z1)
+                    //   +20*n*(x1 - xa)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(zi - z1)
 
-                    //We have
-                    //Pr(pi) = Pr(p1)
-                    //  -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
-                    //  -5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)^2
-                    //  -5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)^2
-                    //  -5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(zi - z1)^2
-                    //  +20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(yi - y1)
-                    //  +20*n*(y1 - ya)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)*(zi - z1)
-                    //  +20*n*(x1 - xa)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(zi - z1)
+                    // Hence
+                    // diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/diff(y1) =
+                    //   diff(y1*yi - ya*yi -y1^2 + ya*y1)/diff(y1) =
+                    //   diff(-y1^2 + (yi + ya)*y1 - ya*yi)/diff(y1) =
+                    //   -2*y1 + yi + ya
 
-                    //Hence
-                    //diff((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/diff(y1) =
-                    //  diff(y1*yi - ya*yi -y1^2 + ya*y1)/diff(y1) =
-                    //  diff(-y1^2 + (yi + ya)*y1 - ya*yi)/diff(y1) =
-                    //  -2*y1 + yi + ya
+                    // diff(((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)/diff(y1) =
+                    //   2*(y1 - ya)*(xi - x1)^2
 
-                    //diff(((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)/diff(y1) =
-                    //  2*(y1 - ya)*(xi - x1)^2
+                    // diff(((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)/diff(y1) =
+                    //   -2*(y1 - ya)*(yi - y1)^2 -2*(yi - y1)*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)
+                    //   -2*((y1 - ya)*(yi - y1)^2 + (yi - y1)*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2))
 
-                    //diff(((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)/diff(y1) =
-                    //  -2*(y1 - ya)*(yi - y1)^2 -2*(yi - y1)*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)
-                    //  -2*((y1 - ya)*(yi - y1)^2 + (yi - y1)*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2))
+                    // diff(((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)/diff(y1) =
+                    //   2*(y1 - ya)*(zi - z1)^2
 
-                    //diff(((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)/diff(y1) =
-                    //  2*(y1 - ya)*(zi - z1)^2
+                    // diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(y1) =
+                    //   (x1 - xa)*(xi - x1)*(yi - y1) - (xi - x1)*(x1 - xa)*(y1 - ya) =
+                    //   (x1 - xa)*((xi - x1)*(yi - y1) - (xi - x1)*(y1 - ya)) =
+                    //   (x1 - xa)*(xi - x1)*(-2*y1 + yi + ya)
 
-                    //diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(y1) =
-                    //  (x1 - xa)*(xi - x1)*(yi - y1) - (xi - x1)*(x1 - xa)*(y1 - ya) =
-                    //  (x1 - xa)*((xi - x1)*(yi - y1) - (xi - x1)*(y1 - ya)) =
-                    //  (x1 - xa)*(xi - x1)*(-2*y1 + yi + ya)
+                    // diff((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))/diff(y1) =
+                    //   (z1 - za)*(yi - y1)*(zi - z1) - (zi - z1)*(y1 - ya)*(z1 - za) =
+                    //   (z1 - za)*((yi - y1)*(zi - z1) - (zi - z1)*(y1 - ya)) =
+                    //   (z1 - za)*(zi - z1)*(-2*y1 + yi + ya)
 
-                    //diff((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))/diff(y1) =
-                    //  (z1 - za)*(yi - y1)*(zi - z1) - (zi - z1)*(y1 - ya)*(z1 - za) =
-                    //  (z1 - za)*((yi - y1)*(zi - z1) - (zi - z1)*(y1 - ya)) =
-                    //  (z1 - za)*(zi - z1)*(-2*y1 + yi + ya)
+                    // diff((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))/diff(y1) = 0
 
-                    //diff((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))/diff(y1) = 0
+                    // diff(Pr(pi))/diff(y1) = -10*n/ln(10)*((-2*y1 + yi + ya)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
+                    //   -5*n/ln(10)*(2*(y1 - ya)*(xi - x1)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   -5*n/ln(10)*(-2*((y1 - ya)*(yi - y1)^2 + (yi - y1)*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2))*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2*2((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2(y1 -ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   -5*n/ln(10)*(2*(y1 - ya)*(zi - z1)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   +20*n/ln(10)*((x1 - xa)*(xi - x1)*(-2*y1 + yi + ya)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   +20*n/ln(10)*((z1 - za)*(zi - z1)*(-2*y1 + yi + ya)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   +20*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
 
-                    //diff(Pr(pi))/diff(y1) = -10*n/ln(10)*((-2*y1 + yi + ya)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
-                    //  -5*n/ln(10)*(2*(y1 - ya)*(xi - x1)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  -5*n/ln(10)*(-2*((y1 - ya)*(yi - y1)^2 + (yi - y1)*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2))*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2*2((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2(y1 -ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  -5*n/ln(10)*(2*(y1 - ya)*(zi - z1)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  +20*n/ln(10)*((x1 - xa)*(xi - x1)*(-2*y1 + yi + ya)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  +20*n/ln(10)*((z1 - za)*(zi - z1)*(-2*y1 + yi + ya)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  +20*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-
-                    //diff(Pr(pi))/diff(y1) = -10*n/ln(10)*((-2*y1 + yi + ya)*d1a^2 - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(y1 - ya))/d1a^4
-                    //  -5*n/ln(10)*(2*(y1 - ya)*(xi - x1)^2*d1a^4 - (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*4*d1a^2*(y1 - ya))/d1a^8
-                    //  -5*n/ln(10)*(-2*((y1 - ya)*(yi - y1)^2 + (yi - y1)*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2))*d1a^4 - (((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)*4*d1a^2*(y1 -ya))/d1a^8
-                    //  -5*n/ln(10)*(2*(y1 - ya)*(zi - z1)^2*d1a^4 - (((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)*4*d1a^2*(y1 - ya))/d1a^8
-                    //  +20*n/ln(10)*((x1 - xa)*(xi - x1)*(-2*y1 + yi + ya)*d1a^4 - (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*4*d1a^2*(y1 - ya))/d1a^8
-                    //  +20*n/ln(10)*((z1 - za)*(zi - z1)*(-2*y1 + yi + ya)*d1a^4 - (y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1)*4*d1a^2*(y1 - ya))/d1a^8
-                    //  +20*n/ln(10)*(-(x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1)*4*d1a^2*(y1 - ya))/d1a^8
+                    // diff(Pr(pi))/diff(y1) = -10*n/ln(10)*((-2*y1 + yi + ya)*d1a^2 - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(y1 - ya))/d1a^4
+                    //   -5*n/ln(10)*(2*(y1 - ya)*(xi - x1)^2*d1a^4 - (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*4*d1a^2*(y1 - ya))/d1a^8
+                    //   -5*n/ln(10)*(-2*((y1 - ya)*(yi - y1)^2 + (yi - y1)*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2))*d1a^4 - (((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)*4*d1a^2*(y1 -ya))/d1a^8
+                    //   -5*n/ln(10)*(2*(y1 - ya)*(zi - z1)^2*d1a^4 - (((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)*4*d1a^2*(y1 - ya))/d1a^8
+                    //   +20*n/ln(10)*((x1 - xa)*(xi - x1)*(-2*y1 + yi + ya)*d1a^4 - (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*4*d1a^2*(y1 - ya))/d1a^8
+                    //   +20*n/ln(10)*((z1 - za)*(zi - z1)*(-2*y1 + yi + ya)*d1a^4 - (y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1)*4*d1a^2*(y1 - ya))/d1a^8
+                    //   +20*n/ln(10)*(-(x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1)*4*d1a^2*(y1 - ya))/d1a^8
                     final double tmp4 = diffY1a * diffZ1a * diffYi1 * diffZi1 * 4.0 * d1a2 * diffY1a;
                     final double derivativeY1 = -10.0 * pathLossExponent / ln10 * ((-2.0 * y1 + yi + ya) * d1a2 - crossDiff * 2.0 * diffY1a) / d1a4
                             - 5.0 * pathLossExponent / ln10 * (2.0 * diffY1a * diffXi12 * d1a4 - (-diffX1a2 + diffY1a2 + diffZ1a2) * diffXi12 * 4.0 * d1a2 * diffY1a) / d1a8
@@ -1517,62 +1489,61 @@ public class Utils {
                             + 20.0 * pathLossExponent / ln10 * (diffZ1a * diffZi1 * (-2.0 * y1 + yi + ya) * d1a4 - tmp4) / d1a8
                             + 20.0 * pathLossExponent / ln10 * (-diffX1a * diffZ1a * diffXi1 * diffZi1 * 4.0 * d1a2 * diffY1a) / d1a8;
 
+                    // derivative of rssi respect to z1
 
-                    //derivative of rssi respect to z1
+                    // We have
+                    // Pr(pi) = Pr(p1)
+                    //   -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
+                    //   -5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)^2
+                    //   -5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)^2
+                    //   -5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(zi - z1)^2
+                    //   +20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(yi - y1)
+                    //   +20*n*(y1 - ya)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)*(zi - z1)
+                    //   +20*n*(x1 - xa)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(zi - z1)
 
-                    //We have
-                    //Pr(pi) = Pr(p1)
-                    //  -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
-                    //  -5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)^2
-                    //  -5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)^2
-                    //  -5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(zi - z1)^2
-                    //  +20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(yi - y1)
-                    //  +20*n*(y1 - ya)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)*(zi - z1)
-                    //  +20*n*(x1 - xa)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(zi - z1)
+                    // Hence
+                    // diff(((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))/diff(z1) =
+                    //   diff(z1*zi -za*zi -z1^2 + za*z1)/diff(z1) =
+                    //   diff(-z1^2 + (zi + za)*z1 - za*zi)/diff(z1) =
+                    //   -2*z1 + zi + za
 
-                    //Hence
-                    //diff(((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))/diff(z1) =
-                    //  diff(z1*zi -za*zi -z1^2 + za*z1)/diff(z1) =
-                    //  diff(-z1^2 + (zi + za)*z1 - za*zi)/diff(z1) =
-                    //  -2*z1 + zi + za
+                    // diff(((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)/diff(z1) =
+                    //   2*(z1 - za)*(xi - x1)^2
 
-                    //diff(((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)/diff(z1) =
-                    //  2*(z1 - za)*(xi - x1)^2
+                    // diff(((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)/diff(z1) =
+                    //   2*(z1 - za)*(yi - y1)^2
 
-                    //diff(((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)/diff(z1) =
-                    //  2*(z1 - za)*(yi - y1)^2
+                    // diff(((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)/diff(z1) =
+                    //   2*(z1 - za)*(zi - z1)^2 + 2*(zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)
+                    //   2*((z1 - za)*(zi - z1)^2 + (zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2))
 
-                    //diff(((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)/diff(z1) =
-                    //  2*(z1 - za)*(zi - z1)^2 + 2*(zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)
-                    //  2*((z1 - za)*(zi - z1)^2 + (zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2))
+                    // diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(z1) = 0
 
-                    //diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(z1) = 0
+                    // diff((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))/diff(z1) =
+                    //   (y1 - ya)*(yi - y1)*(zi - z1) - (yi - y1)*(y1 - ya)*(z1 - za) =
+                    //   (y1 - ya)*((yi - y1)*(zi - z1) - (yi - y1)*(z1 - za)) =
+                    //   (y1 - ya)*(yi - y1)*(-2*z1 + zi + za)
 
-                    //diff((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))/diff(z1) =
-                    //  (y1 - ya)*(yi - y1)*(zi - z1) - (yi - y1)*(y1 - ya)*(z1 - za) =
-                    //  (y1 - ya)*((yi - y1)*(zi - z1) - (yi - y1)*(z1 - za)) =
-                    //  (y1 - ya)*(yi - y1)*(-2*z1 + zi + za)
+                    // diff((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))/diff(z1) =
+                    //   (x1 - xa)*(xi - x1)*(zi - z1) - (xi - x1)*(x1 - xa)*(z1 - za) =
+                    //   (x1 - xa)*((xi - x1)*(zi - z1) - (xi - x1)*(z1 - za)) =
+                    //   (x1 - xa)*(xi - x1)*(-2*z1 + zi + za)
 
-                    //diff((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))/diff(z1) =
-                    //  (x1 - xa)*(xi - x1)*(zi - z1) - (xi - x1)*(x1 - xa)*(z1 - za) =
-                    //  (x1 - xa)*((xi - x1)*(zi - z1) - (xi - x1)*(z1 - za)) =
-                    //  (x1 - xa)*(xi - x1)*(-2*z1 + zi + za)
+                    // diff(Pr(pi))/diff(z1) = -10*n/ln(10)*((-2*z1 + zi + za)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
+                    //   -5*n/ln(10)*(2*(z1 - za)*(xi - x1)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   -5*n/ln(10)*(2*(z1 - za)*(yi - y1)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   -5*n/ln(10)*(2*((z1 - za)*(zi - z1)^2 + (zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2))*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   +20*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2 - ((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   +20*n/ln(10)*((y1 - ya)*(yi - y1)*(-2*z1 + zi + za)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   +20*n/ln(10)*((x1 - xa)*(xi - x1)*(-2*z1 + zi + za)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
 
-                    //diff(Pr(pi))/diff(z1) = -10*n/ln(10)*((-2*z1 + zi + za)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
-                    //  -5*n/ln(10)*(2*(z1 - za)*(xi - x1)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  -5*n/ln(10)*(2*(z1 - za)*(yi - y1)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  -5*n/ln(10)*(2*((z1 - za)*(zi - z1)^2 + (zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2))*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  +20*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2 - ((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  +20*n/ln(10)*((y1 - ya)*(yi - y1)*(-2*z1 + zi + za)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  +20*n/ln(10)*((x1 - xa)*(xi - x1)*(-2*z1 + zi + za)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-
-                    //diff(Pr(pi))/diff(z1) = -10*n/ln(10)*((-2*z1 + zi + za)*d1a^2 - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(z1 - za))/d1a^4
-                    //  -5*n/ln(10)*(2*(z1 - za)*(xi - x1)^2*d1a^4 - (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*4*d1a^2*(z1 - za))/d1a^8
-                    //  -5*n/ln(10)*(2*(z1 - za)*(yi - y1)^2*d1a^4 - (((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)*4*d1a^2*(z1 - za))/d1a^8
-                    //  -5*n/ln(10)*(2*((z1 - za)*(zi - z1)^2 + (zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2))*d1a^4 - (((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)*4*d1a^2*(z1 - za))/d1a^8
-                    //  +20*n/ln(10)*(-(x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*4*d1a^2*(z1 - za))/d1a^8
-                    //  +20*n/ln(10)*((y1 - ya)*(yi - y1)*(-2*z1 + zi + za)*d1a^4 - ((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))*4*d1a^2*(z1 - za))/d1a^8
-                    //  +20*n/ln(10)*((x1 - xa)*(xi - x1)*(-2*z1 + zi + za)*d1a^4 - ((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))*4*d1a^2*(z1 - za))/d1a^8
+                    // diff(Pr(pi))/diff(z1) = -10*n/ln(10)*((-2*z1 + zi + za)*d1a^2 - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(z1 - za))/d1a^4
+                    //   -5*n/ln(10)*(2*(z1 - za)*(xi - x1)^2*d1a^4 - (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*4*d1a^2*(z1 - za))/d1a^8
+                    //   -5*n/ln(10)*(2*(z1 - za)*(yi - y1)^2*d1a^4 - (((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)*4*d1a^2*(z1 - za))/d1a^8
+                    //   -5*n/ln(10)*(2*((z1 - za)*(zi - z1)^2 + (zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2))*d1a^4 - (((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)*4*d1a^2*(z1 - za))/d1a^8
+                    //   +20*n/ln(10)*(-(x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*4*d1a^2*(z1 - za))/d1a^8
+                    //   +20*n/ln(10)*((y1 - ya)*(yi - y1)*(-2*z1 + zi + za)*d1a^4 - ((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))*4*d1a^2*(z1 - za))/d1a^8
+                    //   +20*n/ln(10)*((x1 - xa)*(xi - x1)*(-2*z1 + zi + za)*d1a^4 - ((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))*4*d1a^2*(z1 - za))/d1a^8
                     final double derivativeZ1 = -10.0 * pathLossExponent / ln10 * ((-2.0 * z1 + zi + za) * d1a2 - crossDiff * 2.0 * diffZ1a) / d1a4
                             - 5.0 * pathLossExponent / ln10 * (2.0 * diffZ1a * diffXi12 * d1a4 - ((-diffX1a2 + diffY1a2 + diffZ1a2) * diffXi12) * 4.0 * d1a2 * diffZ1a) / d1a8
                             - 5.0 * pathLossExponent / ln10 * (2.0 * diffZ1a * diffYi12 * d1a4 - ((diffX1a2 - diffY1a2 + diffZ1a2) * diffYi12) * 4.0 * d1a2 * diffZ1a) / d1a8
@@ -1581,55 +1552,54 @@ public class Utils {
                             + 20.0 * pathLossExponent / ln10 * (diffY1a * diffYi1 * (-2.0 * z1 + zi + za) * d1a4 - diffY1a * diffZ1a * diffYi1 * diffZi1 * 4.0 * d1a2 * diffZ1a) / d1a8
                             + 20.0 * pathLossExponent / ln10 * (diffX1a * diffXi1 * (-2.0 * z1 + zi + za) * d1a4 - diffX1a * diffZ1a * diffXi1 * diffZi1 * 4.0 * d1a2 * diffZ1a) / d1a8;
 
+                    // derivative of rssi respect to xa
 
-                    //derivative of rssi respect to xa
+                    // We have
+                    // Pr(pi) = Pr(p1)
+                    //   -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
+                    //   -5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)^2
+                    //   -5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)^2
+                    //   -5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(zi - z1)^2
+                    //   +20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(yi - y1)
+                    //   +20*n*(y1 - ya)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)*(zi - z1)
+                    //   +20*n*(x1 - xa)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(zi - z1)
 
-                    //We have
-                    //Pr(pi) = Pr(p1)
-                    //  -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
-                    //  -5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)^2
-                    //  -5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)^2
-                    //  -5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(zi - z1)^2
-                    //  +20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(yi - y1)
-                    //  +20*n*(y1 - ya)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)*(zi - z1)
-                    //  +20*n*(x1 - xa)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(zi - z1)
+                    // Hence
+                    // diff(((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))/diff(xa) =
+                    //   -(xi - x1)
 
-                    //Hence
-                    //diff(((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))/diff(xa) =
-                    //  -(xi - x1)
+                    // diff(((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)/diff(xa) =
+                    //   2*(x1 - xa)*(xi - x1)^2
 
-                    //diff(((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)/diff(xa) =
-                    //  2*(x1 - xa)*(xi - x1)^2
+                    // diff(((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)/diff(xa) =
+                    //   -2*(x1 - xa)*(yi - y1)^2
 
-                    //diff(((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)/diff(xa) =
-                    //  -2*(x1 - xa)*(yi - y1)^2
+                    // diff(((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)/diff(xa) =
+                    //   -2*(x1 - xa)*(zi - z1)^2
 
-                    //diff(((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)/diff(xa) =
-                    //  -2*(x1 - xa)*(zi - z1)^2
+                    // diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(xa) =
+                    //   -(y1 - ya)*(xi - x1)*(yi - y1)
 
-                    //diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(xa) =
-                    //  -(y1 - ya)*(xi - x1)*(yi - y1)
+                    // diff((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))/diff(xa) = 0
 
-                    //diff((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))/diff(xa) = 0
+                    // diff((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))/diff(xa) =
+                    //   -(z1 - za)*(xi - x1)*(zi - z1)
 
-                    //diff((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))/diff(xa) =
-                    //  -(z1 - za)*(xi - x1)*(zi - z1)
+                    // diff(Pr(pi))/diff(xa) = -10*n/ln(10)*(-(xi - x1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - (((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))*-2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
+                    //   -5*n/ln(10)*(2*(x1 - xa)*(xi - x1)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   -5*n/ln(10)*(-2*(x1 - xa)*(yi - y1)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   -5*n/ln(10)*(-2*(x1 - xa)*(zi - z1)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   +20*n/ln(10)*(-(y1 - ya)*(xi - x1)*(yi - y1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   +20*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   +20*n/ln(10)*(-(z1 - za)*(xi - x1)*(zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
 
-                    //diff(Pr(pi))/diff(xa) = -10*n/ln(10)*(-(xi - x1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - (((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))*-2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
-                    //  -5*n/ln(10)*(2*(x1 - xa)*(xi - x1)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  -5*n/ln(10)*(-2*(x1 - xa)*(yi - y1)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  -5*n/ln(10)*(-2*(x1 - xa)*(zi - z1)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  +20*n/ln(10)*(-(y1 - ya)*(xi - x1)*(yi - y1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  +20*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  +20*n/ln(10)*(-(z1 - za)*(xi - x1)*(zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-
-                    //diff(Pr(pi))/diff(xa) = -10*n/ln(10)*(-(xi - x1)*d1a^2 + (((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))*2*(x1 - xa))/d1a^4
-                    //  -5*n/ln(10)*(2*(x1 - xa)*(xi - x1)^2*d1a^4 + (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*4*d1a^2*(x1 - xa))/d1a^8
-                    //  -5*n/ln(10)*(-2*(x1 - xa)*(yi - y1)^2*d1a^4 + (((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)*4*d1a^2*(x1 - xa))/d1a^8
-                    //  -5*n/ln(10)*(-2*(x1 - xa)*(zi - z1)^2*d1a^4 + (((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)*4*d1a^2*(x1 - xa))/d1a^8
-                    //  +20*n/ln(10)*(-(y1 - ya)*(xi - x1)*(yi - y1)*d1a^4 + (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*4*d1a^2*(x1 - xa))/d1a^8
-                    //  +20*n/ln(10)*((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1)*4*d1a^2*(x1 - xa))/d1a^8
-                    //  +20*n/ln(10)*(-(z1 - za)*(xi - x1)*(zi - z1)*d1a^4 + (x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1)*4*d1a^2*(x1 - xa))/d1a^8
+                    // diff(Pr(pi))/diff(xa) = -10*n/ln(10)*(-(xi - x1)*d1a^2 + (((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))*2*(x1 - xa))/d1a^4
+                    //   -5*n/ln(10)*(2*(x1 - xa)*(xi - x1)^2*d1a^4 + (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*4*d1a^2*(x1 - xa))/d1a^8
+                    //   -5*n/ln(10)*(-2*(x1 - xa)*(yi - y1)^2*d1a^4 + (((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)*4*d1a^2*(x1 - xa))/d1a^8
+                    //   -5*n/ln(10)*(-2*(x1 - xa)*(zi - z1)^2*d1a^4 + (((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)*4*d1a^2*(x1 - xa))/d1a^8
+                    //   +20*n/ln(10)*(-(y1 - ya)*(xi - x1)*(yi - y1)*d1a^4 + (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*4*d1a^2*(x1 - xa))/d1a^8
+                    //   +20*n/ln(10)*((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1)*4*d1a^2*(x1 - xa))/d1a^8
+                    //   +20*n/ln(10)*(-(z1 - za)*(xi - x1)*(zi - z1)*d1a^4 + (x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1)*4*d1a^2*(x1 - xa))/d1a^8
                     final double derivativeXa = -10.0 * pathLossExponent / ln10 * (-diffXi1 * d1a2 + crossDiff * 2.0 * diffX1a) / d1a4
                             - 5.0 * pathLossExponent / ln10 * (2.0 * diffX1a * diffXi12 * d1a4 + ((diffY1a2 + diffZ1a2 - diffX1a2) * diffXi12) * 4.0 * d1a2 * diffX1a) / d1a8
                             - 5.0 * pathLossExponent / ln10 * (-2.0 * diffX1a * diffYi12 * d1a4 + ((diffX1a2 - diffY1a2 + diffZ1a2) * diffYi12) * 4.0 * d1a2 * diffX1a) / d1a8
@@ -1638,55 +1608,54 @@ public class Utils {
                             + 20.0 * pathLossExponent / ln10 * (diffY1a * diffZ1a * diffYi1 * diffZi1 * 4.0 * d1a2 * diffX1a) / d1a8
                             + 20.0 * pathLossExponent / ln10 * (-diffZ1a * diffXi1 * diffZi1 * d1a4 + tmp3) / d1a8;
 
+                    // derivative of rssi respect to ya
 
-                    //derivative of rssi respect to ya
+                    // We have
+                    // Pr(pi) = Pr(p1)
+                    //   -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
+                    //   -5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)^2
+                    //   -5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)^2
+                    //   -5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(zi - z1)^2
+                    //   +20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(yi - y1)
+                    //   +20*n*(y1 - ya)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)*(zi - z1)
+                    //   +20*n*(x1 - xa)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(zi - z1)
 
-                    //We have
-                    //Pr(pi) = Pr(p1)
-                    //  -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
-                    //  -5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)^2
-                    //  -5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)^2
-                    //  -5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(zi - z1)^2
-                    //  +20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(yi - y1)
-                    //  +20*n*(y1 - ya)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)*(zi - z1)
-                    //  +20*n*(x1 - xa)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(zi - z1)
+                    // Hence
+                    // diff(((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))/diff(ya) =
+                    //   -(yi - y1)
 
-                    //Hence
-                    //diff(((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))/diff(ya) =
-                    //  -(yi - y1)
+                    // diff(((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)/diff(ya) =
+                    //   -2*(y1 - ya)*(xi - x1)^2
 
-                    //diff(((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)/diff(ya) =
-                    //  -2*(y1 - ya)*(xi - x1)^2
+                    // diff(((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)/diff(ya) =
+                    //   2*(y1 - ya)*(yi - y1)^2
 
-                    //diff(((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)/diff(ya) =
-                    //  2*(y1 - ya)*(yi - y1)^2
+                    // diff(((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)/diff(ya) =
+                    //   -2*(y1 - ya)*(zi - z1)^2
 
-                    //diff(((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)/diff(ya) =
-                    //  -2*(y1 - ya)*(zi - z1)^2
+                    // diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(ya) =
+                    //   -(x1 - xa)*(xi - x1)*(yi - y1)
 
-                    //diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(ya) =
-                    //  -(x1 - xa)*(xi - x1)*(yi - y1)
+                    // diff((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))/diff(ya) =
+                    //   -(z1 - za)*(yi - y1)*(zi - z1)
 
-                    //diff((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))/diff(ya) =
-                    //  -(z1 - za)*(yi - y1)*(zi - z1)
+                    // diff((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))/diff(ya) = 0
 
-                    //diff((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))/diff(ya) = 0
+                    // diff(Pr(pi))/diff(ya) = -10*n/ln(10)*(-(yi - y1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - (((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))*-2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
+                    //   -5*n/ln(10)*(-2*(y1 - ya)*(xi - x1)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   -5*n/ln(10)*(2*(y1 - ya)*(yi - y1)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   -5*n/ln(10)*(-2*(y1 - ya)*(zi - z1)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   +20*n/ln(10)*(-(x1 - xa)*(xi - x1)*(yi - y1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   +20*n/ln(10)*(-(z1 - za)*(yi - y1)*(zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   +20*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
 
-                    //diff(Pr(pi))/diff(ya) = -10*n/ln(10)*(-(yi - y1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - (((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))*-2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
-                    //  -5*n/ln(10)*(-2*(y1 - ya)*(xi - x1)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  -5*n/ln(10)*(2*(y1 - ya)*(yi - y1)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  -5*n/ln(10)*(-2*(y1 - ya)*(zi - z1)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  +20*n/ln(10)*(-(x1 - xa)*(xi - x1)*(yi - y1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  +20*n/ln(10)*(-(z1 - za)*(yi - y1)*(zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  +20*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-
-                    //diff(Pr(pi))/diff(ya) = -10*n/ln(10)*(-(yi - y1)*d1a^2 + (((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))*2*(y1 - ya))/d1a^4
-                    //  -5*n/ln(10)*(-2*(y1 - ya)*(xi - x1)^2*d1a^4 + (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*4*d1a^2*(y1 - ya))/d1a^8
-                    //  -5*n/ln(10)*(2*(y1 - ya)*(yi - y1)^2*d1a^4 + (((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)*4*d1a^2*(y1 - ya))/d1a^8
-                    //  -5*n/ln(10)*(-2*(y1 - ya)*(zi - z1)^2*d1a^4 + (((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)*4*d1a^2*(y1 - ya))/d1a^8
-                    //  +20*n/ln(10)*(-(x1 - xa)*(xi - x1)*(yi - y1)*d1a^4 + ((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))*4*d1a^2*(y1 - ya))/d1a^8
-                    //  +20*n/ln(10)*(-(z1 - za)*(yi - y1)*(zi - z1)*d1a^4 + (y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1)*4*d1a^2*(y1 - ya))/d1a^8
-                    //  +20*n/ln(10)*(((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))*4*d1a^2*(y1 - ya))/d1a^8
+                    // diff(Pr(pi))/diff(ya) = -10*n/ln(10)*(-(yi - y1)*d1a^2 + (((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))*2*(y1 - ya))/d1a^4
+                    //   -5*n/ln(10)*(-2*(y1 - ya)*(xi - x1)^2*d1a^4 + (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*4*d1a^2*(y1 - ya))/d1a^8
+                    //   -5*n/ln(10)*(2*(y1 - ya)*(yi - y1)^2*d1a^4 + (((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)*4*d1a^2*(y1 - ya))/d1a^8
+                    //   -5*n/ln(10)*(-2*(y1 - ya)*(zi - z1)^2*d1a^4 + (((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)*4*d1a^2*(y1 - ya))/d1a^8
+                    //   +20*n/ln(10)*(-(x1 - xa)*(xi - x1)*(yi - y1)*d1a^4 + ((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))*4*d1a^2*(y1 - ya))/d1a^8
+                    //   +20*n/ln(10)*(-(z1 - za)*(yi - y1)*(zi - z1)*d1a^4 + (y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1)*4*d1a^2*(y1 - ya))/d1a^8
+                    //   +20*n/ln(10)*(((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))*4*d1a^2*(y1 - ya))/d1a^8
                     final double derivativeYa = -10.0 * pathLossExponent / ln10 * (-diffYi1 * d1a2 + crossDiff * 2.0 * diffY1a) / d1a4
                             - 5.0 * pathLossExponent / ln10 * (-2.0 * diffY1a * diffXi12 * d1a4 + ((diffY1a2 + diffZ1a2 - diffX1a2) * diffXi12) * 4.0 * d1a2 * diffY1a) / d1a8
                             - 5.0 * pathLossExponent / ln10 * (2.0 * diffY1a * diffYi12 * d1a4 + ((diffX1a2 - diffY1a2 + diffZ1a2) * diffYi12) * 4.0 * d1a2 * diffY1a) / d1a8
@@ -1695,55 +1664,54 @@ public class Utils {
                             + 20.0 * pathLossExponent / ln10 * (-diffZ1a * diffYi1 * diffZi1 * d1a4 + tmp4) / d1a8
                             + 20.0 * pathLossExponent / ln10 * ((diffX1a * diffZ1a * diffXi1 * diffZi1) * 4.0 * d1a2 * diffY1a) / d1a8;
 
+                    // derivative of rssi respect to za
 
-                    //derivative of rssi respect to za
+                    // We have
+                    // Pr(pi) = Pr(p1)
+                    //   -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
+                    //   -5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)^2
+                    //   -5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)^2
+                    //   -5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(zi - z1)^2
+                    //   +20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(yi - y1)
+                    //   +20*n*(y1 - ya)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)*(zi - z1)
+                    //   +20*n*(x1 - xa)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(zi - z1)
 
-                    //We have
-                    //Pr(pi) = Pr(p1)
-                    //  -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
-                    //  -5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)^2
-                    //  -5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)^2
-                    //  -5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(zi - z1)^2
-                    //  +20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(yi - y1)
-                    //  +20*n*(y1 - ya)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)*(zi - z1)
-                    //  +20*n*(x1 - xa)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(zi - z1)
+                    // Hence
+                    // diff(((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))/diff(za) =
+                    //   -(zi - z1)
 
-                    //Hence
-                    //diff(((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))/diff(za) =
-                    //  -(zi - z1)
+                    // diff(((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)/diff(za) =
+                    //   -2*(z1 - za)*(xi - x1)^2
 
-                    //diff(((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)/diff(za) =
-                    //  -2*(z1 - za)*(xi - x1)^2
+                    // diff(((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)/diff(za) =
+                    //   -2*(z1 - za)*(yi - y1)^2
 
-                    //diff(((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)/diff(za) =
-                    //  -2*(z1 - za)*(yi - y1)^2
+                    // diff(((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)/diff(za) =
+                    //   2*(z1 - za)*(zi - z1)^2
 
-                    //diff(((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)/diff(za) =
-                    //  2*(z1 - za)*(zi - z1)^2
+                    // diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(za) = 0
 
-                    //diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(za) = 0
+                    // diff((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))/diff(za) =
+                    //   -(y1 - ya)*(yi - y1)*(zi - z1)
 
-                    //diff((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))/diff(za) =
-                    //  -(y1 - ya)*(yi - y1)*(zi - z1)
+                    // diff((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))/diff(za) =
+                    //   -(x1 - xa)*(xi - x1)*(zi - z1)
 
-                    //diff((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))/diff(za) =
-                    //  -(x1 - xa)*(xi - x1)*(zi - z1)
+                    // diff(Pr(pi))/diff(za) = -10*n/ln(10)*(-(zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - (((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))*-2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
+                    //   -5*n/ln(10)*(-2*(z1 - za)*(xi - x1)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   -5*n/ln(10)*(-2*(z1 - za)*(yi - y1)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   -5*n/ln(10)*(2*(z1 - za)*(zi - z1)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   +20*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   +20*n/ln(10)*(-(y1 - ya)*(yi - y1)*(zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   +20*n/ln(10)*(-(x1 - xa)*(xi - x1)*(zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
 
-                    //diff(Pr(pi))/diff(za) = -10*n/ln(10)*(-(zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - (((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))*-2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
-                    //  -5*n/ln(10)*(-2*(z1 - za)*(xi - x1)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  -5*n/ln(10)*(-2*(z1 - za)*(yi - y1)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  -5*n/ln(10)*(2*(z1 - za)*(zi - z1)^2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  +20*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  +20*n/ln(10)*(-(y1 - ya)*(yi - y1)*(zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  +20*n/ln(10)*(-(x1 - xa)*(xi - x1)*(zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))*2*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)*-2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-
-                    //diff(Pr(pi))/diff(za) = -10*n/ln(10)*(-(zi - z1)*d1a^2 + (((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))*2*(z1 - za))/d1a^4
-                    //  -5*n/ln(10)*(-2*(z1 - za)*(xi - x1)^2*d1a^4 - (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*4*d1a^2*(z1 - za))/d1a^8
-                    //  -5*n/ln(10)*(-2*(z1 - za)*(yi - y1)^2*d1a^4 + (((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)*4*d1a^2*(z1 - za))/d1a^8
-                    //  -5*n/ln(10)*(2*(z1 - za)*(zi - z1)^2*d1a^4 + (((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)*4*d1a^2*(z1 - za))/d1a^8
-                    //  +20*n/ln(10)*(((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))*4*d1a^2*(z1 - za))/d1a^8
-                    //  +20*n/ln(10)*(-(y1 - ya)*(yi - y1)*(zi - z1)*d1a^4 + ((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))*4*d1a^2*(z1 - za))/d1a^8
-                    //  +20*n/ln(10)*(-(x1 - xa)*(xi - x1)*(zi - z1)*d1a^4 + ((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))*4*d1a^2*(z1 - za))/d1a^8
+                    // diff(Pr(pi))/diff(za) = -10*n/ln(10)*(-(zi - z1)*d1a^2 + (((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))*2*(z1 - za))/d1a^4
+                    //   -5*n/ln(10)*(-2*(z1 - za)*(xi - x1)^2*d1a^4 - (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*4*d1a^2*(z1 - za))/d1a^8
+                    //   -5*n/ln(10)*(-2*(z1 - za)*(yi - y1)^2*d1a^4 + (((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)*4*d1a^2*(z1 - za))/d1a^8
+                    //   -5*n/ln(10)*(2*(z1 - za)*(zi - z1)^2*d1a^4 + (((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)*4*d1a^2*(z1 - za))/d1a^8
+                    //   +20*n/ln(10)*(((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))*4*d1a^2*(z1 - za))/d1a^8
+                    //   +20*n/ln(10)*(-(y1 - ya)*(yi - y1)*(zi - z1)*d1a^4 + ((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))*4*d1a^2*(z1 - za))/d1a^8
+                    //   +20*n/ln(10)*(-(x1 - xa)*(xi - x1)*(zi - z1)*d1a^4 + ((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))*4*d1a^2*(z1 - za))/d1a^8
                     final double derivativeZa = -10.0 * pathLossExponent / ln10 * (-diffZi1 * d1a2 + crossDiff * 2.0 * diffZ1a) / d1a4
                             - 5.0 * pathLossExponent / ln10 * (-2.0 * diffZ1a * diffXi12 * d1a4 - (-diffX1a2 + diffY1a2 + diffZ1a2) * diffXi12 * 4.0 * d1a2 * diffZ1a) / d1a8
                             - 5.0 * pathLossExponent / ln10 * (-2.0 * diffZ1a * diffYi12 * d1a4 + (diffX1a2 - diffY1a2 + diffZ1a2) * diffYi12 * 4.0 * d1a2 * diffZ1a) / d1a8
@@ -1752,170 +1720,166 @@ public class Utils {
                             + 20.0 * pathLossExponent / ln10 * (-diffY1a * diffYi1 * diffZi1 * d1a4 + (diffY1a * diffZ1a * diffYi1 * diffZi1) * 4.0 * d1a2 * diffZ1a) / d1a8
                             + 20.0 * pathLossExponent / ln10 * (-diffX1a * diffXi1 * diffZi1 * d1a4 + (diffX1a * diffZ1a * diffXi1 * diffZi1) * 4.0 * d1a2 * diffZ1a) / d1a8;
 
+                    // derivative of rssi respect to xi
 
-                    //derivative of rssi respect to xi
+                    // We have
+                    // Pr(pi) = Pr(p1)
+                    //   -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
+                    //   -5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)^2
+                    //   -5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)^2
+                    //   -5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(zi - z1)^2
+                    //   +20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(yi - y1)
+                    //   +20*n*(y1 - ya)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)*(zi - z1)
+                    //   +20*n*(x1 - xa)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(zi - z1)
 
-                    //We have
-                    //Pr(pi) = Pr(p1)
-                    //  -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
-                    //  -5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)^2
-                    //  -5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)^2
-                    //  -5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(zi - z1)^2
-                    //  +20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(yi - y1)
-                    //  +20*n*(y1 - ya)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)*(zi - z1)
-                    //  +20*n*(x1 - xa)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(zi - z1)
+                    // Hence
+                    // diff(((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))/diff(xi) =
+                    //   x1 - xa
 
-                    //Hence
-                    //diff(((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))/diff(xi) =
-                    //  x1 - xa
+                    // diff(((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)/diff(xi) =
+                    //   2*(xi - x1)*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)
 
-                    //diff(((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)/diff(xi) =
-                    //  2*(xi - x1)*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)
+                    // diff(((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)/diff(xi) = 0
 
-                    //diff(((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)/diff(xi) = 0
+                    // diff(((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)/diff(xi) = 0
 
-                    //diff(((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)/diff(xi) = 0
+                    // diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(xi) =
+                    //   (x1 - xa)*(y1 - ya)*(yi - y1)
 
-                    //diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(xi) =
-                    //  (x1 - xa)*(y1 - ya)*(yi - y1)
+                    // diff((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))/diff(xi) = 0
 
-                    //diff((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))/diff(xi) = 0
+                    // diff((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))/diff(xi) =
+                    //   (x1 - xa)*(z1 - za)*(zi - z1)
 
-                    //diff((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))/diff(xi) =
-                    //  (x1 - xa)*(z1 - za)*(zi - z1)
+                    // diff(Pr(pi))/diff(xi) = -10*n/ln(10)*((x1 - xa)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - (((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
+                    //   -5*n/ln(10)*(2*(xi - x1)*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   -5*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   -5*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   +20*n/ln(10)*((x1 - xa)*(y1 - ya)*(yi - y1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   +20*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   +20*n/ln(10)*((x1 - xa)*(z1 - za)*(zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
 
-                    //diff(Pr(pi))/diff(xi) = -10*n/ln(10)*((x1 - xa)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - (((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
-                    //  -5*n/ln(10)*(2*(xi - x1)*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  -5*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  -5*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  +20*n/ln(10)*((x1 - xa)*(y1 - ya)*(yi - y1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  +20*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  +20*n/ln(10)*((x1 - xa)*(z1 - za)*(zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    // diff(Pr(pi))/diff(xi) = -10*n/ln(10)*(x1 - xa)*d1a^2/d1a^4
+                    //   -5*n/ln(10)*(2*(xi - x1)*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*d1a^4)/d1a^8
+                    //   +20*n/ln(10)*(x1 - xa)*(y1 - ya)*(yi - y1)*d1a^4/d1a^8
+                    //   +20*n/ln(10)*(x1 - xa)*(z1 - za)*(zi - z1)*d1a^4)/d1a^8
 
-                    //diff(Pr(pi))/diff(xi) = -10*n/ln(10)*(x1 - xa)*d1a^2/d1a^4
-                    //  -5*n/ln(10)*(2*(xi - x1)*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*d1a^4)/d1a^8
-                    //  +20*n/ln(10)*(x1 - xa)*(y1 - ya)*(yi - y1)*d1a^4/d1a^8
-                    //  +20*n/ln(10)*(x1 - xa)*(z1 - za)*(zi - z1)*d1a^4)/d1a^8
-
-                    //diff(Pr(pi))/diff(xi) = -10*n/ln(10)*(x1 - xa)/d1a^2
-                    //  -10*n/ln(10)*(xi - x1)*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/d1a^4
-                    //  +20*n/ln(10)*(x1 - xa)*(y1 - ya)*(yi - y1)/d1a^4
-                    //  +20*n/ln(10)*(x1 - xa)*(z1 - za)*(zi - z1)/d1a^4
+                    // diff(Pr(pi))/diff(xi) = -10*n/ln(10)*(x1 - xa)/d1a^2
+                    //   -10*n/ln(10)*(xi - x1)*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/d1a^4
+                    //   +20*n/ln(10)*(x1 - xa)*(y1 - ya)*(yi - y1)/d1a^4
+                    //   +20*n/ln(10)*(x1 - xa)*(z1 - za)*(zi - z1)/d1a^4
                     final double derivativeXi = -10.0 * pathLossExponent / ln10 * diffX1a / d1a2
                             - 10.0 * pathLossExponent / ln10 * diffXi1 * (-diffX1a2 + diffY1a2 + diffZ1a2) / d1a4
                             + 20.0 * pathLossExponent / ln10 * diffX1a * diffY1a * diffYi1 / d1a4
                             + 20.0 * pathLossExponent / ln10 * diffX1a * diffZ1a * diffZi1 / d1a4;
 
+                    // derivative of rssi respect to yi
 
-                    //derivative of rssi respect to yi
+                    // We have
+                    // Pr(pi) = Pr(p1)
+                    //   -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
+                    //   -5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)^2
+                    //   -5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)^2
+                    //   -5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(zi - z1)^2
+                    //   +20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(yi - y1)
+                    //   +20*n*(y1 - ya)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)*(zi - z1)
+                    //   +20*n*(x1 - xa)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(zi - z1)
 
-                    //We have
-                    //Pr(pi) = Pr(p1)
-                    //  -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
-                    //  -5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)^2
-                    //  -5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)^2
-                    //  -5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(zi - z1)^2
-                    //  +20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(yi - y1)
-                    //  +20*n*(y1 - ya)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)*(zi - z1)
-                    //  +20*n*(x1 - xa)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(zi - z1)
+                    // Hence
+                    // diff(((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))/diff(yi) =
+                    //   y1 - ya
 
-                    //Hence
-                    //diff(((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))/diff(yi) =
-                    //  y1 - ya
+                    // diff(((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)/diff(yi) = 0
 
-                    //diff(((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)/diff(yi) = 0
+                    // diff(((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)/diff(yi) =
+                    //   2*(yi - y1)*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)
 
-                    //diff(((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)/diff(yi) =
-                    //  2*(yi - y1)*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)
+                    // diff(((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)/diff(yi) = 0
 
-                    //diff(((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)/diff(yi) = 0
+                    // diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(yi) =
+                    //   (x1 - xa)*(y1 - ya)*(xi - x1)
 
-                    //diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(yi) =
-                    //  (x1 - xa)*(y1 - ya)*(xi - x1)
+                    // diff((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))/diff(yi) =
+                    //   (y1 - ya)*(z1 - za)*(zi - z1)
 
-                    //diff((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))/diff(yi) =
-                    //  (y1 - ya)*(z1 - za)*(zi - z1)
+                    // diff((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))/diff(yi) = 0
 
-                    //diff((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))/diff(yi) = 0
+                    // diff(Pr(pi))/diff(yi) = -10*n/ln(10)*((y1 - ya)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - (((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
+                    //   -5*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   -5*n/ln(10)*(2*(yi - y1)*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   -5*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   +20*n/ln(10)*((x1 - xa)*(y1 - ya)*(xi - x1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   +20*n/ln(10)*((y1 - ya)*(z1 - za)*(zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   +20*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
 
-                    //diff(Pr(pi))/diff(yi) = -10*n/ln(10)*((y1 - ya)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - (((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
-                    //  -5*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  -5*n/ln(10)*(2*(yi - y1)*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  -5*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  +20*n/ln(10)*((x1 - xa)*(y1 - ya)*(xi - x1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  +20*n/ln(10)*((y1 - ya)*(z1 - za)*(zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  +20*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    // diff(Pr(pi))/diff(yi) = -10*n/ln(10)*(y1 - ya)*d1a^2/d1a^4
+                    //   -5*n/ln(10)*(2*(yi - y1)*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*d1a^4)/d1a^8
+                    //   +20*n/ln(10)*((x1 - xa)*(y1 - ya)*(xi - x1)*d1a^4)/d1a^8
+                    //   +20*n/ln(10)*((y1 - ya)*(z1 - za)*(zi - z1)*d1a^4)/d1a^8
 
-                    //diff(Pr(pi))/diff(yi) = -10*n/ln(10)*(y1 - ya)*d1a^2/d1a^4
-                    //  -5*n/ln(10)*(2*(yi - y1)*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*d1a^4)/d1a^8
-                    //  +20*n/ln(10)*((x1 - xa)*(y1 - ya)*(xi - x1)*d1a^4)/d1a^8
-                    //  +20*n/ln(10)*((y1 - ya)*(z1 - za)*(zi - z1)*d1a^4)/d1a^8
-
-                    //diff(Pr(pi))/diff(yi) = -10*n/ln(10)*(y1 - ya)/d1a^2
-                    //  -10*n/ln(10)*(yi - y1)*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/d1a^4
-                    //  +20*n/ln(10)*(x1 - xa)*(y1 - ya)*(xi - x1)/d1a^4
-                    //  +20*n/ln(10)*(y1 - ya)*(z1 - za)*(zi - z1)/d1a^4
+                    // diff(Pr(pi))/diff(yi) = -10*n/ln(10)*(y1 - ya)/d1a^2
+                    //   -10*n/ln(10)*(yi - y1)*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/d1a^4
+                    //   +20*n/ln(10)*(x1 - xa)*(y1 - ya)*(xi - x1)/d1a^4
+                    //   +20*n/ln(10)*(y1 - ya)*(z1 - za)*(zi - z1)/d1a^4
                     final double derivativeYi = -10.0 * pathLossExponent / ln10 * diffY1a / d1a2
                             - 10.0 * pathLossExponent / ln10 * diffYi1 * (diffX1a2 - diffY1a2 + diffZ1a2) / d1a4
                             + 20.0 * pathLossExponent / ln10 * diffX1a * diffY1a * diffXi1 / d1a4
                             + 20.0 * pathLossExponent / ln10 * diffY1a * diffZ1a * diffZi1 / d1a4;
 
+                    // derivative of rssi respect to zi
 
-                    //derivative of rssi respect to zi
+                    // We have
+                    // Pr(pi) = Pr(p1)
+                    //   -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
+                    //   -5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)^2
+                    //   -5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)^2
+                    //   -5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(zi - z1)^2
+                    //   +20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(yi - y1)
+                    //   +20*n*(y1 - ya)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)*(zi - z1)
+                    //   +20*n*(x1 - xa)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(zi - z1)
 
-                    //We have
-                    //Pr(pi) = Pr(p1)
-                    //  -10*n*((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
-                    //  -5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)^2
-                    //  -5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)^2
-                    //  -5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(zi - z1)^2
-                    //  +20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(yi - y1)
-                    //  +20*n*(y1 - ya)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(yi - y1)*(zi - z1)
-                    //  +20*n*(x1 - xa)*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2)*(xi - x1)*(zi - z1)
+                    // Hence
+                    // diff(((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))/diff(zi) =
+                    //   z1 - za
 
-                    //Hence
-                    //diff(((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))/diff(zi) =
-                    //  z1 - za
+                    // diff(((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)/diff(zi) = 0
 
-                    //diff(((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)/diff(zi) = 0
+                    // diff(((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)/diff(zi) = 0
 
-                    //diff(((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)/diff(zi) = 0
+                    // diff(((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)/diff(zi) =
+                    //   2*(zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)
 
-                    //diff(((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)/diff(zi) =
-                    //  2*(zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)
+                    // diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(zi) = 0
 
-                    //diff((x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1))/diff(zi) = 0
+                    // diff((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))/diff(zi) =
+                    //   (y1 - ya)*(z1 - za)*(yi - y1)
 
-                    //diff((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))/diff(zi) =
-                    //  (y1 - ya)*(z1 - za)*(yi - y1)
+                    // diff((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))/diff(zi) =
+                    //   (x1 - xa)*(z1 - za)*(xi - x1)
 
-                    //diff((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))/diff(zi) =
-                    //  (x1 - xa)*(z1 - za)*(xi - x1)
+                    // diff(Pr(pi))/diff(zi) = -10*n/ln(10)*((z1 - za)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - (((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
+                    //   -5*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   -5*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   -5*n/ln(10)*(2*(zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   20*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   20*n/ln(10)*((y1 - ya)*(z1 - za)*(yi - y1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    //   20*n/ln(10)*((x1 - xa)*(z1 - za)*(xi - x1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
 
-                    //diff(Pr(pi))/diff(zi) = -10*n/ln(10)*((z1 - za)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - (((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1)))*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
-                    //  -5*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*(xi - x1)^2)*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  -5*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*(yi - y1)^2)*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  -5*n/ln(10)*(2*(zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*(zi - z1)^2)*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  20*n/ln(10)*(0*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - (x1 - xa)*(y1 - ya)*(xi - x1)*(yi - y1)*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  20*n/ln(10)*((y1 - ya)*(z1 - za)*(yi - y1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((y1 - ya)*(z1 - za)*(yi - y1)*(zi - z1))*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
-                    //  20*n/ln(10)*((x1 - xa)*(z1 - za)*(xi - x1)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2 - ((x1 - xa)*(z1 - za)*(xi - x1)*(zi - z1))*0)/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^4
+                    // diff(Pr(pi))/diff(zi) = -10*n/ln(10)*((z1 - za)*d1a^2)/d1a^4
+                    //   -5*n/ln(10)*(2*(zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*d1a^4)/d1a^8
+                    //   20*n/ln(10)*((y1 - ya)*(z1 - za)*(yi - y1)*d1a^4)/d1a^8
+                    //   20*n/ln(10)*((x1 - xa)*(z1 - za)*(xi - x1)*d1a^4)/d1a^8
 
-                    //diff(Pr(pi))/diff(zi) = -10*n/ln(10)*((z1 - za)*d1a^2)/d1a^4
-                    //  -5*n/ln(10)*(2*(zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*d1a^4)/d1a^8
-                    //  20*n/ln(10)*((y1 - ya)*(z1 - za)*(yi - y1)*d1a^4)/d1a^8
-                    //  20*n/ln(10)*((x1 - xa)*(z1 - za)*(xi - x1)*d1a^4)/d1a^8
-
-                    //diff(Pr(pi))/diff(zi) = -10*n/ln(10)*(z1 - za)/d1a^2
-                    //  -10*n/ln(10)*(zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/d1a^4
-                    //  20*n/ln(10)*(y1 - ya)*(z1 - za)*(yi - y1)/d1a^4
-                    //  20*n/ln(10)*(x1 - xa)*(z1 - za)*(xi - x1)/d1a^4
+                    // diff(Pr(pi))/diff(zi) = -10*n/ln(10)*(z1 - za)/d1a^2
+                    //   -10*n/ln(10)*(zi - z1)*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/d1a^4
+                    //   20*n/ln(10)*(y1 - ya)*(z1 - za)*(yi - y1)/d1a^4
+                    //   20*n/ln(10)*(x1 - xa)*(z1 - za)*(xi - x1)/d1a^4
                     final double derivativeZi = -10.0 * pathLossExponent / ln10 * diffZ1a / d1a2
                             - 10.0 * pathLossExponent / ln10 * diffZi1 * (diffX1a2 + diffY1a2 - diffZ1a2) / d1a4
                             + 20.0 * pathLossExponent / ln10 * diffY1a * diffZ1a * diffYi1 / d1a4
                             + 20.0 * pathLossExponent / ln10 * diffX1a * diffZ1a * diffXi1 / d1a4;
 
-
-                    //set derivatives fingerprintRssi, pathLossExponent, x1, y1, z1, xa, ya, za, xi, yi, zi
+                    // set derivatives fingerprintRssi, pathLossExponent, x1, y1, z1, xa, ya, za, xi, yi, zi
                     jacobian.setElementAtIndex(0, derivativeFingerprintRssi);
                     jacobian.setElementAtIndex(1, derivativePathLossExponent);
                     jacobian.setElementAtIndex(2, derivativeX1);
@@ -1976,18 +1940,18 @@ public class Utils {
             return null;
         }
 
-        //3rd order Taylor expression of received power in 2D:
-        //Pr(pi) = Pr(p1)
-        //  -10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1) +
-        //  -10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1) +
-        //  -5*n*((y1 - ya)^2 - (x1 - xa)^2)/(ln(10)*d1a^4)*(xi - x1)^2 +
-        //  -5*n*((x1 - xa)^2 - (y1 - ya)^2)/(ln(10)*d1a^4)*(yi - y1)^2 +
-        //  20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4)*(xi - x1)*(yi - y1) +
-        //  -10/6*n/ln(10)*(-2*(x1 - xa)*dia^4 - ((y1 - ya)^2 - (x1 - xa)^2)*4*d1a^2*(x1 - xa))/d1a^8*(xi - x1)^3 +
-        //  -10/6*n/ln(10)*(-2*(y1 - ya)*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2)*4*d1a^2*(y1 - ya))/d1a^8*(yi - y1)^3 +
-        //  -5*n/ln(10)*(2*(y1 - ya)*d1a^4 - ((y1 - ya)^2 - (x1 - xa)^2)*4*d1a^2*(y1 - ya))/d1a^8*(xi - x1)^2*(yi - y1) +
-        //  -5*n/ln(10)*(2*(x1 - xa)*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2)*4*d1a^2*(x1 - xa))/d1a^8*(xi - x1)*(yi - y1)^2
-        //where d1a2 = (x1 - xa)^2 + (y1 - ya)^2
+        // 3rd order Taylor expression of received power in 2D:
+        // Pr(pi) = Pr(p1)
+        //   -10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1) +
+        //   -10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1) +
+        //   -5*n*((y1 - ya)^2 - (x1 - xa)^2)/(ln(10)*d1a^4)*(xi - x1)^2 +
+        //   -5*n*((x1 - xa)^2 - (y1 - ya)^2)/(ln(10)*d1a^4)*(yi - y1)^2 +
+        //   20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4)*(xi - x1)*(yi - y1) +
+        //   -10/6*n/ln(10)*(-2*(x1 - xa)*dia^4 - ((y1 - ya)^2 - (x1 - xa)^2)*4*d1a^2*(x1 - xa))/d1a^8*(xi - x1)^3 +
+        //   -10/6*n/ln(10)*(-2*(y1 - ya)*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2)*4*d1a^2*(y1 - ya))/d1a^8*(yi - y1)^3 +
+        //   -5*n/ln(10)*(2*(y1 - ya)*d1a^4 - ((y1 - ya)^2 - (x1 - xa)^2)*4*d1a^2*(y1 - ya))/d1a^8*(xi - x1)^2*(yi - y1) +
+        //   -5*n/ln(10)*(2*(x1 - xa)*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2)*4*d1a^2*(x1 - xa))/d1a^8*(xi - x1)*(yi - y1)^2
+        // where d1a2 = (x1 - xa)^2 + (y1 - ya)^2
 
         final double x1 = fingerprintPosition.getInhomX();
         final double y1 = fingerprintPosition.getInhomY();
@@ -2033,34 +1997,34 @@ public class Utils {
         }
 
         try {
-            //although less precise, we use a jacobian estimator to simplify expressions
+            // although less precise, we use a jacobian estimator to simplify expressions
             final MultiVariateFunctionEvaluatorListener evaluator = new MultiVariateFunctionEvaluatorListener() {
                 @Override
                 public void evaluate(
                         final double[] point, final double[] result) {
-                    //Pr(pi) = Pr(p1)
-                    //  -10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
-                    //  -10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
-                    //  -5*n*((y1 - ya)^2 - (x1 - xa)^2)/(ln(10)*d1a^4)*(xi - x1)^2
-                    //  -5*n*((x1 - xa)^2 - (y1 - ya)^2)/(ln(10)*d1a^4)*(yi - y1)^2
-                    //  +20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4)*(xi - x1)*(yi - y1)
-                    //  -10/6*n/ln(10)*(-2*(x1 - xa)*dia^4 - ((y1 - ya)^2 - (x1 - xa)^2)*4*d1a^2*(x1 - xa))/d1a^8*(xi - x1)^3
-                    //  -10/6*n/ln(10)*(-2*(y1 - ya)*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2)*4*d1a^2*(y1 - ya))/d1a^8*(yi - y1)^3
-                    //  -5*n/ln(10)*(2*(y1 - ya)*d1a^4 - ((y1 - ya)^2 - (x1 - xa)^2)*4*d1a^2*(y1 - ya))/d1a^8*(xi - x1)^2*(yi - y1)
-                    //  -5*n/ln(10)*(2*(x1 - xa)*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2)*4*d1a^2*(x1 - xa))/d1a^8*(xi - x1)*(yi - y1)^2
-                    //where d1a2 = (x1 - xa)^2 + (y1 - ya)^2
+                    // Pr(pi) = Pr(p1)
+                    //   -10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
+                    //   -10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
+                    //   -5*n*((y1 - ya)^2 - (x1 - xa)^2)/(ln(10)*d1a^4)*(xi - x1)^2
+                    //   -5*n*((x1 - xa)^2 - (y1 - ya)^2)/(ln(10)*d1a^4)*(yi - y1)^2
+                    //   +20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4)*(xi - x1)*(yi - y1)
+                    //   -10/6*n/ln(10)*(-2*(x1 - xa)*dia^4 - ((y1 - ya)^2 - (x1 - xa)^2)*4*d1a^2*(x1 - xa))/d1a^8*(xi - x1)^3
+                    //   -10/6*n/ln(10)*(-2*(y1 - ya)*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2)*4*d1a^2*(y1 - ya))/d1a^8*(yi - y1)^3
+                    //   -5*n/ln(10)*(2*(y1 - ya)*d1a^4 - ((y1 - ya)^2 - (x1 - xa)^2)*4*d1a^2*(y1 - ya))/d1a^8*(xi - x1)^2*(yi - y1)
+                    //   -5*n/ln(10)*(2*(x1 - xa)*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2)*4*d1a^2*(x1 - xa))/d1a^8*(xi - x1)*(yi - y1)^2
+                    // where d1a2 = (x1 - xa)^2 + (y1 - ya)^2
 
-                    //Hence:
-                    //Pr(pi) = Pr(p1)
-                    //  -10*n*(x1 - xa)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))*(xi - x1)
-                    //  -10*n*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))*(yi - y1)
-                    //  -5*n*((y1 - ya)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2)*(xi - x1)^2
-                    //  -5*n*((x1 - xa)^2 - (y1 - ya)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2)*(yi - y1)^2
-                    //  +20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2)*(xi - x1)*(yi - y1)
-                    //  -10/6*n/ln(10)*(-2*(x1 - xa)*((x1 - xa)^2 + (y1 - ya)^2)^2 - ((y1 - ya)^2 - (x1 - xa)^2)*4*((x1 - xa)^2 + (y1 - ya)^2)*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2)^4*(xi - x1)^3
-                    //  -10/6*n/ln(10)*(-2*(y1 - ya)*((x1 - xa)^2 + (y1 - ya)^2)^2 - ((x1 - xa)^2 - (y1 - ya)^2)*4*((x1 - xa)^2 + (y1 - ya)^2)*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2)^4*(yi - y1)^3
-                    //  -5*n/ln(10)*(2*(y1 - ya)*((x1 - xa)^2 + (y1 - ya)^2)^2 - ((y1 - ya)^2 - (x1 - xa)^2)*4*((x1 - xa)^2 + (y1 - ya)^2)*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2)^4*(xi - x1)^2*(yi - y1)
-                    //  -5*n/ln(10)*(2*(x1 - xa)*((x1 - xa)^2 + (y1 - ya)^2)^2 - ((x1 - xa)^2 - (y1 - ya)^2)*4*((x1 - xa)^2 + (y1 - ya)^2)*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2)^4*(xi - x1)*(yi - y1)^2
+                    // Hence:
+                    // Pr(pi) = Pr(p1)
+                    //   -10*n*(x1 - xa)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))*(xi - x1)
+                    //   -10*n*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))*(yi - y1)
+                    //   -5*n*((y1 - ya)^2 - (x1 - xa)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2)*(xi - x1)^2
+                    //   -5*n*((x1 - xa)^2 - (y1 - ya)^2)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2)*(yi - y1)^2
+                    //   +20*n*(x1 - xa)*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)^2)*(xi - x1)*(yi - y1)
+                    //   -10/6*n/ln(10)*(-2*(x1 - xa)*((x1 - xa)^2 + (y1 - ya)^2)^2 - ((y1 - ya)^2 - (x1 - xa)^2)*4*((x1 - xa)^2 + (y1 - ya)^2)*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2)^4*(xi - x1)^3
+                    //   -10/6*n/ln(10)*(-2*(y1 - ya)*((x1 - xa)^2 + (y1 - ya)^2)^2 - ((x1 - xa)^2 - (y1 - ya)^2)*4*((x1 - xa)^2 + (y1 - ya)^2)*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2)^4*(yi - y1)^3
+                    //   -5*n/ln(10)*(2*(y1 - ya)*((x1 - xa)^2 + (y1 - ya)^2)^2 - ((y1 - ya)^2 - (x1 - xa)^2)*4*((x1 - xa)^2 + (y1 - ya)^2)*(y1 - ya))/((x1 - xa)^2 + (y1 - ya)^2)^4*(xi - x1)^2*(yi - y1)
+                    //   -5*n/ln(10)*(2*(x1 - xa)*((x1 - xa)^2 + (y1 - ya)^2)^2 - ((x1 - xa)^2 - (y1 - ya)^2)*4*((x1 - xa)^2 + (y1 - ya)^2)*(x1 - xa))/((x1 - xa)^2 + (y1 - ya)^2)^4*(xi - x1)*(yi - y1)^2
 
                     final double fingerprintRssi = point[0];
                     final double pathLossExponent = point[1];
@@ -2173,12 +2137,12 @@ public class Utils {
             return null;
         }
 
-        //1st order Taylor expression of received power in 3D:
-        //Pr(pi) = Pr(p1)
-        //  - 10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
-        //  - 10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
-        //  - 10*n*(z1 - za)/(ln(10)*d1a^2)*(zi - z1)
-        //where d1a^2 = (x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2
+        // 1st order Taylor expression of received power in 3D:
+        // Pr(pi) = Pr(p1)
+        //   - 10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
+        //   - 10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
+        //   - 10*n*(z1 - za)/(ln(10)*d1a^2)*(zi - z1)
+        // where d1a^2 = (x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2
 
         final double x1 = fingerprintPosition.getInhomX();
         final double y1 = fingerprintPosition.getInhomY();
@@ -2232,26 +2196,26 @@ public class Utils {
                 @Override
                 public void evaluate(
                         final double[] point, final double[] result) {
-                    //Pr(pi = (xi,yi)) = Pr(p1) +
-                    //  -10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1) +
-                    //  -10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1) +
-                    //  -10*n*(z1 - za)/(ln(10)*d1a^2)*(zi - z1) +
-                    //  -5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*d1a^4)*(xi - x1)^2 +
-                    //  -5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*d1a^4)*(yi - y1)^2 +
-                    //  -5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*d1a^4)*(zi - z1)^2 +
-                    //  20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4)*(xi - x1)*(yi - y1) +
-                    //  20*n*(y1 - ya)*(z1 - za)/(ln(10)*d1a^4)*(yi - y1)*(zi - z1) +
-                    //  20*n*(x1 - xa)*(z1 - za)/(ln(10)*d1a^4)*(xi - x1)*(zi - z1) +
-                    //  -10/6*n/ln(10)*(-2*(x1 - xa)*d1a^4 - ((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*4*d1a^2*(x1 - xa))/d1a^8*(xi - x1)^3 +
-                    //  -10/6*n/ln(10)*(-2*(y1 - ya)*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*4*d1a^2*(y1 - ya))/d1a^8*(yi - y1)^3 +
-                    //  -10/6*n/ln(10)*(-2*(z1 - za)*d1a^4 - ((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*4*d1a^2*(z1 - za))/d1a^8*(zi - z1)^3 +
-                    //  -5*n/ln(10)*(2*(y1 - ya)*d1a^4 - ((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*4*d1a^2*(y1 - ya))/d1a^8*(xi - x1)^2*(yi - y1) +
-                    //  -5*n/ln(10)*(2*(z1 - za)*d1a^4 - ((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*4*d1a^2*(z1 - za))/d1a^8*(xi - x1)^2*(zi - z1) +
-                    //  -5*n/ln(10)*(2*(x1 - xa)*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*4*d1a^2*(x1 - xa))/d1a^8*(xi - x1)*(yi - y1)^2 +
-                    //  -5*n/ln(10)*(2*(x1 - xa)*d1a^4 - ((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*4*d1a^2*(x1 - xa))/d1a^8*(xi - x1)*(zi - z1)^2 +
-                    //  -5*n/ln(10)*(2*(z1 - za)*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*4*d1a^2*(z1 - za))/d1a^8*(yi - y1)^2*(zi - z1) +
-                    //  -5*n/ln(10)*(2*(y1 - ya)*d1a^4 - ((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*4*d1a^2*(y1 - ya))/d1a^8*(yi - y1)*(zi - z1)^2 +
-                    //  -80*n/ln(10)*((x1 - xa)*(y1 - ya)*(z1 - za)*d1a^2)/d1a^8*(xi - x1)*(yi - y1)*(zi - z1)
+                    // Pr(pi = (xi,yi)) = Pr(p1) +
+                    //   -10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1) +
+                    //   -10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1) +
+                    //   -10*n*(z1 - za)/(ln(10)*d1a^2)*(zi - z1) +
+                    //   -5*n*((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)/(ln(10)*d1a^4)*(xi - x1)^2 +
+                    //   -5*n*((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)/(ln(10)*d1a^4)*(yi - y1)^2 +
+                    //   -5*n*((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)/(ln(10)*d1a^4)*(zi - z1)^2 +
+                    //   20*n*(x1 - xa)*(y1 - ya)/(ln(10)*d1a^4)*(xi - x1)*(yi - y1) +
+                    //   20*n*(y1 - ya)*(z1 - za)/(ln(10)*d1a^4)*(yi - y1)*(zi - z1) +
+                    //   20*n*(x1 - xa)*(z1 - za)/(ln(10)*d1a^4)*(xi - x1)*(zi - z1) +
+                    //   -10/6*n/ln(10)*(-2*(x1 - xa)*d1a^4 - ((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*4*d1a^2*(x1 - xa))/d1a^8*(xi - x1)^3 +
+                    //   -10/6*n/ln(10)*(-2*(y1 - ya)*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*4*d1a^2*(y1 - ya))/d1a^8*(yi - y1)^3 +
+                    //   -10/6*n/ln(10)*(-2*(z1 - za)*d1a^4 - ((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*4*d1a^2*(z1 - za))/d1a^8*(zi - z1)^3 +
+                    //   -5*n/ln(10)*(2*(y1 - ya)*d1a^4 - ((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*4*d1a^2*(y1 - ya))/d1a^8*(xi - x1)^2*(yi - y1) +
+                    //   -5*n/ln(10)*(2*(z1 - za)*d1a^4 - ((y1 - ya)^2 + (z1 - za)^2 - (x1 - xa)^2)*4*d1a^2*(z1 - za))/d1a^8*(xi - x1)^2*(zi - z1) +
+                    //   -5*n/ln(10)*(2*(x1 - xa)*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*4*d1a^2*(x1 - xa))/d1a^8*(xi - x1)*(yi - y1)^2 +
+                    //   -5*n/ln(10)*(2*(x1 - xa)*d1a^4 - ((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*4*d1a^2*(x1 - xa))/d1a^8*(xi - x1)*(zi - z1)^2 +
+                    //   -5*n/ln(10)*(2*(z1 - za)*d1a^4 - ((x1 - xa)^2 - (y1 - ya)^2 + (z1 - za)^2)*4*d1a^2*(z1 - za))/d1a^8*(yi - y1)^2*(zi - z1) +
+                    //   -5*n/ln(10)*(2*(y1 - ya)*d1a^4 - ((x1 - xa)^2 + (y1 - ya)^2 - (z1 - za)^2)*4*d1a^2*(y1 - ya))/d1a^8*(yi - y1)*(zi - z1)^2 +
+                    //   -80*n/ln(10)*((x1 - xa)*(y1 - ya)*(z1 - za)*d1a^2)/d1a^8*(xi - x1)*(yi - y1)*(zi - z1)
 
                     final double fingerprintRssi = point[0];
                     final double pathLossExponent = point[1];
@@ -2399,10 +2363,9 @@ public class Utils {
             return null;
         }
 
-        //Expression being used is:
-        //Prdiff1a = Pr(pi) - Pr(p1) = 5*n*log(d1a^2) - 5*n*log(dia^2) =
-        //  = 5*n*log((x1 - xa)^2 + (y1 - ya)^2) - 5*n*log((xi - xa)^2 + (yi - ya)^2)
-
+        // Expression being used is:
+        // Prdiff1a = Pr(pi) - Pr(p1) = 5*n*log(d1a^2) - 5*n*log(dia^2) =
+        //   = 5*n*log((x1 - xa)^2 + (y1 - ya)^2) - 5*n*log((xi - xa)^2 + (yi - ya)^2)
 
         final double x1 = fingerprintPosition.getInhomX();
         final double y1 = fingerprintPosition.getInhomY();
@@ -2452,9 +2415,9 @@ public class Utils {
                 public void evaluate(
                         final double[] x, final double[] y, final Matrix jacobian) {
 
-                    //Expression being used is:
-                    //Prdiff1a = Pr(pi) - Pr(p1) = 5*n*log(d1a^2) - 5*n*log(dia^2) =
-                    //  = 5*n*log((x1 - xa)^2 + (y1 - ya)^2) - 5*n*log((xi - xa)^2 + (yi - ya)^2)
+                    // Expression being used is:
+                    // Prdiff1a = Pr(pi) - Pr(p1) = 5*n*log(d1a^2) - 5*n*log(dia^2) =
+                    //   = 5*n*log((x1 - xa)^2 + (y1 - ya)^2) - 5*n*log((xi - xa)^2 + (yi - ya)^2)
 
                     final double diffX1a = x1 - xa;
                     final double diffY1a = y1 - ya;
@@ -2473,64 +2436,55 @@ public class Utils {
 
                     final double ln10 = Math.log(10.0);
 
+                    // compute gradient (is a jacobian having 1 row and 7 columns)
 
-                    //compute gradient (is a jacobian having 1 row and 7 columns)
-
-
-                    //derivative of diff rssi respect to fingerprint path-loss exponent "n"
+                    // derivative of diff rssi respect to fingerprint path-loss exponent "n"
 
                     final double derivativePathLossExponent = 5.0 *
                             (Math.log10(d1a2) - Math.log10(dia2));
 
-
-                    //derivative of diff rssi respect to x1
-                    //diff(Prdiff1a)/diff(x1) = 5*n/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))*2*(x1 - xa) =
-                    //  = 10*n*(x1 - xa)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))
+                    // derivative of diff rssi respect to x1
+                    // diff(Prdiff1a)/diff(x1) = 5*n/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))*2*(x1 - xa) =
+                    //   = 10*n*(x1 - xa)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))
 
                     final double tmp1a = 10.0 * pathLossExponent / (ln10 * d1a2);
                     final double derivativeX1 = tmp1a * diffX1a;
 
-
-                    //derivative of diff rssi respect to y1
-                    //diff(Prdiff1a)/diff(y1) = 5*n/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))*2*(y1 - ya) =
-                    //  = 10*n*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))
+                    // derivative of diff rssi respect to y1
+                    // diff(Prdiff1a)/diff(y1) = 5*n/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))*2*(y1 - ya) =
+                    //   = 10*n*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))
 
                     final double derivativeY1 = tmp1a * diffY1a;
 
-
-                    //derivative of rssi respect to xi
-                    //diff(Prdiff1a)/diff(xi) = -5*n/(ln(10)*((xi - xa)^2 + (yi - ya)^2))*2*(xi - xa)
-                    //  = -10*n*(xi - xa)/(ln(10)*((xi - xa)^2 + (yi - ya)^2))
+                    // derivative of rssi respect to xi
+                    // diff(Prdiff1a)/diff(xi) = -5*n/(ln(10)*((xi - xa)^2 + (yi - ya)^2))*2*(xi - xa)
+                    //   = -10*n*(xi - xa)/(ln(10)*((xi - xa)^2 + (yi - ya)^2))
 
                     final double tmpia = 10.0 * pathLossExponent / (ln10 * dia2);
                     final double derivativeXi = -tmpia * diffXia;
 
-                    //derivative of rssi respect to yi
-                    //diff(Prdiff1a)/diff(yi) = -5*n/(ln(10)*((xi - xa)^2 + (yi - ya)^2))*2*(yi - ya)
-                    //  = -10*n*(yi - ya)/(ln(10)*((xi - xa)^2 + (yi - ya)^2))
+                    // derivative of rssi respect to yi
+                    // diff(Prdiff1a)/diff(yi) = -5*n/(ln(10)*((xi - xa)^2 + (yi - ya)^2))*2*(yi - ya)
+                    //   = -10*n*(yi - ya)/(ln(10)*((xi - xa)^2 + (yi - ya)^2))
 
                     final double derivativeYi = -tmpia * diffYia;
 
-
-                    //derivative of rssi respect to xa
-                    //diff(Prdiff1a)/diff(xa) = 5*n/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))*-2*(x1 - xa) -5*n/(ln(10)*((xi - xa)^2 + (yi - ya)^2))*-2(xi - xa) =
-                    //  = -10*n*(x1 - xa)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)) + 10*n*(xi - xa)/(ln(10)*((xi - xa)^2 + (yi - ya)^2))
+                    // derivative of rssi respect to xa
+                    // diff(Prdiff1a)/diff(xa) = 5*n/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))*-2*(x1 - xa) -5*n/(ln(10)*((xi - xa)^2 + (yi - ya)^2))*-2(xi - xa) =
+                    //   = -10*n*(x1 - xa)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)) + 10*n*(xi - xa)/(ln(10)*((xi - xa)^2 + (yi - ya)^2))
 
                     final double derivativeXa = -derivativeX1 - derivativeXi;
 
-
-                    //derivative of rssi respect to ya
-                    //diff(Prdiff1a)/diff(ya) = 5*n/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))*-2*(y1 - ya) -5*n/(ln(10)*((xi - xa)^2 + (yi - ya)^2))*-2(yi - ya) =
-                    //  = -10*n*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)) + 10*n*(yi - ya)/(ln(10)*((xi - xa)^2 + (yi - ya)^2))
+                    // derivative of rssi respect to ya
+                    // diff(Prdiff1a)/diff(ya) = 5*n/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2))*-2*(y1 - ya) -5*n/(ln(10)*((xi - xa)^2 + (yi - ya)^2))*-2(yi - ya) =
+                    //   = -10*n*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2)) + 10*n*(yi - ya)/(ln(10)*((xi - xa)^2 + (yi - ya)^2))
 
                     final double derivativeYa = -derivativeY1 - derivativeYi;
 
+                    // Prdiff1a = Pr(pi) - Pr(p1) = 5*n*log(d1a^2) - 5*n*log(dia^2) =
+                    //   = 5*n*log((x1 - xa)^2 + (y1 - ya)^2) - 5*n*log((xi - xa)^2 + (yi - ya)^2)
 
-                    //Prdiff1a = Pr(pi) - Pr(p1) = 5*n*log(d1a^2) - 5*n*log(dia^2) =
-                    //  = 5*n*log((x1 - xa)^2 + (y1 - ya)^2) - 5*n*log((xi - xa)^2 + (yi - ya)^2)
-
-
-                    //set derivatives pathLossExponent, x1, y1, xa, ya, xi, yi
+                    // set derivatives pathLossExponent, x1, y1, xa, ya, xi, yi
                     jacobian.setElementAtIndex(0, derivativePathLossExponent);
                     jacobian.setElementAtIndex(1, derivativeX1);
                     jacobian.setElementAtIndex(2, derivativeY1);
@@ -2588,10 +2542,9 @@ public class Utils {
             return null;
         }
 
-        //Expression being used is:
-        //Prdiff1a = Pr(pi) - Pr(p1) = 5*n*log(d1a^2) - 5*n*log(dia^2) =
-        //  = 5*n*log((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - 5*n*log((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2)
-
+        // Expression being used is:
+        // Prdiff1a = Pr(pi) - Pr(p1) = 5*n*log(d1a^2) - 5*n*log(dia^2) =
+        //   = 5*n*log((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - 5*n*log((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2)
 
         final double x1 = fingerprintPosition.getInhomX();
         final double y1 = fingerprintPosition.getInhomY();
@@ -2644,9 +2597,9 @@ public class Utils {
                 public void evaluate(
                         final double[] x, final double[] y, final Matrix jacobian) {
 
-                    //Expression being used is:
-                    //Prdiff1a = Pr(pi) - Pr(p1) = 5*n*log(d1a^2) - 5*n*log(dia^2) =
-                    //  = 5*n*log((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - 5*n*log((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2)
+                    // Expression being used is:
+                    // Prdiff1a = Pr(pi) - Pr(p1) = 5*n*log(d1a^2) - 5*n*log(dia^2) =
+                    //   = 5*n*log((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - 5*n*log((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2)
 
                     final double diffX1a = x1 - xa;
                     final double diffY1a = y1 - ya;
@@ -2669,84 +2622,73 @@ public class Utils {
 
                     final double ln10 = Math.log(10.0);
 
+                    // compute gradient (is a jacobian having 1 row and 10 columns)
 
-                    //compute gradient (is a jacobian having 1 row and 10 columns)
-
-                    //derivative of diff rssi respect to fingerprint path-loss exponent "n"
+                    // derivative of diff rssi respect to fingerprint path-loss exponent "n"
 
                     final double derivativePathLossExponent = 5.0 *
                             (Math.log10(d1a2) - Math.log10(dia2));
 
-
-                    //derivative of diff rssi respect to x1
-                    //diff(Prdiff1a)/diff(x1) = 5*n/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*2*(x1 - xa) =
-                    //  = 10*n*(x1 - xa)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
+                    // derivative of diff rssi respect to x1
+                    // diff(Prdiff1a)/diff(x1) = 5*n/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*2*(x1 - xa) =
+                    //   = 10*n*(x1 - xa)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
 
                     final double tmp1a = 10.0 * pathLossExponent / (ln10 * d1a2);
                     final double derivativeX1 = tmp1a * diffX1a;
 
-
-                    //derivative of diff rssi respect to y1
-                    //diff(Prdiff1a)/diff(y1) = 5*n/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2) + (z1 - za)^2)*2*(y1 - ya) =
-                    //  = 10*n*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
+                    // derivative of diff rssi respect to y1
+                    // diff(Prdiff1a)/diff(y1) = 5*n/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2) + (z1 - za)^2)*2*(y1 - ya) =
+                    //   = 10*n*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
 
                     final double derivativeY1 = tmp1a * diffY1a;
 
-
-                    //derivative of diff rssi respect to z1
-                    //diff(Prdiff1a)/diff(z1) = 5*n/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2) + (z1 - za)^2)*2*(z1 - za) =
-                    //  = 10*n*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
+                    // derivative of diff rssi respect to z1
+                    // diff(Prdiff1a)/diff(z1) = 5*n/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2) + (z1 - za)^2)*2*(z1 - za) =
+                    //   = 10*n*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))
 
                     final double derivativeZ1 = tmp1a * diffZ1a;
 
-
-                    //derivative of rssi respect to xi
-                    //diff(Prdiff1a)/diff(xi) = -5*n/(ln(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*2*(xi - xa)
-                    //  = -10*n*(xi - xa)/(ln(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))
+                    // derivative of rssi respect to xi
+                    // diff(Prdiff1a)/diff(xi) = -5*n/(ln(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*2*(xi - xa)
+                    //   = -10*n*(xi - xa)/(ln(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))
 
                     final double tmpia = 10.0 * pathLossExponent / (ln10 * dia2);
                     final double derivativeXi = -tmpia * diffXia;
 
-
-                    //derivative of rssi respect to yi
-                    //diff(Prdiff1a)/diff(yi) = -5*n/(ln(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*2*(yi - ya)
-                    //  = -10*n*(yi - ya)/(ln(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))
+                    // derivative of rssi respect to yi
+                    // diff(Prdiff1a)/diff(yi) = -5*n/(ln(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*2*(yi - ya)
+                    //   = -10*n*(yi - ya)/(ln(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))
 
                     final double derivativeYi = -tmpia * diffYia;
 
-
-                    //derivative of rssi respect to zi
-                    //diff(Prdiff1a)/diff(zi) = -5*n/(ln(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*2*(zi - za)
-                    //  = -10*n*(zi - za)/(ln(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))
+                    // derivative of rssi respect to zi
+                    // diff(Prdiff1a)/diff(zi) = -5*n/(ln(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*2*(zi - za)
+                    //   = -10*n*(zi - za)/(ln(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))
 
                     final double derivativeZi = -tmpia * diffZia;
 
+                    // Prdiff1a = Pr(pi) - Pr(p1) = 5*n*log(d1a^2) - 5*n*log(dia^2) =
+                    //   = 5*n*log((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - 5*n*log((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2)
 
-                    //Prdiff1a = Pr(pi) - Pr(p1) = 5*n*log(d1a^2) - 5*n*log(dia^2) =
-                    //  = 5*n*log((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - 5*n*log((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2)
-
-                    //derivative of rssi respect to xa
-                    //diff(Prdiff1a)/diff(xa) = 5*n/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*-2*(x1 - xa) -5*n/(ln(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*-2(xi - xa) =
-                    //  = -10*n*(x1 - xa)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)) + 10*n*(xi - xa)/(ln(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))
+                    // derivative of rssi respect to xa
+                    // diff(Prdiff1a)/diff(xa) = 5*n/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*-2*(x1 - xa) -5*n/(ln(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*-2(xi - xa) =
+                    //   = -10*n*(x1 - xa)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)) + 10*n*(xi - xa)/(ln(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))
 
                     final double derivativeXa = -derivativeX1 - derivativeXi;
 
-
-                    //derivative of rssi respect to ya
-                    //diff(Prdiff1a)/diff(ya) = 5*n/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*-2*(y1 - ya) -5*n/(ln(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*-2(yi - ya) =
-                    //  = -10*n*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)) + 10*n*(yi - ya)/(ln(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))
+                    // derivative of rssi respect to ya
+                    // diff(Prdiff1a)/diff(ya) = 5*n/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*-2*(y1 - ya) -5*n/(ln(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*-2(yi - ya) =
+                    //   = -10*n*(y1 - ya)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)) + 10*n*(yi - ya)/(ln(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))
 
                     final double derivativeYa = -derivativeY1 - derivativeYi;
 
-
-                    //derivative of rssi respect to za
-                    //diff(Prdiff1a)/diff(za) = 5*n/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*-2*(z1 - za) -5*n/(ln(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*-2(zi - za) =
-                    //  = -10*n*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)) + 10*n*(zi - za)/(ln(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))
+                    // derivative of rssi respect to za
+                    // diff(Prdiff1a)/diff(za) = 5*n/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*-2*(z1 - za) -5*n/(ln(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*-2(zi - za) =
+                    //   = -10*n*(z1 - za)/(ln(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)) + 10*n*(zi - za)/(ln(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))
 
                     final double derivativeZa = -derivativeZ1 - derivativeZi;
 
-
-                    //set derivatives pathLossExponent, x1, y1, z1, xa, ya, za, xi, yi, zi
+                    // set derivatives pathLossExponent, x1, y1, z1, xa, ya, za, xi, yi, zi
                     jacobian.setElementAtIndex(0, derivativePathLossExponent);
                     jacobian.setElementAtIndex(1, derivativeX1);
                     jacobian.setElementAtIndex(2, derivativeY1);

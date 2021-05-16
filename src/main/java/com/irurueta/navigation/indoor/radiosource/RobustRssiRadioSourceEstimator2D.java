@@ -26,25 +26,26 @@ import com.irurueta.navigation.indoor.RssiReadingLocated;
 import com.irurueta.navigation.indoor.WifiAccessPoint;
 import com.irurueta.navigation.indoor.WifiAccessPointWithPowerAndLocated2D;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
 
 /**
  * This is an abstract class to robustly estimate 2D position, transmitted power and
- * pathloss exponent of a radio source (e.g. WiFi access point or bluetooth beacon),
+ * path-loss exponent of a radio source (e.g. WiFi access point or bluetooth beacon),
  * by discarding outliers and assuming that the radio source emits isotropically
  * following the expression below:
  * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,
  * where Pr is the received power (expressed in mW),
- * Gt is the Gain of the transmission antena
- * Gr is the Gain of the receiver antena
+ * Gt is the Gain of the transmission antenna
+ * Gr is the Gain of the receiver antenna
  * d is the distance between emitter and receiver
  * and lambda is the wavelength and is equal to: lambda = c / f,
  * where c is the speed of light
  * and f is the carrier frequency of the radio signal.
- * Because usually information about the antena of the radio source cannot be
- * retrieved (because many measurements are made on unkown devices where
+ * Because usually information about the antenna of the radio source cannot be
+ * retrieved (because many measurements are made on unknown devices where
  * physical access is not possible), this implementation will estimate the
  * equivalent transmitted power as: Pte = Pt * Gt * Gr.
  * If RssiReadings contain RSSI standard deviations, those values will be used,
@@ -71,7 +72,7 @@ public abstract class RobustRssiRadioSourceEstimator2D<S extends RadioSource> ex
     /**
      * Radio source estimator used internally.
      */
-    protected RssiRadioSourceEstimator2D<S> mInnerEstimator =
+    protected final RssiRadioSourceEstimator2D<S> mInnerEstimator =
             new RssiRadioSourceEstimator2D<>();
 
     /**
@@ -113,7 +114,7 @@ public abstract class RobustRssiRadioSourceEstimator2D<S extends RadioSource> ex
 
     /**
      * Constructor.
-     * Sets signal readings bleonging to the same radio source.
+     * Sets signal readings belonging to the same radio source.
      *
      * @param readings signal readings belonging to the same radio source.
      * @param listener listener in charge of attending events raised by this instance.
@@ -2810,7 +2811,7 @@ public abstract class RobustRssiRadioSourceEstimator2D<S extends RadioSource> ex
 
     /**
      * Gets minimum required number of readings to estimate
-     * power, position and pathloss exponent.
+     * power, position and path-loss exponent.
      * This value depends on the number of parameters to
      * be estimated, but for position only, this is 3
      * readings.
@@ -2900,13 +2901,13 @@ public abstract class RobustRssiRadioSourceEstimator2D<S extends RadioSource> ex
     }
 
     /**
-     * Solves preliminar solution for a subset of samples.
+     * Solves preliminary solution for a subset of samples.
      *
      * @param samplesIndices indices of subset samples.
      * @param solutions      instance where solution will be stored.
      */
     @Override
-    protected void solvePreliminarSolutions(
+    protected void solvePreliminarySolutions(
             final int[] samplesIndices,
             final List<Solution<Point2D>> solutions) {
 
@@ -2914,12 +2915,12 @@ public abstract class RobustRssiRadioSourceEstimator2D<S extends RadioSource> ex
             int index;
 
             mInnerReadings.clear();
-            for (final int samplesIndice : samplesIndices) {
-                index = samplesIndice;
+            for (final int samplesIndex : samplesIndices) {
+                index = samplesIndex;
                 mInnerReadings.add(mReadings.get(index));
             }
 
-            //initial transmitted power and position might or might not be available
+            // initial transmitted power and position might or might not be available
             mInnerEstimator.setInitialTransmittedPowerdBm(
                     mInitialTransmittedPowerdBm);
             mInnerEstimator.setInitialPosition(mInitialPosition);
@@ -2941,7 +2942,7 @@ public abstract class RobustRssiRadioSourceEstimator2D<S extends RadioSource> ex
             solutions.add(new Solution<>(estimatedPosition,
                     estimatedTransmittedPowerdBm, estimatedPathLossExponent));
         } catch (final NavigationException ignore) {
-            //if anything fails, no solution is added
+            // if anything fails, no solution is added
         }
     }
 
@@ -2970,7 +2971,7 @@ public abstract class RobustRssiRadioSourceEstimator2D<S extends RadioSource> ex
 
             for (int i = 0; i < nSamples; i++) {
                 if (inliers.get(i)) {
-                    //sample is inlier
+                    // sample is inlier
                     mInnerReadings.add(mReadings.get(i));
                 }
             }
@@ -2988,13 +2989,13 @@ public abstract class RobustRssiRadioSourceEstimator2D<S extends RadioSource> ex
 
                 final Matrix cov = mInnerEstimator.getEstimatedCovariance();
                 if (mKeepCovariance && cov != null) {
-                    //keep covariance
+                    // keep covariance
                     mCovariance = cov;
 
                     final int dims = getNumberOfDimensions();
                     int pos = 0;
                     if (mPositionEstimationEnabled) {
-                        //position estimation enabled
+                        // position estimation enabled
                         final int d = dims - 1;
                         if (mEstimatedPositionCovariance == null) {
                             mEstimatedPositionCovariance = mCovariance.
@@ -3005,26 +3006,26 @@ public abstract class RobustRssiRadioSourceEstimator2D<S extends RadioSource> ex
                         }
                         pos += dims;
                     } else {
-                        //position estimation disabled
+                        // position estimation disabled
                         mEstimatedPositionCovariance = null;
                     }
 
                     if (mTransmittedPowerEstimationEnabled) {
-                        //transmitted power estimation enabled
+                        // transmitted power estimation enabled
                         mEstimatedTransmittedPowerVariance = mCovariance.
                                 getElementAt(pos, pos);
                         pos++;
                     } else {
-                        //transmitted power estimation disabled
+                        // transmitted power estimation disabled
                         mEstimatedTransmittedPowerVariance = null;
                     }
 
                     if (mPathLossEstimationEnabled) {
-                        //pathloss exponent estimation enabled
+                        // path-loss exponent estimation enabled
                         mEstimatedPathLossExponentVariance = mCovariance.
                                 getElementAt(pos, pos);
                     } else {
-                        //pathloss exponent estimation disabled
+                        // path-loss exponent estimation disabled
                         mEstimatedPathLossExponentVariance = null;
                     }
                 } else {
@@ -3040,8 +3041,8 @@ public abstract class RobustRssiRadioSourceEstimator2D<S extends RadioSource> ex
                 mEstimatedPathLossExponent =
                         mInnerEstimator.getEstimatedPathLossExponent();
             } catch (final Exception e) {
-                //refinement failed, so we return input value, and covariance
-                //becomes unavailable
+                // refinement failed, so we return input value, and covariance
+                // becomes unavailable
                 mCovariance = null;
                 mEstimatedPositionCovariance = null;
                 mEstimatedTransmittedPowerVariance = null;

@@ -34,10 +34,6 @@ import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.text.MessageFormat;
@@ -52,7 +48,6 @@ import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
 
-@SuppressWarnings("Duplicates")
 public class LMedSRobustRangingRadioSourceEstimator3DTest implements
         RobustRangingRadioSourceEstimatorListener<WifiAccessPoint, Point3D> {
 
@@ -83,25 +78,6 @@ public class LMedSRobustRangingRadioSourceEstimator3DTest implements
     private int estimateEnd;
     private int estimateNextIteration;
     private int estimateProgressChange;
-
-    public LMedSRobustRangingRadioSourceEstimator3DTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
 
     @Test
     public void testConstructor() {
@@ -145,7 +121,6 @@ public class LMedSRobustRangingRadioSourceEstimator3DTest implements
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getEstimatedRadioSource());
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
-
 
         // test constructor with readings
         final List<RangingReadingLocated3D<WifiAccessPoint>> readings = new ArrayList<>();
@@ -212,7 +187,6 @@ public class LMedSRobustRangingRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with listener
         estimator = new LMedSRobustRangingRadioSourceEstimator3D<>(this);
 
@@ -250,7 +224,6 @@ public class LMedSRobustRangingRadioSourceEstimator3DTest implements
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getEstimatedRadioSource());
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
-
 
         // test constructor with readings and listener
         estimator = new LMedSRobustRangingRadioSourceEstimator3D<>(readings, this);
@@ -308,7 +281,6 @@ public class LMedSRobustRangingRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position
         final InhomogeneousPoint3D initialPosition = new InhomogeneousPoint3D(
                 randomizer.nextDouble(MIN_POS, MAX_POS),
@@ -350,7 +322,6 @@ public class LMedSRobustRangingRadioSourceEstimator3DTest implements
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getEstimatedRadioSource());
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
-
 
         // test constructor with readings and initial position
         estimator = new LMedSRobustRangingRadioSourceEstimator3D<>(readings, initialPosition);
@@ -407,7 +378,6 @@ public class LMedSRobustRangingRadioSourceEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position and listener
         estimator = new LMedSRobustRangingRadioSourceEstimator3D<>(initialPosition,
                 this);
@@ -446,7 +416,6 @@ public class LMedSRobustRangingRadioSourceEstimator3DTest implements
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getEstimatedRadioSource());
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
-
 
         // test constructor with readings, initial position and listener
         estimator = new LMedSRobustRangingRadioSourceEstimator3D<>(readings,
@@ -1193,7 +1162,6 @@ public class LMedSRobustRangingRadioSourceEstimator3DTest implements
 
         assertTrue(numValidPosition > 0);
 
-
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);
         LOGGER.log(Level.INFO, MessageFormat.format(
@@ -1334,7 +1302,6 @@ public class LMedSRobustRangingRadioSourceEstimator3DTest implements
 
         assertTrue(numValidPosition > 0);
 
-
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);
         LOGGER.log(Level.INFO, MessageFormat.format(
@@ -1465,7 +1432,6 @@ public class LMedSRobustRangingRadioSourceEstimator3DTest implements
         }
 
         assertTrue(numValidPosition > 0);
-
 
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);
@@ -1757,7 +1723,6 @@ public class LMedSRobustRangingRadioSourceEstimator3DTest implements
 
         assertTrue(numValidPosition > 0);
 
-
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);
         LOGGER.log(Level.INFO, MessageFormat.format(
@@ -1889,7 +1854,6 @@ public class LMedSRobustRangingRadioSourceEstimator3DTest implements
         }
 
         assertTrue(numValidPosition > 0);
-
 
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);

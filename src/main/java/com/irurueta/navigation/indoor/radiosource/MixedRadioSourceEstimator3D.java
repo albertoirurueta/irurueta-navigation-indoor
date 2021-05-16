@@ -17,17 +17,8 @@ package com.irurueta.navigation.indoor.radiosource;
 
 import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.Point3D;
-import com.irurueta.navigation.indoor.Beacon;
-import com.irurueta.navigation.indoor.BeaconWithPowerAndLocated3D;
-import com.irurueta.navigation.indoor.RadioSource;
-import com.irurueta.navigation.indoor.RadioSourceLocated;
-import com.irurueta.navigation.indoor.RangingAndRssiReadingLocated;
-import com.irurueta.navigation.indoor.RangingReadingLocated;
-import com.irurueta.navigation.indoor.ReadingLocated;
-import com.irurueta.navigation.indoor.RssiReadingLocated;
-import com.irurueta.navigation.indoor.WifiAccessPoint;
-import com.irurueta.navigation.indoor.WifiAccessPointLocated3D;
-import com.irurueta.navigation.indoor.WifiAccessPointWithPowerAndLocated3D;
+import com.irurueta.navigation.indoor.*;
+
 import java.util.List;
 
 /**
@@ -38,25 +29,24 @@ import java.util.List;
  * expression below:
  * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,
  * where Pr is the received power (expressed in mW),
- * Gt is the Gain of the transmission antena
- * Gr is the Gain of the receiver antena
+ * Gt is the Gain of the transmission antenna
+ * Gr is the Gain of the receiver antenna
  * d is the distance between emitter and receiver
  * and lambda is the wavelength and is equal to: lambda = c / f,
  * where c is the speed of light
  * and f is the carrier frequency of the radio signal.
- * Because usually information about the antena of the radio source cannot be
- * retrieved (because many measurements are made on unkown devices where
+ * Because usually information about the antenna of the radio source cannot be
+ * retrieved (because many measurements are made on unknown devices where
  * physical access is not possible), this implementation will estimate the
  * equivalent transmitted power as: Pte = Pt * Gt * Gr.
  * If Readings contain RSSI standard deviations, those values will be used,
- * otherwise it will be asumed an RSSI standard deviation of 1 dB.
+ * otherwise it will be assumed an RSSI standard deviation of 1 dB.
  * <p>
  * This implementation is like RangingAndRssiRadioSourceEstimator3D but allows mixing
  * different kinds of located radio source readings (ranging, RSSI and ranging+RSSI).
  *
  * @param <S> a {@link RadioSource} type.
  */
-@SuppressWarnings({"WeakerAccess", "Duplicates"})
 public class MixedRadioSourceEstimator3D<S extends RadioSource>
         extends MixedRadioSourceEstimator<S, Point3D> {
 
@@ -389,7 +379,7 @@ public class MixedRadioSourceEstimator3D<S extends RadioSource>
      *
      * @return estimated located radio source or null.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "DuplicatedCode"})
     @Override
     public RadioSourceLocated<Point3D> getEstimatedRadioSource() {
         final List<? extends ReadingLocated<Point3D>> readings = getReadings();
@@ -444,8 +434,8 @@ public class MixedRadioSourceEstimator3D<S extends RadioSource>
             }
         } else if (source instanceof Beacon) {
             final Beacon beacon = (Beacon) source;
-            //transmitted power does not need to be estimated for beacons because
-            //they broadcast such information
+            // transmitted power does not need to be estimated for beacons because
+            // they broadcast such information
             return new BeaconWithPowerAndLocated3D(beacon.getIdentifiers(),
                     beacon.getTransmittedPower(), beacon.getFrequency(),
                     beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(),

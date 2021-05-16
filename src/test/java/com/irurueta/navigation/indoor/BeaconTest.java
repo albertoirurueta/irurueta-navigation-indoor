@@ -16,10 +16,6 @@
 package com.irurueta.navigation.indoor;
 
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -29,25 +25,6 @@ import java.util.Random;
 import static org.junit.Assert.*;
 
 public class BeaconTest {
-
-    public BeaconTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
 
     @Test
     public void testConstructor() {
@@ -67,7 +44,6 @@ public class BeaconTest {
         assertEquals(b.getServiceUuid(), -1);
         assertEquals(b.getType(), RadioSourceType.BEACON);
         assertEquals(b.getFrequency(), Beacon.DEFAULT_FREQUENCY, 0.0);
-
 
         // test constructor with identifiers and transmitted power
         final List<BeaconIdentifier> identifiers = new ArrayList<>();
@@ -94,8 +70,8 @@ public class BeaconTest {
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
+        //noinspection ConstantConditions
         assertNull(b);
-
 
         // test constructor with all data
         b = new Beacon(identifiers, -50.0, "address", 1, 2,
@@ -124,7 +100,6 @@ public class BeaconTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with identifiers, transmitted power and frequency
         b = new Beacon(identifiers, -50.0, 5.0e9);
@@ -265,7 +240,6 @@ public class BeaconTest {
         identifiers2.add(id4);
         identifiers2.add(id5);
         identifiers2.add(id6);
-
 
         final Beacon b1 = new Beacon(identifiers1, -60.0);
         final Beacon b2 = new Beacon(identifiers1, -50.0);

@@ -27,10 +27,6 @@ import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.text.MessageFormat;
@@ -45,14 +41,13 @@ import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
 
-@SuppressWarnings("Duplicates")
 public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         SequentialRobustMixedRadioSourceEstimatorListener<WifiAccessPoint, Point2D> {
 
     private static final Logger LOGGER = Logger.getLogger(
             SequentialRobustMixedRadioSourceEstimator2DTest.class.getName());
 
-    private static final double FREQUENCY = 2.4e9; //(Hz)
+    private static final double FREQUENCY = 2.4e9; // (Hz)
 
     private static final int MIN_READINGS = 100;
     private static final int MAX_READINGS = 500;
@@ -81,29 +76,9 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
 
     private static final double STD_OUTLIER_ERROR = 10.0;
 
-
     private int estimateStart;
     private int estimateEnd;
     private int estimateProgressChange;
-
-    public SequentialRobustMixedRadioSourceEstimator2DTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
 
     @Test
     public void testConstructor() throws LockedException {
@@ -162,7 +137,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         assertEquals(estimator.getRssiPreliminarySubsetSize(), 4);
         assertEquals(estimator.getNumberOfDimensions(), 2);
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with readings
         final List<ReadingLocated<Point2D>> readings =
@@ -244,7 +218,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with listener
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(this);
 
@@ -297,7 +270,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         assertEquals(estimator.getRssiPreliminarySubsetSize(), 4);
         assertEquals(estimator.getNumberOfDimensions(), 2);
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with readings and listener
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(
@@ -370,7 +342,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with readings and initial position
         final InhomogeneousPoint2D initialPosition = new InhomogeneousPoint2D(
@@ -448,7 +419,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(
                 initialPosition);
@@ -503,7 +473,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         assertEquals(estimator.getNumberOfDimensions(), 2);
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
 
-
         // test constructor with initial position and listener
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(
                 initialPosition, this);
@@ -557,7 +526,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         assertEquals(estimator.getRssiPreliminarySubsetSize(), 4);
         assertEquals(estimator.getNumberOfDimensions(), 2);
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with readings, initial position and listener
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(readings,
@@ -631,7 +599,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial transmitted power
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(MAX_RSSI);
 
@@ -686,8 +653,7 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         assertEquals(estimator.getNumberOfDimensions(), 2);
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
 
-
-        // test constructor with readings and initial trnasmitted power
+        // test constructor with readings and initial transmitted power
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(readings,
                 MAX_RSSI);
 
@@ -760,7 +726,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial transmitted power and listener
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(MAX_RSSI,
                 this);
@@ -815,7 +780,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         assertEquals(estimator.getRssiPreliminarySubsetSize(), 4);
         assertEquals(estimator.getNumberOfDimensions(), 2);
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with readings, initial transmitted power and listener
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(readings,
@@ -890,7 +854,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with readings, initial position and initial transmitted power
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(readings,
                 initialPosition, MAX_RSSI);
@@ -964,7 +927,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position and initial transmitted power
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(
                 initialPosition, MAX_RSSI);
@@ -1020,7 +982,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         assertEquals(estimator.getNumberOfDimensions(), 2);
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
 
-
         // test constructor with initial position, initial transmitted power and listener
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(
                 initialPosition, MAX_RSSI, this);
@@ -1075,7 +1036,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         assertEquals(estimator.getRssiPreliminarySubsetSize(), 4);
         assertEquals(estimator.getNumberOfDimensions(), 2);
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with readings, initial position, initial transmitted power
         // and listener
@@ -1151,9 +1111,8 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with readings, initial position, initial transmitted power
-        // and initial pathloss exponent
+        // and initial path-loss exponent
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(readings,
                 initialPosition, MAX_RSSI, 1.0);
 
@@ -1224,10 +1183,9 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with initial position, initial transmitted power
-        // and initial pathloss exponent
+        // and initial path-loss exponent
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(
                 initialPosition, MAX_RSSI, 1.0);
 
@@ -1281,9 +1239,8 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         assertEquals(estimator.getNumberOfDimensions(), 2);
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
 
-
         // test constructor with initial position, initial transmitted power,
-        // initial pathloss exponent and listener
+        // initial path-loss exponent and listener
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(
                 initialPosition, MAX_RSSI, 1.0, this);
 
@@ -1337,9 +1294,8 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         assertEquals(estimator.getNumberOfDimensions(), 2);
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
 
-
         // test constructor with readings, initial position, initial transmitted power,
-        // initial pathloss exponent and listener
+        // initial path-loss exponent and listener
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(readings,
                 initialPosition, MAX_RSSI, 1.0, this);
 
@@ -1410,7 +1366,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with quality scores
         final double[] qualityScores = new double[4];
@@ -1467,7 +1422,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         assertEquals(estimator.getRssiPreliminarySubsetSize(), 4);
         assertEquals(estimator.getNumberOfDimensions(), 2);
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with quality scores and readings
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(
@@ -1541,7 +1495,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with quality scores and listener
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(
                 qualityScores, this);
@@ -1595,7 +1548,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         assertEquals(estimator.getRssiPreliminarySubsetSize(), 4);
         assertEquals(estimator.getNumberOfDimensions(), 2);
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with quality scores, readings and listener
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(
@@ -1671,7 +1623,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with quality scores, readings and initial position
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(
                 qualityScores, readings, initialPosition);
@@ -1744,7 +1695,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with quality scores and initial position
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(
                 qualityScores, initialPosition);
@@ -1799,7 +1749,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         assertEquals(estimator.getNumberOfDimensions(), 2);
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
 
-
         // test constructor with quality scores, initial position and listener
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(
                 qualityScores, initialPosition, this);
@@ -1853,7 +1802,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         assertEquals(estimator.getRssiPreliminarySubsetSize(), 4);
         assertEquals(estimator.getNumberOfDimensions(), 2);
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with quality scores, readings, initial position and listener
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(
@@ -1927,7 +1875,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with quality scores, initial transmitted power
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(
                 qualityScores, MAX_RSSI);
@@ -1983,8 +1930,7 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         assertEquals(estimator.getNumberOfDimensions(), 2);
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
 
-
-        // test constructor with quality scores, readings and initial trnasmitted power
+        // test constructor with quality scores, readings and initial transmitted power
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(
                 qualityScores, readings, MAX_RSSI);
 
@@ -2059,7 +2005,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with quality scores, initial transmitted power and listener
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(
                 qualityScores, MAX_RSSI, this);
@@ -2114,7 +2059,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         assertEquals(estimator.getRssiPreliminarySubsetSize(), 4);
         assertEquals(estimator.getNumberOfDimensions(), 2);
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with quality scores, readings, initial transmitted power
         // and listener
@@ -2192,7 +2136,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with quality scores, readings, initial position and
         // initial transmitted power
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(
@@ -2267,7 +2210,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with quality scores, initial position and initial
         // transmitted power
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(
@@ -2324,7 +2266,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         assertEquals(estimator.getNumberOfDimensions(), 2);
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
 
-
         // test constructor with quality scores, initial position, initial
         // transmitted power and listener
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(
@@ -2379,7 +2320,6 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         assertEquals(estimator.getRssiPreliminarySubsetSize(), 4);
         assertEquals(estimator.getNumberOfDimensions(), 2);
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
-
 
         // test constructor with readings, initial position, initial transmitted power
         // and listener
@@ -2456,9 +2396,8 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with readings, initial position, initial transmitted power
-        // and initial pathloss exponent
+        // and initial path-loss exponent
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(
                 qualityScores, readings, initialPosition, MAX_RSSI,
                 1.0);
@@ -2531,9 +2470,8 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position, initial transmitted power
-        // and initial pathloss exponent
+        // and initial path-loss exponent
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(
                 qualityScores, initialPosition, MAX_RSSI,
                 1.0);
@@ -2588,9 +2526,8 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         assertEquals(estimator.getNumberOfDimensions(), 2);
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
 
-
         // test constructor with initial position, initial transmitted power,
-        // initial pathloss exponent and listener
+        // initial path-loss exponent and listener
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(
                 qualityScores, initialPosition, MAX_RSSI,
                 1.0, this);
@@ -2645,9 +2582,8 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         assertEquals(estimator.getNumberOfDimensions(), 2);
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
 
-
         // test constructor with readings, initial position, initial transmitted power,
-        // initial pathloss exponent and listener
+        // initial path-loss exponent and listener
         estimator = new SequentialRobustMixedRadioSourceEstimator2D<>(
                 qualityScores, readings, initialPosition, MAX_RSSI,
                 1.0, this);
@@ -3272,16 +3208,14 @@ public class SequentialRobustMixedRadioSourceEstimator2DTest implements
         // check
         assertEquals(estimator.getMinReadings(), 4);
 
-
-        // position and pathloss
+        // position and path-loss
         estimator.setTransmittedPowerEstimationEnabled(false);
         estimator.setPathLossEstimationEnabled(true);
 
         // check
         assertEquals(estimator.getMinReadings(), 4);
 
-
-        // position, transmitted power and patloss
+        // position, transmitted power and path-loss
         estimator.setTransmittedPowerEstimationEnabled(true);
         estimator.setPathLossEstimationEnabled(true);
 

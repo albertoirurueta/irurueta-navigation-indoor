@@ -22,6 +22,7 @@ import com.irurueta.navigation.indoor.RadioSourceLocated;
 import com.irurueta.navigation.indoor.RssiFingerprint;
 import com.irurueta.navigation.indoor.RssiFingerprintLocated;
 import com.irurueta.navigation.indoor.RssiReading;
+
 import java.util.List;
 
 /**
@@ -31,7 +32,7 @@ import java.util.List;
  * This is a base implementation for all implementations using different orders of
  * Taylor approximation to estimate position.
  */
-@SuppressWarnings({"WeakerAccess", "Duplicates"})
+@SuppressWarnings("DuplicatedCode")
 public abstract class NonLinearFingerprintPositionEstimator2D extends
         NonLinearFingerprintPositionEstimator<Point2D> {
 

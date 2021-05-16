@@ -60,7 +60,7 @@ public class PROMedSRobustRangingPositionEstimator3DTest implements
     private static final Logger LOGGER = Logger.getLogger(
             PROMedSRobustRangingPositionEstimator3DTest.class.getName());
 
-    private static final double FREQUENCY = 2.4e9; //(Hz)
+    private static final double FREQUENCY = 2.4e9; // (Hz)
 
     private static final int MIN_SOURCES = 100;
     private static final int MAX_SOURCES = 500;
@@ -134,7 +134,6 @@ public class PROMedSRobustRangingPositionEstimator3DTest implements
         assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertTrue(estimator.getEvenlyDistributeReadings());
 
-
         // constructor with sources
         final List<WifiAccessPointLocated3D> sources = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
@@ -199,7 +198,6 @@ public class PROMedSRobustRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprints
         RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
                 new RangingFingerprint<>();
@@ -254,7 +252,6 @@ public class PROMedSRobustRangingPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources and fingerprint
         estimator = new PROMedSRobustRangingPositionEstimator3D(sources, fingerprint);
@@ -321,7 +318,6 @@ public class PROMedSRobustRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with listener
         estimator = new PROMedSRobustRangingPositionEstimator3D(this);
 
@@ -364,7 +360,6 @@ public class PROMedSRobustRangingPositionEstimator3DTest implements
         assertEquals(estimator.getNumberOfDimensions(), 3);
         assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertTrue(estimator.getEvenlyDistributeReadings());
-
 
         // constructor with sources and listener
         estimator = new PROMedSRobustRangingPositionEstimator3D(sources, this);
@@ -425,7 +420,6 @@ public class PROMedSRobustRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint and listener
         estimator = new PROMedSRobustRangingPositionEstimator3D(fingerprint,
                 this);
@@ -480,7 +474,6 @@ public class PROMedSRobustRangingPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint and listener
         estimator = new PROMedSRobustRangingPositionEstimator3D(sources, fingerprint,
@@ -548,7 +541,6 @@ public class PROMedSRobustRangingPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with quality scores
         final double[] sourceQualityScores = new double[4];
@@ -717,7 +709,6 @@ public class PROMedSRobustRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with quality scores and fingerprints
         estimator = new PROMedSRobustRangingPositionEstimator3D(sourceQualityScores,
                 fingerprintReadingsQualityScores, fingerprint);
@@ -800,7 +791,6 @@ public class PROMedSRobustRangingPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with quality scores, sources and fingerprint
         estimator = new PROMedSRobustRangingPositionEstimator3D(sourceQualityScores,
@@ -898,7 +888,6 @@ public class PROMedSRobustRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with quality scores and listener
         estimator = new PROMedSRobustRangingPositionEstimator3D(sourceQualityScores,
                 fingerprintReadingsQualityScores, this);
@@ -973,7 +962,6 @@ public class PROMedSRobustRangingPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with quality scores, sources and listener
         estimator = new PROMedSRobustRangingPositionEstimator3D(sourceQualityScores,
@@ -1064,7 +1052,6 @@ public class PROMedSRobustRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with quality scores, fingerprint and listener
         estimator = new PROMedSRobustRangingPositionEstimator3D(sourceQualityScores,
                 fingerprintReadingsQualityScores, fingerprint, this);
@@ -1146,7 +1133,6 @@ public class PROMedSRobustRangingPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint and listener
         estimator = new PROMedSRobustRangingPositionEstimator3D(sourceQualityScores,
@@ -1564,6 +1550,7 @@ public class PROMedSRobustRangingPositionEstimator3DTest implements
         }
     }
 
+    @Test
     public void testGetSetFingerprintReadingsQualityScores() throws LockedException {
         final PROMedSRobustRangingPositionEstimator3D estimator =
                 new PROMedSRobustRangingPositionEstimator3D();
@@ -1572,7 +1559,7 @@ public class PROMedSRobustRangingPositionEstimator3DTest implements
         assertNull(estimator.getFingerprintReadingsQualityScores());
 
         // set new value
-        final double[] qualityScores = new double[3];
+        final double[] qualityScores = new double[4];
         estimator.setFingerprintReadingsQualityScores(qualityScores);
 
         // check

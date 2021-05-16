@@ -18,10 +18,6 @@ package com.irurueta.navigation.indoor;
 import com.irurueta.algebra.AlgebraException;
 import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.InhomogeneousPoint3D;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -30,25 +26,6 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class RangingFingerprintLocated3DTest {
-
-    public RangingFingerprintLocated3DTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
 
     @Test
     public void testConstructor() throws AlgebraException {
@@ -61,7 +38,6 @@ public class RangingFingerprintLocated3DTest {
         assertTrue(fingerprint.getReadings().isEmpty());
         assertNull(fingerprint.getPosition());
         assertNull(fingerprint.getPositionCovariance());
-
 
         // constructor with readings and position
         final List<RangingReading<RadioSource>> readings = new ArrayList<>();
@@ -86,7 +62,6 @@ public class RangingFingerprintLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(fingerprint);
-
 
         // constructor with readings, position and position covariance
         final Matrix cov = new Matrix(3, 3);

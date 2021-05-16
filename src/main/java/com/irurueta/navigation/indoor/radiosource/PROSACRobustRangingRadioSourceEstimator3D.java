@@ -25,6 +25,7 @@ import com.irurueta.numerical.robust.PROSACRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -34,7 +35,6 @@ import java.util.List;
  *
  * @param <S> a {@link RadioSource} type.
  */
-@SuppressWarnings({"WeakerAccess", "Duplicates"})
 public class PROSACRobustRangingRadioSourceEstimator3D<S extends RadioSource> extends
         RobustRangingRadioSourceEstimator3D<S> {
 
@@ -469,6 +469,7 @@ public class PROSACRobustRangingRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws RobustEstimatorException if estimation fails for any reason
      *                                  (i.e. numerical instability, no solution available, etc).
      */
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void estimate() throws LockedException, NotReadyException, RobustEstimatorException {
         if (isLocked()) {
@@ -506,7 +507,7 @@ public class PROSACRobustRangingRadioSourceEstimator3D<S extends RadioSource> ex
                             public void estimatePreliminarSolutions(
                                     final int[] samplesIndices,
                                     final List<Solution<Point3D>> solutions) {
-                                solvePreliminarSolutions(samplesIndices, solutions);
+                                solvePreliminarySolutions(samplesIndices, solutions);
                             }
 
                             @Override

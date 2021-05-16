@@ -15,10 +15,6 @@
  */
 package com.irurueta.navigation.indoor;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -27,25 +23,6 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class RangingFingerprintTest {
-
-    public RangingFingerprintTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
 
     @Test
     public void testConstructor() {
@@ -70,6 +47,7 @@ public class RangingFingerprintTest {
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
+        //noinspection ConstantConditions
         assertNull(fingerprint);
     }
 }

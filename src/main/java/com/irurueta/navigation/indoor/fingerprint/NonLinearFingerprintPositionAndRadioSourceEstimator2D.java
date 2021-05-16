@@ -26,6 +26,7 @@ import com.irurueta.navigation.indoor.RssiFingerprintLocated;
 import com.irurueta.navigation.indoor.RssiReading;
 import com.irurueta.navigation.indoor.Utils;
 import com.irurueta.statistics.MultivariateNormalDist;
+
 import java.util.List;
 
 /**
@@ -34,7 +35,6 @@ import java.util.List;
  * This class estimates 2D position of a new fingerprint and the 2D position of all
  * radio sources associated to fingerprints whose location is known.
  */
-@SuppressWarnings("WeakerAccess")
 public class NonLinearFingerprintPositionAndRadioSourceEstimator2D extends
         NonLinearFingerprintPositionAndRadioSourceEstimator<Point2D> {
 

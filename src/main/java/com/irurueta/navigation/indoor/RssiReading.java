@@ -18,6 +18,7 @@ package com.irurueta.navigation.indoor;
 /**
  * Contains a signal strength reading associated to a given radio source
  * (e.g. WiFi access point or bluetooth beacon).
+ *
  * @param <S> a {@link RadioSource} type.
  */
 public class RssiReading<S extends RadioSource> extends Reading<S> {
@@ -34,8 +35,9 @@ public class RssiReading<S extends RadioSource> extends Reading<S> {
 
     /**
      * Constructor.
+     *
      * @param source radio source associated to this reading.
-     * @param rssi received signal strength indicator in dBm.
+     * @param rssi   received signal strength indicator in dBm.
      * @throws IllegalArgumentException if radio source data is null.
      */
     public RssiReading(final S source, final double rssi) {
@@ -45,14 +47,15 @@ public class RssiReading<S extends RadioSource> extends Reading<S> {
 
     /**
      * Constructor.
-     * @param source radio source associated to this reading.
-     * @param rssi received signal strength indicator in dBm.
+     *
+     * @param source                radio source associated to this reading.
+     * @param rssi                  received signal strength indicator in dBm.
      * @param rssiStandardDeviation standard deviation of RSSI, if available.
      * @throws IllegalArgumentException if radio source data is null or
-     * standard deviation is zero or negative.
+     *                                  standard deviation is zero or negative.
      */
     public RssiReading(final S source, final double rssi,
-            final Double rssiStandardDeviation) {
+                       final Double rssiStandardDeviation) {
         this(source, rssi);
 
         if (rssiStandardDeviation != null && rssiStandardDeviation <= 0.0) {
@@ -71,6 +74,7 @@ public class RssiReading<S extends RadioSource> extends Reading<S> {
 
     /**
      * Contains radio source reading type.
+     *
      * @return reading type.
      */
     @Override
@@ -80,6 +84,7 @@ public class RssiReading<S extends RadioSource> extends Reading<S> {
 
     /**
      * Gets received signal strength indicator of this 802.11 network, in dBm.
+     *
      * @return received signal strength indicator.
      */
     public double getRssi() {
@@ -88,6 +93,7 @@ public class RssiReading<S extends RadioSource> extends Reading<S> {
 
     /**
      * Gets standard deviation of RSSI, if available.
+     *
      * @return standard deviation of RSSI, if available.
      */
     public Double getRssiStandardDeviation() {

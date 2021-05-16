@@ -33,10 +33,6 @@ import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.text.MessageFormat;
@@ -51,14 +47,13 @@ import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
 
-@SuppressWarnings("Duplicates")
 public class RANSACRobustRssiRadioSourceEstimator2DTest implements
         RobustRssiRadioSourceEstimatorListener<WifiAccessPoint, Point2D> {
 
     private static final Logger LOGGER = Logger.getLogger(
             RANSACRobustRssiRadioSourceEstimator2DTest.class.getName());
 
-    private static final double FREQUENCY = 2.4e9; //(Hz)
+    private static final double FREQUENCY = 2.4e9; // (Hz)
 
     private static final int MIN_READINGS = 100;
     private static final int MAX_READINGS = 500;
@@ -87,30 +82,10 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
 
     private static final double STD_OUTLIER_ERROR = 10.0;
 
-
     private int estimateStart;
     private int estimateEnd;
     private int estimateNextIteration;
     private int estimateProgressChange;
-
-    public RANSACRobustRssiRadioSourceEstimator2DTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
 
     @Test
     public void testConstructor() {
@@ -163,7 +138,6 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
         assertEquals(estimator.getEstimatedPathLossExponent(),
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
-
 
         // test constructor with readings
         final List<RssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
@@ -238,7 +212,6 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with listener
         estimator = new RANSACRobustRssiRadioSourceEstimator2D<>(this);
 
@@ -285,7 +258,6 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
         assertEquals(estimator.getEstimatedPathLossExponent(),
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
-
 
         // test constructor with readings and listener
         estimator = new RANSACRobustRssiRadioSourceEstimator2D<>(
@@ -350,7 +322,6 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with readings and initial position
         final InhomogeneousPoint2D initialPosition = new InhomogeneousPoint2D(
@@ -419,7 +390,6 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position
         estimator = new RANSACRobustRssiRadioSourceEstimator2D<>(
                 initialPosition);
@@ -468,7 +438,6 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-
         // test constructor with initial position and listener
         estimator = new RANSACRobustRssiRadioSourceEstimator2D<>(
                 initialPosition, this);
@@ -516,7 +485,6 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
         assertEquals(estimator.getEstimatedPathLossExponent(),
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
-
 
         // test constructor with readings, initial position and listener
         estimator = new RANSACRobustRssiRadioSourceEstimator2D<>(
@@ -582,7 +550,6 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial transmitted power
         estimator = new RANSACRobustRssiRadioSourceEstimator2D<>(
                 MAX_RSSI);
@@ -630,7 +597,6 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
         assertEquals(estimator.getEstimatedPathLossExponent(),
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
-
 
         // test constructor with readings and initial transmitted power
         estimator = new RANSACRobustRssiRadioSourceEstimator2D<>(
@@ -696,7 +662,6 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial transmitted power and listener
         estimator = new RANSACRobustRssiRadioSourceEstimator2D<>(
                 MAX_RSSI, this);
@@ -744,7 +709,6 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
         assertEquals(estimator.getEstimatedPathLossExponent(),
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
-
 
         // test constructor with readings, initial transmitted power and listener
         estimator = new RANSACRobustRssiRadioSourceEstimator2D<>(
@@ -794,7 +758,7 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-        //force IllegalArgumentException
+        // force IllegalArgumentException
         estimator = null;
         try {
             estimator = new RANSACRobustRssiRadioSourceEstimator2D<>(
@@ -809,7 +773,6 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with readings, initial position and initial transmitted power
         estimator = new RANSACRobustRssiRadioSourceEstimator2D<>(
@@ -859,7 +822,7 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-        //force IllegalArgumentException
+        // force IllegalArgumentException
         estimator = null;
         try {
             estimator = new RANSACRobustRssiRadioSourceEstimator2D<>(
@@ -874,7 +837,6 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with initial position and initial transmitted power
         estimator = new RANSACRobustRssiRadioSourceEstimator2D<>(
@@ -924,7 +886,6 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-
         // test constructor with initial position, initial transmitted power and listener
         estimator = new RANSACRobustRssiRadioSourceEstimator2D<>(
                 initialPosition, MAX_RSSI, this);
@@ -972,7 +933,6 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
         assertEquals(estimator.getEstimatedPathLossExponent(),
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
-
 
         // test constructor with readings, initial position, initial transmitted
         // power and listener
@@ -1023,7 +983,6 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-
         // force IllegalArgumentException
         estimator = null;
         try {
@@ -1039,7 +998,6 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with readings, initial position, initial transmitted power
         // and initial path loss exponent
@@ -1109,7 +1067,6 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position, initial transmitted power and
         // initial path loss exponent
         estimator = new RANSACRobustRssiRadioSourceEstimator2D<>(
@@ -1159,7 +1116,6 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
         assertEquals(estimator.getEstimatedPathLossExponent(),
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
-
 
         // test constructor with initial position, initial transmitted power,
         // initial path loss exponent and listener
@@ -1211,7 +1167,6 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-
         // test constructor with readings, initial position, initial transmitted power
         // initial path loss exponent and listener
         estimator = new RANSACRobustRssiRadioSourceEstimator2D<>(
@@ -1261,7 +1216,6 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
         assertEquals(estimator.getEstimatedPathLossExponent(),
                 RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertNull(estimator.getEstimatedPathLossExponentVariance());
-
 
         // force IllegalArgumentException
         estimator = null;
@@ -1356,7 +1310,6 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
         // check
         assertEquals(estimator.getMinReadings(), 3);
 
-
         // transmitted power only
         estimator.setPositionEstimationEnabled(false);
         estimator.setTransmittedPowerEstimationEnabled(true);
@@ -1365,15 +1318,13 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
         // check
         assertEquals(estimator.getMinReadings(), 2);
 
-
-        // pathloss only
+        // path-loss only
         estimator.setPositionEstimationEnabled(false);
         estimator.setTransmittedPowerEstimationEnabled(false);
         estimator.setPathLossEstimationEnabled(true);
 
         // check
         assertEquals(estimator.getMinReadings(), 2);
-
 
         // position and transmitted power
         estimator.setPositionEstimationEnabled(true);
@@ -1384,7 +1335,7 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
         assertEquals(estimator.getMinReadings(), 4);
 
 
-        // position and pathloss
+        // position and path-loss
         estimator.setPositionEstimationEnabled(true);
         estimator.setTransmittedPowerEstimationEnabled(false);
         estimator.setPathLossEstimationEnabled(true);
@@ -1392,8 +1343,7 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
         // check
         assertEquals(estimator.getMinReadings(), 4);
 
-
-        // transmitted power and pathloss
+        // transmitted power and path-loss
         estimator.setPositionEstimationEnabled(false);
         estimator.setTransmittedPowerEstimationEnabled(true);
         estimator.setPathLossEstimationEnabled(true);
@@ -1401,8 +1351,7 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
         // check
         assertEquals(estimator.getMinReadings(), 3);
 
-
-        // position, transmitted power and patloss
+        // position, transmitted power and path-loss
         estimator.setPositionEstimationEnabled(true);
         estimator.setTransmittedPowerEstimationEnabled(true);
         estimator.setPathLossEstimationEnabled(true);
@@ -1878,7 +1827,6 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
             assertNull(estimatedAccessPoint.getPositionCovariance());
             assertNull(estimatedAccessPoint.getPathLossExponentStandardDeviation());
 
-
             positionError = estimator.getEstimatedPosition().
                     distanceTo(accessPointPosition);
             if (positionError > ABSOLUTE_ERROR) {
@@ -2069,7 +2017,7 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
         LOGGER.log(Level.INFO, "Power error: {0} dB",
                 powerError);
 
-        //force NotReadyException
+        // force NotReadyException
         final RANSACRobustRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
                 new RANSACRobustRssiRadioSourceEstimator2D<>();
         try {
@@ -2618,10 +2566,10 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    //outlier
+                    // outlier
                     error = errorRandomizer.nextDouble();
                 } else {
-                    //inlier
+                    // inlier
                     error = 0.0;
                 }
 
@@ -3581,10 +3529,10 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    //outlier
+                    // outlier
                     error = errorRandomizer.nextDouble();
                 } else {
-                    //inlier
+                    // inlier
                     error = 0.0;
                 }
 
@@ -3781,10 +3729,10 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    //outlier
+                    // outlier
                     error = errorRandomizer.nextDouble();
                 } else {
-                    //inlier
+                    // inlier
                     error = 0.0;
                 }
 
@@ -4418,10 +4366,10 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    //outlier
+                    // outlier
                     error = errorRandomizer.nextDouble();
                 } else {
-                    //inlier
+                    // inlier
                     error = 0.0;
                 }
 
@@ -6735,7 +6683,6 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
             assertNull(estimatedAccessPoint.getPositionCovariance());
             assertNull(estimatedAccessPoint.getPathLossExponentStandardDeviation());
 
-
             positionError = estimator.getEstimatedPosition().
                     distanceTo(accessPointPosition);
             if (positionError > ABSOLUTE_ERROR) {
@@ -6819,10 +6766,10 @@ public class RANSACRobustRssiRadioSourceEstimator2DTest implements
     private double receivedPower(
             final double equivalentTransmittedPower, final double distance, final double frequency,
             final double pathLossExponent) {
-        //Pr = Pt*Gt*Gr*lambda^2/(4*pi*d)^2,    where Pr is the received power
+        // Pr = Pt*Gt*Gr*lambda^2/(4*pi*d)^2,    where Pr is the received power
         // lambda = c/f, where lambda is wavelength,
         // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the received Gain
-        //Pr = Pte*c^2/((4*pi*f)^2 * d^2)
+        // Pr = Pte*c^2/((4*pi*f)^2 * d^2)
         final double k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI * frequency), pathLossExponent);
         return equivalentTransmittedPower * k /
                 Math.pow(distance, pathLossExponent);

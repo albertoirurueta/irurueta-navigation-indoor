@@ -29,7 +29,7 @@ import static org.junit.Assert.*;
 public class RobustRangingAndRssiPositionEstimator3DTest implements
         RobustRangingAndRssiPositionEstimatorListener<Point3D> {
 
-    private static final double FREQUENCY = 2.4e9; //(Hz)
+    private static final double FREQUENCY = 2.4e9; // (Hz)
 
     @Test
     public void testCreate() {
@@ -70,7 +70,6 @@ public class RobustRangingAndRssiPositionEstimator3DTest implements
 
         // check
         assertTrue(estimator instanceof PROMedSRobustRangingAndRssiPositionEstimator3D);
-
 
         // create with sources and method
         final List<WifiAccessPointLocated3D> sources = new ArrayList<>();
@@ -119,7 +118,6 @@ public class RobustRangingAndRssiPositionEstimator3DTest implements
         assertTrue(estimator instanceof PROMedSRobustRangingAndRssiPositionEstimator3D);
         assertSame(estimator.getSources(), sources);
 
-
         // create with fingerprint and method
         final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
                 new RangingAndRssiFingerprint<>();
@@ -163,7 +161,6 @@ public class RobustRangingAndRssiPositionEstimator3DTest implements
         // check
         assertTrue(estimator instanceof PROMedSRobustRangingAndRssiPositionEstimator3D);
         assertSame(estimator.getFingerprint(), fingerprint);
-
 
         // create with sources, fingerprint and method
 
@@ -212,7 +209,6 @@ public class RobustRangingAndRssiPositionEstimator3DTest implements
         assertSame(estimator.getSources(), sources);
         assertSame(estimator.getFingerprint(), fingerprint);
 
-
         // create with listener and method
 
         // RANSAC
@@ -254,7 +250,6 @@ public class RobustRangingAndRssiPositionEstimator3DTest implements
         // check
         assertTrue(estimator instanceof PROMedSRobustRangingAndRssiPositionEstimator3D);
         assertSame(estimator.getListener(), this);
-
 
         // create with sources, listener and method
 
@@ -303,7 +298,6 @@ public class RobustRangingAndRssiPositionEstimator3DTest implements
         assertSame(estimator.getSources(), sources);
         assertSame(estimator.getListener(), this);
 
-
         // create with fingerprint, listener and method
 
         // RANSAC
@@ -350,7 +344,6 @@ public class RobustRangingAndRssiPositionEstimator3DTest implements
         assertTrue(estimator instanceof PROMedSRobustRangingAndRssiPositionEstimator3D);
         assertSame(estimator.getFingerprint(), fingerprint);
         assertSame(estimator.getListener(), this);
-
 
         // create with sources, fingerprint, listener and method
 
@@ -404,7 +397,6 @@ public class RobustRangingAndRssiPositionEstimator3DTest implements
         assertSame(estimator.getFingerprint(), fingerprint);
         assertSame(estimator.getListener(), this);
 
-
         // create with quality scores and method
         final double[] sourceQualityScores = new double[4];
         final double[] fingerprintReadingQualityScores = new double[4];
@@ -455,7 +447,6 @@ public class RobustRangingAndRssiPositionEstimator3DTest implements
         assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
         assertSame(estimator.getFingerprintReadingsQualityScores(),
                 fingerprintReadingQualityScores);
-
 
         // create with quality scores, sources and method
 
@@ -510,7 +501,6 @@ public class RobustRangingAndRssiPositionEstimator3DTest implements
         assertSame(estimator.getFingerprintReadingsQualityScores(),
                 fingerprintReadingQualityScores);
         assertSame(estimator.getSources(), sources);
-
 
         // create with quality scores, fingerprint and method
 
@@ -571,8 +561,7 @@ public class RobustRangingAndRssiPositionEstimator3DTest implements
                 fingerprintReadingQualityScores);
         assertSame(estimator.getFingerprint(), fingerprint);
 
-
-        // create with quality scores, sources, fignerprint and method
+        // create with quality scores, sources, fingerprint and method
 
         // RANSAC
         estimator = RobustRangingAndRssiPositionEstimator3D.create(sourceQualityScores,
@@ -635,7 +624,6 @@ public class RobustRangingAndRssiPositionEstimator3DTest implements
                 fingerprintReadingQualityScores);
         assertSame(estimator.getSources(), sources);
         assertSame(estimator.getFingerprint(), fingerprint);
-
 
         // create with quality scores, listener and method
 
@@ -695,7 +683,6 @@ public class RobustRangingAndRssiPositionEstimator3DTest implements
         assertSame(estimator.getFingerprintReadingsQualityScores(),
                 fingerprintReadingQualityScores);
         assertSame(estimator.getListener(), this);
-
 
         // create with quality scores, sources, listener and method
 
@@ -761,7 +748,6 @@ public class RobustRangingAndRssiPositionEstimator3DTest implements
         assertSame(estimator.getSources(), sources);
         assertSame(estimator.getListener(), this);
 
-
         // create with quality scores, fingerprint, listener and method
 
         // RANSAC
@@ -825,7 +811,6 @@ public class RobustRangingAndRssiPositionEstimator3DTest implements
                 fingerprintReadingQualityScores);
         assertSame(estimator.getFingerprint(), fingerprint);
         assertSame(estimator.getListener(), this);
-
 
         // create with quality scores, sources, fingerprint, listener and method
 
@@ -896,13 +881,11 @@ public class RobustRangingAndRssiPositionEstimator3DTest implements
         assertSame(estimator.getFingerprint(), fingerprint);
         assertSame(estimator.getListener(), this);
 
-
         // create with default method
         estimator = RobustRangingAndRssiPositionEstimator3D.create();
 
         // check
         assertTrue(estimator instanceof PROMedSRobustRangingAndRssiPositionEstimator3D);
-
 
         // create with sources and default method
         estimator = RobustRangingAndRssiPositionEstimator3D.create(sources);
@@ -911,14 +894,12 @@ public class RobustRangingAndRssiPositionEstimator3DTest implements
         assertTrue(estimator instanceof PROMedSRobustRangingAndRssiPositionEstimator3D);
         assertSame(estimator.getSources(), sources);
 
-
         // create with fingerprint and default method
         estimator = RobustRangingAndRssiPositionEstimator3D.create(fingerprint);
 
         // check
         assertTrue(estimator instanceof PROMedSRobustRangingAndRssiPositionEstimator3D);
         assertSame(estimator.getFingerprint(), fingerprint);
-
 
         // create with sources, fingerprint and default method
         estimator = RobustRangingAndRssiPositionEstimator3D.create(sources,
@@ -929,14 +910,12 @@ public class RobustRangingAndRssiPositionEstimator3DTest implements
         assertSame(estimator.getSources(), sources);
         assertSame(estimator.getFingerprint(), fingerprint);
 
-
         // create with listener and default method
         estimator = RobustRangingAndRssiPositionEstimator3D.create(this);
 
         // check
         assertTrue(estimator instanceof PROMedSRobustRangingAndRssiPositionEstimator3D);
         assertSame(estimator.getListener(), this);
-
 
         // create with sources, listener and default method
         estimator = RobustRangingAndRssiPositionEstimator3D.create(sources,
@@ -947,7 +926,6 @@ public class RobustRangingAndRssiPositionEstimator3DTest implements
         assertSame(estimator.getSources(), sources);
         assertSame(estimator.getListener(), this);
 
-
         // create with fingerprint, listener and default method
         estimator = RobustRangingAndRssiPositionEstimator3D.create(fingerprint,
                 this);
@@ -956,7 +934,6 @@ public class RobustRangingAndRssiPositionEstimator3DTest implements
         assertTrue(estimator instanceof PROMedSRobustRangingAndRssiPositionEstimator3D);
         assertSame(estimator.getFingerprint(), fingerprint);
         assertSame(estimator.getListener(), this);
-
 
         // create with sources, fingerprint, listener and default method
         estimator = RobustRangingAndRssiPositionEstimator3D.create(sources,
@@ -968,7 +945,6 @@ public class RobustRangingAndRssiPositionEstimator3DTest implements
         assertSame(estimator.getFingerprint(), fingerprint);
         assertSame(estimator.getListener(), this);
 
-
         // create with quality scores and default method
         estimator = RobustRangingAndRssiPositionEstimator3D.create(sourceQualityScores,
                 fingerprintReadingQualityScores);
@@ -978,7 +954,6 @@ public class RobustRangingAndRssiPositionEstimator3DTest implements
         assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
         assertSame(estimator.getFingerprintReadingsQualityScores(),
                 fingerprintReadingQualityScores);
-
 
         // create with quality scores, sources and default method
         estimator = RobustRangingAndRssiPositionEstimator3D.create(sourceQualityScores,
@@ -991,7 +966,6 @@ public class RobustRangingAndRssiPositionEstimator3DTest implements
                 fingerprintReadingQualityScores);
         assertSame(estimator.getSources(), sources);
 
-
         // create with quality scores, fingerprint and default method
         estimator = RobustRangingAndRssiPositionEstimator3D.create(sourceQualityScores,
                 fingerprintReadingQualityScores, fingerprint);
@@ -1002,7 +976,6 @@ public class RobustRangingAndRssiPositionEstimator3DTest implements
         assertSame(estimator.getFingerprintReadingsQualityScores(),
                 fingerprintReadingQualityScores);
         assertSame(estimator.getFingerprint(), fingerprint);
-
 
         // create with quality scores, sources, fingerprint and default method
         estimator = RobustRangingAndRssiPositionEstimator3D.create(sourceQualityScores,
@@ -1016,7 +989,6 @@ public class RobustRangingAndRssiPositionEstimator3DTest implements
         assertSame(estimator.getSources(), sources);
         assertSame(estimator.getFingerprint(), fingerprint);
 
-
         // create with quality scores, listener and default method
         estimator = RobustRangingAndRssiPositionEstimator3D.create(sourceQualityScores,
                 fingerprintReadingQualityScores, this);
@@ -1027,7 +999,6 @@ public class RobustRangingAndRssiPositionEstimator3DTest implements
         assertSame(estimator.getFingerprintReadingsQualityScores(),
                 fingerprintReadingQualityScores);
         assertSame(estimator.getListener(), this);
-
 
         // create with quality scores, sources, listener and default method
         estimator = RobustRangingAndRssiPositionEstimator3D.create(sourceQualityScores,
@@ -1041,7 +1012,6 @@ public class RobustRangingAndRssiPositionEstimator3DTest implements
         assertSame(estimator.getSources(), sources);
         assertSame(estimator.getListener(), this);
 
-
         // create with quality scores, fingerprint, listener and default method
         estimator = RobustRangingAndRssiPositionEstimator3D.create(sourceQualityScores,
                 fingerprintReadingQualityScores, fingerprint, this);
@@ -1053,7 +1023,6 @@ public class RobustRangingAndRssiPositionEstimator3DTest implements
                 fingerprintReadingQualityScores);
         assertSame(estimator.getFingerprint(), fingerprint);
         assertSame(estimator.getListener(), this);
-
 
         // create with quality scores, sources, fingerprint, listener and default
         // method

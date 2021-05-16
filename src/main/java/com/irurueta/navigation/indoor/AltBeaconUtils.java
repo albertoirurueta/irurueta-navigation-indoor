@@ -26,7 +26,7 @@ package com.irurueta.navigation.indoor;
  * - Pr is received signal strength (expressed in mW),
  * - Pt is transmitted signal strength (expressed in mW),
  * - k is equal to k = c / (4 * pi * f), where:
- * - c is speed of light (which is aproximately 9*10^8 m/s)
+ * - c is speed of light (which is approximately 9*10^8 m/s)
  * - f is the radio link frequency used by the beacon.
  * <p>
  * Hence, considering:
@@ -48,7 +48,6 @@ package com.irurueta.navigation.indoor;
  * 2.0, but can usually range from 1.6 to 1.8 on indoor environments)
  * coefficient3 is a bias term calibrated for each device.
  */
-@SuppressWarnings("WeakerAccess")
 public class AltBeaconUtils {
 
     /**

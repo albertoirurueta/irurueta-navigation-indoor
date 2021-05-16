@@ -25,10 +25,11 @@ import com.irurueta.numerical.robust.RANSACRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
- * Robustly estimate 3D position, transmitted power and pathloss exponent of a radio source
+ * Robustly estimate 3D position, transmitted power and path-loss exponent of a radio source
  * (e.g. WiFi access point or bluetooth beacon), by discarding outliers using RANSAC
  * algorithm and assuming that the access point emits isotropically following the
  * expression below:
@@ -91,7 +92,7 @@ public class RANSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> exten
      * Threshold to determine whether samples are inliers or not when testing possible solutions.
      * The threshold refers to the amount of error on received power (RSSI) expressed
      * in dBm's between received value that should have been received on estimated
-     * isotropical model and actual measured value.
+     * iso-tropical model and actual measured value.
      */
     private double mThreshold = DEFAULT_THRESHOLD;
 
@@ -423,7 +424,7 @@ public class RANSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> exten
      * Gets threshold to determine whether samples are inliers or not when testing possible solutions.
      * The threshold refers to the amount of error on received power (RSSI) expressed
      * in dBm's between received value that should have been received on estimated
-     * isotropical model and actual measured value.
+     * iso-tropical model and actual measured value.
      *
      * @return threshold to determine whether samples are inliers or not.
      */
@@ -435,7 +436,7 @@ public class RANSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> exten
      * Sets threshold to determine whether samples are inliers or not when testing possible solutions.
      * The threshold refers to the amount of error on received power (RSSI) expressed
      * in dBm's between received value that should have been received on estimated
-     * isotropical model and actual measured value.
+     * iso-tropical model and actual measured value.
      *
      * @param threshold threshold to determine whether samples are inliers or not.
      * @throws IllegalArgumentException if provided value is equal or less than zero.
@@ -502,7 +503,7 @@ public class RANSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> exten
     }
 
     /**
-     * Robustly estimates position, transmitted power and pathloss exponent for a
+     * Robustly estimates position, transmitted power and path-loss exponent for a
      * radio source.
      *
      * @throws LockedException          if instance is busy during estimation.
@@ -541,7 +542,7 @@ public class RANSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> exten
                             public void estimatePreliminarSolutions(
                                     final int[] samplesIndices,
                                     final List<Solution<Point3D>> solutions) {
-                                solvePreliminarSolutions(samplesIndices, solutions);
+                                solvePreliminarySolutions(samplesIndices, solutions);
                             }
 
                             @Override

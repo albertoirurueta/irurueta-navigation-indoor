@@ -23,29 +23,38 @@ import com.irurueta.geometry.InhomogeneousPoint2D;
 import com.irurueta.geometry.Point2D;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
-import com.irurueta.navigation.indoor.*;
+import com.irurueta.navigation.indoor.Beacon;
+import com.irurueta.navigation.indoor.BeaconIdentifier;
+import com.irurueta.navigation.indoor.BeaconLocated2D;
+import com.irurueta.navigation.indoor.RangingReadingLocated;
+import com.irurueta.navigation.indoor.RangingReadingLocated2D;
+import com.irurueta.navigation.indoor.WifiAccessPoint;
+import com.irurueta.navigation.indoor.WifiAccessPointLocated2D;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.*;
+import org.junit.Test;
 
 import java.text.MessageFormat;
 import java.text.NumberFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
 
-@SuppressWarnings("Duplicates")
 public class MSACRobustRangingRadioSourceEstimator2DTest implements
         RobustRangingRadioSourceEstimatorListener<WifiAccessPoint, Point2D> {
 
     private static final Logger LOGGER = Logger.getLogger(
             MSACRobustRangingRadioSourceEstimator2DTest.class.getName());
 
-    private static final double FREQUENCY = 2.4e9; //(Hz)
+    private static final double FREQUENCY = 2.4e9; // (Hz)
     private static final double TRANSMITTED_POWER_DBM = -50.0;
 
     private static final int MIN_READINGS = 50;
@@ -69,25 +78,6 @@ public class MSACRobustRangingRadioSourceEstimator2DTest implements
     private int estimateEnd;
     private int estimateNextIteration;
     private int estimateProgressChange;
-
-    public MSACRobustRangingRadioSourceEstimator2DTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
 
     @Test
     public void testConstructor() {
@@ -131,7 +121,6 @@ public class MSACRobustRangingRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getEstimatedRadioSource());
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
-
 
         // test constructor with readings
         final List<RangingReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
@@ -197,7 +186,6 @@ public class MSACRobustRangingRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with listener
         estimator = new MSACRobustRangingRadioSourceEstimator2D<>(this);
 
@@ -235,7 +223,6 @@ public class MSACRobustRangingRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getEstimatedRadioSource());
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
-
 
         // test constructor with readings and listener
         estimator = new MSACRobustRangingRadioSourceEstimator2D<>(readings, this);
@@ -293,7 +280,6 @@ public class MSACRobustRangingRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position
         final InhomogeneousPoint2D initialPosition = new InhomogeneousPoint2D(
                 randomizer.nextDouble(MIN_POS, MAX_POS),
@@ -334,7 +320,6 @@ public class MSACRobustRangingRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getEstimatedRadioSource());
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
-
 
         // test constructor with readings and initial position
         estimator = new MSACRobustRangingRadioSourceEstimator2D<>(readings, initialPosition);
@@ -391,7 +376,6 @@ public class MSACRobustRangingRadioSourceEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with initial position and listener
         estimator = new MSACRobustRangingRadioSourceEstimator2D<>(initialPosition,
                 this);
@@ -430,7 +414,6 @@ public class MSACRobustRangingRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getEstimatedRadioSource());
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
-
 
         // test constructor with readings, initial position and listener
         estimator = new MSACRobustRangingRadioSourceEstimator2D<>(readings,
@@ -1022,7 +1005,6 @@ public class MSACRobustRangingRadioSourceEstimator2DTest implements
 
         assertTrue(numValidPosition > 0);
 
-
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);
         LOGGER.log(Level.INFO, MessageFormat.format(
@@ -1275,7 +1257,6 @@ public class MSACRobustRangingRadioSourceEstimator2DTest implements
 
         assertTrue(numValidPosition > 0);
 
-
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);
         LOGGER.log(Level.INFO, MessageFormat.format(
@@ -1404,7 +1385,6 @@ public class MSACRobustRangingRadioSourceEstimator2DTest implements
         }
 
         assertTrue(numValidPosition > 0);
-
 
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);
@@ -1551,7 +1531,6 @@ public class MSACRobustRangingRadioSourceEstimator2DTest implements
 
         assertTrue(numValidPosition > 0);
 
-
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);
         LOGGER.log(Level.INFO, MessageFormat.format(
@@ -1688,7 +1667,6 @@ public class MSACRobustRangingRadioSourceEstimator2DTest implements
 
         assertTrue(numValidPosition > 0);
 
-
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);
         LOGGER.log(Level.INFO, MessageFormat.format(
@@ -1818,7 +1796,6 @@ public class MSACRobustRangingRadioSourceEstimator2DTest implements
         }
 
         assertTrue(numValidPosition > 0);
-
 
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);

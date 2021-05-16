@@ -23,6 +23,7 @@ import com.irurueta.navigation.indoor.RadioSource;
 import com.irurueta.navigation.indoor.RadioSourceLocated;
 import com.irurueta.navigation.indoor.RangingReading;
 import com.irurueta.navigation.lateration.NonLinearLeastSquaresLateration2DSolver;
+
 import java.util.List;
 
 /**
@@ -32,7 +33,6 @@ import java.util.List;
  * getting ranging readings at an unknown location of different radio sources whose
  * locations are known.
  */
-@SuppressWarnings("WeakerAccess")
 public class NonLinearRangingPositionEstimator2D extends
         NonLinearRangingPositionEstimator<Point2D> {
 

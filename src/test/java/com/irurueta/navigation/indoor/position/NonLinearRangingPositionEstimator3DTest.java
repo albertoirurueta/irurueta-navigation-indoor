@@ -121,7 +121,6 @@ public class NonLinearRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint
         final RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
                 new RangingFingerprint<>();
@@ -155,7 +154,6 @@ public class NonLinearRangingPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources and fingerprint
         estimator = new NonLinearRangingPositionEstimator3D(sources, fingerprint);
@@ -201,7 +199,6 @@ public class NonLinearRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with listener
         estimator = new NonLinearRangingPositionEstimator3D(this);
 
@@ -223,7 +220,6 @@ public class NonLinearRangingPositionEstimator3DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertNull(estimator.getCovariance());
-
 
         // constructor with sources and listener
         estimator = new NonLinearRangingPositionEstimator3D(sources, this);
@@ -263,7 +259,6 @@ public class NonLinearRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint and listener
         estimator = new NonLinearRangingPositionEstimator3D(fingerprint, this);
 
@@ -296,7 +291,6 @@ public class NonLinearRangingPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint and listener
         estimator = new NonLinearRangingPositionEstimator3D(sources, fingerprint,
@@ -345,7 +339,6 @@ public class NonLinearRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with initial position
         final InhomogeneousPoint3D initialPosition = new InhomogeneousPoint3D();
         estimator = new NonLinearRangingPositionEstimator3D(initialPosition);
@@ -368,7 +361,6 @@ public class NonLinearRangingPositionEstimator3DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertNull(estimator.getCovariance());
-
 
         // constructor with sources and initial position
         estimator = new NonLinearRangingPositionEstimator3D(sources, initialPosition);
@@ -410,7 +402,6 @@ public class NonLinearRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint and initial position
         estimator = new NonLinearRangingPositionEstimator3D(fingerprint,
                 initialPosition);
@@ -444,7 +435,6 @@ public class NonLinearRangingPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint and initial position
         estimator = new NonLinearRangingPositionEstimator3D(sources, fingerprint,
@@ -492,7 +482,6 @@ public class NonLinearRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with initial position and listener
         estimator = new NonLinearRangingPositionEstimator3D(initialPosition,
                 this);
@@ -515,7 +504,6 @@ public class NonLinearRangingPositionEstimator3DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertNull(estimator.getCovariance());
-
 
         // constructor with sources, initial position and listener
         estimator = new NonLinearRangingPositionEstimator3D(sources, initialPosition,
@@ -558,7 +546,6 @@ public class NonLinearRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint, initial position and listener
         estimator = new NonLinearRangingPositionEstimator3D(fingerprint,
                 initialPosition, this);
@@ -592,7 +579,6 @@ public class NonLinearRangingPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint, initial position and listener
         estimator = new NonLinearRangingPositionEstimator3D(sources, fingerprint,
@@ -778,7 +764,6 @@ public class NonLinearRangingPositionEstimator3DTest implements
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
-
             final List<WifiAccessPointWithPowerAndLocated3D> sources = new ArrayList<>();
             final List<RangingReading<WifiAccessPoint>> readings = new ArrayList<>();
             for (int i = 0; i < numSources; i++) {
@@ -871,7 +856,6 @@ public class NonLinearRangingPositionEstimator3DTest implements
                     randomizer.nextDouble(MIN_POS, MAX_POS));
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
-
 
             final List<WifiAccessPointWithPowerAndLocated3D> sources = new ArrayList<>();
             final List<RangingReading<WifiAccessPoint>> readings = new ArrayList<>();

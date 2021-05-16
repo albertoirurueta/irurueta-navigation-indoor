@@ -22,24 +22,12 @@ import com.irurueta.geometry.Point2D;
 import com.irurueta.geometry.Point3D;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
-import com.irurueta.navigation.indoor.Beacon;
-import com.irurueta.navigation.indoor.BeaconLocated2D;
-import com.irurueta.navigation.indoor.BeaconLocated3D;
-import com.irurueta.navigation.indoor.RadioSource;
-import com.irurueta.navigation.indoor.RadioSourceKNearestFinder;
-import com.irurueta.navigation.indoor.RadioSourceLocated;
-import com.irurueta.navigation.indoor.RadioSourceNoMeanKNearestFinder;
-import com.irurueta.navigation.indoor.RadioSourceWithPower;
-import com.irurueta.navigation.indoor.RssiFingerprint;
-import com.irurueta.navigation.indoor.RssiFingerprintLocated;
-import com.irurueta.navigation.indoor.RssiReading;
-import com.irurueta.navigation.indoor.WifiAccessPoint;
-import com.irurueta.navigation.indoor.WifiAccessPointLocated2D;
-import com.irurueta.navigation.indoor.WifiAccessPointLocated3D;
+import com.irurueta.navigation.indoor.*;
 import com.irurueta.numerical.NumericalException;
 import com.irurueta.numerical.fitting.FittingException;
 import com.irurueta.numerical.fitting.LevenbergMarquardtMultiDimensionFitter;
 import com.irurueta.numerical.fitting.LevenbergMarquardtMultiDimensionFunctionEvaluator;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -55,7 +43,6 @@ import java.util.List;
  * All implementations solve the problem in a non linear way using Levenberg-Marquardt
  * algorithm.
  */
-@SuppressWarnings("WeakerAccess")
 public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P extends Point<?>> extends
         FingerprintPositionAndRadioSourceEstimator<P> {
 
@@ -644,11 +631,11 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
                 mListener.onEstimateStart(this);
             }
 
-            RadioSourceNoMeanKNearestFinder<P, RadioSource> noMeanfinder = null;
+            RadioSourceNoMeanKNearestFinder<P, RadioSource> noMeanFinder = null;
             RadioSourceKNearestFinder<P, RadioSource> finder = null;
             if (mUseNoMeanNearestFingerprintFinder) {
                 //noinspection unchecked
-                noMeanfinder = new RadioSourceNoMeanKNearestFinder<>(
+                noMeanFinder = new RadioSourceNoMeanKNearestFinder<>(
                         (Collection<? extends RssiFingerprintLocated<RadioSource,
                                 RssiReading<RadioSource>, P>>) mLocatedFingerprints);
             } else {
@@ -669,9 +656,9 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
                     mLocatedFingerprints.size() :
                     Math.min(mMaxNearestFingerprints, mLocatedFingerprints.size());
             for (int k = min; k <= max; k++) {
-                if (noMeanfinder != null) {
+                if (noMeanFinder != null) {
                     //noinspection unchecked
-                    mNearestFingerprints = noMeanfinder.findKNearestTo(
+                    mNearestFingerprints = noMeanFinder.findKNearestTo(
                             (RssiFingerprint<RadioSource, RssiReading<RadioSource>>) mFingerprint, k);
                 } else {
                     //noinspection unchecked
@@ -679,78 +666,78 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
                             (RssiFingerprint<RadioSource, RssiReading<RadioSource>>) mFingerprint, k);
                 }
 
-                //Demonstration in 2D:
-                //--------------------
+                // Demonstration in 2D:
+                // --------------------
 
-                //The expression of received power expressed in dBm's is:
-                //k = (c/(4*pi*f))
-                //Pr = Pte*k^n / d^n
+                // The expression of received power expressed in dBm's is:
+                // k = (c/(4*pi*f))
+                // Pr = Pte*k^n / d^n
 
-                //where c is the speed of light, pi is 3.14159..., f is the frequency of the radio source,
-                //Pte is the equivalent transmitted power by the radio source, n is the path-loss exponent
+                // where c is the speed of light, pi is 3.14159..., f is the frequency of the radio source,
+                // Pte is the equivalent transmitted power by the radio source, n is the path-loss exponent
                 // (typically 2.0), and d is the distance from a point to the location of the radio source.
 
-                //Hence:
-                //Pr(dBm) = 10*log(Pte*k^n/d^n) = 10*n*log(k) + 10*log(Pte) - 10*n*log(d) =
-                //          10*n*log(k) + 10*log(Pte) - 5*n*log(d^2)
+                // Hence:
+                // Pr(dBm) = 10*log(Pte*k^n/d^n) = 10*n*log(k) + 10*log(Pte) - 10*n*log(d) =
+                //           10*n*log(k) + 10*log(Pte) - 5*n*log(d^2)
 
-                //where d^2 = dia^2 = (xi - xa)^2 + (yi - ya)^2 is the squared distance between
-                //fingerprint and unknown point pi = (xi, yi) and
-                //radio source a = a,b... M
-                //10*n*log(k) is constant for a given radio source "a", and
-                //Pte is the equivalent transmitted power of radio source "a".
+                // where d^2 = dia^2 = (xi - xa)^2 + (yi - ya)^2 is the squared distance between
+                // fingerprint and unknown point pi = (xi, yi) and
+                // radio source a = a,b... M
+                // 10*n*log(k) is constant for a given radio source "a", and
+                // Pte is the equivalent transmitted power of radio source "a".
 
-                //We assume that the 2 former terms are constant and known for a given radio source
-                //K = 10*n*log(k) + 10*log(Pte), and the only unknown term is
-                //the latter one depending on the distance of the
-                //measuring point and the radio source.
+                // We assume that the 2 former terms are constant and known for a given radio source
+                // K = 10*n*log(k) + 10*log(Pte), and the only unknown term is
+                // the latter one depending on the distance of the
+                // measuring point and the radio source.
 
-                //Hence for a given radio source "a" at unknown location "i":
-                //Pr(pi) = K - 5*n*log((xi - xa)^2 + (yi - ya)^2)
+                // Hence for a given radio source "a" at unknown location "i":
+                // Pr(pi) = K - 5*n*log((xi - xa)^2 + (yi - ya)^2)
 
-                //we assume that a known located fingerprint is located at p1 = (x1, y1),
-                //Both readings Pr(pi) and Pr(p1) belong to the same radio source "a", hence
-                //K term is the same.
+                // we assume that a known located fingerprint is located at p1 = (x1, y1),
+                // Both readings Pr(pi) and Pr(p1) belong to the same radio source "a", hence
+                // K term is the same.
 
-                //Pr(p1) = K - 5*n*log((x1 - xa)^2 + (y1 - ya)^2)
+                // Pr(p1) = K - 5*n*log((x1 - xa)^2 + (y1 - ya)^2)
 
-                //where d1a^2 = (x1 - xa)^2 + (y1 - ya)^2 is the squared distance between
-                //fingerprint 1 and radio source 2
+                // where d1a^2 = (x1 - xa)^2 + (y1 - ya)^2 is the squared distance between
+                // fingerprint 1 and radio source 2
 
-                //To remove possible bias effects on readings, we consider the difference of received
-                //power for fingerprint "1" and radio source "a" as:
+                // To remove possible bias effects on readings, we consider the difference of received
+                // power for fingerprint "1" and radio source "a" as:
 
-                //Prdiff1a = Pr(pi) - Pr(p1) = (K - 5*n*log(dia^2)) - (K - 5*n*log(d1a^2)) =
-                //  = 5*n*log(d1a^2) - 5*n*log(dia^2)
+                // Prdiff1a = Pr(pi) - Pr(p1) = (K - 5*n*log(dia^2)) - (K - 5*n*log(d1a^2)) =
+                //   = 5*n*log(d1a^2) - 5*n*log(dia^2)
 
-                //where both d1a^2 and dia^2 are unknown, because location pi=(xi,yi) and pa=(xa,ya) are unknown.
-                //Now we have no dependencies on the amount of transmitted power of each radio source
-                //contained on constant term K, and we only depend on squared distances d1a^2 and dia^2.
+                // where both d1a^2 and dia^2 are unknown, because location pi=(xi,yi) and pa=(xa,ya) are unknown.
+                // Now we have no dependencies on the amount of transmitted power of each radio source
+                // contained on constant term K, and we only depend on squared distances d1a^2 and dia^2.
 
-                //Consequently, the difference of received power for fingerprint "2" and radio source "a" is:
-                //Prdiff2a = 5*n*log(d2a^2) - 5*n*log(dia^2)
+                // Consequently, the difference of received power for fingerprint "2" and radio source "a" is:
+                // Prdiff2a = 5*n*log(d2a^2) - 5*n*log(dia^2)
 
-                //the difference of received power for fingerprint "1" and radio source "b" is:
-                //Prdiff1b = 5*n*log(d1b^2) - 5*n*log(dib^2)
+                // the difference of received power for fingerprint "1" and radio source "b" is:
+                // Prdiff1b = 5*n*log(d1b^2) - 5*n*log(dib^2)
 
-                //and so on.
+                // and so on.
 
-                //we want to find unknown location pi, and location of radio source pa, pb,... pM so that Prdiff
-                //errors are minimized in LMSE (Least Mean Square Error) terms.
+                // we want to find unknown location pi, and location of radio source pa, pb,... pM so that Prdiff
+                // errors are minimized in LMSE (Least Mean Square Error) terms.
 
-                //Assuming that we have M radio sources and N fingerprints, we have
-                //y = [Prdiff1a Prdiff2a Prdiff1b Prdiff2b ... PrdiffNa PrdiffNb ... PrdiffNM]
+                // Assuming that we have M radio sources and N fingerprints, we have
+                // y = [Prdiff1a Prdiff2a Prdiff1b Prdiff2b ... PrdiffNa PrdiffNb ... PrdiffNM]
 
-                //and the unknowns to be found are:
-                //x = [xi yi xa ya xb yb ... xM yM], which are the location of the unknown fingerprint
-                //pi = (xi, yi) and the locations of the radio sources a, b ... M that we want to find pa = (xa, ya),
-                //pb = (xb, yb) ... pM = (xM, yM)
+                // and the unknowns to be found are:
+                // x = [xi yi xa ya xb yb ... xM yM], which are the location of the unknown fingerprint
+                // pi = (xi, yi) and the locations of the radio sources a, b ... M that we want to find pa = (xa, ya),
+                // pb = (xb, yb) ... pM = (xM, yM)
 
                 try {
                     final List<RadioSource> sourcesToBeEstimated = setupFitter();
                     if (mMinNearestFingerprints < 0) {
-                        //if no limit is set in minimum value, then a minimum of
-                        //dims * (1 + numSources) is used
+                        // if no limit is set in minimum value, then a minimum of
+                        // dims * (1 + numSources) is used
                         final int numSources = sourcesToBeEstimated.size();
                         final int dims = getNumberOfDimensions();
                         final int minNearest = dims * (1 + numSources);
@@ -761,14 +748,14 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
 
                     mFitter.fit();
 
-                    //estimated position
+                    // estimated position
                     final double[] a = mFitter.getA();
                     mCovariance = mFitter.getCovar();
                     mChiSq = mFitter.getChisq();
 
                     final int dims = getNumberOfDimensions();
 
-                    //obtain estimated position coordinates and covariance
+                    // obtain estimated position coordinates and covariance
                     mEstimatedPositionCoordinates = new double[dims];
                     System.arraycopy(a, 0, mEstimatedPositionCoordinates,
                             0, dims);
@@ -777,7 +764,7 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
                     mEstimatedPositionCovariance = mCovariance.getSubmatrix(0, 0,
                             dimsMinusOne, dimsMinusOne);
 
-                    //obtain radio sources estimated positions and covariance
+                    // obtain radio sources estimated positions and covariance
                     final int totalSources = sourcesToBeEstimated.size();
                     mEstimatedLocatedSources = new ArrayList<>();
                     for (int j = 0; j < totalSources; j++) {
@@ -798,11 +785,11 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
                                         sourceCovariance));
                     }
 
-                    //a solution was found so we exit loop
+                    // a solution was found so we exit loop
                     break;
                 } catch (final NumericalException e) {
-                    //solution could not be found with current data
-                    //Iterate to use additional nearby fingerprints
+                    // solution could not be found with current data
+                    // Iterate to use additional nearby fingerprints
                     mEstimatedPositionCoordinates = null;
                     mCovariance = null;
                     mEstimatedPositionCovariance = null;
@@ -812,7 +799,7 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
 
             if (mEstimatedPositionCoordinates == null ||
                     mEstimatedLocatedSources == null) {
-                //no position could be estimated
+                // no position could be estimated
                 throw new FingerprintEstimationException();
             }
 
@@ -865,7 +852,7 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
             case BEACON:
                 final Beacon beacon = (Beacon) source;
                 if (dims == Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH) {
-                    //2D
+                    // 2D
 
                     //noinspection unchecked
                     return (RadioSourceLocated<P>) new BeaconLocated2D(
@@ -875,7 +862,7 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
                             beacon.getServiceUuid(), beacon.getBluetoothName(),
                             (Point2D) sourcePosition, sourceCovariance);
                 } else {
-                    //3D
+                    // 3D
 
                     //noinspection unchecked
                     return (RadioSourceLocated<P>) new BeaconLocated3D(
@@ -889,7 +876,7 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
             default:
                 final WifiAccessPoint accessPoint = (WifiAccessPoint) source;
                 if (dims == Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH) {
-                    //2D
+                    // 2D
 
                     //noinspection unchecked
                     return (RadioSourceLocated<P>) new WifiAccessPointLocated2D(
@@ -897,7 +884,7 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
                             accessPoint.getSsid(), (Point2D) sourcePosition,
                             sourceCovariance);
                 } else {
-                    //3D
+                    // 3D
 
                     //noinspection unchecked
                     return (RadioSourceLocated<P>) new WifiAccessPointLocated3D(
@@ -963,7 +950,7 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
             nearestFingerprintsCentroid.setInhomogeneousCoordinate(i, centroidCoords[i]);
         }
 
-        //maps to keep cached in memory computed values to speed up computations
+        // maps to keep cached in memory computed values to speed up computations
         final HashMap<RadioSource, Integer> numReadingsMap = new HashMap<>();
         final HashMap<RadioSource, P> centroidsMap = new HashMap<>();
 
@@ -983,9 +970,9 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
             for (final RssiReading<RadioSource> locatedReading : locatedReadings) {
                 final RadioSource source = locatedReading.getSource();
 
-                //obtain the total number of readings available for this source and
-                //the centroid of all located fingerprints containing readings for
-                //such source
+                // obtain the total number of readings available for this source and
+                // the centroid of all located fingerprints containing readings for
+                // such source
                 final int numReadings;
                 if (!numReadingsMap.containsKey(source)) {
                     numReadings = totalReadingsForSource(source, mNearestFingerprints, null);
@@ -1012,9 +999,11 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
                     centroid = centroidsMap.get(source);
                 }
 
-                //find within the list of located sources (if available) the source
-                //of current located fingerprint
-                @SuppressWarnings("SuspiciousMethodCalls") final int pos = mInitialLocatedSources != null ?
+                // find within the list of located sources (if available) the source
+                // of current located fingerprint
+
+                //noinspection SuspiciousMethodCalls
+                final int pos = mInitialLocatedSources != null ?
                         mInitialLocatedSources.indexOf(source) : -1;
 
                 double pathLossExponent = mPathLossExponent;
@@ -1031,7 +1020,7 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
                 final P sourcePosition;
                 Matrix sourcePositionCovariance = null;
                 if (pos < 0) {
-                    //located source is not available, so we use centroid
+                    // located source is not available, so we use centroid
                     sourcePosition = centroid;
                 } else {
                     final RadioSourceLocated<P> locatedSource = mInitialLocatedSources.get(pos);
@@ -1076,8 +1065,8 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
                         continue;
                     }
 
-                    //only take into account reading for matching sources on located
-                    //and non-located readings
+                    // only take into account reading for matching sources on located
+                    // and non-located readings
                     final double rssi = reading.getRssi();
 
                     final double powerDiff = rssi - locatedRssi;
@@ -1087,7 +1076,7 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
                             mPropagateFingerprintPositionCovariance ||
                             mPropagateRadioSourcePositionCovariance) {
 
-                        //compute initial position
+                        // compute initial position
                         final P initialPosition = mInitialPosition != null ?
                                 mInitialPosition : nearestFingerprintsCentroid;
 
@@ -1108,16 +1097,16 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
                     if (mPropagateFingerprintRssiStandardDeviation) {
                         if (standardDeviation != null &&
                                 reading.getRssiStandardDeviation() != null) {
-                            //consider propagated variance and reading variance independent, so we
-                            //sum them both
+                            // consider propagated variance and reading variance independent, so we
+                            // sum them both
                             standardDeviation = standardDeviation * standardDeviation +
                                     reading.getRssiStandardDeviation() * reading.getRssiStandardDeviation();
                             standardDeviation = Math.sqrt(standardDeviation);
                         }
 
                         if (locatedRssiVariance != null && standardDeviation != null) {
-                            //consider propagated variance and located reading variance
-                            //independent, so we sum them both
+                            // consider propagated variance and located reading variance
+                            // independent, so we sum them both
                             standardDeviation = standardDeviation * standardDeviation +
                                     locatedRssiVariance;
                             standardDeviation = Math.sqrt(standardDeviation);
@@ -1146,7 +1135,7 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
      */
     @SuppressWarnings("Duplicates")
     private List<RadioSource> setupFitter() throws FittingException {
-        //build lists of data
+        // build lists of data
         final List<Double> allPowerDiffs = new ArrayList<>();
         final List<P> allFingerprintPositions = new ArrayList<>();
         final List<P> allInitialSourcesPositions = new ArrayList<>();
@@ -1175,12 +1164,12 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
                 final double[] initial = new double[dims * (totalSources + 1)];
 
                 if (mInitialPosition == null) {
-                    //use centroid of nearest fingerprints as initial value
+                    // use centroid of nearest fingerprints as initial value
                     for (int i = 0; i < dims; i++) {
                         initial[i] = nearestFingerprintsCentroid.getInhomogeneousCoordinate(i);
                     }
                 } else {
-                    //use provided initial position
+                    // use provided initial position
                     for (int i = 0; i < dims; i++) {
                         initial[i] = mInitialPosition.getInhomogeneousCoordinate(i);
                     }
@@ -1204,74 +1193,74 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
                     final int i, final double[] point, final double[] params,
                     final double[] derivatives) {
 
-                //For 2D:
-                //-------
+                // For 2D:
+                // -------
 
-                //Prdiff1a = Pr(pi) - Pr(p1) = 5*n*log(d1a^2) - 5*n*log(dia^2) =
-                //  = 5*n*log((x1 - xa)^2 + (y1 - ya)^2) - 5*n*log((xi - xa)^2 + (yi - ya)^2)
+                // Prdiff1a = Pr(pi) - Pr(p1) = 5*n*log(d1a^2) - 5*n*log(dia^2) =
+                //   = 5*n*log((x1 - xa)^2 + (y1 - ya)^2) - 5*n*log((xi - xa)^2 + (yi - ya)^2)
 
-                //derivatives respect parameters being estimated (xi,yi,xa,ya...,xM,yM)
-                //for unknown point pi = (xi, yi)
-                //diff(Prdiff1a)/diff(xi) = -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2))*2*(xi - xa)
-                //  = -10*n*(xi - xa)/(log(10)*((xi - xa)^2 + (yi - ya)^2))
-                //  = -10*n*(xi - xa)/(log(10)*dia^2)
+                // derivatives respect parameters being estimated (xi,yi,xa,ya...,xM,yM)
+                // for unknown point pi = (xi, yi)
+                // diff(Prdiff1a)/diff(xi) = -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2))*2*(xi - xa)
+                //   = -10*n*(xi - xa)/(log(10)*((xi - xa)^2 + (yi - ya)^2))
+                //   = -10*n*(xi - xa)/(log(10)*dia^2)
 
-                //diff(Prdiff1a)/diff(yi) = -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2))*2*(yi - ya)
-                //  = -10*n*(yi - ya)/(log(10)*((xi - xa)^2 + (yi - ya)^2))
-                //  = -10*n*(yi - ya)/(log(10)*dia^2)
+                // diff(Prdiff1a)/diff(yi) = -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2))*2*(yi - ya)
+                //   = -10*n*(yi - ya)/(log(10)*((xi - xa)^2 + (yi - ya)^2))
+                //   = -10*n*(yi - ya)/(log(10)*dia^2)
 
-                //for same radio source pa=(xa,ya)
-                //diff(Prdiff1a)/diff(xa) = 5*n/(log(10)*((x1 - xa)^2 + (y1 - ya)^2))*-2*(x1 - xa) -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2))*-2*(xi - xa) =
-                //  = -10*n*(x1 - xa)/(log(10)*((x1 - xa)^2 + (y1 - ya)^2)) + 10*n*(xi - xa)/(log(10)*((xi - xa)^2 + (yi - ya)^2))
-                //  = 10*n*(-(x1 - xa)/(log(10)*d1a^2) + (xi - xa)/(log(10)*dia^2))
+                // for same radio source pa=(xa,ya)
+                // diff(Prdiff1a)/diff(xa) = 5*n/(log(10)*((x1 - xa)^2 + (y1 - ya)^2))*-2*(x1 - xa) -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2))*-2*(xi - xa) =
+                //   = -10*n*(x1 - xa)/(log(10)*((x1 - xa)^2 + (y1 - ya)^2)) + 10*n*(xi - xa)/(log(10)*((xi - xa)^2 + (yi - ya)^2))
+                //   = 10*n*(-(x1 - xa)/(log(10)*d1a^2) + (xi - xa)/(log(10)*dia^2))
 
-                //diff(Prdiff1a)/diff(ya) = 5*n/(log(10)*((x1 - xa)^2 + (y1 - ya)^2))*-2*(y1 - ya) -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2))*-2*(yi - ya) =
-                //  = -10*n*(y1 - ya)/(log(10)*((x1 - xa)^2 + (y1 - ya)^2)) + 10*n*(yi - ya)/(log(10)*((xi - xa)^2 + (yi - ya)^2))
-                //  = 10*n*(-(y1 - ya)/(log(10)*d1a^2) + (xi - xa)/(log(10)*dia^2))
+                // diff(Prdiff1a)/diff(ya) = 5*n/(log(10)*((x1 - xa)^2 + (y1 - ya)^2))*-2*(y1 - ya) -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2))*-2*(yi - ya) =
+                //   = -10*n*(y1 - ya)/(log(10)*((x1 - xa)^2 + (y1 - ya)^2)) + 10*n*(yi - ya)/(log(10)*((xi - xa)^2 + (yi - ya)^2))
+                //   = 10*n*(-(y1 - ya)/(log(10)*d1a^2) + (xi - xa)/(log(10)*dia^2))
 
-                //for other radio source pb=(xb,yb)
-                //diff(Prdiff1a)/diff(xb) = diff(Prdiff1a)/diff(yb) = 0
+                // for other radio source pb=(xb,yb)
+                // diff(Prdiff1a)/diff(xb) = diff(Prdiff1a)/diff(yb) = 0
 
-                //For 3D:
-                //-------
+                // For 3D:
+                // -------
 
-                //Prdiff1a = Pr(pi) - Pr(p1) = 5*n*log(d1a^2) - 5*n*log(dia^2) =
-                //  = 5*n*log((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - 5*n*log((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2)
+                // Prdiff1a = Pr(pi) - Pr(p1) = 5*n*log(d1a^2) - 5*n*log(dia^2) =
+                //   = 5*n*log((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - 5*n*log((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2)
 
-                //derivatives respect parameters being estimated (xi,yi,zi,xa,ya,za...,xM,yM,zM)
-                //for unknown point pi = (xi, yi,zi)
-                //diff(Prdiff1a)/diff(xi) = -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*2*(xi - xa)
-                //  = -10*n*(xi - xa)/(log(10)*((xi - xa)^2 + (yi - ya)^2) + (zi - za)^2))
-                //  = -10*n*(xi - xa)/(log(10)*dia^2)
+                // derivatives respect parameters being estimated (xi,yi,zi,xa,ya,za...,xM,yM,zM)
+                // for unknown point pi = (xi, yi,zi)
+                // diff(Prdiff1a)/diff(xi) = -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*2*(xi - xa)
+                //   = -10*n*(xi - xa)/(log(10)*((xi - xa)^2 + (yi - ya)^2) + (zi - za)^2))
+                //   = -10*n*(xi - xa)/(log(10)*dia^2)
 
-                //diff(Prdiff1a)/diff(yi) = -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*2*(yi - ya)
-                //  = -10*n*(yi - ya)/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))
-                //  = -10*n*(yi - ya)/(log(10)*dia^2)
+                // diff(Prdiff1a)/diff(yi) = -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*2*(yi - ya)
+                //   = -10*n*(yi - ya)/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))
+                //   = -10*n*(yi - ya)/(log(10)*dia^2)
 
-                //diff(Prdiff1a)/diff(zi) = -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*2*(zi - za)
-                //  = -10*n*(zi - za)/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))
-                //  = -10*n*(zi - za)/(log(10)*dia^2)
+                // diff(Prdiff1a)/diff(zi) = -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*2*(zi - za)
+                //   = -10*n*(zi - za)/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))
+                //   = -10*n*(zi - za)/(log(10)*dia^2)
 
-                //for same radio source pa=(xa,ya)
-                //diff(Prdiff1a)/diff(xa) = 5*n/(log(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*-2*(x1 - xa) -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*-2*(xi - xa) =
-                //  = -10*n*(x1 - xa)/(log(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)) + 10*n*(xi - xa)/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2)) =
-                //  = 10*n*(-(x1 -xa)/(log(10)*d1a^2) + (xi - xa)/(log(10)*dia^2))
+                // for same radio source pa=(xa,ya)
+                // diff(Prdiff1a)/diff(xa) = 5*n/(log(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*-2*(x1 - xa) -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*-2*(xi - xa) =
+                //   = -10*n*(x1 - xa)/(log(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)) + 10*n*(xi - xa)/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2)) =
+                //   = 10*n*(-(x1 -xa)/(log(10)*d1a^2) + (xi - xa)/(log(10)*dia^2))
 
-                //diff(Prdiff1a)/diff(ya) = 5*n/(log(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*-2*(y1 - ya) -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*-2*(yi - ya) =
-                //  = -10*n*(y1 - ya)/(log(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)) + 10*n*(yi - ya)/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2)) =
-                //  = 10*n(-(y1 - ya)/(log(10)*d1a^2) + (xi - xa)/(log(10)*dia^2))
+                // diff(Prdiff1a)/diff(ya) = 5*n/(log(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*-2*(y1 - ya) -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*-2*(yi - ya) =
+                //   = -10*n*(y1 - ya)/(log(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)) + 10*n*(yi - ya)/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2)) =
+                //   = 10*n(-(y1 - ya)/(log(10)*d1a^2) + (xi - xa)/(log(10)*dia^2))
 
-                //diff(Prdiff1a)/diff(za) = 5*n/(log(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*-2*(z1 - za) -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*-2*(zi - za) =
-                //  = -10*n*(z1 - za)/(log(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)) + 10*n*(zi - za)/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2)) =
-                //  = 10*n(-(z1 - za)/(log(10)*d1a^2) + (zi - za)/(log(10)*dia^2))
+                // diff(Prdiff1a)/diff(za) = 5*n/(log(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*-2*(z1 - za) -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*-2*(zi - za) =
+                //   = -10*n*(z1 - za)/(log(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)) + 10*n*(zi - za)/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2)) =
+                //   = 10*n(-(z1 - za)/(log(10)*d1a^2) + (zi - za)/(log(10)*dia^2))
 
-                //for other radio source pb=(xb,yb)
-                //diff(Prdiff1a)/diff(xb) = diff(Prdiff1a)/diff(yb) = 0
+                // for other radio source pb=(xb,yb)
+                // diff(Prdiff1a)/diff(xb) = diff(Prdiff1a)/diff(yb) = 0
 
                 final int dims = NonLinearFingerprintPositionAndRadioSourceEstimator.this.
                         getNumberOfDimensions();
 
-                //path loss exponent
+                // path loss exponent
                 final double n = point[0];
 
                 final double ln10 = Math.log(10.0);
@@ -1279,25 +1268,25 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
                 final int sourceIndex = allSourcesIndices.get(i);
                 final int start = dims * (1 + sourceIndex);
 
-                //d1a^2, d2a^2, ...
+                // d1a^2, d2a^2, ...
                 double distanceFingerprint2 = 0.0;
 
-                //dia^2, dib^2, ...
+                // dia^2, dib^2, ...
                 double distancePoint2 = 0.0;
                 for (int j = 0; j < dims; j++) {
-                    //fingerprint coordinate p1=(x1,y1,z1), ...
+                    // fingerprint coordinate p1=(x1,y1,z1), ...
                     final double fingerprintCoord = point[1 + j];
 
-                    //unknown point "pi" coordinate
+                    // unknown point "pi" coordinate
                     final double pointCoord = params[j];
 
-                    //radio source coordinate pa=(xa,ya,za), ...
+                    // radio source coordinate pa=(xa,ya,za), ...
                     final double sourceCoord = params[start + j];
 
-                    //x1 - xa, y1 - ya, ...
+                    // x1 - xa, y1 - ya, ...
                     final double diffFingerprint = fingerprintCoord - sourceCoord;
 
-                    //xi - xa, yi - ya, ...
+                    // xi - xa, yi - ya, ...
                     final double diffPoint = pointCoord - sourceCoord;
 
                     final double diffFingerprint2 = diffFingerprint * diffFingerprint;
@@ -1314,40 +1303,40 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
                         Math.log10(distancePoint2));
 
 
-                //we clear derivatives array to ensure that derivatives respect other
-                //radio sources are zero
+                // we clear derivatives array to ensure that derivatives respect other
+                // radio sources are zero
                 Arrays.fill(derivatives, 0.0);
 
                 for (int j = 0; j < dims; j++) {
-                    //fingerprint coordinate p1=(x1,y1,z1), ...
+                    // fingerprint coordinate p1=(x1,y1,z1), ...
                     final double fingerprintCoord = point[1 + j];
 
-                    //unknown point "pi" coordinate
+                    // unknown point "pi" coordinate
                     final double pointCoord = params[j];
 
-                    //radio source coordinate pa=(xa,ya,za), ...
+                    // radio source coordinate pa=(xa,ya,za), ...
                     final double sourceCoord = params[start + j];
 
-                    //x1 - xa, y1 - ya, ...
+                    // x1 - xa, y1 - ya, ...
                     final double diffFingerprint = fingerprintCoord - sourceCoord;
 
-                    //xi - xa, yi - ya, ...
+                    // xi - xa, yi - ya, ...
                     final double diffPoint = pointCoord - sourceCoord;
 
 
-                    //Example: diff(Prdiff1a)/diff(xi) =  -10*n*(xi - xa)/(log(10)*dia^2)
+                    // Example: diff(Prdiff1a)/diff(xi) =  -10*n*(xi - xa)/(log(10)*dia^2)
                     final double derivativePointCoord = -10.0 * n * diffPoint / (ln10 * distancePoint2);
 
-                    //Example: diff(Prdiff1a)/diff(xa) = 10*n*(-(x1 - xa)/(log(10)*d1a^2) + (xi - xa)/(log(10)*dia^2)) =
-                    //  -10*n*(x1 - xa)/(log(10)*d1a^2) - diff(Prdiff1a)/diff(xi)
+                    // Example: diff(Prdiff1a)/diff(xa) = 10*n*(-(x1 - xa)/(log(10)*d1a^2) + (xi - xa)/(log(10)*dia^2)) =
+                    //   -10*n*(x1 - xa)/(log(10)*d1a^2) - diff(Prdiff1a)/diff(xi)
                     final double derivativeSameRadioSourceCoord =
                             -10.0 * n * diffFingerprint / (ln10 * distanceFingerprint2)
                                     - derivativePointCoord;
 
-                    //derivatives respect point pi = (xi, yi, zi)
+                    // derivatives respect point pi = (xi, yi, zi)
                     derivatives[j] = derivativePointCoord;
 
-                    //derivatives respect same radio source pa = (xa, ya, za)
+                    // derivatives respect same radio source pa = (xa, ya, za)
                     derivatives[dims * (1 + sourceIndex) + j] = derivativeSameRadioSourceCoord;
                 }
 
@@ -1356,17 +1345,17 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
         });
 
         try {
-            //In 2D we know that for fingerprint "1" and radio source "a":
-            //Prdiff1a = Pr(pi) - Pr(p1) = 5*n*log(d1a^2) - 5*n*log(dia^2) =
-            //  = 5*n*log((x1 - xa)^2 + (y1 - ya)^2) - 5*n*log((xi - xa)^2 + (yi - ya)^2)
+            // In 2D we know that for fingerprint "1" and radio source "a":
+            // Prdiff1a = Pr(pi) - Pr(p1) = 5*n*log(d1a^2) - 5*n*log(dia^2) =
+            //   = 5*n*log((x1 - xa)^2 + (y1 - ya)^2) - 5*n*log((xi - xa)^2 + (yi - ya)^2)
 
-            //Therefore x must have 1 + dims columns (for path-loss n and fingerprint position (x1,y1)
+            // Therefore x must have 1 + dims columns (for path-loss n and fingerprint position (x1,y1)
 
             final Matrix x = new Matrix(totalReadings, n);
             final double[] y = new double[totalReadings];
             final double[] standardDeviations = new double[totalReadings];
             for (int i = 0; i < totalReadings; i++) {
-                //path loss exponent
+                // path loss exponent
                 x.setElementAt(i, 0, allPathLossExponents.get(i));
 
                 final P fingerprintPosition = allFingerprintPositions.get(i);

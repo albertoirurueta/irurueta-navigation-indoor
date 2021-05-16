@@ -23,6 +23,7 @@ import com.irurueta.navigation.indoor.RangingAndRssiFingerprint;
 import com.irurueta.navigation.indoor.RangingAndRssiReading;
 import com.irurueta.navigation.lateration.RANSACRobustLateration3DSolver;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -32,7 +33,6 @@ import java.util.List;
  * device by getting ranging+RSSI readings at an unknown location of different radio
  * sources whose 3D locations are known.
  */
-@SuppressWarnings("WeakerAccess")
 public class RANSACRobustRangingAndRssiPositionEstimator3D extends
         RobustRangingAndRssiPositionEstimator3D {
 
@@ -66,7 +66,8 @@ public class RANSACRobustRangingAndRssiPositionEstimator3D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public RANSACRobustRangingAndRssiPositionEstimator3D(
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint) {
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint) {
         super();
         init();
         internalSetFingerprint(fingerprint);
@@ -83,7 +84,8 @@ public class RANSACRobustRangingAndRssiPositionEstimator3D extends
      */
     public RANSACRobustRangingAndRssiPositionEstimator3D(
             final List<? extends RadioSourceLocated<Point3D>> sources,
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint) {
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint) {
         super();
         init();
         internalSetSources(sources);
@@ -126,7 +128,8 @@ public class RANSACRobustRangingAndRssiPositionEstimator3D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public RANSACRobustRangingAndRssiPositionEstimator3D(
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint,
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener<Point3D> listener) {
         super(listener);
         init();
@@ -145,7 +148,8 @@ public class RANSACRobustRangingAndRssiPositionEstimator3D extends
      */
     public RANSACRobustRangingAndRssiPositionEstimator3D(
             final List<? extends RadioSourceLocated<Point3D>> sources,
-            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>> fingerprint,
+            final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                    extends RadioSource>> fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener<Point3D> listener) {
         super(listener);
         init();

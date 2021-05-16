@@ -23,6 +23,7 @@ import com.irurueta.navigation.indoor.RadioSource;
 import com.irurueta.navigation.indoor.RadioSourceLocated;
 import com.irurueta.navigation.indoor.Reading;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -34,7 +35,7 @@ import java.util.List;
  * Implementations of this class should be able to detect and discard outliers in order to
  * find the best solution.
  */
-@SuppressWarnings({"WeakerAccess", "Duplicates"})
+@SuppressWarnings("DuplicatedCode")
 public abstract class RobustMixedPositionEstimator3D extends
         RobustMixedPositionEstimator<Point3D> {
 

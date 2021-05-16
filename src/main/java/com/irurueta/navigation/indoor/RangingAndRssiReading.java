@@ -22,7 +22,6 @@ package com.irurueta.navigation.indoor;
  *
  * @param <S> a {@link RadioSource} type.
  */
-@SuppressWarnings("WeakerAccess")
 public class RangingAndRssiReading<S extends RadioSource> extends Reading<S> {
 
     /**
@@ -186,7 +185,7 @@ public class RangingAndRssiReading<S extends RadioSource> extends Reading<S> {
     /**
      * Gets distance in meters to the radio source.
      *
-     * @return distance in mters to the radio source.
+     * @return distance in meters to the radio source.
      */
     public double getDistance() {
         return mDistance;

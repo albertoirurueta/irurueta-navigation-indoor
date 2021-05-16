@@ -23,6 +23,7 @@ import com.irurueta.navigation.indoor.RssiFingerprint;
 import com.irurueta.navigation.indoor.RssiReading;
 import com.irurueta.navigation.lateration.LMedSRobustLateration3DSolver;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -32,7 +33,6 @@ import java.util.List;
  * device by getting RSSI readings at an unknown location of different radio sources
  * whose 3D locations are known.
  */
-@SuppressWarnings("WeakerAccess")
 public class LMedSRobustRssiPositionEstimator3D extends RobustRssiPositionEstimator3D {
     /**
      * Constructor.
@@ -156,7 +156,7 @@ public class LMedSRobustRssiPositionEstimator3D extends RobustRssiPositionEstima
      * best estimated threshold using median of residuals is not small enough.
      * Once a solution is found that generates a threshold below this value, the
      * algorithm will stop.
-     * The stop threshold can be used to prevent the LMedS algrithm to iterate
+     * The stop threshold can be used to prevent the LMedS algorithm to iterate
      * too many times in cases where samples have a very similar accuracy.
      * For instance, in cases where proportion of outliers is very small (close
      * to 0%), and samples are very accurate (i.e. 1e-6), the algorithm would

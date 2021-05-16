@@ -18,35 +18,12 @@ package com.irurueta.navigation.indoor;
 import com.irurueta.algebra.AlgebraException;
 import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.InhomogeneousPoint3D;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class RangingReadingLocated3DTest {
     private static final double FREQUENCY = 2.4e9;
-
-    public RangingReadingLocated3DTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
 
     @Test
     public void testConstructor() throws AlgebraException {
@@ -64,7 +41,6 @@ public class RangingReadingLocated3DTest {
                 RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS);
         assertEquals(reading.getNumSuccessfulMeasurements(),
                 RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS);
-
 
         // test constructor with access point, distance and position
         final WifiAccessPoint ap = new WifiAccessPoint("bssid", FREQUENCY);
@@ -102,7 +78,6 @@ public class RangingReadingLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(reading);
-
 
         // test constructor with access point, distance, position and number of
         // measurements.
@@ -153,7 +128,6 @@ public class RangingReadingLocated3DTest {
         }
         assertNull(reading);
 
-
         // test constructor with access point, distance, position and distance standard deviation
         reading = new RangingReadingLocated3D<>(ap, 1.5, position,
                 0.1);
@@ -197,7 +171,6 @@ public class RangingReadingLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(reading);
-
 
         // test constructor with access point, distance, position, distance standard
         // deviation and number of measurements.
@@ -260,7 +233,6 @@ public class RangingReadingLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(reading);
-
 
         // test constructor with access point, distance, position and position covariance
         final Matrix cov = new Matrix(3, 3);
@@ -327,7 +299,6 @@ public class RangingReadingLocated3DTest {
         }
         assertNull(reading);
 
-
         // test constructor with access point, distance, position, position covariance
         // and number of measurements.
         reading = new RangingReadingLocated3D<>(ap, 2.0, position, cov,
@@ -391,7 +362,6 @@ public class RangingReadingLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(reading);
-
 
         // test constructor with access point, distance, position, distance standard deviation and position covariance
         reading = new RangingReadingLocated3D<>(ap, 2.5, position, 0.2, cov);
@@ -462,7 +432,6 @@ public class RangingReadingLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(reading);
-
 
         // test constructor with access point, distance, position, distance standard
         // deviation, position covariance and number of measurements.

@@ -20,6 +20,7 @@ import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.indoor.RadioSource;
 import com.irurueta.navigation.indoor.RangingReadingLocated;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -245,12 +246,12 @@ public abstract class RobustRangingRadioSourceEstimator<S extends RadioSource, P
     public abstract RobustEstimatorMethod getMethod();
 
     /**
-     * Solves preliminar solution for a subset of samples.
+     * Solves preliminary solution for a subset of samples.
      *
      * @param samplesIndices indices of subset samples.
      * @param solutions      instance where solution will be stored.
      */
-    protected abstract void solvePreliminarSolutions(
+    protected abstract void solvePreliminarySolutions(
             final int[] samplesIndices,
             final List<Solution<P>> solutions);
 
@@ -265,7 +266,7 @@ public abstract class RobustRangingRadioSourceEstimator<S extends RadioSource, P
         final RangingReadingLocated<S, P> reading = mReadings.get(i);
         final double distance = reading.getDistance();
 
-        //get distance from estimated radio source position and reading position
+        // get distance from estimated radio source position and reading position
         final P readingPosition = reading.getPosition();
         final P radioSourcePosition = currentEstimation.getEstimatedPosition();
 

@@ -23,6 +23,7 @@ import com.irurueta.navigation.indoor.RadioSourceLocated;
 import com.irurueta.navigation.indoor.Reading;
 import com.irurueta.navigation.lateration.RANSACRobustLateration2DSolver;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -32,7 +33,6 @@ import java.util.List;
  * device by getting readings at an unknown location of different radio
  * sources whose 2D locations are known.
  */
-@SuppressWarnings("WeakerAccess")
 public class RANSACRobustMixedPositionEstimator2D extends
         RobustMixedPositionEstimator2D {
 

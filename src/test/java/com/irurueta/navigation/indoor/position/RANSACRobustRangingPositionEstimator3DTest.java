@@ -132,7 +132,6 @@ public class RANSACRobustRangingPositionEstimator3DTest implements
         assertEquals(estimator.getMethod(), RobustEstimatorMethod.RANSAC);
         assertTrue(estimator.getEvenlyDistributeReadings());
 
-
         // constructor with sources
         final List<WifiAccessPointLocated3D> sources = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
@@ -197,7 +196,6 @@ public class RANSACRobustRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprints
         final RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
                 new RangingFingerprint<>();
@@ -252,7 +250,6 @@ public class RANSACRobustRangingPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources and fingerprint
         estimator = new RANSACRobustRangingPositionEstimator3D(sources, fingerprint);
@@ -318,7 +315,6 @@ public class RANSACRobustRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with listener
         estimator = new RANSACRobustRangingPositionEstimator3D(this);
 
@@ -361,7 +357,6 @@ public class RANSACRobustRangingPositionEstimator3DTest implements
         assertEquals(estimator.getNumberOfDimensions(), 3);
         assertEquals(estimator.getMethod(), RobustEstimatorMethod.RANSAC);
         assertTrue(estimator.getEvenlyDistributeReadings());
-
 
         // constructor with sources and listener
         estimator = new RANSACRobustRangingPositionEstimator3D(sources, this);
@@ -422,7 +417,6 @@ public class RANSACRobustRangingPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint and listener
         estimator = new RANSACRobustRangingPositionEstimator3D(fingerprint, this);
 
@@ -476,7 +470,6 @@ public class RANSACRobustRangingPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint and listener
         estimator = new RANSACRobustRangingPositionEstimator3D(sources, fingerprint,
@@ -544,7 +537,6 @@ public class RANSACRobustRangingPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
     }
 
     @Test
@@ -1125,7 +1117,6 @@ public class RANSACRobustRangingPositionEstimator3DTest implements
             final RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
                     new RangingFingerprint<>(readings);
 
-
             final RANSACRobustRangingPositionEstimator3D estimator =
                     new RANSACRobustRangingPositionEstimator3D(sources, fingerprint,
                             this);
@@ -1179,7 +1170,6 @@ public class RANSACRobustRangingPositionEstimator3DTest implements
         }
 
         assertTrue(numValidPosition > 0);
-
 
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);
@@ -1316,7 +1306,6 @@ public class RANSACRobustRangingPositionEstimator3DTest implements
 
         assertTrue(numValidPosition > 0);
 
-
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);
         LOGGER.log(Level.INFO, MessageFormat.format(
@@ -1443,7 +1432,6 @@ public class RANSACRobustRangingPositionEstimator3DTest implements
 
         assertTrue(numValidPosition > 0);
 
-
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);
         LOGGER.log(Level.INFO, MessageFormat.format(
@@ -1568,7 +1556,6 @@ public class RANSACRobustRangingPositionEstimator3DTest implements
         }
 
         assertTrue(numValidPosition > 0);
-
 
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);
@@ -1695,7 +1682,6 @@ public class RANSACRobustRangingPositionEstimator3DTest implements
 
         assertTrue(numValidPosition > 0);
 
-
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);
         LOGGER.log(Level.INFO, MessageFormat.format(
@@ -1709,7 +1695,7 @@ public class RANSACRobustRangingPositionEstimator3DTest implements
     }
 
     @Test
-    public void testEstimateLineardisabledAndNotPreliminaryRefined()
+    public void testEstimateLinearDisabledAndNotPreliminaryRefined()
             throws LockedException, NotReadyException, RobustEstimatorException,
             NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1820,7 +1806,6 @@ public class RANSACRobustRangingPositionEstimator3DTest implements
         }
 
         assertTrue(numValidPosition > 0);
-
 
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);
@@ -1947,7 +1932,6 @@ public class RANSACRobustRangingPositionEstimator3DTest implements
         }
 
         assertTrue(numValidPosition > 0);
-
 
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);

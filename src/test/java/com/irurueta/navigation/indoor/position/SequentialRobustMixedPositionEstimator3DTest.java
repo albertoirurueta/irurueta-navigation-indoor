@@ -42,7 +42,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertNull;
 
 public class SequentialRobustMixedPositionEstimator3DTest implements
         SequentialRobustMixedPositionEstimatorListener<Point3D> {
@@ -50,7 +49,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
     private static final Logger LOGGER = Logger.getLogger(
             SequentialRobustMixedPositionEstimator3DTest.class.getName());
 
-    private static final double FREQUENCY = 2.4e9; //(Hz)
+    private static final double FREQUENCY = 2.4e9; // (Hz)
 
     private static final int MIN_SOURCES = 100;
     private static final int MAX_SOURCES = 500;
@@ -83,7 +82,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
 
     private static final double TX_POWER_VARIANCE = 0.1;
     private static final double RX_POWER_VARIANCE = 0.5;
-    private static final double PATHLOSS_EXPONENT_VARIANCE = 0.001;
+    private static final double PATH_LOSS_EXPONENT_VARIANCE = 0.001;
 
     private int estimateStart;
     private int estimateEnd;
@@ -180,7 +179,6 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
         assertNull(estimator.getDistanceStandardDeviations());
         assertNull(estimator.getCovariance());
         assertNull(estimator.getEstimatedPosition());
-
 
         // test constructor with sources
         final List<WifiAccessPointLocated3D> sources = new ArrayList<>();
@@ -292,7 +290,6 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with fingerprint
         final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
                 new RangingAndRssiFingerprint<>();
@@ -394,7 +391,6 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with sources and fingerprint
         estimator = new SequentialRobustMixedPositionEstimator3D(
@@ -502,12 +498,12 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
         }
         try {
             estimator = new SequentialRobustMixedPositionEstimator3D(sources,
-                    (RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<? extends RadioSource>>) null);
+                    (RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
+                            extends RadioSource>>) null);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with listener
         estimator = new SequentialRobustMixedPositionEstimator3D(
@@ -598,7 +594,6 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
         assertNull(estimator.getDistanceStandardDeviations());
         assertNull(estimator.getCovariance());
         assertNull(estimator.getEstimatedPosition());
-
 
         // test constructor with sources and listener
         estimator = new SequentialRobustMixedPositionEstimator3D(sources,
@@ -706,7 +701,6 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with fingerprint and listener
         estimator = new SequentialRobustMixedPositionEstimator3D(
                 fingerprint, this);
@@ -807,7 +801,6 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with sources, fingerprint and listener
         estimator = new SequentialRobustMixedPositionEstimator3D(
@@ -920,7 +913,6 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with quality scores
         final double[] sourceQualityScores = new double[4];
@@ -1042,7 +1034,6 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with quality scores and sources
         estimator = new SequentialRobustMixedPositionEstimator3D(
@@ -1180,7 +1171,6 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with quality scores and fingerprint
         estimator = new SequentialRobustMixedPositionEstimator3D(
                 sourceQualityScores, fingerprintReadingsQualityScores,
@@ -1310,7 +1300,6 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with quality scores, sources and fingerprint
         estimator = new SequentialRobustMixedPositionEstimator3D(
                 sourceQualityScores, fingerprintReadingsQualityScores,
@@ -1432,7 +1421,6 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
-
         try {
             estimator = new SequentialRobustMixedPositionEstimator3D(
                     sourceQualityScores, fingerprintReadingsQualityScores,
@@ -1456,7 +1444,6 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with quality scores and listener
         estimator = new SequentialRobustMixedPositionEstimator3D(
@@ -1579,7 +1566,6 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with quality scores and sources and listener
         estimator = new SequentialRobustMixedPositionEstimator3D(
@@ -1719,7 +1705,6 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with quality scores, fingerprint and listener
         estimator = new SequentialRobustMixedPositionEstimator3D(
                 sourceQualityScores, fingerprintReadingsQualityScores,
@@ -1851,7 +1836,6 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
         }
         assertNull(estimator);
 
-
         // test constructor with quality scores, sources, fingerprint and listener
         estimator = new SequentialRobustMixedPositionEstimator3D(
                 sourceQualityScores, fingerprintReadingsQualityScores,
@@ -1974,7 +1958,6 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
-
         try {
             estimator = new SequentialRobustMixedPositionEstimator3D(
                     sourceQualityScores, fingerprintReadingsQualityScores,
@@ -3034,7 +3017,6 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
 
-
             final Point3D estimatedPosition = estimator.getEstimatedPosition();
             assertSame(estimatedPosition, p);
             assertNotNull(estimator.getInliersData());
@@ -3127,7 +3109,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -3188,7 +3170,6 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
             assertFalse(estimator.isLocked());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-
 
             final Point3D estimatedPosition = estimator.getEstimatedPosition();
             assertSame(estimatedPosition, p);
@@ -3284,7 +3265,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -3351,7 +3332,6 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
             assertFalse(estimator.isLocked());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-
 
             final Point3D estimatedPosition = estimator.getEstimatedPosition();
             assertSame(estimatedPosition, p);
@@ -3447,7 +3427,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -3773,7 +3753,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -3937,7 +3917,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -4107,7 +4087,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -4437,7 +4417,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -4599,7 +4579,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -4767,7 +4747,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -4808,13 +4788,10 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                 readings.add(new RssiReading<>(accessPoint,
                         rssi + errorRssi1 + errorRssi2 + inlierError,
                         Math.sqrt(RX_POWER_VARIANCE)));
-                readings.add(new RangingReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2 + inlierError),
-                        RANGING_STD));
+                final double tmp = Math.max(0.0, distance + errorRanging1 + errorRanging2 + inlierError);
+                readings.add(new RangingReading<>(accessPoint, tmp, RANGING_STD));
                 readings.add(new RangingAndRssiReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2 + inlierError),
-                        rssi + errorRssi1 + errorRssi2 + inlierError,
-                        RANGING_STD,
+                        tmp, rssi + errorRssi1 + errorRssi2 + inlierError, RANGING_STD,
                         Math.sqrt(RX_POWER_VARIANCE)));
             }
 
@@ -5102,7 +5079,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -5271,7 +5248,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -5446,7 +5423,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -5491,13 +5468,10 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                     readings.add(new RssiReading<>(accessPoint,
                             rssi + errorRssi1 + errorRssi2 + inlierError,
                             Math.sqrt(RX_POWER_VARIANCE)));
-                    readings.add(new RangingReading<>(accessPoint,
-                            Math.max(0.0, distance + errorRanging1 + errorRanging2 + inlierError),
-                            RANGING_STD));
-                    readings.add(new RangingAndRssiReading<>(accessPoint,
-                            Math.max(0.0, distance + errorRanging1 + errorRanging2 + inlierError),
-                            rssi + errorRssi1 + errorRssi2 + inlierError,
-                            RANGING_STD,
+                    final double tmp = Math.max(0.0, distance + errorRanging1 + errorRanging2 + inlierError);
+                    readings.add(new RangingReading<>(accessPoint, tmp, RANGING_STD));
+                    readings.add(new RangingAndRssiReading<>(accessPoint, tmp,
+                            rssi + errorRssi1 + errorRssi2 + inlierError, RANGING_STD,
                             Math.sqrt(RX_POWER_VARIANCE)));
                 }
             }
@@ -5767,7 +5741,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -5921,7 +5895,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -6081,7 +6055,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -6391,7 +6365,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -6545,7 +6519,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -6705,7 +6679,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -7013,7 +6987,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -7165,7 +7139,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -7323,7 +7297,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -7629,7 +7603,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -7781,7 +7755,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -7939,7 +7913,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -8247,7 +8221,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -8400,7 +8374,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -8559,7 +8533,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -8868,7 +8842,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -9022,7 +8996,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -9182,7 +9156,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -9307,7 +9281,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
     }
 
     @Test
-    public void testEstimateLargerPrelminiarySubsetSize() throws LockedException, NotReadyException,
+    public void testEstimateLargerPreliminarySubsetSize() throws LockedException, NotReadyException,
             RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
@@ -9351,7 +9325,7 @@ public class SequentialRobustMixedPositionEstimator3DTest implements
                                 FREQUENCY, transmittedPowerdBm,
                                 Math.sqrt(TX_POWER_VARIANCE),
                                 pathLossExponent,
-                                Math.sqrt(PATHLOSS_EXPONENT_VARIANCE),
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 

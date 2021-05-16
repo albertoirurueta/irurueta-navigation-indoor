@@ -18,7 +18,6 @@ package com.irurueta.navigation.indoor;
 /**
  * Data related to a WiFi access point with estimated transmitted power.
  */
-@SuppressWarnings("WeakerAccess")
 public class WifiAccessPointWithPower extends WifiAccessPoint implements
         RadioSourceWithPower {
 

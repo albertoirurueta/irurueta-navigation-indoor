@@ -41,7 +41,7 @@ import org.junit.Test;
 public class LinearRangingPositionEstimator2DTest implements
         RangingPositionEstimatorListener<Point2D> {
 
-    private static final double FREQUENCY = 2.4e9; //(Hz)
+    private static final double FREQUENCY = 2.4e9; // (Hz)
 
     private static final int MIN_SOURCES = 3;
     private static final int MAX_SOURCES = 10;
@@ -77,7 +77,6 @@ public class LinearRangingPositionEstimator2DTest implements
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
-
 
         // constructor with sources
         final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
@@ -116,7 +115,6 @@ public class LinearRangingPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint
         final RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
                 new RangingFingerprint<>();
@@ -144,7 +142,6 @@ public class LinearRangingPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources and fingerprint
         estimator = new LinearRangingPositionEstimator2D(sources, fingerprint);
@@ -183,7 +180,6 @@ public class LinearRangingPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with listener
         estimator = new LinearRangingPositionEstimator2D(this);
 
@@ -199,7 +195,6 @@ public class LinearRangingPositionEstimator2DTest implements
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
-
 
         // constructor with sources and listener
         estimator = new LinearRangingPositionEstimator2D(sources, this);
@@ -233,7 +228,6 @@ public class LinearRangingPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint and listener
         estimator = new LinearRangingPositionEstimator2D(fingerprint, this);
 
@@ -260,7 +254,6 @@ public class LinearRangingPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint and listener
         estimator = new LinearRangingPositionEstimator2D(sources, fingerprint,

@@ -18,7 +18,7 @@ package com.irurueta.navigation.indoor.position;
 import com.irurueta.geometry.Point;
 
 /**
- * Listener to be notified of events producted by a sequential robust mixed
+ * Listener to be notified of events produced by a sequential robust mixed
  * position estimation when estimation starts, ends or when progress changes.
  *
  * @param <P> a {@link Point} type.

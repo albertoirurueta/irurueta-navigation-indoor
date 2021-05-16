@@ -16,10 +16,6 @@
 package com.irurueta.navigation.indoor;
 
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.Random;
@@ -28,25 +24,6 @@ import java.util.UUID;
 import static org.junit.Assert.*;
 
 public class BeaconIdentifierTest {
-
-    public BeaconIdentifierTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
 
     @Test
     public void testConstructor() {
@@ -95,7 +72,7 @@ public class BeaconIdentifierTest {
         } catch (final UnsupportedOperationException ignore) {
         }
 
-        //length 16
+        // length 16
         value = new byte[16];
         r.nextBytes(value);
         id = new BeaconIdentifier(value);
@@ -112,6 +89,7 @@ public class BeaconIdentifierTest {
             fail("NullPointerException expected but not thrown");
         } catch (final NullPointerException ignore) {
         }
+        //noinspection ConstantConditions
         assertNull(id);
     }
 
@@ -130,7 +108,6 @@ public class BeaconIdentifierTest {
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
-
 
         // parse
         final String str = id.toString();
@@ -175,7 +152,6 @@ public class BeaconIdentifierTest {
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
-
 
         // parse
         final String str = id.toString();
@@ -325,7 +301,7 @@ public class BeaconIdentifierTest {
 
         assertEquals(id.toInt(), value);
 
-        //force UnsupportedOperationException
+        // force UnsupportedOperationException
         value = 65536;
         id = BeaconIdentifier.fromLong(value, 4);
 

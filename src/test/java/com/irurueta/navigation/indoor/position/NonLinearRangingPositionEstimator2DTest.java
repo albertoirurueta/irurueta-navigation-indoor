@@ -32,7 +32,7 @@ import static org.junit.Assert.*;
 public class NonLinearRangingPositionEstimator2DTest implements
         RangingPositionEstimatorListener<Point2D> {
 
-    private static final double FREQUENCY = 2.4e9; //(Hz)
+    private static final double FREQUENCY = 2.4e9; // (Hz)
 
     private static final int MIN_SOURCES = 3;
     private static final int MAX_SOURCES = 10;
@@ -121,7 +121,6 @@ public class NonLinearRangingPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint
         final RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
                 new RangingFingerprint<>();
@@ -155,7 +154,6 @@ public class NonLinearRangingPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources and fingerprint
         estimator = new NonLinearRangingPositionEstimator2D(sources, fingerprint);
@@ -201,7 +199,6 @@ public class NonLinearRangingPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with listener
         estimator = new NonLinearRangingPositionEstimator2D(this);
 
@@ -223,7 +220,6 @@ public class NonLinearRangingPositionEstimator2DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertNull(estimator.getCovariance());
-
 
         // constructor with sources and listener
         estimator = new NonLinearRangingPositionEstimator2D(sources, this);
@@ -263,7 +259,6 @@ public class NonLinearRangingPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint and listener
         estimator = new NonLinearRangingPositionEstimator2D(fingerprint, this);
 
@@ -296,7 +291,6 @@ public class NonLinearRangingPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint and listener
         estimator = new NonLinearRangingPositionEstimator2D(sources, fingerprint,
@@ -345,7 +339,6 @@ public class NonLinearRangingPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with initial position
         final InhomogeneousPoint2D initialPosition = new InhomogeneousPoint2D();
         estimator = new NonLinearRangingPositionEstimator2D(initialPosition);
@@ -368,7 +361,6 @@ public class NonLinearRangingPositionEstimator2DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertNull(estimator.getCovariance());
-
 
         // constructor with sources and initial position
         estimator = new NonLinearRangingPositionEstimator2D(sources, initialPosition);
@@ -410,7 +402,6 @@ public class NonLinearRangingPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint and initial position
         estimator = new NonLinearRangingPositionEstimator2D(fingerprint,
                 initialPosition);
@@ -444,7 +435,6 @@ public class NonLinearRangingPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint and initial position
         estimator = new NonLinearRangingPositionEstimator2D(sources, fingerprint,
@@ -492,7 +482,6 @@ public class NonLinearRangingPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with initial position and listener
         estimator = new NonLinearRangingPositionEstimator2D(initialPosition,
                 this);
@@ -515,7 +504,6 @@ public class NonLinearRangingPositionEstimator2DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertNull(estimator.getCovariance());
-
 
         // constructor with sources, initial position and listener
         estimator = new NonLinearRangingPositionEstimator2D(sources, initialPosition,
@@ -558,7 +546,6 @@ public class NonLinearRangingPositionEstimator2DTest implements
         }
         assertNull(estimator);
 
-
         // constructor with fingerprint, initial position and listener
         estimator = new NonLinearRangingPositionEstimator2D(fingerprint,
                 initialPosition, this);
@@ -592,7 +579,6 @@ public class NonLinearRangingPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // constructor with sources, fingerprint, initial position and listener
         estimator = new NonLinearRangingPositionEstimator2D(sources, fingerprint,
@@ -777,7 +763,6 @@ public class NonLinearRangingPositionEstimator2DTest implements
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
-
             final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
             final List<RangingReading<WifiAccessPoint>> readings = new ArrayList<>();
             for (int i = 0; i < numSources; i++) {
@@ -867,7 +852,6 @@ public class NonLinearRangingPositionEstimator2DTest implements
                     randomizer.nextDouble(MIN_POS, MAX_POS));
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
-
 
             final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
             final List<RangingReading<WifiAccessPoint>> readings = new ArrayList<>();

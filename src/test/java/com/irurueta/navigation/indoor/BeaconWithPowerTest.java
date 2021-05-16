@@ -16,10 +16,6 @@
 package com.irurueta.navigation.indoor;
 
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -29,25 +25,6 @@ import java.util.Random;
 import static org.junit.Assert.*;
 
 public class BeaconWithPowerTest {
-
-    public BeaconWithPowerTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
 
     @Test
     public void testConstructor() {
@@ -71,7 +48,6 @@ public class BeaconWithPowerTest {
         assertNull(b.getPathLossExponentStandardDeviation());
         assertEquals(b.getType(), RadioSourceType.BEACON);
         assertEquals(b.getFrequency(), Beacon.DEFAULT_FREQUENCY, 0.0);
-
 
         // test constructor with identifiers and transmitted power
         final List<BeaconIdentifier> identifiers = new ArrayList<>();
@@ -102,8 +78,8 @@ public class BeaconWithPowerTest {
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
+        //noinspection ConstantConditions
         assertNull(b);
-
 
         // test constructor with all data
         b = new BeaconWithPower(identifiers, -50.0,
@@ -138,7 +114,6 @@ public class BeaconWithPowerTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with identifiers, transmitted power and
         // transmitted power standard deviation
@@ -199,7 +174,6 @@ public class BeaconWithPowerTest {
         }
         assertNull(b);
 
-
         // test constructor with all data and transmitted power standard deviation
         b = new BeaconWithPower(identifiers, -50.0,
                 "address", 1, 2,
@@ -248,7 +222,6 @@ public class BeaconWithPowerTest {
         assertEquals(b.getType(), RadioSourceType.BEACON);
         assertEquals(b.getFrequency(), Beacon.DEFAULT_FREQUENCY, 0.0);
 
-
         // force IllegalArgumentException
         b = null;
         try {
@@ -268,7 +241,6 @@ public class BeaconWithPowerTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with all data and frequency
         b = new BeaconWithPower(identifiers, -50.0, 5.0e9,
@@ -310,7 +282,6 @@ public class BeaconWithPowerTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with identifiers, transmitted power,
         // transmitted power standard deviation and frequency
@@ -379,7 +350,6 @@ public class BeaconWithPowerTest {
         }
         assertNull(b);
 
-
         // test constructor with all data and transmitted power standard deviation
         b = new BeaconWithPower(identifiers, -50.0, 5.0e9,
                 "address", 1, 2,
@@ -456,7 +426,6 @@ public class BeaconWithPowerTest {
         }
         assertNull(b);
 
-
         // test constructor with identifiers, transmitted power and path loss
         b = new BeaconWithPower(identifiers, -50.0, 1.6);
 
@@ -485,7 +454,6 @@ public class BeaconWithPowerTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with identifiers, all data and path loss
         b = new BeaconWithPower(identifiers, -50.0, "address",
@@ -519,7 +487,6 @@ public class BeaconWithPowerTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with identifiers, transmitted power, tx power std and path loss
         b = new BeaconWithPower(identifiers, -50.0, Double.valueOf(1.0),
@@ -578,7 +545,6 @@ public class BeaconWithPowerTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with all data and path loss
         b = new BeaconWithPower(identifiers, -50.0, "address",
@@ -641,7 +607,6 @@ public class BeaconWithPowerTest {
         }
         assertNull(b);
 
-
         // test constructor with all data, frequency and path loss
         b = new BeaconWithPower(identifiers, -50.0, 5.0e9,
                 "address", 1, 2, 3,
@@ -674,7 +639,6 @@ public class BeaconWithPowerTest {
         } catch (IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with identifiers, tx power, frequency, path loss and tx power std
         b = new BeaconWithPower(identifiers, -50.0, 5.0e9, 1.6,
@@ -732,7 +696,6 @@ public class BeaconWithPowerTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with all data, frequency and path loss
         b = new BeaconWithPower(identifiers, -50.0, 5.0e9,
@@ -795,7 +758,6 @@ public class BeaconWithPowerTest {
         }
         assertNull(b);
 
-
         // test constructor with identifiers, transmitted power and std deviation, path loss and std deviation
         b = new BeaconWithPower(identifiers, -50.0, Double.valueOf(1.0),
                 1.6, Double.valueOf(0.1));
@@ -838,7 +800,6 @@ public class BeaconWithPowerTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with all data, path loss and std deviations
         b = new BeaconWithPower(identifiers, -50.0,
@@ -891,7 +852,6 @@ public class BeaconWithPowerTest {
         }
         assertNull(b);
 
-
         // test constructor with identifiers, tx power, frequency, path loss and std deviations
         b = new BeaconWithPower(identifiers, -50.0, 5.0e9,
                 1.6, 1.0, 0.1);
@@ -934,7 +894,6 @@ public class BeaconWithPowerTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(b);
-
 
         // test constructor with all data, frequency, path loss and std deviations
         b = new BeaconWithPower(identifiers, -50.0, 5.0e9,
@@ -1024,7 +983,6 @@ public class BeaconWithPowerTest {
         identifiers2.add(id4);
         identifiers2.add(id5);
         identifiers2.add(id6);
-
 
         final BeaconWithPower b1 = new BeaconWithPower(identifiers1,
                 -60.0, 1.0);

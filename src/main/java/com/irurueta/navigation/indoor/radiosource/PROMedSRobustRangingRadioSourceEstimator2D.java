@@ -25,6 +25,7 @@ import com.irurueta.numerical.robust.PROMedSRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -34,7 +35,6 @@ import java.util.List;
  *
  * @param <S> a {@link RadioSource} type.
  */
-@SuppressWarnings({"WeakerAccess", "Duplicates"})
 public class PROMedSRobustRangingRadioSourceEstimator2D<S extends RadioSource> extends
         RobustRangingRadioSourceEstimator2D<S> {
 
@@ -448,6 +448,7 @@ public class PROMedSRobustRangingRadioSourceEstimator2D<S extends RadioSource> e
      * @throws RobustEstimatorException if estimation fails for any reason
      *                                  (i.e. numerical instability, no solution available, etc).
      */
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void estimate() throws LockedException, NotReadyException, RobustEstimatorException {
         if (isLocked()) {
@@ -485,7 +486,7 @@ public class PROMedSRobustRangingRadioSourceEstimator2D<S extends RadioSource> e
                             public void estimatePreliminarSolutions(
                                     final int[] samplesIndices,
                                     final List<Solution<Point2D>> solutions) {
-                                solvePreliminarSolutions(samplesIndices, solutions);
+                                solvePreliminarySolutions(samplesIndices, solutions);
                             }
 
                             @Override
@@ -542,7 +543,7 @@ public class PROMedSRobustRangingRadioSourceEstimator2D<S extends RadioSource> e
 
             mInliersData = null;
 
-            //inlier thresholds are disable to obtain a less restrictive amount of inliers
+            // inlier thresholds are disable to obtain a less restrictive amount of inliers
             innerEstimator.setUseInlierThresholds(false);
 
             innerEstimator.setConfidence(mConfidence);

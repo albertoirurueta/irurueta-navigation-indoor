@@ -23,6 +23,7 @@ import com.irurueta.navigation.indoor.RangingFingerprint;
 import com.irurueta.navigation.indoor.RangingReading;
 import com.irurueta.navigation.lateration.LMedSRobustLateration3DSolver;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -32,7 +33,6 @@ import java.util.List;
  * device by getting ranging readings at an unknown location of different radio sources
  * whose 3D locations are known.
  */
-@SuppressWarnings("WeakerAccess")
 public class LMedSRobustRangingPositionEstimator3D extends
         RobustRangingPositionEstimator3D {
 
@@ -66,7 +66,8 @@ public class LMedSRobustRangingPositionEstimator3D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public LMedSRobustRangingPositionEstimator3D(
-            final RangingFingerprint<? extends RadioSource, ? extends RangingReading<? extends RadioSource>> fingerprint) {
+            final RangingFingerprint<? extends RadioSource, ? extends RangingReading<?
+                    extends RadioSource>> fingerprint) {
         super();
         init();
         internalSetFingerprint(fingerprint);
@@ -83,7 +84,8 @@ public class LMedSRobustRangingPositionEstimator3D extends
      */
     public LMedSRobustRangingPositionEstimator3D(
             final List<? extends RadioSourceLocated<Point3D>> sources,
-            final RangingFingerprint<? extends RadioSource, ? extends RangingReading<? extends RadioSource>> fingerprint) {
+            final RangingFingerprint<? extends RadioSource, ? extends RangingReading<?
+                    extends RadioSource>> fingerprint) {
         super();
         init();
         internalSetSources(sources);
@@ -126,7 +128,8 @@ public class LMedSRobustRangingPositionEstimator3D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public LMedSRobustRangingPositionEstimator3D(
-            final RangingFingerprint<? extends RadioSource, ? extends RangingReading<? extends RadioSource>> fingerprint,
+            final RangingFingerprint<? extends RadioSource, ? extends RangingReading<?
+                    extends RadioSource>> fingerprint,
             final RobustRangingPositionEstimatorListener<Point3D> listener) {
         super(listener);
         init();
@@ -145,7 +148,8 @@ public class LMedSRobustRangingPositionEstimator3D extends
      */
     public LMedSRobustRangingPositionEstimator3D(
             final List<? extends RadioSourceLocated<Point3D>> sources,
-            final RangingFingerprint<? extends RadioSource, ? extends RangingReading<? extends RadioSource>> fingerprint,
+            final RangingFingerprint<? extends RadioSource, ? extends RangingReading<?
+                    extends RadioSource>> fingerprint,
             final RobustRangingPositionEstimatorListener<Point3D> listener) {
         super(listener);
         init();

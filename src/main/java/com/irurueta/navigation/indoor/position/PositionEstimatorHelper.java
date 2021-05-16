@@ -19,18 +19,10 @@ import com.irurueta.algebra.AlgebraException;
 import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.SingularValueDecomposer;
 import com.irurueta.geometry.Point;
-import com.irurueta.navigation.indoor.Fingerprint;
-import com.irurueta.navigation.indoor.IndoorException;
-import com.irurueta.navigation.indoor.RadioSource;
-import com.irurueta.navigation.indoor.RadioSourceLocated;
-import com.irurueta.navigation.indoor.RadioSourceWithPower;
-import com.irurueta.navigation.indoor.RangingAndRssiReading;
-import com.irurueta.navigation.indoor.RangingReading;
-import com.irurueta.navigation.indoor.Reading;
-import com.irurueta.navigation.indoor.RssiReading;
-import com.irurueta.navigation.indoor.Utils;
+import com.irurueta.navigation.indoor.*;
 import com.irurueta.navigation.indoor.radiosource.RssiRadioSourceEstimator;
 import com.irurueta.statistics.MultivariateNormalDist;
+
 import java.util.List;
 
 /**
@@ -38,7 +30,6 @@ import java.util.List;
  * distances and distance standard deviations that can be used to solve the lateration
  * problem.
  */
-@SuppressWarnings({"WeakerAccess", "Duplicates"})
 public class PositionEstimatorHelper {
 
     /**
@@ -86,7 +77,7 @@ public class PositionEstimatorHelper {
                 final RadioSourceLocated<P> locatedSource = sources.get(index);
                 final P position = locatedSource.getPosition();
 
-                //compute distance
+                // compute distance
                 Double distance1 = null;
                 Double distance2 = null;
                 switch (reading.getType()) {
@@ -99,8 +90,8 @@ public class PositionEstimatorHelper {
                                 (RssiReading<? extends RadioSource>) reading);
                         break;
                     case RANGING_AND_RSSI_READING:
-                        //in this case two positions and distance might be added to
-                        //the lateration solver
+                        // in this case two positions and distance might be added to
+                        // the lateration solver
                         distance1 = computeDistanceRanging(
                                 (RangingAndRssiReading<? extends RadioSource>) reading);
                         distance2 = computeDistanceRssi(locatedSource,
@@ -199,6 +190,7 @@ public class PositionEstimatorHelper {
      * @throws IllegalArgumentException if provided distance standard deviation
      *                                  fallback is negative.
      */
+    @SuppressWarnings("DuplicatedCode")
     public static <P extends Point<?>> void buildPositionsDistancesDistanceStandardDeviationsAndQualityScores(
             final List<? extends RadioSourceLocated<P>> sources,
             final Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> fingerprint,
@@ -415,12 +407,12 @@ public class PositionEstimatorHelper {
 
         final RadioSourceWithPower poweredSource = (RadioSourceWithPower) locatedSource;
 
-        //source related parameters:
+        // source related parameters:
 
-        //transmitted power in dBm's
+        // transmitted power in dBm's
         final double txPower = poweredSource.getTransmittedPower();
 
-        //path loss exponent
+        // path loss exponent
         final double pathLossExponent = poweredSource.getPathLossExponent();
 
         final double frequency = poweredSource.getFrequency();
@@ -428,17 +420,17 @@ public class PositionEstimatorHelper {
         final double kdB = 10.0 * Math.log10(k);
 
 
-        //received power in dBm's follows the equation:
-        //rxPower = pathLossExponent * kdB + txPower - 5.0 * pathLossExponent * logSqrDistance
+        // received power in dBm's follows the equation:
+        // rxPower = pathLossExponent * kdB + txPower - 5.0 * pathLossExponent * logSqrDistance
 
-        //hence:
-        //5.0 * pathLossExponent * logSqrDistance = pathLossExponent * kdB + txPower - rxPower
+        // hence:
+        // 5.0 * pathLossExponent * logSqrDistance = pathLossExponent * kdB + txPower - rxPower
 
         final double logSqrDistance = (pathLossExponent * kdB + txPower - rxPower) / (5.0 * pathLossExponent);
 
-        //where logSqrDistance = Math.log10(sqrDistance)
-        //and sqrDistance = distance * distance, hence
-        //logSqrDistance = Math.log10(distance * distance) = 2 * Math.log10(distance)
+        // where logSqrDistance = Math.log10(sqrDistance)
+        // and sqrDistance = distance * distance, hence
+        // logSqrDistance = Math.log10(distance * distance) = 2 * Math.log10(distance)
 
         return Math.pow(10.0, logSqrDistance / 2.0);
     }
@@ -508,7 +500,7 @@ public class PositionEstimatorHelper {
     /**
      * Obtains distance and its standard deviation for an RSSI reading.
      *
-     * @param locatedSource             a located source, that must also have pwoer
+     * @param locatedSource             a located source, that must also have power
      *                                  information.
      * @param reading                   an RSSI reading.
      * @param positionStandardDeviation position standard deviation, or null if not
@@ -582,7 +574,7 @@ public class PositionEstimatorHelper {
         final Double pathLossExponentStandardDeviation =
                 poweredSource.getPathLossExponentStandardDeviation();
 
-        //WARNING: covariance between tx power and path loss exponent is ignored
+        // WARNING: covariance between tx power and path loss exponent is ignored
 
         final double frequency = poweredSource.getFrequency();
 
