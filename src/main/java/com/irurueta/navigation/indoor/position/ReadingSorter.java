@@ -20,6 +20,7 @@ import com.irurueta.navigation.indoor.Fingerprint;
 import com.irurueta.navigation.indoor.RadioSource;
 import com.irurueta.navigation.indoor.RadioSourceLocated;
 import com.irurueta.navigation.indoor.Reading;
+import com.irurueta.navigation.indoor.ReadingType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -290,16 +291,17 @@ public class ReadingSorter<P extends Point<?>, R extends Reading<? extends Radio
                         return -1;
 
                     case RANGING_AND_RSSI_READING:
-                        switch (o2.reading.getType()) {
-                            case RANGING_READING:
-                                // o2 goes first (o1 last)
-                                return 1;
-                            case RSSI_READING:
-                                // o1 goes first (o2 last)
-                                return -1;
+                        if (o2.reading.getType() == ReadingType.RANGING_READING) {
+                            // RANGING_READING
+                            // o2 goes first (o1 last)
+                            return 1;
+                        } else {
+                            // RSSI_READING
+                            // o1 goes first (o2 last)
+                            return -1;
                         }
-                        break;
                     case RSSI_READING:
+                    default:
                         // o2 goes first (o1 last)
                         return 1;
                 }

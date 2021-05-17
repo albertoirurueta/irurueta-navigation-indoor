@@ -1035,11 +1035,13 @@ public class PROSACRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSou
                             @Override
                             public void onEstimateStart(
                                     final RobustEstimator<Solution<Point2D>> estimator) {
+                                // no action needed
                             }
 
                             @Override
                             public void onEstimateEnd(
                                     final RobustEstimator<Solution<Point2D>> estimator) {
+                                // no action needed
                             }
 
                             @Override

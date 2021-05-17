@@ -525,11 +525,13 @@ public class PROSACRobustRangingRadioSourceEstimator3D<S extends RadioSource> ex
                             @Override
                             public void onEstimateStart(
                                     final RobustEstimator<Solution<Point3D>> estimator) {
+                                // no action needed
                             }
 
                             @Override
                             public void onEstimateEnd(
                                     final RobustEstimator<Solution<Point3D>> estimator) {
+                                // no action needed
                             }
 
                             @Override

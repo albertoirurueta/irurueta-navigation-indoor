@@ -461,7 +461,7 @@ public abstract class LinearFingerprintPositionEstimator<P extends Point<P>> ext
                                 final double rssi = reading.getRssi();
 
                                 // ideally if there was no bias between devices RSSI measures, we should compute:
-                                // double diffRssi = locatedRssi - rssi;
+                                // diffRssi = locatedRssi - rssi
                                 // However, to account for possible biases, we remove mean of fingerprints from
                                 // both readings (ideally both should be equal, but they will only be approximate in
                                 // practice).
