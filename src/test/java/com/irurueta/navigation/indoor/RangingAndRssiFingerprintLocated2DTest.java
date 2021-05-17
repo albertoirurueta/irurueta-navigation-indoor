@@ -46,7 +46,8 @@ public class RangingAndRssiFingerprintLocated2DTest {
         fingerprint = new RangingAndRssiFingerprintLocated2D<>(readings, position);
 
         // check
-        assertSame(fingerprint.getReadings(), readings);
+        assertEquals(fingerprint.getReadings(), readings);
+        assertNotSame(fingerprint.getReadings(), readings);
         assertSame(fingerprint.getPosition(), position);
         assertNull(fingerprint.getPositionCovariance());
 
@@ -69,14 +70,16 @@ public class RangingAndRssiFingerprintLocated2DTest {
         fingerprint = new RangingAndRssiFingerprintLocated2D<>(readings, position, cov);
 
         // check
-        assertSame(fingerprint.getReadings(), readings);
+        assertEquals(fingerprint.getReadings(), readings);
+        assertNotSame(fingerprint.getReadings(), readings);
         assertSame(fingerprint.getPosition(), position);
         assertSame(fingerprint.getPositionCovariance(), cov);
 
         fingerprint = new RangingAndRssiFingerprintLocated2D<>(readings, position, null);
 
         // check
-        assertSame(fingerprint.getReadings(), readings);
+        assertEquals(fingerprint.getReadings(), readings);
+        assertNotSame(fingerprint.getReadings(), readings);
         assertSame(fingerprint.getPosition(), position);
         assertNull(fingerprint.getPositionCovariance());
 

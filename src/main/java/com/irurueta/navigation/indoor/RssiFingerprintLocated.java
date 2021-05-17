@@ -49,7 +49,7 @@ public abstract class RssiFingerprintLocated<S extends RadioSource, R extends Rs
      * @throws IllegalArgumentException if either readings or position are
      *                                  null.
      */
-    public RssiFingerprintLocated(
+    protected RssiFingerprintLocated(
             final List<R> readings, final P position) {
         super(readings);
 
@@ -70,7 +70,7 @@ public abstract class RssiFingerprintLocated<S extends RadioSource, R extends Rs
      * @throws IllegalArgumentException if either readings or position are null, or
      *                                  covariance has invalid size.
      */
-    public RssiFingerprintLocated(
+    protected RssiFingerprintLocated(
             final List<R> readings, final P position,
             final Matrix positionCovariance) {
         this(readings, position);

@@ -71,7 +71,7 @@ public class PositionEstimatorHelper {
         final List<? extends Reading<? extends RadioSource>> readings =
                 fingerprint.getReadings();
         for (final Reading<? extends RadioSource> reading : readings) {
-            //noinspection all
+            //noinspection SuspiciousMethodCalls
             final int index = sources.indexOf(reading.getSource());
             if (index >= 0) {
                 final RadioSourceLocated<P> locatedSource = sources.get(index);
@@ -228,7 +228,7 @@ public class PositionEstimatorHelper {
                 fingerprint.getReadings();
         int readingIndex = 0;
         for (final Reading<? extends RadioSource> reading : readings) {
-            // noinspection all
+            //noinspection SuspiciousMethodCalls
             final int sourceIndex = sources.indexOf(reading.getSource());
             final Double readingQualityScore = fingerprintReadingsQualityScores != null ?
                     fingerprintReadingsQualityScores[readingIndex] : null;

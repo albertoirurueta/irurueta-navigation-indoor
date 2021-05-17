@@ -523,11 +523,13 @@ public class LMedSRobustRssiRadioSourceEstimator3D<S extends RadioSource> extend
                             @Override
                             public void onEstimateStart(
                                     final RobustEstimator<Solution<Point3D>> estimator) {
+                                // no action needed
                             }
 
                             @Override
                             public void onEstimateEnd(
                                     final RobustEstimator<Solution<Point3D>> estimator) {
+                                // no action needed
                             }
 
                             @Override

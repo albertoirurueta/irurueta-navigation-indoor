@@ -72,7 +72,7 @@ public abstract class LinearRssiPositionEstimator<P extends Point<P>> extends
     /**
      * Constructor.
      */
-    public LinearRssiPositionEstimator() {
+    protected LinearRssiPositionEstimator() {
         super();
         init();
     }
@@ -82,7 +82,7 @@ public abstract class LinearRssiPositionEstimator<P extends Point<P>> extends
      *
      * @param listener listener in charge of handling events.
      */
-    public LinearRssiPositionEstimator(final RssiPositionEstimatorListener<P> listener) {
+    protected LinearRssiPositionEstimator(final RssiPositionEstimatorListener<P> listener) {
         super(listener);
         init();
     }

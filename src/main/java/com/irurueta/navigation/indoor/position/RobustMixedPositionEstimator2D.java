@@ -42,7 +42,7 @@ public abstract class RobustMixedPositionEstimator2D extends
     /**
      * Constructor.
      */
-    public RobustMixedPositionEstimator2D() {
+    protected RobustMixedPositionEstimator2D() {
         super();
         mPreliminarySubsetSize = getMinRequiredSources();
     }
@@ -52,7 +52,7 @@ public abstract class RobustMixedPositionEstimator2D extends
      *
      * @param listener listener in charge of handling events.
      */
-    public RobustMixedPositionEstimator2D(
+    protected RobustMixedPositionEstimator2D(
             final RobustMixedPositionEstimatorListener<Point2D> listener) {
         super(listener);
         mPreliminarySubsetSize = getMinRequiredSources();

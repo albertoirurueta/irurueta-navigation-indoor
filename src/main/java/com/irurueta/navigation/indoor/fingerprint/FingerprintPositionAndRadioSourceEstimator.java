@@ -49,7 +49,7 @@ public abstract class FingerprintPositionAndRadioSourceEstimator<P extends Point
     /**
      * Constructor.
      */
-    public FingerprintPositionAndRadioSourceEstimator() {
+    protected FingerprintPositionAndRadioSourceEstimator() {
     }
 
     /**
@@ -57,7 +57,7 @@ public abstract class FingerprintPositionAndRadioSourceEstimator<P extends Point
      *
      * @param listener listener in charge of handling events.
      */
-    public FingerprintPositionAndRadioSourceEstimator(
+    protected FingerprintPositionAndRadioSourceEstimator(
             final FingerprintPositionAndRadioSourceEstimatorListener<P> listener) {
         super(listener);
     }
@@ -71,7 +71,7 @@ public abstract class FingerprintPositionAndRadioSourceEstimator<P extends Point
      * @throws IllegalArgumentException if either non located fingerprint or located
      *                                  fingerprints are null.
      */
-    public FingerprintPositionAndRadioSourceEstimator(
+    protected FingerprintPositionAndRadioSourceEstimator(
             final List<? extends RssiFingerprintLocated<? extends RadioSource,
                     ? extends RssiReading<? extends RadioSource>, P>> locatedFingerprints,
             final RssiFingerprint<? extends RadioSource,
@@ -89,7 +89,7 @@ public abstract class FingerprintPositionAndRadioSourceEstimator<P extends Point
      * @throws IllegalArgumentException if either non located fingerprint or located
      *                                  fingerprints are null.
      */
-    public FingerprintPositionAndRadioSourceEstimator(
+    protected FingerprintPositionAndRadioSourceEstimator(
             final List<? extends RssiFingerprintLocated<? extends RadioSource,
                     ? extends RssiReading<? extends RadioSource>, P>> locatedFingerprints,
             final RssiFingerprint<? extends RadioSource,

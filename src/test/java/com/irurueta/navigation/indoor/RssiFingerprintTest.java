@@ -50,7 +50,8 @@ public class RssiFingerprintTest {
         f = new RssiFingerprint<>(readings);
 
         // check
-        assertSame(f.getReadings(), readings);
+        assertEquals(f.getReadings(), readings);
+        assertNotSame(f.getReadings(), readings);
 
         // force IllegalArgumentException
         f = null;
@@ -75,7 +76,8 @@ public class RssiFingerprintTest {
         f.setReadings(readings);
 
         // check
-        assertSame(f.getReadings(), readings);
+        assertEquals(f.getReadings(), readings);
+        assertNotSame(f.getReadings(), readings);
 
         // force IllegalArgumentException
         try {

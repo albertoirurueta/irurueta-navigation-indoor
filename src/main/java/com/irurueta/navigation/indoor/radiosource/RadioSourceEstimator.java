@@ -74,7 +74,7 @@ public abstract class RadioSourceEstimator<P extends Point<?>, R extends Reading
     /**
      * Constructor.
      */
-    public RadioSourceEstimator() {
+    protected RadioSourceEstimator() {
     }
 
     /**
@@ -85,7 +85,7 @@ public abstract class RadioSourceEstimator<P extends Point<?>, R extends Reading
      *                 radio source.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RadioSourceEstimator(final List<? extends R> readings) {
+    protected RadioSourceEstimator(final List<? extends R> readings) {
         internalSetReadings(readings);
     }
 
@@ -94,7 +94,7 @@ public abstract class RadioSourceEstimator<P extends Point<?>, R extends Reading
      *
      * @param listener listener in charge of attending events raised by this instance.
      */
-    public RadioSourceEstimator(final L listener) {
+    protected RadioSourceEstimator(final L listener) {
         mListener = listener;
     }
 
@@ -106,7 +106,7 @@ public abstract class RadioSourceEstimator<P extends Point<?>, R extends Reading
      * @param listener listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if fingerprints are not valid.
      */
-    public RadioSourceEstimator(
+    protected RadioSourceEstimator(
             final List<? extends R> readings, final L listener) {
         this(readings);
         mListener = listener;

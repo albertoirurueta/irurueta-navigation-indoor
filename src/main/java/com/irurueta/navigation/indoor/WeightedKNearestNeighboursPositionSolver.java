@@ -76,7 +76,7 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
     /**
      * Constructor.
      */
-    public WeightedKNearestNeighboursPositionSolver() {
+    protected WeightedKNearestNeighboursPositionSolver() {
     }
 
     /**
@@ -90,7 +90,7 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
      * @throws IllegalArgumentException if either fingerprints or distances are null,
      *                                  don't have the same length or their length is smaller than 1.
      */
-    public WeightedKNearestNeighboursPositionSolver(
+    protected WeightedKNearestNeighboursPositionSolver(
             final RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, P>[] fingerprints,
             final double[] distances) {
         internalSetFingerprintsAndDistances(fingerprints, distances);
@@ -101,7 +101,7 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
      *
      * @param listener listener to be notified of events raised by this instance.
      */
-    public WeightedKNearestNeighboursPositionSolver(
+    protected WeightedKNearestNeighboursPositionSolver(
             final WeightedKNearestNeighboursPositionSolverListener<P> listener) {
         mListener = listener;
     }
@@ -118,7 +118,7 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
      * @throws IllegalArgumentException if either fingerprints or distances are null,
      *                                  don't have the same length or their length is smaller than 1.
      */
-    public WeightedKNearestNeighboursPositionSolver(
+    protected WeightedKNearestNeighboursPositionSolver(
             final RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, P>[] fingerprints,
             final double[] distances,
             final WeightedKNearestNeighboursPositionSolverListener<P> listener) {

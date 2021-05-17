@@ -46,7 +46,7 @@ public abstract class WifiAccessPointLocated<P extends Point<?>>
      * @throws IllegalArgumentException if either BSSID or position are null or
      *                                  frequency is negative.
      */
-    public WifiAccessPointLocated(
+    protected WifiAccessPointLocated(
             final String bssid, final double frequency, final P position) {
         super(bssid, frequency);
 
@@ -68,7 +68,7 @@ public abstract class WifiAccessPointLocated<P extends Point<?>>
      * @throws IllegalArgumentException if either BSSID or position are null or
      *                                  frequency is negative.
      */
-    public WifiAccessPointLocated(
+    protected WifiAccessPointLocated(
             final String bssid, final double frequency, final String ssid,
             final P position) {
         super(bssid, frequency, ssid);
@@ -92,7 +92,7 @@ public abstract class WifiAccessPointLocated<P extends Point<?>>
      * @throws IllegalArgumentException if either BSSID or position are null or
      *                                  frequency is negative, or covariance does not have proper size.
      */
-    public WifiAccessPointLocated(
+    protected WifiAccessPointLocated(
             final String bssid, final double frequency, final P position,
             final Matrix positionCovariance) {
         this(bssid, frequency, position);
@@ -120,7 +120,7 @@ public abstract class WifiAccessPointLocated<P extends Point<?>>
      * @throws IllegalArgumentException if either BSSID or position are null or
      *                                  frequency is negative, or covariance does not have proper size.
      */
-    public WifiAccessPointLocated(
+    protected WifiAccessPointLocated(
             final String bssid, final double frequency, final String ssid,
             final P position, final Matrix positionCovariance) {
         this(bssid, frequency, ssid, position);

@@ -48,7 +48,7 @@ public abstract class LinearFingerprintPositionEstimator<P extends Point<P>> ext
     /**
      * Constructor.
      */
-    public LinearFingerprintPositionEstimator() {
+    protected LinearFingerprintPositionEstimator() {
     }
 
     /**
@@ -56,7 +56,7 @@ public abstract class LinearFingerprintPositionEstimator<P extends Point<P>> ext
      *
      * @param listener listener in charge of handling events.
      */
-    public LinearFingerprintPositionEstimator(
+    protected LinearFingerprintPositionEstimator(
             final FingerprintPositionEstimatorListener<P> listener) {
         super(listener);
     }
@@ -76,7 +76,7 @@ public abstract class LinearFingerprintPositionEstimator<P extends Point<P>> ext
      *                                  different locations containing a single reading are required. For 3D position
      *                                  estimation 3 located total readings are required among all fingerprints).
      */
-    public LinearFingerprintPositionEstimator(
+    protected LinearFingerprintPositionEstimator(
             final List<? extends RssiFingerprintLocated<? extends RadioSource,
                     ? extends RssiReading<? extends RadioSource>, P>> locatedFingerprints,
             final RssiFingerprint<? extends RadioSource,
@@ -101,7 +101,7 @@ public abstract class LinearFingerprintPositionEstimator<P extends Point<P>> ext
      *                                  different locations containing a single reading are required. For 3D position
      *                                  estimation 3 located total readings are required among all fingerprints).
      */
-    public LinearFingerprintPositionEstimator(
+    protected LinearFingerprintPositionEstimator(
             final List<? extends RssiFingerprintLocated<? extends RadioSource,
                     ? extends RssiReading<? extends RadioSource>, P>> locatedFingerprints,
             final RssiFingerprint<? extends RadioSource,
@@ -465,7 +465,6 @@ public abstract class LinearFingerprintPositionEstimator<P extends Point<P>> ext
                                 // However, to account for possible biases, we remove mean of fingerprints from
                                 // both readings (ideally both should be equal, but they will only be approximate in
                                 // practice).
-                                // double diffRssi = (locatedRssi - locatedMeanRssi) - (rssi - meanRssi);
                                 double diffRssi;
                                 if (mRemoveMeansFromFingerprintReadings) {
                                     diffRssi = (locatedRssi - locatedMeanRssi) - (rssi - meanRssi);

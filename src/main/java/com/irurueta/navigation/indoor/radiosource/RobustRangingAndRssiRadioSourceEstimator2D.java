@@ -90,7 +90,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
      * @param readings signal readings belonging to the same radio source.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator2D(
+    protected RobustRangingAndRssiRadioSourceEstimator2D(
             final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings) {
         super(readings);
         mPreliminarySubsetSize = getMinReadings();
@@ -101,7 +101,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
      *
      * @param listener listener in charge of attending events raised by this instance.
      */
-    public RobustRangingAndRssiRadioSourceEstimator2D(
+    protected RobustRangingAndRssiRadioSourceEstimator2D(
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(listener);
         mPreliminarySubsetSize = getMinReadings();
@@ -115,7 +115,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
      * @param listener listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator2D(
+    protected RobustRangingAndRssiRadioSourceEstimator2D(
             final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(readings, listener);
@@ -131,7 +131,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
      *                        source position.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator2D(
+    protected RobustRangingAndRssiRadioSourceEstimator2D(
             final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
             final Point2D initialPosition) {
         super(readings, initialPosition);
@@ -144,7 +144,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
      * @param initialPosition initial position to start the estimation of radio
      *                        source position.
      */
-    public RobustRangingAndRssiRadioSourceEstimator2D(
+    protected RobustRangingAndRssiRadioSourceEstimator2D(
             final Point2D initialPosition) {
         super(initialPosition);
         mPreliminarySubsetSize = getMinReadings();
@@ -157,7 +157,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
      *                        source position.
      * @param listener        listener in charge of attending events raised by this instance.
      */
-    public RobustRangingAndRssiRadioSourceEstimator2D(
+    protected RobustRangingAndRssiRadioSourceEstimator2D(
             final Point2D initialPosition,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(initialPosition, listener);
@@ -174,7 +174,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
      * @param listener        listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator2D(
+    protected RobustRangingAndRssiRadioSourceEstimator2D(
             final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
             final Point2D initialPosition,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
@@ -189,7 +189,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's)
      */
-    public RobustRangingAndRssiRadioSourceEstimator2D(
+    protected RobustRangingAndRssiRadioSourceEstimator2D(
             final Double initialTransmittedPowerdBm) {
         super(initialTransmittedPowerdBm);
         mPreliminarySubsetSize = getMinReadings();
@@ -205,7 +205,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
      *                                   (expressed in dBm's)
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator2D(
+    protected RobustRangingAndRssiRadioSourceEstimator2D(
             final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
             final Double initialTransmittedPowerdBm) {
         super(readings, initialTransmittedPowerdBm);
@@ -220,7 +220,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
      *                                   (expressed in dBm's)
      * @param listener                   listener in charge of attending events raised by this instance.
      */
-    public RobustRangingAndRssiRadioSourceEstimator2D(
+    protected RobustRangingAndRssiRadioSourceEstimator2D(
             final Double initialTransmittedPowerdBm,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(initialTransmittedPowerdBm, listener);
@@ -238,7 +238,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
      * @param listener                   listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator2D(
+    protected RobustRangingAndRssiRadioSourceEstimator2D(
             final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
             final Double initialTransmittedPowerdBm,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
@@ -258,7 +258,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
      *                                   (expressed in dBm's).
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator2D(
+    protected RobustRangingAndRssiRadioSourceEstimator2D(
             final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm) {
@@ -275,7 +275,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's).
      */
-    public RobustRangingAndRssiRadioSourceEstimator2D(
+    protected RobustRangingAndRssiRadioSourceEstimator2D(
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm) {
         super(initialPosition, initialTransmittedPowerdBm);
@@ -292,7 +292,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
      *                                   (expressed in dBm's).
      * @param listener                   listener in charge of attending events raised by this instance.
      */
-    public RobustRangingAndRssiRadioSourceEstimator2D(
+    protected RobustRangingAndRssiRadioSourceEstimator2D(
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
@@ -313,7 +313,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
      * @param listener                   listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator2D(
+    protected RobustRangingAndRssiRadioSourceEstimator2D(
             final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
             final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
@@ -334,7 +334,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator2D(
+    protected RobustRangingAndRssiRadioSourceEstimator2D(
             final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
             final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
@@ -353,7 +353,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
      *                                   (expressed in dBm's).
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      */
-    public RobustRangingAndRssiRadioSourceEstimator2D(
+    protected RobustRangingAndRssiRadioSourceEstimator2D(
             final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
         super(initialPosition, initialTransmittedPowerdBm,
@@ -372,7 +372,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      * @param listener                   listener in charge of attending events raised by this instance.
      */
-    public RobustRangingAndRssiRadioSourceEstimator2D(
+    protected RobustRangingAndRssiRadioSourceEstimator2D(
             final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
@@ -396,7 +396,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
      * @param listener                   listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator2D(
+    protected RobustRangingAndRssiRadioSourceEstimator2D(
             final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
             final Point2D initialPosition, Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,

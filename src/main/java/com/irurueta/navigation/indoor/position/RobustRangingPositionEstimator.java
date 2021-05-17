@@ -39,7 +39,7 @@ public abstract class RobustRangingPositionEstimator<P extends Point<?>> extends
     /**
      * Constructor.
      */
-    public RobustRangingPositionEstimator() {
+    protected RobustRangingPositionEstimator() {
         init();
     }
 
@@ -48,7 +48,7 @@ public abstract class RobustRangingPositionEstimator<P extends Point<?>> extends
      *
      * @param listener listener in charge of handling events.
      */
-    public RobustRangingPositionEstimator(
+    protected RobustRangingPositionEstimator(
             final RobustRangingPositionEstimatorListener<P> listener) {
         super(listener);
         init();

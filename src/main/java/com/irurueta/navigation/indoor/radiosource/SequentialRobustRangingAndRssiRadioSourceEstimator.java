@@ -375,7 +375,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
     /**
      * Constructor.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator() {
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator() {
     }
 
     /**
@@ -385,7 +385,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @param readings signal readings belonging to the same radio source.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings) {
         internalSetReadings(readings);
     }
@@ -395,7 +395,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      *
      * @param listener listener in charge of attending events raised by this instance.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, P> listener) {
         mListener = listener;
     }
@@ -408,7 +408,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @param listener listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, P> listener) {
         this(readings);
@@ -424,7 +424,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      *                        source position.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
             final P initialPosition) {
         this(readings);
@@ -437,7 +437,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @param initialPosition initial position to start the estimation of radio
      *                        source position.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final P initialPosition) {
         mInitialPosition = initialPosition;
     }
@@ -449,7 +449,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      *                        source position.
      * @param listener        listener in charge of attending events raised by this instance.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final P initialPosition,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, P> listener) {
         this(listener);
@@ -466,7 +466,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @param listener        listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
             final P initialPosition,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, P> listener) {
@@ -481,7 +481,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's).
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final Double initialTransmittedPowerdBm) {
         mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;
     }
@@ -496,7 +496,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      *                                   (expressed in dBm's).
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
             final Double initialTransmittedPowerdBm) {
         this(readings);
@@ -511,7 +511,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      *                                   (expressed in dBm's).
      * @param listener                   listener in charge of attending events raised by this instance.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final Double initialTransmittedPowerdBm,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, P> listener) {
         this(listener);
@@ -529,7 +529,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @param listener                   listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
             final Double initialTransmittedPowerdBm,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, P> listener) {
@@ -549,7 +549,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      *                                   (expressed in dBm's).
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
             final P initialPosition,
             final Double initialTransmittedPowerdBm) {
@@ -567,7 +567,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's).
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final P initialPosition,
             final Double initialTransmittedPowerdBm) {
         mInitialPosition = initialPosition;
@@ -584,7 +584,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      *                                   (expressed in dBm's).
      * @param listener                   in charge of attending events raised by this instance.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, P> listener) {
@@ -606,7 +606,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @param listener                   listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
@@ -629,7 +629,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
@@ -648,7 +648,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      *                                   (expressed in dBm's).
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
@@ -667,7 +667,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      * @param listener                   listener in charge of attending events raised by this instance.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
@@ -690,7 +690,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @param listener                   listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
@@ -709,7 +709,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @throws IllegalArgumentException if quality scores is null, or length of
      *                                  quality scores is less than required minimum.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final double[] qualityScores) {
         this();
         internalSetQualityScores(qualityScores);
@@ -726,7 +726,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @throws IllegalArgumentException if readings are not valid, quality scores is
      *                                  null, or length of quality scores is less than required minimum.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final double[] qualityScores,
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings) {
         this(readings);
@@ -743,7 +743,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @throws IllegalArgumentException if quality scores is null, or length
      *                                  of quality scores is less than required minimum.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final double[] qualityScores,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, P> listener) {
         this(listener);
@@ -762,7 +762,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @throws IllegalArgumentException if readings are not valid, quality scores is
      *                                  null, or length of quality scores is less than required minimum.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final double[] qualityScores,
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, P> listener) {
@@ -783,7 +783,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @throws IllegalArgumentException if readings are not valid, quality scores is
      *                                  null, or length of quality scores is less than required minimum.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final double[] qualityScores,
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
             final P initialPosition) {
@@ -802,7 +802,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @throws IllegalArgumentException if quality scores is null, or length
      *                                  of quality scores is less than required minimum.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final double[] qualityScores,
             final P initialPosition) {
         this(initialPosition);
@@ -821,7 +821,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @throws IllegalArgumentException if quality scores is null, or length
      *                                  of quality scores is less than required minimum.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final double[] qualityScores,
             final P initialPosition,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, P> listener) {
@@ -843,7 +843,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @throws IllegalArgumentException if readings are not valid, quality scores
      *                                  is null, or length of quality scores is less than required minimum.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final double[] qualityScores,
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
             final P initialPosition,
@@ -864,7 +864,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @throws IllegalArgumentException if quality scores is null, or length
      *                                  of quality scores is less than required minimum.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final double[] qualityScores,
             final Double initialTransmittedPowerdBm) {
         this(initialTransmittedPowerdBm);
@@ -885,7 +885,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @throws IllegalArgumentException if readings are not valid, quality scores
      *                                  is null, or length of quality scores is less than required minimum.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final double[] qualityScores,
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
             final Double initialTransmittedPowerdBm) {
@@ -906,7 +906,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @throws IllegalArgumentException if quality scores is null, or length
      *                                  of quality scores is less than required minimum.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final double[] qualityScores,
             final Double initialTransmittedPowerdBm,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, P> listener) {
@@ -929,7 +929,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @throws IllegalArgumentException if readings are not valid, quality scores
      *                                  is null, or length of quality scores is less than required minimum.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final double[] qualityScores,
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
             final Double initialTransmittedPowerdBm,
@@ -954,7 +954,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @throws IllegalArgumentException if readings are not valid, quality scores
      *                                  is null, or length of quality scores is less than required minimum.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final double[] qualityScores,
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
             final P initialPosition,
@@ -977,7 +977,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @throws IllegalArgumentException if quality scores is null, or length
      *                                  of quality scores is less than required minimum.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final double[] qualityScores,
             final P initialPosition,
             final Double initialTransmittedPowerdBm) {
@@ -1000,7 +1000,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @throws IllegalArgumentException if quality scores is null, or length
      *                                  of quality scores is less than required minimum.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final double[] qualityScores,
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
@@ -1026,7 +1026,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @throws IllegalArgumentException if readings are not valid, quality scores
      *                                  is null, or length of quality scores is less than required minimum.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final double[] qualityScores,
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
             final P initialPosition,
@@ -1053,7 +1053,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @throws IllegalArgumentException if readings are not valid, quality scores
      *                                  is null, or length of quality scores is less than required minimum.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final double[] qualityScores,
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
             final P initialPosition,
@@ -1079,7 +1079,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @throws IllegalArgumentException if quality scores is null, or length
      *                                  of quality scores is less than required minimum.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final double[] qualityScores,
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
@@ -1104,7 +1104,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @throws IllegalArgumentException if quality scores is null, or length
      *                                  of quality scores is less than required minimum.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final double[] qualityScores,
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
@@ -1133,7 +1133,7 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      * @throws IllegalArgumentException if readings are not valid, quality scores
      *                                  is null, or length of quality scores is less than required minimum.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator(
+    protected SequentialRobustRangingAndRssiRadioSourceEstimator(
             final double[] qualityScores,
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
             final P initialPosition,

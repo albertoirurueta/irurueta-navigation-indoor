@@ -150,7 +150,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
     /**
      * Constructor.
      */
-    public RobustRangingAndRssiRadioSourceEstimator() {
+    protected RobustRangingAndRssiRadioSourceEstimator() {
         super();
     }
 
@@ -161,7 +161,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @param readings signal readings belonging to the same radio source.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator(
+    protected RobustRangingAndRssiRadioSourceEstimator(
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings) {
         super(readings);
     }
@@ -171,7 +171,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      *
      * @param listener listener in charge of attending events raised by this instance.
      */
-    public RobustRangingAndRssiRadioSourceEstimator(
+    protected RobustRangingAndRssiRadioSourceEstimator(
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, P> listener) {
         super(listener);
     }
@@ -184,7 +184,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @param listener listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator(
+    protected RobustRangingAndRssiRadioSourceEstimator(
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, P> listener) {
         super(readings, listener);
@@ -199,7 +199,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      *                        source position.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator(
+    protected RobustRangingAndRssiRadioSourceEstimator(
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
             final P initialPosition) {
         super(readings);
@@ -212,7 +212,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @param initialPosition initial position to start the estimation of radio
      *                        source position.
      */
-    public RobustRangingAndRssiRadioSourceEstimator(
+    protected RobustRangingAndRssiRadioSourceEstimator(
             final P initialPosition) {
         mInitialPosition = initialPosition;
     }
@@ -224,7 +224,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      *                        source position.
      * @param listener        listener in charge of attending events raised by this instance.
      */
-    public RobustRangingAndRssiRadioSourceEstimator(
+    protected RobustRangingAndRssiRadioSourceEstimator(
             final P initialPosition,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, P> listener) {
         super(listener);
@@ -241,7 +241,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @param listener        listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator(
+    protected RobustRangingAndRssiRadioSourceEstimator(
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
             final P initialPosition,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, P> listener) {
@@ -256,7 +256,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's)
      */
-    public RobustRangingAndRssiRadioSourceEstimator(
+    protected RobustRangingAndRssiRadioSourceEstimator(
             final Double initialTransmittedPowerdBm) {
         mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;
     }
@@ -271,7 +271,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      *                                   (expressed in dBm's)
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator(
+    protected RobustRangingAndRssiRadioSourceEstimator(
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
             final Double initialTransmittedPowerdBm) {
         super(readings);
@@ -286,7 +286,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      *                                   (expressed in dBm's)
      * @param listener                   listener in charge of attending events raised by this instance.
      */
-    public RobustRangingAndRssiRadioSourceEstimator(
+    protected RobustRangingAndRssiRadioSourceEstimator(
             final Double initialTransmittedPowerdBm,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, P> listener) {
         super(listener);
@@ -304,7 +304,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @param listener                   listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator(
+    protected RobustRangingAndRssiRadioSourceEstimator(
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
             final Double initialTransmittedPowerdBm,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, P> listener) {
@@ -324,7 +324,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      *                                   (expressed in dBm's).
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator(
+    protected RobustRangingAndRssiRadioSourceEstimator(
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
             final P initialPosition,
             final Double initialTransmittedPowerdBm) {
@@ -342,7 +342,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's).
      */
-    public RobustRangingAndRssiRadioSourceEstimator(
+    protected RobustRangingAndRssiRadioSourceEstimator(
             final P initialPosition,
             final Double initialTransmittedPowerdBm) {
         mInitialPosition = initialPosition;
@@ -359,7 +359,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      *                                   (expressed in dBm's).
      * @param listener                   in charge of attending events raised by this instance.
      */
-    public RobustRangingAndRssiRadioSourceEstimator(
+    protected RobustRangingAndRssiRadioSourceEstimator(
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, P> listener) {
@@ -381,7 +381,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @param listener                   listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator(
+    protected RobustRangingAndRssiRadioSourceEstimator(
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
@@ -404,7 +404,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator(
+    protected RobustRangingAndRssiRadioSourceEstimator(
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
@@ -423,7 +423,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      *                                   (expressed in dBm's).
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      */
-    public RobustRangingAndRssiRadioSourceEstimator(
+    protected RobustRangingAndRssiRadioSourceEstimator(
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
@@ -442,7 +442,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      * @param listener                   listener in charge of attending events raised by this instance.
      */
-    public RobustRangingAndRssiRadioSourceEstimator(
+    protected RobustRangingAndRssiRadioSourceEstimator(
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
@@ -465,7 +465,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @param listener                   listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator(
+    protected RobustRangingAndRssiRadioSourceEstimator(
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
             final P initialPosition,
             final Double initialTransmittedPowerdBm,

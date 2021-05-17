@@ -45,7 +45,8 @@ public class RangingFingerprintLocated3DTest {
         fingerprint = new RangingFingerprintLocated3D<>(readings, position);
 
         // check
-        assertSame(fingerprint.getReadings(), readings);
+        assertEquals(fingerprint.getReadings(), readings);
+        assertNotSame(fingerprint.getReadings(), readings);
         assertSame(fingerprint.getPosition(), position);
         assertNull(fingerprint.getPositionCovariance());
 
@@ -68,14 +69,16 @@ public class RangingFingerprintLocated3DTest {
         fingerprint = new RangingFingerprintLocated3D<>(readings, position, cov);
 
         // check
-        assertSame(fingerprint.getReadings(), readings);
+        assertEquals(fingerprint.getReadings(), readings);
+        assertNotSame(fingerprint.getReadings(), readings);
         assertSame(fingerprint.getPosition(), position);
         assertSame(fingerprint.getPositionCovariance(), cov);
 
         fingerprint = new RangingFingerprintLocated3D<>(readings, position, null);
 
         // check
-        assertSame(fingerprint.getReadings(), readings);
+        assertEquals(fingerprint.getReadings(), readings);
+        assertNotSame(fingerprint.getReadings(), readings);
         assertSame(fingerprint.getPosition(), position);
         assertNull(fingerprint.getPositionCovariance());
 

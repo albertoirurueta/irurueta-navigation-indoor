@@ -163,7 +163,7 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
     /**
      * Constructor.
      */
-    public NonLinearFingerprintPositionAndRadioSourceEstimator() {
+    protected NonLinearFingerprintPositionAndRadioSourceEstimator() {
     }
 
     /**
@@ -171,7 +171,7 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
      *
      * @param listener listener in charge of handling events.
      */
-    public NonLinearFingerprintPositionAndRadioSourceEstimator(
+    protected NonLinearFingerprintPositionAndRadioSourceEstimator(
             final FingerprintPositionAndRadioSourceEstimatorListener<P> listener) {
         super(listener);
     }
@@ -185,7 +185,7 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
      * @throws IllegalArgumentException if either non located fingerprint or located
      *                                  fingerprints are null.
      */
-    public NonLinearFingerprintPositionAndRadioSourceEstimator(
+    protected NonLinearFingerprintPositionAndRadioSourceEstimator(
             final List<? extends RssiFingerprintLocated<? extends RadioSource,
                     ? extends RssiReading<? extends RadioSource>, P>> locatedFingerprints,
             final RssiFingerprint<? extends RadioSource,
@@ -203,7 +203,7 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
      * @throws IllegalArgumentException if either non located fingerprint or located
      *                                  fingerprints are null.
      */
-    public NonLinearFingerprintPositionAndRadioSourceEstimator(
+    protected NonLinearFingerprintPositionAndRadioSourceEstimator(
             final List<? extends RssiFingerprintLocated<? extends RadioSource,
                     ? extends RssiReading<? extends RadioSource>, P>> locatedFingerprints,
             final RssiFingerprint<? extends RadioSource,
@@ -223,7 +223,7 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
      * @throws IllegalArgumentException if either non located fingerprint or located
      *                                  fingerprints are null.
      */
-    public NonLinearFingerprintPositionAndRadioSourceEstimator(
+    protected NonLinearFingerprintPositionAndRadioSourceEstimator(
             final List<? extends RssiFingerprintLocated<? extends RadioSource,
                     ? extends RssiReading<? extends RadioSource>, P>> locatedFingerprints,
             final RssiFingerprint<? extends RadioSource,
@@ -245,7 +245,7 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
      * @throws IllegalArgumentException if either non located fingerprint or located
      *                                  fingerprints are null.
      */
-    public NonLinearFingerprintPositionAndRadioSourceEstimator(
+    protected NonLinearFingerprintPositionAndRadioSourceEstimator(
             final List<? extends RssiFingerprintLocated<? extends RadioSource,
                     ? extends RssiReading<? extends RadioSource>, P>> locatedFingerprints,
             final RssiFingerprint<? extends RadioSource,
@@ -267,7 +267,7 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
      * @throws IllegalArgumentException if either non located fingerprint or located
      *                                  fingerprints are null.
      */
-    public NonLinearFingerprintPositionAndRadioSourceEstimator(
+    protected NonLinearFingerprintPositionAndRadioSourceEstimator(
             final List<? extends RssiFingerprintLocated<? extends RadioSource,
                     ? extends RssiReading<? extends RadioSource>, P>> locatedFingerprints,
             final RssiFingerprint<? extends RadioSource,
@@ -289,7 +289,7 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
      * @throws IllegalArgumentException if either non located fingerprint or located
      *                                  fingerprints are null.
      */
-    public NonLinearFingerprintPositionAndRadioSourceEstimator(
+    protected NonLinearFingerprintPositionAndRadioSourceEstimator(
             final List<? extends RssiFingerprintLocated<? extends RadioSource,
                     ? extends RssiReading<? extends RadioSource>, P>> locatedFingerprints,
             final RssiFingerprint<? extends RadioSource,
@@ -313,7 +313,7 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
      * @throws IllegalArgumentException if either non located fingerprint or located
      *                                  fingerprints are null.
      */
-    public NonLinearFingerprintPositionAndRadioSourceEstimator(
+    protected NonLinearFingerprintPositionAndRadioSourceEstimator(
             final List<? extends RssiFingerprintLocated<? extends RadioSource,
                     ? extends RssiReading<? extends RadioSource>, P>> locatedFingerprints,
             final RssiFingerprint<? extends RadioSource,
@@ -338,7 +338,7 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
      * @throws IllegalArgumentException if either non located fingerprint or located
      *                                  fingerprints are null.
      */
-    public NonLinearFingerprintPositionAndRadioSourceEstimator(
+    protected NonLinearFingerprintPositionAndRadioSourceEstimator(
             final List<? extends RssiFingerprintLocated<? extends RadioSource,
                     ? extends RssiReading<? extends RadioSource>, P>> locatedFingerprints,
             final RssiFingerprint<? extends RadioSource,

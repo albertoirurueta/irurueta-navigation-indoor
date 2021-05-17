@@ -63,7 +63,7 @@ public abstract class PositionEstimator<P extends Point<?>,
     /**
      * Constructor.
      */
-    public PositionEstimator() {
+    protected PositionEstimator() {
     }
 
     /**
@@ -71,7 +71,7 @@ public abstract class PositionEstimator<P extends Point<?>,
      *
      * @param listener listener in charge of handling events.
      */
-    public PositionEstimator(final L listener) {
+    protected PositionEstimator(final L listener) {
         mListener = listener;
     }
 

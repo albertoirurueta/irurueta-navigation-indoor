@@ -44,7 +44,8 @@ public class RssiFingerprintLocated2DTest {
         f = new RssiFingerprintLocated2D<>(readings, position);
 
         // check
-        assertSame(f.getReadings(), readings);
+        assertEquals(f.getReadings(), readings);
+        assertNotSame(f.getReadings(), readings);
         assertSame(f.getPosition(), position);
         assertNull(f.getPositionCovariance());
 
@@ -67,7 +68,8 @@ public class RssiFingerprintLocated2DTest {
         f = new RssiFingerprintLocated2D<>(readings, position, cov);
 
         // check
-        assertSame(f.getReadings(), readings);
+        assertEquals(f.getReadings(), readings);
+        assertNotSame(f.getReadings(), readings);
         assertSame(f.getPosition(), position);
         assertSame(f.getPositionCovariance(), cov);
 

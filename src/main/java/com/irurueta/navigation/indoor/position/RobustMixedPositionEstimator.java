@@ -40,7 +40,7 @@ public abstract class RobustMixedPositionEstimator<P extends Point<?>> extends
     /**
      * Constructor.
      */
-    public RobustMixedPositionEstimator() {
+    protected RobustMixedPositionEstimator() {
         init();
     }
 
@@ -49,7 +49,7 @@ public abstract class RobustMixedPositionEstimator<P extends Point<?>> extends
      *
      * @param listener listener in charge of handling events.
      */
-    public RobustMixedPositionEstimator(
+    protected RobustMixedPositionEstimator(
             final RobustMixedPositionEstimatorListener<P> listener) {
         super(listener);
         init();

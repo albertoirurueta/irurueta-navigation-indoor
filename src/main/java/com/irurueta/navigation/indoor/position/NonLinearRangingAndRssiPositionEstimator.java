@@ -82,7 +82,7 @@ public abstract class NonLinearRangingAndRssiPositionEstimator<P extends Point<?
     /**
      * Constructor.
      */
-    public NonLinearRangingAndRssiPositionEstimator() {
+    protected NonLinearRangingAndRssiPositionEstimator() {
         super();
         init();
     }
@@ -92,7 +92,7 @@ public abstract class NonLinearRangingAndRssiPositionEstimator<P extends Point<?
      *
      * @param listener listener in charge of handling events.
      */
-    public NonLinearRangingAndRssiPositionEstimator(
+    protected NonLinearRangingAndRssiPositionEstimator(
             final RangingAndRssiPositionEstimatorListener<P> listener) {
         super(listener);
         init();
@@ -103,7 +103,7 @@ public abstract class NonLinearRangingAndRssiPositionEstimator<P extends Point<?
      *
      * @param initialPosition initial position to start position estimation.
      */
-    public NonLinearRangingAndRssiPositionEstimator(final P initialPosition) {
+    protected NonLinearRangingAndRssiPositionEstimator(final P initialPosition) {
         this();
         mInitialPosition = initialPosition;
     }
@@ -114,7 +114,7 @@ public abstract class NonLinearRangingAndRssiPositionEstimator<P extends Point<?
      * @param initialPosition initial position to start position estimation.
      * @param listener        listener in charge of handling events.
      */
-    public NonLinearRangingAndRssiPositionEstimator(
+    protected NonLinearRangingAndRssiPositionEstimator(
             final P initialPosition,
             final RangingAndRssiPositionEstimatorListener<P> listener) {
         this(listener);

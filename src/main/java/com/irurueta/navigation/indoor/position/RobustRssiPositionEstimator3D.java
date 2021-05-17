@@ -42,7 +42,7 @@ public abstract class RobustRssiPositionEstimator3D extends
     /**
      * Constructor.
      */
-    public RobustRssiPositionEstimator3D() {
+    protected RobustRssiPositionEstimator3D() {
         super();
         mPreliminarySubsetSize = getMinRequiredSources();
     }
@@ -52,7 +52,7 @@ public abstract class RobustRssiPositionEstimator3D extends
      *
      * @param listener listener in charge of handling events.
      */
-    public RobustRssiPositionEstimator3D(
+    protected RobustRssiPositionEstimator3D(
             final RobustRssiPositionEstimatorListener<Point3D> listener) {
         super(listener);
         mPreliminarySubsetSize = getMinRequiredSources();

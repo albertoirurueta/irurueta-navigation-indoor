@@ -428,7 +428,7 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
     /**
      * Constructor.
      */
-    public SequentialRobustMixedPositionEstimator() {
+    protected SequentialRobustMixedPositionEstimator() {
     }
 
     /**
@@ -438,7 +438,7 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
      * @throws IllegalArgumentException if provided sources is null or the number of
      *                                  provided sources is less than the required minimum.
      */
-    public SequentialRobustMixedPositionEstimator(
+    protected SequentialRobustMixedPositionEstimator(
             final List<? extends RadioSourceLocated<P>> sources) {
         internalSetSources(sources);
     }
@@ -450,7 +450,7 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
      *                    for provided located radio sources.
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
-    public SequentialRobustMixedPositionEstimator(
+    protected SequentialRobustMixedPositionEstimator(
             final Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> fingerprint) {
         internalSetFingerprint(fingerprint);
     }
@@ -465,7 +465,7 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
      *                                  null or the number of provided sources is less
      *                                  than the required minimum.
      */
-    public SequentialRobustMixedPositionEstimator(
+    protected SequentialRobustMixedPositionEstimator(
             final List<? extends RadioSourceLocated<P>> sources,
             final Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> fingerprint) {
         internalSetSources(sources);
@@ -477,7 +477,7 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
      *
      * @param listener listener in charge of handling events.
      */
-    public SequentialRobustMixedPositionEstimator(
+    protected SequentialRobustMixedPositionEstimator(
             final SequentialRobustMixedPositionEstimatorListener<P> listener) {
         mListener = listener;
     }
@@ -491,7 +491,7 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
      *                                  provided sources is less than the required
      *                                  minimum.
      */
-    public SequentialRobustMixedPositionEstimator(
+    protected SequentialRobustMixedPositionEstimator(
             final List<? extends RadioSourceLocated<P>> sources,
             final SequentialRobustMixedPositionEstimatorListener<P> listener) {
         this(sources);
@@ -506,7 +506,7 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
      * @param listener    listener in charge of handling events.
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
-    public SequentialRobustMixedPositionEstimator(
+    protected SequentialRobustMixedPositionEstimator(
             final Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> fingerprint,
             final SequentialRobustMixedPositionEstimatorListener<P> listener) {
         this(fingerprint);
@@ -524,7 +524,7 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
      *                                  null or the number of provided sources is less
      *                                  than the required minimum.
      */
-    public SequentialRobustMixedPositionEstimator(
+    protected SequentialRobustMixedPositionEstimator(
             final List<? extends RadioSourceLocated<P>> sources,
             final Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> fingerprint,
             final SequentialRobustMixedPositionEstimatorListener<P> listener) {
@@ -544,7 +544,7 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
      *                                        The larger the score the better the
      *                                        quality of the reading.
      */
-    public SequentialRobustMixedPositionEstimator(
+    protected SequentialRobustMixedPositionEstimator(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores) {
         internalSetSourceQualityScores(sourceQualityScores);
@@ -567,7 +567,7 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
      * @throws IllegalArgumentException if provided sources is null or the number of
      *                                  provided sources is less than the required minimum.
      */
-    public SequentialRobustMixedPositionEstimator(
+    protected SequentialRobustMixedPositionEstimator(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<P>> sources) {
@@ -592,7 +592,7 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
      *                                        radio sources.
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
-    public SequentialRobustMixedPositionEstimator(
+    protected SequentialRobustMixedPositionEstimator(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> fingerprint) {
@@ -620,7 +620,7 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
      * @throws IllegalArgumentException if either provided sources or fingerprint is null
      *                                  or the number of provided sources is less than the required minimum.
      */
-    public SequentialRobustMixedPositionEstimator(
+    protected SequentialRobustMixedPositionEstimator(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<P>> sources,
@@ -643,7 +643,7 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
      *                                        reading.
      * @param listener                        listener in charge of handling events.
      */
-    public SequentialRobustMixedPositionEstimator(
+    protected SequentialRobustMixedPositionEstimator(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final SequentialRobustMixedPositionEstimatorListener<P> listener) {
@@ -668,7 +668,7 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
      * @throws IllegalArgumentException if provided sources is null or the number of
      *                                  provided sources is less than the required minimum.
      */
-    public SequentialRobustMixedPositionEstimator(
+    protected SequentialRobustMixedPositionEstimator(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<P>> sources,
@@ -694,7 +694,7 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
      * @param listener                        listener in charge of handling events.
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
-    public SequentialRobustMixedPositionEstimator(
+    protected SequentialRobustMixedPositionEstimator(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> fingerprint,
@@ -723,7 +723,7 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
      * @throws IllegalArgumentException if either provided sources or fingerprint is null
      *                                  or the number of provided sources is less than the required minimum.
      */
-    public SequentialRobustMixedPositionEstimator(
+    protected SequentialRobustMixedPositionEstimator(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<P>> sources,
@@ -1733,8 +1733,11 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
      * @return data related to inliers found after estimation.
      */
     public InliersData getInliersData() {
-        return mRangingEstimator != null ? mRangingEstimator.getInliersData() :
-                mRssiEstimator != null ? mRssiEstimator.getInliersData() : null;
+        if (mRangingEstimator != null) {
+            return mRangingEstimator.getInliersData();
+        } else {
+            return mRssiEstimator != null ? mRssiEstimator.getInliersData() : null;
+        }
     }
 
     /**
@@ -1743,8 +1746,11 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
      * @return known positions used internally.
      */
     public P[] getPositions() {
-        return mRangingEstimator != null ? mRangingEstimator.getPositions() :
-                mRssiEstimator != null ? mRssiEstimator.getPositions() : null;
+        if (mRangingEstimator != null) {
+            return mRangingEstimator.getPositions();
+        } else {
+            return mRssiEstimator != null ? mRssiEstimator.getPositions() : null;
+        }
     }
 
     /**
@@ -1755,8 +1761,11 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
      * @return euclidean distances used internally.
      */
     public double[] getDistances() {
-        return mRangingEstimator != null ? mRangingEstimator.getDistances() :
-                mRssiEstimator != null ? mRssiEstimator.getDistances() : null;
+        if (mRangingEstimator != null) {
+            return mRangingEstimator.getDistances();
+        } else {
+            return mRssiEstimator != null ? mRssiEstimator.getDistances() : null;
+        }
     }
 
     /**
@@ -1767,10 +1776,12 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
      * @return standard deviations used internally.
      */
     public double[] getDistanceStandardDeviations() {
-        return mRangingEstimator != null ?
-                mRangingEstimator.getDistanceStandardDeviations() :
-                mRssiEstimator != null ?
-                        mRssiEstimator.getDistanceStandardDeviations() : null;
+        if (mRangingEstimator != null) {
+            return mRangingEstimator.getDistanceStandardDeviations();
+        } else {
+            return mRssiEstimator != null ?
+                    mRssiEstimator.getDistanceStandardDeviations() : null;
+        }
     }
 
     /**
@@ -1780,8 +1791,11 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
      * @return estimated covariance or null.
      */
     public Matrix getCovariance() {
-        return mRangingEstimator != null ? mRangingEstimator.getCovariance() :
-                mRssiEstimator != null ? mRssiEstimator.getCovariance() : null;
+        if (mRangingEstimator != null) {
+            return mRangingEstimator.getCovariance();
+        } else {
+            return mRssiEstimator != null ? mRssiEstimator.getCovariance() : null;
+        }
     }
 
     /**
@@ -1790,9 +1804,11 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
      * @return estimated position.
      */
     public P getEstimatedPosition() {
-        return mRangingEstimator != null ?
-                mRangingEstimator.getEstimatedPosition() :
-                mRssiEstimator != null ? mRssiEstimator.getEstimatedPosition() : null;
+        if (mRangingEstimator != null) {
+            return mRangingEstimator.getEstimatedPosition();
+        } else {
+            return mRssiEstimator != null ? mRssiEstimator.getEstimatedPosition() : null;
+        }
     }
 
     /**

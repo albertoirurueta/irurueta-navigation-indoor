@@ -107,7 +107,7 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
     /**
      * Constructor.
      */
-    public RangingRadioSourceEstimator() {
+    protected RangingRadioSourceEstimator() {
         super();
     }
 
@@ -119,7 +119,7 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
      *                 radio source.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RangingRadioSourceEstimator(
+    protected RangingRadioSourceEstimator(
             final List<? extends RangingReadingLocated<S, P>> readings) {
         super(readings);
     }
@@ -129,7 +129,7 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
      *
      * @param listener listener in charge of attending events raised by this instance.
      */
-    public RangingRadioSourceEstimator(
+    protected RangingRadioSourceEstimator(
             final RangingRadioSourceEstimatorListener<S, P> listener) {
         super(listener);
     }
@@ -142,7 +142,7 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
      * @param listener listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RangingRadioSourceEstimator(
+    protected RangingRadioSourceEstimator(
             final List<? extends RangingReadingLocated<S, P>> readings,
             final RangingRadioSourceEstimatorListener<S, P> listener) {
         super(readings, listener);
@@ -154,7 +154,7 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
      * @param initialPosition initial position to start the estimation or radio
      *                        source position.
      */
-    public RangingRadioSourceEstimator(final P initialPosition) {
+    protected RangingRadioSourceEstimator(final P initialPosition) {
         mInitialPosition = initialPosition;
     }
 
@@ -167,7 +167,7 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
      *                        source position.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RangingRadioSourceEstimator(
+    protected RangingRadioSourceEstimator(
             final List<? extends RangingReadingLocated<S, P>> readings,
             final P initialPosition) {
         super(readings);
@@ -181,7 +181,7 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
      *                        source position.
      * @param listener        listener in charge of attending events raised by this instance.
      */
-    public RangingRadioSourceEstimator(
+    protected RangingRadioSourceEstimator(
             final P initialPosition,
             final RangingRadioSourceEstimatorListener<S, P> listener) {
         super(listener);
@@ -198,7 +198,7 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
      * @param listener        listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RangingRadioSourceEstimator(
+    protected RangingRadioSourceEstimator(
             final List<? extends RangingReadingLocated<S, P>> readings,
             final P initialPosition,
             final RangingRadioSourceEstimatorListener<S, P> listener) {

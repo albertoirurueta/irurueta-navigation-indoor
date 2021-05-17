@@ -515,12 +515,14 @@ public class LMedSRobustRangingAndRssiRadioSourceEstimator3D<S extends RadioSour
                             public void onEstimateStart(
                                     final RobustEstimator<RobustRangingAndRssiRadioSourceEstimator
                                             .Solution<Point3D>> estimator) {
+                                // no action needed
                             }
 
                             @Override
                             public void onEstimateEnd(
                                     final RobustEstimator<RobustRangingAndRssiRadioSourceEstimator
                                             .Solution<Point3D>> estimator) {
+                                // no action needed
                             }
 
                             @Override

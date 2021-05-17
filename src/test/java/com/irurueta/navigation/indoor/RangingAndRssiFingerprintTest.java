@@ -39,7 +39,8 @@ public class RangingAndRssiFingerprintTest {
         fingerprint = new RangingAndRssiFingerprint<>(readings);
 
         // check
-        assertSame(fingerprint.getReadings(), readings);
+        assertEquals(fingerprint.getReadings(), readings);
+        assertNotSame(fingerprint.getReadings(), readings);
 
         // force IllegalArgumentException
         fingerprint = null;
@@ -66,7 +67,8 @@ public class RangingAndRssiFingerprintTest {
         fingerprint.setReadings(readings);
 
         // check
-        assertSame(fingerprint.getReadings(), readings);
+        assertEquals(fingerprint.getReadings(), readings);
+        assertNotSame(fingerprint.getReadings(), readings);
 
         // force IllegalArgumentException
         try {

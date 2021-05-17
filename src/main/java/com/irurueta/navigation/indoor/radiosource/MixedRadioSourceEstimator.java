@@ -207,7 +207,7 @@ public abstract class MixedRadioSourceEstimator<S extends RadioSource, P extends
     /**
      * Constructor.
      */
-    public MixedRadioSourceEstimator() {
+    protected MixedRadioSourceEstimator() {
         super();
     }
 
@@ -219,7 +219,7 @@ public abstract class MixedRadioSourceEstimator<S extends RadioSource, P extends
      *                 radio sources.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public MixedRadioSourceEstimator(
+    protected MixedRadioSourceEstimator(
             final List<? extends ReadingLocated<P>> readings) {
         super(readings);
     }
@@ -229,7 +229,7 @@ public abstract class MixedRadioSourceEstimator<S extends RadioSource, P extends
      *
      * @param listener listener in charge of attending events raised by this instance.
      */
-    public MixedRadioSourceEstimator(
+    protected MixedRadioSourceEstimator(
             final MixedRadioSourceEstimatorListener<S, P> listener) {
         super(listener);
     }
@@ -242,7 +242,7 @@ public abstract class MixedRadioSourceEstimator<S extends RadioSource, P extends
      * @param listener listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public MixedRadioSourceEstimator(
+    protected MixedRadioSourceEstimator(
             final List<? extends ReadingLocated<P>> readings,
             final MixedRadioSourceEstimatorListener<S, P> listener) {
         super(readings, listener);
@@ -254,7 +254,7 @@ public abstract class MixedRadioSourceEstimator<S extends RadioSource, P extends
      * @param initialPosition initial position to start the estimation of radio
      *                        source position.
      */
-    public MixedRadioSourceEstimator(final P initialPosition) {
+    protected MixedRadioSourceEstimator(final P initialPosition) {
         mInitialPosition = initialPosition;
     }
 
@@ -267,7 +267,7 @@ public abstract class MixedRadioSourceEstimator<S extends RadioSource, P extends
      *                        source position.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public MixedRadioSourceEstimator(
+    protected MixedRadioSourceEstimator(
             final List<? extends ReadingLocated<P>> readings,
             final P initialPosition) {
         super(readings);
@@ -281,7 +281,7 @@ public abstract class MixedRadioSourceEstimator<S extends RadioSource, P extends
      *                        source position.
      * @param listener        listener in charge of attending events raised by this instance.
      */
-    public MixedRadioSourceEstimator(
+    protected MixedRadioSourceEstimator(
             final P initialPosition,
             final MixedRadioSourceEstimatorListener<S, P> listener) {
         super(listener);
@@ -298,7 +298,7 @@ public abstract class MixedRadioSourceEstimator<S extends RadioSource, P extends
      * @param listener        listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public MixedRadioSourceEstimator(
+    protected MixedRadioSourceEstimator(
             final List<? extends ReadingLocated<P>> readings,
             final P initialPosition,
             final MixedRadioSourceEstimatorListener<S, P> listener) {
@@ -313,7 +313,7 @@ public abstract class MixedRadioSourceEstimator<S extends RadioSource, P extends
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's).
      */
-    public MixedRadioSourceEstimator(final Double initialTransmittedPowerDbm) {
+    protected MixedRadioSourceEstimator(final Double initialTransmittedPowerDbm) {
         mInitialTransmittedPowerdBm = initialTransmittedPowerDbm;
     }
 
@@ -327,7 +327,7 @@ public abstract class MixedRadioSourceEstimator<S extends RadioSource, P extends
      *                                   (expressed in dBm's).
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public MixedRadioSourceEstimator(
+    protected MixedRadioSourceEstimator(
             final List<? extends ReadingLocated<P>> readings,
             final Double initialTransmittedPowerdBm) {
         super(readings);
@@ -342,7 +342,7 @@ public abstract class MixedRadioSourceEstimator<S extends RadioSource, P extends
      *                                   (expressed in dBm's).
      * @param listener                   listener in charge of attending events raised by this instance.
      */
-    public MixedRadioSourceEstimator(
+    protected MixedRadioSourceEstimator(
             final Double initialTransmittedPowerdBm,
             final MixedRadioSourceEstimatorListener<S, P> listener) {
         super(listener);
@@ -360,7 +360,7 @@ public abstract class MixedRadioSourceEstimator<S extends RadioSource, P extends
      * @param listener                   listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public MixedRadioSourceEstimator(
+    protected MixedRadioSourceEstimator(
             final List<? extends ReadingLocated<P>> readings,
             final Double initialTransmittedPowerdBm,
             final MixedRadioSourceEstimatorListener<S, P> listener) {
@@ -380,7 +380,7 @@ public abstract class MixedRadioSourceEstimator<S extends RadioSource, P extends
      *                                   (expressed in dBm's).
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public MixedRadioSourceEstimator(
+    protected MixedRadioSourceEstimator(
             final List<? extends ReadingLocated<P>> readings,
             final P initialPosition, Double initialTransmittedPowerdBm) {
         super(readings);
@@ -397,7 +397,7 @@ public abstract class MixedRadioSourceEstimator<S extends RadioSource, P extends
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's).
      */
-    public MixedRadioSourceEstimator(
+    protected MixedRadioSourceEstimator(
             final P initialPosition,
             final Double initialTransmittedPowerdBm) {
         mInitialPosition = initialPosition;
@@ -414,7 +414,7 @@ public abstract class MixedRadioSourceEstimator<S extends RadioSource, P extends
      *                                   (expressed in dBm's).
      * @param listener                   listener in charge of attending events raised by this instance.
      */
-    public MixedRadioSourceEstimator(
+    protected MixedRadioSourceEstimator(
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
             final MixedRadioSourceEstimatorListener<S, P> listener) {
@@ -436,7 +436,7 @@ public abstract class MixedRadioSourceEstimator<S extends RadioSource, P extends
      * @param listener                   listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public MixedRadioSourceEstimator(
+    protected MixedRadioSourceEstimator(
             final List<? extends ReadingLocated<P>> readings,
             final P initialPosition, final Double initialTransmittedPowerdBm,
             final MixedRadioSourceEstimatorListener<S, P> listener) {
@@ -458,7 +458,7 @@ public abstract class MixedRadioSourceEstimator<S extends RadioSource, P extends
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public MixedRadioSourceEstimator(
+    protected MixedRadioSourceEstimator(
             final List<? extends ReadingLocated<P>> readings,
             final P initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
@@ -476,7 +476,7 @@ public abstract class MixedRadioSourceEstimator<S extends RadioSource, P extends
      *                                   (expressed in dBm's).
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      */
-    public MixedRadioSourceEstimator(
+    protected MixedRadioSourceEstimator(
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
@@ -495,7 +495,7 @@ public abstract class MixedRadioSourceEstimator<S extends RadioSource, P extends
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      * @param listener                   listener in charge of attending events raised by this instance.
      */
-    public MixedRadioSourceEstimator(
+    protected MixedRadioSourceEstimator(
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
@@ -518,7 +518,7 @@ public abstract class MixedRadioSourceEstimator<S extends RadioSource, P extends
      * @param listener                   listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public MixedRadioSourceEstimator(
+    protected MixedRadioSourceEstimator(
             final List<? extends ReadingLocated<P>> readings,
             final P initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,

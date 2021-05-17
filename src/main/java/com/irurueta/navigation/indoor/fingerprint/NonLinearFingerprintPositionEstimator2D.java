@@ -39,7 +39,7 @@ public abstract class NonLinearFingerprintPositionEstimator2D extends
     /**
      * Constructor.
      */
-    public NonLinearFingerprintPositionEstimator2D() {
+    protected NonLinearFingerprintPositionEstimator2D() {
     }
 
     /**
@@ -47,7 +47,7 @@ public abstract class NonLinearFingerprintPositionEstimator2D extends
      *
      * @param listener listener in charge of handling events.
      */
-    public NonLinearFingerprintPositionEstimator2D(
+    protected NonLinearFingerprintPositionEstimator2D(
             final FingerprintPositionEstimatorListener<Point2D> listener) {
         super(listener);
     }
@@ -66,7 +66,7 @@ public abstract class NonLinearFingerprintPositionEstimator2D extends
      *                                  readings are required in a single fingerprint, or at least 2 fingerprints at
      *                                  different locations containing a single reading are required).
      */
-    public NonLinearFingerprintPositionEstimator2D(
+    protected NonLinearFingerprintPositionEstimator2D(
             final List<? extends RssiFingerprintLocated<? extends RadioSource,
                     ? extends RssiReading<? extends RadioSource>, Point2D>> locatedFingerprints,
             final RssiFingerprint<? extends RadioSource,
@@ -90,7 +90,7 @@ public abstract class NonLinearFingerprintPositionEstimator2D extends
      *                                  readings are required in a single fingerprint, or at least 2 fingerprints at
      *                                  different locations containing a single reading are required).
      */
-    public NonLinearFingerprintPositionEstimator2D(
+    protected NonLinearFingerprintPositionEstimator2D(
             final List<? extends RssiFingerprintLocated<? extends RadioSource,
                     ? extends RssiReading<? extends RadioSource>, Point2D>> locatedFingerprints,
             final RssiFingerprint<? extends RadioSource,
@@ -115,7 +115,7 @@ public abstract class NonLinearFingerprintPositionEstimator2D extends
      *                                  readings are required in a single fingerprint, or at least 2 fingerprints at
      *                                  different locations containing a single reading are required).
      */
-    public NonLinearFingerprintPositionEstimator2D(
+    protected NonLinearFingerprintPositionEstimator2D(
             final List<? extends RssiFingerprintLocated<? extends RadioSource,
                     ? extends RssiReading<? extends RadioSource>, Point2D>> locatedFingerprints,
             final RssiFingerprint<? extends RadioSource,
@@ -140,7 +140,7 @@ public abstract class NonLinearFingerprintPositionEstimator2D extends
      *                                  readings are required in a single fingerprint, or at least 2 fingerprints at
      *                                  different locations containing a single reading are required).
      */
-    public NonLinearFingerprintPositionEstimator2D(
+    protected NonLinearFingerprintPositionEstimator2D(
             final List<? extends RssiFingerprintLocated<? extends RadioSource,
                     ? extends RssiReading<? extends RadioSource>, Point2D>> locatedFingerprints,
             final RssiFingerprint<? extends RadioSource,

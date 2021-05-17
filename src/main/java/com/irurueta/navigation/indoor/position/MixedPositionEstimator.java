@@ -35,7 +35,7 @@ public abstract class MixedPositionEstimator<P extends Point<?>> extends Positio
     /**
      * Constructor.
      */
-    public MixedPositionEstimator() {
+    protected MixedPositionEstimator() {
         super();
     }
 
@@ -44,7 +44,7 @@ public abstract class MixedPositionEstimator<P extends Point<?>> extends Positio
      *
      * @param listener listener in charge of handling events.
      */
-    public MixedPositionEstimator(final MixedPositionEstimatorListener<P> listener) {
+    protected MixedPositionEstimator(final MixedPositionEstimatorListener<P> listener) {
         super(listener);
     }
 }

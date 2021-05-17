@@ -42,7 +42,7 @@ public abstract class RobustRangingAndRssiPositionEstimator2D extends
     /**
      * Constructor.
      */
-    public RobustRangingAndRssiPositionEstimator2D() {
+    protected RobustRangingAndRssiPositionEstimator2D() {
         super();
         mPreliminarySubsetSize = getMinRequiredSources();
     }
@@ -52,7 +52,7 @@ public abstract class RobustRangingAndRssiPositionEstimator2D extends
      *
      * @param listener listener in charge of handling events.
      */
-    public RobustRangingAndRssiPositionEstimator2D(
+    protected RobustRangingAndRssiPositionEstimator2D(
             final RobustRangingAndRssiPositionEstimatorListener<Point2D> listener) {
         super(listener);
         mPreliminarySubsetSize = getMinRequiredSources();

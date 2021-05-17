@@ -83,7 +83,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
     /**
      * Constructor.
      */
-    public RobustRssiRadioSourceEstimator3D() {
+    protected RobustRssiRadioSourceEstimator3D() {
         super();
         mPreliminarySubsetSize = getMinReadings();
     }
@@ -95,7 +95,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @param readings signal readings belonging to the same radio source.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRssiRadioSourceEstimator3D(
+    protected RobustRssiRadioSourceEstimator3D(
             final List<? extends RssiReadingLocated<S, Point3D>> readings) {
         super(readings);
         mPreliminarySubsetSize = getMinReadings();
@@ -106,7 +106,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      *
      * @param listener listener in charge of attending events raised by this instance.
      */
-    public RobustRssiRadioSourceEstimator3D(
+    protected RobustRssiRadioSourceEstimator3D(
             final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
         super(listener);
         mPreliminarySubsetSize = getMinReadings();
@@ -120,7 +120,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @param listener listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if fingerprints are not valid.
      */
-    public RobustRssiRadioSourceEstimator3D(
+    protected RobustRssiRadioSourceEstimator3D(
             final List<? extends RssiReadingLocated<S, Point3D>> readings,
             final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
         super(readings, listener);
@@ -136,7 +136,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      *                        source position.
      * @throws IllegalArgumentException if fingerprints are not valid.
      */
-    public RobustRssiRadioSourceEstimator3D(
+    protected RobustRssiRadioSourceEstimator3D(
             final List<? extends RssiReadingLocated<S, Point3D>> readings,
             final Point3D initialPosition) {
         super(readings, initialPosition);
@@ -149,7 +149,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @param initialPosition initial position to start the estimation of radio
      *                        source position.
      */
-    public RobustRssiRadioSourceEstimator3D(
+    protected RobustRssiRadioSourceEstimator3D(
             final Point3D initialPosition) {
         super(initialPosition);
         mPreliminarySubsetSize = getMinReadings();
@@ -162,7 +162,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      *                        source position.
      * @param listener        listener in charge of attending events raised by this instance.
      */
-    public RobustRssiRadioSourceEstimator3D(
+    protected RobustRssiRadioSourceEstimator3D(
             final Point3D initialPosition,
             final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
         super(initialPosition, listener);
@@ -179,7 +179,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @param listener        listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if fingerprints are not valid.
      */
-    public RobustRssiRadioSourceEstimator3D(
+    protected RobustRssiRadioSourceEstimator3D(
             final List<? extends RssiReadingLocated<S, Point3D>> readings,
             final Point3D initialPosition,
             final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
@@ -194,7 +194,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's)
      */
-    public RobustRssiRadioSourceEstimator3D(
+    protected RobustRssiRadioSourceEstimator3D(
             final Double initialTransmittedPowerdBm) {
         super(initialTransmittedPowerdBm);
         mPreliminarySubsetSize = getMinReadings();
@@ -210,7 +210,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      *                                   (expressed in dBm's)
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRssiRadioSourceEstimator3D(
+    protected RobustRssiRadioSourceEstimator3D(
             final List<? extends RssiReadingLocated<S, Point3D>> readings,
             final Double initialTransmittedPowerdBm) {
         super(readings, initialTransmittedPowerdBm);
@@ -225,7 +225,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      *                                   (expressed in dBm's)
      * @param listener                   listener in charge of attending events raised by this instance.
      */
-    public RobustRssiRadioSourceEstimator3D(
+    protected RobustRssiRadioSourceEstimator3D(
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
         super(initialTransmittedPowerdBm, listener);
@@ -243,7 +243,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @param listener                   listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRssiRadioSourceEstimator3D(
+    protected RobustRssiRadioSourceEstimator3D(
             final List<? extends RssiReadingLocated<S, Point3D>> readings,
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
@@ -263,7 +263,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      *                                   (expressed in dBm's).
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRssiRadioSourceEstimator3D(
+    protected RobustRssiRadioSourceEstimator3D(
             final List<? extends RssiReadingLocated<S, Point3D>> readings,
             final Point3D initialPosition,
             final Double initialTransmittedPowerdBm) {
@@ -280,7 +280,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's).
      */
-    public RobustRssiRadioSourceEstimator3D(
+    protected RobustRssiRadioSourceEstimator3D(
             final Point3D initialPosition,
             final Double initialTransmittedPowerdBm) {
         super(initialPosition, initialTransmittedPowerdBm);
@@ -297,7 +297,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      *                                   (expressed in dBm's).
      * @param listener                   in charge of attending events raised by this instance.
      */
-    public RobustRssiRadioSourceEstimator3D(
+    protected RobustRssiRadioSourceEstimator3D(
             final Point3D initialPosition,
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
@@ -318,7 +318,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @param listener                   listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRssiRadioSourceEstimator3D(
+    protected RobustRssiRadioSourceEstimator3D(
             final List<? extends RssiReadingLocated<S, Point3D>> readings,
             final Point3D initialPosition,
             final Double initialTransmittedPowerdBm,
@@ -340,7 +340,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRssiRadioSourceEstimator3D(
+    protected RobustRssiRadioSourceEstimator3D(
             final List<? extends RssiReadingLocated<S, Point3D>> readings,
             final Point3D initialPosition,
             final Double initialTransmittedPowerdBm,
@@ -360,7 +360,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      *                                   (expressed in dBm's).
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      */
-    public RobustRssiRadioSourceEstimator3D(
+    protected RobustRssiRadioSourceEstimator3D(
             final Point3D initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
@@ -380,7 +380,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      * @param listener                   listener in charge of attending events raised by this instance.
      */
-    public RobustRssiRadioSourceEstimator3D(
+    protected RobustRssiRadioSourceEstimator3D(
             final Point3D initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
@@ -404,7 +404,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @param listener                   listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRssiRadioSourceEstimator3D(
+    protected RobustRssiRadioSourceEstimator3D(
             final List<? extends RssiReadingLocated<S, Point3D>> readings,
             final Point3D initialPosition,
             final Double initialTransmittedPowerdBm,

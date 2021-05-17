@@ -36,7 +36,7 @@ public abstract class RangingAndRssiPositionEstimator<
     /**
      * Constructor.
      */
-    public RangingAndRssiPositionEstimator() {
+    protected RangingAndRssiPositionEstimator() {
         super();
     }
 
@@ -45,7 +45,7 @@ public abstract class RangingAndRssiPositionEstimator<
      *
      * @param listener listener in charge of handling events.
      */
-    public RangingAndRssiPositionEstimator(
+    protected RangingAndRssiPositionEstimator(
             final RangingAndRssiPositionEstimatorListener<P> listener) {
         super(listener);
     }

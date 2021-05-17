@@ -116,7 +116,7 @@ public abstract class BaseFingerprintPositionEstimator<P extends Point<?>,
     /**
      * Constructor.
      */
-    public BaseFingerprintPositionEstimator() {
+    protected BaseFingerprintPositionEstimator() {
     }
 
     /**
@@ -124,7 +124,7 @@ public abstract class BaseFingerprintPositionEstimator<P extends Point<?>,
      *
      * @param listener listener in charge of handling events.
      */
-    public BaseFingerprintPositionEstimator(final L listener) {
+    protected BaseFingerprintPositionEstimator(final L listener) {
         mListener = listener;
     }
 
@@ -142,7 +142,7 @@ public abstract class BaseFingerprintPositionEstimator<P extends Point<?>,
      *                                  different locations containing a single reading are required. For 3D position
      *                                  estimation 3 located total readings are required among all fingerprints).
      */
-    public BaseFingerprintPositionEstimator(
+    protected BaseFingerprintPositionEstimator(
             final List<? extends RssiFingerprintLocated<? extends RadioSource,
                     ? extends RssiReading<? extends RadioSource>, P>> locatedFingerprints,
             final RssiFingerprint<? extends RadioSource,
@@ -166,7 +166,7 @@ public abstract class BaseFingerprintPositionEstimator<P extends Point<?>,
      *                                  different locations containing a single reading are required. For 3D position
      *                                  estimation 3 located total readings are required among all fingerprints).
      */
-    public BaseFingerprintPositionEstimator(
+    protected BaseFingerprintPositionEstimator(
             final List<? extends RssiFingerprintLocated<? extends RadioSource,
                     ? extends RssiReading<? extends RadioSource>, P>> locatedFingerprints,
             final RssiFingerprint<? extends RadioSource,
