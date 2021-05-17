@@ -107,7 +107,7 @@ public abstract class RangingRadioSourceEstimator&lt;S extends RadioSource, P ex
     /**
      * Constructor.
      */
-    public RangingRadioSourceEstimator() {
+    protected RangingRadioSourceEstimator() {
 <span class="fc" id="L111">        super();</span>
 <span class="fc" id="L112">    }</span>
 
@@ -119,7 +119,7 @@ public abstract class RangingRadioSourceEstimator&lt;S extends RadioSource, P ex
      *                 radio source.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RangingRadioSourceEstimator(
+    protected RangingRadioSourceEstimator(
             final List&lt;? extends RangingReadingLocated&lt;S, P&gt;&gt; readings) {
 <span class="fc" id="L124">        super(readings);</span>
 <span class="fc" id="L125">    }</span>
@@ -129,7 +129,7 @@ public abstract class RangingRadioSourceEstimator&lt;S extends RadioSource, P ex
      *
      * @param listener listener in charge of attending events raised by this instance.
      */
-    public RangingRadioSourceEstimator(
+    protected RangingRadioSourceEstimator(
             final RangingRadioSourceEstimatorListener&lt;S, P&gt; listener) {
 <span class="fc" id="L134">        super(listener);</span>
 <span class="fc" id="L135">    }</span>
@@ -142,7 +142,7 @@ public abstract class RangingRadioSourceEstimator&lt;S extends RadioSource, P ex
      * @param listener listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RangingRadioSourceEstimator(
+    protected RangingRadioSourceEstimator(
             final List&lt;? extends RangingReadingLocated&lt;S, P&gt;&gt; readings,
             final RangingRadioSourceEstimatorListener&lt;S, P&gt; listener) {
 <span class="fc" id="L148">        super(readings, listener);</span>
@@ -154,7 +154,7 @@ public abstract class RangingRadioSourceEstimator&lt;S extends RadioSource, P ex
      * @param initialPosition initial position to start the estimation or radio
      *                        source position.
      */
-<span class="fc" id="L157">    public RangingRadioSourceEstimator(final P initialPosition) {</span>
+<span class="fc" id="L157">    protected RangingRadioSourceEstimator(final P initialPosition) {</span>
 <span class="fc" id="L158">        mInitialPosition = initialPosition;</span>
 <span class="fc" id="L159">    }</span>
 
@@ -167,7 +167,7 @@ public abstract class RangingRadioSourceEstimator&lt;S extends RadioSource, P ex
      *                        source position.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RangingRadioSourceEstimator(
+    protected RangingRadioSourceEstimator(
             final List&lt;? extends RangingReadingLocated&lt;S, P&gt;&gt; readings,
             final P initialPosition) {
 <span class="fc" id="L173">        super(readings);</span>
@@ -181,7 +181,7 @@ public abstract class RangingRadioSourceEstimator&lt;S extends RadioSource, P ex
      *                        source position.
      * @param listener        listener in charge of attending events raised by this instance.
      */
-    public RangingRadioSourceEstimator(
+    protected RangingRadioSourceEstimator(
             final P initialPosition,
             final RangingRadioSourceEstimatorListener&lt;S, P&gt; listener) {
 <span class="fc" id="L187">        super(listener);</span>
@@ -198,7 +198,7 @@ public abstract class RangingRadioSourceEstimator&lt;S extends RadioSource, P ex
      * @param listener        listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RangingRadioSourceEstimator(
+    protected RangingRadioSourceEstimator(
             final List&lt;? extends RangingReadingLocated&lt;S, P&gt;&gt; readings,
             final P initialPosition,
             final RangingRadioSourceEstimatorListener&lt;S, P&gt; listener) {

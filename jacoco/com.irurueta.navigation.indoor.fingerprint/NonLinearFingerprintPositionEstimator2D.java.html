@@ -39,7 +39,7 @@ public abstract class NonLinearFingerprintPositionEstimator2D extends
     /**
      * Constructor.
      */
-<span class="fc" id="L42">    public NonLinearFingerprintPositionEstimator2D() {</span>
+<span class="fc" id="L42">    protected NonLinearFingerprintPositionEstimator2D() {</span>
 <span class="fc" id="L43">    }</span>
 
     /**
@@ -47,7 +47,7 @@ public abstract class NonLinearFingerprintPositionEstimator2D extends
      *
      * @param listener listener in charge of handling events.
      */
-    public NonLinearFingerprintPositionEstimator2D(
+    protected NonLinearFingerprintPositionEstimator2D(
             final FingerprintPositionEstimatorListener&lt;Point2D&gt; listener) {
 <span class="fc" id="L52">        super(listener);</span>
 <span class="fc" id="L53">    }</span>
@@ -66,7 +66,7 @@ public abstract class NonLinearFingerprintPositionEstimator2D extends
      *                                  readings are required in a single fingerprint, or at least 2 fingerprints at
      *                                  different locations containing a single reading are required).
      */
-    public NonLinearFingerprintPositionEstimator2D(
+    protected NonLinearFingerprintPositionEstimator2D(
             final List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
                     ? extends RssiReading&lt;? extends RadioSource&gt;, Point2D&gt;&gt; locatedFingerprints,
             final RssiFingerprint&lt;? extends RadioSource,
@@ -90,7 +90,7 @@ public abstract class NonLinearFingerprintPositionEstimator2D extends
      *                                  readings are required in a single fingerprint, or at least 2 fingerprints at
      *                                  different locations containing a single reading are required).
      */
-    public NonLinearFingerprintPositionEstimator2D(
+    protected NonLinearFingerprintPositionEstimator2D(
             final List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
                     ? extends RssiReading&lt;? extends RadioSource&gt;, Point2D&gt;&gt; locatedFingerprints,
             final RssiFingerprint&lt;? extends RadioSource,
@@ -115,7 +115,7 @@ public abstract class NonLinearFingerprintPositionEstimator2D extends
      *                                  readings are required in a single fingerprint, or at least 2 fingerprints at
      *                                  different locations containing a single reading are required).
      */
-    public NonLinearFingerprintPositionEstimator2D(
+    protected NonLinearFingerprintPositionEstimator2D(
             final List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
                     ? extends RssiReading&lt;? extends RadioSource&gt;, Point2D&gt;&gt; locatedFingerprints,
             final RssiFingerprint&lt;? extends RadioSource,
@@ -140,7 +140,7 @@ public abstract class NonLinearFingerprintPositionEstimator2D extends
      *                                  readings are required in a single fingerprint, or at least 2 fingerprints at
      *                                  different locations containing a single reading are required).
      */
-    public NonLinearFingerprintPositionEstimator2D(
+    protected NonLinearFingerprintPositionEstimator2D(
             final List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
                     ? extends RssiReading&lt;? extends RadioSource&gt;, Point2D&gt;&gt; locatedFingerprints,
             final RssiFingerprint&lt;? extends RadioSource,

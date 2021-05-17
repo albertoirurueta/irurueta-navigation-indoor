@@ -56,7 +56,7 @@ public abstract class RobustRangingRadioSourceEstimator2D&lt;S extends RadioSour
     /**
      * Constructor.
      */
-    public RobustRangingRadioSourceEstimator2D() {
+    protected RobustRangingRadioSourceEstimator2D() {
 <span class="fc" id="L60">        super();</span>
 <span class="fc" id="L61">        mPreliminarySubsetSize = getMinReadings();</span>
 <span class="fc" id="L62">    }</span>
@@ -69,7 +69,7 @@ public abstract class RobustRangingRadioSourceEstimator2D&lt;S extends RadioSour
      *                 radio source.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingRadioSourceEstimator2D(
+    protected RobustRangingRadioSourceEstimator2D(
             final List&lt;? extends RangingReadingLocated&lt;S, Point2D&gt;&gt; readings) {
 <span class="fc" id="L74">        super(readings);</span>
 <span class="fc" id="L75">        mPreliminarySubsetSize = getMinReadings();</span>
@@ -80,7 +80,7 @@ public abstract class RobustRangingRadioSourceEstimator2D&lt;S extends RadioSour
      *
      * @param listener listener in charge of attending events raised by this instance.
      */
-    public RobustRangingRadioSourceEstimator2D(
+    protected RobustRangingRadioSourceEstimator2D(
             final RobustRangingRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
 <span class="fc" id="L85">        super(listener);</span>
 <span class="fc" id="L86">        mPreliminarySubsetSize = getMinReadings();</span>
@@ -94,7 +94,7 @@ public abstract class RobustRangingRadioSourceEstimator2D&lt;S extends RadioSour
      * @param listener listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingRadioSourceEstimator2D(
+    protected RobustRangingRadioSourceEstimator2D(
             final List&lt;? extends RangingReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final RobustRangingRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
 <span class="fc" id="L100">        super(readings, listener);</span>
@@ -107,7 +107,7 @@ public abstract class RobustRangingRadioSourceEstimator2D&lt;S extends RadioSour
      * @param initialPosition initial position to start the estimation or radio
      *                        source position.
      */
-    public RobustRangingRadioSourceEstimator2D(final Point2D initialPosition) {
+    protected RobustRangingRadioSourceEstimator2D(final Point2D initialPosition) {
 <span class="fc" id="L111">        super(initialPosition);</span>
 <span class="fc" id="L112">        mPreliminarySubsetSize = getMinReadings();</span>
 <span class="fc" id="L113">    }</span>
@@ -121,7 +121,7 @@ public abstract class RobustRangingRadioSourceEstimator2D&lt;S extends RadioSour
      *                        source position.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingRadioSourceEstimator2D(
+    protected RobustRangingRadioSourceEstimator2D(
             final List&lt;? extends RangingReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition) {
 <span class="fc" id="L127">        super(readings, initialPosition);</span>
@@ -135,7 +135,7 @@ public abstract class RobustRangingRadioSourceEstimator2D&lt;S extends RadioSour
      *                        source position.
      * @param listener        listener in charge of attending events raised by this instance.
      */
-    public RobustRangingRadioSourceEstimator2D(
+    protected RobustRangingRadioSourceEstimator2D(
             final Point2D initialPosition,
             final RobustRangingRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
 <span class="fc" id="L141">        super(initialPosition, listener);</span>
@@ -152,7 +152,7 @@ public abstract class RobustRangingRadioSourceEstimator2D&lt;S extends RadioSour
      * @param listener        listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingRadioSourceEstimator2D(
+    protected RobustRangingRadioSourceEstimator2D(
             final List&lt;? extends RangingReadingLocated&lt;S, Point2D&gt;&gt; readings,
             final Point2D initialPosition,
             final RobustRangingRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
@@ -802,7 +802,7 @@ public abstract class RobustRangingRadioSourceEstimator2D&lt;S extends RadioSour
 
 <span class="fc" id="L803">            final Point2D estimatedPosition = mInnerEstimator.getEstimatedPosition();</span>
 <span class="fc" id="L804">            solutions.add(new Solution&lt;&gt;(estimatedPosition));</span>
-<span class="fc" id="L805">        } catch (final NavigationException ignore) {</span>
+<span class="nc" id="L805">        } catch (final NavigationException ignore) {</span>
             // if anything fails, no solution is added
 <span class="fc" id="L807">        }</span>
 <span class="fc" id="L808">    }</span>

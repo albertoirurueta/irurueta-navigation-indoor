@@ -410,7 +410,7 @@
 <a class="jxr_linenumber" name="L402" href="#L402">402</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L403" href="#L403">403</a> <em class="jxr_javadoccomment">     * Constructor.</em>
 <a class="jxr_linenumber" name="L404" href="#L404">404</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L405" href="#L405">405</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>() {
+<a class="jxr_linenumber" name="L405" href="#L405">405</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>() {
 <a class="jxr_linenumber" name="L406" href="#L406">406</a>     }
 <a class="jxr_linenumber" name="L407" href="#L407">407</a> 
 <a class="jxr_linenumber" name="L408" href="#L408">408</a>     <em class="jxr_javadoccomment">/**</em>
@@ -420,7 +420,7 @@
 <a class="jxr_linenumber" name="L412" href="#L412">412</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if provided sources is null or the number of</em>
 <a class="jxr_linenumber" name="L413" href="#L413">413</a> <em class="jxr_javadoccomment">     *                                  provided sources is less than the required minimum.</em>
 <a class="jxr_linenumber" name="L414" href="#L414">414</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L415" href="#L415">415</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
+<a class="jxr_linenumber" name="L415" href="#L415">415</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
 <a class="jxr_linenumber" name="L416" href="#L416">416</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RadioSourceLocated&lt;P&gt;&gt; sources) {
 <a class="jxr_linenumber" name="L417" href="#L417">417</a>         internalSetSources(sources);
 <a class="jxr_linenumber" name="L418" href="#L418">418</a>     }
@@ -432,7 +432,7 @@
 <a class="jxr_linenumber" name="L424" href="#L424">424</a> <em class="jxr_javadoccomment">     *                    location for provided located radio sources.</em>
 <a class="jxr_linenumber" name="L425" href="#L425">425</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if provided fingerprint is null.</em>
 <a class="jxr_linenumber" name="L426" href="#L426">426</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L427" href="#L427">427</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
+<a class="jxr_linenumber" name="L427" href="#L427">427</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
 <a class="jxr_linenumber" name="L428" href="#L428">428</a>             <strong class="jxr_keyword">final</strong> RangingAndRssiFingerprint&lt;? <strong class="jxr_keyword">extends</strong> RadioSource, ? <strong class="jxr_keyword">extends</strong> RangingAndRssiReading&lt;?
 <a class="jxr_linenumber" name="L429" href="#L429">429</a>                     <strong class="jxr_keyword">extends</strong> RadioSource&gt;&gt; fingerprint) {
 <a class="jxr_linenumber" name="L430" href="#L430">430</a>         internalSetFingerprint(fingerprint);
@@ -447,7 +447,7 @@
 <a class="jxr_linenumber" name="L439" href="#L439">439</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if either provided sources or fingerprint is null</em>
 <a class="jxr_linenumber" name="L440" href="#L440">440</a> <em class="jxr_javadoccomment">     *                                  or the number of provided sources is less than the required minimum.</em>
 <a class="jxr_linenumber" name="L441" href="#L441">441</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L442" href="#L442">442</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
+<a class="jxr_linenumber" name="L442" href="#L442">442</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
 <a class="jxr_linenumber" name="L443" href="#L443">443</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RadioSourceLocated&lt;P&gt;&gt; sources,
 <a class="jxr_linenumber" name="L444" href="#L444">444</a>             <strong class="jxr_keyword">final</strong> RangingAndRssiFingerprint&lt;? <strong class="jxr_keyword">extends</strong> RadioSource, ? <strong class="jxr_keyword">extends</strong> RangingAndRssiReading&lt;?
 <a class="jxr_linenumber" name="L445" href="#L445">445</a>                     <strong class="jxr_keyword">extends</strong> RadioSource&gt;&gt; fingerprint) {
@@ -460,7 +460,7 @@
 <a class="jxr_linenumber" name="L452" href="#L452">452</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L453" href="#L453">453</a> <em class="jxr_javadoccomment">     * @param listener listener in charge of handling events.</em>
 <a class="jxr_linenumber" name="L454" href="#L454">454</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L455" href="#L455">455</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
+<a class="jxr_linenumber" name="L455" href="#L455">455</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
 <a class="jxr_linenumber" name="L456" href="#L456">456</a>             <strong class="jxr_keyword">final</strong> SequentialRobustRangingAndRssiPositionEstimatorListener&lt;P&gt; listener) {
 <a class="jxr_linenumber" name="L457" href="#L457">457</a>         mListener = listener;
 <a class="jxr_linenumber" name="L458" href="#L458">458</a>     }
@@ -474,7 +474,7 @@
 <a class="jxr_linenumber" name="L466" href="#L466">466</a> <em class="jxr_javadoccomment">     *                                  provided sources is less than the required</em>
 <a class="jxr_linenumber" name="L467" href="#L467">467</a> <em class="jxr_javadoccomment">     *                                  minimum.</em>
 <a class="jxr_linenumber" name="L468" href="#L468">468</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L469" href="#L469">469</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
+<a class="jxr_linenumber" name="L469" href="#L469">469</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
 <a class="jxr_linenumber" name="L470" href="#L470">470</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RadioSourceLocated&lt;P&gt;&gt; sources,
 <a class="jxr_linenumber" name="L471" href="#L471">471</a>             <strong class="jxr_keyword">final</strong> SequentialRobustRangingAndRssiPositionEstimatorListener&lt;P&gt; listener) {
 <a class="jxr_linenumber" name="L472" href="#L472">472</a>         <strong class="jxr_keyword">this</strong>(sources);
@@ -489,7 +489,7 @@
 <a class="jxr_linenumber" name="L481" href="#L481">481</a> <em class="jxr_javadoccomment">     * @param listener    listener in charge of handling events.</em>
 <a class="jxr_linenumber" name="L482" href="#L482">482</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if provided fingerprint is null.</em>
 <a class="jxr_linenumber" name="L483" href="#L483">483</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L484" href="#L484">484</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
+<a class="jxr_linenumber" name="L484" href="#L484">484</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
 <a class="jxr_linenumber" name="L485" href="#L485">485</a>             <strong class="jxr_keyword">final</strong> RangingAndRssiFingerprint&lt;? <strong class="jxr_keyword">extends</strong> RadioSource, ? <strong class="jxr_keyword">extends</strong> RangingAndRssiReading&lt;?
 <a class="jxr_linenumber" name="L486" href="#L486">486</a>                     <strong class="jxr_keyword">extends</strong> RadioSource&gt;&gt; fingerprint,
 <a class="jxr_linenumber" name="L487" href="#L487">487</a>             <strong class="jxr_keyword">final</strong> SequentialRobustRangingAndRssiPositionEstimatorListener&lt;P&gt; listener) {
@@ -507,7 +507,7 @@
 <a class="jxr_linenumber" name="L499" href="#L499">499</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if either provided sources or fingerprint is null</em>
 <a class="jxr_linenumber" name="L500" href="#L500">500</a> <em class="jxr_javadoccomment">     *                                  or the number of provided sources is less than the required minimum.</em>
 <a class="jxr_linenumber" name="L501" href="#L501">501</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L502" href="#L502">502</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
+<a class="jxr_linenumber" name="L502" href="#L502">502</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
 <a class="jxr_linenumber" name="L503" href="#L503">503</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RadioSourceLocated&lt;P&gt;&gt; sources,
 <a class="jxr_linenumber" name="L504" href="#L504">504</a>             <strong class="jxr_keyword">final</strong> RangingAndRssiFingerprint&lt;? <strong class="jxr_keyword">extends</strong> RadioSource, ? <strong class="jxr_keyword">extends</strong> RangingAndRssiReading&lt;?
 <a class="jxr_linenumber" name="L505" href="#L505">505</a>                     <strong class="jxr_keyword">extends</strong> RadioSource&gt;&gt; fingerprint,
@@ -528,7 +528,7 @@
 <a class="jxr_linenumber" name="L520" href="#L520">520</a> <em class="jxr_javadoccomment">     *                                        the score the better the quality of the</em>
 <a class="jxr_linenumber" name="L521" href="#L521">521</a> <em class="jxr_javadoccomment">     *                                        reading.</em>
 <a class="jxr_linenumber" name="L522" href="#L522">522</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L523" href="#L523">523</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
+<a class="jxr_linenumber" name="L523" href="#L523">523</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
 <a class="jxr_linenumber" name="L524" href="#L524">524</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] sourceQualityScores,
 <a class="jxr_linenumber" name="L525" href="#L525">525</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] fingerprintReadingQualityScores) {
 <a class="jxr_linenumber" name="L526" href="#L526">526</a>         internalSetSourceQualityScores(sourceQualityScores);
@@ -552,7 +552,7 @@
 <a class="jxr_linenumber" name="L544" href="#L544">544</a> <em class="jxr_javadoccomment">     *                                  provided sources is less than the required</em>
 <a class="jxr_linenumber" name="L545" href="#L545">545</a> <em class="jxr_javadoccomment">     *                                  minimum.</em>
 <a class="jxr_linenumber" name="L546" href="#L546">546</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L547" href="#L547">547</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
+<a class="jxr_linenumber" name="L547" href="#L547">547</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
 <a class="jxr_linenumber" name="L548" href="#L548">548</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] sourceQualityScores,
 <a class="jxr_linenumber" name="L549" href="#L549">549</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] fingerprintReadingQualityScores,
 <a class="jxr_linenumber" name="L550" href="#L550">550</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RadioSourceLocated&lt;P&gt;&gt; sources) {
@@ -577,7 +577,7 @@
 <a class="jxr_linenumber" name="L569" href="#L569">569</a> <em class="jxr_javadoccomment">     *                                        provided located radio sources.</em>
 <a class="jxr_linenumber" name="L570" href="#L570">570</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if provided fingerprint is null.</em>
 <a class="jxr_linenumber" name="L571" href="#L571">571</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L572" href="#L572">572</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
+<a class="jxr_linenumber" name="L572" href="#L572">572</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
 <a class="jxr_linenumber" name="L573" href="#L573">573</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] sourceQualityScores,
 <a class="jxr_linenumber" name="L574" href="#L574">574</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] fingerprintReadingQualityScores,
 <a class="jxr_linenumber" name="L575" href="#L575">575</a>             <strong class="jxr_keyword">final</strong> RangingAndRssiFingerprint&lt;? <strong class="jxr_keyword">extends</strong> RadioSource, ? <strong class="jxr_keyword">extends</strong> RangingAndRssiReading&lt;?
@@ -606,7 +606,7 @@
 <a class="jxr_linenumber" name="L598" href="#L598">598</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if either provided sources or fingerprint is null</em>
 <a class="jxr_linenumber" name="L599" href="#L599">599</a> <em class="jxr_javadoccomment">     *                                  or the number of provided sources is less than the required minimum.</em>
 <a class="jxr_linenumber" name="L600" href="#L600">600</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L601" href="#L601">601</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
+<a class="jxr_linenumber" name="L601" href="#L601">601</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
 <a class="jxr_linenumber" name="L602" href="#L602">602</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] sourceQualityScores,
 <a class="jxr_linenumber" name="L603" href="#L603">603</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] fingerprintReadingQualityScores,
 <a class="jxr_linenumber" name="L604" href="#L604">604</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RadioSourceLocated&lt;P&gt;&gt; sources,
@@ -630,7 +630,7 @@
 <a class="jxr_linenumber" name="L622" href="#L622">622</a> <em class="jxr_javadoccomment">     *                                        reading.</em>
 <a class="jxr_linenumber" name="L623" href="#L623">623</a> <em class="jxr_javadoccomment">     * @param listener                        listener in charge of handling events.</em>
 <a class="jxr_linenumber" name="L624" href="#L624">624</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L625" href="#L625">625</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
+<a class="jxr_linenumber" name="L625" href="#L625">625</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
 <a class="jxr_linenumber" name="L626" href="#L626">626</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] sourceQualityScores,
 <a class="jxr_linenumber" name="L627" href="#L627">627</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] fingerprintReadingQualityScores,
 <a class="jxr_linenumber" name="L628" href="#L628">628</a>             <strong class="jxr_keyword">final</strong> SequentialRobustRangingAndRssiPositionEstimatorListener&lt;P&gt; listener) {
@@ -655,7 +655,7 @@
 <a class="jxr_linenumber" name="L647" href="#L647">647</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if provided sources is null or the number of</em>
 <a class="jxr_linenumber" name="L648" href="#L648">648</a> <em class="jxr_javadoccomment">     *                                  provided sources is less than the required minimum.</em>
 <a class="jxr_linenumber" name="L649" href="#L649">649</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L650" href="#L650">650</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
+<a class="jxr_linenumber" name="L650" href="#L650">650</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
 <a class="jxr_linenumber" name="L651" href="#L651">651</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] sourceQualityScores,
 <a class="jxr_linenumber" name="L652" href="#L652">652</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] fingerprintReadingQualityScores,
 <a class="jxr_linenumber" name="L653" href="#L653">653</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RadioSourceLocated&lt;P&gt;&gt; sources,
@@ -681,7 +681,7 @@
 <a class="jxr_linenumber" name="L673" href="#L673">673</a> <em class="jxr_javadoccomment">     * @param listener                        listener in charge of handling events.</em>
 <a class="jxr_linenumber" name="L674" href="#L674">674</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if provided fingerprint is null.</em>
 <a class="jxr_linenumber" name="L675" href="#L675">675</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L676" href="#L676">676</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
+<a class="jxr_linenumber" name="L676" href="#L676">676</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
 <a class="jxr_linenumber" name="L677" href="#L677">677</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] sourceQualityScores,
 <a class="jxr_linenumber" name="L678" href="#L678">678</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] fingerprintReadingQualityScores,
 <a class="jxr_linenumber" name="L679" href="#L679">679</a>             <strong class="jxr_keyword">final</strong> RangingAndRssiFingerprint&lt;? <strong class="jxr_keyword">extends</strong> RadioSource, ? <strong class="jxr_keyword">extends</strong> RangingAndRssiReading&lt;?
@@ -711,7 +711,7 @@
 <a class="jxr_linenumber" name="L703" href="#L703">703</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if either provided sources or fingerprint is null</em>
 <a class="jxr_linenumber" name="L704" href="#L704">704</a> <em class="jxr_javadoccomment">     *                                  or the number of provided sources is less than the required minimum.</em>
 <a class="jxr_linenumber" name="L705" href="#L705">705</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L706" href="#L706">706</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
+<a class="jxr_linenumber" name="L706" href="#L706">706</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/position/SequentialRobustRangingAndRssiPositionEstimator.html">SequentialRobustRangingAndRssiPositionEstimator</a>(
 <a class="jxr_linenumber" name="L707" href="#L707">707</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] sourceQualityScores,
 <a class="jxr_linenumber" name="L708" href="#L708">708</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] fingerprintReadingQualityScores,
 <a class="jxr_linenumber" name="L709" href="#L709">709</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RadioSourceLocated&lt;P&gt;&gt; sources,

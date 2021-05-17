@@ -383,7 +383,7 @@
 <a class="jxr_linenumber" name="L375" href="#L375">375</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L376" href="#L376">376</a> <em class="jxr_javadoccomment">     * Constructor.</em>
 <a class="jxr_linenumber" name="L377" href="#L377">377</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L378" href="#L378">378</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>() {
+<a class="jxr_linenumber" name="L378" href="#L378">378</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>() {
 <a class="jxr_linenumber" name="L379" href="#L379">379</a>     }
 <a class="jxr_linenumber" name="L380" href="#L380">380</a> 
 <a class="jxr_linenumber" name="L381" href="#L381">381</a>     <em class="jxr_javadoccomment">/**</em>
@@ -393,7 +393,7 @@
 <a class="jxr_linenumber" name="L385" href="#L385">385</a> <em class="jxr_javadoccomment">     * @param readings signal readings belonging to the same radio source.</em>
 <a class="jxr_linenumber" name="L386" href="#L386">386</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid.</em>
 <a class="jxr_linenumber" name="L387" href="#L387">387</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L388" href="#L388">388</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L388" href="#L388">388</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L389" href="#L389">389</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, P&gt;&gt; readings) {
 <a class="jxr_linenumber" name="L390" href="#L390">390</a>         internalSetReadings(readings);
 <a class="jxr_linenumber" name="L391" href="#L391">391</a>     }
@@ -403,7 +403,7 @@
 <a class="jxr_linenumber" name="L395" href="#L395">395</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L396" href="#L396">396</a> <em class="jxr_javadoccomment">     * @param listener listener in charge of attending events raised by this instance.</em>
 <a class="jxr_linenumber" name="L397" href="#L397">397</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L398" href="#L398">398</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L398" href="#L398">398</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L399" href="#L399">399</a>             <strong class="jxr_keyword">final</strong> SequentialRobustRangingAndRssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
 <a class="jxr_linenumber" name="L400" href="#L400">400</a>         mListener = listener;
 <a class="jxr_linenumber" name="L401" href="#L401">401</a>     }
@@ -416,7 +416,7 @@
 <a class="jxr_linenumber" name="L408" href="#L408">408</a> <em class="jxr_javadoccomment">     * @param listener listener in charge of attending events raised by this instance.</em>
 <a class="jxr_linenumber" name="L409" href="#L409">409</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid.</em>
 <a class="jxr_linenumber" name="L410" href="#L410">410</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L411" href="#L411">411</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L411" href="#L411">411</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L412" href="#L412">412</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, P&gt;&gt; readings,
 <a class="jxr_linenumber" name="L413" href="#L413">413</a>             <strong class="jxr_keyword">final</strong> SequentialRobustRangingAndRssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
 <a class="jxr_linenumber" name="L414" href="#L414">414</a>         <strong class="jxr_keyword">this</strong>(readings);
@@ -432,7 +432,7 @@
 <a class="jxr_linenumber" name="L424" href="#L424">424</a> <em class="jxr_javadoccomment">     *                        source position.</em>
 <a class="jxr_linenumber" name="L425" href="#L425">425</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid.</em>
 <a class="jxr_linenumber" name="L426" href="#L426">426</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L427" href="#L427">427</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L427" href="#L427">427</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L428" href="#L428">428</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, P&gt;&gt; readings,
 <a class="jxr_linenumber" name="L429" href="#L429">429</a>             <strong class="jxr_keyword">final</strong> P initialPosition) {
 <a class="jxr_linenumber" name="L430" href="#L430">430</a>         <strong class="jxr_keyword">this</strong>(readings);
@@ -445,7 +445,7 @@
 <a class="jxr_linenumber" name="L437" href="#L437">437</a> <em class="jxr_javadoccomment">     * @param initialPosition initial position to start the estimation of radio</em>
 <a class="jxr_linenumber" name="L438" href="#L438">438</a> <em class="jxr_javadoccomment">     *                        source position.</em>
 <a class="jxr_linenumber" name="L439" href="#L439">439</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L440" href="#L440">440</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L440" href="#L440">440</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L441" href="#L441">441</a>             <strong class="jxr_keyword">final</strong> P initialPosition) {
 <a class="jxr_linenumber" name="L442" href="#L442">442</a>         mInitialPosition = initialPosition;
 <a class="jxr_linenumber" name="L443" href="#L443">443</a>     }
@@ -457,7 +457,7 @@
 <a class="jxr_linenumber" name="L449" href="#L449">449</a> <em class="jxr_javadoccomment">     *                        source position.</em>
 <a class="jxr_linenumber" name="L450" href="#L450">450</a> <em class="jxr_javadoccomment">     * @param listener        listener in charge of attending events raised by this instance.</em>
 <a class="jxr_linenumber" name="L451" href="#L451">451</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L452" href="#L452">452</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L452" href="#L452">452</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L453" href="#L453">453</a>             <strong class="jxr_keyword">final</strong> P initialPosition,
 <a class="jxr_linenumber" name="L454" href="#L454">454</a>             <strong class="jxr_keyword">final</strong> SequentialRobustRangingAndRssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
 <a class="jxr_linenumber" name="L455" href="#L455">455</a>         <strong class="jxr_keyword">this</strong>(listener);
@@ -474,7 +474,7 @@
 <a class="jxr_linenumber" name="L466" href="#L466">466</a> <em class="jxr_javadoccomment">     * @param listener        listener in charge of attending events raised by this instance.</em>
 <a class="jxr_linenumber" name="L467" href="#L467">467</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid.</em>
 <a class="jxr_linenumber" name="L468" href="#L468">468</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L469" href="#L469">469</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L469" href="#L469">469</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L470" href="#L470">470</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, P&gt;&gt; readings,
 <a class="jxr_linenumber" name="L471" href="#L471">471</a>             <strong class="jxr_keyword">final</strong> P initialPosition,
 <a class="jxr_linenumber" name="L472" href="#L472">472</a>             <strong class="jxr_keyword">final</strong> SequentialRobustRangingAndRssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
@@ -489,7 +489,7 @@
 <a class="jxr_linenumber" name="L481" href="#L481">481</a> <em class="jxr_javadoccomment">     *                                   estimation of radio source transmitted power</em>
 <a class="jxr_linenumber" name="L482" href="#L482">482</a> <em class="jxr_javadoccomment">     *                                   (expressed in dBm's).</em>
 <a class="jxr_linenumber" name="L483" href="#L483">483</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L484" href="#L484">484</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L484" href="#L484">484</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L485" href="#L485">485</a>             <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm) {
 <a class="jxr_linenumber" name="L486" href="#L486">486</a>         mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;
 <a class="jxr_linenumber" name="L487" href="#L487">487</a>     }
@@ -504,7 +504,7 @@
 <a class="jxr_linenumber" name="L496" href="#L496">496</a> <em class="jxr_javadoccomment">     *                                   (expressed in dBm's).</em>
 <a class="jxr_linenumber" name="L497" href="#L497">497</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid.</em>
 <a class="jxr_linenumber" name="L498" href="#L498">498</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L499" href="#L499">499</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L499" href="#L499">499</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L500" href="#L500">500</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, P&gt;&gt; readings,
 <a class="jxr_linenumber" name="L501" href="#L501">501</a>             <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm) {
 <a class="jxr_linenumber" name="L502" href="#L502">502</a>         <strong class="jxr_keyword">this</strong>(readings);
@@ -519,7 +519,7 @@
 <a class="jxr_linenumber" name="L511" href="#L511">511</a> <em class="jxr_javadoccomment">     *                                   (expressed in dBm's).</em>
 <a class="jxr_linenumber" name="L512" href="#L512">512</a> <em class="jxr_javadoccomment">     * @param listener                   listener in charge of attending events raised by this instance.</em>
 <a class="jxr_linenumber" name="L513" href="#L513">513</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L514" href="#L514">514</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L514" href="#L514">514</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L515" href="#L515">515</a>             <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm,
 <a class="jxr_linenumber" name="L516" href="#L516">516</a>             <strong class="jxr_keyword">final</strong> SequentialRobustRangingAndRssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
 <a class="jxr_linenumber" name="L517" href="#L517">517</a>         <strong class="jxr_keyword">this</strong>(listener);
@@ -537,7 +537,7 @@
 <a class="jxr_linenumber" name="L529" href="#L529">529</a> <em class="jxr_javadoccomment">     * @param listener                   listener in charge of attending events raised by this instance.</em>
 <a class="jxr_linenumber" name="L530" href="#L530">530</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid.</em>
 <a class="jxr_linenumber" name="L531" href="#L531">531</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L532" href="#L532">532</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L532" href="#L532">532</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L533" href="#L533">533</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, P&gt;&gt; readings,
 <a class="jxr_linenumber" name="L534" href="#L534">534</a>             <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm,
 <a class="jxr_linenumber" name="L535" href="#L535">535</a>             <strong class="jxr_keyword">final</strong> SequentialRobustRangingAndRssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
@@ -557,7 +557,7 @@
 <a class="jxr_linenumber" name="L549" href="#L549">549</a> <em class="jxr_javadoccomment">     *                                   (expressed in dBm's).</em>
 <a class="jxr_linenumber" name="L550" href="#L550">550</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid.</em>
 <a class="jxr_linenumber" name="L551" href="#L551">551</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L552" href="#L552">552</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L552" href="#L552">552</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L553" href="#L553">553</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, P&gt;&gt; readings,
 <a class="jxr_linenumber" name="L554" href="#L554">554</a>             <strong class="jxr_keyword">final</strong> P initialPosition,
 <a class="jxr_linenumber" name="L555" href="#L555">555</a>             <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm) {
@@ -575,7 +575,7 @@
 <a class="jxr_linenumber" name="L567" href="#L567">567</a> <em class="jxr_javadoccomment">     *                                   estimation of radio source transmitted power</em>
 <a class="jxr_linenumber" name="L568" href="#L568">568</a> <em class="jxr_javadoccomment">     *                                   (expressed in dBm's).</em>
 <a class="jxr_linenumber" name="L569" href="#L569">569</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L570" href="#L570">570</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L570" href="#L570">570</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L571" href="#L571">571</a>             <strong class="jxr_keyword">final</strong> P initialPosition,
 <a class="jxr_linenumber" name="L572" href="#L572">572</a>             <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm) {
 <a class="jxr_linenumber" name="L573" href="#L573">573</a>         mInitialPosition = initialPosition;
@@ -592,7 +592,7 @@
 <a class="jxr_linenumber" name="L584" href="#L584">584</a> <em class="jxr_javadoccomment">     *                                   (expressed in dBm's).</em>
 <a class="jxr_linenumber" name="L585" href="#L585">585</a> <em class="jxr_javadoccomment">     * @param listener                   in charge of attending events raised by this instance.</em>
 <a class="jxr_linenumber" name="L586" href="#L586">586</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L587" href="#L587">587</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L587" href="#L587">587</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L588" href="#L588">588</a>             <strong class="jxr_keyword">final</strong> P initialPosition,
 <a class="jxr_linenumber" name="L589" href="#L589">589</a>             <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm,
 <a class="jxr_linenumber" name="L590" href="#L590">590</a>             <strong class="jxr_keyword">final</strong> SequentialRobustRangingAndRssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
@@ -614,7 +614,7 @@
 <a class="jxr_linenumber" name="L606" href="#L606">606</a> <em class="jxr_javadoccomment">     * @param listener                   listener in charge of attending events raised by this instance.</em>
 <a class="jxr_linenumber" name="L607" href="#L607">607</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid.</em>
 <a class="jxr_linenumber" name="L608" href="#L608">608</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L609" href="#L609">609</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L609" href="#L609">609</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L610" href="#L610">610</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, P&gt;&gt; readings,
 <a class="jxr_linenumber" name="L611" href="#L611">611</a>             <strong class="jxr_keyword">final</strong> P initialPosition,
 <a class="jxr_linenumber" name="L612" href="#L612">612</a>             <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm,
@@ -637,7 +637,7 @@
 <a class="jxr_linenumber" name="L629" href="#L629">629</a> <em class="jxr_javadoccomment">     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.</em>
 <a class="jxr_linenumber" name="L630" href="#L630">630</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid.</em>
 <a class="jxr_linenumber" name="L631" href="#L631">631</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L632" href="#L632">632</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L632" href="#L632">632</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L633" href="#L633">633</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, P&gt;&gt; readings,
 <a class="jxr_linenumber" name="L634" href="#L634">634</a>             <strong class="jxr_keyword">final</strong> P initialPosition,
 <a class="jxr_linenumber" name="L635" href="#L635">635</a>             <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm,
@@ -656,7 +656,7 @@
 <a class="jxr_linenumber" name="L648" href="#L648">648</a> <em class="jxr_javadoccomment">     *                                   (expressed in dBm's).</em>
 <a class="jxr_linenumber" name="L649" href="#L649">649</a> <em class="jxr_javadoccomment">     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.</em>
 <a class="jxr_linenumber" name="L650" href="#L650">650</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L651" href="#L651">651</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L651" href="#L651">651</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L652" href="#L652">652</a>             <strong class="jxr_keyword">final</strong> P initialPosition,
 <a class="jxr_linenumber" name="L653" href="#L653">653</a>             <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm,
 <a class="jxr_linenumber" name="L654" href="#L654">654</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> initialPathLossExponent) {
@@ -675,7 +675,7 @@
 <a class="jxr_linenumber" name="L667" href="#L667">667</a> <em class="jxr_javadoccomment">     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.</em>
 <a class="jxr_linenumber" name="L668" href="#L668">668</a> <em class="jxr_javadoccomment">     * @param listener                   listener in charge of attending events raised by this instance.</em>
 <a class="jxr_linenumber" name="L669" href="#L669">669</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L670" href="#L670">670</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L670" href="#L670">670</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L671" href="#L671">671</a>             <strong class="jxr_keyword">final</strong> P initialPosition,
 <a class="jxr_linenumber" name="L672" href="#L672">672</a>             <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm,
 <a class="jxr_linenumber" name="L673" href="#L673">673</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> initialPathLossExponent,
@@ -698,7 +698,7 @@
 <a class="jxr_linenumber" name="L690" href="#L690">690</a> <em class="jxr_javadoccomment">     * @param listener                   listener in charge of attending events raised by this instance.</em>
 <a class="jxr_linenumber" name="L691" href="#L691">691</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid.</em>
 <a class="jxr_linenumber" name="L692" href="#L692">692</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L693" href="#L693">693</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L693" href="#L693">693</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L694" href="#L694">694</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, P&gt;&gt; readings,
 <a class="jxr_linenumber" name="L695" href="#L695">695</a>             <strong class="jxr_keyword">final</strong> P initialPosition,
 <a class="jxr_linenumber" name="L696" href="#L696">696</a>             <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm,
@@ -717,7 +717,7 @@
 <a class="jxr_linenumber" name="L709" href="#L709">709</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if quality scores is null, or length of</em>
 <a class="jxr_linenumber" name="L710" href="#L710">710</a> <em class="jxr_javadoccomment">     *                                  quality scores is less than required minimum.</em>
 <a class="jxr_linenumber" name="L711" href="#L711">711</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L712" href="#L712">712</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L712" href="#L712">712</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L713" href="#L713">713</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] qualityScores) {
 <a class="jxr_linenumber" name="L714" href="#L714">714</a>         <strong class="jxr_keyword">this</strong>();
 <a class="jxr_linenumber" name="L715" href="#L715">715</a>         internalSetQualityScores(qualityScores);
@@ -734,7 +734,7 @@
 <a class="jxr_linenumber" name="L726" href="#L726">726</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid, quality scores is</em>
 <a class="jxr_linenumber" name="L727" href="#L727">727</a> <em class="jxr_javadoccomment">     *                                  null, or length of quality scores is less than required minimum.</em>
 <a class="jxr_linenumber" name="L728" href="#L728">728</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L729" href="#L729">729</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L729" href="#L729">729</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L730" href="#L730">730</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] qualityScores,
 <a class="jxr_linenumber" name="L731" href="#L731">731</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, P&gt;&gt; readings) {
 <a class="jxr_linenumber" name="L732" href="#L732">732</a>         <strong class="jxr_keyword">this</strong>(readings);
@@ -751,7 +751,7 @@
 <a class="jxr_linenumber" name="L743" href="#L743">743</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if quality scores is null, or length</em>
 <a class="jxr_linenumber" name="L744" href="#L744">744</a> <em class="jxr_javadoccomment">     *                                  of quality scores is less than required minimum.</em>
 <a class="jxr_linenumber" name="L745" href="#L745">745</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L746" href="#L746">746</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L746" href="#L746">746</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L747" href="#L747">747</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] qualityScores,
 <a class="jxr_linenumber" name="L748" href="#L748">748</a>             <strong class="jxr_keyword">final</strong> SequentialRobustRangingAndRssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
 <a class="jxr_linenumber" name="L749" href="#L749">749</a>         <strong class="jxr_keyword">this</strong>(listener);
@@ -770,7 +770,7 @@
 <a class="jxr_linenumber" name="L762" href="#L762">762</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid, quality scores is</em>
 <a class="jxr_linenumber" name="L763" href="#L763">763</a> <em class="jxr_javadoccomment">     *                                  null, or length of quality scores is less than required minimum.</em>
 <a class="jxr_linenumber" name="L764" href="#L764">764</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L765" href="#L765">765</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L765" href="#L765">765</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L766" href="#L766">766</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] qualityScores,
 <a class="jxr_linenumber" name="L767" href="#L767">767</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, P&gt;&gt; readings,
 <a class="jxr_linenumber" name="L768" href="#L768">768</a>             <strong class="jxr_keyword">final</strong> SequentialRobustRangingAndRssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
@@ -791,7 +791,7 @@
 <a class="jxr_linenumber" name="L783" href="#L783">783</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid, quality scores is</em>
 <a class="jxr_linenumber" name="L784" href="#L784">784</a> <em class="jxr_javadoccomment">     *                                  null, or length of quality scores is less than required minimum.</em>
 <a class="jxr_linenumber" name="L785" href="#L785">785</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L786" href="#L786">786</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L786" href="#L786">786</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L787" href="#L787">787</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] qualityScores,
 <a class="jxr_linenumber" name="L788" href="#L788">788</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, P&gt;&gt; readings,
 <a class="jxr_linenumber" name="L789" href="#L789">789</a>             <strong class="jxr_keyword">final</strong> P initialPosition) {
@@ -810,7 +810,7 @@
 <a class="jxr_linenumber" name="L802" href="#L802">802</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if quality scores is null, or length</em>
 <a class="jxr_linenumber" name="L803" href="#L803">803</a> <em class="jxr_javadoccomment">     *                                  of quality scores is less than required minimum.</em>
 <a class="jxr_linenumber" name="L804" href="#L804">804</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L805" href="#L805">805</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L805" href="#L805">805</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L806" href="#L806">806</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] qualityScores,
 <a class="jxr_linenumber" name="L807" href="#L807">807</a>             <strong class="jxr_keyword">final</strong> P initialPosition) {
 <a class="jxr_linenumber" name="L808" href="#L808">808</a>         <strong class="jxr_keyword">this</strong>(initialPosition);
@@ -829,7 +829,7 @@
 <a class="jxr_linenumber" name="L821" href="#L821">821</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if quality scores is null, or length</em>
 <a class="jxr_linenumber" name="L822" href="#L822">822</a> <em class="jxr_javadoccomment">     *                                  of quality scores is less than required minimum.</em>
 <a class="jxr_linenumber" name="L823" href="#L823">823</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L824" href="#L824">824</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L824" href="#L824">824</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L825" href="#L825">825</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] qualityScores,
 <a class="jxr_linenumber" name="L826" href="#L826">826</a>             <strong class="jxr_keyword">final</strong> P initialPosition,
 <a class="jxr_linenumber" name="L827" href="#L827">827</a>             <strong class="jxr_keyword">final</strong> SequentialRobustRangingAndRssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
@@ -851,7 +851,7 @@
 <a class="jxr_linenumber" name="L843" href="#L843">843</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid, quality scores</em>
 <a class="jxr_linenumber" name="L844" href="#L844">844</a> <em class="jxr_javadoccomment">     *                                  is null, or length of quality scores is less than required minimum.</em>
 <a class="jxr_linenumber" name="L845" href="#L845">845</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L846" href="#L846">846</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L846" href="#L846">846</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L847" href="#L847">847</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] qualityScores,
 <a class="jxr_linenumber" name="L848" href="#L848">848</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, P&gt;&gt; readings,
 <a class="jxr_linenumber" name="L849" href="#L849">849</a>             <strong class="jxr_keyword">final</strong> P initialPosition,
@@ -872,7 +872,7 @@
 <a class="jxr_linenumber" name="L864" href="#L864">864</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if quality scores is null, or length</em>
 <a class="jxr_linenumber" name="L865" href="#L865">865</a> <em class="jxr_javadoccomment">     *                                  of quality scores is less than required minimum.</em>
 <a class="jxr_linenumber" name="L866" href="#L866">866</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L867" href="#L867">867</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L867" href="#L867">867</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L868" href="#L868">868</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] qualityScores,
 <a class="jxr_linenumber" name="L869" href="#L869">869</a>             <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm) {
 <a class="jxr_linenumber" name="L870" href="#L870">870</a>         <strong class="jxr_keyword">this</strong>(initialTransmittedPowerdBm);
@@ -893,7 +893,7 @@
 <a class="jxr_linenumber" name="L885" href="#L885">885</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid, quality scores</em>
 <a class="jxr_linenumber" name="L886" href="#L886">886</a> <em class="jxr_javadoccomment">     *                                  is null, or length of quality scores is less than required minimum.</em>
 <a class="jxr_linenumber" name="L887" href="#L887">887</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L888" href="#L888">888</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L888" href="#L888">888</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L889" href="#L889">889</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] qualityScores,
 <a class="jxr_linenumber" name="L890" href="#L890">890</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, P&gt;&gt; readings,
 <a class="jxr_linenumber" name="L891" href="#L891">891</a>             <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm) {
@@ -914,7 +914,7 @@
 <a class="jxr_linenumber" name="L906" href="#L906">906</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if quality scores is null, or length</em>
 <a class="jxr_linenumber" name="L907" href="#L907">907</a> <em class="jxr_javadoccomment">     *                                  of quality scores is less than required minimum.</em>
 <a class="jxr_linenumber" name="L908" href="#L908">908</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L909" href="#L909">909</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L909" href="#L909">909</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L910" href="#L910">910</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] qualityScores,
 <a class="jxr_linenumber" name="L911" href="#L911">911</a>             <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm,
 <a class="jxr_linenumber" name="L912" href="#L912">912</a>             <strong class="jxr_keyword">final</strong> SequentialRobustRangingAndRssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
@@ -937,7 +937,7 @@
 <a class="jxr_linenumber" name="L929" href="#L929">929</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid, quality scores</em>
 <a class="jxr_linenumber" name="L930" href="#L930">930</a> <em class="jxr_javadoccomment">     *                                  is null, or length of quality scores is less than required minimum.</em>
 <a class="jxr_linenumber" name="L931" href="#L931">931</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L932" href="#L932">932</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L932" href="#L932">932</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L933" href="#L933">933</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] qualityScores,
 <a class="jxr_linenumber" name="L934" href="#L934">934</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, P&gt;&gt; readings,
 <a class="jxr_linenumber" name="L935" href="#L935">935</a>             <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm,
@@ -962,7 +962,7 @@
 <a class="jxr_linenumber" name="L954" href="#L954">954</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid, quality scores</em>
 <a class="jxr_linenumber" name="L955" href="#L955">955</a> <em class="jxr_javadoccomment">     *                                  is null, or length of quality scores is less than required minimum.</em>
 <a class="jxr_linenumber" name="L956" href="#L956">956</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L957" href="#L957">957</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L957" href="#L957">957</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L958" href="#L958">958</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] qualityScores,
 <a class="jxr_linenumber" name="L959" href="#L959">959</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, P&gt;&gt; readings,
 <a class="jxr_linenumber" name="L960" href="#L960">960</a>             <strong class="jxr_keyword">final</strong> P initialPosition,
@@ -985,7 +985,7 @@
 <a class="jxr_linenumber" name="L977" href="#L977">977</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if quality scores is null, or length</em>
 <a class="jxr_linenumber" name="L978" href="#L978">978</a> <em class="jxr_javadoccomment">     *                                  of quality scores is less than required minimum.</em>
 <a class="jxr_linenumber" name="L979" href="#L979">979</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L980" href="#L980">980</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L980" href="#L980">980</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L981" href="#L981">981</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] qualityScores,
 <a class="jxr_linenumber" name="L982" href="#L982">982</a>             <strong class="jxr_keyword">final</strong> P initialPosition,
 <a class="jxr_linenumber" name="L983" href="#L983">983</a>             <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm) {
@@ -1008,7 +1008,7 @@
 <a class="jxr_linenumber" name="L1000" href="#L1000">1000</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if quality scores is null, or length</em>
 <a class="jxr_linenumber" name="L1001" href="#L1001">1001</a> <em class="jxr_javadoccomment">     *                                  of quality scores is less than required minimum.</em>
 <a class="jxr_linenumber" name="L1002" href="#L1002">1002</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L1003" href="#L1003">1003</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L1003" href="#L1003">1003</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L1004" href="#L1004">1004</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] qualityScores,
 <a class="jxr_linenumber" name="L1005" href="#L1005">1005</a>             <strong class="jxr_keyword">final</strong> P initialPosition,
 <a class="jxr_linenumber" name="L1006" href="#L1006">1006</a>             <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm,
@@ -1034,7 +1034,7 @@
 <a class="jxr_linenumber" name="L1026" href="#L1026">1026</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid, quality scores</em>
 <a class="jxr_linenumber" name="L1027" href="#L1027">1027</a> <em class="jxr_javadoccomment">     *                                  is null, or length of quality scores is less than required minimum.</em>
 <a class="jxr_linenumber" name="L1028" href="#L1028">1028</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L1029" href="#L1029">1029</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L1029" href="#L1029">1029</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L1030" href="#L1030">1030</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] qualityScores,
 <a class="jxr_linenumber" name="L1031" href="#L1031">1031</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, P&gt;&gt; readings,
 <a class="jxr_linenumber" name="L1032" href="#L1032">1032</a>             <strong class="jxr_keyword">final</strong> P initialPosition,
@@ -1061,7 +1061,7 @@
 <a class="jxr_linenumber" name="L1053" href="#L1053">1053</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid, quality scores</em>
 <a class="jxr_linenumber" name="L1054" href="#L1054">1054</a> <em class="jxr_javadoccomment">     *                                  is null, or length of quality scores is less than required minimum.</em>
 <a class="jxr_linenumber" name="L1055" href="#L1055">1055</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L1056" href="#L1056">1056</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L1056" href="#L1056">1056</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L1057" href="#L1057">1057</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] qualityScores,
 <a class="jxr_linenumber" name="L1058" href="#L1058">1058</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, P&gt;&gt; readings,
 <a class="jxr_linenumber" name="L1059" href="#L1059">1059</a>             <strong class="jxr_keyword">final</strong> P initialPosition,
@@ -1087,7 +1087,7 @@
 <a class="jxr_linenumber" name="L1079" href="#L1079">1079</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if quality scores is null, or length</em>
 <a class="jxr_linenumber" name="L1080" href="#L1080">1080</a> <em class="jxr_javadoccomment">     *                                  of quality scores is less than required minimum.</em>
 <a class="jxr_linenumber" name="L1081" href="#L1081">1081</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L1082" href="#L1082">1082</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L1082" href="#L1082">1082</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L1083" href="#L1083">1083</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] qualityScores,
 <a class="jxr_linenumber" name="L1084" href="#L1084">1084</a>             <strong class="jxr_keyword">final</strong> P initialPosition,
 <a class="jxr_linenumber" name="L1085" href="#L1085">1085</a>             <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm,
@@ -1112,7 +1112,7 @@
 <a class="jxr_linenumber" name="L1104" href="#L1104">1104</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if quality scores is null, or length</em>
 <a class="jxr_linenumber" name="L1105" href="#L1105">1105</a> <em class="jxr_javadoccomment">     *                                  of quality scores is less than required minimum.</em>
 <a class="jxr_linenumber" name="L1106" href="#L1106">1106</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L1107" href="#L1107">1107</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L1107" href="#L1107">1107</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L1108" href="#L1108">1108</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] qualityScores,
 <a class="jxr_linenumber" name="L1109" href="#L1109">1109</a>             <strong class="jxr_keyword">final</strong> P initialPosition,
 <a class="jxr_linenumber" name="L1110" href="#L1110">1110</a>             <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm,
@@ -1141,7 +1141,7 @@
 <a class="jxr_linenumber" name="L1133" href="#L1133">1133</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid, quality scores</em>
 <a class="jxr_linenumber" name="L1134" href="#L1134">1134</a> <em class="jxr_javadoccomment">     *                                  is null, or length of quality scores is less than required minimum.</em>
 <a class="jxr_linenumber" name="L1135" href="#L1135">1135</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L1136" href="#L1136">1136</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L1136" href="#L1136">1136</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html">SequentialRobustRangingAndRssiRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L1137" href="#L1137">1137</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] qualityScores,
 <a class="jxr_linenumber" name="L1138" href="#L1138">1138</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, P&gt;&gt; readings,
 <a class="jxr_linenumber" name="L1139" href="#L1139">1139</a>             <strong class="jxr_keyword">final</strong> P initialPosition,

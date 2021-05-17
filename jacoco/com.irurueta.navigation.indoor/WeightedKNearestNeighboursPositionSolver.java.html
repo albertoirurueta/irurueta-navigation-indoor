@@ -76,7 +76,7 @@ public abstract class WeightedKNearestNeighboursPositionSolver&lt;P extends Poin
     /**
      * Constructor.
      */
-<span class="fc" id="L79">    public WeightedKNearestNeighboursPositionSolver() {</span>
+<span class="fc" id="L79">    protected WeightedKNearestNeighboursPositionSolver() {</span>
 <span class="fc" id="L80">    }</span>
 
     /**
@@ -90,7 +90,7 @@ public abstract class WeightedKNearestNeighboursPositionSolver&lt;P extends Poin
      * @throws IllegalArgumentException if either fingerprints or distances are null,
      *                                  don't have the same length or their length is smaller than 1.
      */
-    public WeightedKNearestNeighboursPositionSolver(
+    protected WeightedKNearestNeighboursPositionSolver(
             final RssiFingerprintLocated&lt;WifiAccessPoint, RssiReading&lt;WifiAccessPoint&gt;, P&gt;[] fingerprints,
 <span class="fc" id="L95">            final double[] distances) {</span>
 <span class="fc" id="L96">        internalSetFingerprintsAndDistances(fingerprints, distances);</span>
@@ -101,7 +101,7 @@ public abstract class WeightedKNearestNeighboursPositionSolver&lt;P extends Poin
      *
      * @param listener listener to be notified of events raised by this instance.
      */
-    public WeightedKNearestNeighboursPositionSolver(
+    protected WeightedKNearestNeighboursPositionSolver(
 <span class="fc" id="L105">            final WeightedKNearestNeighboursPositionSolverListener&lt;P&gt; listener) {</span>
 <span class="fc" id="L106">        mListener = listener;</span>
 <span class="fc" id="L107">    }</span>
@@ -118,7 +118,7 @@ public abstract class WeightedKNearestNeighboursPositionSolver&lt;P extends Poin
      * @throws IllegalArgumentException if either fingerprints or distances are null,
      *                                  don't have the same length or their length is smaller than 1.
      */
-    public WeightedKNearestNeighboursPositionSolver(
+    protected WeightedKNearestNeighboursPositionSolver(
             final RssiFingerprintLocated&lt;WifiAccessPoint, RssiReading&lt;WifiAccessPoint&gt;, P&gt;[] fingerprints,
             final double[] distances,
             final WeightedKNearestNeighboursPositionSolverListener&lt;P&gt; listener) {

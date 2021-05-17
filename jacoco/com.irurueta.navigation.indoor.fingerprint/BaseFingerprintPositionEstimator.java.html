@@ -116,7 +116,7 @@ public abstract class BaseFingerprintPositionEstimator&lt;P extends Point&lt;?&g
     /**
      * Constructor.
      */
-<span class="fc" id="L119">    public BaseFingerprintPositionEstimator() {</span>
+<span class="fc" id="L119">    protected BaseFingerprintPositionEstimator() {</span>
 <span class="fc" id="L120">    }</span>
 
     /**
@@ -124,7 +124,7 @@ public abstract class BaseFingerprintPositionEstimator&lt;P extends Point&lt;?&g
      *
      * @param listener listener in charge of handling events.
      */
-<span class="fc" id="L127">    public BaseFingerprintPositionEstimator(final L listener) {</span>
+<span class="fc" id="L127">    protected BaseFingerprintPositionEstimator(final L listener) {</span>
 <span class="fc" id="L128">        mListener = listener;</span>
 <span class="fc" id="L129">    }</span>
 
@@ -142,7 +142,7 @@ public abstract class BaseFingerprintPositionEstimator&lt;P extends Point&lt;?&g
      *                                  different locations containing a single reading are required. For 3D position
      *                                  estimation 3 located total readings are required among all fingerprints).
      */
-    public BaseFingerprintPositionEstimator(
+    protected BaseFingerprintPositionEstimator(
             final List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
                     ? extends RssiReading&lt;? extends RadioSource&gt;, P&gt;&gt; locatedFingerprints,
             final RssiFingerprint&lt;? extends RadioSource,
@@ -166,7 +166,7 @@ public abstract class BaseFingerprintPositionEstimator&lt;P extends Point&lt;?&g
      *                                  different locations containing a single reading are required. For 3D position
      *                                  estimation 3 located total readings are required among all fingerprints).
      */
-    public BaseFingerprintPositionEstimator(
+    protected BaseFingerprintPositionEstimator(
             final List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
                     ? extends RssiReading&lt;? extends RadioSource&gt;, P&gt;&gt; locatedFingerprints,
             final RssiFingerprint&lt;? extends RadioSource,

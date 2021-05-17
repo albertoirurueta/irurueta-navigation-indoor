@@ -146,7 +146,7 @@ public abstract class RobustRssiRadioSourceEstimator&lt;S extends RadioSource, P
     /**
      * Constructor.
      */
-    public RobustRssiRadioSourceEstimator() {
+    protected RobustRssiRadioSourceEstimator() {
 <span class="fc" id="L150">        super();</span>
 <span class="fc" id="L151">    }</span>
 
@@ -157,7 +157,7 @@ public abstract class RobustRssiRadioSourceEstimator&lt;S extends RadioSource, P
      * @param readings signal readings belonging to the same radio source.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRssiRadioSourceEstimator(
+    protected RobustRssiRadioSourceEstimator(
             final List&lt;? extends RssiReadingLocated&lt;S, P&gt;&gt; readings) {
 <span class="fc" id="L162">        super(readings);</span>
 <span class="fc" id="L163">    }</span>
@@ -167,7 +167,7 @@ public abstract class RobustRssiRadioSourceEstimator&lt;S extends RadioSource, P
      *
      * @param listener listener in charge of attending events raised by this instance.
      */
-    public RobustRssiRadioSourceEstimator(
+    protected RobustRssiRadioSourceEstimator(
             final RobustRssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
 <span class="fc" id="L172">        super(listener);</span>
 <span class="fc" id="L173">    }</span>
@@ -180,7 +180,7 @@ public abstract class RobustRssiRadioSourceEstimator&lt;S extends RadioSource, P
      * @param listener listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRssiRadioSourceEstimator(
+    protected RobustRssiRadioSourceEstimator(
             final List&lt;? extends RssiReadingLocated&lt;S, P&gt;&gt; readings,
             final RobustRssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
 <span class="fc" id="L186">        super(readings, listener);</span>
@@ -195,7 +195,7 @@ public abstract class RobustRssiRadioSourceEstimator&lt;S extends RadioSource, P
      *                        source position.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRssiRadioSourceEstimator(
+    protected RobustRssiRadioSourceEstimator(
             final List&lt;? extends RssiReadingLocated&lt;S, P&gt;&gt; readings,
             final P initialPosition) {
 <span class="fc" id="L201">        super(readings);</span>
@@ -208,7 +208,7 @@ public abstract class RobustRssiRadioSourceEstimator&lt;S extends RadioSource, P
      * @param initialPosition initial position to start the estimation of radio
      *                        source position.
      */
-<span class="fc" id="L211">    public RobustRssiRadioSourceEstimator(final P initialPosition) {</span>
+<span class="fc" id="L211">    protected RobustRssiRadioSourceEstimator(final P initialPosition) {</span>
 <span class="fc" id="L212">        mInitialPosition = initialPosition;</span>
 <span class="fc" id="L213">    }</span>
 
@@ -219,7 +219,7 @@ public abstract class RobustRssiRadioSourceEstimator&lt;S extends RadioSource, P
      *                        source position.
      * @param listener        listener in charge of attending events raised by this instance.
      */
-    public RobustRssiRadioSourceEstimator(
+    protected RobustRssiRadioSourceEstimator(
             final P initialPosition,
             final RobustRssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
 <span class="fc" id="L225">        super(listener);</span>
@@ -236,7 +236,7 @@ public abstract class RobustRssiRadioSourceEstimator&lt;S extends RadioSource, P
      * @param listener        listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRssiRadioSourceEstimator(
+    protected RobustRssiRadioSourceEstimator(
             final List&lt;? extends RssiReadingLocated&lt;S, P&gt;&gt; readings,
             final P initialPosition,
             final RobustRssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
@@ -251,7 +251,7 @@ public abstract class RobustRssiRadioSourceEstimator&lt;S extends RadioSource, P
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's)
      */
-    public RobustRssiRadioSourceEstimator(
+    protected RobustRssiRadioSourceEstimator(
 <span class="fc" id="L255">            final Double initialTransmittedPowerdBm) {</span>
 <span class="fc" id="L256">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
 <span class="fc" id="L257">    }</span>
@@ -266,7 +266,7 @@ public abstract class RobustRssiRadioSourceEstimator&lt;S extends RadioSource, P
      *                                   (expressed in dBm's)
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRssiRadioSourceEstimator(
+    protected RobustRssiRadioSourceEstimator(
             final List&lt;? extends RssiReadingLocated&lt;S, P&gt;&gt; readings,
             final Double initialTransmittedPowerdBm) {
 <span class="fc" id="L272">        super(readings);</span>
@@ -281,7 +281,7 @@ public abstract class RobustRssiRadioSourceEstimator&lt;S extends RadioSource, P
      *                                   (expressed in dBm's)
      * @param listener                   listener in charge of attending events raised by this instance.
      */
-    public RobustRssiRadioSourceEstimator(
+    protected RobustRssiRadioSourceEstimator(
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
 <span class="fc" id="L287">        super(listener);</span>
@@ -299,7 +299,7 @@ public abstract class RobustRssiRadioSourceEstimator&lt;S extends RadioSource, P
      * @param listener                   listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRssiRadioSourceEstimator(
+    protected RobustRssiRadioSourceEstimator(
             final List&lt;? extends RssiReadingLocated&lt;S, P&gt;&gt; readings,
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
@@ -319,7 +319,7 @@ public abstract class RobustRssiRadioSourceEstimator&lt;S extends RadioSource, P
      *                                   (expressed in dBm's).
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRssiRadioSourceEstimator(
+    protected RobustRssiRadioSourceEstimator(
             final List&lt;? extends RssiReadingLocated&lt;S, P&gt;&gt; readings,
             final P initialPosition,
             final Double initialTransmittedPowerdBm) {
@@ -337,7 +337,7 @@ public abstract class RobustRssiRadioSourceEstimator&lt;S extends RadioSource, P
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's).
      */
-    public RobustRssiRadioSourceEstimator(
+    protected RobustRssiRadioSourceEstimator(
             final P initialPosition,
 <span class="fc" id="L342">            final Double initialTransmittedPowerdBm) {</span>
 <span class="fc" id="L343">        mInitialPosition = initialPosition;</span>
@@ -354,7 +354,7 @@ public abstract class RobustRssiRadioSourceEstimator&lt;S extends RadioSource, P
      *                                   (expressed in dBm's).
      * @param listener                   in charge of attending events raised by this instance.
      */
-    public RobustRssiRadioSourceEstimator(
+    protected RobustRssiRadioSourceEstimator(
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
@@ -376,7 +376,7 @@ public abstract class RobustRssiRadioSourceEstimator&lt;S extends RadioSource, P
      * @param listener                   listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRssiRadioSourceEstimator(
+    protected RobustRssiRadioSourceEstimator(
             final List&lt;? extends RssiReadingLocated&lt;S, P&gt;&gt; readings,
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
@@ -399,7 +399,7 @@ public abstract class RobustRssiRadioSourceEstimator&lt;S extends RadioSource, P
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRssiRadioSourceEstimator(
+    protected RobustRssiRadioSourceEstimator(
             final List&lt;? extends RssiReadingLocated&lt;S, P&gt;&gt; readings,
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
@@ -418,7 +418,7 @@ public abstract class RobustRssiRadioSourceEstimator&lt;S extends RadioSource, P
      *                                   (expressed in dBm's).
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      */
-    public RobustRssiRadioSourceEstimator(
+    protected RobustRssiRadioSourceEstimator(
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
@@ -437,7 +437,7 @@ public abstract class RobustRssiRadioSourceEstimator&lt;S extends RadioSource, P
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      * @param listener                   listener in charge of attending events raised by this instance.
      */
-    public RobustRssiRadioSourceEstimator(
+    protected RobustRssiRadioSourceEstimator(
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
@@ -460,7 +460,7 @@ public abstract class RobustRssiRadioSourceEstimator&lt;S extends RadioSource, P
      * @param listener                   listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRssiRadioSourceEstimator(
+    protected RobustRssiRadioSourceEstimator(
             final List&lt;? extends RssiReadingLocated&lt;S, P&gt;&gt; readings,
             final P initialPosition,
             final Double initialTransmittedPowerdBm,

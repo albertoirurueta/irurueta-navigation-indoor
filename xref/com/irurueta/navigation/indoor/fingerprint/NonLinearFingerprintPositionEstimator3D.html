@@ -47,7 +47,7 @@
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>  <em class="jxr_javadoccomment">     * Constructor.</em>
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/fingerprint/NonLinearFingerprintPositionEstimator3D.html">NonLinearFingerprintPositionEstimator3D</a>() {
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>      <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/fingerprint/NonLinearFingerprintPositionEstimator3D.html">NonLinearFingerprintPositionEstimator3D</a>() {
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>      }
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>  
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>      <em class="jxr_javadoccomment">/**</em>
@@ -55,7 +55,7 @@
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>  <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>  <em class="jxr_javadoccomment">     * @param listener listener in charge of handling events.</em>
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/fingerprint/NonLinearFingerprintPositionEstimator3D.html">NonLinearFingerprintPositionEstimator3D</a>(
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>      <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/fingerprint/NonLinearFingerprintPositionEstimator3D.html">NonLinearFingerprintPositionEstimator3D</a>(
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>              <strong class="jxr_keyword">final</strong> FingerprintPositionEstimatorListener&lt;Point3D&gt; listener) {
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>          <strong class="jxr_keyword">super</strong>(listener);
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>      }
@@ -72,7 +72,7 @@
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>  <em class="jxr_javadoccomment">     *                                  readings within provided fingerprints (for 3D position estimation 3 located</em>
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>  <em class="jxr_javadoccomment">     *                                  total readings are required among all fingerprints).</em>
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/fingerprint/NonLinearFingerprintPositionEstimator3D.html">NonLinearFingerprintPositionEstimator3D</a>(
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>      <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/fingerprint/NonLinearFingerprintPositionEstimator3D.html">NonLinearFingerprintPositionEstimator3D</a>(
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>              <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RssiFingerprintLocated&lt;? <strong class="jxr_keyword">extends</strong> RadioSource,
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>                      ? <strong class="jxr_keyword">extends</strong> RssiReading&lt;? <strong class="jxr_keyword">extends</strong> RadioSource&gt;, Point3D&gt;&gt; locatedFingerprints,
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>              <strong class="jxr_keyword">final</strong> RssiFingerprint&lt;? <strong class="jxr_keyword">extends</strong> RadioSource,
@@ -94,7 +94,7 @@
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>  <em class="jxr_javadoccomment">     *                                  readings within provided fingerprints (for 3D position estimation 3 located</em>
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>  <em class="jxr_javadoccomment">     *                                  total readings are required among all fingerprints).</em>
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L89" href="#L89">89</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/fingerprint/NonLinearFingerprintPositionEstimator3D.html">NonLinearFingerprintPositionEstimator3D</a>(
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>      <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/fingerprint/NonLinearFingerprintPositionEstimator3D.html">NonLinearFingerprintPositionEstimator3D</a>(
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>              <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RssiFingerprintLocated&lt;? <strong class="jxr_keyword">extends</strong> RadioSource,
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>                      ? <strong class="jxr_keyword">extends</strong> RssiReading&lt;? <strong class="jxr_keyword">extends</strong> RadioSource&gt;, Point3D&gt;&gt; locatedFingerprints,
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>              <strong class="jxr_keyword">final</strong> RssiFingerprint&lt;? <strong class="jxr_keyword">extends</strong> RadioSource,
@@ -117,7 +117,7 @@
 <a class="jxr_linenumber" name="L109" href="#L109">109</a> <em class="jxr_javadoccomment">     *                                  readings within provided fingerprints (for 3D position estimation 3 located</em>
 <a class="jxr_linenumber" name="L110" href="#L110">110</a> <em class="jxr_javadoccomment">     *                                  total readings are required among all fingerprints).</em>
 <a class="jxr_linenumber" name="L111" href="#L111">111</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L112" href="#L112">112</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/fingerprint/NonLinearFingerprintPositionEstimator3D.html">NonLinearFingerprintPositionEstimator3D</a>(
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/fingerprint/NonLinearFingerprintPositionEstimator3D.html">NonLinearFingerprintPositionEstimator3D</a>(
 <a class="jxr_linenumber" name="L113" href="#L113">113</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RssiFingerprintLocated&lt;? <strong class="jxr_keyword">extends</strong> RadioSource,
 <a class="jxr_linenumber" name="L114" href="#L114">114</a>                     ? <strong class="jxr_keyword">extends</strong> RssiReading&lt;? <strong class="jxr_keyword">extends</strong> RadioSource&gt;, Point3D&gt;&gt; locatedFingerprints,
 <a class="jxr_linenumber" name="L115" href="#L115">115</a>             <strong class="jxr_keyword">final</strong> RssiFingerprint&lt;? <strong class="jxr_keyword">extends</strong> RadioSource,
@@ -143,7 +143,7 @@
 <a class="jxr_linenumber" name="L135" href="#L135">135</a> <em class="jxr_javadoccomment">     *                                  different locations containing a single reading are required. For 3D position</em>
 <a class="jxr_linenumber" name="L136" href="#L136">136</a> <em class="jxr_javadoccomment">     *                                  estimation 3 located total readings are required among all fingerprints).</em>
 <a class="jxr_linenumber" name="L137" href="#L137">137</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L138" href="#L138">138</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/fingerprint/NonLinearFingerprintPositionEstimator3D.html">NonLinearFingerprintPositionEstimator3D</a>(
+<a class="jxr_linenumber" name="L138" href="#L138">138</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/fingerprint/NonLinearFingerprintPositionEstimator3D.html">NonLinearFingerprintPositionEstimator3D</a>(
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RssiFingerprintLocated&lt;
 <a class="jxr_linenumber" name="L140" href="#L140">140</a>                     ? <strong class="jxr_keyword">extends</strong> RadioSource, ? <strong class="jxr_keyword">extends</strong> RssiReading&lt;? <strong class="jxr_keyword">extends</strong> RadioSource&gt;, Point3D&gt;&gt; locatedFingerprints,
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>             <strong class="jxr_keyword">final</strong> RssiFingerprint&lt;? <strong class="jxr_keyword">extends</strong> RadioSource,

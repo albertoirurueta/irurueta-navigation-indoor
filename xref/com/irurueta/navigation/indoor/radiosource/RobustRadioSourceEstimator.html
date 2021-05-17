@@ -186,7 +186,7 @@
 <a class="jxr_linenumber" name="L178" href="#L178">178</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L179" href="#L179">179</a> <em class="jxr_javadoccomment">     * Constructor.</em>
 <a class="jxr_linenumber" name="L180" href="#L180">180</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L181" href="#L181">181</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRadioSourceEstimator.html">RobustRadioSourceEstimator</a>() {
+<a class="jxr_linenumber" name="L181" href="#L181">181</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRadioSourceEstimator.html">RobustRadioSourceEstimator</a>() {
 <a class="jxr_linenumber" name="L182" href="#L182">182</a>     }
 <a class="jxr_linenumber" name="L183" href="#L183">183</a> 
 <a class="jxr_linenumber" name="L184" href="#L184">184</a>     <em class="jxr_javadoccomment">/**</em>
@@ -197,7 +197,7 @@
 <a class="jxr_linenumber" name="L189" href="#L189">189</a> <em class="jxr_javadoccomment">     *                 radio source.</em>
 <a class="jxr_linenumber" name="L190" href="#L190">190</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid.</em>
 <a class="jxr_linenumber" name="L191" href="#L191">191</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L192" href="#L192">192</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRadioSourceEstimator.html">RobustRadioSourceEstimator</a>(<strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> R&gt; readings) {
+<a class="jxr_linenumber" name="L192" href="#L192">192</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRadioSourceEstimator.html">RobustRadioSourceEstimator</a>(<strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> R&gt; readings) {
 <a class="jxr_linenumber" name="L193" href="#L193">193</a>         internalSetReadings(readings);
 <a class="jxr_linenumber" name="L194" href="#L194">194</a>     }
 <a class="jxr_linenumber" name="L195" href="#L195">195</a> 
@@ -206,7 +206,7 @@
 <a class="jxr_linenumber" name="L198" href="#L198">198</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L199" href="#L199">199</a> <em class="jxr_javadoccomment">     * @param listener listener in charge of attending events raised by this instance.</em>
 <a class="jxr_linenumber" name="L200" href="#L200">200</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L201" href="#L201">201</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRadioSourceEstimator.html">RobustRadioSourceEstimator</a>(<strong class="jxr_keyword">final</strong> L listener) {
+<a class="jxr_linenumber" name="L201" href="#L201">201</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRadioSourceEstimator.html">RobustRadioSourceEstimator</a>(<strong class="jxr_keyword">final</strong> L listener) {
 <a class="jxr_linenumber" name="L202" href="#L202">202</a>         mListener = listener;
 <a class="jxr_linenumber" name="L203" href="#L203">203</a>     }
 <a class="jxr_linenumber" name="L204" href="#L204">204</a> 
@@ -219,7 +219,7 @@
 <a class="jxr_linenumber" name="L211" href="#L211">211</a> <em class="jxr_javadoccomment">     * @param listener listener in charge of attending events raised by this instance.</em>
 <a class="jxr_linenumber" name="L212" href="#L212">212</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid.</em>
 <a class="jxr_linenumber" name="L213" href="#L213">213</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L214" href="#L214">214</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRadioSourceEstimator.html">RobustRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L214" href="#L214">214</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRadioSourceEstimator.html">RobustRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L215" href="#L215">215</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> R&gt; readings, <strong class="jxr_keyword">final</strong> L listener) {
 <a class="jxr_linenumber" name="L216" href="#L216">216</a>         <strong class="jxr_keyword">this</strong>(readings);
 <a class="jxr_linenumber" name="L217" href="#L217">217</a>         mListener = listener;

@@ -123,7 +123,7 @@ public abstract class BaseFingerprintPositionAndRadioSourceEstimator&lt;P extend
     /**
      * Constructor.
      */
-<span class="fc" id="L126">    public BaseFingerprintPositionAndRadioSourceEstimator() {</span>
+<span class="fc" id="L126">    protected BaseFingerprintPositionAndRadioSourceEstimator() {</span>
 <span class="fc" id="L127">    }</span>
 
     /**
@@ -131,7 +131,7 @@ public abstract class BaseFingerprintPositionAndRadioSourceEstimator&lt;P extend
      *
      * @param listener listener in charge of handling events.
      */
-<span class="fc" id="L134">    public BaseFingerprintPositionAndRadioSourceEstimator(final L listener) {</span>
+<span class="fc" id="L134">    protected BaseFingerprintPositionAndRadioSourceEstimator(final L listener) {</span>
 <span class="fc" id="L135">        mListener = listener;</span>
 <span class="fc" id="L136">    }</span>
 
@@ -144,7 +144,7 @@ public abstract class BaseFingerprintPositionAndRadioSourceEstimator&lt;P extend
      * @throws IllegalArgumentException if either non located fingerprint or located
      *                                  fingerprints are null.
      */
-    public BaseFingerprintPositionAndRadioSourceEstimator(
+    protected BaseFingerprintPositionAndRadioSourceEstimator(
             final List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
                     ? extends RssiReading&lt;? extends RadioSource&gt;, P&gt;&gt; locatedFingerprints,
             final RssiFingerprint&lt;? extends RadioSource,
@@ -163,7 +163,7 @@ public abstract class BaseFingerprintPositionAndRadioSourceEstimator&lt;P extend
      * @throws IllegalArgumentException if either non located fingerprint or located
      *                                  fingerprints are null.
      */
-    public BaseFingerprintPositionAndRadioSourceEstimator(
+    protected BaseFingerprintPositionAndRadioSourceEstimator(
             final List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
                     ? extends RssiReading&lt;? extends RadioSource&gt;, P&gt;&gt; locatedFingerprints,
             final RssiFingerprint&lt;? extends RadioSource,

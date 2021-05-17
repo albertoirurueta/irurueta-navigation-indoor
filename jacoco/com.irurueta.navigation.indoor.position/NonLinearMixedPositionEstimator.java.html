@@ -82,7 +82,7 @@ public abstract class NonLinearMixedPositionEstimator&lt;P extends Point&lt;?&gt
     /**
      * Constructor.
      */
-    public NonLinearMixedPositionEstimator() {
+    protected NonLinearMixedPositionEstimator() {
 <span class="fc" id="L86">        super();</span>
 <span class="fc" id="L87">        init();</span>
 <span class="fc" id="L88">    }</span>
@@ -92,7 +92,7 @@ public abstract class NonLinearMixedPositionEstimator&lt;P extends Point&lt;?&gt
      *
      * @param listener listener in charge of handling events.
      */
-    public NonLinearMixedPositionEstimator(
+    protected NonLinearMixedPositionEstimator(
             final MixedPositionEstimatorListener&lt;P&gt; listener) {
 <span class="fc" id="L97">        super(listener);</span>
 <span class="fc" id="L98">        init();</span>
@@ -103,7 +103,7 @@ public abstract class NonLinearMixedPositionEstimator&lt;P extends Point&lt;?&gt
      *
      * @param initialPosition initial position to start position estimation.
      */
-    public NonLinearMixedPositionEstimator(final P initialPosition) {
+    protected NonLinearMixedPositionEstimator(final P initialPosition) {
 <span class="fc" id="L107">        this();</span>
 <span class="fc" id="L108">        mInitialPosition = initialPosition;</span>
 <span class="fc" id="L109">    }</span>
@@ -114,7 +114,7 @@ public abstract class NonLinearMixedPositionEstimator&lt;P extends Point&lt;?&gt
      * @param initialPosition initial position to start position estimation.
      * @param listener        listener in charge of handling events.
      */
-    public NonLinearMixedPositionEstimator(
+    protected NonLinearMixedPositionEstimator(
             final P initialPosition, final MixedPositionEstimatorListener&lt;P&gt; listener) {
 <span class="fc" id="L119">        this(listener);</span>
 <span class="fc" id="L120">        mInitialPosition = initialPosition;</span>

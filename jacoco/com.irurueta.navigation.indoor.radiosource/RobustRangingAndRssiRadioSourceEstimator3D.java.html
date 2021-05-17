@@ -78,7 +78,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator3D&lt;S extends Ra
     /**
      * Constructor.
      */
-    public RobustRangingAndRssiRadioSourceEstimator3D() {
+    protected RobustRangingAndRssiRadioSourceEstimator3D() {
 <span class="fc" id="L82">        super();</span>
 <span class="fc" id="L83">        mPreliminarySubsetSize = getMinReadings();</span>
 <span class="fc" id="L84">    }</span>
@@ -90,7 +90,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator3D&lt;S extends Ra
      * @param readings signal readings belonging to the same radio source.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator3D(
+    protected RobustRangingAndRssiRadioSourceEstimator3D(
             final List&lt;? extends RangingAndRssiReadingLocated&lt;S, Point3D&gt;&gt; readings) {
 <span class="fc" id="L95">        super(readings);</span>
 <span class="fc" id="L96">        mPreliminarySubsetSize = getMinReadings();</span>
@@ -101,7 +101,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator3D&lt;S extends Ra
      *
      * @param listener listener in charge of attending events raised by this instance.
      */
-    public RobustRangingAndRssiRadioSourceEstimator3D(
+    protected RobustRangingAndRssiRadioSourceEstimator3D(
             final RobustRangingAndRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
 <span class="fc" id="L106">        super(listener);</span>
 <span class="fc" id="L107">        mPreliminarySubsetSize = getMinReadings();</span>
@@ -115,7 +115,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator3D&lt;S extends Ra
      * @param listener listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator3D(
+    protected RobustRangingAndRssiRadioSourceEstimator3D(
             final List&lt;? extends RangingAndRssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
             final RobustRangingAndRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
 <span class="fc" id="L121">        super(readings, listener);</span>
@@ -131,7 +131,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator3D&lt;S extends Ra
      *                        source position.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator3D(
+    protected RobustRangingAndRssiRadioSourceEstimator3D(
             final List&lt;? extends RangingAndRssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
             final Point3D initialPosition) {
 <span class="fc" id="L137">        super(readings, initialPosition);</span>
@@ -144,7 +144,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator3D&lt;S extends Ra
      * @param initialPosition initial position to start the estimation of radio
      *                        source position.
      */
-    public RobustRangingAndRssiRadioSourceEstimator3D(
+    protected RobustRangingAndRssiRadioSourceEstimator3D(
             final Point3D initialPosition) {
 <span class="fc" id="L149">        super(initialPosition);</span>
 <span class="fc" id="L150">        mPreliminarySubsetSize = getMinReadings();</span>
@@ -157,7 +157,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator3D&lt;S extends Ra
      *                        source position.
      * @param listener        listener in charge of attending events raised by this instance.
      */
-    public RobustRangingAndRssiRadioSourceEstimator3D(
+    protected RobustRangingAndRssiRadioSourceEstimator3D(
             final Point3D initialPosition,
             final RobustRangingAndRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
 <span class="fc" id="L163">        super(initialPosition, listener);</span>
@@ -174,7 +174,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator3D&lt;S extends Ra
      * @param listener        listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator3D(
+    protected RobustRangingAndRssiRadioSourceEstimator3D(
             final List&lt;? extends RangingAndRssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
             final Point3D initialPosition,
             final RobustRangingAndRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
@@ -189,7 +189,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator3D&lt;S extends Ra
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's)
      */
-    public RobustRangingAndRssiRadioSourceEstimator3D(
+    protected RobustRangingAndRssiRadioSourceEstimator3D(
             final Double initialTransmittedPowerdBm) {
 <span class="fc" id="L194">        super(initialTransmittedPowerdBm);</span>
 <span class="fc" id="L195">        mPreliminarySubsetSize = getMinReadings();</span>
@@ -205,7 +205,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator3D&lt;S extends Ra
      *                                   (expressed in dBm's)
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator3D(
+    protected RobustRangingAndRssiRadioSourceEstimator3D(
             final List&lt;? extends RangingAndRssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
             final Double initialTransmittedPowerdBm) {
 <span class="fc" id="L211">        super(readings, initialTransmittedPowerdBm);</span>
@@ -220,7 +220,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator3D&lt;S extends Ra
      *                                   (expressed in dBm's)
      * @param listener                   listener in charge of attending events raised by this instance.
      */
-    public RobustRangingAndRssiRadioSourceEstimator3D(
+    protected RobustRangingAndRssiRadioSourceEstimator3D(
             final Double initialTransmittedPowerdBm,
             final RobustRangingAndRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
 <span class="fc" id="L226">        super(initialTransmittedPowerdBm, listener);</span>
@@ -238,7 +238,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator3D&lt;S extends Ra
      * @param listener                   listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator3D(
+    protected RobustRangingAndRssiRadioSourceEstimator3D(
             final List&lt;? extends RangingAndRssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
             final Double initialTransmittedPowerdBm,
             final RobustRangingAndRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
@@ -258,7 +258,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator3D&lt;S extends Ra
      *                                   (expressed in dBm's).
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator3D(
+    protected RobustRangingAndRssiRadioSourceEstimator3D(
             final List&lt;? extends RangingAndRssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
             final Point3D initialPosition,
             final Double initialTransmittedPowerdBm) {
@@ -275,7 +275,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator3D&lt;S extends Ra
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's).
      */
-    public RobustRangingAndRssiRadioSourceEstimator3D(
+    protected RobustRangingAndRssiRadioSourceEstimator3D(
             final Point3D initialPosition,
             final Double initialTransmittedPowerdBm) {
 <span class="fc" id="L281">        super(initialPosition, initialTransmittedPowerdBm);</span>
@@ -292,7 +292,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator3D&lt;S extends Ra
      *                                   (expressed in dBm's).
      * @param listener                   listener in charge of attending events raised by this instance.
      */
-    public RobustRangingAndRssiRadioSourceEstimator3D(
+    protected RobustRangingAndRssiRadioSourceEstimator3D(
             final Point3D initialPosition,
             final Double initialTransmittedPowerdBm,
             final RobustRangingAndRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
@@ -313,7 +313,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator3D&lt;S extends Ra
      * @param listener                   listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator3D(
+    protected RobustRangingAndRssiRadioSourceEstimator3D(
             final List&lt;? extends RangingAndRssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
             final Point3D initialPosition,
             final Double initialTransmittedPowerdBm,
@@ -335,7 +335,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator3D&lt;S extends Ra
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator3D(
+    protected RobustRangingAndRssiRadioSourceEstimator3D(
             final List&lt;? extends RangingAndRssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
             final Point3D initialPosition,
             final Double initialTransmittedPowerdBm,
@@ -355,7 +355,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator3D&lt;S extends Ra
      *                                   (expressed in dBm's).
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      */
-    public RobustRangingAndRssiRadioSourceEstimator3D(
+    protected RobustRangingAndRssiRadioSourceEstimator3D(
             final Point3D initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
@@ -375,7 +375,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator3D&lt;S extends Ra
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      * @param listener                   listener in charge of attending events raised by this instance.
      */
-    public RobustRangingAndRssiRadioSourceEstimator3D(
+    protected RobustRangingAndRssiRadioSourceEstimator3D(
             final Point3D initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
@@ -399,7 +399,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator3D&lt;S extends Ra
      * @param listener                   listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingAndRssiRadioSourceEstimator3D(
+    protected RobustRangingAndRssiRadioSourceEstimator3D(
             final List&lt;? extends RangingAndRssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
             final Point3D initialPosition,
             final Double initialTransmittedPowerdBm,

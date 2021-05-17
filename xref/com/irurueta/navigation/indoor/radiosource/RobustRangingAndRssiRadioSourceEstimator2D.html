@@ -98,7 +98,7 @@
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>  <em class="jxr_javadoccomment">     * @param readings signal readings belonging to the same radio source.</em>
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>  <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid.</em>
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L93" href="#L93">93</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>      <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>              <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, Point2D&gt;&gt; readings) {
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>          <strong class="jxr_keyword">super</strong>(readings);
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>          mPreliminarySubsetSize = getMinReadings();
@@ -109,7 +109,7 @@
 <a class="jxr_linenumber" name="L101" href="#L101">101</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L102" href="#L102">102</a> <em class="jxr_javadoccomment">     * @param listener listener in charge of attending events raised by this instance.</em>
 <a class="jxr_linenumber" name="L103" href="#L103">103</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L104" href="#L104">104</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
+<a class="jxr_linenumber" name="L104" href="#L104">104</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
 <a class="jxr_linenumber" name="L105" href="#L105">105</a>             <strong class="jxr_keyword">final</strong> RobustRangingAndRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>         <strong class="jxr_keyword">super</strong>(listener);
 <a class="jxr_linenumber" name="L107" href="#L107">107</a>         mPreliminarySubsetSize = getMinReadings();
@@ -123,7 +123,7 @@
 <a class="jxr_linenumber" name="L115" href="#L115">115</a> <em class="jxr_javadoccomment">     * @param listener listener in charge of attending events raised by this instance.</em>
 <a class="jxr_linenumber" name="L116" href="#L116">116</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid.</em>
 <a class="jxr_linenumber" name="L117" href="#L117">117</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L118" href="#L118">118</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
+<a class="jxr_linenumber" name="L118" href="#L118">118</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
 <a class="jxr_linenumber" name="L119" href="#L119">119</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
 <a class="jxr_linenumber" name="L120" href="#L120">120</a>             <strong class="jxr_keyword">final</strong> RobustRangingAndRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
 <a class="jxr_linenumber" name="L121" href="#L121">121</a>         <strong class="jxr_keyword">super</strong>(readings, listener);
@@ -139,7 +139,7 @@
 <a class="jxr_linenumber" name="L131" href="#L131">131</a> <em class="jxr_javadoccomment">     *                        source position.</em>
 <a class="jxr_linenumber" name="L132" href="#L132">132</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid.</em>
 <a class="jxr_linenumber" name="L133" href="#L133">133</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L134" href="#L134">134</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
+<a class="jxr_linenumber" name="L134" href="#L134">134</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
 <a class="jxr_linenumber" name="L136" href="#L136">136</a>             <strong class="jxr_keyword">final</strong> Point2D initialPosition) {
 <a class="jxr_linenumber" name="L137" href="#L137">137</a>         <strong class="jxr_keyword">super</strong>(readings, initialPosition);
@@ -152,7 +152,7 @@
 <a class="jxr_linenumber" name="L144" href="#L144">144</a> <em class="jxr_javadoccomment">     * @param initialPosition initial position to start the estimation of radio</em>
 <a class="jxr_linenumber" name="L145" href="#L145">145</a> <em class="jxr_javadoccomment">     *                        source position.</em>
 <a class="jxr_linenumber" name="L146" href="#L146">146</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L147" href="#L147">147</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
+<a class="jxr_linenumber" name="L147" href="#L147">147</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
 <a class="jxr_linenumber" name="L148" href="#L148">148</a>             <strong class="jxr_keyword">final</strong> Point2D initialPosition) {
 <a class="jxr_linenumber" name="L149" href="#L149">149</a>         <strong class="jxr_keyword">super</strong>(initialPosition);
 <a class="jxr_linenumber" name="L150" href="#L150">150</a>         mPreliminarySubsetSize = getMinReadings();
@@ -165,7 +165,7 @@
 <a class="jxr_linenumber" name="L157" href="#L157">157</a> <em class="jxr_javadoccomment">     *                        source position.</em>
 <a class="jxr_linenumber" name="L158" href="#L158">158</a> <em class="jxr_javadoccomment">     * @param listener        listener in charge of attending events raised by this instance.</em>
 <a class="jxr_linenumber" name="L159" href="#L159">159</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L160" href="#L160">160</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
+<a class="jxr_linenumber" name="L160" href="#L160">160</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
 <a class="jxr_linenumber" name="L161" href="#L161">161</a>             <strong class="jxr_keyword">final</strong> Point2D initialPosition,
 <a class="jxr_linenumber" name="L162" href="#L162">162</a>             <strong class="jxr_keyword">final</strong> RobustRangingAndRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
 <a class="jxr_linenumber" name="L163" href="#L163">163</a>         <strong class="jxr_keyword">super</strong>(initialPosition, listener);
@@ -182,7 +182,7 @@
 <a class="jxr_linenumber" name="L174" href="#L174">174</a> <em class="jxr_javadoccomment">     * @param listener        listener in charge of attending events raised by this instance.</em>
 <a class="jxr_linenumber" name="L175" href="#L175">175</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid.</em>
 <a class="jxr_linenumber" name="L176" href="#L176">176</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L177" href="#L177">177</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
+<a class="jxr_linenumber" name="L177" href="#L177">177</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
 <a class="jxr_linenumber" name="L178" href="#L178">178</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
 <a class="jxr_linenumber" name="L179" href="#L179">179</a>             <strong class="jxr_keyword">final</strong> Point2D initialPosition,
 <a class="jxr_linenumber" name="L180" href="#L180">180</a>             <strong class="jxr_keyword">final</strong> RobustRangingAndRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
@@ -197,7 +197,7 @@
 <a class="jxr_linenumber" name="L189" href="#L189">189</a> <em class="jxr_javadoccomment">     *                                   estimation of radio source transmitted power</em>
 <a class="jxr_linenumber" name="L190" href="#L190">190</a> <em class="jxr_javadoccomment">     *                                   (expressed in dBm's)</em>
 <a class="jxr_linenumber" name="L191" href="#L191">191</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L192" href="#L192">192</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
+<a class="jxr_linenumber" name="L192" href="#L192">192</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
 <a class="jxr_linenumber" name="L193" href="#L193">193</a>             <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm) {
 <a class="jxr_linenumber" name="L194" href="#L194">194</a>         <strong class="jxr_keyword">super</strong>(initialTransmittedPowerdBm);
 <a class="jxr_linenumber" name="L195" href="#L195">195</a>         mPreliminarySubsetSize = getMinReadings();
@@ -213,7 +213,7 @@
 <a class="jxr_linenumber" name="L205" href="#L205">205</a> <em class="jxr_javadoccomment">     *                                   (expressed in dBm's)</em>
 <a class="jxr_linenumber" name="L206" href="#L206">206</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid.</em>
 <a class="jxr_linenumber" name="L207" href="#L207">207</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L208" href="#L208">208</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
+<a class="jxr_linenumber" name="L208" href="#L208">208</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
 <a class="jxr_linenumber" name="L209" href="#L209">209</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
 <a class="jxr_linenumber" name="L210" href="#L210">210</a>             <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm) {
 <a class="jxr_linenumber" name="L211" href="#L211">211</a>         <strong class="jxr_keyword">super</strong>(readings, initialTransmittedPowerdBm);
@@ -228,7 +228,7 @@
 <a class="jxr_linenumber" name="L220" href="#L220">220</a> <em class="jxr_javadoccomment">     *                                   (expressed in dBm's)</em>
 <a class="jxr_linenumber" name="L221" href="#L221">221</a> <em class="jxr_javadoccomment">     * @param listener                   listener in charge of attending events raised by this instance.</em>
 <a class="jxr_linenumber" name="L222" href="#L222">222</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L223" href="#L223">223</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
+<a class="jxr_linenumber" name="L223" href="#L223">223</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
 <a class="jxr_linenumber" name="L224" href="#L224">224</a>             <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm,
 <a class="jxr_linenumber" name="L225" href="#L225">225</a>             <strong class="jxr_keyword">final</strong> RobustRangingAndRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
 <a class="jxr_linenumber" name="L226" href="#L226">226</a>         <strong class="jxr_keyword">super</strong>(initialTransmittedPowerdBm, listener);
@@ -246,7 +246,7 @@
 <a class="jxr_linenumber" name="L238" href="#L238">238</a> <em class="jxr_javadoccomment">     * @param listener                   listener in charge of attending events raised by this instance.</em>
 <a class="jxr_linenumber" name="L239" href="#L239">239</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid.</em>
 <a class="jxr_linenumber" name="L240" href="#L240">240</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L241" href="#L241">241</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
+<a class="jxr_linenumber" name="L241" href="#L241">241</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
 <a class="jxr_linenumber" name="L242" href="#L242">242</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
 <a class="jxr_linenumber" name="L243" href="#L243">243</a>             <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm,
 <a class="jxr_linenumber" name="L244" href="#L244">244</a>             <strong class="jxr_keyword">final</strong> RobustRangingAndRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
@@ -266,7 +266,7 @@
 <a class="jxr_linenumber" name="L258" href="#L258">258</a> <em class="jxr_javadoccomment">     *                                   (expressed in dBm's).</em>
 <a class="jxr_linenumber" name="L259" href="#L259">259</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid.</em>
 <a class="jxr_linenumber" name="L260" href="#L260">260</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L261" href="#L261">261</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
+<a class="jxr_linenumber" name="L261" href="#L261">261</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
 <a class="jxr_linenumber" name="L262" href="#L262">262</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
 <a class="jxr_linenumber" name="L263" href="#L263">263</a>             <strong class="jxr_keyword">final</strong> Point2D initialPosition,
 <a class="jxr_linenumber" name="L264" href="#L264">264</a>             <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm) {
@@ -283,7 +283,7 @@
 <a class="jxr_linenumber" name="L275" href="#L275">275</a> <em class="jxr_javadoccomment">     *                                   estimation of radio source transmitted power</em>
 <a class="jxr_linenumber" name="L276" href="#L276">276</a> <em class="jxr_javadoccomment">     *                                   (expressed in dBm's).</em>
 <a class="jxr_linenumber" name="L277" href="#L277">277</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L278" href="#L278">278</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
+<a class="jxr_linenumber" name="L278" href="#L278">278</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
 <a class="jxr_linenumber" name="L279" href="#L279">279</a>             <strong class="jxr_keyword">final</strong> Point2D initialPosition,
 <a class="jxr_linenumber" name="L280" href="#L280">280</a>             <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm) {
 <a class="jxr_linenumber" name="L281" href="#L281">281</a>         <strong class="jxr_keyword">super</strong>(initialPosition, initialTransmittedPowerdBm);
@@ -300,7 +300,7 @@
 <a class="jxr_linenumber" name="L292" href="#L292">292</a> <em class="jxr_javadoccomment">     *                                   (expressed in dBm's).</em>
 <a class="jxr_linenumber" name="L293" href="#L293">293</a> <em class="jxr_javadoccomment">     * @param listener                   listener in charge of attending events raised by this instance.</em>
 <a class="jxr_linenumber" name="L294" href="#L294">294</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L295" href="#L295">295</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
+<a class="jxr_linenumber" name="L295" href="#L295">295</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
 <a class="jxr_linenumber" name="L296" href="#L296">296</a>             <strong class="jxr_keyword">final</strong> Point2D initialPosition,
 <a class="jxr_linenumber" name="L297" href="#L297">297</a>             <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm,
 <a class="jxr_linenumber" name="L298" href="#L298">298</a>             <strong class="jxr_keyword">final</strong> RobustRangingAndRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
@@ -321,7 +321,7 @@
 <a class="jxr_linenumber" name="L313" href="#L313">313</a> <em class="jxr_javadoccomment">     * @param listener                   listener in charge of attending events raised by this instance.</em>
 <a class="jxr_linenumber" name="L314" href="#L314">314</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid.</em>
 <a class="jxr_linenumber" name="L315" href="#L315">315</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L316" href="#L316">316</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
+<a class="jxr_linenumber" name="L316" href="#L316">316</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
 <a class="jxr_linenumber" name="L317" href="#L317">317</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
 <a class="jxr_linenumber" name="L318" href="#L318">318</a>             <strong class="jxr_keyword">final</strong> Point2D initialPosition, <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm,
 <a class="jxr_linenumber" name="L319" href="#L319">319</a>             <strong class="jxr_keyword">final</strong> RobustRangingAndRssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
@@ -342,7 +342,7 @@
 <a class="jxr_linenumber" name="L334" href="#L334">334</a> <em class="jxr_javadoccomment">     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.</em>
 <a class="jxr_linenumber" name="L335" href="#L335">335</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid.</em>
 <a class="jxr_linenumber" name="L336" href="#L336">336</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L337" href="#L337">337</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
+<a class="jxr_linenumber" name="L337" href="#L337">337</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
 <a class="jxr_linenumber" name="L338" href="#L338">338</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
 <a class="jxr_linenumber" name="L339" href="#L339">339</a>             <strong class="jxr_keyword">final</strong> Point2D initialPosition, <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm,
 <a class="jxr_linenumber" name="L340" href="#L340">340</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> initialPathLossExponent) {
@@ -361,7 +361,7 @@
 <a class="jxr_linenumber" name="L353" href="#L353">353</a> <em class="jxr_javadoccomment">     *                                   (expressed in dBm's).</em>
 <a class="jxr_linenumber" name="L354" href="#L354">354</a> <em class="jxr_javadoccomment">     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.</em>
 <a class="jxr_linenumber" name="L355" href="#L355">355</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L356" href="#L356">356</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
+<a class="jxr_linenumber" name="L356" href="#L356">356</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
 <a class="jxr_linenumber" name="L357" href="#L357">357</a>             <strong class="jxr_keyword">final</strong> Point2D initialPosition, <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm,
 <a class="jxr_linenumber" name="L358" href="#L358">358</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> initialPathLossExponent) {
 <a class="jxr_linenumber" name="L359" href="#L359">359</a>         <strong class="jxr_keyword">super</strong>(initialPosition, initialTransmittedPowerdBm,
@@ -380,7 +380,7 @@
 <a class="jxr_linenumber" name="L372" href="#L372">372</a> <em class="jxr_javadoccomment">     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.</em>
 <a class="jxr_linenumber" name="L373" href="#L373">373</a> <em class="jxr_javadoccomment">     * @param listener                   listener in charge of attending events raised by this instance.</em>
 <a class="jxr_linenumber" name="L374" href="#L374">374</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L375" href="#L375">375</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
+<a class="jxr_linenumber" name="L375" href="#L375">375</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
 <a class="jxr_linenumber" name="L376" href="#L376">376</a>             <strong class="jxr_keyword">final</strong> Point2D initialPosition,
 <a class="jxr_linenumber" name="L377" href="#L377">377</a>             <strong class="jxr_keyword">final</strong> Double initialTransmittedPowerdBm,
 <a class="jxr_linenumber" name="L378" href="#L378">378</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> initialPathLossExponent,
@@ -404,7 +404,7 @@
 <a class="jxr_linenumber" name="L396" href="#L396">396</a> <em class="jxr_javadoccomment">     * @param listener                   listener in charge of attending events raised by this instance.</em>
 <a class="jxr_linenumber" name="L397" href="#L397">397</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid.</em>
 <a class="jxr_linenumber" name="L398" href="#L398">398</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L399" href="#L399">399</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
+<a class="jxr_linenumber" name="L399" href="#L399">399</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator2D.html">RobustRangingAndRssiRadioSourceEstimator2D</a>(
 <a class="jxr_linenumber" name="L400" href="#L400">400</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingAndRssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
 <a class="jxr_linenumber" name="L401" href="#L401">401</a>             <strong class="jxr_keyword">final</strong> Point2D initialPosition, Double initialTransmittedPowerdBm,
 <a class="jxr_linenumber" name="L402" href="#L402">402</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> initialPathLossExponent,

@@ -74,7 +74,7 @@ public abstract class RadioSourceEstimator&lt;P extends Point&lt;?&gt;, R extend
     /**
      * Constructor.
      */
-<span class="fc" id="L77">    public RadioSourceEstimator() {</span>
+<span class="fc" id="L77">    protected RadioSourceEstimator() {</span>
 <span class="fc" id="L78">    }</span>
 
     /**
@@ -85,7 +85,7 @@ public abstract class RadioSourceEstimator&lt;P extends Point&lt;?&gt;, R extend
      *                 radio source.
      * @throws IllegalArgumentException if readings are not valid.
      */
-<span class="fc" id="L88">    public RadioSourceEstimator(final List&lt;? extends R&gt; readings) {</span>
+<span class="fc" id="L88">    protected RadioSourceEstimator(final List&lt;? extends R&gt; readings) {</span>
 <span class="fc" id="L89">        internalSetReadings(readings);</span>
 <span class="fc" id="L90">    }</span>
 
@@ -94,7 +94,7 @@ public abstract class RadioSourceEstimator&lt;P extends Point&lt;?&gt;, R extend
      *
      * @param listener listener in charge of attending events raised by this instance.
      */
-<span class="fc" id="L97">    public RadioSourceEstimator(final L listener) {</span>
+<span class="fc" id="L97">    protected RadioSourceEstimator(final L listener) {</span>
 <span class="fc" id="L98">        mListener = listener;</span>
 <span class="fc" id="L99">    }</span>
 
@@ -106,7 +106,7 @@ public abstract class RadioSourceEstimator&lt;P extends Point&lt;?&gt;, R extend
      * @param listener listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if fingerprints are not valid.
      */
-    public RadioSourceEstimator(
+    protected RadioSourceEstimator(
             final List&lt;? extends R&gt; readings, final L listener) {
 <span class="fc" id="L111">        this(readings);</span>
 <span class="fc" id="L112">        mListener = listener;</span>

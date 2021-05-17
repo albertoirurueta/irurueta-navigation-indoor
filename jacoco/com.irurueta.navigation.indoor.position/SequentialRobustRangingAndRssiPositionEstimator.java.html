@@ -402,7 +402,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
     /**
      * Constructor.
      */
-<span class="fc" id="L405">    public SequentialRobustRangingAndRssiPositionEstimator() {</span>
+<span class="fc" id="L405">    protected SequentialRobustRangingAndRssiPositionEstimator() {</span>
 <span class="fc" id="L406">    }</span>
 
     /**
@@ -412,7 +412,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      * @throws IllegalArgumentException if provided sources is null or the number of
      *                                  provided sources is less than the required minimum.
      */
-    public SequentialRobustRangingAndRssiPositionEstimator(
+    protected SequentialRobustRangingAndRssiPositionEstimator(
 <span class="fc" id="L416">            final List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; sources) {</span>
 <span class="fc" id="L417">        internalSetSources(sources);</span>
 <span class="fc" id="L418">    }</span>
@@ -424,7 +424,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      *                    location for provided located radio sources.
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
-    public SequentialRobustRangingAndRssiPositionEstimator(
+    protected SequentialRobustRangingAndRssiPositionEstimator(
             final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
 <span class="fc" id="L429">                    extends RadioSource&gt;&gt; fingerprint) {</span>
 <span class="fc" id="L430">        internalSetFingerprint(fingerprint);</span>
@@ -439,7 +439,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      * @throws IllegalArgumentException if either provided sources or fingerprint is null
      *                                  or the number of provided sources is less than the required minimum.
      */
-    public SequentialRobustRangingAndRssiPositionEstimator(
+    protected SequentialRobustRangingAndRssiPositionEstimator(
             final List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; sources,
             final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
 <span class="fc" id="L445">                    extends RadioSource&gt;&gt; fingerprint) {</span>
@@ -452,7 +452,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      *
      * @param listener listener in charge of handling events.
      */
-    public SequentialRobustRangingAndRssiPositionEstimator(
+    protected SequentialRobustRangingAndRssiPositionEstimator(
 <span class="fc" id="L456">            final SequentialRobustRangingAndRssiPositionEstimatorListener&lt;P&gt; listener) {</span>
 <span class="fc" id="L457">        mListener = listener;</span>
 <span class="fc" id="L458">    }</span>
@@ -466,7 +466,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      *                                  provided sources is less than the required
      *                                  minimum.
      */
-    public SequentialRobustRangingAndRssiPositionEstimator(
+    protected SequentialRobustRangingAndRssiPositionEstimator(
             final List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; sources,
             final SequentialRobustRangingAndRssiPositionEstimatorListener&lt;P&gt; listener) {
 <span class="fc" id="L472">        this(sources);</span>
@@ -481,7 +481,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      * @param listener    listener in charge of handling events.
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
-    public SequentialRobustRangingAndRssiPositionEstimator(
+    protected SequentialRobustRangingAndRssiPositionEstimator(
             final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
                     extends RadioSource&gt;&gt; fingerprint,
             final SequentialRobustRangingAndRssiPositionEstimatorListener&lt;P&gt; listener) {
@@ -499,7 +499,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      * @throws IllegalArgumentException if either provided sources or fingerprint is null
      *                                  or the number of provided sources is less than the required minimum.
      */
-    public SequentialRobustRangingAndRssiPositionEstimator(
+    protected SequentialRobustRangingAndRssiPositionEstimator(
             final List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; sources,
             final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
                     extends RadioSource&gt;&gt; fingerprint,
@@ -520,7 +520,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      *                                        the score the better the quality of the
      *                                        reading.
      */
-    public SequentialRobustRangingAndRssiPositionEstimator(
+    protected SequentialRobustRangingAndRssiPositionEstimator(
             final double[] sourceQualityScores,
 <span class="fc" id="L525">            final double[] fingerprintReadingQualityScores) {</span>
 <span class="fc" id="L526">        internalSetSourceQualityScores(sourceQualityScores);</span>
@@ -544,7 +544,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      *                                  provided sources is less than the required
      *                                  minimum.
      */
-    public SequentialRobustRangingAndRssiPositionEstimator(
+    protected SequentialRobustRangingAndRssiPositionEstimator(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; sources) {
@@ -569,7 +569,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      *                                        provided located radio sources.
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
-    public SequentialRobustRangingAndRssiPositionEstimator(
+    protected SequentialRobustRangingAndRssiPositionEstimator(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
@@ -598,7 +598,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      * @throws IllegalArgumentException if either provided sources or fingerprint is null
      *                                  or the number of provided sources is less than the required minimum.
      */
-    public SequentialRobustRangingAndRssiPositionEstimator(
+    protected SequentialRobustRangingAndRssiPositionEstimator(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; sources,
@@ -622,7 +622,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      *                                        reading.
      * @param listener                        listener in charge of handling events.
      */
-    public SequentialRobustRangingAndRssiPositionEstimator(
+    protected SequentialRobustRangingAndRssiPositionEstimator(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final SequentialRobustRangingAndRssiPositionEstimatorListener&lt;P&gt; listener) {
@@ -647,7 +647,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      * @throws IllegalArgumentException if provided sources is null or the number of
      *                                  provided sources is less than the required minimum.
      */
-    public SequentialRobustRangingAndRssiPositionEstimator(
+    protected SequentialRobustRangingAndRssiPositionEstimator(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; sources,
@@ -673,7 +673,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      * @param listener                        listener in charge of handling events.
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
-    public SequentialRobustRangingAndRssiPositionEstimator(
+    protected SequentialRobustRangingAndRssiPositionEstimator(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
@@ -703,7 +703,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      * @throws IllegalArgumentException if either provided sources or fingerprint is null
      *                                  or the number of provided sources is less than the required minimum.
      */
-    public SequentialRobustRangingAndRssiPositionEstimator(
+    protected SequentialRobustRangingAndRssiPositionEstimator(
             final double[] sourceQualityScores,
             final double[] fingerprintReadingQualityScores,
             final List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; sources,

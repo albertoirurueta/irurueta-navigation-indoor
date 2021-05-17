@@ -35,7 +35,7 @@ public abstract class MixedPositionEstimator&lt;P extends Point&lt;?&gt;&gt; ext
     /**
      * Constructor.
      */
-    public MixedPositionEstimator() {
+    protected MixedPositionEstimator() {
 <span class="fc" id="L39">        super();</span>
 <span class="fc" id="L40">    }</span>
 
@@ -44,7 +44,7 @@ public abstract class MixedPositionEstimator&lt;P extends Point&lt;?&gt;&gt; ext
      *
      * @param listener listener in charge of handling events.
      */
-    public MixedPositionEstimator(final MixedPositionEstimatorListener&lt;P&gt; listener) {
+    protected MixedPositionEstimator(final MixedPositionEstimatorListener&lt;P&gt; listener) {
 <span class="fc" id="L48">        super(listener);</span>
 <span class="fc" id="L49">    }</span>
 }

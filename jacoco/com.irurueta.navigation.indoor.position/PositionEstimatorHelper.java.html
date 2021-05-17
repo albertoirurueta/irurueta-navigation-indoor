@@ -71,7 +71,7 @@ public class PositionEstimatorHelper {
 <span class="fc" id="L71">        final List&lt;? extends Reading&lt;? extends RadioSource&gt;&gt; readings =</span>
 <span class="fc" id="L72">                fingerprint.getReadings();</span>
 <span class="fc bfc" id="L73" title="All 2 branches covered.">        for (final Reading&lt;? extends RadioSource&gt; reading : readings) {</span>
-            //noinspection all
+            //noinspection SuspiciousMethodCalls
 <span class="fc" id="L75">            final int index = sources.indexOf(reading.getSource());</span>
 <span class="pc bpc" id="L76" title="1 of 2 branches missed.">            if (index &gt;= 0) {</span>
 <span class="fc" id="L77">                final RadioSourceLocated&lt;P&gt; locatedSource = sources.get(index);</span>
@@ -228,7 +228,7 @@ public class PositionEstimatorHelper {
 <span class="fc" id="L228">                fingerprint.getReadings();</span>
 <span class="fc" id="L229">        int readingIndex = 0;</span>
 <span class="fc bfc" id="L230" title="All 2 branches covered.">        for (final Reading&lt;? extends RadioSource&gt; reading : readings) {</span>
-            // noinspection all
+            //noinspection SuspiciousMethodCalls
 <span class="fc" id="L232">            final int sourceIndex = sources.indexOf(reading.getSource());</span>
 <span class="fc bfc" id="L233" title="All 2 branches covered.">            final Double readingQualityScore = fingerprintReadingsQualityScores != null ?</span>
 <span class="fc" id="L234">                    fingerprintReadingsQualityScores[readingIndex] : null;</span>

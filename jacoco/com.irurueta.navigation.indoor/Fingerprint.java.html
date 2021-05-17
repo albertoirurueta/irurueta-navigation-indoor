@@ -32,7 +32,7 @@ public class Fingerprint&lt;S extends RadioSource, R extends Reading&lt;S&gt;&gt
     /**
      * Non-located ranging and RSSI readings.
      */
-<span class="fc" id="L35">    protected List&lt;R&gt; mReadings = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L35">    protected ArrayList&lt;R&gt; mReadings = new ArrayList&lt;&gt;();</span>
 
     /**
      * Constructor.
@@ -50,7 +50,7 @@ public class Fingerprint&lt;S extends RadioSource, R extends Reading&lt;S&gt;&gt
 <span class="fc bfc" id="L50" title="All 2 branches covered.">        if (readings == null) {</span>
 <span class="fc" id="L51">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L53">        mReadings = readings;</span>
+<span class="fc" id="L53">        mReadings = new ArrayList&lt;&gt;(readings);</span>
 <span class="fc" id="L54">    }</span>
 
     /**
@@ -72,7 +72,7 @@ public class Fingerprint&lt;S extends RadioSource, R extends Reading&lt;S&gt;&gt
 <span class="fc bfc" id="L72" title="All 2 branches covered.">        if (readings == null) {</span>
 <span class="fc" id="L73">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L75">        mReadings = readings;</span>
+<span class="fc" id="L75">        mReadings = new ArrayList&lt;&gt;(readings);</span>
 <span class="fc" id="L76">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

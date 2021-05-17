@@ -178,7 +178,7 @@ public abstract class RobustRadioSourceEstimator&lt;P extends Point&lt;?&gt;,
     /**
      * Constructor.
      */
-<span class="fc" id="L181">    public RobustRadioSourceEstimator() {</span>
+<span class="fc" id="L181">    protected RobustRadioSourceEstimator() {</span>
 <span class="fc" id="L182">    }</span>
 
     /**
@@ -189,7 +189,7 @@ public abstract class RobustRadioSourceEstimator&lt;P extends Point&lt;?&gt;,
      *                 radio source.
      * @throws IllegalArgumentException if readings are not valid.
      */
-<span class="fc" id="L192">    public RobustRadioSourceEstimator(final List&lt;? extends R&gt; readings) {</span>
+<span class="fc" id="L192">    protected RobustRadioSourceEstimator(final List&lt;? extends R&gt; readings) {</span>
 <span class="fc" id="L193">        internalSetReadings(readings);</span>
 <span class="fc" id="L194">    }</span>
 
@@ -198,7 +198,7 @@ public abstract class RobustRadioSourceEstimator&lt;P extends Point&lt;?&gt;,
      *
      * @param listener listener in charge of attending events raised by this instance.
      */
-<span class="fc" id="L201">    public RobustRadioSourceEstimator(final L listener) {</span>
+<span class="fc" id="L201">    protected RobustRadioSourceEstimator(final L listener) {</span>
 <span class="fc" id="L202">        mListener = listener;</span>
 <span class="fc" id="L203">    }</span>
 
@@ -211,7 +211,7 @@ public abstract class RobustRadioSourceEstimator&lt;P extends Point&lt;?&gt;,
      * @param listener listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRadioSourceEstimator(
+    protected RobustRadioSourceEstimator(
             final List&lt;? extends R&gt; readings, final L listener) {
 <span class="fc" id="L216">        this(readings);</span>
 <span class="fc" id="L217">        mListener = listener;</span>

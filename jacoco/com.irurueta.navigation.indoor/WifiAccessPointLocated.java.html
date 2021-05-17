@@ -46,7 +46,7 @@ public abstract class WifiAccessPointLocated&lt;P extends Point&lt;?&gt;&gt;
      * @throws IllegalArgumentException if either BSSID or position are null or
      *                                  frequency is negative.
      */
-    public WifiAccessPointLocated(
+    protected WifiAccessPointLocated(
             final String bssid, final double frequency, final P position) {
 <span class="fc" id="L51">        super(bssid, frequency);</span>
 
@@ -68,7 +68,7 @@ public abstract class WifiAccessPointLocated&lt;P extends Point&lt;?&gt;&gt;
      * @throws IllegalArgumentException if either BSSID or position are null or
      *                                  frequency is negative.
      */
-    public WifiAccessPointLocated(
+    protected WifiAccessPointLocated(
             final String bssid, final double frequency, final String ssid,
             final P position) {
 <span class="fc" id="L74">        super(bssid, frequency, ssid);</span>
@@ -92,7 +92,7 @@ public abstract class WifiAccessPointLocated&lt;P extends Point&lt;?&gt;&gt;
      * @throws IllegalArgumentException if either BSSID or position are null or
      *                                  frequency is negative, or covariance does not have proper size.
      */
-    public WifiAccessPointLocated(
+    protected WifiAccessPointLocated(
             final String bssid, final double frequency, final P position,
             final Matrix positionCovariance) {
 <span class="fc" id="L98">        this(bssid, frequency, position);</span>
@@ -120,7 +120,7 @@ public abstract class WifiAccessPointLocated&lt;P extends Point&lt;?&gt;&gt;
      * @throws IllegalArgumentException if either BSSID or position are null or
      *                                  frequency is negative, or covariance does not have proper size.
      */
-    public WifiAccessPointLocated(
+    protected WifiAccessPointLocated(
             final String bssid, final double frequency, final String ssid,
             final P position, final Matrix positionCovariance) {
 <span class="fc" id="L126">        this(bssid, frequency, ssid, position);</span>

@@ -41,7 +41,7 @@ public class BeaconIdentifier implements Comparable&lt;BeaconIdentifier&gt;, Ser
     /**
      * Parses beacon identifiers in decimal format.
      */
-<span class="fc" id="L44">    private static final Pattern DECIMAL_PATTERN = Pattern.compile(&quot;^0|[1-9][0-9]*$&quot;);</span>
+<span class="fc" id="L44">    private static final Pattern DECIMAL_PATTERN = Pattern.compile(&quot;^(0|[1-9][0-9]*)$&quot;);</span>
 
     /**
      * Parses beacon identifiers in UUID format.

@@ -35,7 +35,7 @@ public abstract class Reading&lt;S extends RadioSource&gt; implements Serializab
      * @param source radio source associated to this reading.
      * @throws IllegalArgumentException if radios source data is null.
      */
-<span class="fc" id="L38">    public Reading(final S source) {</span>
+<span class="fc" id="L38">    protected Reading(final S source) {</span>
 <span class="fc bfc" id="L39" title="All 2 branches covered.">        if (source == null) {</span>
 <span class="fc" id="L40">            throw new IllegalArgumentException();</span>
         }

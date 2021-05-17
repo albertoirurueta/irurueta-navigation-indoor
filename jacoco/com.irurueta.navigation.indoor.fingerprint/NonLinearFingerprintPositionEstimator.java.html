@@ -158,7 +158,7 @@ public abstract class NonLinearFingerprintPositionEstimator&lt;P extends Point&l
     /**
      * Constructor.
      */
-<span class="fc" id="L161">    public NonLinearFingerprintPositionEstimator() {</span>
+<span class="fc" id="L161">    protected NonLinearFingerprintPositionEstimator() {</span>
 <span class="fc" id="L162">    }</span>
 
     /**
@@ -166,7 +166,7 @@ public abstract class NonLinearFingerprintPositionEstimator&lt;P extends Point&l
      *
      * @param listener listener in charge of handling events.
      */
-    public NonLinearFingerprintPositionEstimator(
+    protected NonLinearFingerprintPositionEstimator(
             final FingerprintPositionEstimatorListener&lt;P&gt; listener) {
 <span class="fc" id="L171">        super(listener);</span>
 <span class="fc" id="L172">    }</span>
@@ -186,7 +186,7 @@ public abstract class NonLinearFingerprintPositionEstimator&lt;P extends Point&l
      *                                  different locations containing a single reading are required. For 3D position
      *                                  estimation 3 located total readings are required among all fingerprints).
      */
-    public NonLinearFingerprintPositionEstimator(
+    protected NonLinearFingerprintPositionEstimator(
             final List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
                     ? extends RssiReading&lt;? extends RadioSource&gt;, P&gt;&gt; locatedFingerprints,
             final RssiFingerprint&lt;? extends RadioSource,
@@ -211,7 +211,7 @@ public abstract class NonLinearFingerprintPositionEstimator&lt;P extends Point&l
      *                                  different locations containing a single reading are required. For 3D position
      *                                  estimation 3 located total readings are required among all fingerprints).
      */
-    public NonLinearFingerprintPositionEstimator(
+    protected NonLinearFingerprintPositionEstimator(
             final List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
                     ? extends RssiReading&lt;? extends RadioSource&gt;, P&gt;&gt; locatedFingerprints,
             final RssiFingerprint&lt;? extends RadioSource,
@@ -237,7 +237,7 @@ public abstract class NonLinearFingerprintPositionEstimator&lt;P extends Point&l
      *                                  different locations containing a single reading are required. For 3D position
      *                                  estimation 3 located total readings are required among all fingerprints).
      */
-    public NonLinearFingerprintPositionEstimator(
+    protected NonLinearFingerprintPositionEstimator(
             final List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
                     ? extends RssiReading&lt;? extends RadioSource&gt;, P&gt;&gt; locatedFingerprints,
             final RssiFingerprint&lt;? extends RadioSource,
@@ -264,7 +264,7 @@ public abstract class NonLinearFingerprintPositionEstimator&lt;P extends Point&l
      *                                  different locations containing a single reading are required. For 3D position
      *                                  estimation 3 located total readings are required among all fingerprints).
      */
-    public NonLinearFingerprintPositionEstimator(
+    protected NonLinearFingerprintPositionEstimator(
             final List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
                     ? extends RssiReading&lt;? extends RadioSource&gt;, P&gt;&gt; locatedFingerprints,
             final RssiFingerprint&lt;? extends RadioSource,

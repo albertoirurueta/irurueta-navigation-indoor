@@ -35,7 +35,7 @@ public abstract class RangingPositionEstimator&lt;P extends Point&lt;?&gt;&gt; e
     /**
      * Constructor.
      */
-    public RangingPositionEstimator() {
+    protected RangingPositionEstimator() {
 <span class="fc" id="L39">        super();</span>
 <span class="fc" id="L40">    }</span>
 
@@ -44,7 +44,7 @@ public abstract class RangingPositionEstimator&lt;P extends Point&lt;?&gt;&gt; e
      *
      * @param listener listener in charge of handling events.
      */
-    public RangingPositionEstimator(final RangingPositionEstimatorListener&lt;P&gt; listener) {
+    protected RangingPositionEstimator(final RangingPositionEstimatorListener&lt;P&gt; listener) {
 <span class="fc" id="L48">        super(listener);</span>
 <span class="fc" id="L49">    }</span>
 }

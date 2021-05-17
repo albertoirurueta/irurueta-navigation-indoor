@@ -55,7 +55,7 @@ public abstract class RobustRangingRadioSourceEstimator&lt;S extends RadioSource
     /**
      * Constructor.
      */
-    public RobustRangingRadioSourceEstimator() {
+    protected RobustRangingRadioSourceEstimator() {
 <span class="fc" id="L59">        super();</span>
 <span class="fc" id="L60">    }</span>
 
@@ -67,7 +67,7 @@ public abstract class RobustRangingRadioSourceEstimator&lt;S extends RadioSource
      *                 radio source.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingRadioSourceEstimator(
+    protected RobustRangingRadioSourceEstimator(
             final List&lt;? extends RangingReadingLocated&lt;S, P&gt;&gt; readings) {
 <span class="fc" id="L72">        super(readings);</span>
 <span class="fc" id="L73">    }</span>
@@ -77,7 +77,7 @@ public abstract class RobustRangingRadioSourceEstimator&lt;S extends RadioSource
      *
      * @param listener listener in charge of attending events raised by this instance.
      */
-    public RobustRangingRadioSourceEstimator(
+    protected RobustRangingRadioSourceEstimator(
             final RobustRangingRadioSourceEstimatorListener&lt;S, P&gt; listener) {
 <span class="fc" id="L82">        super(listener);</span>
 <span class="fc" id="L83">    }</span>
@@ -90,7 +90,7 @@ public abstract class RobustRangingRadioSourceEstimator&lt;S extends RadioSource
      * @param listener listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingRadioSourceEstimator(
+    protected RobustRangingRadioSourceEstimator(
             final List&lt;? extends RangingReadingLocated&lt;S, P&gt;&gt; readings,
             final RobustRangingRadioSourceEstimatorListener&lt;S, P&gt; listener) {
 <span class="fc" id="L96">        super(readings, listener);</span>
@@ -102,7 +102,7 @@ public abstract class RobustRangingRadioSourceEstimator&lt;S extends RadioSource
      * @param initialPosition initial position to start the estimation or radio
      *                        source position.
      */
-<span class="fc" id="L105">    public RobustRangingRadioSourceEstimator(final P initialPosition) {</span>
+<span class="fc" id="L105">    protected RobustRangingRadioSourceEstimator(final P initialPosition) {</span>
 <span class="fc" id="L106">        mInitialPosition = initialPosition;</span>
 <span class="fc" id="L107">    }</span>
 
@@ -115,7 +115,7 @@ public abstract class RobustRangingRadioSourceEstimator&lt;S extends RadioSource
      *                        source position.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingRadioSourceEstimator(
+    protected RobustRangingRadioSourceEstimator(
             final List&lt;? extends RangingReadingLocated&lt;S, P&gt;&gt; readings,
             final P initialPosition) {
 <span class="fc" id="L121">        super(readings);</span>
@@ -129,7 +129,7 @@ public abstract class RobustRangingRadioSourceEstimator&lt;S extends RadioSource
      *                        source position.
      * @param listener        listener in charge of attending events raised by this instance.
      */
-    public RobustRangingRadioSourceEstimator(
+    protected RobustRangingRadioSourceEstimator(
             final P initialPosition,
             final RobustRangingRadioSourceEstimatorListener&lt;S, P&gt; listener) {
 <span class="fc" id="L135">        super(listener);</span>
@@ -146,7 +146,7 @@ public abstract class RobustRangingRadioSourceEstimator&lt;S extends RadioSource
      * @param listener        listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RobustRangingRadioSourceEstimator(
+    protected RobustRangingRadioSourceEstimator(
             final List&lt;? extends RangingReadingLocated&lt;S, P&gt;&gt; readings,
             final P initialPosition,
             final RobustRangingRadioSourceEstimatorListener&lt;S, P&gt; listener) {

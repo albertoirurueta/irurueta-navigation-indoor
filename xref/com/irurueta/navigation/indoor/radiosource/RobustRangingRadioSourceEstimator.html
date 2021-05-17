@@ -63,7 +63,7 @@
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>  <em class="jxr_javadoccomment">     * Constructor.</em>
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingRadioSourceEstimator.html">RobustRangingRadioSourceEstimator</a>() {
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>      <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingRadioSourceEstimator.html">RobustRangingRadioSourceEstimator</a>() {
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>          <strong class="jxr_keyword">super</strong>();
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>      }
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>  
@@ -75,7 +75,7 @@
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>  <em class="jxr_javadoccomment">     *                 radio source.</em>
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>  <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid.</em>
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingRadioSourceEstimator.html">RobustRangingRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>      <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingRadioSourceEstimator.html">RobustRangingRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>              <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingReadingLocated&lt;S, P&gt;&gt; readings) {
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>          <strong class="jxr_keyword">super</strong>(readings);
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>      }
@@ -85,7 +85,7 @@
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>  <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>  <em class="jxr_javadoccomment">     * @param listener listener in charge of attending events raised by this instance.</em>
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingRadioSourceEstimator.html">RobustRangingRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>      <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingRadioSourceEstimator.html">RobustRangingRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>              <strong class="jxr_keyword">final</strong> RobustRangingRadioSourceEstimatorListener&lt;S, P&gt; listener) {
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>          <strong class="jxr_keyword">super</strong>(listener);
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>      }
@@ -98,7 +98,7 @@
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>  <em class="jxr_javadoccomment">     * @param listener listener in charge of attending events raised by this instance.</em>
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>  <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid.</em>
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L93" href="#L93">93</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingRadioSourceEstimator.html">RobustRangingRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>      <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingRadioSourceEstimator.html">RobustRangingRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>              <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingReadingLocated&lt;S, P&gt;&gt; readings,
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>              <strong class="jxr_keyword">final</strong> RobustRangingRadioSourceEstimatorListener&lt;S, P&gt; listener) {
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>          <strong class="jxr_keyword">super</strong>(readings, listener);
@@ -110,7 +110,7 @@
 <a class="jxr_linenumber" name="L102" href="#L102">102</a> <em class="jxr_javadoccomment">     * @param initialPosition initial position to start the estimation or radio</em>
 <a class="jxr_linenumber" name="L103" href="#L103">103</a> <em class="jxr_javadoccomment">     *                        source position.</em>
 <a class="jxr_linenumber" name="L104" href="#L104">104</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L105" href="#L105">105</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingRadioSourceEstimator.html">RobustRangingRadioSourceEstimator</a>(<strong class="jxr_keyword">final</strong> P initialPosition) {
+<a class="jxr_linenumber" name="L105" href="#L105">105</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingRadioSourceEstimator.html">RobustRangingRadioSourceEstimator</a>(<strong class="jxr_keyword">final</strong> P initialPosition) {
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>         mInitialPosition = initialPosition;
 <a class="jxr_linenumber" name="L107" href="#L107">107</a>     }
 <a class="jxr_linenumber" name="L108" href="#L108">108</a> 
@@ -123,7 +123,7 @@
 <a class="jxr_linenumber" name="L115" href="#L115">115</a> <em class="jxr_javadoccomment">     *                        source position.</em>
 <a class="jxr_linenumber" name="L116" href="#L116">116</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid.</em>
 <a class="jxr_linenumber" name="L117" href="#L117">117</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L118" href="#L118">118</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingRadioSourceEstimator.html">RobustRangingRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L118" href="#L118">118</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingRadioSourceEstimator.html">RobustRangingRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L119" href="#L119">119</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingReadingLocated&lt;S, P&gt;&gt; readings,
 <a class="jxr_linenumber" name="L120" href="#L120">120</a>             <strong class="jxr_keyword">final</strong> P initialPosition) {
 <a class="jxr_linenumber" name="L121" href="#L121">121</a>         <strong class="jxr_keyword">super</strong>(readings);
@@ -137,7 +137,7 @@
 <a class="jxr_linenumber" name="L129" href="#L129">129</a> <em class="jxr_javadoccomment">     *                        source position.</em>
 <a class="jxr_linenumber" name="L130" href="#L130">130</a> <em class="jxr_javadoccomment">     * @param listener        listener in charge of attending events raised by this instance.</em>
 <a class="jxr_linenumber" name="L131" href="#L131">131</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L132" href="#L132">132</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingRadioSourceEstimator.html">RobustRangingRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L132" href="#L132">132</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingRadioSourceEstimator.html">RobustRangingRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L133" href="#L133">133</a>             <strong class="jxr_keyword">final</strong> P initialPosition,
 <a class="jxr_linenumber" name="L134" href="#L134">134</a>             <strong class="jxr_keyword">final</strong> RobustRangingRadioSourceEstimatorListener&lt;S, P&gt; listener) {
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>         <strong class="jxr_keyword">super</strong>(listener);
@@ -154,7 +154,7 @@
 <a class="jxr_linenumber" name="L146" href="#L146">146</a> <em class="jxr_javadoccomment">     * @param listener        listener in charge of attending events raised by this instance.</em>
 <a class="jxr_linenumber" name="L147" href="#L147">147</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if readings are not valid.</em>
 <a class="jxr_linenumber" name="L148" href="#L148">148</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L149" href="#L149">149</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingRadioSourceEstimator.html">RobustRangingRadioSourceEstimator</a>(
+<a class="jxr_linenumber" name="L149" href="#L149">149</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/indoor/radiosource/RobustRangingRadioSourceEstimator.html">RobustRangingRadioSourceEstimator</a>(
 <a class="jxr_linenumber" name="L150" href="#L150">150</a>             <strong class="jxr_keyword">final</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RangingReadingLocated&lt;S, P&gt;&gt; readings,
 <a class="jxr_linenumber" name="L151" href="#L151">151</a>             <strong class="jxr_keyword">final</strong> P initialPosition,
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>             <strong class="jxr_keyword">final</strong> RobustRangingRadioSourceEstimatorListener&lt;S, P&gt; listener) {
