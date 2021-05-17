@@ -1052,67 +1052,69 @@ public class PROSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
                             @Override
                             public void onEstimateStart(
                                     final RobustEstimator&lt;Solution&lt;Point3D&gt;&gt; estimator) {
-<span class="fc" id="L1055">                            }</span>
+                                // no action needed
+<span class="fc" id="L1056">                            }</span>
 
                             @Override
                             public void onEstimateEnd(
                                     final RobustEstimator&lt;Solution&lt;Point3D&gt;&gt; estimator) {
-<span class="fc" id="L1060">                            }</span>
+                                // no action needed
+<span class="fc" id="L1062">                            }</span>
 
                             @Override
                             public void onEstimateNextIteration(
                                     final RobustEstimator&lt;Solution&lt;Point3D&gt;&gt; estimator,
                                     final int iteration) {
-<span class="fc bfc" id="L1066" title="All 2 branches covered.">                                if (mListener != null) {</span>
-<span class="fc" id="L1067">                                    mListener.onEstimateNextIteration(</span>
+<span class="fc bfc" id="L1068" title="All 2 branches covered.">                                if (mListener != null) {</span>
+<span class="fc" id="L1069">                                    mListener.onEstimateNextIteration(</span>
                                             PROSACRobustRssiRadioSourceEstimator3D.this,
                                             iteration);
                                 }
-<span class="fc" id="L1071">                            }</span>
+<span class="fc" id="L1073">                            }</span>
 
                             @Override
                             public void onEstimateProgressChange(
                                     final RobustEstimator&lt;Solution&lt;Point3D&gt;&gt; estimator,
                                     final float progress) {
-<span class="pc bpc" id="L1077" title="1 of 2 branches missed.">                                if (mListener != null) {</span>
-<span class="fc" id="L1078">                                    mListener.onEstimateProgressChange(</span>
+<span class="pc bpc" id="L1079" title="1 of 2 branches missed.">                                if (mListener != null) {</span>
+<span class="fc" id="L1080">                                    mListener.onEstimateProgressChange(</span>
                                             PROSACRobustRssiRadioSourceEstimator3D.this,
                                             progress);
                                 }
-<span class="fc" id="L1082">                            }</span>
+<span class="fc" id="L1084">                            }</span>
                         });
 
         try {
-<span class="fc" id="L1086">            mLocked = true;</span>
+<span class="fc" id="L1088">            mLocked = true;</span>
 
-<span class="fc bfc" id="L1088" title="All 2 branches covered.">            if (mListener != null) {</span>
-<span class="fc" id="L1089">                mListener.onEstimateStart(this);</span>
+<span class="fc bfc" id="L1090" title="All 2 branches covered.">            if (mListener != null) {</span>
+<span class="fc" id="L1091">                mListener.onEstimateStart(this);</span>
             }
 
-<span class="fc" id="L1092">            mInliersData = null;</span>
-<span class="fc bfc" id="L1093" title="All 4 branches covered.">            innerEstimator.setComputeAndKeepInliersEnabled(</span>
+<span class="fc" id="L1094">            mInliersData = null;</span>
+<span class="fc bfc" id="L1095" title="All 4 branches covered.">            innerEstimator.setComputeAndKeepInliersEnabled(</span>
                     mComputeAndKeepInliers || mRefineResult);
-<span class="fc bfc" id="L1095" title="All 4 branches covered.">            innerEstimator.setComputeAndKeepResidualsEnabled(</span>
+<span class="fc bfc" id="L1097" title="All 4 branches covered.">            innerEstimator.setComputeAndKeepResidualsEnabled(</span>
                     mComputeAndKeepResiduals || mRefineResult);
-<span class="fc" id="L1097">            innerEstimator.setConfidence(mConfidence);</span>
-<span class="fc" id="L1098">            innerEstimator.setMaxIterations(mMaxIterations);</span>
-<span class="fc" id="L1099">            innerEstimator.setProgressDelta(mProgressDelta);</span>
-<span class="fc" id="L1100">            final Solution&lt;Point3D&gt; result = innerEstimator.estimate();</span>
-<span class="fc" id="L1101">            mInliersData = innerEstimator.getInliersData();</span>
-<span class="fc" id="L1102">            attemptRefine(result);</span>
+<span class="fc" id="L1099">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L1100">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L1101">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L1102">            final Solution&lt;Point3D&gt; result = innerEstimator.estimate();</span>
+<span class="fc" id="L1103">            mInliersData = innerEstimator.getInliersData();</span>
+<span class="fc" id="L1104">            attemptRefine(result);</span>
 
-<span class="fc bfc" id="L1104" title="All 2 branches covered.">            if (mListener != null) {</span>
-<span class="fc" id="L1105">                mListener.onEstimateEnd(this);</span>
+<span class="fc bfc" id="L1106" title="All 2 branches covered.">            if (mListener != null) {</span>
+<span class="fc" id="L1107">                mListener.onEstimateEnd(this);</span>
             }
 
-<span class="nc" id="L1108">        } catch (final com.irurueta.numerical.LockedException e) {</span>
-<span class="nc" id="L1109">            throw new LockedException(e);</span>
-<span class="nc" id="L1110">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
-<span class="nc" id="L1111">            throw new NotReadyException(e);</span>
+<span class="nc" id="L1110">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L1111">            throw new LockedException(e);</span>
+<span class="nc" id="L1112">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L1113">            throw new NotReadyException(e);</span>
         } finally {
-<span class="fc" id="L1113">            mLocked = false;</span>
+<span class="fc" id="L1115">            mLocked = false;</span>
         }
-<span class="fc" id="L1115">    }</span>
+<span class="fc" id="L1117">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -1121,7 +1123,7 @@ public class PROSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L1124">        return RobustEstimatorMethod.PROSAC;</span>
+<span class="fc" id="L1126">        return RobustEstimatorMethod.PROSAC;</span>
     }
 
     /**
@@ -1134,12 +1136,12 @@ public class PROSACRobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt;
      *                                  is smaller than required minimum.
      */
     private void internalSetQualityScores(final double[] qualityScores) {
-<span class="fc bfc" id="L1137" title="All 2 branches covered.">        if (qualityScores == null ||</span>
-<span class="fc bfc" id="L1138" title="All 2 branches covered.">                qualityScores.length &lt; getMinReadings()) {</span>
-<span class="fc" id="L1139">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1139" title="All 2 branches covered.">        if (qualityScores == null ||</span>
+<span class="fc bfc" id="L1140" title="All 2 branches covered.">                qualityScores.length &lt; getMinReadings()) {</span>
+<span class="fc" id="L1141">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1142">        mQualityScores = qualityScores;</span>
-<span class="fc" id="L1143">    }</span>
+<span class="fc" id="L1144">        mQualityScores = qualityScores;</span>
+<span class="fc" id="L1145">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

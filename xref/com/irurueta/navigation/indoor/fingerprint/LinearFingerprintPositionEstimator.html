@@ -469,7 +469,7 @@
 <a class="jxr_linenumber" name="L461" href="#L461">461</a>                                 <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> rssi = reading.getRssi();
 <a class="jxr_linenumber" name="L462" href="#L462">462</a> 
 <a class="jxr_linenumber" name="L463" href="#L463">463</a>                                 <em class="jxr_comment">// ideally if there was no bias between devices RSSI measures, we should compute:</em>
-<a class="jxr_linenumber" name="L464" href="#L464">464</a>                                 <em class="jxr_comment">// double diffRssi = locatedRssi - rssi;</em>
+<a class="jxr_linenumber" name="L464" href="#L464">464</a>                                 <em class="jxr_comment">// diffRssi = locatedRssi - rssi</em>
 <a class="jxr_linenumber" name="L465" href="#L465">465</a>                                 <em class="jxr_comment">// However, to account for possible biases, we remove mean of fingerprints from</em>
 <a class="jxr_linenumber" name="L466" href="#L466">466</a>                                 <em class="jxr_comment">// both readings (ideally both should be equal, but they will only be approximate in</em>
 <a class="jxr_linenumber" name="L467" href="#L467">467</a>                                 <em class="jxr_comment">// practice).</em>

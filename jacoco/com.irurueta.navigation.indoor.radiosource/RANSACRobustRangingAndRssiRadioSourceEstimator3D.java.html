@@ -551,67 +551,69 @@ public class RANSACRobustRangingAndRssiRadioSourceEstimator3D&lt;S extends Radio
                             @Override
                             public void onEstimateStart(
                                     final RobustEstimator&lt;Solution&lt;Point3D&gt;&gt; estimator) {
-<span class="fc" id="L554">                            }</span>
+                                // no action needed
+<span class="fc" id="L555">                            }</span>
 
                             @Override
                             public void onEstimateEnd(
                                     final RobustEstimator&lt;Solution&lt;Point3D&gt;&gt; estimator) {
-<span class="fc" id="L559">                            }</span>
+                                // no action needed
+<span class="fc" id="L561">                            }</span>
 
                             @Override
                             public void onEstimateNextIteration(
                                     final RobustEstimator&lt;Solution&lt;Point3D&gt;&gt; estimator,
                                     final int iteration) {
-<span class="fc bfc" id="L565" title="All 2 branches covered.">                                if (mListener != null) {</span>
-<span class="fc" id="L566">                                    mListener.onEstimateNextIteration(</span>
+<span class="fc bfc" id="L567" title="All 2 branches covered.">                                if (mListener != null) {</span>
+<span class="fc" id="L568">                                    mListener.onEstimateNextIteration(</span>
                                             RANSACRobustRangingAndRssiRadioSourceEstimator3D.this,
                                             iteration);
                                 }
-<span class="fc" id="L570">                            }</span>
+<span class="fc" id="L572">                            }</span>
 
                             @Override
                             public void onEstimateProgressChange(
                                     final RobustEstimator&lt;Solution&lt;Point3D&gt;&gt; estimator,
                                     final float progress) {
-<span class="fc bfc" id="L576" title="All 2 branches covered.">                                if (mListener != null) {</span>
-<span class="fc" id="L577">                                    mListener.onEstimateProgressChange(</span>
+<span class="fc bfc" id="L578" title="All 2 branches covered.">                                if (mListener != null) {</span>
+<span class="fc" id="L579">                                    mListener.onEstimateProgressChange(</span>
                                             RANSACRobustRangingAndRssiRadioSourceEstimator3D.this,
                                             progress);
                                 }
-<span class="fc" id="L581">                            }</span>
+<span class="fc" id="L583">                            }</span>
                         });
 
         try {
-<span class="fc" id="L585">            mLocked = true;</span>
+<span class="fc" id="L587">            mLocked = true;</span>
 
-<span class="fc bfc" id="L587" title="All 2 branches covered.">            if (mListener != null) {</span>
-<span class="fc" id="L588">                mListener.onEstimateStart(this);</span>
+<span class="fc bfc" id="L589" title="All 2 branches covered.">            if (mListener != null) {</span>
+<span class="fc" id="L590">                mListener.onEstimateStart(this);</span>
             }
 
-<span class="fc" id="L591">            mInliersData = null;</span>
-<span class="fc bfc" id="L592" title="All 4 branches covered.">            innerEstimator.setComputeAndKeepInliersEnabled(</span>
+<span class="fc" id="L593">            mInliersData = null;</span>
+<span class="fc bfc" id="L594" title="All 4 branches covered.">            innerEstimator.setComputeAndKeepInliersEnabled(</span>
                     mComputeAndKeepInliers || mRefineResult);
-<span class="fc bfc" id="L594" title="All 4 branches covered.">            innerEstimator.setComputeAndKeepResidualsEnabled(</span>
+<span class="fc bfc" id="L596" title="All 4 branches covered.">            innerEstimator.setComputeAndKeepResidualsEnabled(</span>
                     mComputeAndKeepResiduals || mRefineResult);
-<span class="fc" id="L596">            innerEstimator.setConfidence(mConfidence);</span>
-<span class="fc" id="L597">            innerEstimator.setMaxIterations(mMaxIterations);</span>
-<span class="fc" id="L598">            innerEstimator.setProgressDelta(mProgressDelta);</span>
-<span class="fc" id="L599">            Solution&lt;Point3D&gt; result = innerEstimator.estimate();</span>
-<span class="fc" id="L600">            mInliersData = innerEstimator.getInliersData();</span>
-<span class="fc" id="L601">            attemptRefine(result);</span>
+<span class="fc" id="L598">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L599">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L600">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L601">            Solution&lt;Point3D&gt; result = innerEstimator.estimate();</span>
+<span class="fc" id="L602">            mInliersData = innerEstimator.getInliersData();</span>
+<span class="fc" id="L603">            attemptRefine(result);</span>
 
-<span class="fc bfc" id="L603" title="All 2 branches covered.">            if (mListener != null) {</span>
-<span class="fc" id="L604">                mListener.onEstimateEnd(this);</span>
+<span class="fc bfc" id="L605" title="All 2 branches covered.">            if (mListener != null) {</span>
+<span class="fc" id="L606">                mListener.onEstimateEnd(this);</span>
             }
 
-<span class="nc" id="L607">        } catch (final com.irurueta.numerical.LockedException e) {</span>
-<span class="nc" id="L608">            throw new LockedException(e);</span>
-<span class="nc" id="L609">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
-<span class="nc" id="L610">            throw new NotReadyException(e);</span>
+<span class="nc" id="L609">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L610">            throw new LockedException(e);</span>
+<span class="nc" id="L611">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L612">            throw new NotReadyException(e);</span>
         } finally {
-<span class="fc" id="L612">            mLocked = false;</span>
+<span class="fc" id="L614">            mLocked = false;</span>
         }
-<span class="fc" id="L614">    }</span>
+<span class="fc" id="L616">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -620,7 +622,7 @@ public class RANSACRobustRangingAndRssiRadioSourceEstimator3D&lt;S extends Radio
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L623">        return RobustEstimatorMethod.RANSAC;</span>
+<span class="fc" id="L625">        return RobustEstimatorMethod.RANSAC;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

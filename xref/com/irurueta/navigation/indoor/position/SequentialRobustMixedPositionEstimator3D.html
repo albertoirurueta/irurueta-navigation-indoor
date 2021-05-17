@@ -417,41 +417,43 @@
 <a class="jxr_linenumber" name="L409" href="#L409">409</a>                     ((<a href="../../../../../com/irurueta/navigation/indoor/position/PROSACRobustRangingPositionEstimator3D.html">PROSACRobustRangingPositionEstimator3D</a>) mRangingEstimator).setThreshold(mRangingThreshold);
 <a class="jxr_linenumber" name="L410" href="#L410">410</a>                     <strong class="jxr_keyword">break</strong>;
 <a class="jxr_linenumber" name="L411" href="#L411">411</a>                 <strong class="jxr_keyword">case</strong> PROMedS:
-<a class="jxr_linenumber" name="L412" href="#L412">412</a>                     ((<a href="../../../../../com/irurueta/navigation/indoor/position/PROMedSRobustRangingPositionEstimator3D.html">PROMedSRobustRangingPositionEstimator3D</a>) mRangingEstimator).setStopThreshold(mRangingThreshold);
-<a class="jxr_linenumber" name="L413" href="#L413">413</a>                     <strong class="jxr_keyword">break</strong>;
-<a class="jxr_linenumber" name="L414" href="#L414">414</a>             }
-<a class="jxr_linenumber" name="L415" href="#L415">415</a>         }
-<a class="jxr_linenumber" name="L416" href="#L416">416</a>     }
-<a class="jxr_linenumber" name="L417" href="#L417">417</a> 
-<a class="jxr_linenumber" name="L418" href="#L418">418</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L419" href="#L419">419</a> <em class="jxr_javadoccomment">     * Setup RSSI internal estimator.</em>
-<a class="jxr_linenumber" name="L420" href="#L420">420</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L421" href="#L421">421</a> <em class="jxr_javadoccomment">     * @throws LockedException if estimator is locked.</em>
-<a class="jxr_linenumber" name="L422" href="#L422">422</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L423" href="#L423">423</a>     @Override
-<a class="jxr_linenumber" name="L424" href="#L424">424</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> setupRssiEstimator() <strong class="jxr_keyword">throws</strong> LockedException {
-<a class="jxr_linenumber" name="L425" href="#L425">425</a>         <strong class="jxr_keyword">super</strong>.setupRssiEstimator();
-<a class="jxr_linenumber" name="L426" href="#L426">426</a>         <strong class="jxr_keyword">if</strong> (mRssiThreshold != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L427" href="#L427">427</a>             <strong class="jxr_keyword">switch</strong> (mRssiRobustMethod) {
-<a class="jxr_linenumber" name="L428" href="#L428">428</a>                 <strong class="jxr_keyword">case</strong> RANSAC:
-<a class="jxr_linenumber" name="L429" href="#L429">429</a>                     ((<a href="../../../../../com/irurueta/navigation/indoor/position/RANSACRobustRssiPositionEstimator3D.html">RANSACRobustRssiPositionEstimator3D</a>) mRssiEstimator).setThreshold(mRssiThreshold);
-<a class="jxr_linenumber" name="L430" href="#L430">430</a>                     <strong class="jxr_keyword">break</strong>;
-<a class="jxr_linenumber" name="L431" href="#L431">431</a>                 <strong class="jxr_keyword">case</strong> LMedS:
-<a class="jxr_linenumber" name="L432" href="#L432">432</a>                     ((<a href="../../../../../com/irurueta/navigation/indoor/position/LMedSRobustRssiPositionEstimator3D.html">LMedSRobustRssiPositionEstimator3D</a>) mRssiEstimator).setStopThreshold(mRssiThreshold);
-<a class="jxr_linenumber" name="L433" href="#L433">433</a>                     <strong class="jxr_keyword">break</strong>;
-<a class="jxr_linenumber" name="L434" href="#L434">434</a>                 <strong class="jxr_keyword">case</strong> MSAC:
-<a class="jxr_linenumber" name="L435" href="#L435">435</a>                     ((<a href="../../../../../com/irurueta/navigation/indoor/position/MSACRobustRssiPositionEstimator3D.html">MSACRobustRssiPositionEstimator3D</a>) mRssiEstimator).setThreshold(mRssiThreshold);
-<a class="jxr_linenumber" name="L436" href="#L436">436</a>                     <strong class="jxr_keyword">break</strong>;
-<a class="jxr_linenumber" name="L437" href="#L437">437</a>                 <strong class="jxr_keyword">case</strong> PROSAC:
-<a class="jxr_linenumber" name="L438" href="#L438">438</a>                     ((<a href="../../../../../com/irurueta/navigation/indoor/position/PROSACRobustRssiPositionEstimator3D.html">PROSACRobustRssiPositionEstimator3D</a>) mRssiEstimator).setThreshold(mRssiThreshold);
-<a class="jxr_linenumber" name="L439" href="#L439">439</a>                     <strong class="jxr_keyword">break</strong>;
-<a class="jxr_linenumber" name="L440" href="#L440">440</a>                 <strong class="jxr_keyword">case</strong> PROMedS:
-<a class="jxr_linenumber" name="L441" href="#L441">441</a>                     ((<a href="../../../../../com/irurueta/navigation/indoor/position/PROMedSRobustRssiPositionEstimator3D.html">PROMedSRobustRssiPositionEstimator3D</a>) mRssiEstimator).setStopThreshold(mRssiThreshold);
-<a class="jxr_linenumber" name="L442" href="#L442">442</a>                     <strong class="jxr_keyword">break</strong>;
-<a class="jxr_linenumber" name="L443" href="#L443">443</a>             }
-<a class="jxr_linenumber" name="L444" href="#L444">444</a>         }
-<a class="jxr_linenumber" name="L445" href="#L445">445</a>     }
-<a class="jxr_linenumber" name="L446" href="#L446">446</a> }
+<a class="jxr_linenumber" name="L412" href="#L412">412</a>                 <strong class="jxr_keyword">default</strong>:
+<a class="jxr_linenumber" name="L413" href="#L413">413</a>                     ((<a href="../../../../../com/irurueta/navigation/indoor/position/PROMedSRobustRangingPositionEstimator3D.html">PROMedSRobustRangingPositionEstimator3D</a>) mRangingEstimator).setStopThreshold(mRangingThreshold);
+<a class="jxr_linenumber" name="L414" href="#L414">414</a>                     <strong class="jxr_keyword">break</strong>;
+<a class="jxr_linenumber" name="L415" href="#L415">415</a>             }
+<a class="jxr_linenumber" name="L416" href="#L416">416</a>         }
+<a class="jxr_linenumber" name="L417" href="#L417">417</a>     }
+<a class="jxr_linenumber" name="L418" href="#L418">418</a> 
+<a class="jxr_linenumber" name="L419" href="#L419">419</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L420" href="#L420">420</a> <em class="jxr_javadoccomment">     * Setup RSSI internal estimator.</em>
+<a class="jxr_linenumber" name="L421" href="#L421">421</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L422" href="#L422">422</a> <em class="jxr_javadoccomment">     * @throws LockedException if estimator is locked.</em>
+<a class="jxr_linenumber" name="L423" href="#L423">423</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L424" href="#L424">424</a>     @Override
+<a class="jxr_linenumber" name="L425" href="#L425">425</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> setupRssiEstimator() <strong class="jxr_keyword">throws</strong> LockedException {
+<a class="jxr_linenumber" name="L426" href="#L426">426</a>         <strong class="jxr_keyword">super</strong>.setupRssiEstimator();
+<a class="jxr_linenumber" name="L427" href="#L427">427</a>         <strong class="jxr_keyword">if</strong> (mRssiThreshold != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L428" href="#L428">428</a>             <strong class="jxr_keyword">switch</strong> (mRssiRobustMethod) {
+<a class="jxr_linenumber" name="L429" href="#L429">429</a>                 <strong class="jxr_keyword">case</strong> RANSAC:
+<a class="jxr_linenumber" name="L430" href="#L430">430</a>                     ((<a href="../../../../../com/irurueta/navigation/indoor/position/RANSACRobustRssiPositionEstimator3D.html">RANSACRobustRssiPositionEstimator3D</a>) mRssiEstimator).setThreshold(mRssiThreshold);
+<a class="jxr_linenumber" name="L431" href="#L431">431</a>                     <strong class="jxr_keyword">break</strong>;
+<a class="jxr_linenumber" name="L432" href="#L432">432</a>                 <strong class="jxr_keyword">case</strong> LMedS:
+<a class="jxr_linenumber" name="L433" href="#L433">433</a>                     ((<a href="../../../../../com/irurueta/navigation/indoor/position/LMedSRobustRssiPositionEstimator3D.html">LMedSRobustRssiPositionEstimator3D</a>) mRssiEstimator).setStopThreshold(mRssiThreshold);
+<a class="jxr_linenumber" name="L434" href="#L434">434</a>                     <strong class="jxr_keyword">break</strong>;
+<a class="jxr_linenumber" name="L435" href="#L435">435</a>                 <strong class="jxr_keyword">case</strong> MSAC:
+<a class="jxr_linenumber" name="L436" href="#L436">436</a>                     ((<a href="../../../../../com/irurueta/navigation/indoor/position/MSACRobustRssiPositionEstimator3D.html">MSACRobustRssiPositionEstimator3D</a>) mRssiEstimator).setThreshold(mRssiThreshold);
+<a class="jxr_linenumber" name="L437" href="#L437">437</a>                     <strong class="jxr_keyword">break</strong>;
+<a class="jxr_linenumber" name="L438" href="#L438">438</a>                 <strong class="jxr_keyword">case</strong> PROSAC:
+<a class="jxr_linenumber" name="L439" href="#L439">439</a>                     ((<a href="../../../../../com/irurueta/navigation/indoor/position/PROSACRobustRssiPositionEstimator3D.html">PROSACRobustRssiPositionEstimator3D</a>) mRssiEstimator).setThreshold(mRssiThreshold);
+<a class="jxr_linenumber" name="L440" href="#L440">440</a>                     <strong class="jxr_keyword">break</strong>;
+<a class="jxr_linenumber" name="L441" href="#L441">441</a>                 <strong class="jxr_keyword">case</strong> PROMedS:
+<a class="jxr_linenumber" name="L442" href="#L442">442</a>                 <strong class="jxr_keyword">default</strong>:
+<a class="jxr_linenumber" name="L443" href="#L443">443</a>                     ((<a href="../../../../../com/irurueta/navigation/indoor/position/PROMedSRobustRssiPositionEstimator3D.html">PROMedSRobustRssiPositionEstimator3D</a>) mRssiEstimator).setStopThreshold(mRssiThreshold);
+<a class="jxr_linenumber" name="L444" href="#L444">444</a>                     <strong class="jxr_keyword">break</strong>;
+<a class="jxr_linenumber" name="L445" href="#L445">445</a>             }
+<a class="jxr_linenumber" name="L446" href="#L446">446</a>         }
+<a class="jxr_linenumber" name="L447" href="#L447">447</a>     }
+<a class="jxr_linenumber" name="L448" href="#L448">448</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2021. All rights reserved.</div>

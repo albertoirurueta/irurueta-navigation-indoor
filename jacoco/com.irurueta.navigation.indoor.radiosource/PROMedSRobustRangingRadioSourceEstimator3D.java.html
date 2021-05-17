@@ -503,67 +503,69 @@ public class PROMedSRobustRangingRadioSourceEstimator3D&lt;S extends RadioSource
                             @Override
                             public void onEstimateStart(
                                     final RobustEstimator&lt;Solution&lt;Point3D&gt;&gt; estimator) {
-<span class="fc" id="L506">                            }</span>
+                                // no action needed
+<span class="fc" id="L507">                            }</span>
 
                             @Override
                             public void onEstimateEnd(
                                     final RobustEstimator&lt;Solution&lt;Point3D&gt;&gt; estimator) {
-<span class="fc" id="L511">                            }</span>
+                                // no action needed
+<span class="fc" id="L513">                            }</span>
 
                             @Override
                             public void onEstimateNextIteration(
                                     final RobustEstimator&lt;Solution&lt;Point3D&gt;&gt; estimator,
                                     final int iteration) {
-<span class="fc bfc" id="L517" title="All 2 branches covered.">                                if (mListener != null) {</span>
-<span class="fc" id="L518">                                    mListener.onEstimateNextIteration(</span>
+<span class="fc bfc" id="L519" title="All 2 branches covered.">                                if (mListener != null) {</span>
+<span class="fc" id="L520">                                    mListener.onEstimateNextIteration(</span>
                                             PROMedSRobustRangingRadioSourceEstimator3D.this,
                                             iteration);
                                 }
-<span class="fc" id="L522">                            }</span>
+<span class="fc" id="L524">                            }</span>
 
                             @Override
                             public void onEstimateProgressChange(
                                     final RobustEstimator&lt;Solution&lt;Point3D&gt;&gt; estimator,
                                     final float progress) {
-<span class="nc bnc" id="L528" title="All 2 branches missed.">                                if (mListener != null) {</span>
-<span class="nc" id="L529">                                    mListener.onEstimateProgressChange(</span>
+<span class="nc bnc" id="L530" title="All 2 branches missed.">                                if (mListener != null) {</span>
+<span class="nc" id="L531">                                    mListener.onEstimateProgressChange(</span>
                                             PROMedSRobustRangingRadioSourceEstimator3D.this,
                                             progress);
                                 }
-<span class="nc" id="L533">                            }</span>
+<span class="nc" id="L535">                            }</span>
                         });
 
         try {
-<span class="fc" id="L537">            mLocked = true;</span>
+<span class="fc" id="L539">            mLocked = true;</span>
 
-<span class="fc bfc" id="L539" title="All 2 branches covered.">            if (mListener != null) {</span>
-<span class="fc" id="L540">                mListener.onEstimateStart(this);</span>
+<span class="fc bfc" id="L541" title="All 2 branches covered.">            if (mListener != null) {</span>
+<span class="fc" id="L542">                mListener.onEstimateStart(this);</span>
             }
 
-<span class="fc" id="L543">            mInliersData = null;</span>
+<span class="fc" id="L545">            mInliersData = null;</span>
 
             // inlier thresholds are disable to obtain a less restrictive amount of inliers
-<span class="fc" id="L546">            innerEstimator.setUseInlierThresholds(false);</span>
+<span class="fc" id="L548">            innerEstimator.setUseInlierThresholds(false);</span>
 
-<span class="fc" id="L548">            innerEstimator.setConfidence(mConfidence);</span>
-<span class="fc" id="L549">            innerEstimator.setMaxIterations(mMaxIterations);</span>
-<span class="fc" id="L550">            innerEstimator.setProgressDelta(mProgressDelta);</span>
-<span class="fc" id="L551">            final Solution&lt;Point3D&gt; result = innerEstimator.estimate();</span>
-<span class="fc" id="L552">            mInliersData = innerEstimator.getInliersData();</span>
-<span class="fc" id="L553">            attemptRefine(result);</span>
+<span class="fc" id="L550">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L551">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L552">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L553">            final Solution&lt;Point3D&gt; result = innerEstimator.estimate();</span>
+<span class="fc" id="L554">            mInliersData = innerEstimator.getInliersData();</span>
+<span class="fc" id="L555">            attemptRefine(result);</span>
 
-<span class="fc bfc" id="L555" title="All 2 branches covered.">            if (mListener != null) {</span>
-<span class="fc" id="L556">                mListener.onEstimateEnd(this);</span>
+<span class="fc bfc" id="L557" title="All 2 branches covered.">            if (mListener != null) {</span>
+<span class="fc" id="L558">                mListener.onEstimateEnd(this);</span>
             }
 
-<span class="nc" id="L559">        } catch (final com.irurueta.numerical.LockedException e) {</span>
-<span class="nc" id="L560">            throw new LockedException(e);</span>
-<span class="nc" id="L561">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
-<span class="nc" id="L562">            throw new NotReadyException(e);</span>
+<span class="nc" id="L561">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L562">            throw new LockedException(e);</span>
+<span class="nc" id="L563">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L564">            throw new NotReadyException(e);</span>
         } finally {
-<span class="fc" id="L564">            mLocked = false;</span>
+<span class="fc" id="L566">            mLocked = false;</span>
         }
-<span class="fc" id="L566">    }</span>
+<span class="fc" id="L568">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -572,7 +574,7 @@ public class PROMedSRobustRangingRadioSourceEstimator3D&lt;S extends RadioSource
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L575">        return RobustEstimatorMethod.PROMedS;</span>
+<span class="fc" id="L577">        return RobustEstimatorMethod.PROMedS;</span>
     }
 
     /**
@@ -585,12 +587,12 @@ public class PROMedSRobustRangingRadioSourceEstimator3D&lt;S extends RadioSource
      *                                  is smaller than 3 samples.
      */
     private void internalSetQualityScores(final double[] qualityScores) {
-<span class="pc bpc" id="L588" title="1 of 2 branches missed.">        if (qualityScores == null ||</span>
-<span class="fc bfc" id="L589" title="All 2 branches covered.">                qualityScores.length &lt; getMinReadings()) {</span>
-<span class="fc" id="L590">            throw new IllegalArgumentException();</span>
+<span class="pc bpc" id="L590" title="1 of 2 branches missed.">        if (qualityScores == null ||</span>
+<span class="fc bfc" id="L591" title="All 2 branches covered.">                qualityScores.length &lt; getMinReadings()) {</span>
+<span class="fc" id="L592">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L593">        mQualityScores = qualityScores;</span>
-<span class="fc" id="L594">    }</span>
+<span class="fc" id="L595">        mQualityScores = qualityScores;</span>
+<span class="fc" id="L596">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

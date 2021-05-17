@@ -366,7 +366,7 @@ public class SequentialRobustMixedPositionEstimator2D extends
     protected void setupRangingEstimator() throws LockedException {
 <span class="fc" id="L367">        super.setupRangingEstimator();</span>
 <span class="fc bfc" id="L368" title="All 2 branches covered.">        if (mRangingThreshold != null) {</span>
-<span class="pc bpc" id="L369" title="1 of 6 branches missed.">            switch (mRangingRobustMethod) {</span>
+<span class="fc bfc" id="L369" title="All 5 branches covered.">            switch (mRangingRobustMethod) {</span>
                 case RANSAC:
 <span class="fc" id="L371">                    ((RANSACRobustRangingPositionEstimator2D) mRangingEstimator).setThreshold(mRangingThreshold);</span>
 <span class="fc" id="L372">                    break;</span>
@@ -380,11 +380,12 @@ public class SequentialRobustMixedPositionEstimator2D extends
 <span class="fc" id="L380">                    ((PROSACRobustRangingPositionEstimator2D) mRangingEstimator).setThreshold(mRangingThreshold);</span>
 <span class="fc" id="L381">                    break;</span>
                 case PROMedS:
-<span class="fc" id="L383">                    ((PROMedSRobustRangingPositionEstimator2D) mRangingEstimator).setStopThreshold(mRangingThreshold);</span>
+                default:
+<span class="fc" id="L384">                    ((PROMedSRobustRangingPositionEstimator2D) mRangingEstimator).setStopThreshold(mRangingThreshold);</span>
                     break;
             }
         }
-<span class="fc" id="L387">    }</span>
+<span class="fc" id="L388">    }</span>
 
     /**
      * Setup RSSI internal estimator.
@@ -393,26 +394,27 @@ public class SequentialRobustMixedPositionEstimator2D extends
      */
     @Override
     protected void setupRssiEstimator() throws LockedException {
-<span class="fc" id="L396">        super.setupRssiEstimator();</span>
-<span class="fc bfc" id="L397" title="All 2 branches covered.">        if (mRssiThreshold != null) {</span>
-<span class="pc bpc" id="L398" title="1 of 6 branches missed.">            switch (mRssiRobustMethod) {</span>
+<span class="fc" id="L397">        super.setupRssiEstimator();</span>
+<span class="fc bfc" id="L398" title="All 2 branches covered.">        if (mRssiThreshold != null) {</span>
+<span class="fc bfc" id="L399" title="All 5 branches covered.">            switch (mRssiRobustMethod) {</span>
                 case RANSAC:
-<span class="fc" id="L400">                    ((RANSACRobustRssiPositionEstimator2D) mRssiEstimator).setThreshold(mRssiThreshold);</span>
-<span class="fc" id="L401">                    break;</span>
+<span class="fc" id="L401">                    ((RANSACRobustRssiPositionEstimator2D) mRssiEstimator).setThreshold(mRssiThreshold);</span>
+<span class="fc" id="L402">                    break;</span>
                 case LMedS:
-<span class="fc" id="L403">                    ((LMedSRobustRssiPositionEstimator2D) mRssiEstimator).setStopThreshold(mRssiThreshold);</span>
-<span class="fc" id="L404">                    break;</span>
+<span class="fc" id="L404">                    ((LMedSRobustRssiPositionEstimator2D) mRssiEstimator).setStopThreshold(mRssiThreshold);</span>
+<span class="fc" id="L405">                    break;</span>
                 case MSAC:
-<span class="fc" id="L406">                    ((MSACRobustRssiPositionEstimator2D) mRssiEstimator).setThreshold(mRssiThreshold);</span>
-<span class="fc" id="L407">                    break;</span>
+<span class="fc" id="L407">                    ((MSACRobustRssiPositionEstimator2D) mRssiEstimator).setThreshold(mRssiThreshold);</span>
+<span class="fc" id="L408">                    break;</span>
                 case PROSAC:
-<span class="fc" id="L409">                    ((PROSACRobustRssiPositionEstimator2D) mRssiEstimator).setThreshold(mRssiThreshold);</span>
-<span class="fc" id="L410">                    break;</span>
+<span class="fc" id="L410">                    ((PROSACRobustRssiPositionEstimator2D) mRssiEstimator).setThreshold(mRssiThreshold);</span>
+<span class="fc" id="L411">                    break;</span>
                 case PROMedS:
-<span class="fc" id="L412">                    ((PROMedSRobustRssiPositionEstimator2D) mRssiEstimator).setStopThreshold(mRssiThreshold);</span>
+                default:
+<span class="fc" id="L414">                    ((PROMedSRobustRssiPositionEstimator2D) mRssiEstimator).setStopThreshold(mRssiThreshold);</span>
                     break;
             }
         }
-<span class="fc" id="L416">    }</span>
+<span class="fc" id="L418">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

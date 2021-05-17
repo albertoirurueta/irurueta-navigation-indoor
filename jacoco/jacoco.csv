@@ -98,15 +98,15 @@ com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosour
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,RobustRangingAndRssiRadioSourceEstimator2D,37,2575,5,235,14,459,5,282,0,107
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,RobustRangingAndRssiRadioSourceEstimator.Solution,0,21,0,0,0,8,0,4,0,4
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,MSACRobustRssiRadioSourceEstimator3D.new MSACRobustEstimatorListener() {...},0,67,0,4,0,16,0,13,0,11
-com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,RobustRangingRadioSourceEstimator2D,19,940,5,103,8,184,5,104,0,31
+com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,RobustRangingRadioSourceEstimator2D,18,941,5,103,7,185,5,104,0,31
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,SequentialRobustRangingAndRssiRadioSourceEstimator2D,118,708,34,24,35,177,26,54,0,47
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,LMedSRobustRangingAndRssiRadioSourceEstimator2D.new LMedSRobustEstimatorListener() {...},0,63,1,3,0,15,1,11,0,10
-com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,LMedSRobustRssiRadioSourceEstimator2D.new LMedSRobustEstimatorListener() {...},0,63,0,4,0,15,0,12,0,10
+com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,LMedSRobustRssiRadioSourceEstimator2D.new LMedSRobustEstimatorListener() {...},0,63,1,3,0,15,1,11,0,10
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,PROMedSRobustRssiRadioSourceEstimator2D,16,538,2,22,5,141,2,58,0,48
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,PROSACRobustRssiRadioSourceEstimator2D,16,825,2,34,5,154,2,68,0,52
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,PROMedSRobustRssiRadioSourceEstimator3D,16,538,2,22,5,141,2,58,0,48
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,MSACRobustRssiRadioSourceEstimator2D.new MSACRobustEstimatorListener() {...},0,67,0,4,0,16,0,13,0,11
-com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,RobustRangingRadioSourceEstimator3D,18,941,5,103,7,185,5,104,0,31
+com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,RobustRangingRadioSourceEstimator3D,19,940,5,103,8,184,5,104,0,31
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,PROSACRobustRangingAndRssiRadioSourceEstimator3D.new PROSACRobustEstimatorListener() {...},0,71,1,3,0,17,1,13,0,12
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,RANSACRobustRangingRadioSourceEstimator3D.new RANSACRobustEstimatorListener() {...},0,67,0,4,0,16,0,13,0,11
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,PROMedSRobustRangingRadioSourceEstimator2D,12,288,2,22,4,81,2,34,0,24
@@ -115,12 +115,12 @@ com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosour
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,RobustRssiRadioSourceEstimator,11,557,6,30,3,123,6,53,0,41
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,PROSACRobustRangingRadioSourceEstimator2D.new PROSACRobustEstimatorListener() {...},0,71,1,3,0,17,1,13,0,12
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,MSACRobustRangingRadioSourceEstimator3D.new MSACRobustEstimatorListener() {...},0,67,0,4,0,16,0,13,0,11
-com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,PROSACRobustRssiRadioSourceEstimator2D.new PROSACRobustEstimatorListener() {...},0,71,0,4,0,17,0,14,0,12
+com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,PROSACRobustRssiRadioSourceEstimator2D.new PROSACRobustEstimatorListener() {...},0,71,1,3,0,17,1,13,0,12
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,LMedSRobustRssiRadioSourceEstimator2D,12,263,0,12,4,68,0,30,0,24
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,PROSACRobustRangingAndRssiRadioSourceEstimator3D,16,825,2,34,5,154,2,68,0,52
-com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,RobustRssiRadioSourceEstimator2D,36,2568,5,237,13,460,5,281,0,105
+com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,RobustRssiRadioSourceEstimator2D,37,2567,5,237,14,459,5,281,0,105
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,RANSACRobustRssiRadioSourceEstimator2D.new RANSACRobustEstimatorListener() {...},0,67,0,4,0,16,0,13,0,11
-com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,RobustRssiRadioSourceEstimator3D,37,2567,5,237,14,459,5,281,0,105
+com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,RobustRssiRadioSourceEstimator3D,36,2568,5,237,13,460,5,281,0,105
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,PROSACRobustRangingAndRssiRadioSourceEstimator2D,16,825,2,34,5,154,2,68,0,52
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,RANSACRobustRangingRadioSourceEstimator2D,12,253,0,24,4,58,0,28,0,16
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,MSACRobustRssiRadioSourceEstimator3D,12,263,0,12,4,68,0,30,0,24
@@ -128,7 +128,7 @@ com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosour
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,PROMedSRobustRangingAndRssiRadioSourceEstimator2D.new PROMedSRobustEstimatorListener() {...},17,54,2,2,4,13,3,11,2,10
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,RobustRadioSourceEstimator,0,262,0,34,0,77,0,47,0,30
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,RANSACRobustRangingRadioSourceEstimator3D,12,253,0,24,4,58,0,28,0,16
-com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,LMedSRobustRangingAndRssiRadioSourceEstimator3D.new LMedSRobustEstimatorListener() {...},0,63,1,3,0,15,1,11,0,10
+com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,LMedSRobustRangingAndRssiRadioSourceEstimator3D.new LMedSRobustEstimatorListener() {...},0,63,0,4,0,15,0,12,0,10
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,MSACRobustRssiRadioSourceEstimator2D,12,263,0,12,4,68,0,30,0,24
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,RANSACRobustRangingRadioSourceEstimator2D.new RANSACRobustEstimatorListener() {...},0,67,0,4,0,16,0,13,0,11
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,PROMedSRobustRangingRadioSourceEstimator3D.new PROMedSRobustEstimatorListener() {...},17,54,2,2,4,13,3,11,2,10
@@ -136,7 +136,7 @@ com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosour
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,RANSACRobustRangingAndRssiRadioSourceEstimator3D.new RANSACRobustEstimatorListener() {...},0,67,0,4,0,16,0,13,0,11
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,RangingAndRssiRadioSourceEstimator,15,948,5,59,5,211,5,74,0,47
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,RANSACRobustRangingAndRssiRadioSourceEstimator2D,12,433,0,24,4,82,0,40,0,28
-com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,PROSACRobustRangingRadioSourceEstimator3D.new PROSACRobustEstimatorListener() {...},0,71,0,4,0,17,0,14,0,12
+com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,PROSACRobustRangingRadioSourceEstimator3D.new PROSACRobustEstimatorListener() {...},0,71,1,3,0,17,1,13,0,12
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,RadioSourceEstimator,0,105,1,13,0,34,1,21,0,15
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,MSACRobustRangingRadioSourceEstimator2D.new MSACRobustEstimatorListener() {...},0,67,0,4,0,16,0,13,0,11
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.radiosource,RangingRadioSourceEstimator,7,430,7,51,4,111,7,42,0,20
@@ -196,7 +196,7 @@ com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.position,
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.position,LMedSRobustMixedPositionEstimator3D,0,89,0,0,0,40,0,12,0,12
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.position,NonLinearRssiPositionEstimator3D,6,214,0,4,2,82,0,21,0,19
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.position,NonLinearMixedPositionEstimator,11,188,4,14,4,61,4,27,0,22
-com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.position,SequentialRobustMixedPositionEstimator3D,0,318,2,14,0,80,2,32,0,22
+com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.position,SequentialRobustMixedPositionEstimator3D,0,318,0,14,0,80,0,32,0,22
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.position,RobustRangingPositionEstimator2D,6,728,3,85,2,137,3,101,0,36
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.position,LinearRangingAndRssiPositionEstimator3D,6,138,0,4,2,50,0,13,0,11
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.position,NonLinearRangingPositionEstimator.new LaterationSolverListener() {...},0,30,2,2,0,7,2,3,0,3
@@ -204,7 +204,7 @@ com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.position,
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.position,PROMedSRobustRssiPositionEstimator3D,0,235,0,12,0,94,0,32,0,26
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.position,NonLinearRssiPositionEstimator2D,6,214,0,4,2,82,0,21,0,19
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.position,RssiPositionEstimator,0,7,0,0,0,4,0,2,0,2
-com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.position,SequentialRobustMixedPositionEstimator2D,0,318,2,14,0,80,2,32,0,22
+com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.position,SequentialRobustMixedPositionEstimator2D,0,318,0,14,0,80,0,32,0,22
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.position,RobustRangingPositionEstimator3D,6,728,3,85,2,137,3,101,0,36
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.position,NonLinearRangingPositionEstimator3D,6,214,0,4,2,82,0,21,0,19
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.position,LinearRangingAndRssiPositionEstimator.new LaterationSolverListener() {...},0,30,2,2,0,7,2,3,0,3
@@ -283,7 +283,7 @@ com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.position,
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.position,RANSACRobustMixedPositionEstimator3D,0,111,0,0,0,50,0,16,0,16
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.position,NonLinearMixedPositionEstimator.new LaterationSolverListener() {...},0,30,2,2,0,7,2,3,0,3
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.position,RangingAndRssiPositionEstimator,0,7,0,0,0,4,0,2,0,2
-com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.position,ReadingSorter.ReadingComparator,1,35,2,7,1,8,2,5,0,1
+com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.position,ReadingSorter.ReadingComparator,0,33,0,7,0,8,0,5,0,1
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.position,RANSACRobustMixedPositionEstimator2D,0,111,0,0,0,50,0,16,0,16
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.position,RANSACRobustRangingAndRssiPositionEstimator3D,0,111,0,0,0,50,0,16,0,16
 com.irurueta:irurueta-navigation-indoor,com.irurueta.navigation.indoor.position,RobustPositionEstimator,3,468,7,43,1,152,6,71,0,52

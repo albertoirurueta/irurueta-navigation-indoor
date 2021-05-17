@@ -393,7 +393,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
     /**
      * Constructor.
      */
-<span class="fc" id="L396">    public SequentialRobustMixedRadioSourceEstimator() {</span>
+<span class="fc" id="L396">    protected SequentialRobustMixedRadioSourceEstimator() {</span>
 <span class="fc" id="L397">    }</span>
 
     /**
@@ -403,7 +403,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @param readings signal readings belonging to the same radio source.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
 <span class="fc" id="L407">            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings) {</span>
 <span class="fc" id="L408">        internalSetReadings(readings);</span>
 <span class="fc" id="L409">    }</span>
@@ -413,7 +413,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      *
      * @param listener listener in charge of attending events raised by this instance.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
 <span class="fc" id="L417">            final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {</span>
 <span class="fc" id="L418">        mListener = listener;</span>
 <span class="fc" id="L419">    }</span>
@@ -426,7 +426,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @param listener listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
 <span class="fc" id="L432">        this(readings);</span>
@@ -442,7 +442,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      *                        source position.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
             final P initialPosition) {
 <span class="fc" id="L448">        this(readings);</span>
@@ -455,7 +455,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @param initialPosition initial position to start the estimation of radio
      *                        source position.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
 <span class="fc" id="L459">            final P initialPosition) {</span>
 <span class="fc" id="L460">        mInitialPosition = initialPosition;</span>
 <span class="fc" id="L461">    }</span>
@@ -467,7 +467,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      *                        source position.
      * @param listener        listener in charge of attending events raised by this instance.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final P initialPosition,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
 <span class="fc" id="L473">        this(listener);</span>
@@ -484,7 +484,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @param listener        listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
             final P initialPosition,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
@@ -499,7 +499,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's).
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
 <span class="fc" id="L503">            final Double initialTransmittedPowerdBm) {</span>
 <span class="fc" id="L504">        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
 <span class="fc" id="L505">    }</span>
@@ -514,7 +514,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      *                                   (expressed in dBm's).
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
             final Double initialTransmittedPowerdBm) {
 <span class="fc" id="L520">        this(readings);</span>
@@ -529,7 +529,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      *                                   (expressed in dBm's).
      * @param listener                   listener in charge of attending events raised by this instance.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final Double initialTransmittedPowerdBm,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
 <span class="fc" id="L535">        this(listener);</span>
@@ -547,7 +547,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @param listener                   listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
             final Double initialTransmittedPowerdBm,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
@@ -567,7 +567,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      *                                   (expressed in dBm's).
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
             final P initialPosition,
             final Double initialTransmittedPowerdBm) {
@@ -585,7 +585,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's).
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final P initialPosition,
 <span class="fc" id="L590">            final Double initialTransmittedPowerdBm) {</span>
 <span class="fc" id="L591">        mInitialPosition = initialPosition;</span>
@@ -602,7 +602,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      *                                   (expressed in dBm's).
      * @param listener                   listener in charge of attending events raised by this instance.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
@@ -624,7 +624,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @param listener                   listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
@@ -647,7 +647,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
@@ -666,7 +666,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      *                                   (expressed in dBm's).
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
@@ -685,7 +685,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      * @param listener                   listener in charge of attending events raised by this instance.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
@@ -708,7 +708,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @param listener                   listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
@@ -727,7 +727,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @throws IllegalArgumentException if quality scores is null, or length of
      *                                  quality scores is less than required minimum.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final double[] qualityScores) {
 <span class="fc" id="L732">        this();</span>
 <span class="fc" id="L733">        internalSetQualityScores(qualityScores);</span>
@@ -744,7 +744,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @throws IllegalArgumentException if readings are not valid, quality scores is
      *                                  null, or length of quality scores is less than required minimum.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final double[] qualityScores,
             final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings) {
 <span class="fc" id="L750">        this(readings);</span>
@@ -761,7 +761,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @throws IllegalArgumentException if quality scores is null, or length
      *                                  of quality scores is less than required minimum.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final double[] qualityScores,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
 <span class="fc" id="L767">        this(listener);</span>
@@ -780,7 +780,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @throws IllegalArgumentException if readings are not valid, quality scores is
      *                                  null, or length of quality scores is less than required minimum.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final double[] qualityScores,
             final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
@@ -801,7 +801,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @throws IllegalArgumentException if readings are not valid, quality scores is
      *                                  null, or length of quality scores is less than required minimum.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final double[] qualityScores,
             final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
             final P initialPosition) {
@@ -820,7 +820,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @throws IllegalArgumentException if quality scores is null, or length
      *                                  of quality scores is less than required minimum.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final double[] qualityScores,
             final P initialPosition) {
 <span class="fc" id="L826">        this(initialPosition);</span>
@@ -839,7 +839,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @throws IllegalArgumentException if quality scores is null, or length
      *                                  of quality scores is less than required minimum.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final double[] qualityScores,
             final P initialPosition,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
@@ -861,7 +861,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @throws IllegalArgumentException if readings are not valid, quality scores
      *                                  is null, or length of quality scores is less than required minimum.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final double[] qualityScores,
             final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
             final P initialPosition,
@@ -882,7 +882,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @throws IllegalArgumentException if quality scores is null, or length
      *                                  of quality scores is less than required minimum.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final double[] qualityScores,
             final Double initialTransmittedPowerdBm) {
 <span class="fc" id="L888">        this(initialTransmittedPowerdBm);</span>
@@ -903,7 +903,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @throws IllegalArgumentException if readings are not valid, quality scores
      *                                  is null, or length of quality scores is less than required minimum.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final double[] qualityScores,
             final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
             final Double initialTransmittedPowerdBm) {
@@ -924,7 +924,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @throws IllegalArgumentException if quality scores is null, or length
      *                                  of quality scores is less than required minimum.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final double[] qualityScores,
             final Double initialTransmittedPowerdBm,
             final SequentialRobustMixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
@@ -947,7 +947,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @throws IllegalArgumentException if readings are not valid, quality scores
      *                                  is null, or length of quality scores is less than required minimum.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final double[] qualityScores,
             final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
             final Double initialTransmittedPowerdBm,
@@ -972,7 +972,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @throws IllegalArgumentException if readings are not valid, quality scores
      *                                  is null, or length of quality scores is less than required minimum.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final double[] qualityScores,
             final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
             final P initialPosition,
@@ -995,7 +995,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @throws IllegalArgumentException if quality scores is null, or length
      *                                  of quality scores is less than required minimum.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final double[] qualityScores,
             final P initialPosition,
             final Double initialTransmittedPowerdBm) {
@@ -1018,7 +1018,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @throws IllegalArgumentException if quality scores is null, or length
      *                                  of quality scores is less than required minimum.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final double[] qualityScores,
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
@@ -1044,7 +1044,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @throws IllegalArgumentException if readings are not valid, quality scores
      *                                  is null, or length of quality scores is less than required minimum.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final double[] qualityScores,
             final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
             final P initialPosition,
@@ -1071,7 +1071,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @throws IllegalArgumentException if readings are not valid, quality scores
      *                                  is null, or length of quality scores is less than required minimum.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final double[] qualityScores,
             final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
             final P initialPosition,
@@ -1097,7 +1097,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @throws IllegalArgumentException if quality scores is null, or length
      *                                  of quality scores is less than required minimum.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final double[] qualityScores,
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
@@ -1122,7 +1122,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @throws IllegalArgumentException if quality scores is null, or length
      *                                  of quality scores is less than required minimum.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final double[] qualityScores,
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
@@ -1151,7 +1151,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator&lt;S extends Rad
      * @throws IllegalArgumentException if readings are not valid, quality scores
      *                                  is null, or length of quality scores is less than required minimum.
      */
-    public SequentialRobustMixedRadioSourceEstimator(
+    protected SequentialRobustMixedRadioSourceEstimator(
             final double[] qualityScores,
             final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
             final P initialPosition,

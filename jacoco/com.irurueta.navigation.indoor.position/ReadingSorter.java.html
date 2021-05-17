@@ -20,6 +20,7 @@ import com.irurueta.navigation.indoor.Fingerprint;
 import com.irurueta.navigation.indoor.RadioSource;
 import com.irurueta.navigation.indoor.RadioSourceLocated;
 import com.irurueta.navigation.indoor.Reading;
+import com.irurueta.navigation.indoor.ReadingType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -81,20 +82,20 @@ public class ReadingSorter&lt;P extends Point&lt;?&gt;, R extends Reading&lt;? e
     ReadingSorter(final List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; sources,
                   final Fingerprint&lt;? extends RadioSource, ? extends R&gt; fingerprint,
                   final double[] sourceQualityScores,
-<span class="fc" id="L84">                  final double[] fingerprintReadingsQualityScores) {</span>
-<span class="fc bfc" id="L85" title="All 2 branches covered.">        if (sources.size() != sourceQualityScores.length) {</span>
-<span class="fc" id="L86">            throw new IllegalArgumentException();</span>
+<span class="fc" id="L85">                  final double[] fingerprintReadingsQualityScores) {</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">        if (sources.size() != sourceQualityScores.length) {</span>
+<span class="fc" id="L87">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc bfc" id="L89" title="All 2 branches covered.">        if (fingerprint.getReadings().size() != fingerprintReadingsQualityScores.length) {</span>
-<span class="fc" id="L90">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        if (fingerprint.getReadings().size() != fingerprintReadingsQualityScores.length) {</span>
+<span class="fc" id="L91">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L93">        mSources = sources;</span>
-<span class="fc" id="L94">        mFingerprint = fingerprint;</span>
-<span class="fc" id="L95">        mSourceQualityScores = sourceQualityScores;</span>
-<span class="fc" id="L96">        mFingerprintReadingsQualityScores = fingerprintReadingsQualityScores;</span>
-<span class="fc" id="L97">    }</span>
+<span class="fc" id="L94">        mSources = sources;</span>
+<span class="fc" id="L95">        mFingerprint = fingerprint;</span>
+<span class="fc" id="L96">        mSourceQualityScores = sourceQualityScores;</span>
+<span class="fc" id="L97">        mFingerprintReadingsQualityScores = fingerprintReadingsQualityScores;</span>
+<span class="fc" id="L98">    }</span>
 
     /**
      * Gets sources to be taken into account within readings.
@@ -102,7 +103,7 @@ public class ReadingSorter&lt;P extends Point&lt;?&gt;, R extends Reading&lt;? e
      * @return sources to be taken into account within readings.
      */
     public List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; getSources() {
-<span class="fc" id="L105">        return mSources;</span>
+<span class="fc" id="L106">        return mSources;</span>
     }
 
     /**
@@ -111,7 +112,7 @@ public class ReadingSorter&lt;P extends Point&lt;?&gt;, R extends Reading&lt;? e
      * @return fingerprint containing readings of different sources.
      */
     public Fingerprint&lt;? extends RadioSource, ? extends R&gt; getFingerprint() {
-<span class="fc" id="L114">        return mFingerprint;</span>
+<span class="fc" id="L115">        return mFingerprint;</span>
     }
 
     /**
@@ -120,7 +121,7 @@ public class ReadingSorter&lt;P extends Point&lt;?&gt;, R extends Reading&lt;? e
      * @return quality scores associated to each radio source.
      */
     double[] getSourceQualityScores() {
-<span class="fc" id="L123">        return mSourceQualityScores;</span>
+<span class="fc" id="L124">        return mSourceQualityScores;</span>
     }
 
     /**
@@ -129,7 +130,7 @@ public class ReadingSorter&lt;P extends Point&lt;?&gt;, R extends Reading&lt;? e
      * @return quality scores associated to each reading within the fingerprint.
      */
     double[] getFingerprintReadingsQualityScores() {
-<span class="fc" id="L132">        return mFingerprintReadingsQualityScores;</span>
+<span class="fc" id="L133">        return mFingerprintReadingsQualityScores;</span>
     }
 
     /**
@@ -137,73 +138,73 @@ public class ReadingSorter&lt;P extends Point&lt;?&gt;, R extends Reading&lt;? e
      */
     void sort() {
 
-<span class="fc" id="L140">        final Map&lt;RadioSourceLocated&lt;P&gt;, RadioSourceSourceWithQualityScore&lt;P, R&gt;&gt; sourcesMap = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L141">        final Map&lt;RadioSourceLocated&lt;P&gt;, RadioSourceSourceWithQualityScore&lt;P, R&gt;&gt; sourcesMap = new HashMap&lt;&gt;();</span>
 
         // build sources
-<span class="fc" id="L143">        final List&lt;RadioSourceSourceWithQualityScore&lt;P, R&gt;&gt; sourcesWithQualityScores = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L144">        int sourcePosition = 0;</span>
-<span class="fc bfc" id="L145" title="All 2 branches covered.">        for (final RadioSourceLocated&lt;P&gt; source : mSources) {</span>
-<span class="fc" id="L146">            final RadioSourceSourceWithQualityScore&lt;P, R&gt; sourceWithQualityScore =</span>
+<span class="fc" id="L144">        final List&lt;RadioSourceSourceWithQualityScore&lt;P, R&gt;&gt; sourcesWithQualityScores = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L145">        int sourcePosition = 0;</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">        for (final RadioSourceLocated&lt;P&gt; source : mSources) {</span>
+<span class="fc" id="L147">            final RadioSourceSourceWithQualityScore&lt;P, R&gt; sourceWithQualityScore =</span>
                     new RadioSourceSourceWithQualityScore&lt;&gt;();
-<span class="fc" id="L148">            sourceWithQualityScore.source = source;</span>
-<span class="fc" id="L149">            sourceWithQualityScore.qualityScore = mSourceQualityScores[sourcePosition];</span>
-<span class="fc" id="L150">            sourceWithQualityScore.position = sourcePosition;</span>
-<span class="fc" id="L151">            sourceWithQualityScore.readingsWithQualityScores = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L149">            sourceWithQualityScore.source = source;</span>
+<span class="fc" id="L150">            sourceWithQualityScore.qualityScore = mSourceQualityScores[sourcePosition];</span>
+<span class="fc" id="L151">            sourceWithQualityScore.position = sourcePosition;</span>
+<span class="fc" id="L152">            sourceWithQualityScore.readingsWithQualityScores = new ArrayList&lt;&gt;();</span>
 
-<span class="fc" id="L153">            sourcesWithQualityScores.add(sourceWithQualityScore);</span>
+<span class="fc" id="L154">            sourcesWithQualityScores.add(sourceWithQualityScore);</span>
 
-<span class="fc" id="L155">            sourcesMap.put(source, sourceWithQualityScore);</span>
+<span class="fc" id="L156">            sourcesMap.put(source, sourceWithQualityScore);</span>
 
-<span class="fc" id="L157">            sourcePosition++;</span>
-<span class="fc" id="L158">        }</span>
+<span class="fc" id="L158">            sourcePosition++;</span>
+<span class="fc" id="L159">        }</span>
 
         // build readings
-<span class="fc" id="L161">        int readingPosition = 0;</span>
-<span class="fc bfc" id="L162" title="All 2 branches covered.">        for (@SuppressWarnings(&quot;unchecked&quot;) final R reading : mFingerprint.getReadings()) {</span>
+<span class="fc" id="L162">        int readingPosition = 0;</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">        for (@SuppressWarnings(&quot;unchecked&quot;) final R reading : mFingerprint.getReadings()) {</span>
             // noinspection all
-<span class="fc" id="L164">            final RadioSourceSourceWithQualityScore&lt;P, R&gt; sourceWithQualityScore =</span>
-<span class="fc" id="L165">                    sourcesMap.get(reading.getSource());</span>
-<span class="pc bpc" id="L166" title="1 of 2 branches missed.">            if (sourceWithQualityScore == null) {</span>
-<span class="nc" id="L167">                continue;</span>
+<span class="fc" id="L165">            final RadioSourceSourceWithQualityScore&lt;P, R&gt; sourceWithQualityScore =</span>
+<span class="fc" id="L166">                    sourcesMap.get(reading.getSource());</span>
+<span class="pc bpc" id="L167" title="1 of 2 branches missed.">            if (sourceWithQualityScore == null) {</span>
+<span class="nc" id="L168">                continue;</span>
             }
 
-<span class="fc" id="L170">            final List&lt;ReadingWithQualityScore&lt;R&gt;&gt; readingsWithQualityScores =</span>
+<span class="fc" id="L171">            final List&lt;ReadingWithQualityScore&lt;R&gt;&gt; readingsWithQualityScores =</span>
                     sourceWithQualityScore.readingsWithQualityScores;
 
-<span class="fc" id="L173">            final ReadingWithQualityScore&lt;R&gt; readingWithQualityScore = new ReadingWithQualityScore&lt;&gt;();</span>
-<span class="fc" id="L174">            readingWithQualityScore.reading = reading;</span>
-<span class="fc" id="L175">            readingWithQualityScore.qualityScore = mFingerprintReadingsQualityScores[readingPosition];</span>
-<span class="fc" id="L176">            readingWithQualityScore.position = readingPosition;</span>
+<span class="fc" id="L174">            final ReadingWithQualityScore&lt;R&gt; readingWithQualityScore = new ReadingWithQualityScore&lt;&gt;();</span>
+<span class="fc" id="L175">            readingWithQualityScore.reading = reading;</span>
+<span class="fc" id="L176">            readingWithQualityScore.qualityScore = mFingerprintReadingsQualityScores[readingPosition];</span>
+<span class="fc" id="L177">            readingWithQualityScore.position = readingPosition;</span>
 
-<span class="fc" id="L178">            readingsWithQualityScores.add(readingWithQualityScore);</span>
+<span class="fc" id="L179">            readingsWithQualityScores.add(readingWithQualityScore);</span>
 
-<span class="fc" id="L180">            readingPosition++;</span>
-<span class="fc" id="L181">        }</span>
+<span class="fc" id="L181">            readingPosition++;</span>
+<span class="fc" id="L182">        }</span>
 
         // sort all readings within sources
-<span class="fc bfc" id="L184" title="All 2 branches covered.">        for (final RadioSourceSourceWithQualityScore&lt;P, R&gt; sourceWithQualityScore : sourcesWithQualityScores) {</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">        for (final RadioSourceSourceWithQualityScore&lt;P, R&gt; sourceWithQualityScore : sourcesWithQualityScores) {</span>
             // sort all readings for this source from highest to lowest quality
 
             // noinspection unchecked
-<span class="fc" id="L188">            final ReadingWithQualityScore&lt;R&gt;[] readingsWithQualityScoresArray =</span>
-<span class="fc" id="L189">                    new ReadingWithQualityScore[sourceWithQualityScore.readingsWithQualityScores.size()];</span>
-<span class="fc" id="L190">            sourceWithQualityScore.readingsWithQualityScores.toArray(readingsWithQualityScoresArray);</span>
-<span class="fc" id="L191">            Arrays.sort(readingsWithQualityScoresArray, new ReadingComparator&lt;R&gt;());</span>
+<span class="fc" id="L189">            final ReadingWithQualityScore&lt;R&gt;[] readingsWithQualityScoresArray =</span>
+<span class="fc" id="L190">                    new ReadingWithQualityScore[sourceWithQualityScore.readingsWithQualityScores.size()];</span>
+<span class="fc" id="L191">            sourceWithQualityScore.readingsWithQualityScores.toArray(readingsWithQualityScoresArray);</span>
+<span class="fc" id="L192">            Arrays.sort(readingsWithQualityScoresArray, new ReadingComparator&lt;R&gt;());</span>
 
-<span class="fc" id="L193">            sourceWithQualityScore.readingsWithQualityScores = Arrays.asList(</span>
+<span class="fc" id="L194">            sourceWithQualityScore.readingsWithQualityScores = Arrays.asList(</span>
                     readingsWithQualityScoresArray);
-<span class="fc" id="L195">        }</span>
+<span class="fc" id="L196">        }</span>
 
         // sort all sources from highest to lowest quality
 
         // noinspection unchecked
-<span class="fc" id="L200">        final RadioSourceSourceWithQualityScore&lt;P, R&gt;[] sourcesWithQualityScoresArray =</span>
-<span class="fc" id="L201">                new RadioSourceSourceWithQualityScore[sourcesWithQualityScores.size()];</span>
-<span class="fc" id="L202">        sourcesWithQualityScores.toArray(sourcesWithQualityScoresArray);</span>
-<span class="fc" id="L203">        Arrays.sort(sourcesWithQualityScoresArray, new RadioSourceComparator&lt;P, R&gt;());</span>
+<span class="fc" id="L201">        final RadioSourceSourceWithQualityScore&lt;P, R&gt;[] sourcesWithQualityScoresArray =</span>
+<span class="fc" id="L202">                new RadioSourceSourceWithQualityScore[sourcesWithQualityScores.size()];</span>
+<span class="fc" id="L203">        sourcesWithQualityScores.toArray(sourcesWithQualityScoresArray);</span>
+<span class="fc" id="L204">        Arrays.sort(sourcesWithQualityScoresArray, new RadioSourceComparator&lt;P, R&gt;());</span>
 
-<span class="fc" id="L205">        mSortedSourcesAndReadings = Arrays.asList(sourcesWithQualityScoresArray);</span>
-<span class="fc" id="L206">    }</span>
+<span class="fc" id="L206">        mSortedSourcesAndReadings = Arrays.asList(sourcesWithQualityScoresArray);</span>
+<span class="fc" id="L207">    }</span>
 
     /**
      * Gets sorted sources and readings.
@@ -211,7 +212,7 @@ public class ReadingSorter&lt;P extends Point&lt;?&gt;, R extends Reading&lt;? e
      * @return sorted sources and readings.
      */
     List&lt;RadioSourceSourceWithQualityScore&lt;P, R&gt;&gt; getSortedSourcesAndReadings() {
-<span class="fc" id="L214">        return mSortedSourcesAndReadings;</span>
+<span class="fc" id="L215">        return mSortedSourcesAndReadings;</span>
     }
 
     /**
@@ -219,7 +220,7 @@ public class ReadingSorter&lt;P extends Point&lt;?&gt;, R extends Reading&lt;? e
      *
      * @param &lt;R&gt; a {@link Reading} type.
      */
-<span class="fc" id="L222">    static class ReadingWithQualityScore&lt;R extends Reading&lt;? extends RadioSource&gt;&gt; {</span>
+<span class="fc" id="L223">    static class ReadingWithQualityScore&lt;R extends Reading&lt;? extends RadioSource&gt;&gt; {</span>
         /**
          * A reading.
          */
@@ -242,7 +243,7 @@ public class ReadingSorter&lt;P extends Point&lt;?&gt;, R extends Reading&lt;? e
      * @param &lt;P&gt; a {@link Point} type.
      * @param &lt;R&gt; a {@link Reading} type.
      */
-<span class="fc" id="L245">    static class RadioSourceSourceWithQualityScore&lt;P extends Point&lt;?&gt;,</span>
+<span class="fc" id="L246">    static class RadioSourceSourceWithQualityScore&lt;P extends Point&lt;?&gt;,</span>
             R extends Reading&lt;? extends RadioSource&gt;&gt; {
         /**
          * Radio source.
@@ -283,25 +284,26 @@ public class ReadingSorter&lt;P extends Point&lt;?&gt;, R extends Reading&lt;? e
 
             // Take reading type into account so that ranging readings go first,
             // then ranging+RSSI and finally RSSI readings.
-<span class="fc bfc" id="L286" title="All 2 branches covered.">            if (o1.reading.getType() != o2.reading.getType()) {</span>
-<span class="pc bpc" id="L287" title="1 of 4 branches missed.">                switch (o1.reading.getType()) {</span>
+<span class="fc bfc" id="L287" title="All 2 branches covered.">            if (o1.reading.getType() != o2.reading.getType()) {</span>
+<span class="fc bfc" id="L288" title="All 3 branches covered.">                switch (o1.reading.getType()) {</span>
                     case RANGING_READING:
                         // o1 goes first (o2 last)
-<span class="fc" id="L290">                        return -1;</span>
+<span class="fc" id="L291">                        return -1;</span>
 
                     case RANGING_AND_RSSI_READING:
-<span class="pc bpc" id="L293" title="1 of 3 branches missed.">                        switch (o2.reading.getType()) {</span>
-                            case RANGING_READING:
-                                // o2 goes first (o1 last)
-<span class="fc" id="L296">                                return 1;</span>
-                            case RSSI_READING:
-                                // o1 goes first (o2 last)
-<span class="fc" id="L299">                                return -1;</span>
+<span class="fc bfc" id="L294" title="All 2 branches covered.">                        if (o2.reading.getType() == ReadingType.RANGING_READING) {</span>
+                            // RANGING_READING
+                            // o2 goes first (o1 last)
+<span class="fc" id="L297">                            return 1;</span>
+                        } else {
+                            // RSSI_READING
+                            // o1 goes first (o2 last)
+<span class="fc" id="L301">                            return -1;</span>
                         }
-<span class="nc" id="L301">                        break;</span>
                     case RSSI_READING:
+                    default:
                         // o2 goes first (o1 last)
-<span class="fc" id="L304">                        return 1;</span>
+<span class="fc" id="L306">                        return 1;</span>
                 }
             }
 
@@ -309,7 +311,7 @@ public class ReadingSorter&lt;P extends Point&lt;?&gt;, R extends Reading&lt;? e
             // same reading type
 
             // order by reading quality score
-<span class="fc" id="L312">            return Double.compare(o2.qualityScore, o1.qualityScore);</span>
+<span class="fc" id="L314">            return Double.compare(o2.qualityScore, o1.qualityScore);</span>
         }
     }
 
@@ -334,7 +336,7 @@ public class ReadingSorter&lt;P extends Point&lt;?&gt;, R extends Reading&lt;? e
         @Override
         public int compare(final RadioSourceSourceWithQualityScore&lt;P, R&gt; o1,
                            final RadioSourceSourceWithQualityScore&lt;P, R&gt; o2) {
-<span class="fc" id="L337">            return Double.compare(o2.qualityScore, o1.qualityScore);</span>
+<span class="fc" id="L339">            return Double.compare(o2.qualityScore, o1.qualityScore);</span>
         }
     }
 }
