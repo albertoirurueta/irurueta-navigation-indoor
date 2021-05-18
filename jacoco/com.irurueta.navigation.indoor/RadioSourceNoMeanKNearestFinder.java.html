@@ -103,8 +103,9 @@ public class RadioSourceNoMeanKNearestFinder&lt;P extends Point&lt;?&gt;, S exte
      *
      * @return collection of fingerprints to match against.
      */
-    public Collection&lt;? extends RssiFingerprintLocated&lt;S, RssiReading&lt;S&gt;, P&gt;&gt; getFingerprints() {
-<span class="fc" id="L107">        return mFingerprints;</span>
+    public Collection&lt;RssiFingerprintLocated&lt;S, RssiReading&lt;S&gt;, P&gt;&gt; getFingerprints() {
+        //noinspection unchecked
+<span class="fc" id="L108">        return (Collection&lt;RssiFingerprintLocated&lt;S, RssiReading&lt;S&gt;,P&gt;&gt;) mFingerprints;</span>
     }
 
     /**
@@ -122,21 +123,21 @@ public class RadioSourceNoMeanKNearestFinder&lt;P extends Point&lt;?&gt;, S exte
     public static &lt;P extends Point&lt;?&gt;, S extends RadioSource&gt; RssiFingerprintLocated&lt;S, RssiReading&lt;S&gt;, P&gt; findNearestTo(
             final RssiFingerprint&lt;S, RssiReading&lt;S&gt;&gt; fingerprint,
             final Collection&lt;? extends RssiFingerprintLocated&lt;S, RssiReading&lt;S&gt;, P&gt;&gt; fingerprints) {
-<span class="fc bfc" id="L125" title="All 4 branches covered.">        if (fingerprint == null || fingerprints == null) {</span>
-<span class="fc" id="L126">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L126" title="All 4 branches covered.">        if (fingerprint == null || fingerprints == null) {</span>
+<span class="fc" id="L127">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L129">        double bestSqrDist = Double.MAX_VALUE;</span>
-<span class="fc" id="L130">        RssiFingerprintLocated&lt;S, RssiReading&lt;S&gt;, P&gt; result = null;</span>
-<span class="fc bfc" id="L131" title="All 2 branches covered.">        for (RssiFingerprintLocated&lt;S, RssiReading&lt;S&gt;, P&gt; f : fingerprints) {</span>
-<span class="fc" id="L132">            double sqrDist = f.noMeanSqrDistanceTo(fingerprint);</span>
-<span class="fc bfc" id="L133" title="All 2 branches covered.">            if (sqrDist &lt; bestSqrDist) {</span>
-<span class="fc" id="L134">                bestSqrDist = sqrDist;</span>
-<span class="fc" id="L135">                result = f;</span>
+<span class="fc" id="L130">        double bestSqrDist = Double.MAX_VALUE;</span>
+<span class="fc" id="L131">        RssiFingerprintLocated&lt;S, RssiReading&lt;S&gt;, P&gt; result = null;</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">        for (RssiFingerprintLocated&lt;S, RssiReading&lt;S&gt;, P&gt; f : fingerprints) {</span>
+<span class="fc" id="L133">            double sqrDist = f.noMeanSqrDistanceTo(fingerprint);</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">            if (sqrDist &lt; bestSqrDist) {</span>
+<span class="fc" id="L135">                bestSqrDist = sqrDist;</span>
+<span class="fc" id="L136">                result = f;</span>
             }
-<span class="fc" id="L137">        }</span>
+<span class="fc" id="L138">        }</span>
 
-<span class="fc" id="L139">        return result;</span>
+<span class="fc" id="L140">        return result;</span>
     }
 
     /**
@@ -154,16 +155,16 @@ public class RadioSourceNoMeanKNearestFinder&lt;P extends Point&lt;?&gt;, S exte
      */
     @SuppressWarnings(&quot;DuplicatedCode&quot;)
     public static &lt;P extends Point&lt;?&gt;, S extends RadioSource&gt; List&lt;RssiFingerprintLocated&lt;S,
-            RssiReading&lt;S&gt;, P&gt;&gt; findKNearestTo(RssiFingerprint&lt;S, RssiReading&lt;S&gt;&gt; fingerprint,
-                   Collection&lt;? extends RssiFingerprintLocated&lt;S, RssiReading&lt;S&gt;, P&gt;&gt; fingerprints,
-                   int k) {
+            RssiReading&lt;S&gt;, P&gt;&gt; findKNearestTo(final RssiFingerprint&lt;S, RssiReading&lt;S&gt;&gt; fingerprint,
+                                               final Collection&lt;? extends RssiFingerprintLocated&lt;S, RssiReading&lt;S&gt;, P&gt;&gt; fingerprints,
+                                               final int k) {
 
-<span class="fc" id="L161">        final List&lt;RssiFingerprintLocated&lt;S, RssiReading&lt;S&gt;, P&gt;&gt; result =</span>
+<span class="fc" id="L162">        final List&lt;RssiFingerprintLocated&lt;S, RssiReading&lt;S&gt;, P&gt;&gt; result =</span>
                 new ArrayList&lt;&gt;();
-<span class="fc" id="L163">        final List&lt;Double&gt; nearestSqrDistances = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L164">        findKNearestTo(fingerprint, fingerprints, k, result, nearestSqrDistances);</span>
+<span class="fc" id="L164">        final List&lt;Double&gt; nearestSqrDistances = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L165">        findKNearestTo(fingerprint, fingerprints, k, result, nearestSqrDistances);</span>
 
-<span class="fc" id="L166">        return result;</span>
+<span class="fc" id="L167">        return result;</span>
     }
 
     /**
@@ -189,49 +190,49 @@ public class RadioSourceNoMeanKNearestFinder&lt;P extends Point&lt;?&gt;, S exte
             final List&lt;RssiFingerprintLocated&lt;S, RssiReading&lt;S&gt;, P&gt;&gt; nearestFingerprints,
             final List&lt;Double&gt; nearestSqrDistances) {
 
-<span class="pc bpc" id="L192" title="1 of 10 branches missed.">        if (fingerprint == null || fingerprints == null || k &lt; 1 || nearestFingerprints == null ||</span>
+<span class="pc bpc" id="L193" title="1 of 10 branches missed.">        if (fingerprint == null || fingerprints == null || k &lt; 1 || nearestFingerprints == null ||</span>
                 nearestSqrDistances == null) {
-<span class="fc" id="L194">            throw new IllegalArgumentException();</span>
+<span class="fc" id="L195">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L197">        nearestSqrDistances.clear();</span>
-<span class="fc" id="L198">        nearestFingerprints.clear();</span>
+<span class="fc" id="L198">        nearestSqrDistances.clear();</span>
+<span class="fc" id="L199">        nearestFingerprints.clear();</span>
 
-<span class="fc" id="L200">        double maxSqrDist = Double.MAX_VALUE;</span>
-<span class="fc bfc" id="L201" title="All 2 branches covered.">        for (final RssiFingerprintLocated&lt;S, RssiReading&lt;S&gt;, P&gt; f : fingerprints) {</span>
-<span class="fc" id="L202">            final double sqrDist = f.noMeanSqrDistanceTo(fingerprint);</span>
-<span class="fc bfc" id="L203" title="All 4 branches covered.">            if (sqrDist &lt; maxSqrDist || nearestSqrDistances.size() &lt; k) {</span>
+<span class="fc" id="L201">        double maxSqrDist = Double.MAX_VALUE;</span>
+<span class="fc bfc" id="L202" title="All 2 branches covered.">        for (final RssiFingerprintLocated&lt;S, RssiReading&lt;S&gt;, P&gt; f : fingerprints) {</span>
+<span class="fc" id="L203">            final double sqrDist = f.noMeanSqrDistanceTo(fingerprint);</span>
+<span class="fc bfc" id="L204" title="All 4 branches covered.">            if (sqrDist &lt; maxSqrDist || nearestSqrDistances.size() &lt; k) {</span>
 
                 // find insertion point
-<span class="fc" id="L206">                int pos = -1;</span>
-<span class="fc" id="L207">                int i = 0;</span>
-<span class="fc bfc" id="L208" title="All 2 branches covered.">                for (final Double sd : nearestSqrDistances) {</span>
-<span class="fc bfc" id="L209" title="All 2 branches covered.">                    if (sqrDist &lt; sd) {</span>
+<span class="fc" id="L207">                int pos = -1;</span>
+<span class="fc" id="L208">                int i = 0;</span>
+<span class="fc bfc" id="L209" title="All 2 branches covered.">                for (final Double sd : nearestSqrDistances) {</span>
+<span class="fc bfc" id="L210" title="All 2 branches covered.">                    if (sqrDist &lt; sd) {</span>
                         // insertion point found
-<span class="fc" id="L211">                        pos = i;</span>
-<span class="fc" id="L212">                        break;</span>
+<span class="fc" id="L212">                        pos = i;</span>
+<span class="fc" id="L213">                        break;</span>
                     }
-<span class="fc" id="L214">                    i++;</span>
-<span class="fc" id="L215">                }</span>
+<span class="fc" id="L215">                    i++;</span>
+<span class="fc" id="L216">                }</span>
 
-<span class="fc bfc" id="L217" title="All 2 branches covered.">                if (pos &gt;= 0) {</span>
-<span class="fc" id="L218">                    nearestSqrDistances.add(pos, sqrDist);</span>
-<span class="fc" id="L219">                    nearestFingerprints.add(pos, f);</span>
+<span class="fc bfc" id="L218" title="All 2 branches covered.">                if (pos &gt;= 0) {</span>
+<span class="fc" id="L219">                    nearestSqrDistances.add(pos, sqrDist);</span>
+<span class="fc" id="L220">                    nearestFingerprints.add(pos, f);</span>
                 } else {
-<span class="fc" id="L221">                    nearestSqrDistances.add(sqrDist);</span>
-<span class="fc" id="L222">                    nearestFingerprints.add(f);</span>
+<span class="fc" id="L222">                    nearestSqrDistances.add(sqrDist);</span>
+<span class="fc" id="L223">                    nearestFingerprints.add(f);</span>
                 }
 
                 // remove results exceeding required number of k neighbours to be found
-<span class="fc bfc" id="L226" title="All 2 branches covered.">                if (nearestFingerprints.size() &gt; k) {</span>
-<span class="fc" id="L227">                    nearestSqrDistances.remove(k);</span>
-<span class="fc" id="L228">                    nearestFingerprints.remove(k);</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">                if (nearestFingerprints.size() &gt; k) {</span>
+<span class="fc" id="L228">                    nearestSqrDistances.remove(k);</span>
+<span class="fc" id="L229">                    nearestFingerprints.remove(k);</span>
                 }
 
                 // update maxSqrDist to the largest squared distance value contained in result list distances
-<span class="fc" id="L232">                maxSqrDist = nearestSqrDistances.get(nearestSqrDistances.size() - 1);</span>
+<span class="fc" id="L233">                maxSqrDist = nearestSqrDistances.get(nearestSqrDistances.size() - 1);</span>
             }
-<span class="fc" id="L234">        }</span>
-<span class="fc" id="L235">    }</span>
+<span class="fc" id="L235">        }</span>
+<span class="fc" id="L236">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

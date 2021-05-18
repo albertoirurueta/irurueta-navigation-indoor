@@ -80,8 +80,9 @@ public abstract class PositionEstimator&lt;P extends Point&lt;?&gt;,
      *
      * @return located radio sources used for lateration.
      */
-    public List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; getSources() {
-<span class="fc" id="L84">        return mSources;</span>
+    public List&lt;RadioSourceLocated&lt;P&gt;&gt; getSources() {
+        //noinspection unchecked
+<span class="fc" id="L85">        return (List&lt;RadioSourceLocated&lt;P&gt;&gt;) mSources;</span>
     }
 
     /**
@@ -94,12 +95,12 @@ public abstract class PositionEstimator&lt;P extends Point&lt;?&gt;,
      */
     public void setSources(final List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; sources)
             throws LockedException {
-<span class="fc bfc" id="L97" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L98">            throw new LockedException();</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L99">            throw new LockedException();</span>
         }
 
-<span class="fc" id="L101">        internalSetSources(sources);</span>
-<span class="fc" id="L102">    }</span>
+<span class="fc" id="L102">        internalSetSources(sources);</span>
+<span class="fc" id="L103">    }</span>
 
     /**
      * Gets fingerprint containing readings at an unknown location for provided located
@@ -108,8 +109,9 @@ public abstract class PositionEstimator&lt;P extends Point&lt;?&gt;,
      * @return fingerprint containing readings at an unknown location for provided
      * located radio sources.
      */
-    public Fingerprint&lt;? extends RadioSource, ? extends R&gt; getFingerprint() {
-<span class="fc" id="L112">        return mFingerprint;</span>
+    public Fingerprint&lt;RadioSource, ? extends R&gt; getFingerprint() {
+        //noinspection unchecked
+<span class="fc" id="L114">        return (Fingerprint&lt;RadioSource, ? extends R&gt;) mFingerprint;</span>
     }
 
     /**
@@ -123,12 +125,12 @@ public abstract class PositionEstimator&lt;P extends Point&lt;?&gt;,
      */
     public void setFingerprint(final Fingerprint&lt;? extends RadioSource, ? extends R&gt; fingerprint)
             throws LockedException {
-<span class="fc bfc" id="L126" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L127">            throw new LockedException();</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L129">            throw new LockedException();</span>
         }
 
-<span class="fc" id="L130">        internalSetFingerprint(fingerprint);</span>
-<span class="fc" id="L131">    }</span>
+<span class="fc" id="L132">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L133">    }</span>
 
     /**
      * Gets listener to be notified of events raised by this instance.
@@ -136,7 +138,7 @@ public abstract class PositionEstimator&lt;P extends Point&lt;?&gt;,
      * @return listener to be notified of events raised by this instance.
      */
     public L getListener() {
-<span class="fc" id="L139">        return mListener;</span>
+<span class="fc" id="L141">        return mListener;</span>
     }
 
     /**
@@ -146,11 +148,11 @@ public abstract class PositionEstimator&lt;P extends Point&lt;?&gt;,
      * @throws LockedException if estimator is locked.
      */
     public void setListener(final L listener) throws LockedException {
-<span class="fc bfc" id="L149" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L150">            throw new LockedException();</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L152">            throw new LockedException();</span>
         }
-<span class="fc" id="L152">        mListener = listener;</span>
-<span class="fc" id="L153">    }</span>
+<span class="fc" id="L154">        mListener = listener;</span>
+<span class="fc" id="L155">    }</span>
 
     /**
      * Gets estimated inhomogeneous position coordinates.
@@ -158,7 +160,7 @@ public abstract class PositionEstimator&lt;P extends Point&lt;?&gt;,
      * @return estimated inhomogeneous position coordinates.
      */
     public double[] getEstimatedPositionCoordinates() {
-<span class="fc" id="L161">        return mEstimatedPositionCoordinates;</span>
+<span class="fc" id="L163">        return mEstimatedPositionCoordinates;</span>
     }
 
     /**
@@ -168,13 +170,13 @@ public abstract class PositionEstimator&lt;P extends Point&lt;?&gt;,
      *                          stored.
      */
     public void getEstimatedPosition(final P estimatedPosition) {
-<span class="pc bpc" id="L171" title="1 of 2 branches missed.">        if (mEstimatedPositionCoordinates != null) {</span>
-<span class="fc bfc" id="L172" title="All 2 branches covered.">            for (int i = 0; i &lt; mEstimatedPositionCoordinates.length; i++) {</span>
-<span class="fc" id="L173">                estimatedPosition.setInhomogeneousCoordinate(i,</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">        if (mEstimatedPositionCoordinates != null) {</span>
+<span class="fc bfc" id="L174" title="All 2 branches covered.">            for (int i = 0; i &lt; mEstimatedPositionCoordinates.length; i++) {</span>
+<span class="fc" id="L175">                estimatedPosition.setInhomogeneousCoordinate(i,</span>
                         mEstimatedPositionCoordinates[i]);
             }
         }
-<span class="fc" id="L177">    }</span>
+<span class="fc" id="L179">    }</span>
 
     /**
      * Gets minimum required number of located radio sources to perform lateration.
@@ -242,16 +244,16 @@ public abstract class PositionEstimator&lt;P extends Point&lt;?&gt;,
      */
     @SuppressWarnings(&quot;Duplicates&quot;)
     protected void internalSetSources(final List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; sources) {
-<span class="fc bfc" id="L245" title="All 2 branches covered.">        if (sources == null) {</span>
-<span class="fc" id="L246">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L247" title="All 2 branches covered.">        if (sources == null) {</span>
+<span class="fc" id="L248">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc bfc" id="L249" title="All 2 branches covered.">        if (sources.size() &lt; getMinRequiredSources()) {</span>
-<span class="fc" id="L250">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L251" title="All 2 branches covered.">        if (sources.size() &lt; getMinRequiredSources()) {</span>
+<span class="fc" id="L252">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L253">        mSources = sources;</span>
-<span class="fc" id="L254">    }</span>
+<span class="fc" id="L255">        mSources = sources;</span>
+<span class="fc" id="L256">    }</span>
 
     /**
      * Internally sets fingerprint containing readings at an unknown location for
@@ -263,11 +265,11 @@ public abstract class PositionEstimator&lt;P extends Point&lt;?&gt;,
      */
     protected void internalSetFingerprint(
             final Fingerprint&lt;? extends RadioSource, ? extends R&gt; fingerprint) {
-<span class="fc bfc" id="L266" title="All 2 branches covered.">        if (fingerprint == null) {</span>
-<span class="fc" id="L267">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L268" title="All 2 branches covered.">        if (fingerprint == null) {</span>
+<span class="fc" id="L269">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L270">        mFingerprint = fingerprint;</span>
-<span class="fc" id="L271">    }</span>
+<span class="fc" id="L272">        mFingerprint = fingerprint;</span>
+<span class="fc" id="L273">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

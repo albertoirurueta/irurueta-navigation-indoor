@@ -1456,8 +1456,9 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      *
      * @return located radio sources used for lateration.
      */
-    public List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; getSources() {
-<span class="fc" id="L1460">        return mSources;</span>
+    public List&lt;RadioSourceLocated&lt;P&gt;&gt; getSources() {
+        //noinspection unchecked
+<span class="fc" id="L1461">        return (List&lt;RadioSourceLocated&lt;P&gt;&gt;) mSources;</span>
     }
 
     /**
@@ -1471,12 +1472,12 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      */
     public void setSources(final List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; sources)
             throws LockedException {
-<span class="fc bfc" id="L1474" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L1475">            throw new LockedException();</span>
+<span class="fc bfc" id="L1475" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1476">            throw new LockedException();</span>
         }
 
-<span class="fc" id="L1478">        internalSetSources(sources);</span>
-<span class="fc" id="L1479">    }</span>
+<span class="fc" id="L1479">        internalSetSources(sources);</span>
+<span class="fc" id="L1480">    }</span>
 
     /**
      * Gets fingerprint containing ranging+RSSI readings at an unknown location for
@@ -1485,9 +1486,9 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      * @return fingerprint containing readings at an unknown location for provided
      * located radio sources.
      */
-    public RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
-            extends RadioSource&gt;&gt; getFingerprint() {
-<span class="fc" id="L1490">        return mFingerprint;</span>
+    public RangingAndRssiFingerprint&lt;RadioSource, RangingAndRssiReading&lt;RadioSource&gt;&gt; getFingerprint() {
+        //noinspection unchecked
+<span class="fc" id="L1491">        return (RangingAndRssiFingerprint&lt;RadioSource, RangingAndRssiReading&lt;RadioSource&gt;&gt;) mFingerprint;</span>
     }
 
     /**
@@ -1502,12 +1503,12 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
             final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
                     extends RadioSource&gt;&gt; fingerprint)
             throws LockedException {
-<span class="fc bfc" id="L1505" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L1506">            throw new LockedException();</span>
+<span class="fc bfc" id="L1506" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1507">            throw new LockedException();</span>
         }
 
-<span class="fc" id="L1509">        internalSetFingerprint(fingerprint);</span>
-<span class="fc" id="L1510">    }</span>
+<span class="fc" id="L1510">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L1511">    }</span>
 
     /**
      * Returns quality scores corresponding to each radio source.
@@ -1516,7 +1517,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      * @return quality scores corresponding to each radio source.
      */
     public double[] getSourceQualityScores() {
-<span class="fc" id="L1519">        return mSourceQualityScores;</span>
+<span class="fc" id="L1520">        return mSourceQualityScores;</span>
     }
 
     /**
@@ -1530,11 +1531,11 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      */
     public void setSourceQualityScores(final double[] sourceQualityScores)
             throws LockedException {
-<span class="fc bfc" id="L1533" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L1534">            throw new LockedException();</span>
+<span class="fc bfc" id="L1534" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1535">            throw new LockedException();</span>
         }
-<span class="fc" id="L1536">        internalSetSourceQualityScores(sourceQualityScores);</span>
-<span class="fc" id="L1537">    }</span>
+<span class="fc" id="L1537">        internalSetSourceQualityScores(sourceQualityScores);</span>
+<span class="fc" id="L1538">    }</span>
 
     /**
      * Gets quality scores corresponding to each reading within provided fingerprint.
@@ -1544,7 +1545,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      * fingerprint.
      */
     public double[] getFingerprintReadingsQualityScores() {
-<span class="fc" id="L1547">        return mFingerprintReadingsQualityScores;</span>
+<span class="fc" id="L1548">        return mFingerprintReadingsQualityScores;</span>
     }
 
     /**
@@ -1559,11 +1560,11 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      */
     public void setFingerprintReadingsQualityScores(
             final double[] fingerprintReadingsQualityScores) throws LockedException {
-<span class="fc bfc" id="L1562" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L1563">            throw new LockedException();</span>
+<span class="fc bfc" id="L1563" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1564">            throw new LockedException();</span>
         }
-<span class="fc" id="L1565">        internalSetFingerprintReadingsQualityScores(fingerprintReadingsQualityScores);</span>
-<span class="fc" id="L1566">    }</span>
+<span class="fc" id="L1566">        internalSetFingerprintReadingsQualityScores(fingerprintReadingsQualityScores);</span>
+<span class="fc" id="L1567">    }</span>
 
     /**
      * Gets listener to be notified of events raised by this instance.
@@ -1571,7 +1572,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      * @return listener to be notified of events raised by this instance.
      */
     public SequentialRobustRangingAndRssiPositionEstimatorListener&lt;P&gt; getListener() {
-<span class="fc" id="L1574">        return mListener;</span>
+<span class="fc" id="L1575">        return mListener;</span>
     }
 
     /**
@@ -1583,11 +1584,11 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
     public void setListener(
             final SequentialRobustRangingAndRssiPositionEstimatorListener&lt;P&gt; listener)
             throws LockedException {
-<span class="fc bfc" id="L1586" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L1587">            throw new LockedException();</span>
+<span class="fc bfc" id="L1587" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1588">            throw new LockedException();</span>
         }
-<span class="fc" id="L1589">        mListener = listener;</span>
-<span class="fc" id="L1590">    }</span>
+<span class="fc" id="L1590">        mListener = listener;</span>
+<span class="fc" id="L1591">    }</span>
 
     /**
      * Gets initial position to use as a starting point to find a new solution.
@@ -1597,7 +1598,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      * @return an initial position.
      */
     public P getInitialPosition() {
-<span class="fc" id="L1600">        return mInitialPosition;</span>
+<span class="fc" id="L1601">        return mInitialPosition;</span>
     }
 
     /**
@@ -1609,11 +1610,11 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      * @throws LockedException if estimator is locked.
      */
     public void setInitialPosition(final P initialPosition) throws LockedException {
-<span class="fc bfc" id="L1612" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L1613">            throw new LockedException();</span>
+<span class="fc bfc" id="L1613" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L1614">            throw new LockedException();</span>
         }
-<span class="fc" id="L1615">        mInitialPosition = initialPosition;</span>
-<span class="fc" id="L1616">    }</span>
+<span class="fc" id="L1616">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L1617">    }</span>
 
     /**
      * Returns boolean indicating if estimator is locked because estimation is
@@ -1622,7 +1623,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      * @return true if estimator is locked, false otherwise.
      */
     public boolean isLocked() {
-<span class="fc" id="L1625">        return mLocked;</span>
+<span class="fc" id="L1626">        return mLocked;</span>
     }
 
     /**
@@ -1631,11 +1632,11 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      * @return true if this instance is ready, false otherwise.
      */
     public boolean isReady() {
-<span class="fc bfc" id="L1634" title="All 2 branches covered.">        final int numSources = mSources != null ? mSources.size() : 0;</span>
-<span class="pc bpc" id="L1635" title="1 of 4 branches missed.">        final int numReadings = mFingerprint != null &amp;&amp; mFingerprint.getReadings() != null ?</span>
-<span class="fc" id="L1636">                mFingerprint.getReadings().size() : 0;</span>
+<span class="fc bfc" id="L1635" title="All 2 branches covered.">        final int numSources = mSources != null ? mSources.size() : 0;</span>
+<span class="pc bpc" id="L1636" title="1 of 4 branches missed.">        final int numReadings = mFingerprint != null &amp;&amp; mFingerprint.getReadings() != null ?</span>
+<span class="fc" id="L1637">                mFingerprint.getReadings().size() : 0;</span>
 
-<span class="pc bpc" id="L1638" title="1 of 4 branches missed.">        return numSources &gt; getMinRequiredSources() &amp;&amp; numReadings &gt;= numSources;</span>
+<span class="pc bpc" id="L1639" title="1 of 4 branches missed.">        return numSources &gt; getMinRequiredSources() &amp;&amp; numReadings &gt;= numSources;</span>
     }
 
     /**
@@ -1649,46 +1650,46 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      */
     public P estimate() throws LockedException, NotReadyException,
             RobustEstimatorException {
-<span class="pc bpc" id="L1652" title="1 of 2 branches missed.">        if (isLocked()) {</span>
-<span class="nc" id="L1653">            throw new LockedException();</span>
+<span class="pc bpc" id="L1653" title="1 of 2 branches missed.">        if (isLocked()) {</span>
+<span class="nc" id="L1654">            throw new LockedException();</span>
         }
 
         // create inner estimators
-<span class="fc" id="L1657">        buildEstimators();</span>
-<span class="fc" id="L1658">        setupEstimators();</span>
+<span class="fc" id="L1658">        buildEstimators();</span>
+<span class="fc" id="L1659">        setupEstimators();</span>
 
-<span class="pc bpc" id="L1660" title="2 of 6 branches missed.">        if (!isReady() || !mRssiEstimator.isReady() || !mRangingEstimator.isReady()) {</span>
-<span class="fc" id="L1661">            throw new NotReadyException();</span>
+<span class="pc bpc" id="L1661" title="2 of 6 branches missed.">        if (!isReady() || !mRssiEstimator.isReady() || !mRangingEstimator.isReady()) {</span>
+<span class="fc" id="L1662">            throw new NotReadyException();</span>
         }
 
-<span class="fc" id="L1664">        mLocked = true;</span>
-<span class="pc bpc" id="L1665" title="1 of 2 branches missed.">        if (mListener != null) {</span>
-<span class="fc" id="L1666">            mListener.onEstimateStart(this);</span>
+<span class="fc" id="L1665">        mLocked = true;</span>
+<span class="pc bpc" id="L1666" title="1 of 2 branches missed.">        if (mListener != null) {</span>
+<span class="fc" id="L1667">            mListener.onEstimateStart(this);</span>
         }
 
         P coarsePosition;
         try {
             // estimate coarse position using RSSI data
-<span class="fc" id="L1672">            coarsePosition = mRssiEstimator.estimate();</span>
-<span class="nc" id="L1673">        } catch (final RobustEstimatorException e) {</span>
-<span class="nc" id="L1674">            coarsePosition = null;</span>
-<span class="fc" id="L1675">        }</span>
+<span class="fc" id="L1673">            coarsePosition = mRssiEstimator.estimate();</span>
+<span class="nc" id="L1674">        } catch (final RobustEstimatorException e) {</span>
+<span class="nc" id="L1675">            coarsePosition = null;</span>
+<span class="fc" id="L1676">        }</span>
 
         // use coarse position as initial position for ranging estimation
-<span class="pc bpc" id="L1678" title="1 of 2 branches missed.">        if (coarsePosition != null) {</span>
-<span class="fc" id="L1679">            mRangingEstimator.setInitialPosition(coarsePosition);</span>
+<span class="pc bpc" id="L1679" title="1 of 2 branches missed.">        if (coarsePosition != null) {</span>
+<span class="fc" id="L1680">            mRangingEstimator.setInitialPosition(coarsePosition);</span>
         }
 
         try {
-<span class="fc" id="L1683">            final P result = mRangingEstimator.estimate();</span>
+<span class="fc" id="L1684">            final P result = mRangingEstimator.estimate();</span>
 
-<span class="pc bpc" id="L1685" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L1686">                mListener.onEstimateEnd(this);</span>
+<span class="pc bpc" id="L1686" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1687">                mListener.onEstimateEnd(this);</span>
             }
 
-<span class="fc" id="L1689">            return result;</span>
+<span class="fc" id="L1690">            return result;</span>
         } finally {
-<span class="fc" id="L1691">            mLocked = false;</span>
+<span class="fc" id="L1692">            mLocked = false;</span>
         }
     }
 
@@ -1698,7 +1699,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      * @return data related to inliers found after estimation.
      */
     public InliersData getInliersData() {
-<span class="fc bfc" id="L1701" title="All 2 branches covered.">        return mRangingEstimator != null ? mRangingEstimator.getInliersData() : null;</span>
+<span class="fc bfc" id="L1702" title="All 2 branches covered.">        return mRangingEstimator != null ? mRangingEstimator.getInliersData() : null;</span>
     }
 
     /**
@@ -1707,8 +1708,8 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      * @return known positions used internally.
      */
     public P[] getPositions() {
-<span class="fc bfc" id="L1710" title="All 2 branches covered.">        return mRangingEstimator != null ?</span>
-<span class="fc" id="L1711">                mRangingEstimator.getPositions() : null;</span>
+<span class="fc bfc" id="L1711" title="All 2 branches covered.">        return mRangingEstimator != null ?</span>
+<span class="fc" id="L1712">                mRangingEstimator.getPositions() : null;</span>
     }
 
     /**
@@ -1719,8 +1720,8 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      * @return euclidean distances used internally.
      */
     public double[] getDistances() {
-<span class="fc bfc" id="L1722" title="All 2 branches covered.">        return mRangingEstimator != null ?</span>
-<span class="fc" id="L1723">                mRangingEstimator.getDistances() : null;</span>
+<span class="fc bfc" id="L1723" title="All 2 branches covered.">        return mRangingEstimator != null ?</span>
+<span class="fc" id="L1724">                mRangingEstimator.getDistances() : null;</span>
     }
 
     /**
@@ -1731,8 +1732,8 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      * @return standard deviations used internally.
      */
     public double[] getDistanceStandardDeviations() {
-<span class="pc bpc" id="L1734" title="1 of 2 branches missed.">        return mRangingEstimator != null ?</span>
-<span class="pc" id="L1735">                mRangingEstimator.getDistanceStandardDeviations() : null;</span>
+<span class="pc bpc" id="L1735" title="1 of 2 branches missed.">        return mRangingEstimator != null ?</span>
+<span class="pc" id="L1736">                mRangingEstimator.getDistanceStandardDeviations() : null;</span>
     }
 
     /**
@@ -1742,7 +1743,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      * @return estimated covariance or null.
      */
     public Matrix getCovariance() {
-<span class="fc bfc" id="L1745" title="All 2 branches covered.">        return mRangingEstimator != null ? mRangingEstimator.getCovariance() : null;</span>
+<span class="fc bfc" id="L1746" title="All 2 branches covered.">        return mRangingEstimator != null ? mRangingEstimator.getCovariance() : null;</span>
     }
 
     /**
@@ -1751,8 +1752,8 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      * @return estimated position.
      */
     public P getEstimatedPosition() {
-<span class="fc bfc" id="L1754" title="All 2 branches covered.">        return mRangingEstimator != null ?</span>
-<span class="fc" id="L1755">                mRangingEstimator.getEstimatedPosition() : null;</span>
+<span class="fc bfc" id="L1755" title="All 2 branches covered.">        return mRangingEstimator != null ?</span>
+<span class="fc" id="L1756">                mRangingEstimator.getEstimatedPosition() : null;</span>
     }
 
     /**
@@ -1782,139 +1783,139 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      */
     @SuppressWarnings(&quot;DuplicatedCode&quot;)
     private void setupEstimators() throws LockedException {
-<span class="fc bfc" id="L1785" title="All 2 branches covered.">        if (mFingerprint != null) {</span>
+<span class="fc bfc" id="L1786" title="All 2 branches covered.">        if (mFingerprint != null) {</span>
             // builds separated RSSI and ranging readings
-<span class="fc" id="L1787">            final List&lt;? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; readings =</span>
-<span class="fc" id="L1788">                    mFingerprint.getReadings();</span>
+<span class="fc" id="L1788">            final List&lt;? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; readings =</span>
+<span class="fc" id="L1789">                    mFingerprint.getReadings();</span>
 
-<span class="fc" id="L1790">            final List&lt;RangingReading&lt;RadioSource&gt;&gt; rangingReadings =</span>
+<span class="fc" id="L1791">            final List&lt;RangingReading&lt;RadioSource&gt;&gt; rangingReadings =</span>
                     new ArrayList&lt;&gt;();
-<span class="fc" id="L1792">            final List&lt;RssiReading&lt;RadioSource&gt;&gt; rssiReadings =</span>
+<span class="fc" id="L1793">            final List&lt;RssiReading&lt;RadioSource&gt;&gt; rssiReadings =</span>
                     new ArrayList&lt;&gt;();
 
-<span class="fc bfc" id="L1795" title="All 2 branches covered.">            for (final RangingAndRssiReading&lt;? extends RadioSource&gt; reading : readings) {</span>
-<span class="fc" id="L1796">                rangingReadings.add(createRangingReading(reading));</span>
-<span class="fc" id="L1797">                rssiReadings.add(createRssiReading(reading));</span>
-<span class="fc" id="L1798">            }</span>
+<span class="fc bfc" id="L1796" title="All 2 branches covered.">            for (final RangingAndRssiReading&lt;? extends RadioSource&gt; reading : readings) {</span>
+<span class="fc" id="L1797">                rangingReadings.add(createRangingReading(reading));</span>
+<span class="fc" id="L1798">                rssiReadings.add(createRssiReading(reading));</span>
+<span class="fc" id="L1799">            }</span>
 
-<span class="fc" id="L1800">            final RssiFingerprint&lt;RadioSource, RssiReading&lt;RadioSource&gt;&gt; rssiFingerprint =</span>
+<span class="fc" id="L1801">            final RssiFingerprint&lt;RadioSource, RssiReading&lt;RadioSource&gt;&gt; rssiFingerprint =</span>
                     new RssiFingerprint&lt;&gt;(rssiReadings);
-<span class="fc" id="L1802">            final RangingFingerprint&lt;RadioSource, RangingReading&lt;RadioSource&gt;&gt; rangingFingerprint =</span>
+<span class="fc" id="L1803">            final RangingFingerprint&lt;RadioSource, RangingReading&lt;RadioSource&gt;&gt; rangingFingerprint =</span>
                     new RangingFingerprint&lt;&gt;(rangingReadings);
 
             // set data and configuration on both internal estimators
-<span class="fc" id="L1806">            mRssiEstimator.setSources(mSources);</span>
-<span class="fc" id="L1807">            mRssiEstimator.setFingerprint(rssiFingerprint);</span>
-<span class="fc" id="L1808">            mRssiEstimator.setRadioSourcePositionCovarianceUsed(</span>
+<span class="fc" id="L1807">            mRssiEstimator.setSources(mSources);</span>
+<span class="fc" id="L1808">            mRssiEstimator.setFingerprint(rssiFingerprint);</span>
+<span class="fc" id="L1809">            mRssiEstimator.setRadioSourcePositionCovarianceUsed(</span>
                     mUseRssiRadioSourcePositionCovariance);
-<span class="fc" id="L1810">            mRssiEstimator.setEvenlyDistributeReadings(mEvenlyDistributeRssiReadings);</span>
-<span class="fc" id="L1811">            mRssiEstimator.setFallbackDistanceStandardDeviation(</span>
+<span class="fc" id="L1811">            mRssiEstimator.setEvenlyDistributeReadings(mEvenlyDistributeRssiReadings);</span>
+<span class="fc" id="L1812">            mRssiEstimator.setFallbackDistanceStandardDeviation(</span>
                     mRssiFallbackDistanceStandardDeviation);
-<span class="fc" id="L1813">            mRssiEstimator.setProgressDelta(2.0f * mProgressDelta);</span>
-<span class="fc" id="L1814">            mRssiEstimator.setConfidence(mRssiConfidence);</span>
-<span class="fc" id="L1815">            mRssiEstimator.setMaxIterations(mRssiMaxIterations);</span>
-<span class="fc" id="L1816">            mRssiEstimator.setResultRefined(mRefineResult);</span>
-<span class="fc" id="L1817">            mRssiEstimator.setCovarianceKept(mKeepCovariance);</span>
-<span class="fc" id="L1818">            mRssiEstimator.setInitialPosition(mInitialPosition);</span>
-<span class="fc" id="L1819">            mRssiEstimator.setLinearSolverUsed(mUseRssiLinearSolver);</span>
-<span class="fc" id="L1820">            mRssiEstimator.setHomogeneousLinearSolverUsed(</span>
+<span class="fc" id="L1814">            mRssiEstimator.setProgressDelta(2.0f * mProgressDelta);</span>
+<span class="fc" id="L1815">            mRssiEstimator.setConfidence(mRssiConfidence);</span>
+<span class="fc" id="L1816">            mRssiEstimator.setMaxIterations(mRssiMaxIterations);</span>
+<span class="fc" id="L1817">            mRssiEstimator.setResultRefined(mRefineResult);</span>
+<span class="fc" id="L1818">            mRssiEstimator.setCovarianceKept(mKeepCovariance);</span>
+<span class="fc" id="L1819">            mRssiEstimator.setInitialPosition(mInitialPosition);</span>
+<span class="fc" id="L1820">            mRssiEstimator.setLinearSolverUsed(mUseRssiLinearSolver);</span>
+<span class="fc" id="L1821">            mRssiEstimator.setHomogeneousLinearSolverUsed(</span>
                     mUseRssiHomogeneousLinearSolver);
-<span class="fc" id="L1822">            mRssiEstimator.setPreliminarySolutionRefined(</span>
+<span class="fc" id="L1823">            mRssiEstimator.setPreliminarySolutionRefined(</span>
                     mRefineRssiPreliminarySolutions);
-<span class="fc" id="L1824">            mRssiEstimator.setSourceQualityScores(mSourceQualityScores);</span>
-<span class="fc" id="L1825">            mRssiEstimator.setFingerprintReadingsQualityScores(</span>
+<span class="fc" id="L1825">            mRssiEstimator.setSourceQualityScores(mSourceQualityScores);</span>
+<span class="fc" id="L1826">            mRssiEstimator.setFingerprintReadingsQualityScores(</span>
                     mFingerprintReadingsQualityScores);
-<span class="fc" id="L1827">            mRssiEstimator.setListener(new RobustRssiPositionEstimatorListener&lt;P&gt;() {</span>
+<span class="fc" id="L1828">            mRssiEstimator.setListener(new RobustRssiPositionEstimatorListener&lt;P&gt;() {</span>
                 @Override
                 public void onEstimateStart(
                         final RobustRssiPositionEstimator&lt;P&gt; estimator) {
                     // not used
-<span class="fc" id="L1832">                }</span>
+<span class="fc" id="L1833">                }</span>
 
                 @Override
                 public void onEstimateEnd(
                         final RobustRssiPositionEstimator&lt;P&gt; estimator) {
                     // not used
-<span class="fc" id="L1838">                }</span>
+<span class="fc" id="L1839">                }</span>
 
                 @Override
                 public void onEstimateNextIteration(
                         final RobustRssiPositionEstimator&lt;P&gt; estimator,
                         final int iteration) {
                     // not used
-<span class="fc" id="L1845">                }</span>
+<span class="fc" id="L1846">                }</span>
 
                 @Override
                 public void onEstimateProgressChange(
                         final RobustRssiPositionEstimator&lt;P&gt; estimator,
                         final float progress) {
-<span class="nc bnc" id="L1851" title="All 2 branches missed.">                    if (mListener != null) {</span>
-<span class="nc" id="L1852">                        mListener.onEstimateProgressChange(</span>
+<span class="nc bnc" id="L1852" title="All 2 branches missed.">                    if (mListener != null) {</span>
+<span class="nc" id="L1853">                        mListener.onEstimateProgressChange(</span>
                                 SequentialRobustRangingAndRssiPositionEstimator.this,
                                 0.5f * progress);
                     }
-<span class="nc" id="L1856">                }</span>
+<span class="nc" id="L1857">                }</span>
             });
 
-<span class="fc" id="L1859">            mRssiEstimator.setPreliminarySubsetSize(</span>
-<span class="fc" id="L1860">                    Math.max(mRssiPreliminarySubsetSize, mRssiEstimator.getMinRequiredSources()));</span>
+<span class="fc" id="L1860">            mRssiEstimator.setPreliminarySubsetSize(</span>
+<span class="fc" id="L1861">                    Math.max(mRssiPreliminarySubsetSize, mRssiEstimator.getMinRequiredSources()));</span>
 
-<span class="fc" id="L1862">            mRangingEstimator.setSources(mSources);</span>
-<span class="fc" id="L1863">            mRangingEstimator.setFingerprint(rangingFingerprint);</span>
-<span class="fc" id="L1864">            mRangingEstimator.setRadioSourcePositionCovarianceUsed(</span>
+<span class="fc" id="L1863">            mRangingEstimator.setSources(mSources);</span>
+<span class="fc" id="L1864">            mRangingEstimator.setFingerprint(rangingFingerprint);</span>
+<span class="fc" id="L1865">            mRangingEstimator.setRadioSourcePositionCovarianceUsed(</span>
                     mUseRangingRadioSourcePositionCovariance);
-<span class="fc" id="L1866">            mRangingEstimator.setEvenlyDistributeReadings(mEvenlyDistributeRangingReadings);</span>
-<span class="fc" id="L1867">            mRangingEstimator.setFallbackDistanceStandardDeviation(</span>
+<span class="fc" id="L1867">            mRangingEstimator.setEvenlyDistributeReadings(mEvenlyDistributeRangingReadings);</span>
+<span class="fc" id="L1868">            mRangingEstimator.setFallbackDistanceStandardDeviation(</span>
                     mRangingFallbackDistanceStandardDeviation);
-<span class="fc" id="L1869">            mRangingEstimator.setProgressDelta(2.0f * mProgressDelta);</span>
-<span class="fc" id="L1870">            mRangingEstimator.setConfidence(mRangingConfidence);</span>
-<span class="fc" id="L1871">            mRangingEstimator.setMaxIterations(mRangingMaxIterations);</span>
-<span class="fc" id="L1872">            mRangingEstimator.setCovarianceKept(mKeepCovariance);</span>
-<span class="fc" id="L1873">            mRangingEstimator.setInitialPosition(mInitialPosition);</span>
-<span class="fc" id="L1874">            mRangingEstimator.setLinearSolverUsed(mUseRangingLinearSolver);</span>
-<span class="fc" id="L1875">            mRangingEstimator.setHomogeneousLinearSolverUsed(</span>
+<span class="fc" id="L1870">            mRangingEstimator.setProgressDelta(2.0f * mProgressDelta);</span>
+<span class="fc" id="L1871">            mRangingEstimator.setConfidence(mRangingConfidence);</span>
+<span class="fc" id="L1872">            mRangingEstimator.setMaxIterations(mRangingMaxIterations);</span>
+<span class="fc" id="L1873">            mRangingEstimator.setCovarianceKept(mKeepCovariance);</span>
+<span class="fc" id="L1874">            mRangingEstimator.setInitialPosition(mInitialPosition);</span>
+<span class="fc" id="L1875">            mRangingEstimator.setLinearSolverUsed(mUseRangingLinearSolver);</span>
+<span class="fc" id="L1876">            mRangingEstimator.setHomogeneousLinearSolverUsed(</span>
                     mUseRangingHomogeneousLinearSolver);
-<span class="fc" id="L1877">            mRangingEstimator.setPreliminarySolutionRefined(</span>
+<span class="fc" id="L1878">            mRangingEstimator.setPreliminarySolutionRefined(</span>
                     mRefineRangingPreliminarySolutions);
-<span class="fc" id="L1879">            mRangingEstimator.setSourceQualityScores(mSourceQualityScores);</span>
-<span class="fc" id="L1880">            mRangingEstimator.setFingerprintReadingsQualityScores(</span>
+<span class="fc" id="L1880">            mRangingEstimator.setSourceQualityScores(mSourceQualityScores);</span>
+<span class="fc" id="L1881">            mRangingEstimator.setFingerprintReadingsQualityScores(</span>
                     mFingerprintReadingsQualityScores);
-<span class="fc" id="L1882">            mRangingEstimator.setListener(new RobustRangingPositionEstimatorListener&lt;P&gt;() {</span>
+<span class="fc" id="L1883">            mRangingEstimator.setListener(new RobustRangingPositionEstimatorListener&lt;P&gt;() {</span>
                 @Override
                 public void onEstimateStart(
                         final RobustRangingPositionEstimator&lt;P&gt; estimator) {
                     // not used
-<span class="fc" id="L1887">                }</span>
+<span class="fc" id="L1888">                }</span>
 
                 @Override
                 public void onEstimateEnd(
                         final RobustRangingPositionEstimator&lt;P&gt; estimator) {
                     // not used
-<span class="fc" id="L1893">                }</span>
+<span class="fc" id="L1894">                }</span>
 
                 @Override
                 public void onEstimateNextIteration(
                         final RobustRangingPositionEstimator&lt;P&gt; estimator,
                         final int iteration) {
                     // not used
-<span class="fc" id="L1900">                }</span>
+<span class="fc" id="L1901">                }</span>
 
                 @Override
                 public void onEstimateProgressChange(
                         final RobustRangingPositionEstimator&lt;P&gt; estimator,
                         final float progress) {
-<span class="nc bnc" id="L1906" title="All 2 branches missed.">                    if (mListener != null) {</span>
-<span class="nc" id="L1907">                        mListener.onEstimateProgressChange(</span>
+<span class="nc bnc" id="L1907" title="All 2 branches missed.">                    if (mListener != null) {</span>
+<span class="nc" id="L1908">                        mListener.onEstimateProgressChange(</span>
                                 SequentialRobustRangingAndRssiPositionEstimator.this,
                                 0.5f + 0.5f * progress);
                     }
-<span class="nc" id="L1911">                }</span>
+<span class="nc" id="L1912">                }</span>
             });
 
-<span class="fc" id="L1914">            mRangingEstimator.setPreliminarySubsetSize(</span>
-<span class="fc" id="L1915">                    Math.max(mRangingPreliminarySubsetSize, mRangingEstimator.getMinRequiredSources()));</span>
+<span class="fc" id="L1915">            mRangingEstimator.setPreliminarySubsetSize(</span>
+<span class="fc" id="L1916">                    Math.max(mRangingPreliminarySubsetSize, mRangingEstimator.getMinRequiredSources()));</span>
         }
-<span class="fc" id="L1917">    }</span>
+<span class="fc" id="L1918">    }</span>
 
     /**
      * Internally sets located radio sources used for lateration.
@@ -1924,16 +1925,16 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      *                                  provided sources is less than the required minimum.
      */
     private void internalSetSources(final List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; sources) {
-<span class="fc bfc" id="L1927" title="All 2 branches covered.">        if (sources == null) {</span>
-<span class="fc" id="L1928">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1928" title="All 2 branches covered.">        if (sources == null) {</span>
+<span class="fc" id="L1929">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc bfc" id="L1931" title="All 2 branches covered.">        if (sources.size() &lt; getMinRequiredSources()) {</span>
-<span class="fc" id="L1932">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1932" title="All 2 branches covered.">        if (sources.size() &lt; getMinRequiredSources()) {</span>
+<span class="fc" id="L1933">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1935">        mSources = sources;</span>
-<span class="fc" id="L1936">    }</span>
+<span class="fc" id="L1936">        mSources = sources;</span>
+<span class="fc" id="L1937">    }</span>
 
     /**
      * Internally sets fingerprint containing readings at an unknown location for
@@ -1946,12 +1947,12 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
     private void internalSetFingerprint(
             final RangingAndRssiFingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
                     extends RadioSource&gt;&gt; fingerprint) {
-<span class="fc bfc" id="L1949" title="All 2 branches covered.">        if (fingerprint == null) {</span>
-<span class="fc" id="L1950">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1950" title="All 2 branches covered.">        if (fingerprint == null) {</span>
+<span class="fc" id="L1951">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1953">        mFingerprint = fingerprint;</span>
-<span class="fc" id="L1954">    }</span>
+<span class="fc" id="L1954">        mFingerprint = fingerprint;</span>
+<span class="fc" id="L1955">    }</span>
 
     /**
      * Sets quality scores corresponding to each provided located radio source.
@@ -1963,13 +1964,13 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      *                                  is smaller than 3 samples for 2D or 4 samples for 3D.
      */
     private void internalSetSourceQualityScores(final double[] sourceQualityScores) {
-<span class="fc bfc" id="L1966" title="All 2 branches covered.">        if (sourceQualityScores == null ||</span>
-<span class="fc bfc" id="L1967" title="All 2 branches covered.">                sourceQualityScores.length &lt; getMinRequiredSources()) {</span>
-<span class="fc" id="L1968">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1967" title="All 2 branches covered.">        if (sourceQualityScores == null ||</span>
+<span class="fc bfc" id="L1968" title="All 2 branches covered.">                sourceQualityScores.length &lt; getMinRequiredSources()) {</span>
+<span class="fc" id="L1969">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1971">        mSourceQualityScores = sourceQualityScores;</span>
-<span class="fc" id="L1972">    }</span>
+<span class="fc" id="L1972">        mSourceQualityScores = sourceQualityScores;</span>
+<span class="fc" id="L1973">    }</span>
 
     /**
      * Sets quality scores corresponding to each provided reading within provided
@@ -1983,13 +1984,13 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      */
     private void internalSetFingerprintReadingsQualityScores(
             final double[] fingerprintReadingsQualityScores) {
-<span class="fc bfc" id="L1986" title="All 2 branches covered.">        if (fingerprintReadingsQualityScores == null ||</span>
-<span class="fc bfc" id="L1987" title="All 2 branches covered.">                fingerprintReadingsQualityScores.length &lt; getMinRequiredSources()) {</span>
-<span class="fc" id="L1988">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1987" title="All 2 branches covered.">        if (fingerprintReadingsQualityScores == null ||</span>
+<span class="fc bfc" id="L1988" title="All 2 branches covered.">                fingerprintReadingsQualityScores.length &lt; getMinRequiredSources()) {</span>
+<span class="fc" id="L1989">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1991">        mFingerprintReadingsQualityScores = fingerprintReadingsQualityScores;</span>
-<span class="fc" id="L1992">    }</span>
+<span class="fc" id="L1992">        mFingerprintReadingsQualityScores = fingerprintReadingsQualityScores;</span>
+<span class="fc" id="L1993">    }</span>
 
     /**
      * Creates a ranging reading from a ranging and RSSI reading.
@@ -1999,11 +2000,11 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      */
     private RangingReading&lt;RadioSource&gt; createRangingReading(
             final RangingAndRssiReading&lt;? extends RadioSource&gt; reading) {
-<span class="fc" id="L2002">        return new RangingReading&lt;&gt;(reading.getSource(),</span>
-<span class="fc" id="L2003">                reading.getDistance(),</span>
-<span class="fc" id="L2004">                reading.getDistanceStandardDeviation(),</span>
-<span class="fc" id="L2005">                reading.getNumAttemptedMeasurements(),</span>
-<span class="fc" id="L2006">                reading.getNumSuccessfulMeasurements());</span>
+<span class="fc" id="L2003">        return new RangingReading&lt;&gt;(reading.getSource(),</span>
+<span class="fc" id="L2004">                reading.getDistance(),</span>
+<span class="fc" id="L2005">                reading.getDistanceStandardDeviation(),</span>
+<span class="fc" id="L2006">                reading.getNumAttemptedMeasurements(),</span>
+<span class="fc" id="L2007">                reading.getNumSuccessfulMeasurements());</span>
     }
 
     /**
@@ -2014,8 +2015,8 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator&lt;P exten
      */
     private RssiReading&lt;RadioSource&gt; createRssiReading(
             final RangingAndRssiReading&lt;? extends RadioSource&gt; reading) {
-<span class="fc" id="L2017">        return new RssiReading&lt;&gt;(reading.getSource(), reading.getRssi(),</span>
-<span class="fc" id="L2018">                reading.getRssiStandardDeviation());</span>
+<span class="fc" id="L2018">        return new RssiReading&lt;&gt;(reading.getSource(), reading.getRssi(),</span>
+<span class="fc" id="L2019">                reading.getRssiStandardDeviation());</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

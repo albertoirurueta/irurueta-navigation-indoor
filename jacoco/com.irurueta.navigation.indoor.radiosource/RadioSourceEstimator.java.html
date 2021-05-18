@@ -126,8 +126,9 @@ public abstract class RadioSourceEstimator&lt;P extends Point&lt;?&gt;, R extend
      *
      * @return radio signal readings belonging to the same radio source.
      */
-    public List&lt;? extends R&gt; getReadings() {
-<span class="fc" id="L130">        return mReadings;</span>
+    public List&lt;R&gt; getReadings() {
+        //noinspection unchecked
+<span class="fc" id="L131">        return (List&lt;R&gt;) mReadings;</span>
     }
 
     /**
@@ -138,12 +139,12 @@ public abstract class RadioSourceEstimator&lt;P extends Point&lt;?&gt;, R extend
      * @throws IllegalArgumentException if readings are not valid.
      */
     public void setReadings(final List&lt;? extends R&gt; readings) throws LockedException {
-<span class="fc bfc" id="L141" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L142">            throw new LockedException();</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L143">            throw new LockedException();</span>
         }
 
-<span class="fc" id="L145">        internalSetReadings(readings);</span>
-<span class="fc" id="L146">    }</span>
+<span class="fc" id="L146">        internalSetReadings(readings);</span>
+<span class="fc" id="L147">    }</span>
 
     /**
      * Gets listener in charge of attending events raised by this instance.
@@ -151,7 +152,7 @@ public abstract class RadioSourceEstimator&lt;P extends Point&lt;?&gt;, R extend
      * @return listener in charge of attending events raised by this instance.
      */
     public L getListener() {
-<span class="fc" id="L154">        return mListener;</span>
+<span class="fc" id="L155">        return mListener;</span>
     }
 
     /**
@@ -162,12 +163,12 @@ public abstract class RadioSourceEstimator&lt;P extends Point&lt;?&gt;, R extend
      * @throws LockedException if estimator is locked.
      */
     public void setListener(final L listener) throws LockedException {
-<span class="fc bfc" id="L165" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L166">            throw new LockedException();</span>
+<span class="fc bfc" id="L166" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L167">            throw new LockedException();</span>
         }
 
-<span class="fc" id="L169">        mListener = listener;</span>
-<span class="fc" id="L170">    }</span>
+<span class="fc" id="L170">        mListener = listener;</span>
+<span class="fc" id="L171">    }</span>
 
     /**
      * Indicates whether readings are valid or not.
@@ -178,7 +179,7 @@ public abstract class RadioSourceEstimator&lt;P extends Point&lt;?&gt;, R extend
      */
     public boolean areValidReadings(final List&lt;? extends R&gt; readings) {
 
-<span class="fc bfc" id="L181" title="All 4 branches covered.">        return readings != null &amp;&amp; readings.size() &gt;= getMinReadings();</span>
+<span class="fc bfc" id="L182" title="All 4 branches covered.">        return readings != null &amp;&amp; readings.size() &gt;= getMinReadings();</span>
     }
 
     /**
@@ -187,7 +188,7 @@ public abstract class RadioSourceEstimator&lt;P extends Point&lt;?&gt;, R extend
      * @return estimated inhomogeneous position coordinates.
      */
     public double[] getEstimatedPositionCoordinates() {
-<span class="fc" id="L190">        return mEstimatedPositionCoordinates;</span>
+<span class="fc" id="L191">        return mEstimatedPositionCoordinates;</span>
     }
 
     /**
@@ -196,13 +197,13 @@ public abstract class RadioSourceEstimator&lt;P extends Point&lt;?&gt;, R extend
      * @param estimatedPosition instance where estimated estimated position will be stored.
      */
     public void getEstimatedPosition(final P estimatedPosition) {
-<span class="pc bpc" id="L199" title="1 of 2 branches missed.">        if (mEstimatedPositionCoordinates != null) {</span>
-<span class="fc bfc" id="L200" title="All 2 branches covered.">            for (int i = 0; i &lt; mEstimatedPositionCoordinates.length; i++) {</span>
-<span class="fc" id="L201">                estimatedPosition.setInhomogeneousCoordinate(i,</span>
+<span class="pc bpc" id="L200" title="1 of 2 branches missed.">        if (mEstimatedPositionCoordinates != null) {</span>
+<span class="fc bfc" id="L201" title="All 2 branches covered.">            for (int i = 0; i &lt; mEstimatedPositionCoordinates.length; i++) {</span>
+<span class="fc" id="L202">                estimatedPosition.setInhomogeneousCoordinate(i,</span>
                         mEstimatedPositionCoordinates[i]);
             }
         }
-<span class="fc" id="L205">    }</span>
+<span class="fc" id="L206">    }</span>
 
     /**
      * Gets covariance for estimated position and power.
@@ -214,7 +215,7 @@ public abstract class RadioSourceEstimator&lt;P extends Point&lt;?&gt;, R extend
      * @return covariance for estimated parameters.
      */
     public Matrix getEstimatedCovariance() {
-<span class="fc" id="L217">        return mEstimatedCovariance;</span>
+<span class="fc" id="L218">        return mEstimatedCovariance;</span>
     }
 
     /**
@@ -226,7 +227,7 @@ public abstract class RadioSourceEstimator&lt;P extends Point&lt;?&gt;, R extend
      * @return estimated position covariance or null.
      */
     public Matrix getEstimatedPositionCovariance() {
-<span class="fc" id="L229">        return mEstimatedPositionCovariance;</span>
+<span class="fc" id="L230">        return mEstimatedPositionCovariance;</span>
     }
 
     /**
@@ -287,11 +288,11 @@ public abstract class RadioSourceEstimator&lt;P extends Point&lt;?&gt;, R extend
      *                                  are available.
      */
     protected void internalSetReadings(final List&lt;? extends R&gt; readings) {
-<span class="fc bfc" id="L290" title="All 2 branches covered.">        if (!areValidReadings(readings)) {</span>
-<span class="fc" id="L291">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L291" title="All 2 branches covered.">        if (!areValidReadings(readings)) {</span>
+<span class="fc" id="L292">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L294">        mReadings = readings;</span>
-<span class="fc" id="L295">    }</span>
+<span class="fc" id="L295">        mReadings = readings;</span>
+<span class="fc" id="L296">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

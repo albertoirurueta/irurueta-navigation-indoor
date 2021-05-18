@@ -190,9 +190,9 @@
 <a class="jxr_linenumber" name="L182" href="#L182">182</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L183" href="#L183">183</a> <em class="jxr_javadoccomment">     * @return located fingerprints containing RSSI readings.</em>
 <a class="jxr_linenumber" name="L184" href="#L184">184</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L185" href="#L185">185</a>     <strong class="jxr_keyword">public</strong> List&lt;? <strong class="jxr_keyword">extends</strong> RssiFingerprintLocated&lt;? <strong class="jxr_keyword">extends</strong> RadioSource,
-<a class="jxr_linenumber" name="L186" href="#L186">186</a>             ? <strong class="jxr_keyword">extends</strong> RssiReading&lt;? <strong class="jxr_keyword">extends</strong> RadioSource&gt;, P&gt;&gt; getLocatedFingerprints() {
-<a class="jxr_linenumber" name="L187" href="#L187">187</a>         <strong class="jxr_keyword">return</strong> mLocatedFingerprints;
+<a class="jxr_linenumber" name="L185" href="#L185">185</a>     <strong class="jxr_keyword">public</strong> List&lt;RssiFingerprintLocated&lt;RadioSource, RssiReading&lt;RadioSource&gt;, P&gt;&gt; getLocatedFingerprints() {
+<a class="jxr_linenumber" name="L186" href="#L186">186</a>         <em class="jxr_comment">//noinspection unchecked</em>
+<a class="jxr_linenumber" name="L187" href="#L187">187</a>         <strong class="jxr_keyword">return</strong> (List&lt;RssiFingerprintLocated&lt;RadioSource, RssiReading&lt;RadioSource&gt;,P&gt;&gt;) mLocatedFingerprints;
 <a class="jxr_linenumber" name="L188" href="#L188">188</a>     }
 <a class="jxr_linenumber" name="L189" href="#L189">189</a> 
 <a class="jxr_linenumber" name="L190" href="#L190">190</a>     <em class="jxr_javadoccomment">/**</em>
@@ -226,9 +226,9 @@
 <a class="jxr_linenumber" name="L218" href="#L218">218</a> <em class="jxr_javadoccomment">     * @return fingerprint containing readings at an unknown location for provided located</em>
 <a class="jxr_linenumber" name="L219" href="#L219">219</a> <em class="jxr_javadoccomment">     * fingerprints.</em>
 <a class="jxr_linenumber" name="L220" href="#L220">220</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L221" href="#L221">221</a>     <strong class="jxr_keyword">public</strong> RssiFingerprint&lt;? <strong class="jxr_keyword">extends</strong> RadioSource, ? <strong class="jxr_keyword">extends</strong> RssiReading&lt;? <strong class="jxr_keyword">extends</strong> RadioSource&gt;&gt;
-<a class="jxr_linenumber" name="L222" href="#L222">222</a>     getFingerprint() {
-<a class="jxr_linenumber" name="L223" href="#L223">223</a>         <strong class="jxr_keyword">return</strong> mFingerprint;
+<a class="jxr_linenumber" name="L221" href="#L221">221</a>     <strong class="jxr_keyword">public</strong> RssiFingerprint&lt;RadioSource, RssiReading&lt;RadioSource&gt;&gt; getFingerprint() {
+<a class="jxr_linenumber" name="L222" href="#L222">222</a>         <em class="jxr_comment">//noinspection unchecked</em>
+<a class="jxr_linenumber" name="L223" href="#L223">223</a>         <strong class="jxr_keyword">return</strong> (RssiFingerprint&lt;RadioSource, RssiReading&lt;RadioSource&gt;&gt;) mFingerprint;
 <a class="jxr_linenumber" name="L224" href="#L224">224</a>     }
 <a class="jxr_linenumber" name="L225" href="#L225">225</a> 
 <a class="jxr_linenumber" name="L226" href="#L226">226</a>     <em class="jxr_javadoccomment">/**</em>

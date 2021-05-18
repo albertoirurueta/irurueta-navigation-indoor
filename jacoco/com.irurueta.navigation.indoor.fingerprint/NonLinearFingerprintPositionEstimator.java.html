@@ -496,12 +496,12 @@ public abstract class NonLinearFingerprintPositionEstimator&lt;P extends Point&l
 <span class="fc bfc" id="L496" title="All 2 branches covered.">            if (mUseNoMeanNearestFingerprintFinder) {</span>
                 //noinspection unchecked
 <span class="fc" id="L498">                noMeanFinder = new RadioSourceNoMeanKNearestFinder&lt;&gt;(</span>
-                        (Collection&lt;? extends RssiFingerprintLocated&lt;RadioSource,
+                        (Collection&lt;RssiFingerprintLocated&lt;RadioSource,
                                 RssiReading&lt;RadioSource&gt;, P&gt;&gt;) mLocatedFingerprints);
             } else {
                 //noinspection unchecked
 <span class="fc" id="L503">                finder = new RadioSourceKNearestFinder&lt;&gt;(</span>
-                        (Collection&lt;? extends RssiFingerprintLocated&lt;RadioSource,
+                        (Collection&lt;RssiFingerprintLocated&lt;RadioSource,
                                 RssiReading&lt;RadioSource&gt;, P&gt;&gt;) mLocatedFingerprints);
             }
 

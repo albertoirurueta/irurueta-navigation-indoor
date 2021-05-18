@@ -136,8 +136,9 @@ public abstract class FingerprintPositionEstimator&lt;P extends Point&lt;?&gt;&g
      *
      * @return located radio sources.
      */
-    public List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; getSources() {
-<span class="fc" id="L140">        return mSources;</span>
+    public List&lt;RadioSourceLocated&lt;P&gt;&gt; getSources() {
+        //noinspection unchecked
+<span class="fc" id="L141">        return (List&lt;RadioSourceLocated&lt;P&gt;&gt;) mSources;</span>
     }
 
     /**
@@ -148,12 +149,12 @@ public abstract class FingerprintPositionEstimator&lt;P extends Point&lt;?&gt;&g
      */
     public void setSources(final List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; sources)
             throws LockedException {
-<span class="fc bfc" id="L151" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L152">            throw new LockedException();</span>
+<span class="fc bfc" id="L152" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L153">            throw new LockedException();</span>
         }
 
-<span class="fc" id="L155">        internalSetSources(sources);</span>
-<span class="fc" id="L156">    }</span>
+<span class="fc" id="L156">        internalSetSources(sources);</span>
+<span class="fc" id="L157">    }</span>
 
     /**
      * Indicates whether path loss exponent of provided sources must be used when
@@ -163,7 +164,7 @@ public abstract class FingerprintPositionEstimator&lt;P extends Point&lt;?&gt;&g
      * false otherwise.
      */
     public boolean getUseSourcesPathLossExponentWhenAvailable() {
-<span class="fc" id="L166">        return mUseSourcesPathLossExponentWhenAvailable;</span>
+<span class="fc" id="L167">        return mUseSourcesPathLossExponentWhenAvailable;</span>
     }
 
     /**
@@ -177,12 +178,12 @@ public abstract class FingerprintPositionEstimator&lt;P extends Point&lt;?&gt;&g
      */
     public void setUseSourcesPathLossExponentWhenAvailable(
             final boolean useSourcesPathLossExponentWhenAvailable) throws LockedException {
-<span class="fc bfc" id="L180" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L181">            throw new LockedException();</span>
+<span class="fc bfc" id="L181" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L182">            throw new LockedException();</span>
         }
-<span class="fc" id="L183">        mUseSourcesPathLossExponentWhenAvailable =</span>
+<span class="fc" id="L184">        mUseSourcesPathLossExponentWhenAvailable =</span>
                 useSourcesPathLossExponentWhenAvailable;
-<span class="fc" id="L185">    }</span>
+<span class="fc" id="L186">    }</span>
 
     /**
      * Indicates which fingerprint finder is used.
@@ -196,7 +197,7 @@ public abstract class FingerprintPositionEstimator&lt;P extends Point&lt;?&gt;&g
      * @return indicates which fingerprint finder is used.
      */
     public boolean getUseNoMeanNearestFingerprintFinder() {
-<span class="fc" id="L199">        return mUseNoMeanNearestFingerprintFinder;</span>
+<span class="fc" id="L200">        return mUseNoMeanNearestFingerprintFinder;</span>
     }
 
     /**
@@ -213,11 +214,11 @@ public abstract class FingerprintPositionEstimator&lt;P extends Point&lt;?&gt;&g
      */
     public void setUseNoMeanNearestFingerprintFinder(
             final boolean useNoMeanNearestFingerprintFinder) throws LockedException {
-<span class="fc bfc" id="L216" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L217">            throw new LockedException();</span>
+<span class="fc bfc" id="L217" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L218">            throw new LockedException();</span>
         }
-<span class="fc" id="L219">        mUseNoMeanNearestFingerprintFinder = useNoMeanNearestFingerprintFinder;</span>
-<span class="fc" id="L220">    }</span>
+<span class="fc" id="L220">        mUseNoMeanNearestFingerprintFinder = useNoMeanNearestFingerprintFinder;</span>
+<span class="fc" id="L221">    }</span>
 
     /**
      * Indicates whether mean effects are removed from fingerprints.
@@ -228,7 +229,7 @@ public abstract class FingerprintPositionEstimator&lt;P extends Point&lt;?&gt;&g
      * @return true to remove mean effects, false otherwise.
      */
     public boolean isMeansFromFingerprintReadingsRemoved() {
-<span class="fc" id="L231">        return mRemoveMeansFromFingerprintReadings;</span>
+<span class="fc" id="L232">        return mRemoveMeansFromFingerprintReadings;</span>
     }
 
     /**
@@ -242,11 +243,11 @@ public abstract class FingerprintPositionEstimator&lt;P extends Point&lt;?&gt;&g
      */
     public void setMeansFromFingerprintReadingsRemoved(
             final boolean removeMeansFromFingerprintReadings) throws LockedException {
-<span class="fc bfc" id="L245" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L246">            throw new LockedException();</span>
+<span class="fc bfc" id="L246" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L247">            throw new LockedException();</span>
         }
-<span class="fc" id="L248">        mRemoveMeansFromFingerprintReadings = removeMeansFromFingerprintReadings;</span>
-<span class="fc" id="L249">    }</span>
+<span class="fc" id="L249">        mRemoveMeansFromFingerprintReadings = removeMeansFromFingerprintReadings;</span>
+<span class="fc" id="L250">    }</span>
 
     /**
      * Indicates whether estimator is ready to find a solution.
@@ -255,7 +256,7 @@ public abstract class FingerprintPositionEstimator&lt;P extends Point&lt;?&gt;&g
      */
     @Override
     public boolean isReady() {
-<span class="pc bpc" id="L258" title="2 of 6 branches missed.">        return mSources != null &amp;&amp; mLocatedFingerprints != null &amp;&amp;</span>
+<span class="pc bpc" id="L259" title="2 of 6 branches missed.">        return mSources != null &amp;&amp; mLocatedFingerprints != null &amp;&amp;</span>
                 mFingerprint != null;
     }
 
@@ -266,11 +267,11 @@ public abstract class FingerprintPositionEstimator&lt;P extends Point&lt;?&gt;&g
      * @throws IllegalArgumentException if provided value is null.
      */
     private void internalSetSources(final List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; sources) {
-<span class="fc bfc" id="L269" title="All 2 branches covered.">        if (sources == null) {</span>
-<span class="fc" id="L270">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L270" title="All 2 branches covered.">        if (sources == null) {</span>
+<span class="fc" id="L271">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L273">        mSources = sources;</span>
-<span class="fc" id="L274">    }</span>
+<span class="fc" id="L274">        mSources = sources;</span>
+<span class="fc" id="L275">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

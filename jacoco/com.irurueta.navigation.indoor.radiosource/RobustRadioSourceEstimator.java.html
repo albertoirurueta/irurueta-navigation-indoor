@@ -382,8 +382,9 @@ public abstract class RobustRadioSourceEstimator&lt;P extends Point&lt;?&gt;,
      *
      * @return signal readings belonging to the same radio source.
      */
-    public List&lt;? extends R&gt; getReadings() {
-<span class="fc" id="L386">        return mReadings;</span>
+    public List&lt;R&gt; getReadings() {
+        //noinspection unchecked
+<span class="fc" id="L387">        return (List&lt;R&gt;) mReadings;</span>
     }
 
     /**
@@ -396,12 +397,12 @@ public abstract class RobustRadioSourceEstimator&lt;P extends Point&lt;?&gt;,
      */
     public void setReadings(final List&lt;? extends R&gt; readings)
             throws LockedException {
-<span class="fc bfc" id="L399" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L400">            throw new LockedException();</span>
+<span class="fc bfc" id="L400" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L401">            throw new LockedException();</span>
         }
 
-<span class="fc" id="L403">        internalSetReadings(readings);</span>
-<span class="fc" id="L404">    }</span>
+<span class="fc" id="L404">        internalSetReadings(readings);</span>
+<span class="fc" id="L405">    }</span>
 
     /**
      * Gets listener in charge of attending events raised by this instance.
@@ -409,7 +410,7 @@ public abstract class RobustRadioSourceEstimator&lt;P extends Point&lt;?&gt;,
      * @return listener in charge of attending events raised by this instance.
      */
     public L getListener() {
-<span class="fc" id="L412">        return mListener;</span>
+<span class="fc" id="L413">        return mListener;</span>
     }
 
     /**
@@ -420,12 +421,12 @@ public abstract class RobustRadioSourceEstimator&lt;P extends Point&lt;?&gt;,
      * @throws LockedException if estimator is locked.
      */
     public void setListener(final L listener) throws LockedException {
-<span class="fc bfc" id="L423" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L424">            throw new LockedException();</span>
+<span class="fc bfc" id="L424" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L425">            throw new LockedException();</span>
         }
 
-<span class="fc" id="L427">        mListener = listener;</span>
-<span class="fc" id="L428">    }</span>
+<span class="fc" id="L428">        mListener = listener;</span>
+<span class="fc" id="L429">    }</span>
 
     /**
      * Returns quality scores corresponding to each pair of
@@ -437,7 +438,7 @@ public abstract class RobustRadioSourceEstimator&lt;P extends Point&lt;?&gt;,
      * @return quality scores corresponding to each sample.
      */
     public double[] getQualityScores() {
-<span class="fc" id="L440">        return null;</span>
+<span class="fc" id="L441">        return null;</span>
     }
 
     /**
@@ -456,7 +457,7 @@ public abstract class RobustRadioSourceEstimator&lt;P extends Point&lt;?&gt;,
      */
     public void setQualityScores(final double[] qualityScores)
             throws LockedException {
-<span class="fc" id="L459">    }</span>
+<span class="fc" id="L460">    }</span>
 
     /**
      * Gets size of subsets to be checked during robust estimation.
@@ -465,7 +466,7 @@ public abstract class RobustRadioSourceEstimator&lt;P extends Point&lt;?&gt;,
      * @return size of subsets to be checked during robust estimation.
      */
     public int getPreliminarySubsetSize() {
-<span class="fc" id="L468">        return mPreliminarySubsetSize;</span>
+<span class="fc" id="L469">        return mPreliminarySubsetSize;</span>
     }
 
     /**
@@ -478,15 +479,15 @@ public abstract class RobustRadioSourceEstimator&lt;P extends Point&lt;?&gt;,
      */
     public void setPreliminarySubsetSize(final int preliminarySubsetSize)
             throws LockedException {
-<span class="fc bfc" id="L481" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L482">            throw new LockedException();</span>
+<span class="fc bfc" id="L482" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L483">            throw new LockedException();</span>
         }
-<span class="fc bfc" id="L484" title="All 2 branches covered.">        if (preliminarySubsetSize &lt; getMinReadings()) {</span>
-<span class="fc" id="L485">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L485" title="All 2 branches covered.">        if (preliminarySubsetSize &lt; getMinReadings()) {</span>
+<span class="fc" id="L486">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L488">        mPreliminarySubsetSize = preliminarySubsetSize;</span>
-<span class="fc" id="L489">    }</span>
+<span class="fc" id="L489">        mPreliminarySubsetSize = preliminarySubsetSize;</span>
+<span class="fc" id="L490">    }</span>
 
     /**
      * Gets covariance for estimated position, power and path-loss.
@@ -499,7 +500,7 @@ public abstract class RobustRadioSourceEstimator&lt;P extends Point&lt;?&gt;,
      * @return covariance for estimated position and power.
      */
     public Matrix getCovariance() {
-<span class="fc" id="L502">        return mCovariance;</span>
+<span class="fc" id="L503">        return mCovariance;</span>
     }
 
     /**
@@ -511,7 +512,7 @@ public abstract class RobustRadioSourceEstimator&lt;P extends Point&lt;?&gt;,
      * @return estimated position covariance.
      */
     public Matrix getEstimatedPositionCovariance() {
-<span class="fc" id="L514">        return mEstimatedPositionCovariance;</span>
+<span class="fc" id="L515">        return mEstimatedPositionCovariance;</span>
     }
 
     /**
@@ -520,7 +521,7 @@ public abstract class RobustRadioSourceEstimator&lt;P extends Point&lt;?&gt;,
      * @return estimated position.
      */
     public P getEstimatedPosition() {
-<span class="fc" id="L523">        return mEstimatedPosition;</span>
+<span class="fc" id="L524">        return mEstimatedPosition;</span>
     }
 
     /**
@@ -531,7 +532,7 @@ public abstract class RobustRadioSourceEstimator&lt;P extends Point&lt;?&gt;,
      * @return true if readings are valid, false otherwise.
      */
     public boolean areValidReadings(final List&lt;? extends R&gt; readings) {
-<span class="fc bfc" id="L534" title="All 4 branches covered.">        return readings != null &amp;&amp; readings.size() &gt;= getMinReadings();</span>
+<span class="fc bfc" id="L535" title="All 4 branches covered.">        return readings != null &amp;&amp; readings.size() &gt;= getMinReadings();</span>
     }
 
     /**
@@ -587,11 +588,11 @@ public abstract class RobustRadioSourceEstimator&lt;P extends Point&lt;?&gt;,
      *                                  are available, or readings do not belong to the same access point.
      */
     protected void internalSetReadings(final List&lt;? extends R&gt; readings) {
-<span class="fc bfc" id="L590" title="All 2 branches covered.">        if (!areValidReadings(readings)) {</span>
-<span class="fc" id="L591">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L591" title="All 2 branches covered.">        if (!areValidReadings(readings)) {</span>
+<span class="fc" id="L592">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L594">        mReadings = readings;</span>
-<span class="fc" id="L595">    }</span>
+<span class="fc" id="L595">        mReadings = readings;</span>
+<span class="fc" id="L596">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

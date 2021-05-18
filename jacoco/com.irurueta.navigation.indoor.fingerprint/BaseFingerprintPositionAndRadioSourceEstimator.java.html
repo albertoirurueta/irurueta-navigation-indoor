@@ -179,9 +179,10 @@ public abstract class BaseFingerprintPositionAndRadioSourceEstimator&lt;P extend
      *
      * @return located fingerprints containing RSSI readings.
      */
-    public List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
-            ? extends RssiReading&lt;? extends RadioSource&gt;, P&gt;&gt; getLocatedFingerprints() {
-<span class="fc" id="L184">        return mLocatedFingerprints;</span>
+    public List&lt;RssiFingerprintLocated&lt;RadioSource, RssiReading&lt;RadioSource&gt;, P&gt;&gt; getLocatedFingerprints() {
+        //noinspection unchecked
+<span class="fc" id="L184">        return (List&lt;RssiFingerprintLocated&lt;RadioSource, RssiReading&lt;RadioSource&gt;,P&gt;&gt;)</span>
+                mLocatedFingerprints;
     }
 
     /**
@@ -201,12 +202,12 @@ public abstract class BaseFingerprintPositionAndRadioSourceEstimator&lt;P extend
             final List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
                     ? extends RssiReading&lt;? extends RadioSource&gt;, P&gt;&gt; locatedFingerprints)
             throws LockedException {
-<span class="fc bfc" id="L204" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L205">            throw new LockedException();</span>
+<span class="fc bfc" id="L205" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L206">            throw new LockedException();</span>
         }
 
-<span class="fc" id="L208">        internalSetLocatedFingerprints(locatedFingerprints);</span>
-<span class="fc" id="L209">    }</span>
+<span class="fc" id="L209">        internalSetLocatedFingerprints(locatedFingerprints);</span>
+<span class="fc" id="L210">    }</span>
 
     /**
      * Gets fingerprint containing readings at an unknown location for provided located
@@ -215,9 +216,9 @@ public abstract class BaseFingerprintPositionAndRadioSourceEstimator&lt;P extend
      * @return fingerprint containing readings at an unknown location for provided located
      * fingerprints.
      */
-    public RssiFingerprint&lt;? extends RadioSource, ? extends RssiReading&lt;? extends RadioSource&gt;&gt;
-    getFingerprint() {
-<span class="fc" id="L220">        return mFingerprint;</span>
+    public RssiFingerprint&lt;RadioSource, RssiReading&lt;RadioSource&gt;&gt; getFingerprint() {
+        //noinspection unchecked
+<span class="fc" id="L221">        return (RssiFingerprint&lt;RadioSource, RssiReading&lt;RadioSource&gt;&gt;) mFingerprint;</span>
     }
 
     /**
@@ -231,12 +232,12 @@ public abstract class BaseFingerprintPositionAndRadioSourceEstimator&lt;P extend
             final RssiFingerprint&lt;? extends RadioSource,
                     ? extends RssiReading&lt;? extends RadioSource&gt;&gt; fingerprint)
             throws LockedException {
-<span class="fc bfc" id="L234" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L235">            throw new LockedException();</span>
+<span class="fc bfc" id="L235" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L236">            throw new LockedException();</span>
         }
 
-<span class="fc" id="L238">        internalSetFingerprint(fingerprint);</span>
-<span class="fc" id="L239">    }</span>
+<span class="fc" id="L239">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L240">    }</span>
 
     /**
      * Get minimum number of nearest fingerprints to search.
@@ -245,7 +246,7 @@ public abstract class BaseFingerprintPositionAndRadioSourceEstimator&lt;P extend
      * all fingerprints needed to estimate available radio sources.
      */
     public int getMinNearestFingerprints() {
-<span class="fc" id="L248">        return mMinNearestFingerprints;</span>
+<span class="fc" id="L249">        return mMinNearestFingerprints;</span>
     }
 
     /**
@@ -255,7 +256,7 @@ public abstract class BaseFingerprintPositionAndRadioSourceEstimator&lt;P extend
      * fingerprints.
      */
     public int getMaxNearestFingerprints() {
-<span class="fc" id="L258">        return mMaxNearestFingerprints;</span>
+<span class="fc" id="L259">        return mMaxNearestFingerprints;</span>
     }
 
     /**
@@ -275,13 +276,13 @@ public abstract class BaseFingerprintPositionAndRadioSourceEstimator&lt;P extend
     public void setMinMaxNearestFingerprints(
             final int minNearestFingerprints,
             final int maxNearestFingerprints) throws LockedException {
-<span class="fc bfc" id="L278" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L279">            throw new LockedException();</span>
+<span class="fc bfc" id="L279" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L280">            throw new LockedException();</span>
         }
 
-<span class="fc" id="L282">        internalSetMinMaxNearestFingerprints(minNearestFingerprints,</span>
+<span class="fc" id="L283">        internalSetMinMaxNearestFingerprints(minNearestFingerprints,</span>
                 maxNearestFingerprints);
-<span class="fc" id="L284">    }</span>
+<span class="fc" id="L285">    }</span>
 
     /**
      * Gets path loss exponent to be used by default.
@@ -296,7 +297,7 @@ public abstract class BaseFingerprintPositionAndRadioSourceEstimator&lt;P extend
      * @return path loss exponent to be used by default.
      */
     public double getPathLossExponent() {
-<span class="fc" id="L299">        return mPathLossExponent;</span>
+<span class="fc" id="L300">        return mPathLossExponent;</span>
     }
 
     /**
@@ -313,11 +314,11 @@ public abstract class BaseFingerprintPositionAndRadioSourceEstimator&lt;P extend
      * @throws LockedException if estimator is locked.
      */
     public void setPathLossExponent(final double pathLossExponent) throws LockedException {
-<span class="fc bfc" id="L316" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L317">            throw new LockedException();</span>
+<span class="fc bfc" id="L317" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L318">            throw new LockedException();</span>
         }
-<span class="fc" id="L319">        mPathLossExponent = pathLossExponent;</span>
-<span class="fc" id="L320">    }</span>
+<span class="fc" id="L320">        mPathLossExponent = pathLossExponent;</span>
+<span class="fc" id="L321">    }</span>
 
     /**
      * Gets listener to be notified of events raised by this instance.
@@ -325,7 +326,7 @@ public abstract class BaseFingerprintPositionAndRadioSourceEstimator&lt;P extend
      * @return listener to be notified of events raised by this instance.
      */
     public L getListener() {
-<span class="fc" id="L328">        return mListener;</span>
+<span class="fc" id="L329">        return mListener;</span>
     }
 
     /**
@@ -335,11 +336,11 @@ public abstract class BaseFingerprintPositionAndRadioSourceEstimator&lt;P extend
      * @throws LockedException if estimator is locked.
      */
     public void setListener(final L listener) throws LockedException {
-<span class="fc bfc" id="L338" title="All 2 branches covered.">        if (isLocked()) {</span>
-<span class="fc" id="L339">            throw new LockedException();</span>
+<span class="fc bfc" id="L339" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L340">            throw new LockedException();</span>
         }
-<span class="fc" id="L341">        mListener = listener;</span>
-<span class="fc" id="L342">    }</span>
+<span class="fc" id="L342">        mListener = listener;</span>
+<span class="fc" id="L343">    }</span>
 
     /**
      * Gets estimated inhomogeneous position coordinates.
@@ -347,7 +348,7 @@ public abstract class BaseFingerprintPositionAndRadioSourceEstimator&lt;P extend
      * @return estimated inhomogeneous position coordinates.
      */
     public double[] getEstimatedPositionCoordinates() {
-<span class="fc" id="L350">        return mEstimatedPositionCoordinates;</span>
+<span class="fc" id="L351">        return mEstimatedPositionCoordinates;</span>
     }
 
     /**
@@ -356,13 +357,13 @@ public abstract class BaseFingerprintPositionAndRadioSourceEstimator&lt;P extend
      * @param estimatedPosition instance where estimated estimated position will be stored.
      */
     public void getEstimatedPosition(final P estimatedPosition) {
-<span class="pc bpc" id="L359" title="1 of 2 branches missed.">        if (mEstimatedPositionCoordinates != null) {</span>
-<span class="fc bfc" id="L360" title="All 2 branches covered.">            for (int i = 0; i &lt; mEstimatedPositionCoordinates.length; i++) {</span>
-<span class="fc" id="L361">                estimatedPosition.setInhomogeneousCoordinate(i,</span>
+<span class="pc bpc" id="L360" title="1 of 2 branches missed.">        if (mEstimatedPositionCoordinates != null) {</span>
+<span class="fc bfc" id="L361" title="All 2 branches covered.">            for (int i = 0; i &lt; mEstimatedPositionCoordinates.length; i++) {</span>
+<span class="fc" id="L362">                estimatedPosition.setInhomogeneousCoordinate(i,</span>
                         mEstimatedPositionCoordinates[i]);
             }
         }
-<span class="fc" id="L365">    }</span>
+<span class="fc" id="L366">    }</span>
 
     /**
      * Gets estimated position or null if not available yet.
@@ -370,13 +371,13 @@ public abstract class BaseFingerprintPositionAndRadioSourceEstimator&lt;P extend
      * @return estimated position or null.
      */
     public P getEstimatedPosition() {
-<span class="fc bfc" id="L373" title="All 2 branches covered.">        if (mEstimatedPositionCoordinates == null) {</span>
-<span class="fc" id="L374">            return null;</span>
+<span class="fc bfc" id="L374" title="All 2 branches covered.">        if (mEstimatedPositionCoordinates == null) {</span>
+<span class="fc" id="L375">            return null;</span>
         }
 
-<span class="fc" id="L377">        final P result = createPoint();</span>
-<span class="fc" id="L378">        getEstimatedPosition(result);</span>
-<span class="fc" id="L379">        return result;</span>
+<span class="fc" id="L378">        final P result = createPoint();</span>
+<span class="fc" id="L379">        getEstimatedPosition(result);</span>
+<span class="fc" id="L380">        return result;</span>
     }
 
     /**
@@ -386,7 +387,7 @@ public abstract class BaseFingerprintPositionAndRadioSourceEstimator&lt;P extend
      * @return radio sources containing estimated locations.
      */
     public List&lt;RadioSourceLocated&lt;P&gt;&gt; getEstimatedLocatedSources() {
-<span class="fc" id="L389">        return mEstimatedLocatedSources;</span>
+<span class="fc" id="L390">        return mEstimatedLocatedSources;</span>
     }
 
     /**
@@ -397,7 +398,7 @@ public abstract class BaseFingerprintPositionAndRadioSourceEstimator&lt;P extend
      * @return nearest located fingerprints based on their RSSI readings or null if estimation has not been done yet.
      */
     public List&lt;RssiFingerprintLocated&lt;RadioSource, RssiReading&lt;RadioSource&gt;, P&gt;&gt; getNearestFingerprints() {
-<span class="fc" id="L400">        return mNearestFingerprints;</span>
+<span class="fc" id="L401">        return mNearestFingerprints;</span>
     }
 
     /**
@@ -407,7 +408,7 @@ public abstract class BaseFingerprintPositionAndRadioSourceEstimator&lt;P extend
      * @return true if estimator is locked, false otherwise.
      */
     public boolean isLocked() {
-<span class="fc" id="L410">        return mLocked;</span>
+<span class="fc" id="L411">        return mLocked;</span>
     }
 
     /**
@@ -416,7 +417,7 @@ public abstract class BaseFingerprintPositionAndRadioSourceEstimator&lt;P extend
      * @return true if estimator is ready, false otherwise.
      */
     public boolean isReady() {
-<span class="pc bpc" id="L419" title="1 of 4 branches missed.">        return mLocatedFingerprints != null &amp;&amp; mFingerprint != null;</span>
+<span class="pc bpc" id="L420" title="1 of 4 branches missed.">        return mLocatedFingerprints != null &amp;&amp; mFingerprint != null;</span>
     }
 
     /**
@@ -452,12 +453,12 @@ public abstract class BaseFingerprintPositionAndRadioSourceEstimator&lt;P extend
     private void internalSetLocatedFingerprints(
             final List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
                     ? extends RssiReading&lt;? extends RadioSource&gt;, P&gt;&gt; locatedFingerprints) {
-<span class="fc bfc" id="L455" title="All 2 branches covered.">        if (locatedFingerprints == null) {</span>
-<span class="fc" id="L456">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L456" title="All 2 branches covered.">        if (locatedFingerprints == null) {</span>
+<span class="fc" id="L457">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L459">        mLocatedFingerprints = locatedFingerprints;</span>
-<span class="fc" id="L460">    }</span>
+<span class="fc" id="L460">        mLocatedFingerprints = locatedFingerprints;</span>
+<span class="fc" id="L461">    }</span>
 
     /**
      * Internally sets fingerprint containing readings at an unknown location for provided
@@ -470,12 +471,12 @@ public abstract class BaseFingerprintPositionAndRadioSourceEstimator&lt;P extend
     private void internalSetFingerprint(
             final RssiFingerprint&lt;? extends RadioSource,
                     ? extends RssiReading&lt;? extends RadioSource&gt;&gt; fingerprint) {
-<span class="fc bfc" id="L473" title="All 2 branches covered.">        if (fingerprint == null) {</span>
-<span class="fc" id="L474">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L474" title="All 2 branches covered.">        if (fingerprint == null) {</span>
+<span class="fc" id="L475">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L477">        mFingerprint = fingerprint;</span>
-<span class="fc" id="L478">    }</span>
+<span class="fc" id="L478">        mFingerprint = fingerprint;</span>
+<span class="fc" id="L479">    }</span>
 
     /**
      * Sets minimum and maximum number of nearest fingerprints to search.
@@ -489,15 +490,15 @@ public abstract class BaseFingerprintPositionAndRadioSourceEstimator&lt;P extend
     @SuppressWarnings(&quot;Duplicates&quot;)
     private void internalSetMinMaxNearestFingerprints(
             final int minNearestFingerprints, final int maxNearestFingerprints) {
-<span class="pc bpc" id="L492" title="1 of 10 branches missed.">        if (minNearestFingerprints == 0 ||</span>
+<span class="pc bpc" id="L493" title="1 of 10 branches missed.">        if (minNearestFingerprints == 0 ||</span>
                 (minNearestFingerprints &lt; 1 &amp;&amp; maxNearestFingerprints &gt;= 0) ||
                 (maxNearestFingerprints &gt;= 0 &amp;&amp;
                         minNearestFingerprints &gt; maxNearestFingerprints)) {
-<span class="fc" id="L496">            throw new IllegalArgumentException();</span>
+<span class="fc" id="L497">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L499">        mMinNearestFingerprints = minNearestFingerprints;</span>
-<span class="fc" id="L500">        mMaxNearestFingerprints = maxNearestFingerprints;</span>
-<span class="fc" id="L501">    }</span>
+<span class="fc" id="L500">        mMinNearestFingerprints = minNearestFingerprints;</span>
+<span class="fc" id="L501">        mMaxNearestFingerprints = maxNearestFingerprints;</span>
+<span class="fc" id="L502">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
