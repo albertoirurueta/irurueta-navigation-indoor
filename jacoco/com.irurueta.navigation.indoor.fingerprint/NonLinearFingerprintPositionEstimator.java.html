@@ -1058,50 +1058,52 @@ public abstract class NonLinearFingerprintPositionEstimator&lt;P extends Point&l
 <span class="fc" id="L1058">                        num++;</span>
 <span class="fc" id="L1059">                    }</span>
 
-<span class="fc bfc" id="L1061" title="All 2 branches covered.">                    for (int i = 0; i &lt; dims; i++) {</span>
-<span class="fc" id="L1062">                        initial[i] /= num;</span>
+<span class="pc bpc" id="L1061" title="1 of 2 branches missed.">                    if (num &gt; 0) {</span>
+<span class="fc bfc" id="L1062" title="All 2 branches covered.">                        for (int i = 0; i &lt; dims; i++) {</span>
+<span class="fc" id="L1063">                            initial[i] /= num;</span>
+                        }
                     }
-<span class="fc" id="L1064">                } else {</span>
+<span class="fc" id="L1066">                } else {</span>
                     // use provided initial position
-<span class="fc bfc" id="L1066" title="All 2 branches covered.">                    for (int i = 0; i &lt; dims; i++) {</span>
-<span class="fc" id="L1067">                        initial[i] = mInitialPosition.getInhomogeneousCoordinate(i);</span>
+<span class="fc bfc" id="L1068" title="All 2 branches covered.">                    for (int i = 0; i &lt; dims; i++) {</span>
+<span class="fc" id="L1069">                        initial[i] = mInitialPosition.getInhomogeneousCoordinate(i);</span>
                     }
                 }
-<span class="fc" id="L1070">                return initial;</span>
+<span class="fc" id="L1072">                return initial;</span>
             }
 
             @Override
             public double evaluate(
                     final int i, final double[] point, final double[] params,
                     final double[] derivatives) {
-<span class="fc" id="L1077">                return NonLinearFingerprintPositionEstimator.this.evaluate(i, point, params, derivatives);</span>
+<span class="fc" id="L1079">                return NonLinearFingerprintPositionEstimator.this.evaluate(i, point, params, derivatives);</span>
             }
         });
 
         try {
-<span class="fc" id="L1082">            final Matrix x = new Matrix(totalReadings, n);</span>
-<span class="fc" id="L1083">            final double[] y = new double[totalReadings];</span>
-<span class="fc" id="L1084">            final double[] standardDeviations = new double[totalReadings];</span>
-<span class="fc bfc" id="L1085" title="All 2 branches covered.">            for (int i = 0; i &lt; totalReadings; i++) {</span>
+<span class="fc" id="L1084">            final Matrix x = new Matrix(totalReadings, n);</span>
+<span class="fc" id="L1085">            final double[] y = new double[totalReadings];</span>
+<span class="fc" id="L1086">            final double[] standardDeviations = new double[totalReadings];</span>
+<span class="fc bfc" id="L1087" title="All 2 branches covered.">            for (int i = 0; i &lt; totalReadings; i++) {</span>
                 // fingerprint power Pr(p1)
-<span class="fc" id="L1087">                x.setElementAt(i, 0, allFingerprintPower.get(i));</span>
-<span class="fc bfc" id="L1088" title="All 2 branches covered.">                for (int j = 0; j &lt; dims; j++) {</span>
-<span class="fc" id="L1089">                    x.setElementAt(i, j + 1,</span>
-<span class="fc" id="L1090">                            allFingerprintPositions.get(i).getInhomogeneousCoordinate(j));</span>
-<span class="fc" id="L1091">                    x.setElementAt(i, j + 1 + dims,</span>
-<span class="fc" id="L1092">                            allSourcesPosition.get(i).getInhomogeneousCoordinate(j));</span>
+<span class="fc" id="L1089">                x.setElementAt(i, 0, allFingerprintPower.get(i));</span>
+<span class="fc bfc" id="L1090" title="All 2 branches covered.">                for (int j = 0; j &lt; dims; j++) {</span>
+<span class="fc" id="L1091">                    x.setElementAt(i, j + 1,</span>
+<span class="fc" id="L1092">                            allFingerprintPositions.get(i).getInhomogeneousCoordinate(j));</span>
+<span class="fc" id="L1093">                    x.setElementAt(i, j + 1 + dims,</span>
+<span class="fc" id="L1094">                            allSourcesPosition.get(i).getInhomogeneousCoordinate(j));</span>
                 }
-<span class="fc" id="L1094">                x.setElementAt(i, 1 + 2 * dims, allPathLossExponents.get(i));</span>
+<span class="fc" id="L1096">                x.setElementAt(i, 1 + 2 * dims, allPathLossExponents.get(i));</span>
 
-<span class="fc" id="L1096">                y[i] = allReceivedPower.get(i);</span>
+<span class="fc" id="L1098">                y[i] = allReceivedPower.get(i);</span>
 
-<span class="fc" id="L1098">                standardDeviations[i] = allStandardDeviations.get(i);</span>
+<span class="fc" id="L1100">                standardDeviations[i] = allStandardDeviations.get(i);</span>
             }
 
-<span class="fc" id="L1101">            mFitter.setInputData(x, y, standardDeviations);</span>
-<span class="nc" id="L1102">        } catch (final AlgebraException e) {</span>
-<span class="nc" id="L1103">            throw new FittingException(e);</span>
-<span class="fc" id="L1104">        }</span>
-<span class="fc" id="L1105">    }</span>
+<span class="fc" id="L1103">            mFitter.setInputData(x, y, standardDeviations);</span>
+<span class="nc" id="L1104">        } catch (final AlgebraException e) {</span>
+<span class="nc" id="L1105">            throw new FittingException(e);</span>
+<span class="fc" id="L1106">        }</span>
+<span class="fc" id="L1107">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
