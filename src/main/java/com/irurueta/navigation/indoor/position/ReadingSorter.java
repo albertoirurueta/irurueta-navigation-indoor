@@ -102,8 +102,9 @@ public class ReadingSorter<P extends Point<?>, R extends Reading<? extends Radio
      *
      * @return sources to be taken into account within readings.
      */
-    public List<? extends RadioSourceLocated<P>> getSources() {
-        return mSources;
+    public List<RadioSourceLocated<P>> getSources() {
+        //noinspection unchecked
+        return (List<RadioSourceLocated<P>>) mSources;
     }
 
     /**
@@ -111,8 +112,9 @@ public class ReadingSorter<P extends Point<?>, R extends Reading<? extends Radio
      *
      * @return fingerprint containing readings of different sources.
      */
-    public Fingerprint<? extends RadioSource, ? extends R> getFingerprint() {
-        return mFingerprint;
+    public Fingerprint<RadioSource, ? extends R> getFingerprint() {
+        //noinspection unchecked
+        return (Fingerprint<RadioSource, ? extends R>) mFingerprint;
     }
 
     /**

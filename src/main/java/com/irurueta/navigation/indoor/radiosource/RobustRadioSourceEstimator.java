@@ -382,8 +382,9 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
      *
      * @return signal readings belonging to the same radio source.
      */
-    public List<? extends R> getReadings() {
-        return mReadings;
+    public List<R> getReadings() {
+        //noinspection unchecked
+        return (List<R>) mReadings;
     }
 
     /**

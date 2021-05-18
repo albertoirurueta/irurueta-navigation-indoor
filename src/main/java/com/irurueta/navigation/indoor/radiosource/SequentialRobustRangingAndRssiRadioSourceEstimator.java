@@ -1540,8 +1540,9 @@ public abstract class SequentialRobustRangingAndRssiRadioSourceEstimator<S exten
      *
      * @return signal readings belonging to the same radio source.
      */
-    public List<? extends RangingAndRssiReadingLocated<S, P>> getReadings() {
-        return mReadings;
+    public List<RangingAndRssiReadingLocated<S, P>> getReadings() {
+        //noinspection unchecked
+        return (List<RangingAndRssiReadingLocated<S,P>>) mReadings;
     }
 
     /**

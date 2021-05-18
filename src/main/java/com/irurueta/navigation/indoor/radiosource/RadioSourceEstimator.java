@@ -126,8 +126,9 @@ public abstract class RadioSourceEstimator<P extends Point<?>, R extends Reading
      *
      * @return radio signal readings belonging to the same radio source.
      */
-    public List<? extends R> getReadings() {
-        return mReadings;
+    public List<R> getReadings() {
+        //noinspection unchecked
+        return (List<R>) mReadings;
     }
 
     /**

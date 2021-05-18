@@ -80,8 +80,9 @@ public abstract class PositionEstimator<P extends Point<?>,
      *
      * @return located radio sources used for lateration.
      */
-    public List<? extends RadioSourceLocated<P>> getSources() {
-        return mSources;
+    public List<RadioSourceLocated<P>> getSources() {
+        //noinspection unchecked
+        return (List<RadioSourceLocated<P>>) mSources;
     }
 
     /**
@@ -108,8 +109,9 @@ public abstract class PositionEstimator<P extends Point<?>,
      * @return fingerprint containing readings at an unknown location for provided
      * located radio sources.
      */
-    public Fingerprint<? extends RadioSource, ? extends R> getFingerprint() {
-        return mFingerprint;
+    public Fingerprint<RadioSource, ? extends R> getFingerprint() {
+        //noinspection unchecked
+        return (Fingerprint<RadioSource, ? extends R>) mFingerprint;
     }
 
     /**

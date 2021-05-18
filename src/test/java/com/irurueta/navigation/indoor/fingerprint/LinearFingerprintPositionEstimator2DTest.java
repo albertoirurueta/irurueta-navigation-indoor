@@ -560,7 +560,6 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             final double closestDistance = closestPosition.distanceTo(position);
             avgClosestDistance += closestDistance / TIMES;
 
-
             // find closest fingerprint based on RSSI without mean
             final RadioSourceNoMeanKNearestFinder<Point2D, RadioSource> noMeanFinder =
                     new RadioSourceNoMeanKNearestFinder<>(locatedFingerprints);
@@ -572,7 +571,6 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             final double noMeanRssiClosestDistance = noMeanRssiClosestPosition.distanceTo(position);
             avgNoMeanRssiDistance += noMeanRssiClosestDistance / TIMES;
 
-
             // find closest fingerprint based on RSSI
             final RadioSourceKNearestFinder<Point2D, RadioSource> finder =
                     new RadioSourceKNearestFinder<>(locatedFingerprints);
@@ -583,7 +581,6 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             final double rssiClosestDistance = rssiClosestPosition.distanceTo(position);
             avgRssiDistance += rssiClosestDistance / TIMES;
-
 
             // create estimator with means removed on finder and fingerprints
             LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D(

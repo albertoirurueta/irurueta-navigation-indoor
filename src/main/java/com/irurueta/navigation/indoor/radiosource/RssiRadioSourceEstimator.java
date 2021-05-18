@@ -194,7 +194,7 @@ public abstract class RssiRadioSourceEstimator<S extends RadioSource, P extends 
     /**
      * Constructor.
      */
-    public RssiRadioSourceEstimator() {
+    protected RssiRadioSourceEstimator() {
         super();
     }
 
@@ -206,7 +206,7 @@ public abstract class RssiRadioSourceEstimator<S extends RadioSource, P extends 
      *                 radio source.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RssiRadioSourceEstimator(
+    protected RssiRadioSourceEstimator(
             final List<? extends RssiReadingLocated<S, P>> readings) {
         super(readings);
     }
@@ -216,7 +216,7 @@ public abstract class RssiRadioSourceEstimator<S extends RadioSource, P extends 
      *
      * @param listener listener in charge of attending events raised by this instance.
      */
-    public RssiRadioSourceEstimator(
+    protected RssiRadioSourceEstimator(
             final RssiRadioSourceEstimatorListener<S, P> listener) {
         super(listener);
     }
@@ -229,7 +229,7 @@ public abstract class RssiRadioSourceEstimator<S extends RadioSource, P extends 
      * @param listener listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RssiRadioSourceEstimator(
+    protected RssiRadioSourceEstimator(
             final List<? extends RssiReadingLocated<S, P>> readings,
             final RssiRadioSourceEstimatorListener<S, P> listener) {
         super(readings, listener);
@@ -241,7 +241,7 @@ public abstract class RssiRadioSourceEstimator<S extends RadioSource, P extends 
      * @param initialPosition initial position to start the estimation of radio
      *                        source position.
      */
-    public RssiRadioSourceEstimator(
+    protected RssiRadioSourceEstimator(
             final P initialPosition) {
         mInitialPosition = initialPosition;
     }
@@ -255,7 +255,7 @@ public abstract class RssiRadioSourceEstimator<S extends RadioSource, P extends 
      *                        source position.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RssiRadioSourceEstimator(
+    protected RssiRadioSourceEstimator(
             final List<? extends RssiReadingLocated<S, P>> readings,
             final P initialPosition) {
         super(readings);
@@ -269,7 +269,7 @@ public abstract class RssiRadioSourceEstimator<S extends RadioSource, P extends 
      *                        source position.
      * @param listener        listener in charge of attending events raised by this instance.
      */
-    public RssiRadioSourceEstimator(
+    protected RssiRadioSourceEstimator(
             final P initialPosition,
             final RssiRadioSourceEstimatorListener<S, P> listener) {
         super(listener);
@@ -286,7 +286,7 @@ public abstract class RssiRadioSourceEstimator<S extends RadioSource, P extends 
      * @param listener        listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RssiRadioSourceEstimator(
+    protected RssiRadioSourceEstimator(
             final List<? extends RssiReadingLocated<S, P>> readings,
             final P initialPosition,
             final RssiRadioSourceEstimatorListener<S, P> listener) {
@@ -301,7 +301,7 @@ public abstract class RssiRadioSourceEstimator<S extends RadioSource, P extends 
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's).
      */
-    public RssiRadioSourceEstimator(
+    protected RssiRadioSourceEstimator(
             final Double initialTransmittedPowerdBm) {
         mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;
     }
@@ -316,7 +316,7 @@ public abstract class RssiRadioSourceEstimator<S extends RadioSource, P extends 
      *                                   (expressed in dBm's).
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RssiRadioSourceEstimator(
+    protected RssiRadioSourceEstimator(
             final List<? extends RssiReadingLocated<S, P>> readings,
             final Double initialTransmittedPowerdBm) {
         super(readings);
@@ -331,7 +331,7 @@ public abstract class RssiRadioSourceEstimator<S extends RadioSource, P extends 
      *                                   (expressed in dBm's)
      * @param listener                   listener in charge of attending events raised by this instance.
      */
-    public RssiRadioSourceEstimator(
+    protected RssiRadioSourceEstimator(
             final Double initialTransmittedPowerdBm,
             final RssiRadioSourceEstimatorListener<S, P> listener) {
         super(listener);
@@ -349,7 +349,7 @@ public abstract class RssiRadioSourceEstimator<S extends RadioSource, P extends 
      * @param listener                   listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RssiRadioSourceEstimator(
+    protected RssiRadioSourceEstimator(
             final List<? extends RssiReadingLocated<S, P>> readings,
             final Double initialTransmittedPowerdBm,
             final RssiRadioSourceEstimatorListener<S, P> listener) {
@@ -369,7 +369,7 @@ public abstract class RssiRadioSourceEstimator<S extends RadioSource, P extends 
      *                                   (expressed in dBm's)
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RssiRadioSourceEstimator(
+    protected RssiRadioSourceEstimator(
             final List<? extends RssiReadingLocated<S, P>> readings,
             final P initialPosition,
             final Double initialTransmittedPowerdBm) {
@@ -387,7 +387,7 @@ public abstract class RssiRadioSourceEstimator<S extends RadioSource, P extends 
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's)
      */
-    public RssiRadioSourceEstimator(
+    protected RssiRadioSourceEstimator(
             final P initialPosition,
             final Double initialTransmittedPowerdBm) {
         mInitialPosition = initialPosition;
@@ -404,7 +404,7 @@ public abstract class RssiRadioSourceEstimator<S extends RadioSource, P extends 
      *                                   (expressed in dBm's)
      * @param listener                   listener in charge of attending events raised by this instance.
      */
-    public RssiRadioSourceEstimator(
+    protected RssiRadioSourceEstimator(
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
             final RssiRadioSourceEstimatorListener<S, P> listener) {
@@ -426,7 +426,7 @@ public abstract class RssiRadioSourceEstimator<S extends RadioSource, P extends 
      * @param listener                   listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RssiRadioSourceEstimator(
+    protected RssiRadioSourceEstimator(
             final List<? extends RssiReadingLocated<S, P>> readings,
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
@@ -449,7 +449,7 @@ public abstract class RssiRadioSourceEstimator<S extends RadioSource, P extends 
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RssiRadioSourceEstimator(
+    protected RssiRadioSourceEstimator(
             final List<? extends RssiReadingLocated<S, P>> readings,
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
@@ -468,7 +468,7 @@ public abstract class RssiRadioSourceEstimator<S extends RadioSource, P extends 
      *                                   (expressed in dBm's).
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      */
-    public RssiRadioSourceEstimator(
+    protected RssiRadioSourceEstimator(
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
@@ -487,7 +487,7 @@ public abstract class RssiRadioSourceEstimator<S extends RadioSource, P extends 
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      * @param listener                   listener in charge of attending events raised by this instance.
      */
-    public RssiRadioSourceEstimator(
+    protected RssiRadioSourceEstimator(
             final P initialPosition,
             final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
@@ -510,7 +510,7 @@ public abstract class RssiRadioSourceEstimator<S extends RadioSource, P extends 
      * @param listener                   listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RssiRadioSourceEstimator(
+    protected RssiRadioSourceEstimator(
             final List<? extends RssiReadingLocated<S, P>> readings,
             final P initialPosition,
             final Double initialTransmittedPowerdBm,

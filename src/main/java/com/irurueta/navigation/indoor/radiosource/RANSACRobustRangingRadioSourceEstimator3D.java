@@ -315,11 +315,13 @@ public class RANSACRobustRangingRadioSourceEstimator3D<S extends RadioSource> ex
                             @Override
                             public void onEstimateStart(
                                     final RobustEstimator<Solution<Point3D>> estimator) {
+                                // no action required
                             }
 
                             @Override
                             public void onEstimateEnd(
                                     final RobustEstimator<Solution<Point3D>> estimator) {
+                                // no action required
                             }
 
                             @Override

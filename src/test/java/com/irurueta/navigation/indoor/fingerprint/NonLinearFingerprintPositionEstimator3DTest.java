@@ -20,7 +20,6 @@ import com.irurueta.geometry.Point3D;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.indoor.*;
-import com.irurueta.numerical.EvaluationException;
 import com.irurueta.statistics.UniformRandomizer;
 import org.junit.Test;
 

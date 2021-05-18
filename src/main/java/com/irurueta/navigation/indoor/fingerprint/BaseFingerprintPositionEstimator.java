@@ -182,9 +182,9 @@ public abstract class BaseFingerprintPositionEstimator<P extends Point<?>,
      *
      * @return located fingerprints containing RSSI readings.
      */
-    public List<? extends RssiFingerprintLocated<? extends RadioSource,
-            ? extends RssiReading<? extends RadioSource>, P>> getLocatedFingerprints() {
-        return mLocatedFingerprints;
+    public List<RssiFingerprintLocated<RadioSource, RssiReading<RadioSource>, P>> getLocatedFingerprints() {
+        //noinspection unchecked
+        return (List<RssiFingerprintLocated<RadioSource, RssiReading<RadioSource>,P>>) mLocatedFingerprints;
     }
 
     /**
@@ -218,9 +218,9 @@ public abstract class BaseFingerprintPositionEstimator<P extends Point<?>,
      * @return fingerprint containing readings at an unknown location for provided located
      * fingerprints.
      */
-    public RssiFingerprint<? extends RadioSource, ? extends RssiReading<? extends RadioSource>>
-    getFingerprint() {
-        return mFingerprint;
+    public RssiFingerprint<RadioSource, RssiReading<RadioSource>> getFingerprint() {
+        //noinspection unchecked
+        return (RssiFingerprint<RadioSource, RssiReading<RadioSource>>) mFingerprint;
     }
 
     /**

@@ -1560,8 +1560,9 @@ public abstract class SequentialRobustMixedRadioSourceEstimator<S extends RadioS
      *
      * @return signal readings belonging to the same radio source.
      */
-    public List<? extends ReadingLocated<P>> getReadings() {
-        return mReadings;
+    public List<ReadingLocated<P>> getReadings() {
+        //noinspection unchecked
+        return (List<ReadingLocated<P>>) mReadings;
     }
 
     /**

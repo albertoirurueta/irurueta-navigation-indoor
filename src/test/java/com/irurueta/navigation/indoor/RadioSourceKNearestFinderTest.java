@@ -69,8 +69,7 @@ public class RadioSourceKNearestFinderTest {
     public void testConstructorWifi2D() {
         final List<RssiFingerprintLocated2D<WifiAccessPoint, RssiReading<WifiAccessPoint>>> fingerprints =
                 new ArrayList<>();
-        RadioSourceKNearestFinder<Point2D, WifiAccessPoint> finder = new RadioSourceKNearestFinder<>(
-                fingerprints);
+        RadioSourceKNearestFinder<Point2D, WifiAccessPoint> finder = new RadioSourceKNearestFinder<>(fingerprints);
 
         // check
         assertSame(finder.getFingerprints(), fingerprints);
@@ -111,8 +110,8 @@ public class RadioSourceKNearestFinderTest {
     public void testConstructorBeacon2D() {
         final List<RssiFingerprintLocated2D<Beacon, RssiReading<Beacon>>> fingerprints =
                 new ArrayList<>();
-        RadioSourceKNearestFinder<Point2D, Beacon> finder = new RadioSourceKNearestFinder<>(
-                fingerprints);
+        RadioSourceKNearestFinder<Point2D, Beacon> finder =
+                new RadioSourceKNearestFinder<>(fingerprints);
 
         // check
         assertSame(finder.getFingerprints(), fingerprints);
@@ -132,8 +131,8 @@ public class RadioSourceKNearestFinderTest {
     public void testConstructorBeacon3D() {
         final List<RssiFingerprintLocated3D<Beacon, RssiReading<Beacon>>> fingerprints =
                 new ArrayList<>();
-        RadioSourceKNearestFinder<Point3D, Beacon> finder = new RadioSourceKNearestFinder<>(
-                fingerprints);
+        RadioSourceKNearestFinder<Point3D, Beacon> finder =
+                new RadioSourceKNearestFinder<>(fingerprints);
 
         // check
         assertSame(finder.getFingerprints(), fingerprints);

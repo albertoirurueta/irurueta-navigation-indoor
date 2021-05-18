@@ -1456,8 +1456,9 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      *
      * @return located radio sources used for lateration.
      */
-    public List<? extends RadioSourceLocated<P>> getSources() {
-        return mSources;
+    public List<RadioSourceLocated<P>> getSources() {
+        //noinspection unchecked
+        return (List<RadioSourceLocated<P>>) mSources;
     }
 
     /**
@@ -1485,9 +1486,9 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @return fingerprint containing readings at an unknown location for provided
      * located radio sources.
      */
-    public RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
-            extends RadioSource>> getFingerprint() {
-        return mFingerprint;
+    public RangingAndRssiFingerprint<RadioSource, RangingAndRssiReading<RadioSource>> getFingerprint() {
+        //noinspection unchecked
+        return (RangingAndRssiFingerprint<RadioSource, RangingAndRssiReading<RadioSource>>) mFingerprint;
     }
 
     /**

@@ -136,8 +136,9 @@ public abstract class FingerprintPositionEstimator<P extends Point<?>> extends
      *
      * @return located radio sources.
      */
-    public List<? extends RadioSourceLocated<P>> getSources() {
-        return mSources;
+    public List<RadioSourceLocated<P>> getSources() {
+        //noinspection unchecked
+        return (List<RadioSourceLocated<P>>) mSources;
     }
 
     /**

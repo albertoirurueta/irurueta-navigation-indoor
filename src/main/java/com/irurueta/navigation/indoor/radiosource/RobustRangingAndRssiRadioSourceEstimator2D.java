@@ -78,7 +78,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
     /**
      * Constructor.
      */
-    public RobustRangingAndRssiRadioSourceEstimator2D() {
+    protected RobustRangingAndRssiRadioSourceEstimator2D() {
         super();
         mPreliminarySubsetSize = getMinReadings();
     }

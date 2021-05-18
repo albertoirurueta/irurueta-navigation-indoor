@@ -355,8 +355,9 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
      *
      * @return initial radio sources.
      */
-    public List<? extends RadioSourceLocated<P>> getInitialLocatedSources() {
-        return mInitialLocatedSources;
+    public List<RadioSourceLocated<P>> getInitialLocatedSources() {
+        //noinspection unchecked
+        return (List<RadioSourceLocated<P>>) mInitialLocatedSources;
     }
 
     /**
@@ -636,12 +637,12 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
             if (mUseNoMeanNearestFingerprintFinder) {
                 //noinspection unchecked
                 noMeanFinder = new RadioSourceNoMeanKNearestFinder<>(
-                        (Collection<? extends RssiFingerprintLocated<RadioSource,
+                        (Collection<RssiFingerprintLocated<RadioSource,
                                 RssiReading<RadioSource>, P>>) mLocatedFingerprints);
             } else {
                 //noinspection unchecked
                 finder = new RadioSourceKNearestFinder<>(
-                        (Collection<? extends RssiFingerprintLocated<RadioSource,
+                        (Collection<RssiFingerprintLocated<RadioSource,
                                 RssiReading<RadioSource>, P>>) mLocatedFingerprints);
             }
 

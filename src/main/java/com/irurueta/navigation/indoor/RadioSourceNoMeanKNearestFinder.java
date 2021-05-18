@@ -103,8 +103,9 @@ public class RadioSourceNoMeanKNearestFinder<P extends Point<?>, S extends Radio
      *
      * @return collection of fingerprints to match against.
      */
-    public Collection<? extends RssiFingerprintLocated<S, RssiReading<S>, P>> getFingerprints() {
-        return mFingerprints;
+    public Collection<RssiFingerprintLocated<S, RssiReading<S>, P>> getFingerprints() {
+        //noinspection unchecked
+        return (Collection<RssiFingerprintLocated<S, RssiReading<S>,P>>) mFingerprints;
     }
 
     /**
@@ -154,9 +155,9 @@ public class RadioSourceNoMeanKNearestFinder<P extends Point<?>, S extends Radio
      */
     @SuppressWarnings("DuplicatedCode")
     public static <P extends Point<?>, S extends RadioSource> List<RssiFingerprintLocated<S,
-            RssiReading<S>, P>> findKNearestTo(RssiFingerprint<S, RssiReading<S>> fingerprint,
-                   Collection<? extends RssiFingerprintLocated<S, RssiReading<S>, P>> fingerprints,
-                   int k) {
+            RssiReading<S>, P>> findKNearestTo(final RssiFingerprint<S, RssiReading<S>> fingerprint,
+                                               final Collection<? extends RssiFingerprintLocated<S, RssiReading<S>, P>> fingerprints,
+                                               final int k) {
 
         final List<RssiFingerprintLocated<S, RssiReading<S>, P>> result =
                 new ArrayList<>();

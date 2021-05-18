@@ -1474,8 +1474,9 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
      *
      * @return located radio sources used for lateration.
      */
-    public List<? extends RadioSourceLocated<P>> getSources() {
-        return mSources;
+    public List<RadioSourceLocated<P>> getSources() {
+        //noinspection unchecked
+        return (List<RadioSourceLocated<P>>) mSources;
     }
 
     /**
@@ -1503,8 +1504,9 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
      * @return fingerprint containing readings at an unknown location for provided
      * located radio sources.
      */
-    public Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> getFingerprint() {
-        return mFingerprint;
+    public Fingerprint<RadioSource, Reading<RadioSource>> getFingerprint() {
+        //noinspection unchecked
+        return (Fingerprint<RadioSource, Reading<RadioSource>>) mFingerprint;
     }
 
     /**
