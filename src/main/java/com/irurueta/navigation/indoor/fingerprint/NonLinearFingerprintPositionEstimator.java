@@ -1058,8 +1058,10 @@ public abstract class NonLinearFingerprintPositionEstimator<P extends Point<?>> 
                         num++;
                     }
 
-                    for (int i = 0; i < dims; i++) {
-                        initial[i] /= num;
+                    if (num > 0) {
+                        for (int i = 0; i < dims; i++) {
+                            initial[i] /= num;
+                        }
                     }
                 } else {
                     // use provided initial position

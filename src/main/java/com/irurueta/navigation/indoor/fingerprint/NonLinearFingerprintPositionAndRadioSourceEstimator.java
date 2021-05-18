@@ -894,7 +894,6 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
                             sourceCovariance);
                 }
         }
-
     }
 
     /**
@@ -946,9 +945,11 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
             num++;
         }
 
-        for (int i = 0; i < dims; i++) {
-            centroidCoords[i] /= num;
-            nearestFingerprintsCentroid.setInhomogeneousCoordinate(i, centroidCoords[i]);
+        if (num > 0) {
+            for (int i = 0; i < dims; i++) {
+                centroidCoords[i] /= num;
+                nearestFingerprintsCentroid.setInhomogeneousCoordinate(i, centroidCoords[i]);
+            }
         }
 
         // maps to keep cached in memory computed values to speed up computations
@@ -1017,7 +1018,6 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
                     pathLossExponentVariance = std != null ? std * std : null;
                 }
 
-
                 final P sourcePosition;
                 Matrix sourcePositionCovariance = null;
                 if (pos < 0) {
@@ -1050,7 +1050,6 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
                 } else {
                     sourceIndex = allSourcesToBeEstimated.indexOf(source);
                 }
-
 
                 final double locatedRssi = locatedReading.getRssi();
 
@@ -1426,7 +1425,7 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
             }
         }
 
-        if (centroid != null) {
+        if (centroid != null && result > 0) {
             for (int i = 0; i < dims; i++) {
                 centroidCoords[i] /= result;
                 centroid.setInhomogeneousCoordinate(i, centroidCoords[i]);
