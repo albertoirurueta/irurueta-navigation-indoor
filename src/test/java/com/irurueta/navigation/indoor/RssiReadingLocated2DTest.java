@@ -17,8 +17,11 @@ package com.irurueta.navigation.indoor;
 
 import com.irurueta.algebra.AlgebraException;
 import com.irurueta.algebra.Matrix;
+import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.geometry.InhomogeneousPoint2D;
 import org.junit.Test;
+
+import java.io.IOException;
 
 import static org.junit.Assert.*;
 
@@ -203,5 +206,36 @@ public class RssiReadingLocated2DTest {
         assertTrue(reading1.hasSameSource(reading1));
         assertTrue(reading1.hasSameSource(reading2));
         assertFalse(reading1.hasSameSource(reading3));
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws WrongSizeException, IOException, ClassNotFoundException {
+        final WifiAccessPoint ap = new WifiAccessPoint("bssid", FREQUENCY);
+        final InhomogeneousPoint2D position = new InhomogeneousPoint2D();
+        final Matrix cov = new Matrix(2, 2);
+        final RssiReadingLocated2D<WifiAccessPoint> reading1 =
+                new RssiReadingLocated2D<>(ap, -50.0, position,
+                5.5, cov);
+
+        // check
+        assertSame(reading1.getPosition(), position);
+        assertSame(reading1.getPositionCovariance(), cov);
+        assertSame(reading1.getSource(), ap);
+        assertEquals(reading1.getRssi(), -50.0, 0.0);
+        assertEquals(reading1.getRssiStandardDeviation(), 5.5, 0.0);
+        assertEquals(reading1.getType(), ReadingType.RSSI_READING);
+
+        // serialize and deserialize
+        final byte[] bytes = SerializationHelper.serialize(reading1);
+        final RssiReadingLocated2D<WifiAccessPoint> reading2 =
+                SerializationHelper.deserialize(bytes);
+
+        // check
+        assertNotSame(reading1, reading2);
+        assertEquals(reading1.getPosition(), reading2.getPosition());
+        assertEquals(reading1.getPositionCovariance(),
+                reading2.getPositionCovariance());
+        assertEquals(reading1.getSource(), reading2.getSource());
+        assertEquals(reading1.getType(), reading2.getType());
     }
 }

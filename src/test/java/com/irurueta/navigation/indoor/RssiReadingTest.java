@@ -17,6 +17,8 @@ package com.irurueta.navigation.indoor;
 
 import org.junit.Test;
 
+import java.io.IOException;
+
 import static org.junit.Assert.*;
 
 public class RssiReadingTest {
@@ -91,5 +93,30 @@ public class RssiReadingTest {
         assertTrue(reading1.hasSameSource(reading1));
         assertTrue(reading1.hasSameSource(reading2));
         assertFalse(reading1.hasSameSource(reading3));
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final WifiAccessPoint ap = new WifiAccessPoint("bssid", FREQUENCY);
+        final RssiReading<WifiAccessPoint> reading1 = new RssiReading<>(
+                ap, -50.0, 5.5);
+
+        // check
+        assertSame(reading1.getSource(), ap);
+        assertEquals(reading1.getRssi(), -50.0, 0.0);
+        assertEquals(reading1.getRssiStandardDeviation(), 5.5, 0.0);
+        assertEquals(reading1.getType(), ReadingType.RSSI_READING);
+
+        // serialize and deserialize
+        final byte[] bytes = SerializationHelper.serialize(reading1);
+        final RssiReading<WifiAccessPoint> reading2 = SerializationHelper.deserialize(bytes);
+
+        // check
+        assertNotSame(reading1, reading2);
+        assertEquals(reading1.getSource(), reading2.getSource());
+        assertEquals(reading1.getRssi(), reading2.getRssi(), 0.0);
+        assertEquals(reading1.getRssiStandardDeviation(),
+                reading2.getRssiStandardDeviation(), 0.0);
+        assertEquals(reading1.getType(), reading2.getType());
     }
 }

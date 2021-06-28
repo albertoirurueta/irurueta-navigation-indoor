@@ -17,6 +17,7 @@ package com.irurueta.navigation.indoor;
 
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,5 +51,26 @@ public class RangingFingerprintTest {
         }
         //noinspection ConstantConditions
         assertNull(fingerprint);
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final List<RangingReading<RadioSource>> readings = new ArrayList<>();
+        final RangingFingerprint<RadioSource, RangingReading<RadioSource>> fingerprint1 =
+                new RangingFingerprint<>(readings);
+
+        // check
+        assertEquals(fingerprint1.getReadings(), readings);
+        assertNotSame(fingerprint1.getReadings(), readings);
+
+        // serialize and deserialize
+        final byte[] bytes = SerializationHelper.serialize(fingerprint1);
+        final RangingFingerprint<RadioSource, RangingReading<RadioSource>> fingerprint2 =
+                SerializationHelper.deserialize(bytes);
+
+        // check
+        assertNotSame(fingerprint1, fingerprint2);
+        assertEquals(fingerprint1.getReadings(), fingerprint2.getReadings());
+        assertNotSame(fingerprint1.getReadings(), fingerprint2.getReadings());
     }
 }

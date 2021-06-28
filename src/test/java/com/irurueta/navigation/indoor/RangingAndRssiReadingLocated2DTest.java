@@ -17,8 +17,11 @@ package com.irurueta.navigation.indoor;
 
 import com.irurueta.algebra.AlgebraException;
 import com.irurueta.algebra.Matrix;
+import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.geometry.InhomogeneousPoint2D;
 import org.junit.Test;
+
+import java.io.IOException;
 
 import static org.junit.Assert.*;
 
@@ -590,5 +593,50 @@ public class RangingAndRssiReadingLocated2DTest {
         assertTrue(reading1.hasSameSource(reading1));
         assertTrue(reading1.hasSameSource(reading2));
         assertFalse(reading1.hasSameSource(reading3));
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws WrongSizeException, IOException, ClassNotFoundException {
+        final WifiAccessPoint ap = new WifiAccessPoint("bssid", FREQUENCY);
+        final InhomogeneousPoint2D position = new InhomogeneousPoint2D();
+        final Matrix cov = new Matrix(2, 2);
+        final RangingAndRssiReadingLocated2D<WifiAccessPoint> reading1 =
+                new RangingAndRssiReadingLocated2D<>(ap, 2.5, -50.0,
+                        position, 0.1, 0.2, cov,
+                        8, 7);
+
+        // check
+        assertSame(reading1.getSource(), ap);
+        assertEquals(reading1.getDistance(), 2.5, 0.0);
+        assertEquals(reading1.getDistanceStandardDeviation(), 0.1, 0.0);
+        assertEquals(reading1.getRssi(), -50.0, 0.0);
+        assertEquals(reading1.getRssiStandardDeviation(), 0.2, 0.0);
+        assertSame(reading1.getPosition(), position);
+        assertSame(reading1.getPositionCovariance(), cov);
+        assertEquals(reading1.getType(), ReadingType.RANGING_AND_RSSI_READING);
+        assertEquals(reading1.getNumAttemptedMeasurements(), 8);
+        assertEquals(reading1.getNumSuccessfulMeasurements(), 7);
+
+        // serialize and deserialize
+        final byte[] bytes = SerializationHelper.serialize(reading1);
+        final RangingAndRssiReadingLocated2D<WifiAccessPoint> reading2 =
+                SerializationHelper.deserialize(bytes);
+
+        // check
+        assertNotSame(reading1, reading2);
+        assertEquals(reading1.getSource(), reading2.getSource());
+        assertEquals(reading1.getDistance(), reading2.getDistance(), 0.0);
+        assertEquals(reading1.getDistanceStandardDeviation(),
+                reading2.getDistanceStandardDeviation(), 0.0);
+        assertEquals(reading1.getRssi(), reading2.getRssi(), 0.0);
+        assertEquals(reading1.getRssiStandardDeviation(),
+                reading2.getRssiStandardDeviation());
+        assertEquals(reading1.getPosition(), reading2.getPosition());
+        assertEquals(reading1.getPositionCovariance(), reading2.getPositionCovariance());
+        assertEquals(reading1.getType(), reading2.getType());
+        assertEquals(reading1.getNumAttemptedMeasurements(),
+                reading2.getNumAttemptedMeasurements());
+        assertEquals(reading1.getNumSuccessfulMeasurements(),
+                reading2.getNumSuccessfulMeasurements());
     }
 }

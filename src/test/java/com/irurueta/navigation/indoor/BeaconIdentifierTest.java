@@ -18,6 +18,7 @@ package com.irurueta.navigation.indoor;
 import com.irurueta.statistics.UniformRandomizer;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.Random;
 import java.util.UUID;
 
@@ -332,5 +333,23 @@ public class BeaconIdentifierTest {
 
         assertEquals(id.compareTo(id5), 1);
         assertEquals(id5.compareTo(id), -1);
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final Random r = new Random();
+
+        final byte[] value = new byte[2];
+        r.nextBytes(value);
+
+        final BeaconIdentifier id1 = new BeaconIdentifier(value);
+
+        // serialize and deserialize
+        final byte[] bytes = SerializationHelper.serialize(id1);
+        final BeaconIdentifier id2 = SerializationHelper.deserialize(bytes);
+
+        // check
+        assertEquals(id1, id2);
+        assertNotSame(id1, id2);
     }
 }

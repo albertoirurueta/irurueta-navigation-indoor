@@ -17,6 +17,8 @@ package com.irurueta.navigation.indoor;
 
 import org.junit.Test;
 
+import java.io.IOException;
+
 import static org.junit.Assert.*;
 
 public class RangingAndRssiReadingTest {
@@ -236,5 +238,44 @@ public class RangingAndRssiReadingTest {
         assertTrue(reading1.hasSameSource(reading1));
         assertTrue(reading1.hasSameSource(reading2));
         assertFalse(reading1.hasSameSource(reading3));
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final WifiAccessPoint ap = new WifiAccessPoint("bssid", FREQUENCY);
+        final RangingAndRssiReading<WifiAccessPoint> reading1 = new RangingAndRssiReading<>(
+                ap, 1.5, -50.0,
+                0.1, 5.5,
+                8, 7);
+
+        // check
+        assertSame(reading1.getSource(), ap);
+        assertEquals(reading1.getDistance(), 1.5, 0.0);
+        assertEquals(reading1.getDistanceStandardDeviation(), 0.1, 0.0);
+        assertEquals(reading1.getRssi(), -50.0, 0.0);
+        assertEquals(reading1.getRssiStandardDeviation(), 5.5, 0.0);
+        assertEquals(reading1.getType(), ReadingType.RANGING_AND_RSSI_READING);
+        assertEquals(reading1.getNumAttemptedMeasurements(), 8);
+        assertEquals(reading1.getNumSuccessfulMeasurements(), 7);
+
+        // serialize and deserialize
+        final byte[] bytes = SerializationHelper.serialize(reading1);
+        final RangingAndRssiReading<WifiAccessPoint> reading2 =
+                SerializationHelper.deserialize(bytes);
+
+        // check
+        assertNotSame(reading1, reading2);
+        assertEquals(reading1.getSource(), reading2.getSource());
+        assertEquals(reading1.getDistance(), reading2.getDistance(), 0.0);
+        assertEquals(reading1.getDistanceStandardDeviation(),
+                reading2.getDistanceStandardDeviation(), 0.0);
+        assertEquals(reading1.getRssi(), reading2.getRssi(), 0.0);
+        assertEquals(reading1.getRssiStandardDeviation(),
+                reading2.getRssiStandardDeviation(), 0.0);
+        assertEquals(reading1.getType(), reading2.getType());
+        assertEquals(reading1.getNumAttemptedMeasurements(),
+                reading2.getNumAttemptedMeasurements());
+        assertEquals(reading1.getNumSuccessfulMeasurements(),
+                reading2.getNumSuccessfulMeasurements());
     }
 }

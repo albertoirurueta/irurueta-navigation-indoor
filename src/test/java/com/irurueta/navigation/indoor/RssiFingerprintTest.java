@@ -18,6 +18,7 @@ package com.irurueta.navigation.indoor;
 import com.irurueta.statistics.UniformRandomizer;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -234,5 +235,25 @@ public class RssiFingerprintTest {
         // test with null fingerprints
         assertEquals(f.noMeanSqrDistanceTo(null), Double.MAX_VALUE,
                 0.0);
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
+        final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> f1 =
+                new RssiFingerprint<>(readings);
+
+        // check
+        assertEquals(f1.getReadings(), readings);
+        assertNotSame(f1.getReadings(), readings);
+
+        // serialize and deserialize
+        final byte[] bytes = SerializationHelper.serialize(f1);
+        final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> f2 =
+                SerializationHelper.deserialize(bytes);
+
+        // check
+        assertNotSame(f1, f2);
+        assertEquals(f1.getReadings(), f2.getReadings());
     }
 }

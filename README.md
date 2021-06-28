@@ -1,7 +1,7 @@
 # irurueta-navigation-indoor
 An indoor GNSS/INS navigation library
 
-[![Build Status](https://travis-ci.org/albertoirurueta/irurueta-navigation-indoor.svg?branch=master)](https://travis-ci.org/albertoirurueta/irurueta-navigation-indoor)
+[![Build Status](https://travis-ci.com/albertoirurueta/irurueta-navigation-indoor.svg?branch=master)](https://travis-ci.com/albertoirurueta/irurueta-navigation-indoor)
 
 
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=albertoirurueta_irurueta-navigation-indoor&metric=bugs)](https://sonarcloud.io/dashboard?id=albertoirurueta_irurueta-navigation-indoor)

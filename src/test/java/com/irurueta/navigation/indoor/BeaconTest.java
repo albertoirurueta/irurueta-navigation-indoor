@@ -18,6 +18,7 @@ package com.irurueta.navigation.indoor;
 import com.irurueta.statistics.UniformRandomizer;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -254,5 +255,62 @@ public class BeaconTest {
 
         assertEquals(b1.hashCode(), b2.hashCode());
         assertNotEquals(b1.hashCode(), b3.hashCode());
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final long value1 = randomizer.nextLong();
+        final BeaconIdentifier id1 = BeaconIdentifier.fromLong(value1,
+                Long.SIZE / Byte.SIZE);
+
+        final long value2 = randomizer.nextLong();
+        final BeaconIdentifier id2 = BeaconIdentifier.fromLong(value2,
+                Long.SIZE / Byte.SIZE);
+
+        final long value3 = randomizer.nextLong();
+        final BeaconIdentifier id3 = BeaconIdentifier.fromLong(value3,
+                Long.SIZE / Byte.SIZE);
+
+        final List<BeaconIdentifier> identifiers = new ArrayList<>();
+        identifiers.add(id1);
+        identifiers.add(id2);
+        identifiers.add(id3);
+
+        final Beacon b1 = new Beacon(identifiers, -50.0,
+                5.0e9, "address", 1,
+                2, 3, "name");
+
+        // check default values
+        assertEquals(b1.getId1(), id1);
+        assertEquals(b1.getId2(), id2);
+        assertEquals(b1.getId3(), id3);
+        assertEquals(b1.getIdentifiers(), identifiers);
+        assertEquals(b1.getTransmittedPower(), -50.0, 0.0);
+        assertEquals(b1.getBluetoothAddress(), "address");
+        assertEquals(b1.getBeaconTypeCode(), 1);
+        assertEquals(b1.getBluetoothName(), "name");
+        assertEquals(b1.getManufacturer(), 2);
+        assertEquals(b1.getServiceUuid(), 3);
+        assertEquals(b1.getType(), RadioSourceType.BEACON);
+        assertEquals(b1.getFrequency(), 5.0e9, 0.0);
+
+        // serialize and deserialize
+        final byte[] bytes = SerializationHelper.serialize(b1);
+        final Beacon b2 = SerializationHelper.deserialize(bytes);
+
+        // check
+        assertEquals(b1.getId1(), b2.getId1());
+        assertEquals(b1.getId2(), b2.getId2());
+        assertEquals(b1.getId3(), b2.getId3());
+        assertEquals(b1.getIdentifiers(), b2.getIdentifiers());
+        assertEquals(b1.getTransmittedPower(), b2.getTransmittedPower(), 0.0);
+        assertEquals(b1.getBluetoothAddress(), b2.getBluetoothAddress());
+        assertEquals(b1.getBeaconTypeCode(), b2.getBeaconTypeCode());
+        assertEquals(b1.getBluetoothName(), b2.getBluetoothName());
+        assertEquals(b1.getManufacturer(), b2.getManufacturer());
+        assertEquals(b1.getServiceUuid(), b2.getServiceUuid());
+        assertEquals(b1.getType(), b2.getType());
+        assertEquals(b1.getFrequency(), b2.getFrequency(), 0.0);
     }
 }

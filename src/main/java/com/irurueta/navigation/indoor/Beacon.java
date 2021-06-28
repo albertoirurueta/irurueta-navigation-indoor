@@ -16,6 +16,7 @@
 package com.irurueta.navigation.indoor;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class Beacon implements Serializable, RadioSource {
      * a unique beacon. The identifiers are ordered by significance for the purpose of grouping
      * beacons.
      */
-    private List<BeaconIdentifier> mIdentifiers;
+    private ArrayList<BeaconIdentifier> mIdentifiers;
 
     /**
      * The calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
@@ -105,7 +106,7 @@ public class Beacon implements Serializable, RadioSource {
             throw new IllegalArgumentException();
         }
 
-        mIdentifiers = identifiers;
+        mIdentifiers = new ArrayList<>(identifiers);
         mTransmittedPower = transmittedPower;
     }
 

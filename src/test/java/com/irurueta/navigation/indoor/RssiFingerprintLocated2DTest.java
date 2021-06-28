@@ -20,6 +20,7 @@ import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.geometry.InhomogeneousPoint2D;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,5 +92,23 @@ public class RssiFingerprintLocated2DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(f);
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
+        final InhomogeneousPoint2D position = new InhomogeneousPoint2D();
+        final RssiFingerprintLocated2D<WifiAccessPoint, RssiReading<WifiAccessPoint>> f1 =
+                new RssiFingerprintLocated2D<>(readings, position);
+
+        // serialize and deserialize
+        final byte[] bytes = SerializationHelper.serialize(f1);
+        final RssiFingerprintLocated2D<WifiAccessPoint, RssiReading<WifiAccessPoint>> f2 =
+                SerializationHelper.deserialize(bytes);
+
+        // check
+        assertNotSame(f1, f2);
+        assertEquals(f1.getReadings(), f2.getReadings());
+        assertEquals(f1.getPosition(), f2.getPosition());
     }
 }

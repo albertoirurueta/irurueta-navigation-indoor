@@ -17,6 +17,8 @@ package com.irurueta.navigation.indoor;
 
 import org.junit.Test;
 
+import java.io.IOException;
+
 import static org.junit.Assert.*;
 
 public class WifiAccessPointTest {
@@ -107,5 +109,29 @@ public class WifiAccessPointTest {
         // check
         assertEquals(ap1.hashCode(), ap2.hashCode());
         assertNotEquals(ap1.hashCode(), ap3.hashCode());
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        // test constructor with BSSID and SSID
+        final WifiAccessPoint ap1 = new WifiAccessPoint(BSSID, FREQUENCY, SSID);
+
+        // check
+        assertEquals(ap1.getBssid(), BSSID);
+        assertEquals(ap1.getFrequency(), FREQUENCY, 0.0);
+        assertEquals(ap1.getSsid(), SSID);
+        assertEquals(ap1.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+
+        // serialize and deserialize
+        final byte[] bytes = SerializationHelper.serialize(ap1);
+        final WifiAccessPoint ap2 = SerializationHelper.deserialize(bytes);
+
+        // check
+        assertEquals(ap1, ap2);
+        assertNotSame(ap1, ap2);
+        assertEquals(ap1.getBssid(), ap2.getBssid());
+        assertEquals(ap1.getFrequency(), ap2.getFrequency(), 0.0);
+        assertEquals(ap1.getSsid(), ap2.getSsid());
+        assertEquals(ap1.getType(), ap2.getType());
     }
 }

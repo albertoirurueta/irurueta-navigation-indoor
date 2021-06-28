@@ -20,6 +20,7 @@ import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.geometry.InhomogeneousPoint3D;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,5 +92,23 @@ public class RssiFingerprintLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(f);
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
+        final InhomogeneousPoint3D position = new InhomogeneousPoint3D();
+        final RssiFingerprintLocated3D<WifiAccessPoint, RssiReading<WifiAccessPoint>> f1 =
+                new RssiFingerprintLocated3D<>(readings, position);
+
+        // serialize and deserialize
+        final byte[] bytes = SerializationHelper.serialize(f1);
+        final RssiFingerprintLocated3D<WifiAccessPoint, RssiReading<WifiAccessPoint>> f2 =
+                SerializationHelper.deserialize(bytes);
+
+        // check
+        assertNotSame(f1, f2);
+        assertEquals(f1.getReadings(), f2.getReadings());
+        assertEquals(f1.getPosition(), f2.getPosition());
     }
 }

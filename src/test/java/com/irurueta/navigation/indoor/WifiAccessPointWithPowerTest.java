@@ -18,6 +18,7 @@ package com.irurueta.navigation.indoor;
 import com.irurueta.statistics.UniformRandomizer;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -419,5 +420,46 @@ public class WifiAccessPointWithPowerTest {
         // check
         assertEquals(ap1.hashCode(), ap2.hashCode());
         assertNotEquals(ap1.hashCode(), ap3.hashCode());
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double pathLossExponent = randomizer.nextDouble(
+                MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
+
+        final WifiAccessPointWithPower ap1 = new WifiAccessPointWithPower(BSSID,
+                FREQUENCY, SSID, TRANSMITTED_POWER, TRANSMITTED_POWER_STD,
+                pathLossExponent, PATH_LOSS_STD);
+
+        // check
+        assertEquals(ap1.getBssid(), BSSID);
+        assertEquals(ap1.getFrequency(), FREQUENCY, 0.0);
+        assertEquals(ap1.getSsid(), SSID);
+        assertEquals(ap1.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
+        assertEquals(ap1.getTransmittedPowerStandardDeviation(),
+                TRANSMITTED_POWER_STD, 0.0);
+        assertEquals(ap1.getPathLossExponent(), pathLossExponent, 0.0);
+        assertEquals(ap1.getPathLossExponentStandardDeviation(),
+                PATH_LOSS_STD, 0.0);
+        assertEquals(ap1.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+
+        // serialize and deserialize
+        final byte[] bytes = SerializationHelper.serialize(ap1);
+        final WifiAccessPointWithPower ap2 = SerializationHelper.deserialize(bytes);
+
+        // check
+        assertEquals(ap1, ap2);
+        assertNotSame(ap1, ap2);
+        assertEquals(ap1.getBssid(), ap2.getBssid());
+        assertEquals(ap1.getFrequency(), ap2.getFrequency(), 0.0);
+        assertEquals(ap1.getSsid(), ap2.getSsid());
+        assertEquals(ap1.getTransmittedPower(), ap2.getTransmittedPower(), 0.0);
+        assertEquals(ap1.getTransmittedPowerStandardDeviation(),
+                ap2.getTransmittedPowerStandardDeviation(), 0.0);
+        assertEquals(ap1.getPathLossExponent(), ap2.getPathLossExponent(), 0.0);
+        assertEquals(ap1.getPathLossExponentStandardDeviation(),
+                ap2.getPathLossExponentStandardDeviation(), 0.0);
+        assertEquals(ap1.getType(), ap2.getType());
     }
 }

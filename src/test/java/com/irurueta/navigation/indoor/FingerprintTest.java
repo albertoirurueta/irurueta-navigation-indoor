@@ -17,6 +17,7 @@ package com.irurueta.navigation.indoor;
 
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,5 +77,23 @@ public class FingerprintTest {
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final List<Reading<RadioSource>> readings = new ArrayList<>();
+        final Fingerprint<RadioSource, Reading<RadioSource>> fingerprint1 = new Fingerprint<>(readings);
+
+        assertEquals(fingerprint1.getReadings(), readings);
+        assertNotSame(fingerprint1.getReadings(), readings);
+
+        // serialize and deserialize
+        final byte[] bytes = SerializationHelper.serialize(fingerprint1);
+        final Fingerprint<RadioSource, Reading<RadioSource>> fingerprint2 =
+                SerializationHelper.deserialize(bytes);
+
+        // check
+        assertNotSame(fingerprint1, fingerprint2);
+        assertEquals(fingerprint1.getReadings(), fingerprint2.getReadings());
     }
 }
