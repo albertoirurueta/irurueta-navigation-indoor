@@ -1807,7 +1807,7 @@ public abstract class RssiRadioSourceEstimator<S extends RadioSource, P extends 
             double result = 0.0;
             for (final RssiReadingLocated<S, P> reading : mReadings) {
                 final double rssi = reading.getRssi();
-                result += rssi / (double) num;
+                result += rssi / num;
             }
             return result;
         } else {
