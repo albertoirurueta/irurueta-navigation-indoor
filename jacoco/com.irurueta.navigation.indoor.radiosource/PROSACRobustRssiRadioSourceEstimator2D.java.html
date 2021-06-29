@@ -1079,7 +1079,7 @@ public class PROSACRobustRssiRadioSourceEstimator2D&lt;S extends RadioSource&gt;
                             public void onEstimateProgressChange(
                                     final RobustEstimator&lt;Solution&lt;Point2D&gt;&gt; estimator,
                                     final float progress) {
-<span class="fc bfc" id="L1082" title="All 2 branches covered.">                                if (mListener != null) {</span>
+<span class="pc bpc" id="L1082" title="1 of 2 branches missed.">                                if (mListener != null) {</span>
 <span class="fc" id="L1083">                                    mListener.onEstimateProgressChange(</span>
                                             PROSACRobustRssiRadioSourceEstimator2D.this,
                                             progress);

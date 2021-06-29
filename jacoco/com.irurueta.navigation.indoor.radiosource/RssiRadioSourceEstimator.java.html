@@ -1807,7 +1807,7 @@ public abstract class RssiRadioSourceEstimator&lt;S extends RadioSource, P exten
 <span class="fc" id="L1807">            double result = 0.0;</span>
 <span class="fc bfc" id="L1808" title="All 2 branches covered.">            for (final RssiReadingLocated&lt;S, P&gt; reading : mReadings) {</span>
 <span class="fc" id="L1809">                final double rssi = reading.getRssi();</span>
-<span class="fc" id="L1810">                result += rssi / (double) num;</span>
+<span class="fc" id="L1810">                result += rssi / num;</span>
 <span class="fc" id="L1811">            }</span>
 <span class="fc" id="L1812">            return result;</span>
         } else {
