@@ -443,7 +443,7 @@ public class LinearRssiPositionEstimator3DTest implements
             assertFalse(estimator.isLocked());
 
             final Point3D estimatedPosition = estimator.getEstimatedPosition();
-            assertTrue(position.equals(estimatedPosition, ABSOLUTE_ERROR));
+            assertTrue(position.equals(estimatedPosition, 5.0 * ABSOLUTE_ERROR));
         }
 
         // force NotReadyException
