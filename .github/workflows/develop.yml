@@ -27,8 +27,8 @@ jobs:
 
     - name: Run tests
       run: |
-        mvn clean jacoco:prepare-agent install jacoco:report -P !build-extras
-        mvn site -Djacoco.skip -DskipTests -P !build-extras
+        mvn clean jacoco:prepare-agent install jacoco:report -P '!extras'
+        mvn site -Djacoco.skip -DskipTests -P '!extras'
 
     - name: Setup sonarqube
       uses: warchant/setup-sonar-scanner@v3
@@ -56,4 +56,4 @@ jobs:
         SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
         SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
         SONATYPE_STAGING_PROFILE_ID: ${{ secrets.SONATYPE_STAGING_PROFILE_ID }}
-      run: mvn deploy -P sign,build-extras --settings mvnsettings.xml -DskipTests
+      run: mvn deploy -P sign,extras --settings mvnsettings.xml -DskipTests

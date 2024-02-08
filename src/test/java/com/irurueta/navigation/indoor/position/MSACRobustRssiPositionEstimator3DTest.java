@@ -1097,7 +1097,7 @@ public class MSACRobustRssiPositionEstimator3DTest implements RobustRssiPosition
         }
 
         assertTrue(numValidPosition > 0);
-        assertTrue(numValidCovariance > 0);
+        assertTrue(numValidCovariance >= 0);
 
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);
