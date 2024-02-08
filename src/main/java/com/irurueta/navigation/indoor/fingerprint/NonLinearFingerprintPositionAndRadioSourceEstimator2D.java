@@ -230,7 +230,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator2D extends
      * @param fingerprintPosition           position of closest located fingerprint.
      * @param radioSourcePosition           radio source position associated to fingerprint reading.
      * @param estimatedPosition             position to be estimated. Usually this is equal to the
-     *                                      initial position used by a non linear algorithm.
+     *                                      initial position used by a non-linear algorithm.
      * @param pathlossExponentVariance      variance of path-loss exponent or null if unknown.
      * @param fingerprintPositionCovariance covariance of fingerprint position or null if
      *                                      unknown.

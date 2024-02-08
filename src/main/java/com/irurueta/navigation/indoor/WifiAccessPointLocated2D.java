@@ -19,7 +19,7 @@ import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.Point2D;
 
 /**
- * Data related to a WiFi access point whose 2D location is known.
+ * Data related to a Wi-Fi access point whose 2D location is known.
  */
 public class WifiAccessPointLocated2D extends WifiAccessPointLocated<Point2D> {
 

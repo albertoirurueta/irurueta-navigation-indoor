@@ -20,7 +20,7 @@ import com.irurueta.geometry.Point;
 
 /**
  * Contains a located signal strength reading associated to a given radio source
- * (e.g. WiFi access point or bluetooth beacon).
+ * (e.g. Wi-Fi access point or bluetooth beacon).
  *
  * @param <S> a {@link RadioSource} type.
  * @param <P> a {@link Point} type.

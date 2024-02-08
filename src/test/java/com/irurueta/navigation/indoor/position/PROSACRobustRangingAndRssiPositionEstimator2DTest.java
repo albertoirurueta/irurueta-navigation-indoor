@@ -108,28 +108,23 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                 new PROSACRobustRangingAndRssiPositionEstimator2D();
 
         // check default values
-        assertEquals(estimator.getThreshold(),
-                PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
+        assertEquals(PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD,
+                estimator.getThreshold(), 0.0);
+        assertEquals(3, estimator.getMinRequiredSources());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
         assertNull(estimator.getSources());
         assertNull(estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -143,41 +138,35 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 2);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROSAC);
+        assertEquals(2, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROSAC, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // constructor with sources
         final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            sources.add(new WifiAccessPointLocated2D("id1", FREQUENCY,
-                    new InhomogeneousPoint2D()));
+            sources.add(new WifiAccessPointLocated2D("id1", FREQUENCY, new InhomogeneousPoint2D()));
         }
         estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sources);
 
         // check default values
-        assertEquals(estimator.getThreshold(),
-                PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
-        assertSame(estimator.getSources(), sources);
+        assertEquals(PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD,
+                estimator.getThreshold(), 0.0);
+        assertEquals(3, estimator.getMinRequiredSources());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
+        assertSame(sources, estimator.getSources());
         assertNull(estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -191,8 +180,8 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 2);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROSAC);
+        assertEquals(2, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROSAC, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
@@ -217,28 +206,23 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(fingerprint);
 
         // check default values
-        assertEquals(estimator.getThreshold(),
-                PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
+        assertEquals(PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD,
+                estimator.getThreshold(), 0.0);
+        assertEquals(3, estimator.getMinRequiredSources());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
         assertNull(estimator.getSources());
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -252,8 +236,8 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 2);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROSAC);
+        assertEquals(2, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROSAC, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
@@ -267,32 +251,26 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         assertNull(estimator);
 
         // constructor with sources and fingerprint
-        estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sources,
-                fingerprint);
+        estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sources, fingerprint);
 
         // check default values
-        assertEquals(estimator.getThreshold(),
-                PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertEquals(PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD,
+                estimator.getThreshold(), 0.0);
+        assertEquals(3, estimator.getMinRequiredSources());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -306,15 +284,14 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 2);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROSAC);
+        assertEquals(2, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROSAC, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(null,
-                    fingerprint);
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(null, fingerprint);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -336,28 +313,23 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(this);
 
         // check default values
-        assertEquals(estimator.getThreshold(),
-                PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
+        assertEquals(PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD,
+                estimator.getThreshold(), 0.0);
+        assertEquals(3, estimator.getMinRequiredSources());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
         assertNull(estimator.getSources());
         assertNull(estimator.getFingerprint());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -371,37 +343,31 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 2);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROSAC);
+        assertEquals(2, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROSAC, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // constructor with sources and listener
-        estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sources,
-                this);
+        estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sources, this);
 
         // check default values
-        assertEquals(estimator.getThreshold(),
-                PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
-        assertSame(estimator.getSources(), sources);
+        assertEquals(PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD,
+                estimator.getThreshold(), 0.0);
+        assertEquals(3, estimator.getMinRequiredSources());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
+        assertSame(sources, estimator.getSources());
         assertNull(estimator.getFingerprint());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -415,8 +381,8 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 2);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROSAC);
+        assertEquals(2, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROSAC, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
@@ -440,28 +406,23 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                 this);
 
         // check default values
-        assertEquals(estimator.getThreshold(),
-                PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
+        assertEquals(PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD,
+                estimator.getThreshold(), 0.0);
+        assertEquals(3, estimator.getMinRequiredSources());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
         assertNull(estimator.getSources());
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -475,8 +436,8 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 2);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROSAC);
+        assertEquals(2, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROSAC, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
@@ -495,28 +456,23 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                 fingerprint, this);
 
         // check default values
-        assertEquals(estimator.getThreshold(),
-                PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertEquals(PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD,
+                estimator.getThreshold(), 0.0);
+        assertEquals(3, estimator.getMinRequiredSources());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -530,22 +486,21 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 2);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROSAC);
+        assertEquals(2, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROSAC, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    null, fingerprint, this);
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(null, fingerprint,
+                    this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
             estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    new ArrayList<WifiAccessPointLocated2D>(), fingerprint,
-                    this);
+                    new ArrayList<WifiAccessPointLocated2D>(), fingerprint, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -564,28 +519,23 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                 sourceQualityScores, fingerprintReadingsQualityScores);
 
         // check default values
-        assertEquals(estimator.getThreshold(),
-                PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
+        assertEquals(PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD,
+                estimator.getThreshold(), 0.0);
+        assertEquals(3, estimator.getMinRequiredSources());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
         assertNull(estimator.getSources());
         assertNull(estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -595,13 +545,12 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertFalse(estimator.isReady());
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingsQualityScores);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingsQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 2);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROSAC);
+        assertEquals(2, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROSAC, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
@@ -613,22 +562,19 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    sourceQualityScores,
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
                     null);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    new double[1],
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(new double[1],
                     fingerprintReadingsQualityScores);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    sourceQualityScores,
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
                     new double[1]);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -636,33 +582,27 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         assertNull(estimator);
 
         // constructor with quality scores and sources
-        estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                sourceQualityScores,
+        estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
                 fingerprintReadingsQualityScores, sources);
 
         // check default values
-        assertEquals(estimator.getThreshold(),
-                PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
-        assertSame(estimator.getSources(), sources);
+        assertEquals(PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD,
+                estimator.getThreshold(), 0.0);
+        assertEquals(3, estimator.getMinRequiredSources());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
+        assertSame(sources, estimator.getSources());
         assertNull(estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -672,27 +612,24 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertFalse(estimator.isReady());
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingsQualityScores);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingsQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 2);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROSAC);
+        assertEquals(2, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROSAC, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    null,
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(null,
                     fingerprintReadingsQualityScores, sources);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    sourceQualityScores,
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
                     null, sources);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -710,16 +647,14 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    sourceQualityScores, fingerprintReadingsQualityScores,
-                    (List<WifiAccessPointLocated2D>) null);
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                    fingerprintReadingsQualityScores, (List<WifiAccessPointLocated2D>) null);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    sourceQualityScores, fingerprintReadingsQualityScores,
-                    new ArrayList<WifiAccessPointLocated2D>());
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                    fingerprintReadingsQualityScores, new ArrayList<WifiAccessPointLocated2D>());
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -730,28 +665,23 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                 sourceQualityScores, fingerprintReadingsQualityScores, fingerprint);
 
         // check default values
-        assertEquals(estimator.getThreshold(),
-                PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
+        assertEquals(PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD,
+                estimator.getThreshold(), 0.0);
+        assertEquals(3, estimator.getMinRequiredSources());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
         assertNull(estimator.getSources());
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -761,40 +691,37 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertFalse(estimator.isReady());
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingsQualityScores);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingsQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 2);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROSAC);
+        assertEquals(2, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROSAC, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    null, fingerprintReadingsQualityScores,
-                    fingerprint);
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(null,
+                    fingerprintReadingsQualityScores, fingerprint);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    sourceQualityScores, null,
-                    fingerprint);
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                    null, fingerprint);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    new double[1], fingerprintReadingsQualityScores, fingerprint);
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(new double[1],
+                    fingerprintReadingsQualityScores, fingerprint);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    sourceQualityScores, new double[1], fingerprint);
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                    new double[1], fingerprint);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -808,33 +735,27 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         assertNull(estimator);
 
         // constructor with quality scores, sources and fingerprint
-        estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                sourceQualityScores, fingerprintReadingsQualityScores, sources,
-                fingerprint);
+        estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                fingerprintReadingsQualityScores, sources, fingerprint);
 
         // check default values
-        assertEquals(estimator.getThreshold(),
-                PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertEquals(PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD,
+                estimator.getThreshold(), 0.0);
+        assertEquals(3, estimator.getMinRequiredSources());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -844,61 +765,56 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertFalse(estimator.isReady());
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingsQualityScores);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingsQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 2);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROSAC);
+        assertEquals(2, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROSAC, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    null, fingerprintReadingsQualityScores,
-                    sources, fingerprint);
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(null,
+                    fingerprintReadingsQualityScores, sources, fingerprint);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    sourceQualityScores, null,
-                    sources, fingerprint);
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                    null, sources, fingerprint);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    new double[1], fingerprintReadingsQualityScores, sources,
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(new double[1],
+                    fingerprintReadingsQualityScores, sources, fingerprint);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                    new double[1], sources, fingerprint);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                    fingerprintReadingsQualityScores, null, fingerprint);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                    fingerprintReadingsQualityScores, new ArrayList<WifiAccessPointLocated2D>(),
                     fingerprint);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    sourceQualityScores, new double[1], sources, fingerprint);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    sourceQualityScores, fingerprintReadingsQualityScores,
-                    null, fingerprint);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    sourceQualityScores, fingerprintReadingsQualityScores,
-                    new ArrayList<WifiAccessPointLocated2D>(), fingerprint);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    sourceQualityScores, fingerprintReadingsQualityScores, sources,
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                    fingerprintReadingsQualityScores, sources,
                     (RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>>) null);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -910,28 +826,23 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                 sourceQualityScores, fingerprintReadingsQualityScores, this);
 
         // check default values
-        assertEquals(estimator.getThreshold(),
-                PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
+        assertEquals(PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD,
+                estimator.getThreshold(), 0.0);
+        assertEquals(3, estimator.getMinRequiredSources());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
         assertNull(estimator.getSources());
         assertNull(estimator.getFingerprint());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -941,73 +852,64 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertFalse(estimator.isReady());
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingsQualityScores);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingsQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 2);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROSAC);
+        assertEquals(2, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROSAC, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
         estimator = null;
         try {
             estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    null, fingerprintReadingsQualityScores,
-                    this);
+                    null, fingerprintReadingsQualityScores, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    sourceQualityScores, null,
-                    this);
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                    null, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    new double[1], fingerprintReadingsQualityScores, this);
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(new double[1],
+                    fingerprintReadingsQualityScores, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    sourceQualityScores, new double[1], this);
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                    new double[1], this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
 
         // constructor with quality scores, sources and listener
-        estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                sourceQualityScores, fingerprintReadingsQualityScores, sources,
-                this);
+        estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                fingerprintReadingsQualityScores, sources, this);
 
         // check default values
-        assertEquals(estimator.getThreshold(),
-                PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
-        assertSame(estimator.getSources(), sources);
+        assertEquals(PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD,
+                estimator.getThreshold(), 0.0);
+        assertEquals(3, estimator.getMinRequiredSources());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
+        assertSame(sources, estimator.getSources());
         assertNull(estimator.getFingerprint());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -1017,91 +919,77 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertFalse(estimator.isReady());
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingsQualityScores);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingsQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 2);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROSAC);
+        assertEquals(2, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROSAC, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    null, fingerprintReadingsQualityScores,
-                    sources, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    sourceQualityScores, null,
-                    sources, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    new double[1],
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(null,
                     fingerprintReadingsQualityScores, sources, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    sourceQualityScores,
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                    null, sources, this);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(new double[1],
+                    fingerprintReadingsQualityScores, sources, this);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
                     new double[1], sources, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    sourceQualityScores,
-                    fingerprintReadingsQualityScores,
-                    (List<WifiAccessPointLocated2D>) null, this);
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                    fingerprintReadingsQualityScores, (List<WifiAccessPointLocated2D>) null, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    sourceQualityScores,
-                    fingerprintReadingsQualityScores,
-                    new ArrayList<WifiAccessPointLocated2D>(), this);
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                    fingerprintReadingsQualityScores, new ArrayList<WifiAccessPointLocated2D>(),
+                    this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
 
         // constructor with quality scores, fingerprint and listener
-        estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                sourceQualityScores,
+        estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
                 fingerprintReadingsQualityScores, fingerprint, this);
 
         // check default values
-        assertEquals(estimator.getThreshold(),
-                PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
+        assertEquals(PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD,
+                estimator.getThreshold(), 0.0);
+        assertEquals(3, estimator.getMinRequiredSources());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
         assertNull(estimator.getSources());
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -1111,35 +999,31 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertFalse(estimator.isReady());
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingsQualityScores);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingsQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 2);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROSAC);
+        assertEquals(2, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROSAC, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    null, fingerprintReadingsQualityScores,
-                    fingerprint, this);
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(null,
+                    fingerprintReadingsQualityScores, fingerprint, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    sourceQualityScores, null, fingerprint,
-                    this);
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                    null, fingerprint, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    new double[1], fingerprintReadingsQualityScores, fingerprint,
-                    this);
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(new double[1],
+                    fingerprintReadingsQualityScores, fingerprint, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -1150,8 +1034,8 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    sourceQualityScores, fingerprintReadingsQualityScores,
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                    fingerprintReadingsQualityScores,
                     (RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>>) null,
                     this);
             fail("IllegalArgumentException expected but not thrown");
@@ -1160,33 +1044,27 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         assertNull(estimator);
 
         // constructor with sources, fingerprint and listener
-        estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                sourceQualityScores, fingerprintReadingsQualityScores, sources,
-                fingerprint, this);
+        estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                fingerprintReadingsQualityScores, sources, fingerprint, this);
 
         // check default values
-        assertEquals(estimator.getThreshold(),
-                PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertEquals(PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD,
+                estimator.getThreshold(), 0.0);
+        assertEquals(3, estimator.getMinRequiredSources());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -1196,64 +1074,56 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertFalse(estimator.isReady());
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingsQualityScores);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingsQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 2);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROSAC);
+        assertEquals(2, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROSAC, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    null, fingerprintReadingsQualityScores,
-                    sources, fingerprint, this);
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(null,
+                    fingerprintReadingsQualityScores, sources, fingerprint, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    sourceQualityScores, null, sources,
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                    null, sources, fingerprint, this);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(new double[1],
+                    fingerprintReadingsQualityScores, sources, fingerprint, this);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                    new double[1], sources, fingerprint, this);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                    fingerprintReadingsQualityScores, null, fingerprint, this);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                    fingerprintReadingsQualityScores, new ArrayList<WifiAccessPointLocated2D>(),
                     fingerprint, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    new double[1], fingerprintReadingsQualityScores, sources,
-                    fingerprint, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    sourceQualityScores, new double[1], sources, fingerprint,
-                    this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    sourceQualityScores, fingerprintReadingsQualityScores,
-                    null, fingerprint, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    sourceQualityScores, fingerprintReadingsQualityScores,
-                    new ArrayList<WifiAccessPointLocated2D>(), fingerprint,
-                    this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(
-                    sourceQualityScores, fingerprintReadingsQualityScores, sources,
-                    null, this);
+            estimator = new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                    fingerprintReadingsQualityScores, sources, null, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -1266,14 +1136,14 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                 new PROSACRobustRangingAndRssiPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.getThreshold(),
-                PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD, 0.0);
+        assertEquals(PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD,
+                estimator.getThreshold(), 0.0);
 
         // set new value
         estimator.setThreshold(1.0);
 
         // check
-        assertEquals(estimator.getThreshold(), 1.0, 0.0);
+        assertEquals(1.0, estimator.getThreshold(), 0.0);
 
         // force IllegalArgumentException
         try {
@@ -1324,8 +1194,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         // set new value
         final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            sources.add(new WifiAccessPointLocated2D("id1", FREQUENCY,
-                    new InhomogeneousPoint2D()));
+            sources.add(new WifiAccessPointLocated2D("id1", FREQUENCY, new InhomogeneousPoint2D()));
         }
 
         estimator.setSources(sources);
@@ -1360,7 +1229,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         estimator.setFingerprint(fingerprint);
 
         // check
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // force IllegalArgumentException
         try {
@@ -1382,7 +1251,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         estimator.setListener(this);
 
         // check
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
     }
 
     @Test
@@ -1398,7 +1267,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         solver.setInitialPosition(p);
 
         // check
-        assertSame(solver.getInitialPosition(), p);
+        assertSame(p, solver.getInitialPosition());
     }
 
     @Test
@@ -1422,16 +1291,14 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                 new PROSACRobustRangingAndRssiPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
 
         // set new value
         estimator.setFallbackDistanceStandardDeviation(1.0);
 
         // check
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                1.0, 0.0);
+        assertEquals(1.0, estimator.getFallbackDistanceStandardDeviation(), 0.0);
     }
 
     @Test
@@ -1440,14 +1307,14 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                 new PROSACRobustRangingAndRssiPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
 
         // set new value
         estimator.setProgressDelta(0.5f);
 
         // check
-        assertEquals(estimator.getProgressDelta(), 0.5f, 0.0);
+        assertEquals(0.5f, estimator.getProgressDelta(), 0.0);
 
         // force IllegalArgumentException
         try {
@@ -1463,8 +1330,14 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                 new PROSACRobustRangingAndRssiPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE,
+                estimator.getConfidence(), 0.0);
+
+        // set new value
+        estimator.setConfidence(0.8);
+
+        // check
+        assertEquals(0.8, estimator.getConfidence(), 0.0);
 
         // set new value
         try {
@@ -1485,14 +1358,13 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                 new PROSACRobustRangingAndRssiPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
 
         // set new value
         estimator.setMaxIterations(100);
 
         // check
-        assertEquals(estimator.getMaxIterations(), 100);
+        assertEquals(100, estimator.getMaxIterations());
 
         // force IllegalArgumentException
         try {
@@ -1618,7 +1490,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         estimator.setFingerprintReadingsQualityScores(qualityScores);
 
         // check
-        assertSame(estimator.getFingerprintReadingsQualityScores(), qualityScores);
+        assertSame(qualityScores, estimator.getFingerprintReadingsQualityScores());
 
         // force IllegalArgumentException
         try {
@@ -1654,13 +1526,13 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                 spy(new PROSACRobustRangingAndRssiPositionEstimator2D());
 
         // check default value
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
+        assertEquals(3, estimator.getPreliminarySubsetSize());
 
         // set new value
         estimator.setPreliminarySubsetSize(4);
 
         // check
-        assertEquals(estimator.getPreliminarySubsetSize(), 4);
+        assertEquals(4, estimator.getPreliminarySubsetSize());
         verify(estimator, times(1))
                 .buildPositionsDistancesDistanceStandardDeviationsAndQualityScores();
 
@@ -1711,12 +1583,9 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -1740,16 +1609,12 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2 + errorRanging2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
 
                 readings.add(new RangingAndRssiReading<>(accessPoint,
                         Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                        rssi + errorRssi1 + errorRssi2,
-                        RANGING_STD,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                        rssi + errorRssi1 + errorRssi2, RANGING_STD, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
             final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
@@ -1757,8 +1622,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
 
             final PROSACRobustRangingAndRssiPositionEstimator2D estimator =
                     new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
-                            fingerprintReadingsQualityScores, sources, fingerprint,
-                            this);
+                            fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
 
             reset();
@@ -1770,20 +1634,20 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -1870,19 +1734,16 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -1893,8 +1754,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                     errorRanging1 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
                 for (int j = 0; j < NUM_READINGS; j++) {
 
                     if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
@@ -1912,8 +1772,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
 
                     readings.add(new RangingAndRssiReading<>(accessPoint,
                             Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                            rssi + errorRssi1 + errorRssi2,
-                            RANGING_STD,
+                            rssi + errorRssi1 + errorRssi2, RANGING_STD,
                             Math.sqrt(RX_POWER_VARIANCE)));
                 }
             }
@@ -1923,8 +1782,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
 
             final PROSACRobustRangingAndRssiPositionEstimator2D estimator =
                     new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
-                            fingerprintReadingsQualityScores, sources, fingerprint,
-                            this);
+                            fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
 
             reset();
@@ -1936,20 +1794,20 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -2039,20 +1897,17 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -2070,15 +1925,12 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
 
                 inlierError = inlierErrorRandomizer.nextDouble();
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2 + errorRanging2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
 
                 readings.add(new RangingAndRssiReading<>(accessPoint,
                         Math.max(0.0, distance + errorRanging1 + errorRanging2 + inlierError),
-                        rssi + errorRssi1 + errorRssi2 + inlierError,
-                        RANGING_STD,
+                        rssi + errorRssi1 + errorRssi2 + inlierError, RANGING_STD,
                         Math.sqrt(RX_POWER_VARIANCE)));
             }
 
@@ -2086,9 +1938,8 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                     new RangingAndRssiFingerprint<>(readings);
 
             final PROSACRobustRangingAndRssiPositionEstimator2D estimator =
-                    new PROSACRobustRangingAndRssiPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores,
-                            sources, fingerprint, this);
+                    new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                            fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
 
             reset();
@@ -2100,20 +1951,20 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -2162,9 +2013,8 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateMultipleReadingsPerSourceWithInlierError()
-            throws LockedException, RobustEstimatorException,
-            NotReadyException, NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateMultipleReadingsPerSourceWithInlierError() throws LockedException,
+            RobustEstimatorException, NotReadyException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -2204,19 +2054,16 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -2227,8 +2074,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                     errorRanging1 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
                 for (int j = 0; j < NUM_READINGS; j++) {
 
                     if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
@@ -2248,8 +2094,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
 
                     readings.add(new RangingAndRssiReading<>(accessPoint,
                             Math.max(0.0, distance + errorRanging1 + errorRanging2 + inlierError),
-                            rssi + errorRssi1 + errorRssi2 + inlierError,
-                            RANGING_STD,
+                            rssi + errorRssi1 + errorRssi2 + inlierError, RANGING_STD,
                             Math.sqrt(RX_POWER_VARIANCE)));
                 }
             }
@@ -2258,9 +2103,8 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                     new RangingAndRssiFingerprint<>(readings);
 
             final PROSACRobustRangingAndRssiPositionEstimator2D estimator =
-                    new PROSACRobustRangingAndRssiPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores,
-                            sources, fingerprint, this);
+                    new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                            fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
 
             reset();
@@ -2272,13 +2116,13 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
@@ -2334,9 +2178,8 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateLinearSolverUsedHomogeneousAndPreliminaryRefined()
-            throws LockedException, RobustEstimatorException,
-            NotReadyException, NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateLinearSolverUsedHomogeneousAndPreliminaryRefined() throws LockedException,
+            RobustEstimatorException, NotReadyException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -2373,12 +2216,9 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -2402,15 +2242,12 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2 + errorRanging2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
 
                 readings.add(new RangingAndRssiReading<>(accessPoint,
                         Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                        rssi + errorRssi1 + errorRssi2,
-                        RANGING_STD,
+                        rssi + errorRssi1 + errorRssi2, RANGING_STD,
                         Math.sqrt(RX_POWER_VARIANCE)));
             }
 
@@ -2419,8 +2256,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
 
             final PROSACRobustRangingAndRssiPositionEstimator2D estimator =
                     new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
-                            fingerprintReadingsQualityScores, sources, fingerprint,
-                            this);
+                            fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setLinearSolverUsed(true);
             estimator.setHomogeneousLinearSolverUsed(true);
@@ -2435,20 +2271,20 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -2488,9 +2324,8 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateLinearSolverUsedInhomogeneousAndPreliminaryRefined()
-            throws LockedException, RobustEstimatorException,
-            NotReadyException, NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateLinearSolverUsedInhomogeneousAndPreliminaryRefined() throws LockedException,
+            RobustEstimatorException, NotReadyException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -2527,20 +2362,17 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -2556,25 +2388,20 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2 + errorRanging2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
 
                 readings.add(new RangingAndRssiReading<>(accessPoint,
                         Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                        rssi + errorRssi1 + errorRssi2,
-                        RANGING_STD,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                        rssi + errorRssi1 + errorRssi2, RANGING_STD, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
             final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
                     new RangingAndRssiFingerprint<>(readings);
 
             final PROSACRobustRangingAndRssiPositionEstimator2D estimator =
-                    new PROSACRobustRangingAndRssiPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores,
-                            sources, fingerprint, this);
+                    new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                            fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setLinearSolverUsed(true);
             estimator.setHomogeneousLinearSolverUsed(false);
@@ -2589,20 +2416,20 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -2642,8 +2469,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimatePreliminaryNotRefined()
-            throws LockedException, RobustEstimatorException,
+    public void testEstimatePreliminaryNotRefined() throws LockedException, RobustEstimatorException,
             NotReadyException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
@@ -2681,20 +2507,17 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -2710,15 +2533,12 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2 + errorRanging2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
 
                 readings.add(new RangingAndRssiReading<>(accessPoint,
                         Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                        rssi + errorRssi1 + errorRssi2,
-                        RANGING_STD,
+                        rssi + errorRssi1 + errorRssi2, RANGING_STD,
                         Math.sqrt(RX_POWER_VARIANCE)));
             }
 
@@ -2727,8 +2547,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
 
             final PROSACRobustRangingAndRssiPositionEstimator2D estimator =
                     new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
-                            fingerprintReadingsQualityScores, sources, fingerprint,
-                            this);
+                            fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setLinearSolverUsed(true);
             estimator.setPreliminarySolutionRefined(false);
@@ -2742,20 +2561,20 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -2795,8 +2614,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateLinearDisabled()
-            throws LockedException, RobustEstimatorException,
+    public void testEstimateLinearDisabled() throws LockedException, RobustEstimatorException,
             NotReadyException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
@@ -2834,20 +2652,17 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -2863,25 +2678,20 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2 + errorRanging2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
 
                 readings.add(new RangingAndRssiReading<>(accessPoint,
                         Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                        rssi + errorRssi1 + errorRssi2,
-                        RANGING_STD,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                        rssi + errorRssi1 + errorRssi2, RANGING_STD, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
             final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
                     new RangingAndRssiFingerprint<>(readings);
 
             final PROSACRobustRangingAndRssiPositionEstimator2D estimator =
-                    new PROSACRobustRangingAndRssiPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores,
-                            sources, fingerprint, this);
+                    new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                            fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setLinearSolverUsed(false);
             estimator.setPreliminarySolutionRefined(true);
@@ -2895,20 +2705,20 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -2948,9 +2758,8 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateLinearDisabledAndNotPreliminaryRefined()
-            throws LockedException, RobustEstimatorException,
-            NotReadyException, NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateLinearDisabledAndNotPreliminaryRefined() throws LockedException,
+            RobustEstimatorException, NotReadyException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -2987,20 +2796,17 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -3016,25 +2822,20 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2 + errorRanging2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
 
                 readings.add(new RangingAndRssiReading<>(accessPoint,
                         Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                        rssi + errorRssi1 + errorRssi2,
-                        RANGING_STD,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                        rssi + errorRssi1 + errorRssi2, RANGING_STD, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
             final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
                     new RangingAndRssiFingerprint<>(readings);
 
             final PROSACRobustRangingAndRssiPositionEstimator2D estimator =
-                    new PROSACRobustRangingAndRssiPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores,
-                            sources, fingerprint, this);
+                    new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                            fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setLinearSolverUsed(false);
             estimator.setPreliminarySolutionRefined(false);
@@ -3048,20 +2849,20 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -3101,9 +2902,8 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateLinearDisabledWithInitialPosition()
-            throws LockedException, RobustEstimatorException,
-            NotReadyException, NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateLinearDisabledWithInitialPosition() throws LockedException,
+            RobustEstimatorException, NotReadyException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -3140,20 +2940,17 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -3169,25 +2966,20 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2 + errorRanging2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
 
                 readings.add(new RangingAndRssiReading<>(accessPoint,
                         Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                        rssi + errorRssi1 + errorRssi2,
-                        RANGING_STD,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                        rssi + errorRssi1 + errorRssi2, RANGING_STD, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
             final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
                     new RangingAndRssiFingerprint<>(readings);
 
             final PROSACRobustRangingAndRssiPositionEstimator2D estimator =
-                    new PROSACRobustRangingAndRssiPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores,
-                            sources, fingerprint, this);
+                    new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
+                            fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setLinearSolverUsed(false);
             estimator.setPreliminarySolutionRefined(true);
@@ -3202,20 +2994,20 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -3293,20 +3085,17 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -3322,16 +3111,12 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2 + errorRanging2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
 
                 readings.add(new RangingAndRssiReading<>(accessPoint,
                         Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                        rssi + errorRssi1 + errorRssi2,
-                        RANGING_STD,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                        rssi + errorRssi1 + errorRssi2, RANGING_STD, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
             final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
@@ -3339,8 +3124,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
 
             final PROSACRobustRangingAndRssiPositionEstimator2D estimator =
                     new PROSACRobustRangingAndRssiPositionEstimator2D(sourceQualityScores,
-                            fingerprintReadingsQualityScores, sources, fingerprint,
-                            this);
+                            fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setPreliminarySubsetSize(4);
 
@@ -3353,13 +3137,13 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
@@ -3415,31 +3199,27 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
     }
 
     @Override
-    public void onEstimateStart(
-            final RobustRangingAndRssiPositionEstimator<Point2D> estimator) {
+    public void onEstimateStart(final RobustRangingAndRssiPositionEstimator<Point2D> estimator) {
         estimateStart++;
         checkLocked((PROSACRobustRangingAndRssiPositionEstimator2D) estimator);
     }
 
     @Override
-    public void onEstimateEnd(
-            final RobustRangingAndRssiPositionEstimator<Point2D> estimator) {
+    public void onEstimateEnd(final RobustRangingAndRssiPositionEstimator<Point2D> estimator) {
         estimateEnd++;
         checkLocked((PROSACRobustRangingAndRssiPositionEstimator2D) estimator);
     }
 
     @Override
-    public void onEstimateNextIteration(
-            final RobustRangingAndRssiPositionEstimator<Point2D> estimator,
-            final int iteration) {
+    public void onEstimateNextIteration(final RobustRangingAndRssiPositionEstimator<Point2D> estimator,
+                                        final int iteration) {
         estimateNextIteration++;
         checkLocked((PROSACRobustRangingAndRssiPositionEstimator2D) estimator);
     }
 
     @Override
-    public void onEstimateProgressChange(
-            final RobustRangingAndRssiPositionEstimator<Point2D> estimator,
-            final float progress) {
+    public void onEstimateProgressChange(final RobustRangingAndRssiPositionEstimator<Point2D> estimator,
+                                         final float progress) {
         estimateProgressChange++;
         checkLocked((PROSACRobustRangingAndRssiPositionEstimator2D) estimator);
     }
@@ -3455,10 +3235,8 @@ public class PROSACRobustRangingAndRssiPositionEstimator2DTest implements
         // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the received Gain
         // Pr = Pte*c^2/((4*pi*f)^2 * d^2)
         final double k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI *
-                        PROSACRobustRangingAndRssiPositionEstimator2DTest.FREQUENCY),
-                pathLossExponent);
-        return equivalentTransmittedPower * k /
-                Math.pow(distance, pathLossExponent);
+                        PROSACRobustRangingAndRssiPositionEstimator2DTest.FREQUENCY), pathLossExponent);
+        return equivalentTransmittedPower * k / Math.pow(distance, pathLossExponent);
     }
 
     private void checkLocked(final PROSACRobustRangingAndRssiPositionEstimator2D estimator) {

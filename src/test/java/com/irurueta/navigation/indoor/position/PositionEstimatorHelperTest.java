@@ -95,17 +95,16 @@ public class PositionEstimatorHelperTest {
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 readings.add(new RssiReading<>(accessPoint, rssi));
             }
@@ -115,8 +114,8 @@ public class PositionEstimatorHelperTest {
 
             final List<Point2D> positions = new ArrayList<>();
             final List<Double> distances = new ArrayList<>();
-            PositionEstimatorHelper.buildPositionsAndDistances(sources, fingerprint,
-                    positions, distances);
+            PositionEstimatorHelper.buildPositionsAndDistances(sources, fingerprint, positions,
+                    distances);
 
             // check that positions and distances are not modified if no sources or
             // fingerprint are provided
@@ -124,8 +123,8 @@ public class PositionEstimatorHelperTest {
                     null, null, positions, distances);
 
             // check
-            assertEquals(positions.size(), numSources);
-            assertEquals(distances.size(), numSources);
+            assertEquals(numSources, positions.size());
+            assertEquals(numSources, distances.size());
 
             for (int i = 0; i < numSources; i++) {
                 assertEquals(sources.get(i).getPosition(), positions.get(i));
@@ -158,9 +157,8 @@ public class PositionEstimatorHelperTest {
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -175,8 +173,7 @@ public class PositionEstimatorHelperTest {
 
             final List<Point2D> positions = new ArrayList<>();
             final List<Double> distances = new ArrayList<>();
-            PositionEstimatorHelper.buildPositionsAndDistances(sources, fingerprint,
-                    positions, distances);
+            PositionEstimatorHelper.buildPositionsAndDistances(sources, fingerprint, positions, distances);
 
             // check that positions and distances are not modified if no sources or
             // fingerprint are provided
@@ -184,13 +181,12 @@ public class PositionEstimatorHelperTest {
                     null, null, positions, distances);
 
             // check
-            assertEquals(positions.size(), numSources);
-            assertEquals(distances.size(), numSources);
+            assertEquals(numSources, positions.size());
+            assertEquals(numSources, distances.size());
 
             for (int i = 0; i < numSources; i++) {
                 assertEquals(sources.get(i).getPosition(), positions.get(i));
-                assertEquals(distances.get(i), readings.get(i).getDistance(),
-                        0.0);
+                assertEquals(distances.get(i), readings.get(i).getDistance(), 0.0);
             }
         }
     }
@@ -220,9 +216,8 @@ public class PositionEstimatorHelperTest {
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -240,8 +235,7 @@ public class PositionEstimatorHelperTest {
 
             final List<Point2D> positions = new ArrayList<>();
             final List<Double> distances = new ArrayList<>();
-            PositionEstimatorHelper.buildPositionsAndDistances(sources, fingerprint,
-                    positions, distances);
+            PositionEstimatorHelper.buildPositionsAndDistances(sources, fingerprint, positions, distances);
 
             // check that positions and distances are not modified if no sources or
             // fingerprint are provided
@@ -249,8 +243,8 @@ public class PositionEstimatorHelperTest {
                     null, null, positions, distances);
 
             // check
-            assertEquals(positions.size(), 2 * numSources);
-            assertEquals(distances.size(), 2 * numSources);
+            assertEquals(2 * numSources, positions.size());
+            assertEquals(2 * numSources, distances.size());
 
             for (int i = 0, j = 0; i < numSources; i++, j += 2) {
                 assertEquals(sources.get(i).getPosition(), positions.get(j));
@@ -287,16 +281,15 @@ public class PositionEstimatorHelperTest {
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointLocated2D locatedAccessPoint =
-                        new WifiAccessPointLocated2D(bssid, FREQUENCY,
-                                accessPointPosition);
+                        new WifiAccessPointLocated2D(bssid, FREQUENCY, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 readings.add(new RssiReading<>(accessPoint, rssi));
             }
@@ -306,8 +299,7 @@ public class PositionEstimatorHelperTest {
 
             final List<Point2D> positions = new ArrayList<>();
             final List<Double> distances = new ArrayList<>();
-            PositionEstimatorHelper.buildPositionsAndDistances(sources, fingerprint,
-                    positions, distances);
+            PositionEstimatorHelper.buildPositionsAndDistances(sources, fingerprint, positions, distances);
 
             // check
             assertTrue(positions.isEmpty());
@@ -340,23 +332,19 @@ public class PositionEstimatorHelperTest {
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
-                readings.add(new RssiReading<>(accessPoint, rssi,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                readings.add(new RssiReading<>(accessPoint, rssi, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
             final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
@@ -367,20 +355,18 @@ public class PositionEstimatorHelperTest {
             final List<Double> distanceStandardDeviations = new ArrayList<>();
             PositionEstimatorHelper.buildPositionsDistancesAndDistanceStandardDeviations(
                     sources, fingerprint, true,
-                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances,
-                    distanceStandardDeviations);
+                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances, distanceStandardDeviations);
 
             // check that positions, distances and distance standard deviations are not
             // modified if no sources or fingerprint are provided
             PositionEstimatorHelper.buildPositionsDistancesAndDistanceStandardDeviations(
                     null, null, true,
-                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances,
-                    distanceStandardDeviations);
+                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances, distanceStandardDeviations);
 
             // check
-            assertEquals(positions.size(), numSources);
-            assertEquals(distances.size(), numSources);
-            assertEquals(distanceStandardDeviations.size(), numSources);
+            assertEquals(numSources, positions.size());
+            assertEquals(numSources, distances.size());
+            assertEquals(numSources, distanceStandardDeviations.size());
 
             for (int i = 0; i < numSources; i++) {
                 assertEquals(sources.get(i).getPosition(), positions.get(i));
@@ -414,12 +400,9 @@ public class PositionEstimatorHelperTest {
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -438,20 +421,18 @@ public class PositionEstimatorHelperTest {
             final List<Double> distanceStandardDeviations = new ArrayList<>();
             PositionEstimatorHelper.buildPositionsDistancesAndDistanceStandardDeviations(
                     sources, fingerprint, true,
-                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances,
-                    distanceStandardDeviations);
+                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances, distanceStandardDeviations);
 
             // check that positions, distances and distance standard deviations are not
             // modified if no sources or fingerprint are provided
             PositionEstimatorHelper.buildPositionsDistancesAndDistanceStandardDeviations(
                     null, null, true,
-                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances,
-                    distanceStandardDeviations);
+                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances, distanceStandardDeviations);
 
             // check
-            assertEquals(positions.size(), numSources);
-            assertEquals(distances.size(), numSources);
-            assertEquals(distanceStandardDeviations.size(), numSources);
+            assertEquals(numSources, positions.size());
+            assertEquals(numSources, distances.size());
+            assertEquals(numSources, distanceStandardDeviations.size());
 
             for (int i = 0; i < numSources; i++) {
                 assertEquals(sources.get(i).getPosition(), positions.get(i));
@@ -486,24 +467,20 @@ public class PositionEstimatorHelperTest {
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 readings.add(new RangingAndRssiReading<>(accessPoint, distance, rssi,
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                        FALLBACK_DISTANCE_STANDARD_DEVIATION, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
             final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
@@ -514,20 +491,18 @@ public class PositionEstimatorHelperTest {
             final List<Double> distanceStandardDeviations = new ArrayList<>();
             PositionEstimatorHelper.buildPositionsDistancesAndDistanceStandardDeviations(
                     sources, fingerprint, true,
-                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances,
-                    distanceStandardDeviations);
+                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances, distanceStandardDeviations);
 
             // check that positions, distances and distance standard deviations are not
             // modified if no sources or fingerprint are provided
             PositionEstimatorHelper.buildPositionsDistancesAndDistanceStandardDeviations(
                     null, null, true,
-                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances,
-                    distanceStandardDeviations);
+                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances, distanceStandardDeviations);
 
             // check
-            assertEquals(positions.size(), 2 * numSources);
-            assertEquals(distances.size(), 2 * numSources);
-            assertEquals(distanceStandardDeviations.size(), 2 * numSources);
+            assertEquals(2 * numSources, positions.size());
+            assertEquals(2 * numSources, distances.size());
+            assertEquals(2 * numSources, distanceStandardDeviations.size());
 
             for (int i = 0, j = 0; i < numSources; i++, j += 2) {
                 assertEquals(sources.get(i).getPosition(), positions.get(j));
@@ -567,8 +542,7 @@ public class PositionEstimatorHelperTest {
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointLocated2D locatedAccessPoint =
-                        new WifiAccessPointLocated2D(bssid,
-                                FREQUENCY, accessPointPosition);
+                        new WifiAccessPointLocated2D(bssid, FREQUENCY, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -578,8 +552,7 @@ public class PositionEstimatorHelperTest {
                 final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
                         distance, pathLossExponent));
 
-                readings.add(new RssiReading<>(accessPoint, rssi,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                readings.add(new RssiReading<>(accessPoint, rssi, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
             final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
@@ -590,8 +563,7 @@ public class PositionEstimatorHelperTest {
             final List<Double> distanceStandardDeviations = new ArrayList<>();
             PositionEstimatorHelper.buildPositionsDistancesAndDistanceStandardDeviations(
                     sources, fingerprint, true,
-                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances,
-                    distanceStandardDeviations);
+                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances, distanceStandardDeviations);
 
             // check
             assertTrue(positions.isEmpty());
@@ -624,23 +596,19 @@ public class PositionEstimatorHelperTest {
             final String bssid = String.valueOf(i);
 
             final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                    new WifiAccessPointWithPowerAndLocated2D(bssid,
-                            FREQUENCY, transmittedPowerdBm,
-                            Math.sqrt(TX_POWER_VARIANCE),
-                            pathLossExponent,
-                            Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                            accessPointPosition);
+                    new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                            Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                            Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
             sources.add(locatedAccessPoint);
 
             final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
             final double distance = position.distanceTo(accessPointPosition);
 
-            final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                    distance, pathLossExponent));
+            final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                    pathLossExponent));
 
-            readings.add(new RssiReading<>(accessPoint, rssi,
-                    Math.sqrt(RX_POWER_VARIANCE)));
+            readings.add(new RssiReading<>(accessPoint, rssi, Math.sqrt(RX_POWER_VARIANCE)));
         }
 
         final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
@@ -686,23 +654,20 @@ public class PositionEstimatorHelperTest {
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition, positionCovariance);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition,
+                                positionCovariance);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
-                readings.add(new RssiReading<>(accessPoint, rssi,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                readings.add(new RssiReading<>(accessPoint, rssi, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
             final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
@@ -713,20 +678,18 @@ public class PositionEstimatorHelperTest {
             final List<Double> distanceStandardDeviations = new ArrayList<>();
             PositionEstimatorHelper.buildPositionsDistancesAndDistanceStandardDeviations(
                     sources, fingerprint, true,
-                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances,
-                    distanceStandardDeviations);
+                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances, distanceStandardDeviations);
 
             // check that positions, distances and distance standard deviations are not
             // modified if no sources or fingerprint are provided
             PositionEstimatorHelper.buildPositionsDistancesAndDistanceStandardDeviations(
                     null, null, true,
-                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances,
-                    distanceStandardDeviations);
+                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances, distanceStandardDeviations);
 
             // check
-            assertEquals(positions.size(), numSources);
-            assertEquals(distances.size(), numSources);
-            assertEquals(distanceStandardDeviations.size(), numSources);
+            assertEquals(numSources, positions.size());
+            assertEquals(numSources, distances.size());
+            assertEquals(numSources, distanceStandardDeviations.size());
 
             for (int i = 0; i < numSources; i++) {
                 assertEquals(sources.get(i).getPosition(), positions.get(i));
@@ -762,12 +725,10 @@ public class PositionEstimatorHelperTest {
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition, positionCovariance);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition,
+                                positionCovariance);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -786,20 +747,18 @@ public class PositionEstimatorHelperTest {
             final List<Double> distanceStandardDeviations = new ArrayList<>();
             PositionEstimatorHelper.buildPositionsDistancesAndDistanceStandardDeviations(
                     sources, fingerprint, true,
-                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances,
-                    distanceStandardDeviations);
+                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances, distanceStandardDeviations);
 
             // check that positions, distances and distance standard deviations are not
             // modified if no sources or fingerprint are provided
             PositionEstimatorHelper.buildPositionsDistancesAndDistanceStandardDeviations(
                     null, null, true,
-                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances,
-                    distanceStandardDeviations);
+                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances, distanceStandardDeviations);
 
             // check
-            assertEquals(positions.size(), numSources);
-            assertEquals(distances.size(), numSources);
-            assertEquals(distanceStandardDeviations.size(), numSources);
+            assertEquals(numSources, positions.size());
+            assertEquals(numSources, distances.size());
+            assertEquals(numSources, distanceStandardDeviations.size());
 
             for (int i = 0; i < numSources; i++) {
                 assertEquals(sources.get(i).getPosition(), positions.get(i));
@@ -834,17 +793,16 @@ public class PositionEstimatorHelperTest {
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 readings.add(new RssiReading<>(accessPoint, rssi));
             }
@@ -857,26 +815,24 @@ public class PositionEstimatorHelperTest {
             final List<Double> distanceStandardDeviations = new ArrayList<>();
             PositionEstimatorHelper.buildPositionsDistancesAndDistanceStandardDeviations(
                     sources, fingerprint, true,
-                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances,
-                    distanceStandardDeviations);
+                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances, distanceStandardDeviations);
 
             // check that positions, distances and distance standard deviations are not
             // modified if no sources or fingerprint are provided
             PositionEstimatorHelper.buildPositionsDistancesAndDistanceStandardDeviations(
                     null, null, true,
-                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances,
-                    distanceStandardDeviations);
+                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances, distanceStandardDeviations);
 
             // check
-            assertEquals(positions.size(), numSources);
-            assertEquals(distances.size(), numSources);
-            assertEquals(distanceStandardDeviations.size(), numSources);
+            assertEquals(numSources, positions.size());
+            assertEquals(numSources, distances.size());
+            assertEquals(numSources, distanceStandardDeviations.size());
 
             for (int i = 0; i < numSources; i++) {
                 assertEquals(sources.get(i).getPosition(), positions.get(i));
                 assertTrue(distances.get(i) > 0.0);
-                assertEquals(distanceStandardDeviations.get(i),
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
+                assertEquals(FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                        distanceStandardDeviations.get(i), 0.0);
             }
         }
     }
@@ -905,9 +861,8 @@ public class PositionEstimatorHelperTest {
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -925,26 +880,24 @@ public class PositionEstimatorHelperTest {
             final List<Double> distanceStandardDeviations = new ArrayList<>();
             PositionEstimatorHelper.buildPositionsDistancesAndDistanceStandardDeviations(
                     sources, fingerprint, true,
-                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances,
-                    distanceStandardDeviations);
+                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances, distanceStandardDeviations);
 
             // check that positions, distances and distance standard deviations are not
             // modified if no sources or fingerprint are provided
             PositionEstimatorHelper.buildPositionsDistancesAndDistanceStandardDeviations(
                     null, null, true,
-                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances,
-                    distanceStandardDeviations);
+                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances, distanceStandardDeviations);
 
             // check
-            assertEquals(positions.size(), numSources);
-            assertEquals(distances.size(), numSources);
-            assertEquals(distanceStandardDeviations.size(), numSources);
+            assertEquals(numSources, positions.size());
+            assertEquals(numSources, distances.size());
+            assertEquals(numSources, distanceStandardDeviations.size());
 
             for (int i = 0; i < numSources; i++) {
                 assertEquals(sources.get(i).getPosition(), positions.get(i));
                 assertEquals(distances.get(i), readings.get(i).getDistance(), 0.0);
-                assertEquals(distanceStandardDeviations.get(i),
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
+                assertEquals(FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                        distanceStandardDeviations.get(i), 0.0);
             }
         }
     }
@@ -976,23 +929,20 @@ public class PositionEstimatorHelperTest {
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition, positionCovariance);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition,
+                                positionCovariance);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
-                readings.add(new RssiReading<>(accessPoint, rssi,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                readings.add(new RssiReading<>(accessPoint, rssi, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
             final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
@@ -1003,20 +953,18 @@ public class PositionEstimatorHelperTest {
             final List<Double> distanceStandardDeviations = new ArrayList<>();
             PositionEstimatorHelper.buildPositionsDistancesAndDistanceStandardDeviations(
                     sources, fingerprint, true,
-                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances,
-                    distanceStandardDeviations);
+                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances, distanceStandardDeviations);
 
             // check that positions, distances and distance standard deviations are not
             // modified if no sources or fingerprint are provided
             PositionEstimatorHelper.buildPositionsDistancesAndDistanceStandardDeviations(
                     null, null, true,
-                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances,
-                    distanceStandardDeviations);
+                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances, distanceStandardDeviations);
 
             // check
-            assertEquals(positions.size(), numSources);
-            assertEquals(distances.size(), numSources);
-            assertEquals(distanceStandardDeviations.size(), numSources);
+            assertEquals(numSources, positions.size());
+            assertEquals(numSources, distances.size());
+            assertEquals(numSources, distanceStandardDeviations.size());
 
             for (int i = 0; i < numSources; i++) {
                 assertEquals(sources.get(i).getPosition(), positions.get(i));
@@ -1052,12 +1000,9 @@ public class PositionEstimatorHelperTest {
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
                 sourcesQualityScores[i] = randomizer.nextDouble();
 
@@ -1065,16 +1010,14 @@ public class PositionEstimatorHelperTest {
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
-                readings.add(new RssiReading<>(accessPoint, rssi,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                readings.add(new RssiReading<>(accessPoint, rssi, Math.sqrt(RX_POWER_VARIANCE)));
                 readings.add(new RangingReading<>(accessPoint, distance,
                         FALLBACK_DISTANCE_STANDARD_DEVIATION));
-                readings.add(new RangingAndRssiReading<>(accessPoint,
-                        distance, rssi, FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                readings.add(new RangingAndRssiReading<>(accessPoint, distance, rssi,
+                        FALLBACK_DISTANCE_STANDARD_DEVIATION, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
             final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
@@ -1086,9 +1029,8 @@ public class PositionEstimatorHelperTest {
             final List<Double> distanceQualityScores = new ArrayList<>();
             PositionEstimatorHelper.buildPositionsDistancesDistanceStandardDeviationsAndQualityScores(
                     sources, fingerprint, sourcesQualityScores, null,
-                    true,
-                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances,
-                    distanceStandardDeviations, distanceQualityScores);
+                    true, FALLBACK_DISTANCE_STANDARD_DEVIATION, positions,
+                    distances, distanceStandardDeviations, distanceQualityScores);
 
             // check that positions, distances and distance standard deviations are not
             // modified if no sources or fingerprint are provided
@@ -1099,10 +1041,10 @@ public class PositionEstimatorHelperTest {
                     distanceStandardDeviations, distanceQualityScores);
 
             // check
-            assertEquals(positions.size(), 4 * numSources);
-            assertEquals(distances.size(), 4 * numSources);
-            assertEquals(distanceStandardDeviations.size(), 4 * numSources);
-            assertEquals(distanceQualityScores.size(), 4 * numSources);
+            assertEquals(4 * numSources, positions.size());
+            assertEquals(4 * numSources, distances.size());
+            assertEquals(4 * numSources, distanceStandardDeviations.size());
+            assertEquals(4 * numSources, distanceQualityScores.size());
 
             for (int i = 0, j = 0; i < numSources; i++, j += 4) {
                 assertEquals(sources.get(i).getPosition(), positions.get(j));
@@ -1162,30 +1104,25 @@ public class PositionEstimatorHelperTest {
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
-                readings.add(new RssiReading<>(accessPoint, rssi,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                readings.add(new RssiReading<>(accessPoint, rssi, Math.sqrt(RX_POWER_VARIANCE)));
                 readingsQualityScores[j] = randomizer.nextDouble();
                 readings.add(new RangingReading<>(accessPoint, distance,
                         FALLBACK_DISTANCE_STANDARD_DEVIATION));
                 readingsQualityScores[j + 1] = randomizer.nextDouble();
-                readings.add(new RangingAndRssiReading<>(accessPoint,
-                        distance, rssi, FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                readings.add(new RangingAndRssiReading<>(accessPoint, distance, rssi,
+                        FALLBACK_DISTANCE_STANDARD_DEVIATION, Math.sqrt(RX_POWER_VARIANCE)));
                 readingsQualityScores[j + 2] = randomizer.nextDouble();
             }
 
@@ -1198,9 +1135,8 @@ public class PositionEstimatorHelperTest {
             final List<Double> distanceQualityScores = new ArrayList<>();
             PositionEstimatorHelper.buildPositionsDistancesDistanceStandardDeviationsAndQualityScores(
                     sources, fingerprint, null, readingsQualityScores,
-                    true,
-                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances,
-                    distanceStandardDeviations, distanceQualityScores);
+                    true, FALLBACK_DISTANCE_STANDARD_DEVIATION, positions,
+                    distances, distanceStandardDeviations, distanceQualityScores);
 
             // check that positions, distances and distance standard deviations are not
             // modified if no sources or fingerprint are provided
@@ -1211,10 +1147,10 @@ public class PositionEstimatorHelperTest {
                     distanceStandardDeviations, distanceQualityScores);
 
             // check
-            assertEquals(positions.size(), 4 * numSources);
-            assertEquals(distances.size(), 4 * numSources);
-            assertEquals(distanceStandardDeviations.size(), 4 * numSources);
-            assertEquals(distanceQualityScores.size(), 4 * numSources);
+            assertEquals(4 * numSources, positions.size());
+            assertEquals(4 * numSources, distances.size());
+            assertEquals(4 * numSources, distanceStandardDeviations.size());
+            assertEquals(4 * numSources, distanceQualityScores.size());
 
             for (int i = 0, j = 0, k = 0; i < numSources; i++, j += 4, k += 3) {
                 assertEquals(sources.get(i).getPosition(), positions.get(j));
@@ -1240,14 +1176,10 @@ public class PositionEstimatorHelperTest {
                 assertTrue(distanceStandardDeviations.get(j + 1) > 0.0);
                 assertTrue(distanceStandardDeviations.get(j + 1) > 0.0);
 
-                assertEquals(readingsQualityScores[k], distanceQualityScores.get(j),
-                        0.0);
-                assertEquals(readingsQualityScores[k + 1],
-                        distanceQualityScores.get(j + 1), 0.0);
-                assertEquals(readingsQualityScores[k + 2],
-                        distanceQualityScores.get(j + 2), 0.0);
-                assertEquals(readingsQualityScores[k + 2],
-                        distanceQualityScores.get(j + 3), 0.0);
+                assertEquals(readingsQualityScores[k], distanceQualityScores.get(j), 0.0);
+                assertEquals(readingsQualityScores[k + 1], distanceQualityScores.get(j + 1), 0.0);
+                assertEquals(readingsQualityScores[k + 2], distanceQualityScores.get(j + 2), 0.0);
+                assertEquals(readingsQualityScores[k + 2], distanceQualityScores.get(j + 3), 0.0);
             }
         }
     }
@@ -1279,12 +1211,9 @@ public class PositionEstimatorHelperTest {
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
                 sourcesQualityScores[i] = randomizer.nextDouble();
 
@@ -1292,18 +1221,16 @@ public class PositionEstimatorHelperTest {
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
-                readings.add(new RssiReading<>(accessPoint, rssi,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                readings.add(new RssiReading<>(accessPoint, rssi, Math.sqrt(RX_POWER_VARIANCE)));
                 readingsQualityScores[j] = randomizer.nextDouble();
                 readings.add(new RangingReading<>(accessPoint, distance,
                         FALLBACK_DISTANCE_STANDARD_DEVIATION));
                 readingsQualityScores[j + 1] = randomizer.nextDouble();
-                readings.add(new RangingAndRssiReading<>(accessPoint,
-                        distance, rssi, FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                readings.add(new RangingAndRssiReading<>(accessPoint, distance, rssi,
+                        FALLBACK_DISTANCE_STANDARD_DEVIATION, Math.sqrt(RX_POWER_VARIANCE)));
                 readingsQualityScores[j + 2] = randomizer.nextDouble();
             }
 
@@ -1316,23 +1243,21 @@ public class PositionEstimatorHelperTest {
             final List<Double> distanceQualityScores = new ArrayList<>();
             PositionEstimatorHelper.buildPositionsDistancesDistanceStandardDeviationsAndQualityScores(
                     sources, fingerprint, sourcesQualityScores, readingsQualityScores,
-                    true,
-                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances,
-                    distanceStandardDeviations, distanceQualityScores);
+                    true, FALLBACK_DISTANCE_STANDARD_DEVIATION, positions,
+                    distances, distanceStandardDeviations, distanceQualityScores);
 
             // check that positions, distances and distance standard deviations are not
             // modified if no sources or fingerprint are provided
             PositionEstimatorHelper.buildPositionsDistancesDistanceStandardDeviationsAndQualityScores(
-                    null, null, sourcesQualityScores,
-                    readingsQualityScores, true,
-                    FALLBACK_DISTANCE_STANDARD_DEVIATION, positions, distances,
-                    distanceStandardDeviations, distanceQualityScores);
+                    null, null, sourcesQualityScores, readingsQualityScores,
+                    true, FALLBACK_DISTANCE_STANDARD_DEVIATION, positions,
+                    distances, distanceStandardDeviations, distanceQualityScores);
 
             // check
-            assertEquals(positions.size(), 4 * numSources);
-            assertEquals(distances.size(), 4 * numSources);
-            assertEquals(distanceStandardDeviations.size(), 4 * numSources);
-            assertEquals(distanceQualityScores.size(), 4 * numSources);
+            assertEquals(4 * numSources, positions.size());
+            assertEquals(4 * numSources, distances.size());
+            assertEquals(4 * numSources, distanceStandardDeviations.size());
+            assertEquals(4 * numSources, distanceQualityScores.size());
 
             for (int i = 0, j = 0, k = 0; i < numSources; i++, j += 4, k += 3) {
                 assertEquals(sources.get(i).getPosition(), positions.get(j));
@@ -1362,7 +1287,7 @@ public class PositionEstimatorHelperTest {
                         distanceQualityScores.get(j), 0.0);
                 assertEquals(sourcesQualityScores[i] + readingsQualityScores[k + 1],
                         distanceQualityScores.get(j + 1), 0.0);
-                assertEquals(sourcesQualityScores[i] + +readingsQualityScores[k + 2],
+                assertEquals(sourcesQualityScores[i] + readingsQualityScores[k + 2],
                         distanceQualityScores.get(j + 2), 0.0);
                 assertEquals(sourcesQualityScores[i] + readingsQualityScores[k + 2],
                         distanceQualityScores.get(j + 3), 0.0);
@@ -1377,7 +1302,6 @@ public class PositionEstimatorHelperTest {
         // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the received Gain
         // Pr = Pte*c^2/((4*pi*f)^2 * d^2)
         final double k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI * FREQUENCY), pathLossExponent);
-        return equivalentTransmittedPower * k /
-                Math.pow(distance, pathLossExponent);
+        return equivalentTransmittedPower * k / Math.pow(distance, pathLossExponent);
     }
 }

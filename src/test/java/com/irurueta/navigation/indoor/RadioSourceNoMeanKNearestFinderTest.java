@@ -36,8 +36,7 @@ import static org.junit.Assert.*;
 
 public class RadioSourceNoMeanKNearestFinderTest {
 
-    private static final Logger LOGGER = Logger.getLogger(
-            RadioSourceNoMeanKNearestFinderTest.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(RadioSourceNoMeanKNearestFinderTest.class.getName());
 
     private static final int MIN_RSSI = -100;
     private static final int MAX_RSSI = -50;
@@ -73,7 +72,7 @@ public class RadioSourceNoMeanKNearestFinderTest {
                 new RadioSourceNoMeanKNearestFinder<>(fingerprints);
 
         // check
-        assertSame(finder.getFingerprints(), fingerprints);
+        assertSame(fingerprints, finder.getFingerprints());
 
         // Force IllegalArgumentException
         finder = null;
@@ -94,7 +93,7 @@ public class RadioSourceNoMeanKNearestFinderTest {
                 new RadioSourceNoMeanKNearestFinder<>(fingerprints);
 
         // check
-        assertSame(finder.getFingerprints(), fingerprints);
+        assertSame(fingerprints, finder.getFingerprints());
 
         // Force IllegalArgumentException
         finder = null;
@@ -109,13 +108,11 @@ public class RadioSourceNoMeanKNearestFinderTest {
 
     @Test
     public void testConstructorBeacon2D() {
-        final List<RssiFingerprintLocated2D<Beacon, RssiReading<Beacon>>> fingerprints =
-                new ArrayList<>();
-        RadioSourceNoMeanKNearestFinder<Point2D, Beacon> finder =
-                new RadioSourceNoMeanKNearestFinder<>(fingerprints);
+        final List<RssiFingerprintLocated2D<Beacon, RssiReading<Beacon>>> fingerprints = new ArrayList<>();
+        RadioSourceNoMeanKNearestFinder<Point2D, Beacon> finder = new RadioSourceNoMeanKNearestFinder<>(fingerprints);
 
         // check
-        assertSame(finder.getFingerprints(), fingerprints);
+        assertSame(fingerprints, finder.getFingerprints());
 
         // Force IllegalArgumentException
         finder = null;
@@ -130,13 +127,11 @@ public class RadioSourceNoMeanKNearestFinderTest {
 
     @Test
     public void testConstructorBeacon3D() {
-        final List<RssiFingerprintLocated3D<Beacon, RssiReading<Beacon>>> fingerprints =
-                new ArrayList<>();
-        RadioSourceNoMeanKNearestFinder<Point3D, Beacon> finder =
-                new RadioSourceNoMeanKNearestFinder<>(fingerprints);
+        final List<RssiFingerprintLocated3D<Beacon, RssiReading<Beacon>>> fingerprints = new ArrayList<>();
+        RadioSourceNoMeanKNearestFinder<Point3D, Beacon> finder = new RadioSourceNoMeanKNearestFinder<>(fingerprints);
 
         // check
-        assertSame(finder.getFingerprints(), fingerprints);
+        assertSame(fingerprints, finder.getFingerprints());
 
         // Force IllegalArgumentException
         finder = null;
@@ -173,8 +168,7 @@ public class RadioSourceNoMeanKNearestFinderTest {
                 accessPoints[i] = new WifiAccessPoint(String.valueOf(i), FREQUENCY);
             }
 
-            final int numFingerprints = randomizer.nextInt(
-                    MIN_FINGERPRINTS, MAX_FINGERPRINTS);
+            final int numFingerprints = randomizer.nextInt(MIN_FINGERPRINTS, MAX_FINGERPRINTS);
             final Point2D[] fingerprintsPositions = new Point2D[numFingerprints];
             final List<RssiFingerprintLocated2D<WifiAccessPoint, RssiReading<WifiAccessPoint>>> fingerprints =
                     new ArrayList<>();
@@ -184,8 +178,7 @@ public class RadioSourceNoMeanKNearestFinderTest {
                         randomizer.nextDouble(MIN_POS, MAX_POS));
                 final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
                 for (int j = 0; j < numAccessPoints; j++) {
-                    final double distance = fingerprintsPositions[i].distanceTo(
-                            accessPointPositions[j]);
+                    final double distance = fingerprintsPositions[i].distanceTo(accessPointPositions[j]);
                     final double rssi = powerTodBm(receivedPower(
                             transmittedPower[j], distance, accessPoints[j].getFrequency()));
                     readings.add(new RssiReading<>(accessPoints[j], rssi));
@@ -214,7 +207,7 @@ public class RadioSourceNoMeanKNearestFinderTest {
             final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
                     new RssiFingerprint<>(readings);
 
-            // find closest fingerprint
+            // find the closest fingerprint
             final RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D> closestFingerprint1 =
                     finder.findNearestTo(fingerprint);
             final RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D> closestFingerprint2 =
@@ -225,8 +218,7 @@ public class RadioSourceNoMeanKNearestFinderTest {
             final List<RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>>
                     closestFingerprints2 = new ArrayList<>();
             final List<Double> nearestSqrDistances = new ArrayList<>();
-            finder.findKNearestTo(fingerprint, 1, closestFingerprints2,
-                    nearestSqrDistances);
+            finder.findKNearestTo(fingerprint, 1, closestFingerprints2, nearestSqrDistances);
 
             final RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D> closestFingerprint3 =
                     closestFingerprints1.get(0);
@@ -237,18 +229,13 @@ public class RadioSourceNoMeanKNearestFinderTest {
             avgDistance += closestFingerprint1.getPosition().distanceTo(position);
 
             final Point2D nearestPosition = tree.nearestPoint(position);
-            if (!nearestPosition.equals(
-                    closestFingerprint1.getPosition(), ABSOLUTE_ERROR)) {
+            if (!nearestPosition.equals(closestFingerprint1.getPosition(), ABSOLUTE_ERROR)) {
                 continue;
             }
-            assertTrue(nearestPosition.equals(
-                    closestFingerprint1.getPosition(), ABSOLUTE_ERROR));
-            assertTrue(nearestPosition.equals(
-                    closestFingerprint2.getPosition(), ABSOLUTE_ERROR));
-            assertTrue(nearestPosition.equals(
-                    closestFingerprint3.getPosition(), ABSOLUTE_ERROR));
-            assertTrue(nearestPosition.equals(
-                    closestFingerprint4.getPosition(), ABSOLUTE_ERROR));
+            assertTrue(nearestPosition.equals(closestFingerprint1.getPosition(), ABSOLUTE_ERROR));
+            assertTrue(nearestPosition.equals(closestFingerprint2.getPosition(), ABSOLUTE_ERROR));
+            assertTrue(nearestPosition.equals(closestFingerprint3.getPosition(), ABSOLUTE_ERROR));
+            assertTrue(nearestPosition.equals(closestFingerprint4.getPosition(), ABSOLUTE_ERROR));
             assertTrue(nearestSqrDistances.get(0) >= 0.0);
 
             avgValidSignalDistance += nearestSqrDistances.get(0);
@@ -301,8 +288,7 @@ public class RadioSourceNoMeanKNearestFinderTest {
                 accessPoints[i] = new WifiAccessPoint(String.valueOf(i), FREQUENCY);
             }
 
-            final int numFingerprints = randomizer.nextInt(
-                    MIN_FINGERPRINTS, MAX_FINGERPRINTS);
+            final int numFingerprints = randomizer.nextInt(MIN_FINGERPRINTS, MAX_FINGERPRINTS);
             final Point2D[] fingerprintsPositions = new Point2D[numFingerprints];
             final List<RssiFingerprintLocated2D<WifiAccessPoint, RssiReading<WifiAccessPoint>>> fingerprints =
                     new ArrayList<>();
@@ -312,8 +298,7 @@ public class RadioSourceNoMeanKNearestFinderTest {
                         randomizer.nextDouble(MIN_POS, MAX_POS));
                 final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
                 for (int j = 0; j < numAccessPoints; j++) {
-                    final double distance = fingerprintsPositions[i].distanceTo(
-                            accessPointPositions[j]);
+                    final double distance = fingerprintsPositions[i].distanceTo(accessPointPositions[j]);
                     final double rssi = powerTodBm(receivedPower(
                             transmittedPower[j], distance, accessPoints[j].getFrequency()));
                     readings.add(new RssiReading<>(accessPoints[j], rssi));
@@ -335,14 +320,13 @@ public class RadioSourceNoMeanKNearestFinderTest {
             final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
             for (int i = 0; i < numAccessPoints; i++) {
                 double distance = position.distanceTo(accessPointPositions[i]);
-                double rssi = powerTodBm(receivedPower(
-                        transmittedPower[i], distance, accessPoints[i].getFrequency()));
+                double rssi = powerTodBm(receivedPower(transmittedPower[i], distance, accessPoints[i].getFrequency()));
                 readings.add(new RssiReading<>(accessPoints[i], rssi));
             }
             final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
                     new RssiFingerprint<>(readings);
 
-            // find k closest fingerprints
+            // find the k-closest fingerprints
             final int k = randomizer.nextInt(2, numFingerprints);
             final List<RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>>
                     kClosestFingerprints1 = finder.findKNearestTo(fingerprint, k);
@@ -353,8 +337,7 @@ public class RadioSourceNoMeanKNearestFinderTest {
             final List<RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>>
                     kClosestFingerprints3 = new ArrayList<>();
             final List<Double> nearestSqrDistances3 = new ArrayList<>();
-            finder.findKNearestTo(fingerprint, k, kClosestFingerprints3,
-                    nearestSqrDistances3);
+            finder.findKNearestTo(fingerprint, k, kClosestFingerprints3, nearestSqrDistances3);
 
             final List<RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>>
                     kClosestFingerprints4 = new ArrayList<>();
@@ -371,10 +354,8 @@ public class RadioSourceNoMeanKNearestFinderTest {
             assertEquals(nearestSqrDistances4.size(), k);
 
             for (int i = 1; i < k; i++) {
-                assertTrue(nearestSqrDistances3.get(i - 1) <=
-                        nearestSqrDistances3.get(i));
-                assertTrue(nearestSqrDistances4.get(i - 1) <=
-                        nearestSqrDistances4.get(i));
+                assertTrue(nearestSqrDistances3.get(i - 1) <= nearestSqrDistances3.get(i));
+                assertTrue(nearestSqrDistances4.get(i - 1) <= nearestSqrDistances4.get(i));
             }
 
             final Point2D nearestPosition = tree.nearestPoint(position);
@@ -456,8 +437,7 @@ public class RadioSourceNoMeanKNearestFinderTest {
                 accessPoints[i] = new WifiAccessPoint(String.valueOf(i), FREQUENCY);
             }
 
-            final int numFingerprints = randomizer.nextInt(
-                    MIN_FINGERPRINTS, MAX_FINGERPRINTS);
+            final int numFingerprints = randomizer.nextInt(MIN_FINGERPRINTS, MAX_FINGERPRINTS);
             final Point2D[] fingerprintsPositions = new Point2D[numFingerprints];
             final List<RssiFingerprintLocated2D<WifiAccessPoint, RssiReading<WifiAccessPoint>>> fingerprints =
                     new ArrayList<>();
@@ -467,8 +447,7 @@ public class RadioSourceNoMeanKNearestFinderTest {
                         randomizer.nextDouble(MIN_POS, MAX_POS));
                 final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
                 for (int j = 0; j < numAccessPoints; j++) {
-                    final double distance = fingerprintsPositions[i].distanceTo(
-                            accessPointPositions[j]);
+                    final double distance = fingerprintsPositions[i].distanceTo(accessPointPositions[j]);
                     final double rssi = powerTodBm(receivedPower(
                             transmittedPower[j], distance, accessPoints[j].getFrequency()));
                     readings.add(new RssiReading<>(accessPoints[j], rssi));
@@ -499,14 +478,13 @@ public class RadioSourceNoMeanKNearestFinderTest {
 
             // check
             for (int i = 1; i < numFingerprints; i++) {
-                assertTrue(nearestSqrDistances.get(i - 1) <=
-                        nearestSqrDistances.get(i));
+                assertTrue(nearestSqrDistances.get(i - 1) <= nearestSqrDistances.get(i));
             }
 
             numValid++;
         }
 
-        assertEquals(numValid, TIMES);
+        assertEquals(TIMES, numValid);
     }
 
     @Test
@@ -517,8 +495,7 @@ public class RadioSourceNoMeanKNearestFinderTest {
         double avgSignalDistance = 0.0;
         double avgDistance = 0.0;
         for (int t = 0; t < TIMES; t++) {
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                    new Random(), 0.0, ERROR_STD);
+            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
             final int numAccessPoints = randomizer.nextInt(MIN_AP, MAX_AP);
@@ -535,8 +512,7 @@ public class RadioSourceNoMeanKNearestFinderTest {
                 accessPoints[i] = new WifiAccessPoint(String.valueOf(i), FREQUENCY);
             }
 
-            final int numFingerprints = randomizer.nextInt(
-                    MIN_FINGERPRINTS, MAX_FINGERPRINTS);
+            final int numFingerprints = randomizer.nextInt(MIN_FINGERPRINTS, MAX_FINGERPRINTS);
             final Point2D[] fingerprintsPositions = new Point2D[numFingerprints];
             final List<RssiFingerprintLocated2D<WifiAccessPoint, RssiReading<WifiAccessPoint>>> fingerprints =
                     new ArrayList<>();
@@ -546,8 +522,7 @@ public class RadioSourceNoMeanKNearestFinderTest {
                         randomizer.nextDouble(MIN_POS, MAX_POS));
                 final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
                 for (int j = 0; j < numAccessPoints; j++) {
-                    final double distance = fingerprintsPositions[i].distanceTo(
-                            accessPointPositions[j]);
+                    final double distance = fingerprintsPositions[i].distanceTo(accessPointPositions[j]);
                     final double error = errorRandomizer.nextDouble();
                     final double rssi = powerTodBm(receivedPower(
                             transmittedPower[j], distance, accessPoints[j].getFrequency())) + error;
@@ -578,7 +553,7 @@ public class RadioSourceNoMeanKNearestFinderTest {
             final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
                     new RssiFingerprint<>(readings);
 
-            // find closest fingerprint
+            // find the closest fingerprint
             final RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D> closestFingerprint1 =
                     finder.findNearestTo(fingerprint);
             final RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D> closestFingerprint2 =
@@ -589,8 +564,7 @@ public class RadioSourceNoMeanKNearestFinderTest {
             final List<RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>>
                     closestFingerprints2 = new ArrayList<>();
             final List<Double> nearestSqrDistances = new ArrayList<>();
-            finder.findKNearestTo(fingerprint, 1, closestFingerprints2,
-                    nearestSqrDistances);
+            finder.findKNearestTo(fingerprint, 1, closestFingerprints2, nearestSqrDistances);
 
             final RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D> closestFingerprint3 =
                     closestFingerprints1.get(0);
@@ -601,18 +575,13 @@ public class RadioSourceNoMeanKNearestFinderTest {
             avgDistance += closestFingerprint1.getPosition().distanceTo(position);
 
             final Point2D nearestPosition = tree.nearestPoint(position);
-            if (!nearestPosition.equals(
-                    closestFingerprint1.getPosition(), ABSOLUTE_ERROR)) {
+            if (!nearestPosition.equals(closestFingerprint1.getPosition(), ABSOLUTE_ERROR)) {
                 continue;
             }
-            assertTrue(nearestPosition.equals(
-                    closestFingerprint1.getPosition(), ABSOLUTE_ERROR));
-            assertTrue(nearestPosition.equals(
-                    closestFingerprint2.getPosition(), ABSOLUTE_ERROR));
-            assertTrue(nearestPosition.equals(
-                    closestFingerprint3.getPosition(), ABSOLUTE_ERROR));
-            assertTrue(nearestPosition.equals(
-                    closestFingerprint4.getPosition(), ABSOLUTE_ERROR));
+            assertTrue(nearestPosition.equals(closestFingerprint1.getPosition(), ABSOLUTE_ERROR));
+            assertTrue(nearestPosition.equals(closestFingerprint2.getPosition(), ABSOLUTE_ERROR));
+            assertTrue(nearestPosition.equals(closestFingerprint3.getPosition(), ABSOLUTE_ERROR));
+            assertTrue(nearestPosition.equals(closestFingerprint4.getPosition(), ABSOLUTE_ERROR));
             assertTrue(nearestSqrDistances.get(0) >= 0.0);
 
             avgValidSignalDistance += nearestSqrDistances.get(0);
@@ -626,6 +595,11 @@ public class RadioSourceNoMeanKNearestFinderTest {
         avgDistance /= TIMES;
         avgValidSignalDistance /= numValid;
         avgValidDistance /= numValid;
+
+        assertTrue(avgSignalDistance > 0.0);
+        assertTrue(avgDistance > 0.0);
+        assertTrue(avgValidSignalDistance > 0.0);
+        assertTrue(avgValidDistance > 0.0);
 
         LOGGER.log(Level.INFO, "Average signal distance: {0}", avgSignalDistance);
         LOGGER.log(Level.INFO, "Average position distance: {0}", avgDistance);
@@ -653,8 +627,7 @@ public class RadioSourceNoMeanKNearestFinderTest {
                 accessPoints[i] = new WifiAccessPoint(String.valueOf(i), FREQUENCY);
             }
 
-            final int numFingerprints = randomizer.nextInt(
-                    MIN_FINGERPRINTS, MAX_FINGERPRINTS);
+            final int numFingerprints = randomizer.nextInt(MIN_FINGERPRINTS, MAX_FINGERPRINTS);
             final Point2D[] fingerprintsPositions = new Point2D[numFingerprints];
             final List<RssiFingerprintLocated2D<WifiAccessPoint, RssiReading<WifiAccessPoint>>> fingerprints =
                     new ArrayList<>();
@@ -664,8 +637,7 @@ public class RadioSourceNoMeanKNearestFinderTest {
                         randomizer.nextDouble(MIN_POS, MAX_POS));
                 final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
                 for (int j = 0; j < numAccessPoints; j++) {
-                    final double distance = fingerprintsPositions[i].distanceTo(
-                            accessPointPositions[j]);
+                    final double distance = fingerprintsPositions[i].distanceTo(accessPointPositions[j]);
                     final double rssi = powerTodBm(receivedPower(
                             transmittedPower[j], distance, accessPoints[j].getFrequency()));
                     readings.add(new RssiReading<>(accessPoints[j], rssi));
@@ -701,8 +673,7 @@ public class RadioSourceNoMeanKNearestFinderTest {
                         nearestFingerprints = finder.findKNearestTo(fingerprint, k);
                 boolean found = false;
                 for (int i = 0; i < k; i++) {
-                    if (nearestFingerprints.get(i).getPosition().equals(
-                            nearestPosition, ABSOLUTE_ERROR)) {
+                    if (nearestFingerprints.get(i).getPosition().equals(nearestPosition, ABSOLUTE_ERROR)) {
                         avgK += k;
                         found = true;
                         break;
@@ -715,6 +686,8 @@ public class RadioSourceNoMeanKNearestFinderTest {
             }
         }
 
+        assertTrue(avgK > 0.0);
+
         avgK /= TIMES;
         LOGGER.log(Level.INFO, "Average best k: {0}", avgK);
     }
@@ -723,8 +696,7 @@ public class RadioSourceNoMeanKNearestFinderTest {
     public void testFindBestKWithError() {
         double avgK = 0.0;
         for (int t = 0; t < TIMES; t++) {
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                    new Random(), 0.0, ERROR_STD);
+            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
             final int numAccessPoints = randomizer.nextInt(MIN_AP, MAX_AP);
@@ -741,8 +713,7 @@ public class RadioSourceNoMeanKNearestFinderTest {
                 accessPoints[i] = new WifiAccessPoint(String.valueOf(i), FREQUENCY);
             }
 
-            final int numFingerprints = randomizer.nextInt(
-                    MIN_FINGERPRINTS, MAX_FINGERPRINTS);
+            final int numFingerprints = randomizer.nextInt(MIN_FINGERPRINTS, MAX_FINGERPRINTS);
             final Point2D[] fingerprintsPositions = new Point2D[numFingerprints];
             final List<RssiFingerprintLocated2D<WifiAccessPoint, RssiReading<WifiAccessPoint>>> fingerprints =
                     new ArrayList<>();
@@ -752,8 +723,7 @@ public class RadioSourceNoMeanKNearestFinderTest {
                         randomizer.nextDouble(MIN_POS, MAX_POS));
                 final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
                 for (int j = 0; j < numAccessPoints; j++) {
-                    final double distance = fingerprintsPositions[i].distanceTo(
-                            accessPointPositions[j]);
+                    final double distance = fingerprintsPositions[i].distanceTo(accessPointPositions[j]);
                     final double error = errorRandomizer.nextDouble();
                     final double rssi = powerTodBm(receivedPower(
                             transmittedPower[j], distance, accessPoints[j].getFrequency())) + error;
@@ -791,8 +761,7 @@ public class RadioSourceNoMeanKNearestFinderTest {
                         nearestFingerprints = finder.findKNearestTo(fingerprint, k);
                 boolean found = false;
                 for (int i = 0; i < k; i++) {
-                    if (nearestFingerprints.get(i).getPosition().equals(
-                            nearestPosition, ABSOLUTE_ERROR)) {
+                    if (nearestFingerprints.get(i).getPosition().equals(nearestPosition, ABSOLUTE_ERROR)) {
                         avgK += k;
                         found = true;
                         break;
@@ -804,6 +773,8 @@ public class RadioSourceNoMeanKNearestFinderTest {
                 }
             }
         }
+
+        assertTrue(avgK > 0.0);
 
         avgK /= TIMES;
         LOGGER.log(Level.INFO, "Average best k: {0}", avgK);
@@ -835,13 +806,11 @@ public class RadioSourceNoMeanKNearestFinderTest {
                     new ArrayList<>();
             for (double x = MIN_POS; x < MAX_POS; x += SEPARATION_POS) {
                 for (double y = MIN_POS; y < MAX_POS; y += SEPARATION_POS) {
-                    final InhomogeneousPoint2D fingerprintPosition =
-                            new InhomogeneousPoint2D(x, y);
+                    final InhomogeneousPoint2D fingerprintPosition = new InhomogeneousPoint2D(x, y);
 
                     final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
                     for (int j = 0; j < numAccessPoints; j++) {
-                        final double distance = fingerprintPosition.distanceTo(
-                                accessPointPositions[j]);
+                        final double distance = fingerprintPosition.distanceTo(accessPointPositions[j]);
                         final double rssi = powerTodBm(receivedPower(
                                 transmittedPower[j], distance, accessPoints[j].getFrequency()));
                         readings.add(new RssiReading<>(accessPoints[j], rssi));
@@ -868,12 +837,11 @@ public class RadioSourceNoMeanKNearestFinderTest {
             final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
                     new RssiFingerprint<>(readings);
 
-            // find closest fingerprint
+            // find the closest fingerprint
             final List<RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>>
                     closestFingerprints = new ArrayList<>();
             final List<Double> nearestSqrDistances = new ArrayList<>();
-            finder.findKNearestTo(fingerprint, 1, closestFingerprints,
-                    nearestSqrDistances);
+            finder.findKNearestTo(fingerprint, 1, closestFingerprints, nearestSqrDistances);
 
             final RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D> closestFingerprint =
                     closestFingerprints.get(0);
@@ -881,6 +849,9 @@ public class RadioSourceNoMeanKNearestFinderTest {
             avgSignalDistance += nearestSqrDistances.get(0);
             avgDistance += closestFingerprint.getPosition().distanceTo(position);
         }
+
+        assertTrue(avgSignalDistance > 0.0);
+        assertTrue(avgDistance > 0.0);
 
         avgSignalDistance /= TIMES;
         avgDistance /= TIMES;
@@ -893,8 +864,7 @@ public class RadioSourceNoMeanKNearestFinderTest {
         double avgSignalDistance = 0.0;
         double avgDistance = 0.0;
         for (int t = 0; t < TIMES; t++) {
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                    new Random(), 0.0, ERROR_STD);
+            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
             final int numAccessPoints = randomizer.nextInt(MIN_AP, MAX_AP);
@@ -916,13 +886,11 @@ public class RadioSourceNoMeanKNearestFinderTest {
                     new ArrayList<>();
             for (double x = MIN_POS; x < MAX_POS; x += SEPARATION_POS) {
                 for (double y = MIN_POS; y < MAX_POS; y += SEPARATION_POS) {
-                    final InhomogeneousPoint2D fingerprintPosition =
-                            new InhomogeneousPoint2D(x, y);
+                    final InhomogeneousPoint2D fingerprintPosition = new InhomogeneousPoint2D(x, y);
 
                     final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
                     for (int j = 0; j < numAccessPoints; j++) {
-                        final double distance = fingerprintPosition.distanceTo(
-                                accessPointPositions[j]);
+                        final double distance = fingerprintPosition.distanceTo(accessPointPositions[j]);
                         final double error = errorRandomizer.nextDouble();
                         final double rssi = powerTodBm(receivedPower(
                                 transmittedPower[j], distance, accessPoints[j].getFrequency())) + error;
@@ -951,12 +919,11 @@ public class RadioSourceNoMeanKNearestFinderTest {
             final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
                     new RssiFingerprint<>(readings);
 
-            // find closest fingerprint
+            // find the closest fingerprint
             final List<RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>>
                     closestFingerprints = new ArrayList<>();
             final List<Double> nearestSqrDistances = new ArrayList<>();
-            finder.findKNearestTo(fingerprint, 1, closestFingerprints,
-                    nearestSqrDistances);
+            finder.findKNearestTo(fingerprint, 1, closestFingerprints, nearestSqrDistances);
 
             final RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D> closestFingerprint =
                     closestFingerprints.get(0);
@@ -964,6 +931,9 @@ public class RadioSourceNoMeanKNearestFinderTest {
             avgSignalDistance += nearestSqrDistances.get(0);
             avgDistance += closestFingerprint.getPosition().distanceTo(position);
         }
+
+        assertTrue(avgSignalDistance > 0.0);
+        assertTrue(avgDistance > 0.0);
 
         avgSignalDistance /= TIMES;
         avgDistance /= TIMES;
@@ -997,14 +967,12 @@ public class RadioSourceNoMeanKNearestFinderTest {
                     new ArrayList<>();
             for (double x = MIN_POS; x < MAX_POS; x += SEPARATION_POS) {
                 for (double y = MIN_POS; y < MAX_POS; y += SEPARATION_POS) {
-                    final InhomogeneousPoint2D fingerprintPosition =
-                            new InhomogeneousPoint2D(x, y);
+                    final InhomogeneousPoint2D fingerprintPosition = new InhomogeneousPoint2D(x, y);
                     fingerprintsPositionsList.add(fingerprintPosition);
 
                     final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
                     for (int j = 0; j < numAccessPoints; j++) {
-                        final double distance = fingerprintPosition.distanceTo(
-                                accessPointPositions[j]);
+                        final double distance = fingerprintPosition.distanceTo(accessPointPositions[j]);
                         final double rssi = powerTodBm(receivedPower(
                                 transmittedPower[j], distance, accessPoints[j].getFrequency()));
                         readings.add(new RssiReading<>(accessPoints[j], rssi));
@@ -1043,8 +1011,7 @@ public class RadioSourceNoMeanKNearestFinderTest {
                         nearestFingerprints = finder.findKNearestTo(fingerprint, k);
                 boolean found = false;
                 for (int i = 0; i < k; i++) {
-                    if (nearestFingerprints.get(i).getPosition().equals(
-                            nearestPosition, ABSOLUTE_ERROR)) {
+                    if (nearestFingerprints.get(i).getPosition().equals(nearestPosition, ABSOLUTE_ERROR)) {
                         avgK += k;
                         found = true;
                         break;
@@ -1057,6 +1024,8 @@ public class RadioSourceNoMeanKNearestFinderTest {
             }
         }
 
+        assertTrue(avgK > 0.0);
+
         avgK /= TIMES;
         LOGGER.log(Level.INFO, "Average best k: {0}", avgK);
     }
@@ -1065,8 +1034,7 @@ public class RadioSourceNoMeanKNearestFinderTest {
     public void testFindBestKWithErrorUniformFingerprints() {
         double avgK = 0.0;
         for (int t = 0; t < TIMES; t++) {
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                    new Random(), 0.0, ERROR_STD);
+            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
             final int numAccessPoints = randomizer.nextInt(MIN_AP, MAX_AP);
@@ -1089,14 +1057,12 @@ public class RadioSourceNoMeanKNearestFinderTest {
                     new ArrayList<>();
             for (double x = MIN_POS; x < MAX_POS; x += SEPARATION_POS) {
                 for (double y = MIN_POS; y < MAX_POS; y += SEPARATION_POS) {
-                    final InhomogeneousPoint2D fingerprintPosition =
-                            new InhomogeneousPoint2D(x, y);
+                    final InhomogeneousPoint2D fingerprintPosition = new InhomogeneousPoint2D(x, y);
                     fingerprintsPositionsList.add(fingerprintPosition);
 
                     final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
                     for (int j = 0; j < numAccessPoints; j++) {
-                        final double distance = fingerprintPosition.distanceTo(
-                                accessPointPositions[j]);
+                        final double distance = fingerprintPosition.distanceTo(accessPointPositions[j]);
                         final double error = errorRandomizer.nextDouble();
                         final double rssi = powerTodBm(receivedPower(
                                 transmittedPower[j], distance, accessPoints[j].getFrequency())) + error;
@@ -1137,8 +1103,7 @@ public class RadioSourceNoMeanKNearestFinderTest {
                         nearestFingerprints = finder.findKNearestTo(fingerprint, k);
                 boolean found = false;
                 for (int i = 0; i < k; i++) {
-                    if (nearestFingerprints.get(i).getPosition().equals(
-                            nearestPosition, ABSOLUTE_ERROR)) {
+                    if (nearestFingerprints.get(i).getPosition().equals(nearestPosition, ABSOLUTE_ERROR)) {
                         avgK += k;
                         found = true;
                         break;
@@ -1151,12 +1116,14 @@ public class RadioSourceNoMeanKNearestFinderTest {
             }
         }
 
+        assertTrue(avgK > 0.0);
+
         avgK /= TIMES;
         LOGGER.log(Level.INFO, "Average best k: {0}", avgK);
     }
 
-    private double receivedPower(
-            final double equivalentTransmittedPower, final double distance, final double frequency) {
+    private double receivedPower(final double equivalentTransmittedPower, final double distance,
+                                 final double frequency) {
         // Pr = Pt*Gt*Gr*lambda^2/(4*pi*d)^2,    where Pr is the received power
         // lambda = c/f, where lambda is wavelength,
         // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the received Gain

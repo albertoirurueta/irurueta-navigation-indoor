@@ -531,10 +531,10 @@ public abstract class NonLinearFingerprintPositionEstimator<P extends Point<?>> 
                 // where f'(x) is the derivative of f respect x, which can also be expressed as:
                 // f'(x) = diff(f(x))/diff(x)
 
-                // and f'(a) is the derivative of f respect x evaluated at a, which can be expressed
+                // and f'(a) is the derivative of f respect x evaluated at "a", which can be expressed
                 // as f'(a) = diff(f(a))/diff(x)
 
-                // consequently f''(a) is the second derivative respect x evaluated at a, which can
+                // consequently f''(a) is the second derivative respect x evaluated at "a", which can
                 // be expressed as:
                 // f''(x) = diff(f(x))/diff(x^2)
 
@@ -557,7 +557,7 @@ public abstract class NonLinearFingerprintPositionEstimator<P extends Point<?>> 
 
                 // Hence, assuming the constant K = 10*n*log(k) + Pte(dBm), where Pte(dBm) = 10*log(Pte),
                 // assuming that transmitted power by the radio source Pte is known (so that K is also known),
-                // and assuming that the location of the radio source is known and it is located at pa = (xa, ya)
+                // and assuming that the location of the radio source is known, and it is located at pa = (xa, ya)
                 // so that d^2 = (x - xa)^2 + (y - ya)^2 then the received power at an unknown point pi = (xi, yi) is:
 
                 // Pr(pi) = Pr(xi,yi) = K - 5*n*log(d^2) = K - 5*n*log((xi - xa)^2 + (yi - ya)^2)
@@ -648,10 +648,10 @@ public abstract class NonLinearFingerprintPositionEstimator<P extends Point<?>> 
                 // where f'(x) is the derivative of f respect x, which can also be expressed as:
                 // f'(x) = diff(f(x))/diff(x)
 
-                // and f'(a) is the derivative of f respect x evaluated at a, which can be expressed
+                // and f'(a) is the derivative of f respect x evaluated at "a", which can be expressed
                 // as f'(a) = diff(f(a))/diff(x)
 
-                // consequently f''(a) is the second derivative respect x evaluated at a, which can
+                // consequently f''(a) is the second derivative respect x evaluated at "a", which can
                 // be expressed as:
                 // f''(x) = diff(f(x))/diff(x^2)
 
@@ -674,7 +674,7 @@ public abstract class NonLinearFingerprintPositionEstimator<P extends Point<?>> 
 
                 // Hence, assuming the constant K = 10*n*log(k) + Pte(dBm), where Pte(dBm) = 10*log(Pte),
                 // assuming that transmitted power by the radio source Pte is known (so that K is also known),
-                // and assuming that the location of the radio source is known and it is located at pa = (xa, ya, za)
+                // and assuming that the location of the radio source is known, and it is located at pa = (xa, ya, za)
                 // so that d^2 = (x - xa)^2 + (y - ya)^2 + (z - za)^2 then the received power at an unknown point
                 // pi = (xi, yi, zi) is:
 
@@ -837,7 +837,7 @@ public abstract class NonLinearFingerprintPositionEstimator<P extends Point<?>> 
      * @param i           number of sample being evaluated.
      * @param point       point where function will be evaluated.
      * @param params      initial parameters estimation to be tried. These will
-     *                    change as the Levenberg-Marquard algorithm iterates to the best solution.
+     *                    change as the Levenberg-Marquardt algorithm iterates to the best solution.
      *                    These are used as input parameters along with point to evaluate function.
      * @param derivatives partial derivatives of the function respect to each
      *                    provided parameter.
@@ -856,7 +856,7 @@ public abstract class NonLinearFingerprintPositionEstimator<P extends Point<?>> 
      * @param fingerprintPosition           position of closest located fingerprint.
      * @param radioSourcePosition           radio source position associated to fingerprint reading.
      * @param estimatedPosition             position to be estimated. Usually this is equal to the
-     *                                      initial position used by a non linear algorithm.
+     *                                      initial position used by a non-linear algorithm.
      * @param fingerprintRssiVariance       variance of fingerprint RSSI or null if unknown.
      * @param pathlossExponentVariance      variance of path-loss exponent or null if unknown.
      * @param fingerprintPositionCovariance covariance of fingerprint position or null if

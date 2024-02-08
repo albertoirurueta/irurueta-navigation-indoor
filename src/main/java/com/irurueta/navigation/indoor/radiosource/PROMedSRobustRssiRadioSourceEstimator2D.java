@@ -30,7 +30,7 @@ import java.util.List;
 
 /**
  * Robustly estimate 2D position, transmitted power and path-loss exponent of a radio source
- * (e.g. WiFi access point or bluetooth beacon), by discarding outliers using PROMedS
+ * (e.g. Wi-Fi access point or bluetooth beacon), by discarding outliers using PROMedS
  * algorithm and assuming that the radio source emits isotropically following the
  * expression below:
  * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,
@@ -326,7 +326,7 @@ public class PROMedSRobustRssiRadioSourceEstimator2D<S extends RadioSource> exte
      * Constructor.
      * Sets signal readings belonging to the same radio source.
      *
-     * @param readings                   WiFi signal readings belonging to the same radio source.
+     * @param readings                   Wi-Fi signal readings belonging to the same radio source.
      * @param initialPosition            initial position to start the estimation of radio
      *                                   source position.
      * @param initialTransmittedPowerdBm initial transmitted power to start the
@@ -940,6 +940,7 @@ public class PROMedSRobustRssiRadioSourceEstimator2D<S extends RadioSource> exte
      * @throws LockedException          if robust solver is locked because an
      *                                  estimation is already in progress.
      */
+    @Override
     public void setQualityScores(final double[] qualityScores) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
@@ -1092,7 +1093,7 @@ public class PROMedSRobustRssiRadioSourceEstimator2D<S extends RadioSource> exte
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-        return RobustEstimatorMethod.PROMedS;
+        return RobustEstimatorMethod.PROMEDS;
     }
 
     /**

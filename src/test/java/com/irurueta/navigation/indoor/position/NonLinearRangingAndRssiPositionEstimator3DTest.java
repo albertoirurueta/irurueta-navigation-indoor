@@ -64,11 +64,10 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
         // check default values
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
         assertNull(estimator.getSources());
@@ -83,22 +82,20 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
         // constructor with sources
         final List<WifiAccessPointLocated3D> sources = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
-            sources.add(new WifiAccessPointLocated3D("id1", FREQUENCY,
-                    new InhomogeneousPoint3D()));
+            sources.add(new WifiAccessPointLocated3D("id1", FREQUENCY, new InhomogeneousPoint3D()));
         }
         estimator = new NonLinearRangingAndRssiPositionEstimator3D(sources);
 
         // check default values
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
         assertNull(estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
@@ -131,15 +128,14 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
         // check default values
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
         assertNull(estimator.getSources());
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
@@ -158,21 +154,19 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
         assertNull(estimator);
 
         // constructor with sources and fingerprint
-        estimator = new NonLinearRangingAndRssiPositionEstimator3D(sources,
-                fingerprint);
+        estimator = new NonLinearRangingAndRssiPositionEstimator3D(sources, fingerprint);
 
         // check default values
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
@@ -183,8 +177,7 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new NonLinearRangingAndRssiPositionEstimator3D(null,
-                    fingerprint);
+            estimator = new NonLinearRangingAndRssiPositionEstimator3D(null, fingerprint);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -208,16 +201,15 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
         // check default values
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
         assertNull(estimator.getSources());
         assertNull(estimator.getFingerprint());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
@@ -225,22 +217,20 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
         assertNull(estimator.getCovariance());
 
         // constructor with sources and listener
-        estimator = new NonLinearRangingAndRssiPositionEstimator3D(sources,
-                this);
+        estimator = new NonLinearRangingAndRssiPositionEstimator3D(sources, this);
 
         // check default values
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
         assertNull(estimator.getFingerprint());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
@@ -264,22 +254,20 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
         assertNull(estimator);
 
         // constructor with fingerprint and listener
-        estimator = new NonLinearRangingAndRssiPositionEstimator3D(fingerprint,
-                this);
+        estimator = new NonLinearRangingAndRssiPositionEstimator3D(fingerprint, this);
 
         // check default values
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
         assertNull(estimator.getSources());
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
@@ -298,22 +286,20 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
         assertNull(estimator);
 
         // constructor with sources, fingerprint and listener
-        estimator = new NonLinearRangingAndRssiPositionEstimator3D(sources, fingerprint,
-                this);
+        estimator = new NonLinearRangingAndRssiPositionEstimator3D(sources, fingerprint, this);
 
         // check default values
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
@@ -330,8 +316,7 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
         }
         try {
             estimator = new NonLinearRangingAndRssiPositionEstimator3D(
-                    new ArrayList<WifiAccessPointLocated3D>(), fingerprint,
-                    this);
+                    new ArrayList<WifiAccessPointLocated3D>(), fingerprint, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -349,13 +334,12 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
         estimator = new NonLinearRangingAndRssiPositionEstimator3D(initialPosition);
 
         // check default values
-        assertSame(estimator.getInitialPosition(), initialPosition);
+        assertSame(initialPosition, estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
         assertNull(estimator.getSources());
@@ -368,20 +352,18 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
         assertNull(estimator.getCovariance());
 
         // constructor with sources and initial position
-        estimator = new NonLinearRangingAndRssiPositionEstimator3D(sources,
-                initialPosition);
+        estimator = new NonLinearRangingAndRssiPositionEstimator3D(sources, initialPosition);
 
         // check default values
-        assertSame(estimator.getInitialPosition(), initialPosition);
+        assertSame(initialPosition, estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
         assertNull(estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
@@ -394,36 +376,32 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
         estimator = null;
         try {
             estimator = new NonLinearRangingAndRssiPositionEstimator3D(
-                    (List<WifiAccessPointLocated3D>) null,
-                    initialPosition);
+                    (List<WifiAccessPointLocated3D>) null, initialPosition);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
             estimator = new NonLinearRangingAndRssiPositionEstimator3D(
-                    new ArrayList<WifiAccessPointLocated3D>(),
-                    initialPosition);
+                    new ArrayList<WifiAccessPointLocated3D>(), initialPosition);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
 
         // constructor with fingerprint and initial position
-        estimator = new NonLinearRangingAndRssiPositionEstimator3D(fingerprint,
-                initialPosition);
+        estimator = new NonLinearRangingAndRssiPositionEstimator3D(fingerprint, initialPosition);
 
         // check default values
-        assertSame(estimator.getInitialPosition(), initialPosition);
+        assertSame(initialPosition, estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
         assertNull(estimator.getSources());
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
@@ -443,21 +421,19 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
         assertNull(estimator);
 
         // constructor with sources, fingerprint and initial position
-        estimator = new NonLinearRangingAndRssiPositionEstimator3D(sources, fingerprint,
-                initialPosition);
+        estimator = new NonLinearRangingAndRssiPositionEstimator3D(sources, fingerprint, initialPosition);
 
         // check default values
-        assertSame(estimator.getInitialPosition(), initialPosition);
+        assertSame(initialPosition, estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
@@ -475,8 +451,7 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
         }
         try {
             estimator = new NonLinearRangingAndRssiPositionEstimator3D(
-                    new ArrayList<WifiAccessPointLocated3D>(), fingerprint,
-                    initialPosition);
+                    new ArrayList<WifiAccessPointLocated3D>(), fingerprint, initialPosition);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -489,22 +464,20 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
         assertNull(estimator);
 
         // constructor with initial position and listener
-        estimator = new NonLinearRangingAndRssiPositionEstimator3D(initialPosition,
-                this);
+        estimator = new NonLinearRangingAndRssiPositionEstimator3D(initialPosition, this);
 
         // check default values
-        assertSame(estimator.getInitialPosition(), initialPosition);
+        assertSame(initialPosition, estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
         assertNull(estimator.getSources());
         assertNull(estimator.getFingerprint());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
@@ -512,22 +485,20 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
         assertNull(estimator.getCovariance());
 
         // constructor with sources, initial position and listener
-        estimator = new NonLinearRangingAndRssiPositionEstimator3D(sources,
-                initialPosition, this);
+        estimator = new NonLinearRangingAndRssiPositionEstimator3D(sources, initialPosition, this);
 
         // check default values
-        assertSame(estimator.getInitialPosition(), initialPosition);
+        assertSame(initialPosition, estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
         assertNull(estimator.getFingerprint());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
@@ -538,15 +509,13 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
         estimator = null;
         try {
             estimator = new NonLinearRangingAndRssiPositionEstimator3D(
-                    (List<WifiAccessPointLocated3D>) null,
-                    initialPosition, this);
+                    (List<WifiAccessPointLocated3D>) null, initialPosition, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
             estimator = new NonLinearRangingAndRssiPositionEstimator3D(
-                    new ArrayList<WifiAccessPointLocated3D>(),
-                    initialPosition, this);
+                    new ArrayList<WifiAccessPointLocated3D>(), initialPosition, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -557,18 +526,17 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
                 initialPosition, this);
 
         // check default values
-        assertSame(estimator.getInitialPosition(), initialPosition);
+        assertSame(initialPosition, estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
         assertNull(estimator.getSources());
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
@@ -587,22 +555,21 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
         assertNull(estimator);
 
         // constructor with sources, fingerprint, initial position and listener
-        estimator = new NonLinearRangingAndRssiPositionEstimator3D(sources, fingerprint,
-                initialPosition, this);
+        estimator = new NonLinearRangingAndRssiPositionEstimator3D(sources, fingerprint, initialPosition,
+                this);
 
         // check default values
-        assertSame(estimator.getInitialPosition(), initialPosition);
+        assertSame(initialPosition, estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
@@ -619,14 +586,13 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
         }
         try {
             estimator = new NonLinearRangingAndRssiPositionEstimator3D(
-                    new ArrayList<WifiAccessPointLocated3D>(), fingerprint,
-                    initialPosition, this);
+                    new ArrayList<WifiAccessPointLocated3D>(), fingerprint, initialPosition, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new NonLinearRangingAndRssiPositionEstimator3D(sources,
-                    null, initialPosition, this);
+            estimator = new NonLinearRangingAndRssiPositionEstimator3D(sources, null,
+                    initialPosition, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -646,7 +612,7 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
         estimator.setInitialPosition(initialPosition);
 
         // check
-        assertSame(estimator.getInitialPosition(), initialPosition);
+        assertSame(initialPosition, estimator.getInitialPosition());
     }
 
     @Test
@@ -670,16 +636,14 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
                 new NonLinearRangingAndRssiPositionEstimator3D();
 
         // check default value
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
 
         // set new value
         estimator.setFallbackDistanceStandardDeviation(5.0);
 
         // check
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                5.0, 0.0);
+        assertEquals(5.0, estimator.getFallbackDistanceStandardDeviation(), 0.0);
     }
 
     @Test
@@ -693,14 +657,13 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
         // set new value
         final List<WifiAccessPointLocated3D> sources = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
-            sources.add(new WifiAccessPointLocated3D("id1", FREQUENCY,
-                    new InhomogeneousPoint3D()));
+            sources.add(new WifiAccessPointLocated3D("id1", FREQUENCY, new InhomogeneousPoint3D()));
         }
 
         estimator.setSources(sources);
 
         // check
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
 
         // force IllegalArgumentException
         try {
@@ -729,7 +692,7 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
         estimator.setFingerprint(fingerprint);
 
         // check
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // force IllegalArgumentException
         try {
@@ -751,7 +714,7 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
         estimator.setListener(this);
 
         // check
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
     }
 
     @Test
@@ -783,17 +746,16 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 readings.add(new RangingAndRssiReading<>(accessPoint, distance, rssi));
             }
@@ -803,8 +765,7 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
 
 
             final NonLinearRangingAndRssiPositionEstimator3D estimator =
-                    new NonLinearRangingAndRssiPositionEstimator3D(sources, fingerprint,
-                            this);
+                    new NonLinearRangingAndRssiPositionEstimator3D(sources, fingerprint, this);
 
             reset();
 
@@ -817,13 +778,13 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
             assertNotNull(estimator.getDistances());
             assertNotNull(estimator.getDistanceStandardDeviations());
             assertNull(estimator.getCovariance());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -851,8 +812,8 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
     }
 
     @Test
-    public void testEstimateNoErrorWithInitialPosition() throws LockedException,
-            NotReadyException, PositionEstimationException {
+    public void testEstimateNoErrorWithInitialPosition() throws LockedException, NotReadyException,
+            PositionEstimationException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         int numValid = 0;
@@ -879,17 +840,16 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 readings.add(new RangingAndRssiReading<>(accessPoint, distance, rssi));
             }
@@ -899,8 +859,8 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
 
 
             final NonLinearRangingAndRssiPositionEstimator3D estimator =
-                    new NonLinearRangingAndRssiPositionEstimator3D(sources, fingerprint,
-                            position, this);
+                    new NonLinearRangingAndRssiPositionEstimator3D(sources, fingerprint, position,
+                            this);
 
             reset();
 
@@ -913,13 +873,13 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
             assertNotNull(estimator.getDistances());
             assertNotNull(estimator.getDistanceStandardDeviations());
             assertNull(estimator.getCovariance());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -969,8 +929,7 @@ public class NonLinearRangingAndRssiPositionEstimator3DTest implements
         // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the received Gain
         // Pr = Pte*c^2/((4*pi*f)^2 * d^2)
         final double k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI * FREQUENCY), pathLossExponent);
-        return equivalentTransmittedPower * k /
-                Math.pow(distance, pathLossExponent);
+        return equivalentTransmittedPower * k / Math.pow(distance, pathLossExponent);
     }
 
     private void checkLocked(final NonLinearRangingAndRssiPositionEstimator3D estimator) {

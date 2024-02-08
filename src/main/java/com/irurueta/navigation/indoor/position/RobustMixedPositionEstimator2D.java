@@ -36,8 +36,7 @@ import java.util.List;
  * find the best solution.
  */
 @SuppressWarnings("DuplicatedCode")
-public abstract class RobustMixedPositionEstimator2D extends
-        RobustMixedPositionEstimator<Point2D> {
+public abstract class RobustMixedPositionEstimator2D extends RobustMixedPositionEstimator<Point2D> {
 
     /**
      * Constructor.
@@ -79,13 +78,13 @@ public abstract class RobustMixedPositionEstimator2D extends
         switch (method) {
             case RANSAC:
                 return new RANSACRobustMixedPositionEstimator2D();
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustMixedPositionEstimator2D();
             case MSAC:
                 return new MSACRobustMixedPositionEstimator2D();
             case PROSAC:
                 return new PROSACRobustMixedPositionEstimator2D();
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustMixedPositionEstimator2D();
         }
@@ -106,13 +105,13 @@ public abstract class RobustMixedPositionEstimator2D extends
         switch (method) {
             case RANSAC:
                 return new RANSACRobustMixedPositionEstimator2D(sources);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustMixedPositionEstimator2D(sources);
             case MSAC:
                 return new MSACRobustMixedPositionEstimator2D(sources);
             case PROSAC:
                 return new PROSACRobustMixedPositionEstimator2D(sources);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustMixedPositionEstimator2D(sources);
         }
@@ -133,13 +132,13 @@ public abstract class RobustMixedPositionEstimator2D extends
         switch (method) {
             case RANSAC:
                 return new RANSACRobustMixedPositionEstimator2D(fingerprint);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustMixedPositionEstimator2D(fingerprint);
             case MSAC:
                 return new MSACRobustMixedPositionEstimator2D(fingerprint);
             case PROSAC:
                 return new PROSACRobustMixedPositionEstimator2D(fingerprint);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustMixedPositionEstimator2D(fingerprint);
         }
@@ -164,7 +163,7 @@ public abstract class RobustMixedPositionEstimator2D extends
             case RANSAC:
                 return new RANSACRobustMixedPositionEstimator2D(sources,
                         fingerprint);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustMixedPositionEstimator2D(sources,
                         fingerprint);
             case MSAC:
@@ -173,7 +172,7 @@ public abstract class RobustMixedPositionEstimator2D extends
             case PROSAC:
                 return new PROSACRobustMixedPositionEstimator2D(sources,
                         fingerprint);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustMixedPositionEstimator2D(sources,
                         fingerprint);
@@ -193,13 +192,13 @@ public abstract class RobustMixedPositionEstimator2D extends
         switch (method) {
             case RANSAC:
                 return new RANSACRobustMixedPositionEstimator2D(listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustMixedPositionEstimator2D(listener);
             case MSAC:
                 return new MSACRobustMixedPositionEstimator2D(listener);
             case PROSAC:
                 return new PROSACRobustMixedPositionEstimator2D(listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustMixedPositionEstimator2D(listener);
         }
@@ -223,7 +222,7 @@ public abstract class RobustMixedPositionEstimator2D extends
             case RANSAC:
                 return new RANSACRobustMixedPositionEstimator2D(sources,
                         listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustMixedPositionEstimator2D(sources,
                         listener);
             case MSAC:
@@ -232,7 +231,7 @@ public abstract class RobustMixedPositionEstimator2D extends
             case PROSAC:
                 return new PROSACRobustMixedPositionEstimator2D(sources,
                         listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustMixedPositionEstimator2D(sources,
                         listener);
@@ -257,7 +256,7 @@ public abstract class RobustMixedPositionEstimator2D extends
             case RANSAC:
                 return new RANSACRobustMixedPositionEstimator2D(fingerprint,
                         listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustMixedPositionEstimator2D(fingerprint,
                         listener);
             case MSAC:
@@ -266,7 +265,7 @@ public abstract class RobustMixedPositionEstimator2D extends
             case PROSAC:
                 return new PROSACRobustMixedPositionEstimator2D(fingerprint,
                         listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustMixedPositionEstimator2D(fingerprint,
                         listener);
@@ -294,7 +293,7 @@ public abstract class RobustMixedPositionEstimator2D extends
             case RANSAC:
                 return new RANSACRobustMixedPositionEstimator2D(sources,
                         fingerprint, listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustMixedPositionEstimator2D(sources,
                         fingerprint, listener);
             case MSAC:
@@ -303,7 +302,7 @@ public abstract class RobustMixedPositionEstimator2D extends
             case PROSAC:
                 return new PROSACRobustMixedPositionEstimator2D(sources,
                         fingerprint, listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustMixedPositionEstimator2D(sources,
                         fingerprint, listener);
@@ -331,14 +330,14 @@ public abstract class RobustMixedPositionEstimator2D extends
         switch (method) {
             case RANSAC:
                 return new RANSACRobustMixedPositionEstimator2D();
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustMixedPositionEstimator2D();
             case MSAC:
                 return new MSACRobustMixedPositionEstimator2D();
             case PROSAC:
                 return new PROSACRobustMixedPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustMixedPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores);
@@ -371,7 +370,7 @@ public abstract class RobustMixedPositionEstimator2D extends
         switch (method) {
             case RANSAC:
                 return new RANSACRobustMixedPositionEstimator2D(sources);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustMixedPositionEstimator2D(sources);
             case MSAC:
                 return new MSACRobustMixedPositionEstimator2D(sources);
@@ -379,7 +378,7 @@ public abstract class RobustMixedPositionEstimator2D extends
                 return new PROSACRobustMixedPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores,
                         sources);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustMixedPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores,
@@ -413,7 +412,7 @@ public abstract class RobustMixedPositionEstimator2D extends
         switch (method) {
             case RANSAC:
                 return new RANSACRobustMixedPositionEstimator2D(fingerprint);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustMixedPositionEstimator2D(fingerprint);
             case MSAC:
                 return new MSACRobustMixedPositionEstimator2D(fingerprint);
@@ -421,7 +420,7 @@ public abstract class RobustMixedPositionEstimator2D extends
                 return new PROSACRobustMixedPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores,
                         fingerprint);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustMixedPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores,
@@ -460,7 +459,7 @@ public abstract class RobustMixedPositionEstimator2D extends
             case RANSAC:
                 return new RANSACRobustMixedPositionEstimator2D(sources,
                         fingerprint);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustMixedPositionEstimator2D(sources,
                         fingerprint);
             case MSAC:
@@ -470,7 +469,7 @@ public abstract class RobustMixedPositionEstimator2D extends
                 return new PROSACRobustMixedPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores,
                         sources, fingerprint);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustMixedPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores,
@@ -501,7 +500,7 @@ public abstract class RobustMixedPositionEstimator2D extends
         switch (method) {
             case RANSAC:
                 return new RANSACRobustMixedPositionEstimator2D(listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustMixedPositionEstimator2D(listener);
             case MSAC:
                 return new MSACRobustMixedPositionEstimator2D(listener);
@@ -509,7 +508,7 @@ public abstract class RobustMixedPositionEstimator2D extends
                 return new PROSACRobustMixedPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores,
                         listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustMixedPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores,
@@ -546,7 +545,7 @@ public abstract class RobustMixedPositionEstimator2D extends
             case RANSAC:
                 return new RANSACRobustMixedPositionEstimator2D(sources,
                         listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustMixedPositionEstimator2D(sources,
                         listener);
             case MSAC:
@@ -556,7 +555,7 @@ public abstract class RobustMixedPositionEstimator2D extends
                 return new PROSACRobustMixedPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores,
                         sources, listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustMixedPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores,
@@ -593,7 +592,7 @@ public abstract class RobustMixedPositionEstimator2D extends
             case RANSAC:
                 return new RANSACRobustMixedPositionEstimator2D(fingerprint,
                         listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustMixedPositionEstimator2D(fingerprint,
                         listener);
             case MSAC:
@@ -603,7 +602,7 @@ public abstract class RobustMixedPositionEstimator2D extends
                 return new PROSACRobustMixedPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores,
                         fingerprint, listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustMixedPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores,
@@ -644,7 +643,7 @@ public abstract class RobustMixedPositionEstimator2D extends
             case RANSAC:
                 return new RANSACRobustMixedPositionEstimator2D(sources,
                         fingerprint, listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustMixedPositionEstimator2D(sources,
                         fingerprint, listener);
             case MSAC:
@@ -654,7 +653,7 @@ public abstract class RobustMixedPositionEstimator2D extends
                 return new PROSACRobustMixedPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores,
                         sources, fingerprint, listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustMixedPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores,

@@ -24,8 +24,7 @@ import java.util.List;
  * @param <R> a {@link RssiReading} type.
  * @param <S> a {@link RadioSource} type.
  */
-public class RssiFingerprint<S extends RadioSource, R extends RssiReading<S>>
-        extends Fingerprint<S, R> {
+public class RssiFingerprint<S extends RadioSource, R extends RssiReading<S>> extends Fingerprint<S, R> {
 
     /**
      * Constructor.
@@ -44,20 +43,20 @@ public class RssiFingerprint<S extends RadioSource, R extends RssiReading<S>>
     }
 
     /**
-     * Gets euclidean distance of signal readings from another fingerprint.
+     * Gets Euclidean distance of signal readings from another fingerprint.
      *
      * @param otherFingerprint other fingerprint to compare.
-     * @return euclidean distance of signal readings from another fingerprint.
+     * @return Euclidean distance of signal readings from another fingerprint.
      */
     public double distanceTo(final RssiFingerprint<S, R> otherFingerprint) {
         return Math.sqrt(sqrDistanceTo(otherFingerprint));
     }
 
     /**
-     * Gets squared euclidean distance of signal readings from another fingerprint.
+     * Gets squared Euclidean distance of signal readings from another fingerprint.
      *
      * @param otherFingerprint other fingerprint to compare.
-     * @return squared euclidean distance of signal readings from another
+     * @return squared Euclidean distance of signal readings from another
      * fingerprint.
      */
     @SuppressWarnings("Duplicates")
@@ -100,29 +99,29 @@ public class RssiFingerprint<S extends RadioSource, R extends RssiReading<S>>
 
         double result = 0.0;
         for (final R reading : mReadings) {
-            result += reading.getRssi() / (double) mReadings.size();
+            result += reading.getRssi() / mReadings.size();
         }
 
         return result;
     }
 
     /**
-     * Gets euclidean distance of signal readings from another fingerprint.
+     * Gets Euclidean distance of signal readings from another fingerprint.
      *
      * @param otherFingerprint other fingerprint to compare.
-     * @return euclidean distance of signal readings from another fingerprint.
+     * @return Euclidean distance of signal readings from another fingerprint.
      */
     public double noMeanDistanceTo(final RssiFingerprint<S, R> otherFingerprint) {
         return Math.sqrt(noMeanSqrDistanceTo(otherFingerprint));
     }
 
     /**
-     * Gets squared euclidean distance of signal readings with mean RSSI removed from another fingerprint.
+     * Gets squared Euclidean distance of signal readings with mean RSSI removed from another fingerprint.
      * Mean RSSI's are taken into account so that bias effects introduced by different device's hardware is
      * partially removed.
      *
      * @param otherFingerprint other fingerprint to compare.
-     * @return squared euclidean distance of signal readings from another
+     * @return squared Euclidean distance of signal readings from another
      * fingerprint with average RSSI's removed.
      */
     @SuppressWarnings("Duplicates")

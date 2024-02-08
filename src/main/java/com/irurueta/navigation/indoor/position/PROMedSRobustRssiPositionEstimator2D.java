@@ -376,6 +376,7 @@ public class PROMedSRobustRssiPositionEstimator2D extends RobustRssiPositionEsti
      *
      * @return quality scores corresponding to each radio source.
      */
+    @Override
     public double[] getSourceQualityScores() {
         return mSourceQualityScores;
     }
@@ -389,6 +390,7 @@ public class PROMedSRobustRssiPositionEstimator2D extends RobustRssiPositionEsti
      * @throws IllegalArgumentException if provided quality scores length is smaller
      *                                  than minimum required samples.
      */
+    @Override
     public void setSourceQualityScores(final double[] sourceQualityScores)
             throws LockedException {
         if (isLocked()) {
@@ -406,6 +408,7 @@ public class PROMedSRobustRssiPositionEstimator2D extends RobustRssiPositionEsti
      * @return quality scores corresponding to each reading within provided
      * fingerprint.
      */
+    @Override
     public double[] getFingerprintReadingsQualityScores() {
         return mFingerprintReadingsQualityScores;
     }
@@ -422,6 +425,7 @@ public class PROMedSRobustRssiPositionEstimator2D extends RobustRssiPositionEsti
      * @throws IllegalArgumentException if provided quality scores length is smaller
      *                                  than minimum required samples.
      */
+    @Override
     public void setFingerprintReadingsQualityScores(
             final double[] fingerprintReadingsQualityScores) throws LockedException {
         if (isLocked()) {
@@ -487,7 +491,7 @@ public class PROMedSRobustRssiPositionEstimator2D extends RobustRssiPositionEsti
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-        return RobustEstimatorMethod.PROMedS;
+        return RobustEstimatorMethod.PROMEDS;
     }
 
     /**

@@ -36,7 +36,7 @@ import java.util.List;
 
 /**
  * This is an abstract class to robustly estimate position, transmitted power and path-loss
- * exponent of a radio source (e.g. WiFi access point or bluetooth beacon), by discarding
+ * exponent of a radio source (e.g. Wi-Fi access point or bluetooth beacon), by discarding
  * outliers and assuming that the ranging data is available to obtain position with
  * greater accuracy and that the radio source emits isotropically following the
  * expression below:
@@ -76,14 +76,14 @@ public abstract class SequentialRobustMixedRadioSourceEstimator<S extends RadioS
      * data when no robust method is provided.
      */
     public static final RobustEstimatorMethod DEFAULT_PANGING_ROBUST_METHOD =
-            RobustEstimatorMethod.PROMedS;
+            RobustEstimatorMethod.PROMEDS;
 
     /**
      * Default robust estimator method for path-loss exponent and transmitted power
      * estimation using RSSI data when no robust method is provided.
      */
     public static final RobustEstimatorMethod DEFAULT_RSSI_ROBUST_METHOD =
-            RobustEstimatorMethod.PROMedS;
+            RobustEstimatorMethod.PROMEDS;
 
     /**
      * Indicates that result is refined by default using all found inliers.
@@ -97,7 +97,7 @@ public abstract class SequentialRobustMixedRadioSourceEstimator<S extends RadioS
 
     /**
      * Default amount of progress variation before notifying a change in estimation progress.
-     * By default this is set to 5%.
+     * By default, this is set to 5%.
      */
     public static final float DEFAULT_PROGRESS_DELTA = 0.05f;
 

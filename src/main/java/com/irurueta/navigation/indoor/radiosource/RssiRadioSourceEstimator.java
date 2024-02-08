@@ -33,7 +33,7 @@ import java.util.List;
 
 /**
  * Estimates position, transmitted power and path loss exponent of a
- * radio source (e.g. WiFi access point or bluetooth beacon) assuming
+ * radio source (e.g. Wi-Fi access point or bluetooth beacon) assuming
  * that the radio source emits isotropically following the expression
  * below:
  * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,
@@ -92,7 +92,7 @@ public abstract class RssiRadioSourceEstimator<S extends RadioSource, P extends 
 
     /**
      * Indicates whether radio source transmitted power estimation is enabled or not by
-     * default. Typically this data is required for WiFi Access points, but it is already
+     * default. Typically, this data is required for Wi-Fi Access points, but it is already
      * provided for Beacons (and hence its estimation is not needed).
      */
     public static final boolean DEFAULT_TRANSMITTED_POWER_ESTIMATION_ENABLED = true;
@@ -1830,8 +1830,7 @@ public abstract class RssiRadioSourceEstimator<S extends RadioSource, P extends 
             for (final RssiReadingLocated<S, P> reading : mReadings) {
                 final P position = reading.getPosition();
                 for (int i = 0; i < dims; i++) {
-                    result[i] += position.getInhomogeneousCoordinate(i) /
-                            (double) num;
+                    result[i] += position.getInhomogeneousCoordinate(i) / num;
                 }
             }
         } else {

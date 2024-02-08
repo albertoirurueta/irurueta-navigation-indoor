@@ -16,11 +16,11 @@
 package com.irurueta.navigation.indoor;
 
 /**
- * Contains a radio source type, which can be either a WiFi Access Point or a bluetooth Beacon.
+ * Contains a radio source type, which can be either a Wi-Fi Access Point or a bluetooth Beacon.
  */
 public enum RadioSourceType {
     /**
-     * A WiFi Access point.
+     * A Wi-Fi Access point.
      */
     WIFI_ACCESS_POINT,
 

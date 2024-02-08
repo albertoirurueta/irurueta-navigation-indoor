@@ -41,7 +41,7 @@ public class BeaconLocated<P extends Point<?>> extends Beacon
     /**
      * Constructor.
      *
-     * @param identifiers      list of the multi-part identifiers of the beacon.
+     * @param identifiers      list of the multipart identifiers of the beacon.
      * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI
      *                         (expressed in dBm's).
      * @param position         position where beacon is located.
@@ -62,7 +62,7 @@ public class BeaconLocated<P extends Point<?>> extends Beacon
     /**
      * Constructor.
      *
-     * @param identifiers      list of the multi-part identifiers of the beacon.
+     * @param identifiers      list of the multipart identifiers of the beacon.
      * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param bluetoothAddress the bluetooth mac address.
      * @param beaconTypeCode   the two byte value indicating the type of beacon.
@@ -93,7 +93,7 @@ public class BeaconLocated<P extends Point<?>> extends Beacon
     /**
      * Constructor.
      *
-     * @param identifiers        list of the multi-part identifiers of the beacon.
+     * @param identifiers        list of the multipart identifiers of the beacon.
      * @param transmittedPower   calibrated measured Tx power of the Beacon in RSSI
      *                           (expressed in dBm's).
      * @param position           position where beacon is located.
@@ -120,7 +120,7 @@ public class BeaconLocated<P extends Point<?>> extends Beacon
     /**
      * Constructor.
      *
-     * @param identifiers        list of the multi-part identifiers of the beacon.
+     * @param identifiers        list of the multipart identifiers of the beacon.
      * @param transmittedPower   calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param bluetoothAddress   the bluetooth mac address.
      * @param beaconTypeCode     the two byte value indicating the type of beacon.
@@ -157,13 +157,13 @@ public class BeaconLocated<P extends Point<?>> extends Beacon
     /**
      * Constructor.
      *
-     * @param identifiers      list of the multi-part identifiers of the beacon.
+     * @param identifiers      list of the multipart identifiers of the beacon.
      * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI
      *                         (expressed in dBm's).
      * @param frequency        frequency used by this Beacon.
      * @param position         position where beacon is located.
      * @throws IllegalArgumentException if either identifiers or position are null or
-     *                                  frequency is negative..
+     *                                  frequency is negative.
      */
     public BeaconLocated(final List<BeaconIdentifier> identifiers,
                          final double transmittedPower,
@@ -181,7 +181,7 @@ public class BeaconLocated<P extends Point<?>> extends Beacon
     /**
      * Constructor.
      *
-     * @param identifiers      list of the multi-part identifiers of the beacon.
+     * @param identifiers      list of the multipart identifiers of the beacon.
      * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency        frequency used by this Beacon.
      * @param bluetoothAddress the bluetooth mac address.
@@ -215,7 +215,7 @@ public class BeaconLocated<P extends Point<?>> extends Beacon
     /**
      * Constructor.
      *
-     * @param identifiers        list of the multi-part identifiers of the beacon.
+     * @param identifiers        list of the multipart identifiers of the beacon.
      * @param transmittedPower   calibrated measured Tx power of the Beacon in RSSI
      *                           (expressed in dBm's).
      * @param frequency          frequency used by this Beacon.
@@ -245,7 +245,7 @@ public class BeaconLocated<P extends Point<?>> extends Beacon
     /**
      * Constructor.
      *
-     * @param identifiers        list of the multi-part identifiers of the beacon.
+     * @param identifiers        list of the multipart identifiers of the beacon.
      * @param transmittedPower   calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency          frequency used by this Beacon.
      * @param bluetoothAddress   the bluetooth mac address.

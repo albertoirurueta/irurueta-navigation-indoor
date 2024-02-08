@@ -29,7 +29,7 @@ import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import java.util.List;
 
 /**
- * Robustly estimated 2D position of a radio source (e.g. WiFi
+ * Robustly estimated 2D position of a radio source (e.g. Wi-Fi
  * access point or bluetooth beacon), by discarding outliers using PROMedS
  * algorithm.
  *
@@ -422,6 +422,7 @@ public class PROMedSRobustRangingRadioSourceEstimator2D<S extends RadioSource> e
      * @throws LockedException          if robust solver is locked because an
      *                                  estimation is already in progress.
      */
+    @Override
     public void setQualityScores(final double[] qualityScores) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
@@ -575,7 +576,7 @@ public class PROMedSRobustRangingRadioSourceEstimator2D<S extends RadioSource> e
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-        return RobustEstimatorMethod.PROMedS;
+        return RobustEstimatorMethod.PROMEDS;
     }
 
     /**

@@ -16,7 +16,7 @@
 package com.irurueta.navigation.indoor;
 
 /**
- * Interface defining any radio source (e.g. WiFi access point or
+ * Interface defining any radio source (e.g. Wi-Fi access point or
  * Bluetooth beacon) whose transmitted power is known.
  */
 public interface RadioSourceWithPower extends RadioSource {

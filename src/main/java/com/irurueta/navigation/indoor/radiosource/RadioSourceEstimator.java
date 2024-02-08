@@ -134,7 +134,7 @@ public abstract class RadioSourceEstimator<P extends Point<?>, R extends Reading
     /**
      * Sets radio signal readings belonging to the same radio source.
      *
-     * @param readings WiFi signal readings belonging to the same radio source.
+     * @param readings Wi-Fi signal readings belonging to the same radio source.
      * @throws LockedException          if estimator is locked.
      * @throws IllegalArgumentException if readings are not valid.
      */
@@ -192,9 +192,9 @@ public abstract class RadioSourceEstimator<P extends Point<?>, R extends Reading
     }
 
     /**
-     * Gets estimated estimated position and stores result into provided instance.
+     * Gets estimated position and stores result into provided instance.
      *
-     * @param estimatedPosition instance where estimated estimated position will be stored.
+     * @param estimatedPosition instance where estimated position will be stored.
      */
     public void getEstimatedPosition(final P estimatedPosition) {
         if (mEstimatedPositionCoordinates != null) {

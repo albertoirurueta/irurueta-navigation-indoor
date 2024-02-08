@@ -41,7 +41,7 @@ public class NonLinearRangingAndRssiPositionEstimator3D extends
      */
     public NonLinearRangingAndRssiPositionEstimator3D() {
         super();
-        init();
+        initialize();
     }
 
     /**
@@ -55,7 +55,7 @@ public class NonLinearRangingAndRssiPositionEstimator3D extends
     public NonLinearRangingAndRssiPositionEstimator3D(
             final List<? extends RadioSourceLocated<Point3D>> sources) {
         super();
-        init();
+        initialize();
         internalSetSources(sources);
     }
 
@@ -70,7 +70,7 @@ public class NonLinearRangingAndRssiPositionEstimator3D extends
             final Fingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
                     extends RadioSource>> fingerprint) {
         super();
-        init();
+        initialize();
         internalSetFingerprint(fingerprint);
     }
 
@@ -89,7 +89,7 @@ public class NonLinearRangingAndRssiPositionEstimator3D extends
             final Fingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
                     extends RadioSource>> fingerprint) {
         super();
-        init();
+        initialize();
         internalSetSources(sources);
         internalSetFingerprint(fingerprint);
     }
@@ -102,7 +102,7 @@ public class NonLinearRangingAndRssiPositionEstimator3D extends
     public NonLinearRangingAndRssiPositionEstimator3D(
             final RangingAndRssiPositionEstimatorListener<Point3D> listener) {
         super(listener);
-        init();
+        initialize();
     }
 
     /**
@@ -118,7 +118,7 @@ public class NonLinearRangingAndRssiPositionEstimator3D extends
             final List<? extends RadioSourceLocated<Point3D>> sources,
             final RangingAndRssiPositionEstimatorListener<Point3D> listener) {
         super(listener);
-        init();
+        initialize();
         internalSetSources(sources);
     }
 
@@ -135,7 +135,7 @@ public class NonLinearRangingAndRssiPositionEstimator3D extends
                     extends RadioSource>> fingerprint,
             final RangingAndRssiPositionEstimatorListener<Point3D> listener) {
         super(listener);
-        init();
+        initialize();
         internalSetFingerprint(fingerprint);
     }
 
@@ -156,7 +156,7 @@ public class NonLinearRangingAndRssiPositionEstimator3D extends
                     extends RadioSource>> fingerprint,
             final RangingAndRssiPositionEstimatorListener<Point3D> listener) {
         super(listener);
-        init();
+        initialize();
         internalSetSources(sources);
         internalSetFingerprint(fingerprint);
     }
@@ -168,7 +168,7 @@ public class NonLinearRangingAndRssiPositionEstimator3D extends
      */
     public NonLinearRangingAndRssiPositionEstimator3D(final Point3D initialPosition) {
         super(initialPosition);
-        init();
+        initialize();
     }
 
     /**
@@ -184,7 +184,7 @@ public class NonLinearRangingAndRssiPositionEstimator3D extends
             final List<? extends RadioSourceLocated<Point3D>> sources,
             final Point3D initialPosition) {
         super(initialPosition);
-        init();
+        initialize();
         internalSetSources(sources);
     }
 
@@ -201,7 +201,7 @@ public class NonLinearRangingAndRssiPositionEstimator3D extends
                     extends RadioSource>> fingerprint,
             final Point3D initialPosition) {
         super(initialPosition);
-        init();
+        initialize();
         internalSetFingerprint(fingerprint);
     }
 
@@ -222,7 +222,7 @@ public class NonLinearRangingAndRssiPositionEstimator3D extends
                     extends RadioSource>> fingerprint,
             final Point3D initialPosition) {
         super(initialPosition);
-        init();
+        initialize();
         internalSetSources(sources);
         internalSetFingerprint(fingerprint);
     }
@@ -237,7 +237,7 @@ public class NonLinearRangingAndRssiPositionEstimator3D extends
             final Point3D initialPosition,
             final RangingAndRssiPositionEstimatorListener<Point3D> listener) {
         super(initialPosition, listener);
-        init();
+        initialize();
     }
 
     /**
@@ -255,7 +255,7 @@ public class NonLinearRangingAndRssiPositionEstimator3D extends
             final Point3D initialPosition,
             final RangingAndRssiPositionEstimatorListener<Point3D> listener) {
         super(initialPosition, listener);
-        init();
+        initialize();
         internalSetSources(sources);
     }
 
@@ -274,7 +274,7 @@ public class NonLinearRangingAndRssiPositionEstimator3D extends
             final Point3D initialPosition,
             final RangingAndRssiPositionEstimatorListener<Point3D> listener) {
         super(initialPosition, listener);
-        init();
+        initialize();
         internalSetFingerprint(fingerprint);
     }
 
@@ -297,7 +297,7 @@ public class NonLinearRangingAndRssiPositionEstimator3D extends
             final Point3D initialPosition,
             final RangingAndRssiPositionEstimatorListener<Point3D> listener) {
         super(initialPosition, listener);
-        init();
+        initialize();
         internalSetSources(sources);
         internalSetFingerprint(fingerprint);
     }
@@ -353,7 +353,7 @@ public class NonLinearRangingAndRssiPositionEstimator3D extends
     /**
      * Initializes lateration solver.
      */
-    private void init() {
+    private void initialize() {
         mTrilaterationSolver = new NonLinearLeastSquaresLateration3DSolver(
                 mLaterationSolverListener);
     }

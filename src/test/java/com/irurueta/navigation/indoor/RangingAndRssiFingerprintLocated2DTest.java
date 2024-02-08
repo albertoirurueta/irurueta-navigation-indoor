@@ -48,9 +48,9 @@ public class RangingAndRssiFingerprintLocated2DTest {
         fingerprint = new RangingAndRssiFingerprintLocated2D<>(readings, position);
 
         // check
-        assertEquals(fingerprint.getReadings(), readings);
-        assertNotSame(fingerprint.getReadings(), readings);
-        assertSame(fingerprint.getPosition(), position);
+        assertEquals(readings, fingerprint.getReadings());
+        assertNotSame(readings, fingerprint.getReadings());
+        assertSame(position, fingerprint.getPosition());
         assertNull(fingerprint.getPositionCovariance());
 
         // force IllegalArgumentException
@@ -72,17 +72,17 @@ public class RangingAndRssiFingerprintLocated2DTest {
         fingerprint = new RangingAndRssiFingerprintLocated2D<>(readings, position, cov);
 
         // check
-        assertEquals(fingerprint.getReadings(), readings);
-        assertNotSame(fingerprint.getReadings(), readings);
-        assertSame(fingerprint.getPosition(), position);
-        assertSame(fingerprint.getPositionCovariance(), cov);
+        assertEquals(readings, fingerprint.getReadings());
+        assertNotSame(readings, fingerprint.getReadings());
+        assertSame(position, fingerprint.getPosition());
+        assertSame(cov, fingerprint.getPositionCovariance());
 
         fingerprint = new RangingAndRssiFingerprintLocated2D<>(readings, position, null);
 
         // check
-        assertEquals(fingerprint.getReadings(), readings);
-        assertNotSame(fingerprint.getReadings(), readings);
-        assertSame(fingerprint.getPosition(), position);
+        assertEquals(readings, fingerprint.getReadings());
+        assertNotSame(readings, fingerprint.getReadings());
+        assertSame(position, fingerprint.getPosition());
         assertNull(fingerprint.getPositionCovariance());
 
         // force IllegalArgumentException
@@ -116,10 +116,10 @@ public class RangingAndRssiFingerprintLocated2DTest {
                 new RangingAndRssiFingerprintLocated2D<>(readings, position, cov);
 
         // check
-        assertEquals(fingerprint1.getReadings(), readings);
-        assertNotSame(fingerprint1.getReadings(), readings);
-        assertSame(fingerprint1.getPosition(), position);
-        assertSame(fingerprint1.getPositionCovariance(), cov);
+        assertEquals(readings, fingerprint1.getReadings());
+        assertNotSame(readings, fingerprint1.getReadings());
+        assertSame(position, fingerprint1.getPosition());
+        assertSame(cov, fingerprint1.getPositionCovariance());
 
         // serialize and deserialize
         final byte[] bytes = SerializationHelper.serialize(fingerprint1);

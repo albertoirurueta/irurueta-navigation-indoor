@@ -43,11 +43,11 @@ public class WifiAccessPointLocated2DTest {
 
         // check default values
         assertNull(ap.getBssid());
-        assertEquals(ap.getFrequency(), 0.0, 0.0);
+        assertEquals(0.0, ap.getFrequency(), 0.0);
         assertNull(ap.getSsid());
         assertNull(ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // test constructor with bssid, frequency and position
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -57,12 +57,12 @@ public class WifiAccessPointLocated2DTest {
         ap = new WifiAccessPointLocated2D(BSSID, FREQUENCY, position);
 
         // check default values
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
         assertNull(ap.getSsid());
-        assertSame(ap.getPosition(), position);
+        assertSame(position, ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // force IllegalArgumentException
         ap = null;
@@ -87,30 +87,27 @@ public class WifiAccessPointLocated2DTest {
         ap = new WifiAccessPointLocated2D(BSSID, FREQUENCY, SSID, position);
 
         // check default values
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
-        assertEquals(ap.getSsid(), SSID);
-        assertSame(ap.getPosition(), position);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
+        assertEquals(SSID, ap.getSsid());
+        assertSame(position, ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // force IllegalArgumentException
         ap = null;
         try {
-            ap = new WifiAccessPointLocated2D(null, FREQUENCY, SSID,
-                    position);
+            ap = new WifiAccessPointLocated2D(null, FREQUENCY, SSID, position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointLocated2D(BSSID, -FREQUENCY, SSID,
-                    position);
+            ap = new WifiAccessPointLocated2D(BSSID, -FREQUENCY, SSID, position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointLocated2D(BSSID, FREQUENCY, SSID,
-                    null);
+            ap = new WifiAccessPointLocated2D(BSSID, FREQUENCY, SSID, null);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -122,28 +119,27 @@ public class WifiAccessPointLocated2DTest {
         ap = new WifiAccessPointLocated2D(BSSID, FREQUENCY, position, cov);
 
         // check default values
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
         assertNull(ap.getSsid());
-        assertSame(ap.getPosition(), position);
-        assertSame(ap.getPositionCovariance(), cov);
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertSame(position, ap.getPosition());
+        assertSame(cov, ap.getPositionCovariance());
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         ap = new WifiAccessPointLocated2D(BSSID, FREQUENCY, position, null);
 
         // check default values
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
         assertNull(ap.getSsid());
-        assertSame(ap.getPosition(), position);
+        assertSame(position, ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // force IllegalArgumentException
         ap = null;
         try {
-            ap = new WifiAccessPointLocated2D(null, FREQUENCY,
-                    position, cov);
+            ap = new WifiAccessPointLocated2D(null, FREQUENCY, position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -153,14 +149,12 @@ public class WifiAccessPointLocated2DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointLocated2D(BSSID, FREQUENCY, null,
-                    cov);
+            ap = new WifiAccessPointLocated2D(BSSID, FREQUENCY, null, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointLocated2D(BSSID, FREQUENCY, position,
-                    new Matrix(1, 1));
+            ap = new WifiAccessPointLocated2D(BSSID, FREQUENCY, position, new Matrix(1, 1));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -171,47 +165,42 @@ public class WifiAccessPointLocated2DTest {
         ap = new WifiAccessPointLocated2D(BSSID, FREQUENCY, SSID, position, cov);
 
         // check default values
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
-        assertEquals(ap.getSsid(), SSID);
-        assertSame(ap.getPosition(), position);
-        assertSame(ap.getPositionCovariance(), cov);
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
+        assertEquals(SSID, ap.getSsid());
+        assertSame(position, ap.getPosition());
+        assertSame(cov, ap.getPositionCovariance());
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
-        ap = new WifiAccessPointLocated2D(BSSID, FREQUENCY, SSID, position,
-                null);
+        ap = new WifiAccessPointLocated2D(BSSID, FREQUENCY, SSID, position, null);
 
         // check default values
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
-        assertEquals(ap.getSsid(), SSID);
-        assertSame(ap.getPosition(), position);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
+        assertEquals(SSID, ap.getSsid());
+        assertSame(position, ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // force IllegalArgumentException
         ap = null;
         try {
-            ap = new WifiAccessPointLocated2D(null, FREQUENCY, SSID,
-                    position, cov);
+            ap = new WifiAccessPointLocated2D(null, FREQUENCY, SSID, position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointLocated2D(BSSID, -FREQUENCY, SSID,
-                    position, cov);
+            ap = new WifiAccessPointLocated2D(BSSID, -FREQUENCY, SSID, position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointLocated2D(BSSID, FREQUENCY, SSID,
-                    null, cov);
+            ap = new WifiAccessPointLocated2D(BSSID, FREQUENCY, SSID, null, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointLocated2D(BSSID, FREQUENCY, SSID,
-                    position, new Matrix(1, 1));
+            ap = new WifiAccessPointLocated2D(BSSID, FREQUENCY, SSID, position, new Matrix(1, 1));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -224,14 +213,12 @@ public class WifiAccessPointLocated2DTest {
         final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
                 randomizer.nextDouble(MIN_POS, MAX_POS),
                 randomizer.nextDouble(MIN_POS, MAX_POS));
-        final WifiAccessPointLocated2D ap1 = new WifiAccessPointLocated2D("bssid1",
-                FREQUENCY, position);
-        final WifiAccessPointLocated2D ap2 = new WifiAccessPointLocated2D("bssid1",
-                FREQUENCY, position);
-        final WifiAccessPointLocated2D ap3 = new WifiAccessPointLocated2D("bssid2",
-                FREQUENCY, position);
+        final WifiAccessPointLocated2D ap1 = new WifiAccessPointLocated2D("bssid1", FREQUENCY, position);
+        final WifiAccessPointLocated2D ap2 = new WifiAccessPointLocated2D("bssid1", FREQUENCY, position);
+        final WifiAccessPointLocated2D ap3 = new WifiAccessPointLocated2D("bssid2", FREQUENCY, position);
 
         // check
+        //noinspection EqualsWithItself
         assertEquals(ap1, ap1);
         assertEquals(ap1, ap2);
         assertNotEquals(ap1, ap3);
@@ -243,12 +230,9 @@ public class WifiAccessPointLocated2DTest {
         final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
                 randomizer.nextDouble(MIN_POS, MAX_POS),
                 randomizer.nextDouble(MIN_POS, MAX_POS));
-        final WifiAccessPointLocated2D ap1 = new WifiAccessPointLocated2D("bssid1",
-                FREQUENCY, position);
-        final WifiAccessPointLocated2D ap2 = new WifiAccessPointLocated2D("bssid1",
-                FREQUENCY, position);
-        final WifiAccessPointLocated2D ap3 = new WifiAccessPointLocated2D("bssid2",
-                FREQUENCY, position);
+        final WifiAccessPointLocated2D ap1 = new WifiAccessPointLocated2D("bssid1", FREQUENCY, position);
+        final WifiAccessPointLocated2D ap2 = new WifiAccessPointLocated2D("bssid1", FREQUENCY, position);
+        final WifiAccessPointLocated2D ap3 = new WifiAccessPointLocated2D("bssid2", FREQUENCY, position);
 
         // check
         assertEquals(ap1.hashCode(), ap2.hashCode());
@@ -266,12 +250,12 @@ public class WifiAccessPointLocated2DTest {
         final WifiAccessPointLocated2D ap1 = new WifiAccessPointLocated2D(BSSID, FREQUENCY, SSID, position, cov);
 
         // check
-        assertEquals(ap1.getBssid(), BSSID);
-        assertEquals(ap1.getFrequency(), FREQUENCY, 0.0);
-        assertEquals(ap1.getSsid(), SSID);
-        assertSame(ap1.getPosition(), position);
-        assertSame(ap1.getPositionCovariance(), cov);
-        assertEquals(ap1.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(BSSID, ap1.getBssid());
+        assertEquals(FREQUENCY, ap1.getFrequency(), 0.0);
+        assertEquals(SSID, ap1.getSsid());
+        assertSame(position, ap1.getPosition());
+        assertSame(cov, ap1.getPositionCovariance());
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap1.getType());
 
         // serialize and deserialize
         final byte[] bytes = SerializationHelper.serialize(ap1);

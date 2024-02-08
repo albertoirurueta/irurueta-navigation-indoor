@@ -130,10 +130,8 @@ public class AltBeaconUtilsTest {
 
         final double distance = AltBeaconUtils.getDistance(c1, c2, c3, ratio);
 
-        assertEquals(ratio, AltBeaconUtils.getRatio(c1, c2, c3, distance),
-                ABSOLUTE_ERROR);
-        assertEquals(distance, c1 * Math.pow(ratio, c2) + c3,
-                ABSOLUTE_ERROR);
+        assertEquals(ratio, AltBeaconUtils.getRatio(c1, c2, c3, distance), ABSOLUTE_ERROR);
+        assertEquals(distance, c1 * Math.pow(ratio, c2) + c3, ABSOLUTE_ERROR);
     }
 
     @Test
@@ -147,16 +145,12 @@ public class AltBeaconUtilsTest {
         final double transmittedPower = randomizer.nextDouble(MIN_POWER, MAX_POWER);
         final double ratio = randomizer.nextDouble(MIN_RATIO, MAX_RATIO);
 
-        final double receivedPower = AltBeaconUtils.getReceivedPower(ratio,
-                transmittedPower);
+        final double receivedPower = AltBeaconUtils.getReceivedPower(ratio, transmittedPower);
 
-        final double distance = AltBeaconUtils.getDistance(c1, c2, c3,
-                receivedPower, transmittedPower);
+        final double distance = AltBeaconUtils.getDistance(c1, c2, c3, receivedPower, transmittedPower);
 
-        assertEquals(ratio, AltBeaconUtils.getRatio(c1, c2, c3, distance),
-                ABSOLUTE_ERROR);
-        assertEquals(distance, c1 * Math.pow(ratio, c2) + c3,
-                ABSOLUTE_ERROR);
+        assertEquals(ratio, AltBeaconUtils.getRatio(c1, c2, c3, distance), ABSOLUTE_ERROR);
+        assertEquals(distance, c1 * Math.pow(ratio, c2) + c3, ABSOLUTE_ERROR);
     }
 
     @Test
@@ -171,8 +165,7 @@ public class AltBeaconUtilsTest {
 
         final double ratio = AltBeaconUtils.getRatio(c1, c2, c3, distance);
 
-        assertEquals(distance, AltBeaconUtils.getDistance(c1, c2, c3, ratio),
-                ABSOLUTE_ERROR);
+        assertEquals(distance, AltBeaconUtils.getDistance(c1, c2, c3, ratio), ABSOLUTE_ERROR);
     }
 
     @Test
@@ -185,8 +178,7 @@ public class AltBeaconUtilsTest {
         final double ratio = AltBeaconUtils.getRatio(receivedPower, transmittedPower);
 
         // check
-        assertEquals(ratio, receivedPower / transmittedPower,
-                ABSOLUTE_ERROR);
+        assertEquals(ratio, receivedPower / transmittedPower, ABSOLUTE_ERROR);
     }
 
     @Test
@@ -198,9 +190,7 @@ public class AltBeaconUtilsTest {
 
         final double ratio = AltBeaconUtils.getRatio(receivedPower, transmittedPower);
 
-        assertEquals(receivedPower,
-                AltBeaconUtils.getReceivedPower(ratio, transmittedPower),
-                ABSOLUTE_ERROR);
+        assertEquals(receivedPower, AltBeaconUtils.getReceivedPower(ratio, transmittedPower), ABSOLUTE_ERROR);
     }
 
     @Test
@@ -214,11 +204,10 @@ public class AltBeaconUtilsTest {
         final double distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
         final double transmittedPower = randomizer.nextDouble(MIN_POWER, MAX_POWER);
 
-        final double receivedPower = AltBeaconUtils.getReceivedPower(c1, c2, c3,
-                distance, transmittedPower);
+        final double receivedPower = AltBeaconUtils.getReceivedPower(c1, c2, c3, distance, transmittedPower);
 
-        assertEquals(distance, AltBeaconUtils.getDistance(c1, c2, c3,
-                receivedPower, transmittedPower), ABSOLUTE_ERROR);
+        assertEquals(distance, AltBeaconUtils.getDistance(c1, c2, c3, receivedPower, transmittedPower),
+                ABSOLUTE_ERROR);
     }
 
     @Test
@@ -230,9 +219,7 @@ public class AltBeaconUtilsTest {
 
         final double ratio = AltBeaconUtils.getRatio(receivedPower, transmittedPower);
 
-        assertEquals(transmittedPower,
-                AltBeaconUtils.getTransmittedPower(ratio, receivedPower),
-                ABSOLUTE_ERROR);
+        assertEquals(transmittedPower, AltBeaconUtils.getTransmittedPower(ratio, receivedPower), ABSOLUTE_ERROR);
     }
 
     @Test
@@ -246,11 +233,10 @@ public class AltBeaconUtilsTest {
         final double distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
         final double receivedPower = randomizer.nextDouble(MIN_POWER, MAX_POWER);
 
-        final double transmittedPower = AltBeaconUtils.getTransmittedPower(c1, c2, c3,
-                distance, receivedPower);
+        final double transmittedPower = AltBeaconUtils.getTransmittedPower(c1, c2, c3, distance, receivedPower);
 
-        assertEquals(distance, AltBeaconUtils.getDistance(c1, c2, c3,
-                receivedPower, transmittedPower), ABSOLUTE_ERROR);
+        assertEquals(distance, AltBeaconUtils.getDistance(c1, c2, c3, receivedPower, transmittedPower),
+                ABSOLUTE_ERROR);
     }
 
     @Test
@@ -260,14 +246,12 @@ public class AltBeaconUtilsTest {
         final double frequency = randomizer.nextDouble(MIN_FREQUENCY, MAX_FREQUENCY);
         final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS, MAX_PATH_LOSS);
 
-        final double coefficient1 = AltBeaconUtils.getCoefficient1WithFrequency(frequency,
-                pathLossExponent);
+        final double coefficient1 = AltBeaconUtils.getCoefficient1WithFrequency(frequency, pathLossExponent);
         final double coefficient2 = AltBeaconUtils.getCoefficient2(pathLossExponent);
 
         final double k = AltBeaconUtils.getK(coefficient1, coefficient2);
 
-        assertEquals(coefficient1, AltBeaconUtils.getCoefficient1(k, pathLossExponent),
-                ABSOLUTE_ERROR);
+        assertEquals(coefficient1, AltBeaconUtils.getCoefficient1(k, pathLossExponent), ABSOLUTE_ERROR);
     }
 
     @Test
@@ -277,12 +261,10 @@ public class AltBeaconUtilsTest {
         final double frequency = randomizer.nextDouble(MIN_FREQUENCY, MAX_FREQUENCY);
         final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS, MAX_PATH_LOSS);
 
-        final double c1 = AltBeaconUtils.getCoefficient1WithFrequency(frequency,
-                pathLossExponent);
+        final double c1 = AltBeaconUtils.getCoefficient1WithFrequency(frequency, pathLossExponent);
         final double c2 = AltBeaconUtils.getCoefficient2(pathLossExponent);
 
-        assertEquals(frequency, AltBeaconUtils.getFrequency(c1, c2),
-                10.0 * ABSOLUTE_ERROR);
+        assertEquals(frequency, AltBeaconUtils.getFrequency(c1, c2), 10.0 * ABSOLUTE_ERROR);
     }
 
     @Test
@@ -293,7 +275,6 @@ public class AltBeaconUtilsTest {
 
         final double c2 = AltBeaconUtils.getCoefficient2(pathLossExponent);
 
-        assertEquals(pathLossExponent, AltBeaconUtils.getPathLossExponent(c2),
-                ABSOLUTE_ERROR);
+        assertEquals(pathLossExponent, AltBeaconUtils.getPathLossExponent(c2), ABSOLUTE_ERROR);
     }
 }

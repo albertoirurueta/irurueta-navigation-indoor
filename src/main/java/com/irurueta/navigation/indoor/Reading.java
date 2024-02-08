@@ -18,7 +18,7 @@ package com.irurueta.navigation.indoor;
 import java.io.Serializable;
 
 /**
- * Contains a reading related to a given WiFi access point.
+ * Contains a reading related to a given Wi-Fi access point.
  *
  * @param <S> a {@link RadioSource} type.
  */

@@ -41,7 +41,7 @@ public class LinearRssiPositionEstimator2D extends LinearRssiPositionEstimator<P
      */
     public LinearRssiPositionEstimator2D() {
         super();
-        init();
+        initialize();
     }
 
     /**
@@ -55,7 +55,7 @@ public class LinearRssiPositionEstimator2D extends LinearRssiPositionEstimator<P
     public LinearRssiPositionEstimator2D(
             final List<? extends RadioSourceLocated<Point2D>> sources) {
         super();
-        init();
+        initialize();
         internalSetSources(sources);
     }
 
@@ -69,7 +69,7 @@ public class LinearRssiPositionEstimator2D extends LinearRssiPositionEstimator<P
     public LinearRssiPositionEstimator2D(
             final Fingerprint<? extends RadioSource, ? extends RssiReading<? extends RadioSource>> fingerprint) {
         super();
-        init();
+        initialize();
         internalSetFingerprint(fingerprint);
     }
 
@@ -87,7 +87,7 @@ public class LinearRssiPositionEstimator2D extends LinearRssiPositionEstimator<P
             final List<? extends RadioSourceLocated<Point2D>> sources,
             final Fingerprint<? extends RadioSource, ? extends RssiReading<? extends RadioSource>> fingerprint) {
         super();
-        init();
+        initialize();
         internalSetSources(sources);
         internalSetFingerprint(fingerprint);
     }
@@ -100,7 +100,7 @@ public class LinearRssiPositionEstimator2D extends LinearRssiPositionEstimator<P
     public LinearRssiPositionEstimator2D(
             final RssiPositionEstimatorListener<Point2D> listener) {
         super(listener);
-        init();
+        initialize();
     }
 
     /**
@@ -116,7 +116,7 @@ public class LinearRssiPositionEstimator2D extends LinearRssiPositionEstimator<P
             final List<? extends RadioSourceLocated<Point2D>> sources,
             final RssiPositionEstimatorListener<Point2D> listener) {
         super(listener);
-        init();
+        initialize();
         internalSetSources(sources);
     }
 
@@ -132,7 +132,7 @@ public class LinearRssiPositionEstimator2D extends LinearRssiPositionEstimator<P
             final Fingerprint<? extends RadioSource, ? extends RssiReading<? extends RadioSource>> fingerprint,
             final RssiPositionEstimatorListener<Point2D> listener) {
         super(listener);
-        init();
+        initialize();
         internalSetFingerprint(fingerprint);
     }
 
@@ -152,7 +152,7 @@ public class LinearRssiPositionEstimator2D extends LinearRssiPositionEstimator<P
             final Fingerprint<? extends RadioSource, ? extends RssiReading<? extends RadioSource>> fingerprint,
             final RssiPositionEstimatorListener<Point2D> listener) {
         super(listener);
-        init();
+        initialize();
         internalSetSources(sources);
         internalSetFingerprint(fingerprint);
     }
@@ -206,7 +206,7 @@ public class LinearRssiPositionEstimator2D extends LinearRssiPositionEstimator<P
     /**
      * Initializes lateration solver.
      */
-    private void init() {
+    private void initialize() {
         mHomogeneousTrilaterationSolver = new HomogeneousLinearLeastSquaresLateration2DSolver(
                 mLaterationSolverListener);
         mInhomogeneousTrilaterationSolver = new InhomogeneousLinearLeastSquaresLateration2DSolver(

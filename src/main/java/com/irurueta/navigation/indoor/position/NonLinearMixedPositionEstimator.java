@@ -274,11 +274,11 @@ public abstract class NonLinearMixedPositionEstimator<P extends Point<?>> extend
     }
 
     /**
-     * Gets euclidean distances from known located radio sources to the location of
+     * Gets Euclidean distances from known located radio sources to the location of
      * provided readings in a fingerprint.
      * Distance values are used internally to solve lateration.
      *
-     * @return euclidean distances used internally.
+     * @return Euclidean distances used internally.
      */
     @Override
     public double[] getDistances() {
@@ -301,6 +301,7 @@ public abstract class NonLinearMixedPositionEstimator<P extends Point<?>> extend
      * @throws IllegalArgumentException if provided value is null or the number of
      *                                  provided sources is less than the required minimum.
      */
+    @Override
     protected void internalSetSources(
             final List<? extends RadioSourceLocated<P>> sources) {
         super.internalSetSources(sources);
@@ -315,6 +316,7 @@ public abstract class NonLinearMixedPositionEstimator<P extends Point<?>> extend
      *                    provided located radio sources.
      * @throws IllegalArgumentException if provided value is null.
      */
+    @Override
     protected void internalSetFingerprint(
             final Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> fingerprint) {
         super.internalSetFingerprint(fingerprint);

@@ -143,7 +143,7 @@ public class WifiAccessPoint implements Serializable, RadioSource {
     }
 
     /**
-     * Gets radio source type, which can be either a WiFi Access point or a bluetooth Beacon.
+     * Gets radio source type, which can be either a Wi-Fi Access point or a bluetooth Beacon.
      *
      * @return radio source type.
      */

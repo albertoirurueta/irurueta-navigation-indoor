@@ -54,7 +54,7 @@ public abstract class RobustPositionEstimator<P extends Point<?>,
      * Default robust estimator method when none is provided.
      */
     public static final RobustEstimatorMethod DEFAULT_ROBUST_METHOD =
-            RobustEstimatorMethod.PROMedS;
+            RobustEstimatorMethod.PROMEDS;
 
     /**
      * Indicates that by default located radio source position covariance is taken
@@ -176,9 +176,9 @@ public abstract class RobustPositionEstimator<P extends Point<?>,
      * @return fingerprint containing readings at an unknown location for provided
      * located radio sources.
      */
-    public Fingerprint<RadioSource, ? extends R> getFingerprint() {
+    public Fingerprint<RadioSource, Reading<RadioSource>> getFingerprint() {
         //noinspection unchecked
-        return (Fingerprint<RadioSource, ? extends R>) mFingerprint;
+        return (Fingerprint<RadioSource, Reading<RadioSource>>) mFingerprint;
     }
 
     /**
@@ -508,7 +508,7 @@ public abstract class RobustPositionEstimator<P extends Point<?>,
     /**
      * Indicates whether preliminary solutions must be refined after an initial linear
      * solution is found.
-     * If no initial solution is found using a linear solver, a non linear solver will
+     * If no initial solution is found using a linear solver, a non-linear solver will
      * be used regardless of this value using an average solution as the initial value
      * to be refined.
      *
@@ -522,7 +522,7 @@ public abstract class RobustPositionEstimator<P extends Point<?>,
     /**
      * Specifies whether preliminary solutions must be refined after an initial linear
      * solution is found.
-     * If no initial solution is found using a linear solver, a non linear solver will
+     * If no initial solution is found using a linear solver, a non-linear solver will
      * be used regardless of this value using an average solution as the initial value
      * to be refined.
      *
@@ -557,11 +557,11 @@ public abstract class RobustPositionEstimator<P extends Point<?>,
     }
 
     /**
-     * Gets euclidean distances from known located radio sources to the location of
+     * Gets Euclidean distances from known located radio sources to the location of
      * provided readings in a fingerprint.
      * Distance values are used internally to solve lateration.
      *
-     * @return euclidean distances used internally.
+     * @return Euclidean distances used internally.
      */
     public double[] getDistances() {
         return mLaterationSolver.getDistances();

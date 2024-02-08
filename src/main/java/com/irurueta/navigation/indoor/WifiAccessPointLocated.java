@@ -19,7 +19,7 @@ import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.Point;
 
 /**
- * Data related to a WiFi access point whose location is known.
+ * Data related to a Wi-Fi access point whose location is known.
  *
  * @param <P> a {@link Point} type.
  */

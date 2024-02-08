@@ -26,8 +26,7 @@ import java.util.List;
  * @param <S> a {@link RadioSource} type.
  * @param <R> a {@link RssiReading} type.
  */
-public class Fingerprint<S extends RadioSource, R extends Reading<S>>
-        implements Serializable {
+public class Fingerprint<S extends RadioSource, R extends Reading<S>> implements Serializable {
 
     /**
      * Non-located ranging and RSSI readings.

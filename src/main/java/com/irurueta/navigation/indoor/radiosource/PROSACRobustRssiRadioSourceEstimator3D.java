@@ -30,7 +30,7 @@ import java.util.List;
 
 /**
  * Robustly estimate 3D position, transmitted power and path-loss exponent of a radio source
- * (e.g. WiFi access point or bluetooth beacon), by discarding outliers using PROSAC
+ * (e.g. Wi-Fi access point or bluetooth beacon), by discarding outliers using PROSAC
  * algorithm and assuming that the access point emits isotropically following the
  * expression below:
  * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,
@@ -599,7 +599,7 @@ public class PROSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> exten
      * @param qualityScores              quality scores corresponding to each provided
      *                                   sample. The larger the score value the better
      *                                   the quality of the sample.
-     * @param readings                   WiFi signal readings belonging to the same radio source.
+     * @param readings                   Wi-Fi signal readings belonging to the same radio source.
      * @param initialTransmittedPowerdBm initial transmitted power to start the
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's)
@@ -737,7 +737,7 @@ public class PROSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> exten
      * @param qualityScores              quality scores corresponding to each provided
      *                                   sample. The larger the score value the better
      *                                   the quality of the sample.
-     * @param readings                   WiFi signal readings belonging to the same radio source.
+     * @param readings                   Wi-Fi signal readings belonging to the same radio source.
      * @param initialPosition            initial position to start the estimation of radio
      *                                   source position.
      * @param initialTransmittedPowerdBm initial transmitted power to start the
@@ -834,12 +834,12 @@ public class PROSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> exten
 
     /**
      * Constructor.
-     * Sets WiFi signal readings belonging to the same radio source.
+     * Sets Wi-Fi signal readings belonging to the same radio source.
      *
      * @param qualityScores              quality scores corresponding to each provided
      *                                   sample. The larger the score value the better
      *                                   the quality of the sample.
-     * @param readings                   WiFi signal readings belonging to the same radio source.
+     * @param readings                   Wi-Fi signal readings belonging to the same radio source.
      * @param initialPosition            initial position to start the estimation of radio
      *                                   source position.
      * @param initialTransmittedPowerdBm initial transmitted power to start the
@@ -920,6 +920,7 @@ public class PROSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> exten
      * @throws LockedException          if robust solver is locked because an
      *                                  estimation is already in progress.
      */
+    @Override
     public void setQualityScores(final double[] qualityScores) throws LockedException {
         if (isLocked()) {
             throw new LockedException();

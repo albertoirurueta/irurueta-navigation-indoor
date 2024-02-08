@@ -31,8 +31,7 @@ public class RssiFingerprintLocated3DTest {
     @Test
     public void testConstructor() throws WrongSizeException {
         // test empty constructor
-        RssiFingerprintLocated3D<WifiAccessPoint, RssiReading<WifiAccessPoint>> f =
-                new RssiFingerprintLocated3D<>();
+        RssiFingerprintLocated3D<WifiAccessPoint, RssiReading<WifiAccessPoint>> f = new RssiFingerprintLocated3D<>();
 
         // check default values
         assertTrue(f.getReadings().isEmpty());
@@ -45,9 +44,9 @@ public class RssiFingerprintLocated3DTest {
         f = new RssiFingerprintLocated3D<>(readings, position);
 
         // check
-        assertEquals(f.getReadings(), readings);
-        assertNotSame(f.getReadings(), readings);
-        assertSame(f.getPosition(), position);
+        assertEquals(readings, f.getReadings());
+        assertNotSame(readings, f.getReadings());
+        assertSame(position, f.getPosition());
         assertNull(f.getPositionCovariance());
 
         // force IllegalArgumentException
@@ -69,10 +68,10 @@ public class RssiFingerprintLocated3DTest {
         f = new RssiFingerprintLocated3D<>(readings, position, cov);
 
         // check
-        assertEquals(f.getReadings(), readings);
-        assertNotSame(f.getReadings(), readings);
-        assertSame(f.getPosition(), position);
-        assertSame(f.getPositionCovariance(), cov);
+        assertEquals(readings, f.getReadings());
+        assertNotSame(readings, f.getReadings());
+        assertSame(position, f.getPosition());
+        assertSame(cov, f.getPositionCovariance());
 
         f = null;
         try {
@@ -86,8 +85,7 @@ public class RssiFingerprintLocated3DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            f = new RssiFingerprintLocated3D<>(readings, position,
-                    new Matrix(1, 1));
+            f = new RssiFingerprintLocated3D<>(readings, position, new Matrix(1, 1));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }

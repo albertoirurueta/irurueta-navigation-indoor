@@ -18,7 +18,7 @@ package com.irurueta.navigation.indoor;
 import com.irurueta.geometry.Point;
 
 /**
- * Interface defining any radio source (e.g. WiFi access point or
+ * Interface defining any radio source (e.g. Wi-Fi access point or
  * Bluetooth beacon) whose transmitted power and location are known.
  *
  * @param <P> a {@link Point} type.

@@ -33,8 +33,7 @@ import java.util.List;
  * device by getting ranging readings at an unknown location of different radio sources
  * whose 2D locations are known.
  */
-public class PROSACRobustRangingPositionEstimator2D extends
-        RobustRangingPositionEstimator2D {
+public class PROSACRobustRangingPositionEstimator2D extends RobustRangingPositionEstimator2D {
 
     /**
      * Quality scores corresponding to each provided located radio source.
@@ -385,6 +384,7 @@ public class PROSACRobustRangingPositionEstimator2D extends
      *
      * @return quality scores corresponding to each radio source.
      */
+    @Override
     public double[] getSourceQualityScores() {
         return mSourceQualityScores;
     }
@@ -398,6 +398,7 @@ public class PROSACRobustRangingPositionEstimator2D extends
      * @throws IllegalArgumentException if provided quality scores length is smaller
      *                                  than minimum required samples.
      */
+    @Override
     public void setSourceQualityScores(final double[] sourceQualityScores)
             throws LockedException {
         if (isLocked()) {
@@ -415,6 +416,7 @@ public class PROSACRobustRangingPositionEstimator2D extends
      * @return quality scores corresponding to each reading within provided
      * fingerprint.
      */
+    @Override
     public double[] getFingerprintReadingsQualityScores() {
         return mFingerprintReadingsQualityScores;
     }
@@ -431,6 +433,7 @@ public class PROSACRobustRangingPositionEstimator2D extends
      * @throws IllegalArgumentException if provided quality scores length is smaller
      *                                  than minimum required samples.
      */
+    @Override
     public void setFingerprintReadingsQualityScores(
             final double[] fingerprintReadingsQualityScores) throws LockedException {
         if (isLocked()) {

@@ -33,8 +33,7 @@ import java.util.List;
  * device by getting readings at an unknown location of different radio
  * sources whose 2D locations are known.
  */
-public class MSACRobustMixedPositionEstimator2D extends
-        RobustMixedPositionEstimator2D {
+public class MSACRobustMixedPositionEstimator2D extends RobustMixedPositionEstimator2D {
 
     /**
      * Constructor.

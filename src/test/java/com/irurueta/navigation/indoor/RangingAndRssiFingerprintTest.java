@@ -40,8 +40,8 @@ public class RangingAndRssiFingerprintTest {
         fingerprint = new RangingAndRssiFingerprint<>(readings);
 
         // check
-        assertEquals(fingerprint.getReadings(), readings);
-        assertNotSame(fingerprint.getReadings(), readings);
+        assertEquals(readings, fingerprint.getReadings());
+        assertNotSame(readings, fingerprint.getReadings());
 
         // force IllegalArgumentException
         fingerprint = null;
@@ -68,8 +68,8 @@ public class RangingAndRssiFingerprintTest {
         fingerprint.setReadings(readings);
 
         // check
-        assertEquals(fingerprint.getReadings(), readings);
-        assertNotSame(fingerprint.getReadings(), readings);
+        assertEquals(readings, fingerprint.getReadings());
+        assertNotSame(readings, fingerprint.getReadings());
 
         // force IllegalArgumentException
         try {
@@ -86,8 +86,8 @@ public class RangingAndRssiFingerprintTest {
                 new RangingAndRssiFingerprint<>(readings);
 
         // check
-        assertEquals(fingerprint1.getReadings(), readings);
-        assertNotSame(fingerprint1.getReadings(), readings);
+        assertEquals(readings, fingerprint1.getReadings());
+        assertNotSame(readings, fingerprint1.getReadings());
 
         // serialize and deserialize
         final byte[] bytes = SerializationHelper.serialize(fingerprint1);

@@ -15,6 +15,6 @@
  */
 
 /**
- * Estimates positions using WiFi/Beacons signals.
+ * Estimates positions using Wi-Fi/Beacons signals.
  */
 package com.irurueta.navigation.indoor.position;

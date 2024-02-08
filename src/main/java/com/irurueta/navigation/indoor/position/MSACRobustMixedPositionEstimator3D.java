@@ -33,8 +33,7 @@ import java.util.List;
  * device by getting readings at an unknown location of different radio
  * sources whose 3D locations are known.
  */
-public class MSACRobustMixedPositionEstimator3D extends
-        RobustMixedPositionEstimator3D {
+public class MSACRobustMixedPositionEstimator3D extends RobustMixedPositionEstimator3D {
 
     /**
      * Constructor.

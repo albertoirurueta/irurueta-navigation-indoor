@@ -32,19 +32,19 @@ public class RssiReadingTest {
 
         // check
         assertNull(reading.getSource());
-        assertEquals(reading.getRssi(), 0.0, 0.0);
+        assertEquals(0.0, reading.getRssi(), 0.0);
         assertNull(reading.getRssiStandardDeviation());
-        assertEquals(reading.getType(), ReadingType.RSSI_READING);
+        assertEquals(ReadingType.RSSI_READING, reading.getType());
 
         // test constructor with access point and RSSI
         final WifiAccessPoint ap = new WifiAccessPoint("bssid", FREQUENCY);
         reading = new RssiReading<>(ap, -50.0);
 
         // check
-        assertSame(reading.getSource(), ap);
-        assertEquals(reading.getRssi(), -50.0, 0.0);
+        assertSame(ap, reading.getSource());
+        assertEquals(-50.0, reading.getRssi(), 0.0);
         assertNull(reading.getRssiStandardDeviation());
-        assertEquals(reading.getType(), ReadingType.RSSI_READING);
+        assertEquals(ReadingType.RSSI_READING, reading.getType());
 
         // Force IllegalArgumentException
         reading = null;
@@ -59,16 +59,15 @@ public class RssiReadingTest {
         reading = new RssiReading<>(ap, -50.0, 5.5);
 
         // check
-        assertSame(reading.getSource(), ap);
-        assertEquals(reading.getRssi(), -50.0, 0.0);
-        assertEquals(reading.getRssiStandardDeviation(), 5.5, 0.0);
-        assertEquals(reading.getType(), ReadingType.RSSI_READING);
+        assertSame(ap, reading.getSource());
+        assertEquals(-50.0, reading.getRssi(), 0.0);
+        assertEquals(5.5, reading.getRssiStandardDeviation(), 0.0);
+        assertEquals(ReadingType.RSSI_READING, reading.getType());
 
         // Force IllegalArgumentException
         reading = null;
         try {
-            reading = new RssiReading<>(null, -50.0,
-                    5.5);
+            reading = new RssiReading<>(null, -50.0, 5.5);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -98,14 +97,13 @@ public class RssiReadingTest {
     @Test
     public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
         final WifiAccessPoint ap = new WifiAccessPoint("bssid", FREQUENCY);
-        final RssiReading<WifiAccessPoint> reading1 = new RssiReading<>(
-                ap, -50.0, 5.5);
+        final RssiReading<WifiAccessPoint> reading1 = new RssiReading<>(ap, -50.0, 5.5);
 
         // check
-        assertSame(reading1.getSource(), ap);
-        assertEquals(reading1.getRssi(), -50.0, 0.0);
-        assertEquals(reading1.getRssiStandardDeviation(), 5.5, 0.0);
-        assertEquals(reading1.getType(), ReadingType.RSSI_READING);
+        assertSame(ap, reading1.getSource());
+        assertEquals(-50.0, reading1.getRssi(), 0.0);
+        assertEquals(5.5, reading1.getRssiStandardDeviation(), 0.0);
+        assertEquals(ReadingType.RSSI_READING, reading1.getType());
 
         // serialize and deserialize
         final byte[] bytes = SerializationHelper.serialize(reading1);
@@ -115,8 +113,7 @@ public class RssiReadingTest {
         assertNotSame(reading1, reading2);
         assertEquals(reading1.getSource(), reading2.getSource());
         assertEquals(reading1.getRssi(), reading2.getRssi(), 0.0);
-        assertEquals(reading1.getRssiStandardDeviation(),
-                reading2.getRssiStandardDeviation(), 0.0);
+        assertEquals(reading1.getRssiStandardDeviation(), reading2.getRssiStandardDeviation(), 0.0);
         assertEquals(reading1.getType(), reading2.getType());
     }
 }

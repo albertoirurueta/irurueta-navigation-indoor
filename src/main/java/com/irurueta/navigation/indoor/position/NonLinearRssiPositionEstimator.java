@@ -39,8 +39,7 @@ import java.util.List;
  *
  * @param <P> a {@link Point} type.
  */
-public abstract class NonLinearRssiPositionEstimator<P extends Point<?>> extends
-        RssiPositionEstimator<P> {
+public abstract class NonLinearRssiPositionEstimator<P extends Point<?>> extends RssiPositionEstimator<P> {
 
     /**
      * Distance standard deviation assumed for provided distances as a fallback when
@@ -272,11 +271,11 @@ public abstract class NonLinearRssiPositionEstimator<P extends Point<?>> extends
     }
 
     /**
-     * Gets euclidean distances from known located radio sources to the location of
+     * Gets Euclidean distances from known located radio sources to the location of
      * provided readings in a fingerprint.
      * Distance values are used internally to solve lateration.
      *
-     * @return euclidean distances used internally.
+     * @return Euclidean distances used internally.
      */
     @Override
     public double[] getDistances() {
@@ -299,6 +298,7 @@ public abstract class NonLinearRssiPositionEstimator<P extends Point<?>> extends
      * @throws IllegalArgumentException if provided value is null or the number of
      *                                  provided sources is less than the required minimum.
      */
+    @Override
     protected void internalSetSources(final List<? extends RadioSourceLocated<P>> sources) {
         super.internalSetSources(sources);
         buildPositionsDistancesAndDistanceStandardDeviations();
@@ -312,6 +312,7 @@ public abstract class NonLinearRssiPositionEstimator<P extends Point<?>> extends
      *                    provided located radio sources.
      * @throws IllegalArgumentException if provided value is null.
      */
+    @Override
     protected void internalSetFingerprint(
             final Fingerprint<? extends RadioSource, ? extends RssiReading<? extends RadioSource>> fingerprint) {
         super.internalSetFingerprint(fingerprint);

@@ -20,12 +20,11 @@ import com.irurueta.geometry.Point2D;
 
 /**
  * Contains a 2D located signal strength reading associated to a given radio source
- * (e.g. WiFi access point or bluetooth beacon).
+ * (e.g. Wi-Fi access point or bluetooth beacon).
  *
  * @param <S> a {@link RadioSource} type.
  */
-public class RssiReadingLocated2D<S extends RadioSource> extends
-        RssiReadingLocated<S, Point2D> {
+public class RssiReadingLocated2D<S extends RadioSource> extends RssiReadingLocated<S, Point2D> {
 
     /**
      * Constructor.

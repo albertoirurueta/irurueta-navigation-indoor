@@ -19,9 +19,9 @@ import com.irurueta.geometry.InhomogeneousPoint3D;
 import com.irurueta.geometry.Point3D;
 
 /**
- * Estimates 3D position using WiFi signals indoor and the Weighted k-Nearest
+ * Estimates 3D position using Wi-Fi signals indoor and the Weighted k-Nearest
  * Neighbours (WkNN) algorithm.
- * WkNN algorithm is based on https://github.com/ajnas/WiFiPS.
+ * WkNN algorithm is based on <a href="https://github.com/ajnas/WiFiPS">https://github.com/ajnas/WiFiPS</a>.
  */
 public class WeightedKNearestNeighboursPositionSolver3D extends
         WeightedKNearestNeighboursPositionSolver<Point3D> {
@@ -35,11 +35,11 @@ public class WeightedKNearestNeighboursPositionSolver3D extends
 
     /**
      * Constructor.
-     * Sets known located WiFi fingerprints and euclidean distances between WiFi
+     * Sets known located Wi-Fi fingerprints and Euclidean distances between Wi-Fi
      * signal fingerprints.
      *
-     * @param fingerprints known located WiFi fingerprints.
-     * @param distances    euclidean distances between WiFi signal fingerprints
+     * @param fingerprints known located Wi-Fi fingerprints.
+     * @param distances    Euclidean distances between Wi-Fi signal fingerprints
      *                     (expressed in dB's).
      * @throws IllegalArgumentException if either fingerprints or distances are null,
      *                                  don't have the same length or their length is smaller than 1.
@@ -62,11 +62,11 @@ public class WeightedKNearestNeighboursPositionSolver3D extends
 
     /**
      * Constructor.
-     * Sets known located WiFi fingerprints and euclidean distances between WiFi
+     * Sets known located Wi-Fi fingerprints and Euclidean distances between Wi-Fi
      * signal fingerprints.
      *
-     * @param fingerprints known located WiFi fingerprints.
-     * @param distances    euclidean distances between WiFi signal fingerprints
+     * @param fingerprints known located Wi-Fi fingerprints.
+     * @param distances    Euclidean distances between Wi-Fi signal fingerprints
      *                     (expressed in dB's).
      * @param listener     listener to be notified of events raised by this instance.
      * @throws IllegalArgumentException if either fingerprints or distances are null,

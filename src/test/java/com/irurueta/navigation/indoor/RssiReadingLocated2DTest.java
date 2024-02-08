@@ -38,9 +38,9 @@ public class RssiReadingLocated2DTest {
         assertNull(reading.getPosition());
         assertNull(reading.getPositionCovariance());
         assertNull(reading.getSource());
-        assertEquals(reading.getRssi(), 0.0, 0.0);
+        assertEquals(0.0, reading.getRssi(), 0.0);
         assertNull(reading.getRssiStandardDeviation());
-        assertEquals(reading.getType(), ReadingType.RSSI_READING);
+        assertEquals(ReadingType.RSSI_READING, reading.getType());
 
         // test constructor with access point, rssi and position
         final WifiAccessPoint ap = new WifiAccessPoint("bssid", FREQUENCY);
@@ -48,18 +48,17 @@ public class RssiReadingLocated2DTest {
         reading = new RssiReadingLocated2D<>(ap, -50.0, position);
 
         // check
-        assertSame(reading.getPosition(), position);
+        assertSame(position, reading.getPosition());
         assertNull(reading.getPositionCovariance());
-        assertSame(reading.getSource(), ap);
-        assertEquals(reading.getRssi(), -50.0, 0.0);
+        assertSame(ap, reading.getSource());
+        assertEquals(-50.0, reading.getRssi(), 0.0);
         assertNull(reading.getRssiStandardDeviation());
-        assertEquals(reading.getType(), ReadingType.RSSI_READING);
+        assertEquals(ReadingType.RSSI_READING, reading.getType());
 
         // Force IllegalArgumentException
         reading = null;
         try {
-            reading = new RssiReadingLocated2D<>(null, -50.0,
-                    position);
+            reading = new RssiReadingLocated2D<>(null, -50.0, position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -72,34 +71,30 @@ public class RssiReadingLocated2DTest {
 
         // test constructor with access point, rssi, position and rssi standard
         // deviation
-        reading = new RssiReadingLocated2D<>(ap, -50.0, position,
-                5.5);
+        reading = new RssiReadingLocated2D<>(ap, -50.0, position, 5.5);
 
         // check
-        assertSame(reading.getPosition(), position);
+        assertSame(position, reading.getPosition());
         assertNull(reading.getPositionCovariance());
-        assertSame(reading.getSource(), ap);
-        assertEquals(reading.getRssi(), -50.0, 0.0);
-        assertEquals(reading.getRssiStandardDeviation(), 5.5, 0.0);
-        assertEquals(reading.getType(), ReadingType.RSSI_READING);
+        assertSame(ap, reading.getSource());
+        assertEquals(-50.0, reading.getRssi(), 0.0);
+        assertEquals(5.5, reading.getRssiStandardDeviation(), 0.0);
+        assertEquals(ReadingType.RSSI_READING, reading.getType());
 
         // Force IllegalArgumentException
         reading = null;
         try {
-            reading = new RssiReadingLocated2D<>(null, -50.0, position,
-                    5.5);
+            reading = new RssiReadingLocated2D<>(null, -50.0, position, 5.5);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RssiReadingLocated2D<>(ap, -50.0, null,
-                    5.5);
+            reading = new RssiReadingLocated2D<>(ap, -50.0, null, 5.5);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RssiReadingLocated2D<>(ap, -50.0, position,
-                    0.0);
+            reading = new RssiReadingLocated2D<>(ap, -50.0, position, 0.0);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -110,22 +105,22 @@ public class RssiReadingLocated2DTest {
         reading = new RssiReadingLocated2D<>(ap, -50.0, position, cov);
 
         // check
-        assertSame(reading.getPosition(), position);
-        assertSame(reading.getPositionCovariance(), cov);
-        assertSame(reading.getSource(), ap);
-        assertEquals(reading.getRssi(), -50.0, 0.0);
+        assertSame(position, reading.getPosition());
+        assertSame(cov, reading.getPositionCovariance());
+        assertSame(ap, reading.getSource());
+        assertEquals(-50.0, reading.getRssi(), 0.0);
         assertNull(reading.getRssiStandardDeviation());
-        assertEquals(reading.getType(), ReadingType.RSSI_READING);
+        assertEquals(ReadingType.RSSI_READING, reading.getType());
 
         reading = new RssiReadingLocated2D<>(ap, -50.0, position, (Matrix) null);
 
         // check
-        assertSame(reading.getPosition(), position);
+        assertSame(position, reading.getPosition());
         assertNull(reading.getPositionCovariance());
-        assertSame(reading.getSource(), ap);
-        assertEquals(reading.getRssi(), -50.0, 0.0);
+        assertSame(ap, reading.getSource());
+        assertEquals(-50.0, reading.getRssi(), 0.0);
         assertNull(reading.getRssiStandardDeviation());
-        assertEquals(reading.getType(), ReadingType.RSSI_READING);
+        assertEquals(ReadingType.RSSI_READING, reading.getType());
 
         // Force IllegalArgumentException
         reading = null;
@@ -140,8 +135,7 @@ public class RssiReadingLocated2DTest {
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RssiReadingLocated2D<>(ap, -50.0, position,
-                    new Matrix(1, 1));
+            reading = new RssiReadingLocated2D<>(ap, -50.0, position, new Matrix(1, 1));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -149,40 +143,36 @@ public class RssiReadingLocated2DTest {
 
         // test constructor with access point, rssi, position, rssi standard
         // deviation, and position covariance
-        reading = new RssiReadingLocated2D<>(ap, -50.0, position,
-                5.5, cov);
+        reading = new RssiReadingLocated2D<>(ap, -50.0, position, 5.5, cov);
 
         // check
-        assertSame(reading.getPosition(), position);
-        assertSame(reading.getPositionCovariance(), cov);
-        assertSame(reading.getSource(), ap);
-        assertEquals(reading.getRssi(), -50.0, 0.0);
-        assertEquals(reading.getRssiStandardDeviation(), 5.5, 0.0);
-        assertEquals(reading.getType(), ReadingType.RSSI_READING);
+        assertSame(position, reading.getPosition());
+        assertSame(cov, reading.getPositionCovariance());
+        assertSame(ap, reading.getSource());
+        assertEquals(-50.0, reading.getRssi(), 0.0);
+        assertEquals(5.5, reading.getRssiStandardDeviation(), 0.0);
+        assertEquals(ReadingType.RSSI_READING, reading.getType());
 
         // Force IllegalArgumentException
         reading = null;
         try {
-            reading = new RssiReadingLocated2D<>(null, -50.0,
-                    position, 5.5, cov);
+            reading = new RssiReadingLocated2D<>(null, -50.0, position, 5.5, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RssiReadingLocated2D<>(ap, -50.0, null,
-                    5.5, cov);
+            reading = new RssiReadingLocated2D<>(ap, -50.0, null, 5.5, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RssiReadingLocated2D<>(ap, -50.0, position,
-                    0.0, cov);
+            reading = new RssiReadingLocated2D<>(ap, -50.0, position, 0.0, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RssiReadingLocated2D<>(ap, -50.0, position,
-                    5.5, new Matrix(1, 1));
+            reading = new RssiReadingLocated2D<>(ap, -50.0, position, 5.5,
+                    new Matrix(1, 1));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -195,12 +185,9 @@ public class RssiReadingLocated2DTest {
         final WifiAccessPoint ap2 = new WifiAccessPoint("bssid2", FREQUENCY);
 
         final InhomogeneousPoint2D position = new InhomogeneousPoint2D();
-        final RssiReadingLocated2D<WifiAccessPoint> reading1 = new RssiReadingLocated2D<>(ap1,
-                -50.0, position);
-        final RssiReadingLocated2D<WifiAccessPoint> reading2 = new RssiReadingLocated2D<>(ap1,
-                -50.0, position);
-        final RssiReadingLocated2D<WifiAccessPoint> reading3 = new RssiReadingLocated2D<>(ap2,
-                -50.0, position);
+        final RssiReadingLocated2D<WifiAccessPoint> reading1 = new RssiReadingLocated2D<>(ap1, -50.0, position);
+        final RssiReadingLocated2D<WifiAccessPoint> reading2 = new RssiReadingLocated2D<>(ap1, -50.0, position);
+        final RssiReadingLocated2D<WifiAccessPoint> reading3 = new RssiReadingLocated2D<>(ap2, -50.0, position);
 
         // check
         assertTrue(reading1.hasSameSource(reading1));
@@ -213,28 +200,25 @@ public class RssiReadingLocated2DTest {
         final WifiAccessPoint ap = new WifiAccessPoint("bssid", FREQUENCY);
         final InhomogeneousPoint2D position = new InhomogeneousPoint2D();
         final Matrix cov = new Matrix(2, 2);
-        final RssiReadingLocated2D<WifiAccessPoint> reading1 =
-                new RssiReadingLocated2D<>(ap, -50.0, position,
+        final RssiReadingLocated2D<WifiAccessPoint> reading1 = new RssiReadingLocated2D<>(ap, -50.0, position,
                 5.5, cov);
 
         // check
-        assertSame(reading1.getPosition(), position);
-        assertSame(reading1.getPositionCovariance(), cov);
-        assertSame(reading1.getSource(), ap);
-        assertEquals(reading1.getRssi(), -50.0, 0.0);
-        assertEquals(reading1.getRssiStandardDeviation(), 5.5, 0.0);
-        assertEquals(reading1.getType(), ReadingType.RSSI_READING);
+        assertSame(position, reading1.getPosition());
+        assertSame(cov, reading1.getPositionCovariance());
+        assertSame(ap, reading1.getSource());
+        assertEquals(-50.0, reading1.getRssi(), 0.0);
+        assertEquals(5.5, reading1.getRssiStandardDeviation(), 0.0);
+        assertEquals(ReadingType.RSSI_READING, reading1.getType());
 
         // serialize and deserialize
         final byte[] bytes = SerializationHelper.serialize(reading1);
-        final RssiReadingLocated2D<WifiAccessPoint> reading2 =
-                SerializationHelper.deserialize(bytes);
+        final RssiReadingLocated2D<WifiAccessPoint> reading2 = SerializationHelper.deserialize(bytes);
 
         // check
         assertNotSame(reading1, reading2);
         assertEquals(reading1.getPosition(), reading2.getPosition());
-        assertEquals(reading1.getPositionCovariance(),
-                reading2.getPositionCovariance());
+        assertEquals(reading1.getPositionCovariance(), reading2.getPositionCovariance());
         assertEquals(reading1.getSource(), reading2.getSource());
         assertEquals(reading1.getType(), reading2.getType());
     }

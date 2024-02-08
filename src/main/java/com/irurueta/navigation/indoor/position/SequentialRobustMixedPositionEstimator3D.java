@@ -399,7 +399,7 @@ public class SequentialRobustMixedPositionEstimator3D extends
                 case RANSAC:
                     ((RANSACRobustRangingPositionEstimator3D) mRangingEstimator).setThreshold(mRangingThreshold);
                     break;
-                case LMedS:
+                case LMEDS:
                     ((LMedSRobustRangingPositionEstimator3D) mRangingEstimator).setStopThreshold(mRangingThreshold);
                     break;
                 case MSAC:
@@ -408,7 +408,7 @@ public class SequentialRobustMixedPositionEstimator3D extends
                 case PROSAC:
                     ((PROSACRobustRangingPositionEstimator3D) mRangingEstimator).setThreshold(mRangingThreshold);
                     break;
-                case PROMedS:
+                case PROMEDS:
                 default:
                     ((PROMedSRobustRangingPositionEstimator3D) mRangingEstimator).setStopThreshold(mRangingThreshold);
                     break;
@@ -429,7 +429,7 @@ public class SequentialRobustMixedPositionEstimator3D extends
                 case RANSAC:
                     ((RANSACRobustRssiPositionEstimator3D) mRssiEstimator).setThreshold(mRssiThreshold);
                     break;
-                case LMedS:
+                case LMEDS:
                     ((LMedSRobustRssiPositionEstimator3D) mRssiEstimator).setStopThreshold(mRssiThreshold);
                     break;
                 case MSAC:
@@ -438,7 +438,7 @@ public class SequentialRobustMixedPositionEstimator3D extends
                 case PROSAC:
                     ((PROSACRobustRssiPositionEstimator3D) mRssiEstimator).setThreshold(mRssiThreshold);
                     break;
-                case PROMedS:
+                case PROMEDS:
                 default:
                     ((PROMedSRobustRssiPositionEstimator3D) mRssiEstimator).setStopThreshold(mRssiThreshold);
                     break;

@@ -19,7 +19,7 @@ import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.Point2D;
 
 /**
- * Contains a 2D located reading associated to a given radio source (e.g. WiFi access point
+ * Contains a 2D located reading associated to a given radio source (e.g. Wi-Fi access point
  * or bluetooth beacon) containing signal strength and distance to associated access point.
  *
  * @param <S> a {@link RadioSource} type.

@@ -16,7 +16,7 @@
 package com.irurueta.navigation.indoor.fingerprint;
 
 /**
- * Type of non linear position estimator.
+ * Type of non-linear position estimator.
  */
 public enum NonLinearFingerprintPositionEstimatorType {
     /**

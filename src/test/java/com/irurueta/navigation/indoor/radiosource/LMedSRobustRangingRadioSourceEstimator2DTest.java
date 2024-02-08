@@ -88,32 +88,27 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                 new LMedSRobustRangingRadioSourceEstimator2D<>();
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                LMedSRobustRangingRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
+        assertEquals(LMedSRobustRangingRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD, estimator.getStopThreshold(),
                 0.0);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertEquals(estimator.getMinReadings(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
-        assertEquals(estimator.getNumberOfDimensions(), 2);
+        assertEquals(RobustEstimatorMethod.LMEDS, estimator.getMethod());
+        assertEquals(3, estimator.getMinReadings());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
+        assertEquals(2, estimator.getNumberOfDimensions());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getEstimatedRadioSource());
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustRangingRadioSourceEstimator.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustRangingRadioSourceEstimator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
         assertNull(estimator.getInliersData());
-        assertEquals(estimator.isResultRefined(),
-                RobustRangingRadioSourceEstimator.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustRangingRadioSourceEstimator.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getReadings());
         assertNull(estimator.getListener());
-        assertEquals(estimator.getUseReadingPositionCovariance(),
-                RobustRangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES,
+                estimator.getUseReadingPositionCovariance());
         assertFalse(estimator.isReady());
         assertNull(estimator.getQualityScores());
         assertNull(estimator.getCovariance());
@@ -129,39 +124,33 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            readings.add(new RangingReadingLocated2D<>(accessPoint, 0.0,
-                    position));
+            readings.add(new RangingReadingLocated2D<>(accessPoint, 0.0, position));
         }
 
         estimator = new LMedSRobustRangingRadioSourceEstimator2D<>(readings);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                LMedSRobustRangingRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
+        assertEquals(LMedSRobustRangingRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD, estimator.getStopThreshold(),
                 0.0);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertEquals(estimator.getMinReadings(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
-        assertEquals(estimator.getNumberOfDimensions(), 2);
+        assertEquals(RobustEstimatorMethod.LMEDS, estimator.getMethod());
+        assertEquals(3, estimator.getMinReadings());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
+        assertEquals(2, estimator.getNumberOfDimensions());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getEstimatedRadioSource());
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustRangingRadioSourceEstimator.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustRangingRadioSourceEstimator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA, estimator.getProgressDelta(),
+                0.0);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
         assertNull(estimator.getInliersData());
-        assertEquals(estimator.isResultRefined(),
-                RobustRangingRadioSourceEstimator.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustRangingRadioSourceEstimator.DEFAULT_KEEP_COVARIANCE);
-        assertSame(estimator.getReadings(), readings);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
+        assertSame(readings, estimator.getReadings());
         assertNull(estimator.getListener());
-        assertEquals(estimator.getUseReadingPositionCovariance(),
-                RobustRangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES,
+                estimator.getUseReadingPositionCovariance());
         assertTrue(estimator.isReady());
         assertNull(estimator.getQualityScores());
         assertNull(estimator.getCovariance());
@@ -190,32 +179,27 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
         estimator = new LMedSRobustRangingRadioSourceEstimator2D<>(this);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                LMedSRobustRangingRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
+        assertEquals(LMedSRobustRangingRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD, estimator.getStopThreshold(),
                 0.0);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertEquals(estimator.getMinReadings(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
-        assertEquals(estimator.getNumberOfDimensions(), 2);
+        assertEquals(RobustEstimatorMethod.LMEDS, estimator.getMethod());
+        assertEquals(3, estimator.getMinReadings());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
+        assertEquals(2, estimator.getNumberOfDimensions());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getEstimatedRadioSource());
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustRangingRadioSourceEstimator.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustRangingRadioSourceEstimator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
         assertNull(estimator.getInliersData());
-        assertEquals(estimator.isResultRefined(),
-                RobustRangingRadioSourceEstimator.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustRangingRadioSourceEstimator.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getReadings());
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getUseReadingPositionCovariance(),
-                RobustRangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES);
+        assertSame(this, estimator.getListener());
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES,
+                estimator.getUseReadingPositionCovariance());
         assertFalse(estimator.isReady());
         assertNull(estimator.getQualityScores());
         assertNull(estimator.getCovariance());
@@ -228,32 +212,26 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
         estimator = new LMedSRobustRangingRadioSourceEstimator2D<>(readings, this);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                LMedSRobustRangingRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
-                0.0);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertEquals(estimator.getMinReadings(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
-        assertEquals(estimator.getNumberOfDimensions(), 2);
+        assertEquals(LMedSRobustRangingRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
+        assertEquals(RobustEstimatorMethod.LMEDS, estimator.getMethod());
+        assertEquals(3, estimator.getMinReadings());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
+        assertEquals(2, estimator.getNumberOfDimensions());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getEstimatedRadioSource());
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustRangingRadioSourceEstimator.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustRangingRadioSourceEstimator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA, estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
         assertNull(estimator.getInliersData());
-        assertEquals(estimator.isResultRefined(),
-                RobustRangingRadioSourceEstimator.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustRangingRadioSourceEstimator.DEFAULT_KEEP_COVARIANCE);
-        assertSame(estimator.getReadings(), readings);
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getUseReadingPositionCovariance(),
-                RobustRangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
+        assertSame(readings, estimator.getReadings());
+        assertSame(this, estimator.getListener());
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES,
+                estimator.getUseReadingPositionCovariance());
         assertTrue(estimator.isReady());
         assertNull(estimator.getQualityScores());
         assertNull(estimator.getCovariance());
@@ -266,15 +244,13 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
         estimator = null;
         try {
             estimator = new LMedSRobustRangingRadioSourceEstimator2D<>(
-                    (List<RangingReadingLocated2D<WifiAccessPoint>>) null,
-                    this);
+                    (List<RangingReadingLocated2D<WifiAccessPoint>>) null, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
             estimator = new LMedSRobustRangingRadioSourceEstimator2D<>(
-                    new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>(),
-                    this);
+                    new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>(), this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -287,32 +263,26 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
         estimator = new LMedSRobustRangingRadioSourceEstimator2D<>(initialPosition);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                LMedSRobustRangingRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
-                0.0);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertEquals(estimator.getMinReadings(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
-        assertEquals(estimator.getNumberOfDimensions(), 2);
+        assertEquals(LMedSRobustRangingRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
+        assertEquals(RobustEstimatorMethod.LMEDS, estimator.getMethod());
+        assertEquals(3, estimator.getMinReadings());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
+        assertEquals(2, estimator.getNumberOfDimensions());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getEstimatedRadioSource());
-        assertSame(estimator.getInitialPosition(), initialPosition);
+        assertSame(initialPosition, estimator.getInitialPosition());
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustRangingRadioSourceEstimator.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustRangingRadioSourceEstimator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA, estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
         assertNull(estimator.getInliersData());
-        assertEquals(estimator.isResultRefined(),
-                RobustRangingRadioSourceEstimator.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustRangingRadioSourceEstimator.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getReadings());
         assertNull(estimator.getListener());
-        assertEquals(estimator.getUseReadingPositionCovariance(),
-                RobustRangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES,
+                estimator.getUseReadingPositionCovariance());
         assertFalse(estimator.isReady());
         assertNull(estimator.getQualityScores());
         assertNull(estimator.getCovariance());
@@ -325,32 +295,26 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
         estimator = new LMedSRobustRangingRadioSourceEstimator2D<>(readings, initialPosition);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                LMedSRobustRangingRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
+        assertEquals(LMedSRobustRangingRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD, estimator.getStopThreshold(),
                 0.0);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertEquals(estimator.getMinReadings(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
-        assertEquals(estimator.getNumberOfDimensions(), 2);
+        assertEquals(RobustEstimatorMethod.LMEDS, estimator.getMethod());
+        assertEquals(3, estimator.getMinReadings());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
+        assertEquals(2, estimator.getNumberOfDimensions());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getEstimatedRadioSource());
-        assertSame(estimator.getInitialPosition(), initialPosition);
+        assertSame(initialPosition, estimator.getInitialPosition());
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustRangingRadioSourceEstimator.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustRangingRadioSourceEstimator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA, estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
         assertNull(estimator.getInliersData());
-        assertEquals(estimator.isResultRefined(),
-                RobustRangingRadioSourceEstimator.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustRangingRadioSourceEstimator.DEFAULT_KEEP_COVARIANCE);
-        assertSame(estimator.getReadings(), readings);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
+        assertSame(readings, estimator.getReadings());
         assertNull(estimator.getListener());
-        assertEquals(estimator.getUseReadingPositionCovariance(),
-                RobustRangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES,
+                estimator.getUseReadingPositionCovariance());
         assertTrue(estimator.isReady());
         assertNull(estimator.getQualityScores());
         assertNull(estimator.getCovariance());
@@ -362,51 +326,43 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new LMedSRobustRangingRadioSourceEstimator2D<>(null,
-                    initialPosition);
+            estimator = new LMedSRobustRangingRadioSourceEstimator2D<>(null, initialPosition);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
             estimator = new LMedSRobustRangingRadioSourceEstimator2D<>(
-                    new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>(),
-                    initialPosition);
+                    new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>(), initialPosition);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
 
         // test constructor with initial position and listener
-        estimator = new LMedSRobustRangingRadioSourceEstimator2D<>(initialPosition,
-                this);
+        estimator = new LMedSRobustRangingRadioSourceEstimator2D<>(initialPosition, this);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                LMedSRobustRangingRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
-                0.0);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertEquals(estimator.getMinReadings(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
-        assertEquals(estimator.getNumberOfDimensions(), 2);
+        assertEquals(LMedSRobustRangingRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
+        assertEquals(RobustEstimatorMethod.LMEDS, estimator.getMethod());
+        assertEquals(3, estimator.getMinReadings());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
+        assertEquals(2, estimator.getNumberOfDimensions());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getEstimatedRadioSource());
-        assertSame(estimator.getInitialPosition(), initialPosition);
+        assertSame(initialPosition, estimator.getInitialPosition());
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustRangingRadioSourceEstimator.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustRangingRadioSourceEstimator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
         assertNull(estimator.getInliersData());
-        assertEquals(estimator.isResultRefined(),
-                RobustRangingRadioSourceEstimator.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustRangingRadioSourceEstimator.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getReadings());
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getUseReadingPositionCovariance(),
-                RobustRangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES);
+        assertSame(this, estimator.getListener());
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES,
+                estimator.getUseReadingPositionCovariance());
         assertFalse(estimator.isReady());
         assertNull(estimator.getQualityScores());
         assertNull(estimator.getCovariance());
@@ -416,36 +372,29 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
 
         // test constructor with readings, initial position and listener
-        estimator = new LMedSRobustRangingRadioSourceEstimator2D<>(readings,
-                initialPosition, this);
+        estimator = new LMedSRobustRangingRadioSourceEstimator2D<>(readings, initialPosition, this);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                LMedSRobustRangingRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
-                0.0);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertEquals(estimator.getMinReadings(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
-        assertEquals(estimator.getNumberOfDimensions(), 2);
+        assertEquals(LMedSRobustRangingRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
+        assertEquals(RobustEstimatorMethod.LMEDS, estimator.getMethod());
+        assertEquals(3, estimator.getMinReadings());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
+        assertEquals(2, estimator.getNumberOfDimensions());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getEstimatedRadioSource());
-        assertSame(estimator.getInitialPosition(), initialPosition);
+        assertSame(initialPosition, estimator.getInitialPosition());
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustRangingRadioSourceEstimator.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustRangingRadioSourceEstimator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA, estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
         assertNull(estimator.getInliersData());
-        assertEquals(estimator.isResultRefined(),
-                RobustRangingRadioSourceEstimator.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustRangingRadioSourceEstimator.DEFAULT_KEEP_COVARIANCE);
-        assertSame(estimator.getReadings(), readings);
-        assertSame(estimator.getListener(), this);
-        assertEquals(estimator.getUseReadingPositionCovariance(),
-                RobustRangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
+        assertSame(readings, estimator.getReadings());
+        assertSame(this, estimator.getListener());
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES,
+                estimator.getUseReadingPositionCovariance());
         assertTrue(estimator.isReady());
         assertNull(estimator.getQualityScores());
         assertNull(estimator.getCovariance());
@@ -457,15 +406,13 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new LMedSRobustRangingRadioSourceEstimator2D<>(null,
-                    initialPosition, this);
+            estimator = new LMedSRobustRangingRadioSourceEstimator2D<>(null, initialPosition, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
             estimator = new LMedSRobustRangingRadioSourceEstimator2D<>(
-                    new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>(),
-                    initialPosition, this);
+                    new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>(), initialPosition, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -478,15 +425,14 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                 new LMedSRobustRangingRadioSourceEstimator2D<>();
 
         // check default value
-        assertEquals(estimator.getStopThreshold(),
-                LMedSRobustRangingRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
-                0.0);
+        assertEquals(LMedSRobustRangingRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
 
         // set new value
         estimator.setStopThreshold(0.5);
 
         // check
-        assertEquals(estimator.getStopThreshold(), 0.5, 0.0);
+        assertEquals(0.5, estimator.getStopThreshold(), 0.0);
 
         // force IllegalArgumentException
         try {
@@ -513,7 +459,7 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
         estimator.setInitialPosition(initialPosition);
 
         // check
-        assertSame(estimator.getInitialPosition(), initialPosition);
+        assertSame(initialPosition, estimator.getInitialPosition());
     }
 
     @Test
@@ -522,16 +468,16 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                 new LMedSRobustRangingRadioSourceEstimator2D<>();
 
         // check default value
-        assertEquals(estimator.getUseReadingPositionCovariance(),
-                RobustRangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES,
+                estimator.getUseReadingPositionCovariance());
 
         // set new value
         estimator.setUseReadingPositionCovariances(
                 !RobustRangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES);
 
         // check
-        assertEquals(estimator.getUseReadingPositionCovariance(),
-                !RobustRangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES);
+        assertEquals(!RobustRangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES,
+                estimator.getUseReadingPositionCovariance());
     }
 
     @Test
@@ -540,15 +486,14 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                 new LMedSRobustRangingRadioSourceEstimator2D<>();
 
         // check default value
-        assertEquals(estimator.getProgressDelta(),
-                RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA,
-                0.0);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
 
         // set new value
         estimator.setProgressDelta(0.5f);
 
         // check
-        assertEquals(estimator.getProgressDelta(), 0.5f, 0.0);
+        assertEquals(0.5f, estimator.getProgressDelta(), 0.0);
 
         // force IllegalArgumentException
         try {
@@ -569,15 +514,14 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                 new LMedSRobustRangingRadioSourceEstimator2D<>();
 
         // check default value
-        assertEquals(estimator.getConfidence(),
-                RobustRangingRadioSourceEstimator.DEFAULT_CONFIDENCE,
-                0.0);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_CONFIDENCE,
+                estimator.getConfidence(), 0.0);
 
         // set new value
         estimator.setConfidence(0.5);
 
         // check
-        assertEquals(estimator.getConfidence(), 0.5, 0.0);
+        assertEquals(0.5, estimator.getConfidence(), 0.0);
 
         // force IllegalArgumentException
         try {
@@ -598,14 +542,13 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                 new LMedSRobustRangingRadioSourceEstimator2D<>();
 
         // check default value
-        assertEquals(estimator.getMaxIterations(),
-                RobustRangingRadioSourceEstimator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
 
         // set new value
         estimator.setMaxIterations(10);
 
         // check
-        assertEquals(estimator.getMaxIterations(), 10);
+        assertEquals(10, estimator.getMaxIterations());
 
         // force IllegalArgumentException
         try {
@@ -621,16 +564,14 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                 new LMedSRobustRangingRadioSourceEstimator2D<>();
 
         // check default value
-        assertEquals(estimator.isResultRefined(),
-                RobustRangingRadioSourceEstimator.DEFAULT_REFINE_RESULT);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
 
         // set new value
         estimator.setResultRefined(
                 !RobustRangingRadioSourceEstimator.DEFAULT_REFINE_RESULT);
 
         // check
-        assertEquals(estimator.isResultRefined(),
-                !RobustRangingRadioSourceEstimator.DEFAULT_REFINE_RESULT);
+        assertEquals(!RobustRangingRadioSourceEstimator.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
     }
 
     @Test
@@ -639,16 +580,13 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                 new LMedSRobustRangingRadioSourceEstimator2D<>();
 
         // check default value
-        assertEquals(estimator.isCovarianceKept(),
-                RobustRangingRadioSourceEstimator.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
 
         // set new value
-        estimator.setCovarianceKept(
-                !RobustRangingRadioSourceEstimator.DEFAULT_KEEP_COVARIANCE);
+        estimator.setCovarianceKept(!RobustRangingRadioSourceEstimator.DEFAULT_KEEP_COVARIANCE);
 
         // check
-        assertEquals(estimator.isCovarianceKept(),
-                !RobustRangingRadioSourceEstimator.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(!RobustRangingRadioSourceEstimator.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
     }
 
     @Test
@@ -670,8 +608,7 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
         assertTrue(estimator.areValidReadings(readings));
 
         assertFalse(estimator.areValidReadings(null));
-        assertFalse(estimator.areValidReadings(
-                new ArrayList<RangingReadingLocated<WifiAccessPoint, Point2D>>()));
+        assertFalse(estimator.areValidReadings(new ArrayList<RangingReadingLocated<WifiAccessPoint, Point2D>>()));
     }
 
     @Test
@@ -684,8 +621,7 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            readings.add(new RangingReadingLocated2D<>(accessPoint,
-                    0.0, position));
+            readings.add(new RangingReadingLocated2D<>(accessPoint, 0.0, position));
         }
 
         final LMedSRobustRangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
@@ -699,7 +635,7 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
         estimator.setReadings(readings);
 
         // check
-        assertSame(estimator.getReadings(), readings);
+        assertSame(readings, estimator.getReadings());
         assertTrue(estimator.isReady());
 
         // force IllegalArgumentException
@@ -709,8 +645,7 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator.setReadings(
-                    new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>());
+            estimator.setReadings(new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>());
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -728,7 +663,7 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
         estimator.setListener(this);
 
         // check
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
     }
 
     @Test
@@ -752,13 +687,13 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                 new LMedSRobustRangingRadioSourceEstimator2D<>();
 
         // check default value
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
+        assertEquals(3, estimator.getPreliminarySubsetSize());
 
         // set new value
         estimator.setPreliminarySubsetSize(4);
 
         // check
-        assertEquals(estimator.getPreliminarySubsetSize(), 4);
+        assertEquals(4, estimator.getPreliminarySubsetSize());
 
         // force IllegalArgumentException
         try {
@@ -784,23 +719,20 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateNoInlierErrorNoRefinement() throws LockedException,
-            NotReadyException, RobustEstimatorException {
+    public void testEstimateNoInlierErrorNoRefinement() throws LockedException, NotReadyException,
+            RobustEstimatorException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, STD_OUTLIER_ERROR);
+        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, STD_OUTLIER_ERROR);
 
         int numValidPosition = 0;
         double positionError = 0.0;
         for (int t = 0; t < TIMES; t++) {
-            final InhomogeneousPoint2D accessPointPosition =
-                    new InhomogeneousPoint2D(
-                            randomizer.nextDouble(MIN_POS, MAX_POS),
-                            randomizer.nextDouble(MIN_POS, MAX_POS));
+            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
             final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(
-                    MIN_READINGS, MAX_READINGS);
+            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
             final Point2D[] readingsPositions = new Point2D[numReadings];
             final List<RangingReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
             for (int i = 0; i < numReadings; i++) {
@@ -808,8 +740,7 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(
-                        accessPointPosition);
+                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
@@ -820,13 +751,12 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                     error = 0.0;
                 }
 
-                readings.add(new RangingReadingLocated2D<>(accessPoint,
-                        distance + error, readingsPositions[i]));
+                readings.add(new RangingReadingLocated2D<>(accessPoint, distance + error,
+                        readingsPositions[i]));
             }
 
             final LMedSRobustRangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new LMedSRobustRangingRadioSourceEstimator2D<>(readings,
-                            this);
+                    new LMedSRobustRangingRadioSourceEstimator2D<>(readings, this);
 
             estimator.setResultRefined(false);
 
@@ -834,16 +764,16 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
             assertNull(estimator.getEstimatedPosition());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
-            assertEquals(estimateNextIteration, 0);
-            assertEquals(estimateProgressChange, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
+            assertEquals(0, estimateNextIteration);
+            assertEquals(0, estimateProgressChange);
 
             estimator.estimate();
 
             // check
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
@@ -856,33 +786,30 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
             final WifiAccessPointLocated2D estimatedAccessPoint =
                     (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
-            assertEquals(estimatedAccessPoint.getBssid(), "bssid");
-            assertEquals(estimatedAccessPoint.getFrequency(), FREQUENCY, 0.0);
+            assertEquals("bssid", estimatedAccessPoint.getBssid());
+            assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
             assertNull(estimatedAccessPoint.getSsid());
             assertEquals(estimatedAccessPoint.getPosition(),
                     estimator.getEstimatedPosition());
             assertNull(estimatedAccessPoint.getPositionCovariance());
 
-            positionError = estimator.getEstimatedPosition().
-                    distanceTo(accessPointPosition);
+            positionError = estimator.getEstimatedPosition().distanceTo(accessPointPosition);
             if (positionError > ABSOLUTE_ERROR) {
                 continue;
             }
 
-            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition,
-                    ABSOLUTE_ERROR));
+            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
 
             break;
         }
 
         assertTrue(numValidPosition > 0);
 
-        LOGGER.log(Level.INFO, "Position error: {0} meters",
-                positionError);
+        LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
 
         // force NotReadyException
         final LMedSRobustRangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
@@ -895,26 +822,22 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateNoInlierErrorWithRefinement() throws LockedException,
-            NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateNoInlierErrorWithRefinement() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, STD_OUTLIER_ERROR);
+        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, STD_OUTLIER_ERROR);
 
         int numValidPosition = 0;
         double positionError = 0.0;
         double positionStd = 0.0, positionStdConfidence = 0.0;
         double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
         for (int t = 0; t < TIMES; t++) {
-            final InhomogeneousPoint2D accessPointPosition =
-                    new InhomogeneousPoint2D(
-                            randomizer.nextDouble(MIN_POS, MAX_POS),
-                            randomizer.nextDouble(MIN_POS, MAX_POS));
+            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
             final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(
-                    MIN_READINGS, MAX_READINGS);
+            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
             final Point2D[] readingsPositions = new Point2D[numReadings];
             final List<RangingReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
             for (int i = 0; i < numReadings; i++) {
@@ -922,8 +845,7 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(
-                        accessPointPosition);
+                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
@@ -934,13 +856,12 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                     error = 0.0;
                 }
 
-                readings.add(new RangingReadingLocated2D<>(accessPoint,
-                        distance + error, readingsPositions[i]));
+                readings.add(new RangingReadingLocated2D<>(accessPoint, distance + error,
+                        readingsPositions[i]));
             }
 
             final LMedSRobustRangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new LMedSRobustRangingRadioSourceEstimator2D<>(readings,
-                            this);
+                    new LMedSRobustRangingRadioSourceEstimator2D<>(readings, this);
 
             estimator.setResultRefined(true);
 
@@ -948,16 +869,16 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
             assertNull(estimator.getEstimatedPosition());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
-            assertEquals(estimateNextIteration, 0);
-            assertEquals(estimateProgressChange, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
+            assertEquals(0, estimateNextIteration);
+            assertEquals(0, estimateProgressChange);
 
             estimator.estimate();
 
             // check
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
@@ -970,16 +891,13 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
             final WifiAccessPointLocated2D estimatedAccessPoint =
                     (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
-            assertEquals(estimatedAccessPoint.getBssid(), "bssid");
-            assertEquals(estimatedAccessPoint.getFrequency(), FREQUENCY, 0.0);
+            assertEquals("bssid", estimatedAccessPoint.getBssid());
+            assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
             assertNull(estimatedAccessPoint.getSsid());
-            assertEquals(estimatedAccessPoint.getPosition(),
-                    estimator.getEstimatedPosition());
-            assertEquals(estimatedAccessPoint.getPositionCovariance(),
-                    estimator.getEstimatedPositionCovariance());
+            assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
+            assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(
-                    estimator.getEstimatedPositionCovariance());
+            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
             final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
@@ -990,18 +908,16 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
             positionAccuracy = accuracy.getAverageAccuracy();
             positionAccuracyConfidence = accuracy.getConfidence();
 
-            positionError = estimator.getEstimatedPosition().
-                    distanceTo(accessPointPosition);
+            positionError = estimator.getEstimatedPosition().distanceTo(accessPointPosition);
             if (positionError > ABSOLUTE_ERROR) {
                 continue;
             }
 
-            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition,
-                    ABSOLUTE_ERROR));
+            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
 
             break;
         }
@@ -1019,8 +935,7 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                 "Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
-        LOGGER.log(Level.INFO, "Position error: {0} meters",
-                positionError);
+        LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
 
         // force NotReadyException
         final LMedSRobustRangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
@@ -1033,12 +948,10 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateWithInlierErrorWithRefinement() throws LockedException,
-            NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateWithInlierErrorWithRefinement() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, STD_OUTLIER_ERROR);
+        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, STD_OUTLIER_ERROR);
         final GaussianRandomizer inlierErrorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, INLIER_ERROR_STD);
 
@@ -1047,14 +960,12 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
         double positionStd = 0.0, positionStdConfidence = 0.0;
         double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
         for (int t = 0; t < TIMES; t++) {
-            final InhomogeneousPoint2D accessPointPosition =
-                    new InhomogeneousPoint2D(
-                            randomizer.nextDouble(MIN_POS, MAX_POS),
-                            randomizer.nextDouble(MIN_POS, MAX_POS));
+            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
             final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(
-                    MIN_READINGS, MAX_READINGS);
+            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
             final Point2D[] readingsPositions = new Point2D[numReadings];
             final List<RangingReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
             for (int i = 0; i < numReadings; i++) {
@@ -1062,8 +973,7 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(
-                        accessPointPosition);
+                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
@@ -1081,8 +991,7 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
             }
 
             final LMedSRobustRangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new LMedSRobustRangingRadioSourceEstimator2D<>(readings,
-                            this);
+                    new LMedSRobustRangingRadioSourceEstimator2D<>(readings, this);
 
             estimator.setResultRefined(true);
 
@@ -1090,16 +999,16 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
             assertNull(estimator.getEstimatedPosition());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
-            assertEquals(estimateNextIteration, 0);
-            assertEquals(estimateProgressChange, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
+            assertEquals(0, estimateNextIteration);
+            assertEquals(0, estimateProgressChange);
 
             estimator.estimate();
 
             // check
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
@@ -1112,16 +1021,14 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
             final WifiAccessPointLocated2D estimatedAccessPoint =
                     (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
-            assertEquals(estimatedAccessPoint.getBssid(), "bssid");
-            assertEquals(estimatedAccessPoint.getFrequency(), FREQUENCY, 0.0);
+            assertEquals("bssid", estimatedAccessPoint.getBssid());
+            assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
             assertNull(estimatedAccessPoint.getSsid());
-            assertEquals(estimatedAccessPoint.getPosition(),
-                    estimator.getEstimatedPosition());
-            assertEquals(estimatedAccessPoint.getPositionCovariance(),
-                    estimator.getEstimatedPositionCovariance());
+            assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
+            assertEquals(estimator.getEstimatedPositionCovariance(),
+                    estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(
-                    estimator.getEstimatedPositionCovariance());
+            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
             final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
@@ -1132,18 +1039,16 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
             positionAccuracy = accuracy.getAverageAccuracy();
             positionAccuracyConfidence = accuracy.getConfidence();
 
-            positionError = estimator.getEstimatedPosition().
-                    distanceTo(accessPointPosition);
+            positionError = estimator.getEstimatedPosition().distanceTo(accessPointPosition);
             if (positionError > LARGE_POSITION_ERROR) {
                 continue;
             }
 
-            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition,
-                    LARGE_POSITION_ERROR));
+            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, LARGE_POSITION_ERROR));
             numValidPosition++;
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
 
             break;
         }
@@ -1161,8 +1066,7 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                 "Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
-        LOGGER.log(Level.INFO, "Position error: {0} meters",
-                positionError);
+        LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
 
         // force NotReadyException
         final LMedSRobustRangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
@@ -1175,26 +1079,22 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateNoInlierErrorWithInitialPositionAndRefinement() throws LockedException,
-            NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateNoInlierErrorWithInitialPositionAndRefinement() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, STD_OUTLIER_ERROR);
+        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, STD_OUTLIER_ERROR);
 
         int numValidPosition = 0;
         double positionError = 0.0;
         double positionStd = 0.0, positionStdConfidence = 0.0;
         double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
         for (int t = 0; t < TIMES; t++) {
-            final InhomogeneousPoint2D accessPointPosition =
-                    new InhomogeneousPoint2D(
-                            randomizer.nextDouble(MIN_POS, MAX_POS),
-                            randomizer.nextDouble(MIN_POS, MAX_POS));
+            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
             final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(
-                    MIN_READINGS, MAX_READINGS);
+            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
             final Point2D[] readingsPositions = new Point2D[numReadings];
             final List<RangingReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
             for (int i = 0; i < numReadings; i++) {
@@ -1202,8 +1102,7 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(
-                        accessPointPosition);
+                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
@@ -1214,13 +1113,12 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                     error = 0.0;
                 }
 
-                readings.add(new RangingReadingLocated2D<>(accessPoint,
-                        distance + error, readingsPositions[i]));
+                readings.add(new RangingReadingLocated2D<>(accessPoint, distance + error,
+                        readingsPositions[i]));
             }
 
             final LMedSRobustRangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new LMedSRobustRangingRadioSourceEstimator2D<>(readings,
-                            accessPointPosition, this);
+                    new LMedSRobustRangingRadioSourceEstimator2D<>(readings, accessPointPosition, this);
 
             estimator.setResultRefined(true);
 
@@ -1228,16 +1126,16 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
             assertNull(estimator.getEstimatedPosition());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
-            assertEquals(estimateNextIteration, 0);
-            assertEquals(estimateProgressChange, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
+            assertEquals(0, estimateNextIteration);
+            assertEquals(0, estimateProgressChange);
 
             estimator.estimate();
 
             // check
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
@@ -1250,16 +1148,13 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
             final WifiAccessPointLocated2D estimatedAccessPoint =
                     (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
-            assertEquals(estimatedAccessPoint.getBssid(), "bssid");
-            assertEquals(estimatedAccessPoint.getFrequency(), FREQUENCY, 0.0);
+            assertEquals("bssid", estimatedAccessPoint.getBssid());
+            assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
             assertNull(estimatedAccessPoint.getSsid());
-            assertEquals(estimatedAccessPoint.getPosition(),
-                    estimator.getEstimatedPosition());
-            assertEquals(estimatedAccessPoint.getPositionCovariance(),
-                    estimator.getEstimatedPositionCovariance());
+            assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
+            assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(
-                    estimator.getEstimatedPositionCovariance());
+            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
             final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
@@ -1270,18 +1165,16 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
             positionAccuracy = accuracy.getAverageAccuracy();
             positionAccuracyConfidence = accuracy.getConfidence();
 
-            positionError = estimator.getEstimatedPosition().
-                    distanceTo(accessPointPosition);
+            positionError = estimator.getEstimatedPosition().distanceTo(accessPointPosition);
             if (positionError > ABSOLUTE_ERROR) {
                 continue;
             }
 
-            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition,
-                    ABSOLUTE_ERROR));
+            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
 
             break;
         }
@@ -1299,8 +1192,7 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                 "Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
-        LOGGER.log(Level.INFO, "Position error: {0} meters",
-                positionError);
+        LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
 
         // force NotReadyException
         final LMedSRobustRangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
@@ -1313,28 +1205,23 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateBeacon() throws LockedException,
-            NotReadyException, RobustEstimatorException,
+    public void testEstimateBeacon() throws LockedException, NotReadyException, RobustEstimatorException,
             NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, STD_OUTLIER_ERROR);
+        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, STD_OUTLIER_ERROR);
 
         int numValidPosition = 0;
         double positionError = 0.0;
         double positionStd = 0.0, positionStdConfidence = 0.0;
         double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
         for (int t = 0; t < TIMES; t++) {
-            final InhomogeneousPoint2D accessPointPosition =
-                    new InhomogeneousPoint2D(
-                            randomizer.nextDouble(MIN_POS, MAX_POS),
-                            randomizer.nextDouble(MIN_POS, MAX_POS));
+            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
             final BeaconIdentifier identifier = BeaconIdentifier.fromUuid(UUID.randomUUID());
-            final Beacon beacon = new Beacon(Collections.singletonList(identifier),
-                    TRANSMITTED_POWER_DBM, FREQUENCY);
+            final Beacon beacon = new Beacon(Collections.singletonList(identifier), TRANSMITTED_POWER_DBM, FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(
-                    MIN_READINGS, MAX_READINGS);
+            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
             final Point2D[] readingsPositions = new Point2D[numReadings];
             final List<RangingReadingLocated2D<Beacon>> readings = new ArrayList<>();
             for (int i = 0; i < numReadings; i++) {
@@ -1342,8 +1229,7 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(
-                        accessPointPosition);
+                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
@@ -1354,8 +1240,7 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                     error = 0.0;
                 }
 
-                readings.add(new RangingReadingLocated2D<>(beacon,
-                        distance + error, readingsPositions[i]));
+                readings.add(new RangingReadingLocated2D<>(beacon, distance + error, readingsPositions[i]));
             }
 
             final LMedSRobustRangingRadioSourceEstimator2D<Beacon> estimator =
@@ -1378,20 +1263,15 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
             assertNotNull(estimator.getCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final BeaconLocated2D estimatedBeacon =
-                    (BeaconLocated2D) estimator.getEstimatedRadioSource();
+            final BeaconLocated2D estimatedBeacon = (BeaconLocated2D) estimator.getEstimatedRadioSource();
 
-            assertEquals(estimatedBeacon.getIdentifiers(), beacon.getIdentifiers());
-            assertEquals(estimatedBeacon.getTransmittedPower(),
-                    TRANSMITTED_POWER_DBM, 0.0);
-            assertEquals(estimatedBeacon.getFrequency(), beacon.getFrequency(), 0.0);
-            assertEquals(estimatedBeacon.getPosition(),
-                    estimator.getEstimatedPosition());
-            assertEquals(estimatedBeacon.getPositionCovariance(),
-                    estimator.getEstimatedPositionCovariance());
+            assertEquals(beacon.getIdentifiers(), estimatedBeacon.getIdentifiers());
+            assertEquals(TRANSMITTED_POWER_DBM, estimatedBeacon.getTransmittedPower(), 0.0);
+            assertEquals(beacon.getFrequency(), estimatedBeacon.getFrequency(), 0.0);
+            assertEquals(estimator.getEstimatedPosition(), estimatedBeacon.getPosition());
+            assertEquals(estimator.getEstimatedPositionCovariance(), estimatedBeacon.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(
-                    estimator.getEstimatedPositionCovariance());
+            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
             final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
@@ -1408,8 +1288,7 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                 continue;
             }
 
-            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition,
-                    ABSOLUTE_ERROR));
+            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
             break;
@@ -1428,8 +1307,7 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                 "Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
-        LOGGER.log(Level.INFO, "Position error: {0} meters",
-                positionError);
+        LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
 
         // force NotReadyException
         final LMedSRobustRangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
@@ -1442,36 +1320,30 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateWithStandardDeviationsAndPositionCovariance()
-            throws LockedException, NotReadyException, RobustEstimatorException,
-            AlgebraException {
+    public void testEstimateWithStandardDeviationsAndPositionCovariance() throws LockedException, NotReadyException,
+            RobustEstimatorException, AlgebraException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, STD_OUTLIER_ERROR);
+        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, STD_OUTLIER_ERROR);
 
         int numValidPosition = 0;
         double positionError = 0.0;
         double positionStd = 0.0, positionStdConfidence = 0.0;
         double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
         for (int t = 0; t < TIMES; t++) {
-            final InhomogeneousPoint2D accessPointPosition =
-                    new InhomogeneousPoint2D(
-                            randomizer.nextDouble(MIN_POS, MAX_POS),
-                            randomizer.nextDouble(MIN_POS, MAX_POS));
+            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
             final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(
-                    MIN_READINGS, MAX_READINGS);
+            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
             final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingReadingLocated2D<WifiAccessPoint>> readings =
-                    new ArrayList<>();
+            final List<RangingReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
             for (int i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(
-                        accessPointPosition);
+                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
@@ -1486,14 +1358,12 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                         INLIER_ERROR_STD * INLIER_ERROR_STD,
                         INLIER_ERROR_STD * INLIER_ERROR_STD});
 
-                readings.add(new RangingReadingLocated2D<>(accessPoint,
-                        distance + error, readingsPositions[i],
+                readings.add(new RangingReadingLocated2D<>(accessPoint, distance + error, readingsPositions[i],
                         INLIER_ERROR_STD, positionCovariance));
             }
 
             final LMedSRobustRangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new LMedSRobustRangingRadioSourceEstimator2D<>(
-                            readings, this);
+                    new LMedSRobustRangingRadioSourceEstimator2D<>(readings, this);
             estimator.setUseReadingPositionCovariances(true);
 
             estimator.setResultRefined(true);
@@ -1502,16 +1372,16 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
             assertNull(estimator.getEstimatedPosition());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
-            assertEquals(estimateNextIteration, 0);
-            assertEquals(estimateProgressChange, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
+            assertEquals(0, estimateNextIteration);
+            assertEquals(0, estimateProgressChange);
 
             estimator.estimate();
 
             // check
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
@@ -1524,16 +1394,13 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
             final WifiAccessPointLocated2D estimatedAccessPoint =
                     (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
-            assertEquals(estimatedAccessPoint.getBssid(), "bssid");
-            assertEquals(estimatedAccessPoint.getFrequency(), FREQUENCY, 0.0);
+            assertEquals("bssid", estimatedAccessPoint.getBssid());
+            assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
             assertNull(estimatedAccessPoint.getSsid());
-            assertEquals(estimatedAccessPoint.getPosition(),
-                    estimator.getEstimatedPosition());
-            assertEquals(estimatedAccessPoint.getPositionCovariance(),
-                    estimator.getEstimatedPositionCovariance());
+            assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
+            assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(
-                    estimator.getEstimatedPositionCovariance());
+            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
             final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
@@ -1544,18 +1411,16 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
             positionAccuracy = accuracy.getAverageAccuracy();
             positionAccuracyConfidence = accuracy.getConfidence();
 
-            positionError = estimator.getEstimatedPosition().
-                    distanceTo(accessPointPosition);
+            positionError = estimator.getEstimatedPosition().distanceTo(accessPointPosition);
             if (positionError > ABSOLUTE_ERROR) {
                 continue;
             }
 
-            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition,
-                    ABSOLUTE_ERROR));
+            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
 
             break;
         }
@@ -1573,8 +1438,7 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                 "Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
-        LOGGER.log(Level.INFO, "Position error: {0} meters",
-                positionError);
+        LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
 
         // force NotReadyException
         final LMedSRobustRangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
@@ -1587,26 +1451,22 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateHomogeneousLinearSolver() throws LockedException,
-            NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateHomogeneousLinearSolver() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, STD_OUTLIER_ERROR);
+        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, STD_OUTLIER_ERROR);
 
         int numValidPosition = 0;
         double positionError = 0.0;
         double positionStd = 0.0, positionStdConfidence = 0.0;
         double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
         for (int t = 0; t < TIMES; t++) {
-            final InhomogeneousPoint2D accessPointPosition =
-                    new InhomogeneousPoint2D(
-                            randomizer.nextDouble(MIN_POS, MAX_POS),
-                            randomizer.nextDouble(MIN_POS, MAX_POS));
+            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
             final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(
-                    MIN_READINGS, MAX_READINGS);
+            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
             final Point2D[] readingsPositions = new Point2D[numReadings];
             final List<RangingReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
             for (int i = 0; i < numReadings; i++) {
@@ -1614,8 +1474,7 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(
-                        accessPointPosition);
+                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
@@ -1626,13 +1485,12 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                     error = 0.0;
                 }
 
-                readings.add(new RangingReadingLocated2D<>(accessPoint,
-                        distance + error, readingsPositions[i]));
+                readings.add(new RangingReadingLocated2D<>(accessPoint, distance + error,
+                        readingsPositions[i]));
             }
 
             final LMedSRobustRangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new LMedSRobustRangingRadioSourceEstimator2D<>(readings,
-                            this);
+                    new LMedSRobustRangingRadioSourceEstimator2D<>(readings, this);
 
             estimator.setResultRefined(true);
             estimator.setHomogeneousLinearSolverUsed(true);
@@ -1641,16 +1499,16 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
             assertNull(estimator.getEstimatedPosition());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
-            assertEquals(estimateNextIteration, 0);
-            assertEquals(estimateProgressChange, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
+            assertEquals(0, estimateNextIteration);
+            assertEquals(0, estimateProgressChange);
 
             estimator.estimate();
 
             // check
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
@@ -1663,16 +1521,13 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
             final WifiAccessPointLocated2D estimatedAccessPoint =
                     (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
-            assertEquals(estimatedAccessPoint.getBssid(), "bssid");
-            assertEquals(estimatedAccessPoint.getFrequency(), FREQUENCY, 0.0);
+            assertEquals("bssid", estimatedAccessPoint.getBssid());
+            assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
             assertNull(estimatedAccessPoint.getSsid());
-            assertEquals(estimatedAccessPoint.getPosition(),
-                    estimator.getEstimatedPosition());
-            assertEquals(estimatedAccessPoint.getPositionCovariance(),
-                    estimator.getEstimatedPositionCovariance());
+            assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
+            assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(
-                    estimator.getEstimatedPositionCovariance());
+            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
             final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
@@ -1683,18 +1538,16 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
             positionAccuracy = accuracy.getAverageAccuracy();
             positionAccuracyConfidence = accuracy.getConfidence();
 
-            positionError = estimator.getEstimatedPosition().
-                    distanceTo(accessPointPosition);
+            positionError = estimator.getEstimatedPosition().distanceTo(accessPointPosition);
             if (positionError > ABSOLUTE_ERROR) {
                 continue;
             }
 
-            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition,
-                    ABSOLUTE_ERROR));
+            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
 
             break;
         }
@@ -1712,31 +1565,26 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                 "Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
-        LOGGER.log(Level.INFO, "Position error: {0} meters",
-                positionError);
+        LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
     }
 
     @Test
-    public void testEstimateInhomogeneousLinearSolver() throws LockedException,
-            NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateInhomogeneousLinearSolver() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, STD_OUTLIER_ERROR);
+        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, STD_OUTLIER_ERROR);
 
         int numValidPosition = 0;
         double positionError = 0.0;
         double positionStd = 0.0, positionStdConfidence = 0.0;
         double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
         for (int t = 0; t < TIMES; t++) {
-            final InhomogeneousPoint2D accessPointPosition =
-                    new InhomogeneousPoint2D(
-                            randomizer.nextDouble(MIN_POS, MAX_POS),
-                            randomizer.nextDouble(MIN_POS, MAX_POS));
+            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
             final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(
-                    MIN_READINGS, MAX_READINGS);
+            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
             final Point2D[] readingsPositions = new Point2D[numReadings];
             final List<RangingReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
             for (int i = 0; i < numReadings; i++) {
@@ -1744,8 +1592,7 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(
-                        accessPointPosition);
+                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
@@ -1756,13 +1603,12 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                     error = 0.0;
                 }
 
-                readings.add(new RangingReadingLocated2D<>(accessPoint,
-                        distance + error, readingsPositions[i]));
+                readings.add(new RangingReadingLocated2D<>(accessPoint, distance + error,
+                        readingsPositions[i]));
             }
 
             final LMedSRobustRangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new LMedSRobustRangingRadioSourceEstimator2D<>(readings,
-                            this);
+                    new LMedSRobustRangingRadioSourceEstimator2D<>(readings, this);
 
             estimator.setResultRefined(true);
             estimator.setHomogeneousLinearSolverUsed(false);
@@ -1771,16 +1617,16 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
             assertNull(estimator.getEstimatedPosition());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
-            assertEquals(estimateNextIteration, 0);
-            assertEquals(estimateProgressChange, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
+            assertEquals(0, estimateNextIteration);
+            assertEquals(0, estimateProgressChange);
 
             estimator.estimate();
 
             // check
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
@@ -1793,16 +1639,13 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
             final WifiAccessPointLocated2D estimatedAccessPoint =
                     (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
-            assertEquals(estimatedAccessPoint.getBssid(), "bssid");
-            assertEquals(estimatedAccessPoint.getFrequency(), FREQUENCY, 0.0);
+            assertEquals("bssid", estimatedAccessPoint.getBssid());
+            assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
             assertNull(estimatedAccessPoint.getSsid());
-            assertEquals(estimatedAccessPoint.getPosition(),
-                    estimator.getEstimatedPosition());
-            assertEquals(estimatedAccessPoint.getPositionCovariance(),
-                    estimator.getEstimatedPositionCovariance());
+            assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
+            assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(
-                    estimator.getEstimatedPositionCovariance());
+            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
             final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
@@ -1813,18 +1656,16 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
             positionAccuracy = accuracy.getAverageAccuracy();
             positionAccuracyConfidence = accuracy.getConfidence();
 
-            positionError = estimator.getEstimatedPosition().
-                    distanceTo(accessPointPosition);
+            positionError = estimator.getEstimatedPosition().distanceTo(accessPointPosition);
             if (positionError > ABSOLUTE_ERROR) {
                 continue;
             }
 
-            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition,
-                    ABSOLUTE_ERROR));
+            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
 
             break;
         }
@@ -1842,28 +1683,24 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                 "Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
-        LOGGER.log(Level.INFO, "Position error: {0} meters",
-                positionError);
+        LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
     }
 
     @Test
     public void testEstimateLargerPreliminarySubsetSize() throws LockedException,
             NotReadyException, RobustEstimatorException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, STD_OUTLIER_ERROR);
+        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, STD_OUTLIER_ERROR);
 
         int numValidPosition = 0;
         double positionError = 0.0;
         for (int t = 0; t < TIMES; t++) {
-            final InhomogeneousPoint2D accessPointPosition =
-                    new InhomogeneousPoint2D(
-                            randomizer.nextDouble(MIN_POS, MAX_POS),
-                            randomizer.nextDouble(MIN_POS, MAX_POS));
+            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
             final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(
-                    MIN_READINGS, MAX_READINGS);
+            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
             final Point2D[] readingsPositions = new Point2D[numReadings];
             final List<RangingReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
             for (int i = 0; i < numReadings; i++) {
@@ -1871,8 +1708,7 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(
-                        accessPointPosition);
+                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
@@ -1883,13 +1719,12 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
                     error = 0.0;
                 }
 
-                readings.add(new RangingReadingLocated2D<>(accessPoint,
-                        distance + error, readingsPositions[i]));
+                readings.add(new RangingReadingLocated2D<>(accessPoint, distance + error,
+                        readingsPositions[i]));
             }
 
             final LMedSRobustRangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new LMedSRobustRangingRadioSourceEstimator2D<>(readings,
-                            this);
+                    new LMedSRobustRangingRadioSourceEstimator2D<>(readings, this);
 
             estimator.setResultRefined(false);
 
@@ -1899,16 +1734,16 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
             assertNull(estimator.getEstimatedPosition());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
-            assertEquals(estimateNextIteration, 0);
-            assertEquals(estimateProgressChange, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
+            assertEquals(0, estimateNextIteration);
+            assertEquals(0, estimateProgressChange);
 
             estimator.estimate();
 
             // check
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
@@ -1921,25 +1756,22 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
             final WifiAccessPointLocated2D estimatedAccessPoint =
                     (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
-            assertEquals(estimatedAccessPoint.getBssid(), "bssid");
-            assertEquals(estimatedAccessPoint.getFrequency(), FREQUENCY, 0.0);
+            assertEquals("bssid", estimatedAccessPoint.getBssid());
+            assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
             assertNull(estimatedAccessPoint.getSsid());
-            assertEquals(estimatedAccessPoint.getPosition(),
-                    estimator.getEstimatedPosition());
+            assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
             assertNull(estimatedAccessPoint.getPositionCovariance());
 
-            positionError = estimator.getEstimatedPosition().
-                    distanceTo(accessPointPosition);
+            positionError = estimator.getEstimatedPosition().distanceTo(accessPointPosition);
             if (positionError > ABSOLUTE_ERROR) {
                 continue;
             }
 
-            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition,
-                    ABSOLUTE_ERROR));
+            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
 
             break;
         }
@@ -1960,31 +1792,27 @@ public class LMedSRobustRangingRadioSourceEstimator2DTest implements
     }
 
     @Override
-    public void onEstimateStart(
-            final RobustRangingRadioSourceEstimator<WifiAccessPoint, Point2D> estimator) {
+    public void onEstimateStart(final RobustRangingRadioSourceEstimator<WifiAccessPoint, Point2D> estimator) {
         estimateStart++;
         checkLocked((LMedSRobustRangingRadioSourceEstimator2D<WifiAccessPoint>) estimator);
     }
 
     @Override
-    public void onEstimateEnd(
-            final RobustRangingRadioSourceEstimator<WifiAccessPoint, Point2D> estimator) {
+    public void onEstimateEnd(final RobustRangingRadioSourceEstimator<WifiAccessPoint, Point2D> estimator) {
         estimateEnd++;
         checkLocked((LMedSRobustRangingRadioSourceEstimator2D<WifiAccessPoint>) estimator);
     }
 
     @Override
-    public void onEstimateNextIteration(
-            final RobustRangingRadioSourceEstimator<WifiAccessPoint, Point2D> estimator,
-            final int iteration) {
+    public void onEstimateNextIteration(final RobustRangingRadioSourceEstimator<WifiAccessPoint, Point2D> estimator,
+                                        final int iteration) {
         estimateNextIteration++;
         checkLocked((LMedSRobustRangingRadioSourceEstimator2D<WifiAccessPoint>) estimator);
     }
 
     @Override
-    public void onEstimateProgressChange(
-            final RobustRangingRadioSourceEstimator<WifiAccessPoint, Point2D> estimator,
-            final float progress) {
+    public void onEstimateProgressChange(final RobustRangingRadioSourceEstimator<WifiAccessPoint, Point2D> estimator,
+                                         final float progress) {
         estimateProgressChange++;
         checkLocked((LMedSRobustRangingRadioSourceEstimator2D<WifiAccessPoint>) estimator);
     }

@@ -30,7 +30,7 @@ import java.util.List;
 
 /**
  * Robustly estimate 3D position, transmitted power and path-loss exponent of a radio source
- * (e.g. WiFi access point or bluetooth beacon), by discarding outliers using RANSAC
+ * (e.g. Wi-Fi access point or bluetooth beacon), by discarding outliers using RANSAC
  * algorithm and assuming that the access point emits isotropically following the
  * expression below:
  * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,

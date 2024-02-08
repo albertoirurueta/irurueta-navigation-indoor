@@ -35,15 +35,13 @@ public class RangingReadingLocated3DTest {
 
         // check
         assertNull(reading.getSource());
-        assertEquals(reading.getDistance(), 0.0, 0.0);
+        assertEquals(0.0, reading.getDistance(), 0.0);
         assertNull(reading.getDistanceStandardDeviation());
         assertNull(reading.getPosition());
         assertNull(reading.getPositionCovariance());
-        assertEquals(reading.getType(), ReadingType.RANGING_READING);
-        assertEquals(reading.getNumAttemptedMeasurements(),
-                RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS);
-        assertEquals(reading.getNumSuccessfulMeasurements(),
-                RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS);
+        assertEquals(ReadingType.RANGING_READING, reading.getType());
+        assertEquals(RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS, reading.getNumAttemptedMeasurements());
+        assertEquals(RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS, reading.getNumSuccessfulMeasurements());
 
         // test constructor with access point, distance and position
         final WifiAccessPoint ap = new WifiAccessPoint("bssid", FREQUENCY);
@@ -51,22 +49,19 @@ public class RangingReadingLocated3DTest {
         reading = new RangingReadingLocated3D<>(ap, 1.2, position);
 
         // check
-        assertSame(reading.getPosition(), position);
+        assertSame(position, reading.getPosition());
         assertNull(reading.getPositionCovariance());
-        assertEquals(reading.getDistance(), 1.2, 0.0);
+        assertEquals(1.2, reading.getDistance(), 0.0);
         assertNull(reading.getDistanceStandardDeviation());
-        assertSame(reading.getSource(), ap);
-        assertEquals(reading.getType(), ReadingType.RANGING_READING);
-        assertEquals(reading.getNumAttemptedMeasurements(),
-                RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS);
-        assertEquals(reading.getNumSuccessfulMeasurements(),
-                RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS);
+        assertSame(ap, reading.getSource());
+        assertEquals(ReadingType.RANGING_READING, reading.getType());
+        assertEquals(RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS, reading.getNumAttemptedMeasurements());
+        assertEquals(RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS, reading.getNumSuccessfulMeasurements());
 
         // force IllegalArgumentException
         reading = null;
         try {
-            reading = new RangingReadingLocated3D<>(null,
-                    1.2, position);
+            reading = new RangingReadingLocated3D<>(null, 1.2, position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -88,14 +83,14 @@ public class RangingReadingLocated3DTest {
                 8, 7);
 
         // check
-        assertSame(reading.getPosition(), position);
+        assertSame(position, reading.getPosition());
         assertNull(reading.getPositionCovariance());
-        assertEquals(reading.getDistance(), 1.2, 0.0);
+        assertEquals(1.2, reading.getDistance(), 0.0);
         assertNull(reading.getDistanceStandardDeviation());
-        assertSame(reading.getSource(), ap);
-        assertEquals(reading.getType(), ReadingType.RANGING_READING);
-        assertEquals(reading.getNumAttemptedMeasurements(), 8);
-        assertEquals(reading.getNumSuccessfulMeasurements(), 7);
+        assertSame(ap, reading.getSource());
+        assertEquals(ReadingType.RANGING_READING, reading.getType());
+        assertEquals(8, reading.getNumAttemptedMeasurements());
+        assertEquals(7, reading.getNumSuccessfulMeasurements());
 
         // force IllegalArgumentException
         reading = null;
@@ -132,44 +127,37 @@ public class RangingReadingLocated3DTest {
         assertNull(reading);
 
         // test constructor with access point, distance, position and distance standard deviation
-        reading = new RangingReadingLocated3D<>(ap, 1.5, position,
-                0.1);
+        reading = new RangingReadingLocated3D<>(ap, 1.5, position, 0.1);
 
         // check
-        assertSame(reading.getPosition(), position);
+        assertSame(position, reading.getPosition());
         assertNull(reading.getPositionCovariance());
-        assertEquals(reading.getDistance(), 1.5, 0.0);
-        assertEquals(reading.getDistanceStandardDeviation(), 0.1, 0.0);
-        assertSame(reading.getSource(), ap);
-        assertEquals(reading.getType(), ReadingType.RANGING_READING);
-        assertEquals(reading.getNumAttemptedMeasurements(),
-                RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS);
-        assertEquals(reading.getNumSuccessfulMeasurements(),
-                RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS);
+        assertEquals(1.5, reading.getDistance(), 0.0);
+        assertEquals(0.1, reading.getDistanceStandardDeviation(), 0.0);
+        assertSame(ap, reading.getSource());
+        assertEquals(ReadingType.RANGING_READING, reading.getType());
+        assertEquals(RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS, reading.getNumAttemptedMeasurements());
+        assertEquals(RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS, reading.getNumSuccessfulMeasurements());
 
         // force IllegalArgumentException
         reading = null;
         try {
-            reading = new RangingReadingLocated3D<>(null, 1.5, position,
-                    0.1);
+            reading = new RangingReadingLocated3D<>(null, 1.5, position, 0.1);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, -1.0, position,
-                    0.1);
+            reading = new RangingReadingLocated3D<>(ap, -1.0, position, 0.1);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, 1.5, null,
-                    0.1);
+            reading = new RangingReadingLocated3D<>(ap, 1.5, null, 0.1);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, 1.5, position,
-                    0.0);
+            reading = new RangingReadingLocated3D<>(ap, 1.5, position, 0.0);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -177,61 +165,54 @@ public class RangingReadingLocated3DTest {
 
         // test constructor with access point, distance, position, distance standard
         // deviation and number of measurements.
-        reading = new RangingReadingLocated3D<>(ap, 1.5, position,
-                0.1, 8,
-                7);
+        reading = new RangingReadingLocated3D<>(ap, 1.5, position, 0.1,
+                8, 7);
 
         // check
-        assertSame(reading.getPosition(), position);
+        assertSame(position, reading.getPosition());
         assertNull(reading.getPositionCovariance());
-        assertEquals(reading.getDistance(), 1.5, 0.0);
-        assertEquals(reading.getDistanceStandardDeviation(), 0.1, 0.0);
-        assertSame(reading.getSource(), ap);
-        assertEquals(reading.getType(), ReadingType.RANGING_READING);
-        assertEquals(reading.getNumAttemptedMeasurements(), 8);
-        assertEquals(reading.getNumSuccessfulMeasurements(), 7);
+        assertEquals(1.5, reading.getDistance(), 0.0);
+        assertEquals(0.1, reading.getDistanceStandardDeviation(), 0.0);
+        assertSame(ap, reading.getSource());
+        assertEquals(ReadingType.RANGING_READING, reading.getType());
+        assertEquals(8, reading.getNumAttemptedMeasurements());
+        assertEquals(7, reading.getNumSuccessfulMeasurements());
 
         // force IllegalArgumentException
         reading = null;
         try {
-            reading = new RangingReadingLocated3D<>(null, 1.5, position,
-                    0.1, 8,
-                    7);
+            reading = new RangingReadingLocated3D<>(null, 1.5, position, 0.1,
+                    8, 7);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, -1.0, position,
-                    0.1, 8,
-                    7);
+            reading = new RangingReadingLocated3D<>(ap, -1.0, position, 0.1,
+                    8, 7);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, 1.5, null,
-                    0.1, 8,
-                    7);
+            reading = new RangingReadingLocated3D<>(ap, 1.5, null, 0.1,
+                    8, 7);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, 1.5, position,
-                    0.0, 8,
-                    7);
+            reading = new RangingReadingLocated3D<>(ap, 1.5, position, 0.0,
+                    8, 7);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, 1.5, position,
-                    0.1, 0,
-                    7);
+            reading = new RangingReadingLocated3D<>(ap, 1.5, position, 0.1,
+                    0, 7);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, 1.5, position,
-                    0.1, 8,
-                    -1);
+            reading = new RangingReadingLocated3D<>(ap, 1.5, position, 0.1,
+                    8, -1);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -242,61 +223,51 @@ public class RangingReadingLocated3DTest {
         reading = new RangingReadingLocated3D<>(ap, 2.0, position, cov);
 
         // check
-        assertSame(reading.getPosition(), position);
-        assertSame(reading.getPositionCovariance(), cov);
-        assertEquals(reading.getDistance(), 2.0, 0.0);
+        assertSame(position, reading.getPosition());
+        assertSame(cov, reading.getPositionCovariance());
+        assertEquals(2.0, reading.getDistance(), 0.0);
         assertNull(reading.getDistanceStandardDeviation());
-        assertSame(reading.getSource(), ap);
-        assertEquals(reading.getType(), ReadingType.RANGING_READING);
-        assertEquals(reading.getNumAttemptedMeasurements(),
-                RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS);
-        assertEquals(reading.getNumSuccessfulMeasurements(),
-                RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS);
+        assertSame(ap, reading.getSource());
+        assertEquals(ReadingType.RANGING_READING, reading.getType());
+        assertEquals(RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS, reading.getNumAttemptedMeasurements());
+        assertEquals(RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS, reading.getNumSuccessfulMeasurements());
 
-        reading = new RangingReadingLocated3D<>(ap, 2.0, position,
-                (Matrix) null);
+        reading = new RangingReadingLocated3D<>(ap, 2.0, position, (Matrix) null);
 
         // check
-        assertSame(reading.getPosition(), position);
+        assertSame(position, reading.getPosition());
         assertNull(reading.getPositionCovariance());
-        assertEquals(reading.getDistance(), 2.0, 0.0);
+        assertEquals(2.0, reading.getDistance(), 0.0);
         assertNull(reading.getDistanceStandardDeviation());
-        assertSame(reading.getSource(), ap);
-        assertEquals(reading.getType(), ReadingType.RANGING_READING);
-        assertEquals(reading.getNumAttemptedMeasurements(),
-                RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS);
-        assertEquals(reading.getNumSuccessfulMeasurements(),
-                RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS);
+        assertSame(ap, reading.getSource());
+        assertEquals(ReadingType.RANGING_READING, reading.getType());
+        assertEquals(RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS, reading.getNumAttemptedMeasurements());
+        assertEquals(RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS, reading.getNumSuccessfulMeasurements());
 
         // force IllegalArgumentException
         reading = null;
         try {
-            reading = new RangingReadingLocated3D<>(null,
-                    2.0, position, cov);
+            reading = new RangingReadingLocated3D<>(null, 2.0, position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, -1.0,
-                    position, cov);
+            reading = new RangingReadingLocated3D<>(ap, -1.0, position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, 2.0,
-                    null, cov);
+            reading = new RangingReadingLocated3D<>(ap, 2.0, null, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, 2.0,
-                    position, new Matrix(1, 1));
+            reading = new RangingReadingLocated3D<>(ap, 2.0, position, new Matrix(1, 1));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, 2.0,
-                    position, new Matrix(3, 1));
+            reading = new RangingReadingLocated3D<>(ap, 2.0, position, new Matrix(3, 1));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -308,59 +279,56 @@ public class RangingReadingLocated3DTest {
                 8, 7);
 
         // check
-        assertSame(reading.getPosition(), position);
-        assertSame(reading.getPositionCovariance(), cov);
-        assertEquals(reading.getDistance(), 2.0, 0.0);
+        assertSame(position, reading.getPosition());
+        assertSame(cov, reading.getPositionCovariance());
+        assertEquals(2.0, reading.getDistance(), 0.0);
         assertNull(reading.getDistanceStandardDeviation());
-        assertSame(reading.getSource(), ap);
-        assertEquals(reading.getType(), ReadingType.RANGING_READING);
-        assertEquals(reading.getNumAttemptedMeasurements(), 8);
-        assertEquals(reading.getNumSuccessfulMeasurements(), 7);
+        assertSame(ap, reading.getSource());
+        assertEquals(ReadingType.RANGING_READING, reading.getType());
+        assertEquals(8, reading.getNumAttemptedMeasurements());
+        assertEquals(7, reading.getNumSuccessfulMeasurements());
 
         // force IllegalArgumentException
         reading = null;
         try {
-            reading = new RangingReadingLocated3D<>(null, 2.0,
-                    position, cov, 8,
-                    7);
+            reading = new RangingReadingLocated3D<>(null, 2.0, position, cov,
+                    8, 7);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, -1.0, position,
-                    cov, 8, 7);
+            reading = new RangingReadingLocated3D<>(ap, -1.0, position, cov,
+                    8, 7);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, 2.0, null,
-                    cov, 8, 7);
+            reading = new RangingReadingLocated3D<>(ap, 2.0, null, cov,
+                    8, 7);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, 2.0, position,
-                    new Matrix(1, 1), 8,
-                    7);
+            reading = new RangingReadingLocated3D<>(ap, 2.0, position, new Matrix(1, 1),
+                    8, 7);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, 2.0, position,
-                    new Matrix(2, 1), 8,
-                    7);
+            reading = new RangingReadingLocated3D<>(ap, 2.0, position, new Matrix(2, 1),
+                    8, 7);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, 2.0, position,
-                    cov, 0, 7);
+            reading = new RangingReadingLocated3D<>(ap, 2.0, position, cov,
+                    0, 7);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, 2.0, position,
-                    cov, 8, -1);
+            reading = new RangingReadingLocated3D<>(ap, 2.0, position, cov,
+                    8, -1);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -370,67 +338,60 @@ public class RangingReadingLocated3DTest {
         reading = new RangingReadingLocated3D<>(ap, 2.5, position, 0.2, cov);
 
         // check
-        assertSame(reading.getPosition(), position);
-        assertSame(reading.getPositionCovariance(), cov);
-        assertEquals(reading.getDistance(), 2.5, 0.0);
-        assertEquals(reading.getDistanceStandardDeviation(), 0.2, 0.0);
-        assertSame(reading.getSource(), ap);
-        assertEquals(reading.getType(), ReadingType.RANGING_READING);
-        assertEquals(reading.getNumAttemptedMeasurements(),
-                RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS);
-        assertEquals(reading.getNumSuccessfulMeasurements(),
-                RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS);
+        assertSame(position, reading.getPosition());
+        assertSame(cov, reading.getPositionCovariance());
+        assertEquals(2.5, reading.getDistance(), 0.0);
+        assertEquals(0.2, reading.getDistanceStandardDeviation(), 0.0);
+        assertSame(ap, reading.getSource());
+        assertEquals(ReadingType.RANGING_READING, reading.getType());
+        assertEquals(RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS, reading.getNumAttemptedMeasurements());
+        assertEquals(RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS, reading.getNumSuccessfulMeasurements());
 
         reading = new RangingReadingLocated3D<>(ap, 2.5, position, 0.2,
                 null);
 
         // check
-        assertSame(reading.getPosition(), position);
+        assertSame(position, reading.getPosition());
         assertNull(reading.getPositionCovariance());
-        assertEquals(reading.getDistance(), 2.5, 0.0);
-        assertEquals(reading.getDistanceStandardDeviation(), 0.2, 0.0);
-        assertSame(reading.getSource(), ap);
-        assertEquals(reading.getType(), ReadingType.RANGING_READING);
-        assertEquals(reading.getNumAttemptedMeasurements(),
-                RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS);
-        assertEquals(reading.getNumSuccessfulMeasurements(),
-                RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS);
+        assertEquals(2.5, reading.getDistance(), 0.0);
+        assertEquals(0.2, reading.getDistanceStandardDeviation(), 0.0);
+        assertSame(ap, reading.getSource());
+        assertEquals(ReadingType.RANGING_READING, reading.getType());
+        assertEquals(RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS, reading.getNumAttemptedMeasurements());
+        assertEquals(RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS, reading.getNumSuccessfulMeasurements());
 
         // force IllegalArgumentException
         reading = null;
         try {
-            reading = new RangingReadingLocated3D<>(null, 2.5,
-                    position, 0.2, cov);
+            reading = new RangingReadingLocated3D<>(null, 2.5, position, 0.2,
+                    cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, -1.0,
-                    position, 0.2, cov);
+            reading = new RangingReadingLocated3D<>(ap, -1.0, position, 0.2, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, 2.5,
-                    null, 0.2, cov);
+            reading = new RangingReadingLocated3D<>(ap, 2.5, null, 0.2, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, 2.5, position,
-                    0.0, cov);
+            reading = new RangingReadingLocated3D<>(ap, 2.5, position, 0.0, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, 2.5, position,
-                    0.2, new Matrix(1, 1));
+            reading = new RangingReadingLocated3D<>(ap, 2.5, position, 0.2,
+                    new Matrix(1, 1));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, 2.5, position,
-                    0.2, new Matrix(3, 1));
+            reading = new RangingReadingLocated3D<>(ap, 2.5, position, 0.2,
+                    new Matrix(3, 1));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -438,74 +399,65 @@ public class RangingReadingLocated3DTest {
 
         // test constructor with access point, distance, position, distance standard
         // deviation, position covariance and number of measurements.
-        reading = new RangingReadingLocated3D<>(ap, 2.5, position,
-                0.2, cov, 8,
-                7);
+        reading = new RangingReadingLocated3D<>(ap, 2.5, position, 0.2, cov,
+                8, 7);
 
         // check
-        assertSame(reading.getPosition(), position);
-        assertSame(reading.getPositionCovariance(), cov);
-        assertEquals(reading.getDistance(), 2.5, 0.0);
-        assertEquals(reading.getDistanceStandardDeviation(), 0.2, 0.0);
-        assertSame(reading.getSource(), ap);
-        assertEquals(reading.getType(), ReadingType.RANGING_READING);
-        assertEquals(reading.getNumAttemptedMeasurements(), 8);
-        assertEquals(reading.getNumSuccessfulMeasurements(), 7);
+        assertSame(position, reading.getPosition());
+        assertSame(cov, reading.getPositionCovariance());
+        assertEquals(2.5, reading.getDistance(), 0.0);
+        assertEquals(0.2, reading.getDistanceStandardDeviation(), 0.0);
+        assertSame(ap, reading.getSource());
+        assertEquals(ReadingType.RANGING_READING, reading.getType());
+        assertEquals(8, reading.getNumAttemptedMeasurements());
+        assertEquals(7, reading.getNumSuccessfulMeasurements());
 
         // force IllegalArgumentException
         reading = null;
         try {
-            reading = new RangingReadingLocated3D<>(null, 2.5,
-                    position, 0.2, cov,
+            reading = new RangingReadingLocated3D<>(null, 2.5, position, 0.2,
+                    cov, 8, 7);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            reading = new RangingReadingLocated3D<>(ap, -1.0, position, 0.2, cov,
                     8, 7);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, -1.0,
-                    position, 0.2, cov,
+            reading = new RangingReadingLocated3D<>(ap, 2.5, null, 0.2, cov,
                     8, 7);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, 2.5, null,
-                    0.2, cov,
+            reading = new RangingReadingLocated3D<>(ap, 2.5, position, 0.0, cov,
                     8, 7);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, 2.5, position,
-                    0.0, cov,
-                    8, 7);
+            reading = new RangingReadingLocated3D<>(ap, 2.5, position, 0.2,
+                    new Matrix(1, 1), 8, 7);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, 2.5, position,
-                    0.2, new Matrix(1, 1),
-                    8, 7);
+            reading = new RangingReadingLocated3D<>(ap, 2.5, position, 0.2,
+                    new Matrix(2, 1), 8, 7);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, 2.5, position,
-                    0.2, new Matrix(2, 1),
-                    8, 7);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            reading = new RangingReadingLocated3D<>(ap, 2.5, position,
-                    0.2, cov,
+            reading = new RangingReadingLocated3D<>(ap, 2.5, position, 0.2, cov,
                     0, 7);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            reading = new RangingReadingLocated3D<>(ap, 2.5, position,
-                    0.2, cov,
+            reading = new RangingReadingLocated3D<>(ap, 2.5, position, 0.2, cov,
                     8, -1);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -537,39 +489,32 @@ public class RangingReadingLocated3DTest {
         final WifiAccessPoint ap = new WifiAccessPoint("bssid", FREQUENCY);
         final InhomogeneousPoint3D position = new InhomogeneousPoint3D();
         final Matrix cov = new Matrix(3, 3);
-        final RangingReadingLocated3D<WifiAccessPoint> reading1 =
-                new RangingReadingLocated3D<>(ap, 2.5, position,
-                0.2, cov, 8,
-                7);
+        final RangingReadingLocated3D<WifiAccessPoint> reading1 = new RangingReadingLocated3D<>(ap, 2.5,
+                position, 0.2, cov, 8, 7);
 
         // check
-        assertSame(reading1.getPosition(), position);
-        assertSame(reading1.getPositionCovariance(), cov);
-        assertEquals(reading1.getDistance(), 2.5, 0.0);
-        assertEquals(reading1.getDistanceStandardDeviation(), 0.2, 0.0);
-        assertSame(reading1.getSource(), ap);
-        assertEquals(reading1.getType(), ReadingType.RANGING_READING);
-        assertEquals(reading1.getNumAttemptedMeasurements(), 8);
-        assertEquals(reading1.getNumSuccessfulMeasurements(), 7);
+        assertSame(position, reading1.getPosition());
+        assertSame(cov, reading1.getPositionCovariance());
+        assertEquals(2.5, reading1.getDistance(), 0.0);
+        assertEquals(0.2, reading1.getDistanceStandardDeviation(), 0.0);
+        assertSame(ap, reading1.getSource());
+        assertEquals(ReadingType.RANGING_READING, reading1.getType());
+        assertEquals(8, reading1.getNumAttemptedMeasurements());
+        assertEquals(7, reading1.getNumSuccessfulMeasurements());
 
         // serialize and deserialize
         final byte[] bytes = SerializationHelper.serialize(reading1);
-        final RangingReadingLocated3D<WifiAccessPoint> reading2 =
-                SerializationHelper.deserialize(bytes);
+        final RangingReadingLocated3D<WifiAccessPoint> reading2 = SerializationHelper.deserialize(bytes);
 
         // check
         assertNotSame(reading1, reading2);
         assertEquals(reading1.getPosition(), reading2.getPosition());
-        assertEquals(reading1.getPositionCovariance(),
-                reading2.getPositionCovariance());
+        assertEquals(reading1.getPositionCovariance(), reading2.getPositionCovariance());
         assertEquals(reading1.getDistance(), reading2.getDistance(), 0.0);
-        assertEquals(reading1.getDistanceStandardDeviation(),
-                reading2.getDistanceStandardDeviation(), 0.0);
+        assertEquals(reading1.getDistanceStandardDeviation(), reading2.getDistanceStandardDeviation(), 0.0);
         assertEquals(reading1.getSource(), reading2.getSource());
         assertEquals(reading1.getType(), reading2.getType());
-        assertEquals(reading1.getNumAttemptedMeasurements(),
-                reading2.getNumAttemptedMeasurements());
-        assertEquals(reading1.getNumSuccessfulMeasurements(),
-                reading2.getNumSuccessfulMeasurements());
+        assertEquals(reading1.getNumAttemptedMeasurements(), reading2.getNumAttemptedMeasurements());
+        assertEquals(reading1.getNumSuccessfulMeasurements(), reading2.getNumSuccessfulMeasurements());
     }
 }

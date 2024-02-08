@@ -33,15 +33,14 @@ import java.util.List;
  * getting ranging readings at an unknown location of different radio sources whose
  * locations are known.
  */
-public class NonLinearRangingPositionEstimator2D extends
-        NonLinearRangingPositionEstimator<Point2D> {
+public class NonLinearRangingPositionEstimator2D extends NonLinearRangingPositionEstimator<Point2D> {
 
     /**
      * Constructor.
      */
     public NonLinearRangingPositionEstimator2D() {
         super();
-        init();
+        initialize();
     }
 
     /**
@@ -55,7 +54,7 @@ public class NonLinearRangingPositionEstimator2D extends
     public NonLinearRangingPositionEstimator2D(
             final List<? extends RadioSourceLocated<Point2D>> sources) {
         super();
-        init();
+        initialize();
         internalSetSources(sources);
     }
 
@@ -69,7 +68,7 @@ public class NonLinearRangingPositionEstimator2D extends
     public NonLinearRangingPositionEstimator2D(
             final Fingerprint<? extends RadioSource, ? extends RangingReading<? extends RadioSource>> fingerprint) {
         super();
-        init();
+        initialize();
         internalSetFingerprint(fingerprint);
     }
 
@@ -87,7 +86,7 @@ public class NonLinearRangingPositionEstimator2D extends
             final List<? extends RadioSourceLocated<Point2D>> sources,
             final Fingerprint<? extends RadioSource, ? extends RangingReading<? extends RadioSource>> fingerprint) {
         super();
-        init();
+        initialize();
         internalSetSources(sources);
         internalSetFingerprint(fingerprint);
     }
@@ -100,7 +99,7 @@ public class NonLinearRangingPositionEstimator2D extends
     public NonLinearRangingPositionEstimator2D(
             final RangingPositionEstimatorListener<Point2D> listener) {
         super(listener);
-        init();
+        initialize();
     }
 
     /**
@@ -116,7 +115,7 @@ public class NonLinearRangingPositionEstimator2D extends
             final List<? extends RadioSourceLocated<Point2D>> sources,
             final RangingPositionEstimatorListener<Point2D> listener) {
         super(listener);
-        init();
+        initialize();
         internalSetSources(sources);
     }
 
@@ -132,7 +131,7 @@ public class NonLinearRangingPositionEstimator2D extends
             final Fingerprint<? extends RadioSource, ? extends RangingReading<? extends RadioSource>> fingerprint,
             final RangingPositionEstimatorListener<Point2D> listener) {
         super(listener);
-        init();
+        initialize();
         internalSetFingerprint(fingerprint);
     }
 
@@ -152,7 +151,7 @@ public class NonLinearRangingPositionEstimator2D extends
             final Fingerprint<? extends RadioSource, ? extends RangingReading<? extends RadioSource>> fingerprint,
             final RangingPositionEstimatorListener<Point2D> listener) {
         super(listener);
-        init();
+        initialize();
         internalSetSources(sources);
         internalSetFingerprint(fingerprint);
     }
@@ -164,7 +163,7 @@ public class NonLinearRangingPositionEstimator2D extends
      */
     public NonLinearRangingPositionEstimator2D(final Point2D initialPosition) {
         super(initialPosition);
-        init();
+        initialize();
     }
 
     /**
@@ -180,7 +179,7 @@ public class NonLinearRangingPositionEstimator2D extends
             final List<? extends RadioSourceLocated<Point2D>> sources,
             final Point2D initialPosition) {
         super(initialPosition);
-        init();
+        initialize();
         internalSetSources(sources);
     }
 
@@ -196,7 +195,7 @@ public class NonLinearRangingPositionEstimator2D extends
             final Fingerprint<? extends RadioSource, ? extends RangingReading<? extends RadioSource>> fingerprint,
             final Point2D initialPosition) {
         super(initialPosition);
-        init();
+        initialize();
         internalSetFingerprint(fingerprint);
     }
 
@@ -216,7 +215,7 @@ public class NonLinearRangingPositionEstimator2D extends
             final Fingerprint<? extends RadioSource, ? extends RangingReading<? extends RadioSource>> fingerprint,
             final Point2D initialPosition) {
         super(initialPosition);
-        init();
+        initialize();
         internalSetSources(sources);
         internalSetFingerprint(fingerprint);
     }
@@ -231,7 +230,7 @@ public class NonLinearRangingPositionEstimator2D extends
             final Point2D initialPosition,
             final RangingPositionEstimatorListener<Point2D> listener) {
         super(initialPosition, listener);
-        init();
+        initialize();
     }
 
     /**
@@ -249,7 +248,7 @@ public class NonLinearRangingPositionEstimator2D extends
             final Point2D initialPosition,
             final RangingPositionEstimatorListener<Point2D> listener) {
         super(initialPosition, listener);
-        init();
+        initialize();
         internalSetSources(sources);
     }
 
@@ -267,7 +266,7 @@ public class NonLinearRangingPositionEstimator2D extends
             final Point2D initialPosition,
             final RangingPositionEstimatorListener<Point2D> listener) {
         super(initialPosition, listener);
-        init();
+        initialize();
         internalSetFingerprint(fingerprint);
     }
 
@@ -289,7 +288,7 @@ public class NonLinearRangingPositionEstimator2D extends
             final Point2D initialPosition,
             final RangingPositionEstimatorListener<Point2D> listener) {
         super(initialPosition, listener);
-        init();
+        initialize();
         internalSetSources(sources);
         internalSetFingerprint(fingerprint);
     }
@@ -345,7 +344,7 @@ public class NonLinearRangingPositionEstimator2D extends
     /**
      * Initializes lateration solver.
      */
-    private void init() {
+    private void initialize() {
         mTrilaterationSolver = new NonLinearLeastSquaresLateration2DSolver(
                 mLaterationSolverListener);
     }

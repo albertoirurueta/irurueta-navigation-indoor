@@ -45,99 +45,87 @@ public class WifiAccessPointWithPowerAndLocated2DTest {
     @Test
     public void testConstructor() throws AlgebraException {
         // test empty constructor
-        WifiAccessPointWithPowerAndLocated2D ap =
-                new WifiAccessPointWithPowerAndLocated2D();
+        WifiAccessPointWithPowerAndLocated2D ap = new WifiAccessPointWithPowerAndLocated2D();
 
         // check default values
         assertNull(ap.getBssid());
-        assertEquals(ap.getFrequency(), 0.0, 0.0);
+        assertEquals(0.0, ap.getFrequency(), 0.0);
         assertNull(ap.getSsid());
-        assertEquals(ap.getTransmittedPower(), 0.0, 0.0);
+        assertEquals(0.0, ap.getTransmittedPower(), 0.0);
         assertNull(ap.getTransmittedPowerStandardDeviation());
         assertNull(ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getPathLossExponent(),
-                WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
+        assertEquals(WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // test with bssid, frequency, transmitted power and position
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
                 randomizer.nextDouble(MIN_POS, MAX_POS),
                 randomizer.nextDouble(MIN_POS, MAX_POS));
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                TRANSMITTED_POWER, position);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER, position);
 
         // check default values
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
         assertNull(ap.getSsid());
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
         assertNull(ap.getTransmittedPowerStandardDeviation());
-        assertSame(ap.getPosition(), position);
+        assertSame(position, ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getPathLossExponent(),
-                WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
+        assertEquals(WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // force IllegalArgumentException
         ap = null;
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY,
-                    TRANSMITTED_POWER, position);
+            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY, TRANSMITTED_POWER, position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY,
-                    TRANSMITTED_POWER, position);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY, TRANSMITTED_POWER, position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    TRANSMITTED_POWER, null);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER, null);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(ap);
 
         // test with bssid, frequency, ssid, transmitted power and position
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID,
-                TRANSMITTED_POWER, position);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER, position);
 
         // check default values
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
-        assertEquals(ap.getSsid(), SSID);
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
+        assertEquals(SSID, ap.getSsid());
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
         assertNull(ap.getTransmittedPowerStandardDeviation());
-        assertSame(ap.getPosition(), position);
+        assertSame(position, ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getPathLossExponent(),
-                WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
+        assertEquals(WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // force IllegalArgumentException
         ap = null;
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY,
-                    SSID, TRANSMITTED_POWER, position);
+            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY, SSID, TRANSMITTED_POWER, position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY,
-                    SSID, TRANSMITTED_POWER, position);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY, SSID, TRANSMITTED_POWER, position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    SSID, TRANSMITTED_POWER, null);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER, null);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -145,67 +133,59 @@ public class WifiAccessPointWithPowerAndLocated2DTest {
 
         // test with bssid, frequency, transmitted power, transmitted power
         // standard deviation and position
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                TRANSMITTED_POWER, Double.valueOf(TRANSMITTED_POWER_STD),
-                position);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER,
+                Double.valueOf(TRANSMITTED_POWER_STD), position);
 
         // check default values
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
         assertNull(ap.getSsid());
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
-        assertEquals(ap.getTransmittedPowerStandardDeviation(),
-                TRANSMITTED_POWER_STD, 0.0);
-        assertSame(ap.getPosition(), position);
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
+        assertEquals(TRANSMITTED_POWER_STD, ap.getTransmittedPowerStandardDeviation(), 0.0);
+        assertSame(position, ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getPathLossExponent(),
-                WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
+        assertEquals(WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                TRANSMITTED_POWER, null, position);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER,
+                null, position);
 
         // check
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
         assertNull(ap.getSsid());
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
         assertNull(ap.getTransmittedPowerStandardDeviation());
-        assertSame(ap.getPosition(), position);
+        assertSame(position, ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getPathLossExponent(),
-                WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
+        assertEquals(WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // force IllegalArgumentException
         ap = null;
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY,
-                    TRANSMITTED_POWER, Double.valueOf(TRANSMITTED_POWER_STD),
-                    position);
+            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY, TRANSMITTED_POWER,
+                    Double.valueOf(TRANSMITTED_POWER_STD), position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY,
-                    TRANSMITTED_POWER, Double.valueOf(TRANSMITTED_POWER_STD),
-                    position);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY, TRANSMITTED_POWER,
+                    Double.valueOf(TRANSMITTED_POWER_STD), position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    TRANSMITTED_POWER, Double.valueOf(-TRANSMITTED_POWER_STD),
-                    position);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER,
+                    Double.valueOf(-TRANSMITTED_POWER_STD), position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    TRANSMITTED_POWER, Double.valueOf(TRANSMITTED_POWER_STD),
-                    null);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER,
+                    Double.valueOf(TRANSMITTED_POWER_STD), null);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -213,62 +193,59 @@ public class WifiAccessPointWithPowerAndLocated2DTest {
 
         // test with bssid, frequency, ssid, transmitted power and transmitted power
         // standard deviation
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID,
-                TRANSMITTED_POWER, TRANSMITTED_POWER_STD, position);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER,
+                TRANSMITTED_POWER_STD, position);
 
         // check default values
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
-        assertEquals(ap.getSsid(), SSID);
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
-        assertEquals(ap.getTransmittedPowerStandardDeviation(),
-                TRANSMITTED_POWER_STD, 0.0);
-        assertSame(ap.getPosition(), position);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
+        assertEquals(SSID, ap.getSsid());
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
+        assertEquals(TRANSMITTED_POWER_STD, ap.getTransmittedPowerStandardDeviation(), 0.0);
+        assertSame(position, ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getPathLossExponent(),
-                WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
+        assertEquals(WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID,
-                TRANSMITTED_POWER, null, position);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER,
+                null, position);
 
         // check
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
-        assertEquals(ap.getSsid(), SSID);
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
+        assertEquals(SSID, ap.getSsid());
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
         assertNull(ap.getTransmittedPowerStandardDeviation());
-        assertSame(ap.getPosition(), position);
+        assertSame(position, ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getPathLossExponent(),
-                WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
+        assertEquals(WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // force IllegalArgumentException
         ap = null;
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY, SSID,
-                    TRANSMITTED_POWER, TRANSMITTED_POWER_STD, position);
+            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY, SSID, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY, SSID,
-                    TRANSMITTED_POWER, TRANSMITTED_POWER_STD, position);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY, SSID, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID,
-                    TRANSMITTED_POWER, -TRANSMITTED_POWER_STD, position);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER,
+                    -TRANSMITTED_POWER_STD, position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID,
-                    TRANSMITTED_POWER, TRANSMITTED_POWER_STD, null);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, null);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -278,61 +255,55 @@ public class WifiAccessPointWithPowerAndLocated2DTest {
         // covariance
         final Matrix cov = new Matrix(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH,
                 Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH);
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                TRANSMITTED_POWER, position, cov);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER, position, cov);
 
         // check default values
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
         assertNull(ap.getSsid());
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
         assertNull(ap.getTransmittedPowerStandardDeviation());
-        assertSame(ap.getPosition(), position);
-        assertSame(ap.getPositionCovariance(), cov);
-        assertEquals(ap.getPathLossExponent(),
-                WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
+        assertSame(position, ap.getPosition());
+        assertSame(cov, ap.getPositionCovariance());
+        assertEquals(WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                TRANSMITTED_POWER, position, null);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER, position,
+                null);
 
         // check default values
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
         assertNull(ap.getSsid());
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
         assertNull(ap.getTransmittedPowerStandardDeviation());
-        assertSame(ap.getPosition(), position);
+        assertSame(position, ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getPathLossExponent(),
-                WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
+        assertEquals(WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // force IllegalArgumentException
         ap = null;
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY,
-                    TRANSMITTED_POWER, position, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY, TRANSMITTED_POWER, position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY,
-                    TRANSMITTED_POWER, position, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY, TRANSMITTED_POWER, position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    TRANSMITTED_POWER, null, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER, null, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    TRANSMITTED_POWER, position, new Matrix(1, 1));
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER, position,
+                    new Matrix(1, 1));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -340,61 +311,57 @@ public class WifiAccessPointWithPowerAndLocated2DTest {
 
         // test with bssid, frequency, ssid, transmitted power, position and
         // position covariance
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID,
-                TRANSMITTED_POWER, position, cov);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER, position, cov);
 
         // check default values
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
-        assertEquals(ap.getSsid(), SSID);
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
+        assertEquals(SSID, ap.getSsid());
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
         assertNull(ap.getTransmittedPowerStandardDeviation());
-        assertSame(ap.getPosition(), position);
-        assertSame(ap.getPositionCovariance(), cov);
-        assertEquals(ap.getPathLossExponent(),
-                WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
+        assertSame(position, ap.getPosition());
+        assertSame(cov, ap.getPositionCovariance());
+        assertEquals(WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID,
-                TRANSMITTED_POWER, position, null);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER, position,
+                null);
 
         // check default values
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
-        assertEquals(ap.getSsid(), SSID);
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
+        assertEquals(SSID, ap.getSsid());
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
         assertNull(ap.getTransmittedPowerStandardDeviation());
-        assertSame(ap.getPosition(), position);
+        assertSame(position, ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getPathLossExponent(),
-                WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
+        assertEquals(WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // force IllegalArgumentException
         ap = null;
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY,
-                    SSID, TRANSMITTED_POWER, position, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY, SSID, TRANSMITTED_POWER, position,
+                    cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY,
-                    SSID, TRANSMITTED_POWER, position, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY, SSID, TRANSMITTED_POWER, position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    SSID, TRANSMITTED_POWER, null, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER, null,
+                    cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    SSID, TRANSMITTED_POWER, position, new Matrix(1, 1));
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER, position,
+                    new Matrix(1, 1));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -402,76 +369,66 @@ public class WifiAccessPointWithPowerAndLocated2DTest {
 
         // test with bssid, frequency, transmitted power, transmitted power standard
         // deviation, position and position covariance
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                TRANSMITTED_POWER, Double.valueOf(TRANSMITTED_POWER_STD),
-                position, cov);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER,
+                Double.valueOf(TRANSMITTED_POWER_STD), position, cov);
 
         // check default values
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
         assertNull(ap.getSsid());
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
-        assertEquals(ap.getTransmittedPowerStandardDeviation(),
-                TRANSMITTED_POWER_STD, 0.0);
-        assertSame(ap.getPosition(), position);
-        assertSame(ap.getPositionCovariance(), cov);
-        assertEquals(ap.getPathLossExponent(),
-                WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
+        assertEquals(TRANSMITTED_POWER_STD, ap.getTransmittedPowerStandardDeviation(), 0.0);
+        assertSame(position, ap.getPosition());
+        assertSame(cov, ap.getPositionCovariance());
+        assertEquals(WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
 
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                TRANSMITTED_POWER, null, position,
-                null);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER,
+                null, position, null);
 
         // check default values
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
         assertNull(ap.getSsid());
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
         assertNull(ap.getTransmittedPowerStandardDeviation());
-        assertSame(ap.getPosition(), position);
+        assertSame(position, ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getPathLossExponent(),
-                WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
+        assertEquals(WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // force IllegalArgumentException
         ap = null;
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY,
-                    TRANSMITTED_POWER, Double.valueOf(TRANSMITTED_POWER_STD),
-                    position, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY, TRANSMITTED_POWER,
+                    Double.valueOf(TRANSMITTED_POWER_STD), position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY,
-                    TRANSMITTED_POWER, Double.valueOf(TRANSMITTED_POWER_STD),
-                    position, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY, TRANSMITTED_POWER,
+                    Double.valueOf(TRANSMITTED_POWER_STD), position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    TRANSMITTED_POWER, Double.valueOf(-TRANSMITTED_POWER_STD),
-                    position, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER,
+                    Double.valueOf(-TRANSMITTED_POWER_STD), position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    TRANSMITTED_POWER, Double.valueOf(TRANSMITTED_POWER_STD),
-                    null, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER,
+                    Double.valueOf(TRANSMITTED_POWER_STD), null, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    TRANSMITTED_POWER, Double.valueOf(TRANSMITTED_POWER_STD),
-                    position, new Matrix(1, 1));
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER,
+                    Double.valueOf(TRANSMITTED_POWER_STD), position, new Matrix(1, 1));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -479,114 +436,103 @@ public class WifiAccessPointWithPowerAndLocated2DTest {
 
         // test with bssid, frequency, ssid, transmitted power,
         // transmitted power standard deviation, position and position covariance
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID,
-                TRANSMITTED_POWER, TRANSMITTED_POWER_STD, position, cov);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER,
+                TRANSMITTED_POWER_STD, position, cov);
 
         // check default values
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
-        assertEquals(ap.getSsid(), SSID);
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
-        assertEquals(ap.getTransmittedPowerStandardDeviation(),
-                TRANSMITTED_POWER_STD, 0.0);
-        assertSame(ap.getPosition(), position);
-        assertSame(ap.getPositionCovariance(), cov);
-        assertEquals(ap.getPathLossExponent(),
-                WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
+        assertEquals(SSID, ap.getSsid());
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
+        assertEquals(TRANSMITTED_POWER_STD, ap.getTransmittedPowerStandardDeviation(), 0.0);
+        assertSame(position, ap.getPosition());
+        assertSame(cov, ap.getPositionCovariance());
+        assertEquals(WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID,
-                TRANSMITTED_POWER, null, position,
-                null);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER,
+                null, position, null);
 
         // check default values
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
-        assertEquals(ap.getSsid(), SSID);
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
+        assertEquals(SSID, ap.getSsid());
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
         assertNull(ap.getTransmittedPowerStandardDeviation());
-        assertSame(ap.getPosition(), position);
+        assertSame(position, ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getPathLossExponent(),
-                WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
+        assertEquals(WifiAccessPointWithPower.DEFAULT_PATH_LOSS_EXPONENT, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // force IllegalArgumentException
         ap = null;
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY,
-                    SSID, TRANSMITTED_POWER, TRANSMITTED_POWER_STD, position,
-                    cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY, SSID, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY,
-                    SSID, TRANSMITTED_POWER, TRANSMITTED_POWER_STD, position,
-                    cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY, SSID, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    SSID, TRANSMITTED_POWER, -TRANSMITTED_POWER_STD, position,
-                    cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER,
+                    -TRANSMITTED_POWER_STD, position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    SSID, TRANSMITTED_POWER, TRANSMITTED_POWER_STD, null,
-                    cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, null, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    SSID, TRANSMITTED_POWER, TRANSMITTED_POWER_STD, position,
-                    new Matrix(1, 1));
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, position, new Matrix(1, 1));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(ap);
 
         // test with bssid, frequency, transmitted power, path-loss and position
-        final double pathLossExponent = randomizer.nextDouble(
-                MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                TRANSMITTED_POWER, pathLossExponent, position);
+        final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER, pathLossExponent, position);
 
         // check default values
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
         assertNull(ap.getSsid());
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
         assertNull(ap.getTransmittedPowerStandardDeviation());
-        assertSame(ap.getPosition(), position);
+        assertSame(position, ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getPathLossExponent(), pathLossExponent, 0.0);
+        assertEquals(pathLossExponent, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // force IllegalArgumentException
         ap = null;
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY,
-                    TRANSMITTED_POWER, pathLossExponent, position);
+            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY, TRANSMITTED_POWER, pathLossExponent,
+                    position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY,
-                    TRANSMITTED_POWER, pathLossExponent, position);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY, TRANSMITTED_POWER, pathLossExponent,
+                    position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    TRANSMITTED_POWER, pathLossExponent, null);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER, pathLossExponent,
+                    null);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -594,66 +540,59 @@ public class WifiAccessPointWithPowerAndLocated2DTest {
 
         // test with bssid, frequency, transmitted power, transmitted power
         // standard deviation, path loss exponent and position
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                position);
-
-        // check default values
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
-        assertNull(ap.getSsid());
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
-        assertEquals(ap.getTransmittedPowerStandardDeviation(),
-                TRANSMITTED_POWER_STD, 0.0);
-        assertSame(ap.getPosition(), position);
-        assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getPathLossExponent(), pathLossExponent, 0.0);
-        assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
-
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                TRANSMITTED_POWER, null,
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER, TRANSMITTED_POWER_STD,
                 pathLossExponent, position);
 
-        // check
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
+        // check default values
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
         assertNull(ap.getSsid());
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
-        assertNull(ap.getTransmittedPowerStandardDeviation());
-        assertSame(ap.getPosition(), position);
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
+        assertEquals(TRANSMITTED_POWER_STD, ap.getTransmittedPowerStandardDeviation(), 0.0);
+        assertSame(position, ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getPathLossExponent(), pathLossExponent, 0.0);
+        assertEquals(pathLossExponent, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
+
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER,
+                null, pathLossExponent, position);
+
+        // check
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
+        assertNull(ap.getSsid());
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
+        assertNull(ap.getTransmittedPowerStandardDeviation());
+        assertSame(position, ap.getPosition());
+        assertNull(ap.getPositionCovariance());
+        assertEquals(pathLossExponent, ap.getPathLossExponent(), 0.0);
+        assertNull(ap.getPathLossExponentStandardDeviation());
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // force IllegalArgumentException
         ap = null;
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY,
-                    TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                    position);
+            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, pathLossExponent, position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY,
-                    TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                    position);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY, TRANSMITTED_POWER, TRANSMITTED_POWER_STD,
+                    pathLossExponent, position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    TRANSMITTED_POWER, -TRANSMITTED_POWER_STD, pathLossExponent,
-                    position);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER, -TRANSMITTED_POWER_STD,
+                    pathLossExponent, position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                    null);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER, TRANSMITTED_POWER_STD,
+                    pathLossExponent, null);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -661,66 +600,59 @@ public class WifiAccessPointWithPowerAndLocated2DTest {
 
         // test with bssid, frequency, ssid, transmitted power, transmitted power
         // standard deviation, path loss exponent and position
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID,
-                TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                position);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER, TRANSMITTED_POWER_STD,
+                pathLossExponent, position);
 
         // check default values
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
-        assertEquals(ap.getSsid(), SSID);
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
-        assertEquals(ap.getTransmittedPowerStandardDeviation(),
-                TRANSMITTED_POWER_STD, 0.0);
-        assertSame(ap.getPosition(), position);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
+        assertEquals(SSID, ap.getSsid());
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
+        assertEquals(TRANSMITTED_POWER_STD, ap.getTransmittedPowerStandardDeviation(), 0.0);
+        assertSame(position, ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getPathLossExponent(), pathLossExponent, 0.0);
+        assertEquals(pathLossExponent, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID,
-                TRANSMITTED_POWER, null, pathLossExponent,
-                position);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER,
+                null, pathLossExponent, position);
 
         // check default values
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
-        assertEquals(ap.getSsid(), SSID);
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
+        assertEquals(SSID, ap.getSsid());
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
         assertNull(ap.getTransmittedPowerStandardDeviation());
-        assertSame(ap.getPosition(), position);
+        assertSame(position, ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getPathLossExponent(), pathLossExponent, 0.0);
+        assertEquals(pathLossExponent, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // force IllegalArgumentException
         ap = null;
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY, SSID,
-                    TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                    position);
+            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY, SSID, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, pathLossExponent, position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY, SSID,
-                    TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                    position);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY, SSID, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, pathLossExponent, position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID,
-                    TRANSMITTED_POWER, -TRANSMITTED_POWER_STD, pathLossExponent,
-                    position);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER,
+                    -TRANSMITTED_POWER_STD, pathLossExponent, position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID,
-                    TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                    null);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, pathLossExponent, null);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -728,61 +660,59 @@ public class WifiAccessPointWithPowerAndLocated2DTest {
 
         // test with bssid, frequency, transmitted power, path loss, position and
         // position covariance
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                TRANSMITTED_POWER, pathLossExponent, position, cov);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER, pathLossExponent,
+                position, cov);
 
         // check default values
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
         assertNull(ap.getSsid());
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
         assertNull(ap.getTransmittedPowerStandardDeviation());
-        assertSame(ap.getPosition(), position);
-        assertSame(ap.getPositionCovariance(), cov);
-        assertEquals(ap.getPathLossExponent(), pathLossExponent, 0.0);
+        assertSame(position, ap.getPosition());
+        assertSame(cov, ap.getPositionCovariance());
+        assertEquals(pathLossExponent, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                TRANSMITTED_POWER, pathLossExponent, position,
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER, pathLossExponent, position,
                 null);
 
         // check
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
         assertNull(ap.getSsid());
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
         assertNull(ap.getTransmittedPowerStandardDeviation());
-        assertSame(ap.getPosition(), position);
+        assertSame(position, ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getPathLossExponent(), pathLossExponent, 0.0);
+        assertEquals(pathLossExponent, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // force IllegalArgumentException
         ap = null;
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY,
-                    TRANSMITTED_POWER, pathLossExponent, position, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY, TRANSMITTED_POWER, pathLossExponent,
+                    position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY,
-                    TRANSMITTED_POWER, pathLossExponent, position, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY, TRANSMITTED_POWER, pathLossExponent,
+                    position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    TRANSMITTED_POWER, pathLossExponent, null, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER, pathLossExponent,
+                    null, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    TRANSMITTED_POWER, pathLossExponent, position,
-                    new Matrix(1, 1));
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER, pathLossExponent,
+                    position, new Matrix(1, 1));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -790,75 +720,65 @@ public class WifiAccessPointWithPowerAndLocated2DTest {
 
         // test with bssid, frequency, transmitted power, transmitted power standard
         // deviation, path loss exponent, position and position covariance
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                position, cov);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER, TRANSMITTED_POWER_STD,
+                pathLossExponent, position, cov);
 
         // check default values
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
         assertNull(ap.getSsid());
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
-        assertEquals(ap.getTransmittedPowerStandardDeviation(),
-                TRANSMITTED_POWER_STD, 0.0);
-        assertSame(ap.getPosition(), position);
-        assertSame(ap.getPositionCovariance(), cov);
-        assertEquals(ap.getPathLossExponent(), pathLossExponent, 0.0);
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
+        assertEquals(TRANSMITTED_POWER_STD, ap.getTransmittedPowerStandardDeviation(), 0.0);
+        assertSame(position, ap.getPosition());
+        assertSame(cov, ap.getPositionCovariance());
+        assertEquals(pathLossExponent, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                TRANSMITTED_POWER, null,
-                pathLossExponent, position, null);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER,
+                null, pathLossExponent, position, null);
 
         // check default values
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
         assertNull(ap.getSsid());
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
         assertNull(ap.getTransmittedPowerStandardDeviation());
-        assertSame(ap.getPosition(), position);
+        assertSame(position, ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getPathLossExponent(), pathLossExponent, 0.0);
+        assertEquals(pathLossExponent, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // force IllegalArgumentException
         ap = null;
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY,
-                    TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                    position, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, pathLossExponent, position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY,
-                    TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                    position, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, pathLossExponent, position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    TRANSMITTED_POWER, -TRANSMITTED_POWER_STD, pathLossExponent,
-                    position, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER,
+                    -TRANSMITTED_POWER_STD, pathLossExponent, position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                    null,
-                    cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, pathLossExponent, null, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                    position,
-                    new Matrix(1, 1));
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, pathLossExponent, position, new Matrix(1, 1));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -866,73 +786,65 @@ public class WifiAccessPointWithPowerAndLocated2DTest {
 
         // test with bssid, frequency, ssid, transmitted power, transmitted power
         // standard deviation, path loss exponent, position and position covariance
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID,
-                TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                position, cov);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER,
+                TRANSMITTED_POWER_STD, pathLossExponent, position, cov);
 
         // check default values
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
-        assertEquals(ap.getSsid(), SSID);
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
-        assertEquals(ap.getTransmittedPowerStandardDeviation(),
-                TRANSMITTED_POWER_STD, 0.0);
-        assertSame(ap.getPosition(), position);
-        assertSame(ap.getPositionCovariance(), cov);
-        assertEquals(ap.getPathLossExponent(), pathLossExponent, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
+        assertEquals(SSID, ap.getSsid());
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
+        assertEquals(TRANSMITTED_POWER_STD, ap.getTransmittedPowerStandardDeviation(), 0.0);
+        assertSame(position, ap.getPosition());
+        assertSame(cov, ap.getPositionCovariance());
+        assertEquals(pathLossExponent, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID,
-                TRANSMITTED_POWER, null, pathLossExponent,
-                position, null);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER,
+                null, pathLossExponent, position, null);
 
         // check default values
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
-        assertEquals(ap.getSsid(), SSID);
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
+        assertEquals(SSID, ap.getSsid());
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
         assertNull(ap.getTransmittedPowerStandardDeviation());
-        assertSame(ap.getPosition(), position);
+        assertSame(position, ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getPathLossExponent(), pathLossExponent, 0.0);
+        assertEquals(pathLossExponent, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // force IllegalArgumentException
         ap = null;
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY,
-                    SSID, TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                    position, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY, SSID, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, pathLossExponent, position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY,
-                    SSID, TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                    position, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY, SSID, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, pathLossExponent, position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    SSID, TRANSMITTED_POWER, -TRANSMITTED_POWER_STD, pathLossExponent,
-                    position, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER,
+                    -TRANSMITTED_POWER_STD, pathLossExponent, position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    SSID, TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                    null, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, pathLossExponent, null, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    SSID, TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                    position, new Matrix(1, 1));
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, pathLossExponent, position, new Matrix(1, 1));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -940,74 +852,65 @@ public class WifiAccessPointWithPowerAndLocated2DTest {
 
         // test constructor with bssid, frequency, tx power, tx power std deviation,
         // path-loss, pat-loss std deviation and position
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                PATH_LOSS_STD, position);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER, TRANSMITTED_POWER_STD,
+                pathLossExponent, PATH_LOSS_STD, position);
 
         // check
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
         assertNull(ap.getSsid());
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
-        assertEquals(ap.getTransmittedPowerStandardDeviation(),
-                TRANSMITTED_POWER_STD, 0.0);
-        assertSame(ap.getPosition(), position);
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
+        assertEquals(TRANSMITTED_POWER_STD, ap.getTransmittedPowerStandardDeviation(), 0.0);
+        assertSame(position, ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getPathLossExponent(), pathLossExponent, 0.0);
-        assertEquals(ap.getPathLossExponentStandardDeviation(), PATH_LOSS_STD,
-                0.0);
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(pathLossExponent, ap.getPathLossExponent(), 0.0);
+        assertEquals(PATH_LOSS_STD, ap.getPathLossExponentStandardDeviation(), 0.0);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                TRANSMITTED_POWER, null, pathLossExponent,
-                null, position);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER,
+                null, pathLossExponent, null, position);
 
         // check
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
         assertNull(ap.getSsid());
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
         assertNull(ap.getTransmittedPowerStandardDeviation());
-        assertSame(ap.getPosition(), position);
+        assertSame(position, ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getPathLossExponent(), pathLossExponent, 0.0);
+        assertEquals(pathLossExponent, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // fail IllegalArgumentException
         ap = null;
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY,
-                    TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                    PATH_LOSS_STD, position);
+            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, pathLossExponent, PATH_LOSS_STD, position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY,
-                    TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                    PATH_LOSS_STD, position);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY, TRANSMITTED_POWER, TRANSMITTED_POWER_STD,
+                    pathLossExponent, PATH_LOSS_STD, position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    TRANSMITTED_POWER, -TRANSMITTED_POWER_STD, pathLossExponent,
-                    PATH_LOSS_STD, position);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER, -TRANSMITTED_POWER_STD,
+                    pathLossExponent, PATH_LOSS_STD, position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                    -PATH_LOSS_STD, position);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER, TRANSMITTED_POWER_STD,
+                    pathLossExponent, -PATH_LOSS_STD, position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                    PATH_LOSS_STD, null);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER, TRANSMITTED_POWER_STD,
+                    pathLossExponent, PATH_LOSS_STD, null);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -1015,74 +918,65 @@ public class WifiAccessPointWithPowerAndLocated2DTest {
 
         // test constructor with bssid, frequency, ssid, tx power, tx power std deviation,
         // path-loss, path-loss std deviation and position
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID,
-                TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                PATH_LOSS_STD, position);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER,
+                TRANSMITTED_POWER_STD, pathLossExponent, PATH_LOSS_STD, position);
 
         // check
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
-        assertEquals(ap.getSsid(), SSID);
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
-        assertEquals(ap.getTransmittedPowerStandardDeviation(),
-                TRANSMITTED_POWER_STD, 0.0);
-        assertSame(ap.getPosition(), position);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
+        assertEquals(SSID, ap.getSsid());
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
+        assertEquals(TRANSMITTED_POWER_STD, ap.getTransmittedPowerStandardDeviation(), 0.0);
+        assertSame(position, ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getPathLossExponent(), pathLossExponent, 0.0);
-        assertEquals(ap.getPathLossExponentStandardDeviation(), PATH_LOSS_STD,
-                0.0);
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(pathLossExponent, ap.getPathLossExponent(), 0.0);
+        assertEquals(PATH_LOSS_STD, ap.getPathLossExponentStandardDeviation(), 0.0);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID,
-                TRANSMITTED_POWER, null, pathLossExponent,
-                null, position);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER,
+                null, pathLossExponent, null, position);
 
         // check
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
-        assertEquals(ap.getSsid(), SSID);
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
+        assertEquals(SSID, ap.getSsid());
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
         assertNull(ap.getTransmittedPowerStandardDeviation());
-        assertSame(ap.getPosition(), position);
+        assertSame(position, ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getPathLossExponent(), pathLossExponent, 0.0);
+        assertEquals(pathLossExponent, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // fail IllegalArgumentException
         ap = null;
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY,
-                    SSID, TRANSMITTED_POWER, TRANSMITTED_POWER_STD,
-                    pathLossExponent, PATH_LOSS_STD, position);
+            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY, SSID, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, pathLossExponent, PATH_LOSS_STD, position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY,
-                    SSID, TRANSMITTED_POWER, TRANSMITTED_POWER_STD,
-                    pathLossExponent, PATH_LOSS_STD, position);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY, SSID, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, pathLossExponent, PATH_LOSS_STD, position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    SSID, TRANSMITTED_POWER, -TRANSMITTED_POWER_STD,
-                    pathLossExponent, PATH_LOSS_STD, position);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER,
+                    -TRANSMITTED_POWER_STD, pathLossExponent, PATH_LOSS_STD, position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    SSID, TRANSMITTED_POWER, TRANSMITTED_POWER_STD,
-                    pathLossExponent, -PATH_LOSS_STD, position);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, pathLossExponent, -PATH_LOSS_STD, position);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    SSID, TRANSMITTED_POWER, TRANSMITTED_POWER_STD,
-                    pathLossExponent, PATH_LOSS_STD, null);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, pathLossExponent, PATH_LOSS_STD, null);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -1090,81 +984,72 @@ public class WifiAccessPointWithPowerAndLocated2DTest {
 
         // test constructor with bssid, frequency, tx power, tx power std deviation,
         // path-loss, path-loss std deviation, position and position covariance
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                PATH_LOSS_STD, position, cov);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER, TRANSMITTED_POWER_STD,
+                pathLossExponent, PATH_LOSS_STD, position, cov);
 
         // check
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
         assertNull(ap.getSsid());
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
-        assertEquals(ap.getTransmittedPowerStandardDeviation(),
-                TRANSMITTED_POWER_STD, 0.0);
-        assertSame(ap.getPosition(), position);
-        assertSame(ap.getPositionCovariance(), cov);
-        assertEquals(ap.getPathLossExponent(), pathLossExponent, 0.0);
-        assertEquals(ap.getPathLossExponentStandardDeviation(), PATH_LOSS_STD,
-                0.0);
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
+        assertEquals(TRANSMITTED_POWER_STD, ap.getTransmittedPowerStandardDeviation(), 0.0);
+        assertSame(position, ap.getPosition());
+        assertSame(cov, ap.getPositionCovariance());
+        assertEquals(pathLossExponent, ap.getPathLossExponent(), 0.0);
+        assertEquals(PATH_LOSS_STD, ap.getPathLossExponentStandardDeviation(), 0.0);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                TRANSMITTED_POWER, null, pathLossExponent,
-                null, position, null);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER,
+                null, pathLossExponent, null, position,
+                null);
 
         // check
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
         assertNull(ap.getSsid());
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
         assertNull(ap.getTransmittedPowerStandardDeviation());
-        assertSame(ap.getPosition(), position);
+        assertSame(position, ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getPathLossExponent(), pathLossExponent, 0.0);
+        assertEquals(pathLossExponent, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // fail IllegalArgumentException
         ap = null;
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY,
-                    TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                    PATH_LOSS_STD, position, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, pathLossExponent, PATH_LOSS_STD, position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY,
-                    TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                    PATH_LOSS_STD, position, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY, TRANSMITTED_POWER, TRANSMITTED_POWER_STD,
+                    pathLossExponent, PATH_LOSS_STD, position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    TRANSMITTED_POWER, -TRANSMITTED_POWER_STD, pathLossExponent,
-                    PATH_LOSS_STD, position, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER, -TRANSMITTED_POWER_STD,
+                    pathLossExponent, PATH_LOSS_STD, position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                    -PATH_LOSS_STD, position, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER, TRANSMITTED_POWER_STD,
+                    pathLossExponent, -PATH_LOSS_STD, position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                    PATH_LOSS_STD, null, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER, TRANSMITTED_POWER_STD,
+                    pathLossExponent, PATH_LOSS_STD, null, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                    PATH_LOSS_STD, position, new Matrix(1, 1));
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, TRANSMITTED_POWER, TRANSMITTED_POWER_STD,
+                    pathLossExponent, PATH_LOSS_STD, position, new Matrix(1, 1));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -1172,82 +1057,72 @@ public class WifiAccessPointWithPowerAndLocated2DTest {
 
         // test constructor with bssid, frequency, ssid, tx power, tx power std deviation,
         // path-loss, path-loss std deviation, position and position covariance
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID,
-                TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent,
-                PATH_LOSS_STD, position, cov);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER, TRANSMITTED_POWER_STD,
+                pathLossExponent, PATH_LOSS_STD, position, cov);
 
         // check
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
-        assertEquals(ap.getSsid(), SSID);
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
-        assertEquals(ap.getTransmittedPowerStandardDeviation(),
-                TRANSMITTED_POWER_STD, 0.0);
-        assertSame(ap.getPosition(), position);
-        assertSame(ap.getPositionCovariance(), cov);
-        assertEquals(ap.getPathLossExponent(), pathLossExponent, 0.0);
-        assertEquals(ap.getPathLossExponentStandardDeviation(), PATH_LOSS_STD,
-                0.0);
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
+        assertEquals(SSID, ap.getSsid());
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
+        assertEquals(TRANSMITTED_POWER_STD, ap.getTransmittedPowerStandardDeviation(), 0.0);
+        assertSame(position, ap.getPosition());
+        assertSame(cov, ap.getPositionCovariance());
+        assertEquals(pathLossExponent, ap.getPathLossExponent(), 0.0);
+        assertEquals(PATH_LOSS_STD, ap.getPathLossExponentStandardDeviation(), 0.0);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
-        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID,
-                TRANSMITTED_POWER, null, pathLossExponent,
-                null, position, null);
+        ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER,
+                null, pathLossExponent, null, position,
+                null);
 
         // check
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
-        assertEquals(ap.getSsid(), SSID);
-        assertEquals(ap.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
+        assertEquals(SSID, ap.getSsid());
+        assertEquals(TRANSMITTED_POWER, ap.getTransmittedPower(), 0.0);
         assertNull(ap.getTransmittedPowerStandardDeviation());
-        assertSame(ap.getPosition(), position);
+        assertSame(position, ap.getPosition());
         assertNull(ap.getPositionCovariance());
-        assertEquals(ap.getPathLossExponent(), pathLossExponent, 0.0);
+        assertEquals(pathLossExponent, ap.getPathLossExponent(), 0.0);
         assertNull(ap.getPathLossExponentStandardDeviation());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // fail IllegalArgumentException
         ap = null;
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY,
-                    SSID, TRANSMITTED_POWER, TRANSMITTED_POWER_STD,
-                    pathLossExponent, PATH_LOSS_STD, position, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(null, FREQUENCY, SSID, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, pathLossExponent, PATH_LOSS_STD, position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY,
-                    SSID, TRANSMITTED_POWER, TRANSMITTED_POWER_STD,
-                    pathLossExponent, PATH_LOSS_STD, position, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, -FREQUENCY, SSID, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, pathLossExponent, PATH_LOSS_STD, position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    SSID, TRANSMITTED_POWER, -TRANSMITTED_POWER_STD,
-                    pathLossExponent, PATH_LOSS_STD, position, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER,
+                    -TRANSMITTED_POWER_STD, pathLossExponent, PATH_LOSS_STD, position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    SSID, TRANSMITTED_POWER, TRANSMITTED_POWER_STD,
-                    pathLossExponent, -PATH_LOSS_STD, position, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, pathLossExponent, -PATH_LOSS_STD, position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    SSID, TRANSMITTED_POWER, TRANSMITTED_POWER_STD,
-                    pathLossExponent, PATH_LOSS_STD, null, cov);
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, pathLossExponent, PATH_LOSS_STD, null, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
-                    SSID, TRANSMITTED_POWER, TRANSMITTED_POWER_STD,
-                    pathLossExponent, PATH_LOSS_STD, position,
-                    new Matrix(1, 1));
+            ap = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY, SSID, TRANSMITTED_POWER,
+                    TRANSMITTED_POWER_STD, pathLossExponent, PATH_LOSS_STD, position, new Matrix(1, 1));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -1260,17 +1135,15 @@ public class WifiAccessPointWithPowerAndLocated2DTest {
         final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
                 randomizer.nextDouble(MIN_POS, MAX_POS),
                 randomizer.nextDouble(MIN_POS, MAX_POS));
-        final WifiAccessPointWithPowerAndLocated2D ap1 =
-                new WifiAccessPointWithPowerAndLocated2D("bssid1", FREQUENCY,
-                        TRANSMITTED_POWER, position);
-        final WifiAccessPointWithPowerAndLocated2D ap2 =
-                new WifiAccessPointWithPowerAndLocated2D("bssid1", FREQUENCY,
-                        TRANSMITTED_POWER, position);
-        final WifiAccessPointWithPowerAndLocated2D ap3 =
-                new WifiAccessPointWithPowerAndLocated2D("bssid2", FREQUENCY,
-                        TRANSMITTED_POWER, position);
+        final WifiAccessPointWithPowerAndLocated2D ap1 = new WifiAccessPointWithPowerAndLocated2D("bssid1",
+                FREQUENCY, TRANSMITTED_POWER, position);
+        final WifiAccessPointWithPowerAndLocated2D ap2 = new WifiAccessPointWithPowerAndLocated2D("bssid1",
+                FREQUENCY, TRANSMITTED_POWER, position);
+        final WifiAccessPointWithPowerAndLocated2D ap3 = new WifiAccessPointWithPowerAndLocated2D("bssid2",
+                FREQUENCY, TRANSMITTED_POWER, position);
 
         // check
+        //noinspection EqualsWithItself
         assertEquals(ap1, ap1);
         assertEquals(ap1, ap2);
         assertNotEquals(ap1, ap3);
@@ -1282,15 +1155,12 @@ public class WifiAccessPointWithPowerAndLocated2DTest {
         final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
                 randomizer.nextDouble(MIN_POS, MAX_POS),
                 randomizer.nextDouble(MIN_POS, MAX_POS));
-        final WifiAccessPointWithPowerAndLocated2D ap1 =
-                new WifiAccessPointWithPowerAndLocated2D("bssid1", FREQUENCY,
-                        TRANSMITTED_POWER, position);
-        final WifiAccessPointWithPowerAndLocated2D ap2 =
-                new WifiAccessPointWithPowerAndLocated2D("bssid1", FREQUENCY,
-                        TRANSMITTED_POWER, position);
-        final WifiAccessPointWithPowerAndLocated2D ap3 =
-                new WifiAccessPointWithPowerAndLocated2D("bssid2", FREQUENCY,
-                        TRANSMITTED_POWER, position);
+        final WifiAccessPointWithPowerAndLocated2D ap1 = new WifiAccessPointWithPowerAndLocated2D("bssid1",
+                FREQUENCY, TRANSMITTED_POWER, position);
+        final WifiAccessPointWithPowerAndLocated2D ap2 = new WifiAccessPointWithPowerAndLocated2D("bssid1",
+                FREQUENCY, TRANSMITTED_POWER, position);
+        final WifiAccessPointWithPowerAndLocated2D ap3 = new WifiAccessPointWithPowerAndLocated2D("bssid2",
+                FREQUENCY, TRANSMITTED_POWER, position);
 
         // check
         assertEquals(ap1.hashCode(), ap2.hashCode());
@@ -1303,33 +1173,28 @@ public class WifiAccessPointWithPowerAndLocated2DTest {
         final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
                 randomizer.nextDouble(MIN_POS, MAX_POS),
                 randomizer.nextDouble(MIN_POS, MAX_POS));
-        final double pathLossExponent = randomizer.nextDouble(
-                MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
+        final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
         final Matrix cov = new Matrix(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH,
                 Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH);
 
-        final WifiAccessPointWithPowerAndLocated2D ap1 = new WifiAccessPointWithPowerAndLocated2D(
-                BSSID, FREQUENCY, SSID, TRANSMITTED_POWER, TRANSMITTED_POWER_STD,
-                pathLossExponent, PATH_LOSS_STD, position, cov);
+        final WifiAccessPointWithPowerAndLocated2D ap1 = new WifiAccessPointWithPowerAndLocated2D(BSSID, FREQUENCY,
+                SSID, TRANSMITTED_POWER, TRANSMITTED_POWER_STD, pathLossExponent, PATH_LOSS_STD, position, cov);
 
         // check
-        assertEquals(ap1.getBssid(), BSSID);
-        assertEquals(ap1.getFrequency(), FREQUENCY, 0.0);
-        assertEquals(ap1.getSsid(), SSID);
-        assertEquals(ap1.getTransmittedPower(), TRANSMITTED_POWER, 0.0);
-        assertEquals(ap1.getTransmittedPowerStandardDeviation(),
-                TRANSMITTED_POWER_STD, 0.0);
-        assertSame(ap1.getPosition(), position);
-        assertSame(ap1.getPositionCovariance(), cov);
-        assertEquals(ap1.getPathLossExponent(), pathLossExponent, 0.0);
-        assertEquals(ap1.getPathLossExponentStandardDeviation(), PATH_LOSS_STD,
-                0.0);
-        assertEquals(ap1.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(BSSID, ap1.getBssid());
+        assertEquals(FREQUENCY, ap1.getFrequency(), 0.0);
+        assertEquals(SSID, ap1.getSsid());
+        assertEquals(TRANSMITTED_POWER, ap1.getTransmittedPower(), 0.0);
+        assertEquals(TRANSMITTED_POWER_STD, ap1.getTransmittedPowerStandardDeviation(), 0.0);
+        assertSame(position, ap1.getPosition());
+        assertSame(cov, ap1.getPositionCovariance());
+        assertEquals(pathLossExponent, ap1.getPathLossExponent(), 0.0);
+        assertEquals(PATH_LOSS_STD, ap1.getPathLossExponentStandardDeviation(), 0.0);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap1.getType());
 
         // serialize and deserialize
         final byte[] bytes = SerializationHelper.serialize(ap1);
-        final WifiAccessPointWithPowerAndLocated2D ap2 =
-                SerializationHelper.deserialize(bytes);
+        final WifiAccessPointWithPowerAndLocated2D ap2 = SerializationHelper.deserialize(bytes);
 
         // check
         assertEquals(ap1, ap2);
@@ -1338,15 +1203,13 @@ public class WifiAccessPointWithPowerAndLocated2DTest {
         assertEquals(ap1.getFrequency(), ap2.getFrequency(), 0.0);
         assertEquals(ap1.getSsid(), ap2.getSsid());
         assertEquals(ap1.getTransmittedPower(), ap2.getTransmittedPower(), 0.0);
-        assertEquals(ap1.getTransmittedPowerStandardDeviation(),
-                ap2.getTransmittedPowerStandardDeviation(), 0.0);
+        assertEquals(ap1.getTransmittedPowerStandardDeviation(), ap2.getTransmittedPowerStandardDeviation(),
+                0.0);
         assertEquals(ap1.getPosition(), ap2.getPosition());
-        assertEquals(ap1.getPositionCovariance(),
-                ap2.getPositionCovariance());
-        assertEquals(ap1.getPathLossExponent(),
-                ap2.getPathLossExponent(), 0.0);
-        assertEquals(ap1.getPathLossExponentStandardDeviation(),
-                ap2.getPathLossExponentStandardDeviation(), 0.0);
+        assertEquals(ap1.getPositionCovariance(), ap2.getPositionCovariance());
+        assertEquals(ap1.getPathLossExponent(), ap2.getPathLossExponent(), 0.0);
+        assertEquals(ap1.getPathLossExponentStandardDeviation(), ap2.getPathLossExponentStandardDeviation(),
+                0.0);
         assertEquals(ap1.getType(), ap2.getType());
     }
 }

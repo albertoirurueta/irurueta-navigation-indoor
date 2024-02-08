@@ -347,9 +347,9 @@ public abstract class BaseFingerprintPositionEstimator<P extends Point<?>,
     }
 
     /**
-     * Gets estimated estimated position and stores result into provided instance.
+     * Gets estimated position and stores result into provided instance.
      *
-     * @param estimatedPosition instance where estimated estimated position will be stored.
+     * @param estimatedPosition instance where estimated position will be stored.
      */
     public void getEstimatedPosition(final P estimatedPosition) {
         if (mEstimatedPositionCoordinates != null) {

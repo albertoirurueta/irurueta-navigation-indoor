@@ -30,7 +30,7 @@ import java.util.List;
 
 /**
  * Robustly estimate 2D position, transmitted power and path-loss exponent of a radio source
- * (e.g. WiFi access point or bluetooth beacon), by discarding outliers using PROSAC
+ * (e.g. Wi-Fi access point or bluetooth beacon), by discarding outliers using PROSAC
  * algorithm and assuming that the radio source emits isotropically following the
  * expression below:
  * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,
@@ -923,6 +923,7 @@ public class PROSACRobustRssiRadioSourceEstimator2D<S extends RadioSource> exten
      * @throws LockedException          if robust solver is locked because an
      *                                  estimation is already in progress.
      */
+    @Override
     public void setQualityScores(final double[] qualityScores) throws LockedException {
         if (isLocked()) {
             throw new LockedException();

@@ -26,7 +26,7 @@ import java.util.List;
 
 /**
  * This is an abstract class to robustly estimate position, transmitted power and path-loss
- * exponent of a radio source (e.g. WiFi access point or bluetooth beacon), by discarding
+ * exponent of a radio source (e.g. Wi-Fi access point or bluetooth beacon), by discarding
  * outliers and assuming that the ranging data is available to obtain position with
  * greater accuracy and that the radio source emits isotropically following the
  * expression below:
@@ -800,7 +800,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      */
     protected abstract void solvePreliminarySolutions(
             final int[] samplesIndices,
-            final List<RobustRangingAndRssiRadioSourceEstimator.Solution<P>> solutions);
+            final List<Solution<P>> solutions);
 
     /**
      * Estimates residual for a solution obtained for a subset of samples.
@@ -852,7 +852,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      *
      * @param <P> a {@link Point} type.
      */
-    static class Solution<P extends Point<?>> {
+    protected static class Solution<P extends Point<?>> {
         /**
          * Estimated position for a subset of samples.
          */

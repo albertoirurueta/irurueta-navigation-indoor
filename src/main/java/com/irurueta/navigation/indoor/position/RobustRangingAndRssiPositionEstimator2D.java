@@ -80,13 +80,13 @@ public abstract class RobustRangingAndRssiPositionEstimator2D extends
         switch (method) {
             case RANSAC:
                 return new RANSACRobustRangingAndRssiPositionEstimator2D();
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiPositionEstimator2D();
             case MSAC:
                 return new MSACRobustRangingAndRssiPositionEstimator2D();
             case PROSAC:
                 return new PROSACRobustRangingAndRssiPositionEstimator2D();
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiPositionEstimator2D();
         }
@@ -107,13 +107,13 @@ public abstract class RobustRangingAndRssiPositionEstimator2D extends
         switch (method) {
             case RANSAC:
                 return new RANSACRobustRangingAndRssiPositionEstimator2D(sources);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiPositionEstimator2D(sources);
             case MSAC:
                 return new MSACRobustRangingAndRssiPositionEstimator2D(sources);
             case PROSAC:
                 return new PROSACRobustRangingAndRssiPositionEstimator2D(sources);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiPositionEstimator2D(sources);
         }
@@ -135,13 +135,13 @@ public abstract class RobustRangingAndRssiPositionEstimator2D extends
         switch (method) {
             case RANSAC:
                 return new RANSACRobustRangingAndRssiPositionEstimator2D(fingerprint);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiPositionEstimator2D(fingerprint);
             case MSAC:
                 return new MSACRobustRangingAndRssiPositionEstimator2D(fingerprint);
             case PROSAC:
                 return new PROSACRobustRangingAndRssiPositionEstimator2D(fingerprint);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiPositionEstimator2D(fingerprint);
         }
@@ -166,13 +166,13 @@ public abstract class RobustRangingAndRssiPositionEstimator2D extends
         switch (method) {
             case RANSAC:
                 return new RANSACRobustRangingAndRssiPositionEstimator2D(sources, fingerprint);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiPositionEstimator2D(sources, fingerprint);
             case MSAC:
                 return new MSACRobustRangingAndRssiPositionEstimator2D(sources, fingerprint);
             case PROSAC:
                 return new PROSACRobustRangingAndRssiPositionEstimator2D(sources, fingerprint);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiPositionEstimator2D(sources, fingerprint);
         }
@@ -191,13 +191,13 @@ public abstract class RobustRangingAndRssiPositionEstimator2D extends
         switch (method) {
             case RANSAC:
                 return new RANSACRobustRangingAndRssiPositionEstimator2D(listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiPositionEstimator2D(listener);
             case MSAC:
                 return new MSACRobustRangingAndRssiPositionEstimator2D(listener);
             case PROSAC:
                 return new PROSACRobustRangingAndRssiPositionEstimator2D(listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiPositionEstimator2D(listener);
         }
@@ -221,7 +221,7 @@ public abstract class RobustRangingAndRssiPositionEstimator2D extends
             case RANSAC:
                 return new RANSACRobustRangingAndRssiPositionEstimator2D(sources,
                         listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiPositionEstimator2D(sources,
                         listener);
             case MSAC:
@@ -230,7 +230,7 @@ public abstract class RobustRangingAndRssiPositionEstimator2D extends
             case PROSAC:
                 return new PROSACRobustRangingAndRssiPositionEstimator2D(sources,
                         listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiPositionEstimator2D(sources,
                         listener);
@@ -256,7 +256,7 @@ public abstract class RobustRangingAndRssiPositionEstimator2D extends
             case RANSAC:
                 return new RANSACRobustRangingAndRssiPositionEstimator2D(fingerprint,
                         listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiPositionEstimator2D(fingerprint,
                         listener);
             case MSAC:
@@ -265,7 +265,7 @@ public abstract class RobustRangingAndRssiPositionEstimator2D extends
             case PROSAC:
                 return new PROSACRobustRangingAndRssiPositionEstimator2D(fingerprint,
                         listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiPositionEstimator2D(fingerprint,
                         listener);
@@ -294,7 +294,7 @@ public abstract class RobustRangingAndRssiPositionEstimator2D extends
             case RANSAC:
                 return new RANSACRobustRangingAndRssiPositionEstimator2D(sources,
                         fingerprint, listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiPositionEstimator2D(sources,
                         fingerprint, listener);
             case MSAC:
@@ -303,7 +303,7 @@ public abstract class RobustRangingAndRssiPositionEstimator2D extends
             case PROSAC:
                 return new PROSACRobustRangingAndRssiPositionEstimator2D(sources,
                         fingerprint, listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiPositionEstimator2D(sources,
                         fingerprint, listener);
@@ -331,14 +331,14 @@ public abstract class RobustRangingAndRssiPositionEstimator2D extends
         switch (method) {
             case RANSAC:
                 return new RANSACRobustRangingAndRssiPositionEstimator2D();
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiPositionEstimator2D();
             case MSAC:
                 return new MSACRobustRangingAndRssiPositionEstimator2D();
             case PROSAC:
                 return new PROSACRobustRangingAndRssiPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores);
@@ -371,7 +371,7 @@ public abstract class RobustRangingAndRssiPositionEstimator2D extends
         switch (method) {
             case RANSAC:
                 return new RANSACRobustRangingAndRssiPositionEstimator2D(sources);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiPositionEstimator2D(sources);
             case MSAC:
                 return new MSACRobustRangingAndRssiPositionEstimator2D(sources);
@@ -379,7 +379,7 @@ public abstract class RobustRangingAndRssiPositionEstimator2D extends
                 return new PROSACRobustRangingAndRssiPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores,
                         sources);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores,
@@ -414,7 +414,7 @@ public abstract class RobustRangingAndRssiPositionEstimator2D extends
         switch (method) {
             case RANSAC:
                 return new RANSACRobustRangingAndRssiPositionEstimator2D(fingerprint);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiPositionEstimator2D(fingerprint);
             case MSAC:
                 return new MSACRobustRangingAndRssiPositionEstimator2D(fingerprint);
@@ -422,7 +422,7 @@ public abstract class RobustRangingAndRssiPositionEstimator2D extends
                 return new PROSACRobustRangingAndRssiPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores,
                         fingerprint);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores,
@@ -461,7 +461,7 @@ public abstract class RobustRangingAndRssiPositionEstimator2D extends
         switch (method) {
             case RANSAC:
                 return new RANSACRobustRangingAndRssiPositionEstimator2D(sources, fingerprint);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiPositionEstimator2D(sources, fingerprint);
             case MSAC:
                 return new MSACRobustRangingAndRssiPositionEstimator2D(sources, fingerprint);
@@ -469,7 +469,7 @@ public abstract class RobustRangingAndRssiPositionEstimator2D extends
                 return new PROSACRobustRangingAndRssiPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores,
                         sources, fingerprint);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores,
@@ -500,7 +500,7 @@ public abstract class RobustRangingAndRssiPositionEstimator2D extends
         switch (method) {
             case RANSAC:
                 return new RANSACRobustRangingAndRssiPositionEstimator2D(listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiPositionEstimator2D(listener);
             case MSAC:
                 return new MSACRobustRangingAndRssiPositionEstimator2D(listener);
@@ -508,7 +508,7 @@ public abstract class RobustRangingAndRssiPositionEstimator2D extends
                 return new PROSACRobustRangingAndRssiPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores,
                         listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores,
@@ -545,7 +545,7 @@ public abstract class RobustRangingAndRssiPositionEstimator2D extends
             case RANSAC:
                 return new RANSACRobustRangingAndRssiPositionEstimator2D(sources,
                         listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiPositionEstimator2D(sources,
                         listener);
             case MSAC:
@@ -555,7 +555,7 @@ public abstract class RobustRangingAndRssiPositionEstimator2D extends
                 return new PROSACRobustRangingAndRssiPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores,
                         sources, listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores,
@@ -593,7 +593,7 @@ public abstract class RobustRangingAndRssiPositionEstimator2D extends
             case RANSAC:
                 return new RANSACRobustRangingAndRssiPositionEstimator2D(fingerprint,
                         listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiPositionEstimator2D(fingerprint,
                         listener);
             case MSAC:
@@ -603,7 +603,7 @@ public abstract class RobustRangingAndRssiPositionEstimator2D extends
                 return new PROSACRobustRangingAndRssiPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores,
                         fingerprint, listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores,
@@ -645,7 +645,7 @@ public abstract class RobustRangingAndRssiPositionEstimator2D extends
             case RANSAC:
                 return new RANSACRobustRangingAndRssiPositionEstimator2D(sources,
                         fingerprint, listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiPositionEstimator2D(sources,
                         fingerprint, listener);
             case MSAC:
@@ -655,7 +655,7 @@ public abstract class RobustRangingAndRssiPositionEstimator2D extends
                 return new PROSACRobustRangingAndRssiPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores,
                         sources, fingerprint, listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiPositionEstimator2D(
                         sourceQualityScores, fingerprintReadingQualityScores,

@@ -62,13 +62,12 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
     @Test
     public void testConstructor() {
         // empty constructor
-        LinearRangingAndRssiPositionEstimator2D estimator =
-                new LinearRangingAndRssiPositionEstimator2D();
+        LinearRangingAndRssiPositionEstimator2D estimator = new LinearRangingAndRssiPositionEstimator2D();
 
         // check default values
         assertNull(estimator.getEstimatedPosition());
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
-        assertEquals(estimator.getMinRequiredSources(), 3);
+        assertEquals(3, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
         assertNull(estimator.getSources());
@@ -81,18 +80,17 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
         // constructor with sources
         final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            sources.add(new WifiAccessPointLocated2D("id1", FREQUENCY,
-                    new InhomogeneousPoint2D()));
+            sources.add(new WifiAccessPointLocated2D("id1", FREQUENCY, new InhomogeneousPoint2D()));
         }
         estimator = new LinearRangingAndRssiPositionEstimator2D(sources);
 
         // check default values
         assertNull(estimator.getEstimatedPosition());
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
-        assertEquals(estimator.getMinRequiredSources(), 3);
+        assertEquals(3, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
         assertNull(estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
@@ -102,8 +100,7 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new LinearRangingAndRssiPositionEstimator2D(
-                    (List<WifiAccessPointLocated2D>) null);
+            estimator = new LinearRangingAndRssiPositionEstimator2D((List<WifiAccessPointLocated2D>) null);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -123,11 +120,11 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
         // check default value
         assertNull(estimator.getEstimatedPosition());
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
-        assertEquals(estimator.getMinRequiredSources(), 3);
+        assertEquals(3, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
         assertNull(estimator.getSources());
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
@@ -149,11 +146,11 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
         // check default values
         assertNull(estimator.getEstimatedPosition());
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
-        assertEquals(estimator.getMinRequiredSources(), 3);
+        assertEquals(3, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
@@ -162,8 +159,7 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new LinearRangingAndRssiPositionEstimator2D(null,
-                    fingerprint);
+            estimator = new LinearRangingAndRssiPositionEstimator2D(null, fingerprint);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -187,12 +183,12 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
         // check
         assertNull(estimator.getEstimatedPosition());
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
-        assertEquals(estimator.getMinRequiredSources(), 3);
+        assertEquals(3, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
         assertNull(estimator.getSources());
         assertNull(estimator.getFingerprint());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
@@ -203,12 +199,12 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
         // check default values
         assertNull(estimator.getEstimatedPosition());
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
-        assertEquals(estimator.getMinRequiredSources(), 3);
+        assertEquals(3, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
         assertNull(estimator.getFingerprint());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
@@ -230,18 +226,17 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
         assertNull(estimator);
 
         // constructor with fingerprint and listener
-        estimator = new LinearRangingAndRssiPositionEstimator2D(fingerprint,
-                this);
+        estimator = new LinearRangingAndRssiPositionEstimator2D(fingerprint, this);
 
         // check default values
         assertNull(estimator.getEstimatedPosition());
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
-        assertEquals(estimator.getMinRequiredSources(), 3);
+        assertEquals(3, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
         assertNull(estimator.getSources());
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
@@ -258,18 +253,17 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
         assertNull(estimator);
 
         // constructor with sources, fingerprint and listener
-        estimator = new LinearRangingAndRssiPositionEstimator2D(sources, fingerprint,
-                this);
+        estimator = new LinearRangingAndRssiPositionEstimator2D(sources, fingerprint, this);
 
         // check default values
         assertNull(estimator.getEstimatedPosition());
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
-        assertEquals(estimator.getMinRequiredSources(), 3);
+        assertEquals(3, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
@@ -277,21 +271,18 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new LinearRangingAndRssiPositionEstimator2D(null,
-                    fingerprint, this);
+            estimator = new LinearRangingAndRssiPositionEstimator2D(null, fingerprint, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
             estimator = new LinearRangingAndRssiPositionEstimator2D(
-                    new ArrayList<WifiAccessPointLocated2D>(), fingerprint,
-                    this);
+                    new ArrayList<WifiAccessPointLocated2D>(), fingerprint, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new LinearRangingAndRssiPositionEstimator2D(sources,
-                    null, this);
+            estimator = new LinearRangingAndRssiPositionEstimator2D(sources, null, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -309,14 +300,13 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
         // set new value
         final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            sources.add(new WifiAccessPointLocated2D("id1", FREQUENCY,
-                    new InhomogeneousPoint2D()));
+            sources.add(new WifiAccessPointLocated2D("id1", FREQUENCY, new InhomogeneousPoint2D()));
         }
 
         estimator.setSources(sources);
 
         // check
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
 
         // force IllegalArgumentException
         try {
@@ -333,8 +323,7 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
 
     @Test
     public void testGetSetFingerprint() throws LockedException {
-        final LinearRangingAndRssiPositionEstimator2D estimator =
-                new LinearRangingAndRssiPositionEstimator2D();
+        final LinearRangingAndRssiPositionEstimator2D estimator = new LinearRangingAndRssiPositionEstimator2D();
 
         // check default value
         assertNull(estimator.getFingerprint());
@@ -345,7 +334,7 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
         estimator.setFingerprint(fingerprint);
 
         // check
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // force IllegalArgumentException
         try {
@@ -367,7 +356,7 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
         estimator.setListener(this);
 
         // check
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
     }
 
     @Test
@@ -381,8 +370,8 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT,
-                    MAX_PATH_LOSS_EXPONENT);
+            final double pathLossExponent = randomizer.nextDouble(
+                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
             final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
             final List<RangingAndRssiReading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -396,17 +385,16 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 readings.add(new RangingAndRssiReading<>(accessPoint, distance, rssi));
             }
@@ -415,8 +403,7 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
                     new RangingAndRssiFingerprint<>(readings);
 
             final LinearRangingAndRssiPositionEstimator2D estimator =
-                    new LinearRangingAndRssiPositionEstimator2D(sources, fingerprint,
-                            this);
+                    new LinearRangingAndRssiPositionEstimator2D(sources, fingerprint, this);
 
             reset();
 
@@ -428,13 +415,13 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
             assertNull(estimator.getEstimatedPositionCoordinates());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -466,8 +453,8 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT,
-                    MAX_PATH_LOSS_EXPONENT);
+            final double pathLossExponent = randomizer.nextDouble(
+                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
             final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
             final List<RangingAndRssiReading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -481,9 +468,8 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -491,8 +477,8 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
                 final double distance = position.distanceTo(accessPointPosition);
 
                 final double error = errorRandomizer.nextDouble();
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent)) + error;
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent)) + error;
 
                 readings.add(new RangingAndRssiReading<>(accessPoint, distance, rssi));
             }
@@ -501,8 +487,7 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
                     new RangingAndRssiFingerprint<>(readings);
 
             final LinearRangingAndRssiPositionEstimator2D estimator =
-                    new LinearRangingAndRssiPositionEstimator2D(sources, fingerprint,
-                            this);
+                    new LinearRangingAndRssiPositionEstimator2D(sources, fingerprint, this);
 
             reset();
 
@@ -514,13 +499,13 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
             assertNull(estimator.getEstimatedPositionCoordinates());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -557,8 +542,8 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT,
-                    MAX_PATH_LOSS_EXPONENT);
+            final double pathLossExponent = randomizer.nextDouble(
+                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
             final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
             final List<RangingAndRssiReading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -572,17 +557,16 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 readings.add(new RangingAndRssiReading<>(accessPoint, distance, rssi));
             }
@@ -591,8 +575,7 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
                     new RangingAndRssiFingerprint<>(readings);
 
             final LinearRangingAndRssiPositionEstimator2D estimator =
-                    new LinearRangingAndRssiPositionEstimator2D(sources, fingerprint,
-                            this);
+                    new LinearRangingAndRssiPositionEstimator2D(sources, fingerprint, this);
             estimator.setHomogeneousLinearSolverUsed(false);
 
             reset();
@@ -605,13 +588,13 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
             assertNull(estimator.getEstimatedPositionCoordinates());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -643,8 +626,8 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT,
-                    MAX_PATH_LOSS_EXPONENT);
+            final double pathLossExponent = randomizer.nextDouble(
+                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
             final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
             final List<RangingAndRssiReading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -658,9 +641,8 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -678,8 +660,7 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
                     new RangingAndRssiFingerprint<>(readings);
 
             final LinearRangingAndRssiPositionEstimator2D estimator =
-                    new LinearRangingAndRssiPositionEstimator2D(sources, fingerprint,
-                            this);
+                    new LinearRangingAndRssiPositionEstimator2D(sources, fingerprint, this);
             estimator.setHomogeneousLinearSolverUsed(false);
 
             reset();
@@ -692,13 +673,13 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
             assertNull(estimator.getEstimatedPositionCoordinates());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -740,15 +721,14 @@ public class LinearRangingAndRssiPositionEstimator2DTest implements
         estimateStart = estimateEnd = 0;
     }
 
-    private double receivedPower(final double equivalentTransmittedPower,
-                                 final double distance, final double pathLossExponent) {
+    private double receivedPower(final double equivalentTransmittedPower, final double distance,
+                                 final double pathLossExponent) {
         // Pr = Pt*Gt*Gr*lambda^2/(4*pi*d)^2,    where Pr is the received power
         // lambda = c/f, where lambda is wavelength,
         // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the received Gain
         // Pr = Pte*c^2/((4*pi*f)^2 * d^2)
         final double k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI * FREQUENCY), pathLossExponent);
-        return equivalentTransmittedPower * k /
-                Math.pow(distance, pathLossExponent);
+        return equivalentTransmittedPower * k / Math.pow(distance, pathLossExponent);
     }
 
     private void checkLocked(final LinearRangingAndRssiPositionEstimator2D estimators) {

@@ -33,8 +33,7 @@ import java.util.List;
  * device by getting ranging+RSSI readings at an unknown location of different radio
  * sources whose 2D locations are known.
  */
-public class LMedSRobustRangingAndRssiPositionEstimator2D extends
-        RobustRangingAndRssiPositionEstimator2D {
+public class LMedSRobustRangingAndRssiPositionEstimator2D extends RobustRangingAndRssiPositionEstimator2D {
 
     /**
      * Constructor.
@@ -212,7 +211,7 @@ public class LMedSRobustRangingAndRssiPositionEstimator2D extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-        return RobustEstimatorMethod.LMedS;
+        return RobustEstimatorMethod.LMEDS;
     }
 
     /**

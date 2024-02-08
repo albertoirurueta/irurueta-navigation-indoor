@@ -33,8 +33,7 @@ import java.util.List;
  * device by getting readings at an unknown location of different radio
  * sources whose 2D locations are known.
  */
-public class PROSACRobustMixedPositionEstimator2D extends
-        RobustMixedPositionEstimator2D {
+public class PROSACRobustMixedPositionEstimator2D extends RobustMixedPositionEstimator2D {
 
     /**
      * Quality scores corresponding to each provided located radio source.
@@ -376,6 +375,7 @@ public class PROSACRobustMixedPositionEstimator2D extends
      *
      * @return quality scores corresponding to each radio source.
      */
+    @Override
     public double[] getSourceQualityScores() {
         return mSourceQualityScores;
     }
@@ -389,6 +389,7 @@ public class PROSACRobustMixedPositionEstimator2D extends
      * @throws IllegalArgumentException if provided quality scores length is smaller
      *                                  than minimum required samples.
      */
+    @Override
     public void setSourceQualityScores(final double[] sourceQualityScores)
             throws LockedException {
         if (isLocked()) {
@@ -406,6 +407,7 @@ public class PROSACRobustMixedPositionEstimator2D extends
      * @return quality scores corresponding to each reading within provided
      * fingerprint.
      */
+    @Override
     public double[] getFingerprintReadingsQualityScores() {
         return mFingerprintReadingsQualityScores;
     }
@@ -422,6 +424,7 @@ public class PROSACRobustMixedPositionEstimator2D extends
      * @throws IllegalArgumentException if provided quality scores length is smaller
      *                                  than minimum required samples.
      */
+    @Override
     public void setFingerprintReadingsQualityScores(
             final double[] fingerprintReadingsQualityScores) throws LockedException {
         if (isLocked()) {
@@ -438,8 +441,7 @@ public class PROSACRobustMixedPositionEstimator2D extends
      * @return threshold to determine whether samples are inliers or not.
      */
     public double getThreshold() {
-        return ((PROSACRobustLateration2DSolver) mLaterationSolver).
-                getThreshold();
+        return ((PROSACRobustLateration2DSolver) mLaterationSolver).getThreshold();
     }
 
     /**
@@ -452,8 +454,7 @@ public class PROSACRobustMixedPositionEstimator2D extends
      * @throws LockedException          if this solver is locked.
      */
     public void setThreshold(final double threshold) throws LockedException {
-        ((PROSACRobustLateration2DSolver) mLaterationSolver).
-                setThreshold(threshold);
+        ((PROSACRobustLateration2DSolver) mLaterationSolver).setThreshold(threshold);
     }
 
     /**

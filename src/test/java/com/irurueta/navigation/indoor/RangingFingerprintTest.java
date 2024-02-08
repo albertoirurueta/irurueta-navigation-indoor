@@ -27,8 +27,7 @@ public class RangingFingerprintTest {
 
     @Test
     public void testConstructor() {
-        RangingFingerprint<RadioSource, RangingReading<RadioSource>> fingerprint =
-                new RangingFingerprint<>();
+        RangingFingerprint<RadioSource, RangingReading<RadioSource>> fingerprint = new RangingFingerprint<>();
 
         // check
         assertNotNull(fingerprint.getReadings());
@@ -39,8 +38,8 @@ public class RangingFingerprintTest {
         fingerprint = new RangingFingerprint<>(readings);
 
         // check
-        assertEquals(fingerprint.getReadings(), readings);
-        assertNotSame(fingerprint.getReadings(), readings);
+        assertEquals(readings, fingerprint.getReadings());
+        assertNotSame(readings, fingerprint.getReadings());
 
         // force IllegalArgumentException
         fingerprint = null;
@@ -60,8 +59,8 @@ public class RangingFingerprintTest {
                 new RangingFingerprint<>(readings);
 
         // check
-        assertEquals(fingerprint1.getReadings(), readings);
-        assertNotSame(fingerprint1.getReadings(), readings);
+        assertEquals(readings, fingerprint1.getReadings());
+        assertNotSame(readings, fingerprint1.getReadings());
 
         // serialize and deserialize
         final byte[] bytes = SerializationHelper.serialize(fingerprint1);

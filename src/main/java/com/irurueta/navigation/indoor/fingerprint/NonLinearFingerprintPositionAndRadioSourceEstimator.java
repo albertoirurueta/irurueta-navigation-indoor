@@ -40,7 +40,7 @@ import java.util.List;
  * All implementations of this class estimate the position of a new fingerprint
  * and the position of all radio sources associated to fingerprints whose location
  * is known.
- * All implementations solve the problem in a non linear way using Levenberg-Marquardt
+ * All implementations solve the problem in a non-linear way using Levenberg-Marquardt
  * algorithm.
  */
 public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P extends Point<?>> extends
@@ -819,7 +819,7 @@ public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator<P exte
      * @param fingerprintPosition           position of closest located fingerprint.
      * @param radioSourcePosition           radio source position associated to fingerprint reading.
      * @param estimatedPosition             position to be estimated. Usually this is equal to the
-     *                                      initial position used by a non linear algorithm.
+     *                                      initial position used by a non-linear algorithm.
      * @param pathlossExponentVariance      variance of path-loss exponent or null if unknown.
      * @param fingerprintPositionCovariance covariance of fingerprint position or null if
      *                                      unknown.

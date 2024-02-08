@@ -43,7 +43,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
     /**
      * Default robust estimator method when none is provided.
      */
-    public static final RobustEstimatorMethod DEFAULT_ROBUST_METHOD = RobustEstimatorMethod.PROMedS;
+    public static final RobustEstimatorMethod DEFAULT_ROBUST_METHOD = RobustEstimatorMethod.PROMEDS;
 
     /**
      * Indicates that result is refined by default using all found inliers.
@@ -57,7 +57,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
 
     /**
      * Default amount of progress variation before notifying a change in estimation progress.
-     * By default this is set to 5%.
+     * By default, this is set to 5%.
      */
     public static final float DEFAULT_PROGRESS_DELTA = 0.05f;
 

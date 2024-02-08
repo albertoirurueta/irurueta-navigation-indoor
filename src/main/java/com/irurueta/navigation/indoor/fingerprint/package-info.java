@@ -15,6 +15,6 @@
  */
 
 /**
- * Estimates positions and radio sources using fingerprints of WiFi/Beacons signals.
+ * Estimates positions and radio sources using fingerprints of Wi-Fi/Beacons signals.
  */
 package com.irurueta.navigation.indoor.fingerprint;

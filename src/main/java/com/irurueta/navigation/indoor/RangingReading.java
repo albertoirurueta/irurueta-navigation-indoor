@@ -16,7 +16,7 @@
 package com.irurueta.navigation.indoor;
 
 /**
- * Contains a ranging reading associated to a given radio source (e.g. WiFi
+ * Contains a ranging reading associated to a given radio source (e.g. Wi-Fi
  * access point or bluetooth beacon), indicating the distance to such source.
  *
  * @param <S> a {@link RadioSource} type.

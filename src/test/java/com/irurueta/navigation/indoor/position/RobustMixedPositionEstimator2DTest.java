@@ -30,8 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
 
-public class RobustMixedPositionEstimator2DTest implements
-        RobustMixedPositionEstimatorListener<Point2D> {
+public class RobustMixedPositionEstimator2DTest implements RobustMixedPositionEstimatorListener<Point2D> {
 
     private static final double FREQUENCY = 2.4e9; // (Hz)
 
@@ -47,7 +46,7 @@ public class RobustMixedPositionEstimator2DTest implements
         assertTrue(estimator instanceof RANSACRobustMixedPositionEstimator2D);
 
         // LMedS
-        estimator = RobustMixedPositionEstimator2D.create(RobustEstimatorMethod.LMedS);
+        estimator = RobustMixedPositionEstimator2D.create(RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(estimator instanceof LMedSRobustMixedPositionEstimator2D);
@@ -65,7 +64,7 @@ public class RobustMixedPositionEstimator2DTest implements
         assertTrue(estimator instanceof PROSACRobustMixedPositionEstimator2D);
 
         // PROMedS
-        estimator = RobustMixedPositionEstimator2D.create(RobustEstimatorMethod.PROMedS);
+        estimator = RobustMixedPositionEstimator2D.create(RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
@@ -78,88 +77,77 @@ public class RobustMixedPositionEstimator2DTest implements
         }
 
         // RANSAC
-        estimator = RobustMixedPositionEstimator2D.create(sources,
-                RobustEstimatorMethod.RANSAC);
+        estimator = RobustMixedPositionEstimator2D.create(sources, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(estimator instanceof RANSACRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
 
         // LMedS
-        estimator = RobustMixedPositionEstimator2D.create(sources,
-                RobustEstimatorMethod.LMedS);
+        estimator = RobustMixedPositionEstimator2D.create(sources, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(estimator instanceof LMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
 
         // MSAC
-        estimator = RobustMixedPositionEstimator2D.create(sources,
-                RobustEstimatorMethod.MSAC);
+        estimator = RobustMixedPositionEstimator2D.create(sources, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(estimator instanceof MSACRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
 
         // PROSAC
-        estimator = RobustMixedPositionEstimator2D.create(sources,
-                RobustEstimatorMethod.PROSAC);
+        estimator = RobustMixedPositionEstimator2D.create(sources, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(estimator instanceof PROSACRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
 
         // PROMedS
-        estimator = RobustMixedPositionEstimator2D.create(sources,
-                RobustEstimatorMethod.PROMedS);
+        estimator = RobustMixedPositionEstimator2D.create(sources, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
 
         // create with fingerprint and method
-        final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
-                new Fingerprint<>();
+        final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint = new Fingerprint<>();
 
         // RANSAC
-        estimator = RobustMixedPositionEstimator2D.create(fingerprint,
-                RobustEstimatorMethod.RANSAC);
+        estimator = RobustMixedPositionEstimator2D.create(fingerprint, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(estimator instanceof RANSACRobustMixedPositionEstimator2D);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // LMedS
-        estimator = RobustMixedPositionEstimator2D.create(fingerprint,
-                RobustEstimatorMethod.LMedS);
+        estimator = RobustMixedPositionEstimator2D.create(fingerprint, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(estimator instanceof LMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // MSAC
-        estimator = RobustMixedPositionEstimator2D.create(fingerprint,
-                RobustEstimatorMethod.MSAC);
+        estimator = RobustMixedPositionEstimator2D.create(fingerprint, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(estimator instanceof MSACRobustMixedPositionEstimator2D);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // PROSAC
-        estimator = RobustMixedPositionEstimator2D.create(fingerprint,
-                RobustEstimatorMethod.PROSAC);
+        estimator = RobustMixedPositionEstimator2D.create(fingerprint, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(estimator instanceof PROSACRobustMixedPositionEstimator2D);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // PROMedS
-        estimator = RobustMixedPositionEstimator2D.create(fingerprint,
-                RobustEstimatorMethod.PROMedS);
+        estimator = RobustMixedPositionEstimator2D.create(fingerprint, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // create with sources, fingerprint and method
 
@@ -169,17 +157,17 @@ public class RobustMixedPositionEstimator2DTest implements
 
         // check
         assertTrue(estimator instanceof RANSACRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // LMedS
         estimator = RobustMixedPositionEstimator2D.create(sources, fingerprint,
-                RobustEstimatorMethod.LMedS);
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(estimator instanceof LMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // MSAC
         estimator = RobustMixedPositionEstimator2D.create(sources, fingerprint,
@@ -187,8 +175,8 @@ public class RobustMixedPositionEstimator2DTest implements
 
         // check
         assertTrue(estimator instanceof MSACRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // PROSAC
         estimator = RobustMixedPositionEstimator2D.create(sources, fingerprint,
@@ -196,59 +184,54 @@ public class RobustMixedPositionEstimator2DTest implements
 
         // check
         assertTrue(estimator instanceof PROSACRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // PROMedS
         estimator = RobustMixedPositionEstimator2D.create(sources, fingerprint,
-                RobustEstimatorMethod.PROMedS);
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // create with listener and method
 
         // RANSAC
-        estimator = RobustMixedPositionEstimator2D.create(this,
-                RobustEstimatorMethod.RANSAC);
+        estimator = RobustMixedPositionEstimator2D.create(this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(estimator instanceof RANSACRobustMixedPositionEstimator2D);
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
 
         // LMedS
-        estimator = RobustMixedPositionEstimator2D.create(this,
-                RobustEstimatorMethod.LMedS);
+        estimator = RobustMixedPositionEstimator2D.create(this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(estimator instanceof LMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
 
         // MSAC
-        estimator = RobustMixedPositionEstimator2D.create(this,
-                RobustEstimatorMethod.MSAC);
+        estimator = RobustMixedPositionEstimator2D.create(this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(estimator instanceof MSACRobustMixedPositionEstimator2D);
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
 
         // PROSAC
-        estimator = RobustMixedPositionEstimator2D.create(this,
-                RobustEstimatorMethod.PROSAC);
+        estimator = RobustMixedPositionEstimator2D.create(this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(estimator instanceof PROSACRobustMixedPositionEstimator2D);
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
 
         // PROMedS
-        estimator = RobustMixedPositionEstimator2D.create(this,
-                RobustEstimatorMethod.PROMedS);
+        estimator = RobustMixedPositionEstimator2D.create(this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
 
         // create with sources, listener and method
 
@@ -258,17 +241,17 @@ public class RobustMixedPositionEstimator2DTest implements
 
         // check
         assertTrue(estimator instanceof RANSACRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getListener(), this);
+        assertSame(sources, estimator.getSources());
+        assertSame(this, estimator.getListener());
 
         // LMedS
         estimator = RobustMixedPositionEstimator2D.create(sources, this,
-                RobustEstimatorMethod.LMedS);
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(estimator instanceof LMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getListener(), this);
+        assertSame(sources, estimator.getSources());
+        assertSame(this, estimator.getListener());
 
         // MSAC
         estimator = RobustMixedPositionEstimator2D.create(sources, this,
@@ -276,8 +259,8 @@ public class RobustMixedPositionEstimator2DTest implements
 
         // check
         assertTrue(estimator instanceof MSACRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getListener(), this);
+        assertSame(sources, estimator.getSources());
+        assertSame(this, estimator.getListener());
 
         // PROSAC
         estimator = RobustMixedPositionEstimator2D.create(sources, this,
@@ -285,17 +268,17 @@ public class RobustMixedPositionEstimator2DTest implements
 
         // check
         assertTrue(estimator instanceof PROSACRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getListener(), this);
+        assertSame(sources, estimator.getSources());
+        assertSame(this, estimator.getListener());
 
         // PROMedS
         estimator = RobustMixedPositionEstimator2D.create(sources, this,
-                RobustEstimatorMethod.PROMedS);
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getListener(), this);
+        assertSame(sources, estimator.getSources());
+        assertSame(this, estimator.getListener());
 
         // create with fingerprint, listener and method
 
@@ -305,17 +288,17 @@ public class RobustMixedPositionEstimator2DTest implements
 
         // check
         assertTrue(estimator instanceof RANSACRobustMixedPositionEstimator2D);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
 
         // LMedS
         estimator = RobustMixedPositionEstimator2D.create(fingerprint, this,
-                RobustEstimatorMethod.LMedS);
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(estimator instanceof LMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
 
         // MSAC
         estimator = RobustMixedPositionEstimator2D.create(fingerprint, this,
@@ -323,8 +306,8 @@ public class RobustMixedPositionEstimator2DTest implements
 
         // check
         assertTrue(estimator instanceof MSACRobustMixedPositionEstimator2D);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
 
         // PROSAC
         estimator = RobustMixedPositionEstimator2D.create(fingerprint, this,
@@ -332,17 +315,17 @@ public class RobustMixedPositionEstimator2DTest implements
 
         // check
         assertTrue(estimator instanceof PROSACRobustMixedPositionEstimator2D);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
 
         // PROMedS
         estimator = RobustMixedPositionEstimator2D.create(fingerprint, this,
-                RobustEstimatorMethod.PROMedS);
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
 
         // create with sources, fingerprint, listener and method
 
@@ -352,19 +335,19 @@ public class RobustMixedPositionEstimator2DTest implements
 
         // check
         assertTrue(estimator instanceof RANSACRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
 
         // LMedS
         estimator = RobustMixedPositionEstimator2D.create(sources, fingerprint,
-                this, RobustEstimatorMethod.LMedS);
+                this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(estimator instanceof LMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
 
         // MSAC
         estimator = RobustMixedPositionEstimator2D.create(sources, fingerprint,
@@ -372,9 +355,9 @@ public class RobustMixedPositionEstimator2DTest implements
 
         // check
         assertTrue(estimator instanceof MSACRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
 
         // PROSAC
         estimator = RobustMixedPositionEstimator2D.create(sources, fingerprint,
@@ -382,19 +365,19 @@ public class RobustMixedPositionEstimator2DTest implements
 
         // check
         assertTrue(estimator instanceof PROSACRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
 
         // PROMedS
         estimator = RobustMixedPositionEstimator2D.create(sources, fingerprint,
-                this, RobustEstimatorMethod.PROMedS);
+                this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
 
         // create with quality scores and method
         final double[] sourceQualityScores = new double[3];
@@ -411,7 +394,7 @@ public class RobustMixedPositionEstimator2DTest implements
 
         // LMedS
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, RobustEstimatorMethod.LMedS);
+                fingerprintReadingQualityScores, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(estimator instanceof LMedSRobustMixedPositionEstimator2D);
@@ -434,18 +417,16 @@ public class RobustMixedPositionEstimator2DTest implements
         // check
         assertTrue(estimator instanceof PROSACRobustMixedPositionEstimator2D);
         assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingQualityScores);
+        assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
 
         // PROMedS
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, RobustEstimatorMethod.PROMedS);
+                fingerprintReadingQualityScores, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
         assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingQualityScores);
+        assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
 
         // create with quality scores, sources and method
 
@@ -457,17 +438,17 @@ public class RobustMixedPositionEstimator2DTest implements
         assertTrue(estimator instanceof RANSACRobustMixedPositionEstimator2D);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
 
         // LMedS
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, RobustEstimatorMethod.LMedS);
+                fingerprintReadingQualityScores, sources, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(estimator instanceof LMedSRobustMixedPositionEstimator2D);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
 
         // MSAC
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
@@ -477,7 +458,7 @@ public class RobustMixedPositionEstimator2DTest implements
         assertTrue(estimator instanceof MSACRobustMixedPositionEstimator2D);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
 
         // PROSAC
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
@@ -485,331 +466,294 @@ public class RobustMixedPositionEstimator2DTest implements
 
         // check
         assertTrue(estimator instanceof PROSACRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingQualityScores);
-        assertSame(estimator.getSources(), sources);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
+        assertSame(sources, estimator.getSources());
 
         // PROMedS
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, RobustEstimatorMethod.PROMedS);
+                fingerprintReadingQualityScores, sources, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingQualityScores);
-        assertSame(estimator.getSources(), sources);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
+        assertSame(sources, estimator.getSources());
 
         // create with quality scores, fingerprint and method
 
         // RANSAC
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, fingerprint,
-                RobustEstimatorMethod.RANSAC);
+                fingerprintReadingQualityScores, fingerprint, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(estimator instanceof RANSACRobustMixedPositionEstimator2D);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // LMedS
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, fingerprint,
-                RobustEstimatorMethod.LMedS);
+                fingerprintReadingQualityScores, fingerprint, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(estimator instanceof LMedSRobustMixedPositionEstimator2D);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // MSAC
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, fingerprint,
-                RobustEstimatorMethod.MSAC);
+                fingerprintReadingQualityScores, fingerprint, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(estimator instanceof MSACRobustMixedPositionEstimator2D);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // PROSAC
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, fingerprint,
-                RobustEstimatorMethod.PROSAC);
+                fingerprintReadingQualityScores, fingerprint, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(estimator instanceof PROSACRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingQualityScores);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // PROMedS
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, fingerprint,
-                RobustEstimatorMethod.PROMedS);
+                fingerprintReadingQualityScores, fingerprint, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingQualityScores);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // create with quality scores, sources, fingerprint and method
 
         // RANSAC
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, fingerprint,
-                RobustEstimatorMethod.RANSAC);
+                fingerprintReadingQualityScores, sources, fingerprint, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(estimator instanceof RANSACRobustMixedPositionEstimator2D);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // LMedS
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, fingerprint,
-                RobustEstimatorMethod.LMedS);
+                fingerprintReadingQualityScores, sources, fingerprint, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(estimator instanceof LMedSRobustMixedPositionEstimator2D);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // MSAC
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, fingerprint,
-                RobustEstimatorMethod.MSAC);
+                fingerprintReadingQualityScores, sources, fingerprint, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(estimator instanceof MSACRobustMixedPositionEstimator2D);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // PROSAC
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, fingerprint,
-                RobustEstimatorMethod.PROSAC);
+                fingerprintReadingQualityScores, sources, fingerprint, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(estimator instanceof PROSACRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingQualityScores);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // PROMedS
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, fingerprint,
-                RobustEstimatorMethod.PROMedS);
+                fingerprintReadingQualityScores, sources, fingerprint, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingQualityScores);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // create with quality scores, listener and method
 
         // RANSAC
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, this,
-                RobustEstimatorMethod.RANSAC);
+                fingerprintReadingQualityScores, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(estimator instanceof RANSACRobustMixedPositionEstimator2D);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
 
         // LMedS
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, this,
-                RobustEstimatorMethod.LMedS);
+                fingerprintReadingQualityScores, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(estimator instanceof LMedSRobustMixedPositionEstimator2D);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
 
         // MSAC
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, this,
-                RobustEstimatorMethod.MSAC);
+                fingerprintReadingQualityScores, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(estimator instanceof MSACRobustMixedPositionEstimator2D);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
 
         // PROSAC
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, this,
-                RobustEstimatorMethod.PROSAC);
+                fingerprintReadingQualityScores, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(estimator instanceof PROSACRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingQualityScores);
-        assertSame(estimator.getListener(), this);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
+        assertSame(this, estimator.getListener());
 
         // PROMedS
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, this,
-                RobustEstimatorMethod.PROMedS);
+                fingerprintReadingQualityScores, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingQualityScores);
-        assertSame(estimator.getListener(), this);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
+        assertSame(this, estimator.getListener());
 
         // create with quality scores, sources, listener and method
 
         // RANSAC
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, this,
-                RobustEstimatorMethod.RANSAC);
+                fingerprintReadingQualityScores, sources, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(estimator instanceof RANSACRobustMixedPositionEstimator2D);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getListener(), this);
+        assertSame(sources, estimator.getSources());
+        assertSame(this, estimator.getListener());
 
         // LMedS
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, this,
-                RobustEstimatorMethod.LMedS);
+                fingerprintReadingQualityScores, sources, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(estimator instanceof LMedSRobustMixedPositionEstimator2D);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getListener(), this);
+        assertSame(sources, estimator.getSources());
+        assertSame(this, estimator.getListener());
 
         // MSAC
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, this,
-                RobustEstimatorMethod.MSAC);
+                fingerprintReadingQualityScores, sources, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(estimator instanceof MSACRobustMixedPositionEstimator2D);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getListener(), this);
+        assertSame(sources, estimator.getSources());
+        assertSame(this, estimator.getListener());
 
         // PROSAC
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, this,
-                RobustEstimatorMethod.PROSAC);
+                fingerprintReadingQualityScores, sources, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(estimator instanceof PROSACRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingQualityScores);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getListener(), this);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
+        assertSame(sources, estimator.getSources());
+        assertSame(this, estimator.getListener());
 
         // PROMedS
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, this,
-                RobustEstimatorMethod.PROMedS);
+                fingerprintReadingQualityScores, sources, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingQualityScores);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getListener(), this);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
+        assertSame(sources, estimator.getSources());
+        assertSame(this, estimator.getListener());
 
         // create with quality scores, fingerprint, listener and method
 
         // RANSAC
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, fingerprint, this,
-                RobustEstimatorMethod.RANSAC);
+                fingerprintReadingQualityScores, fingerprint, this, RobustEstimatorMethod.RANSAC);
 
         // check
         assertTrue(estimator instanceof RANSACRobustMixedPositionEstimator2D);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
 
         // LMedS
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, fingerprint, this,
-                RobustEstimatorMethod.LMedS);
+                fingerprintReadingQualityScores, fingerprint, this, RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(estimator instanceof LMedSRobustMixedPositionEstimator2D);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
 
         // MSAC
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, fingerprint, this,
-                RobustEstimatorMethod.MSAC);
+                fingerprintReadingQualityScores, fingerprint, this, RobustEstimatorMethod.MSAC);
 
         // check
         assertTrue(estimator instanceof MSACRobustMixedPositionEstimator2D);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
 
         // PROSAC
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, fingerprint, this,
-                RobustEstimatorMethod.PROSAC);
+                fingerprintReadingQualityScores, fingerprint, this, RobustEstimatorMethod.PROSAC);
 
         // check
         assertTrue(estimator instanceof PROSACRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingQualityScores);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
 
         // PROMedS
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, fingerprint, this,
-                RobustEstimatorMethod.PROMedS);
+                fingerprintReadingQualityScores, fingerprint, this, RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingQualityScores);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
 
         // create with quality scores, sources, fingerprint, listener and method
 
@@ -822,22 +766,22 @@ public class RobustMixedPositionEstimator2DTest implements
         assertTrue(estimator instanceof RANSACRobustMixedPositionEstimator2D);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
 
         // LMedS
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
                 fingerprintReadingQualityScores, sources, fingerprint, this,
-                RobustEstimatorMethod.LMedS);
+                RobustEstimatorMethod.LMEDS);
 
         // check
         assertTrue(estimator instanceof LMedSRobustMixedPositionEstimator2D);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
 
         // MSAC
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
@@ -848,9 +792,9 @@ public class RobustMixedPositionEstimator2DTest implements
         assertTrue(estimator instanceof MSACRobustMixedPositionEstimator2D);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
 
         // PROSAC
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
@@ -859,26 +803,24 @@ public class RobustMixedPositionEstimator2DTest implements
 
         // check
         assertTrue(estimator instanceof PROSACRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingQualityScores);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
 
         // PROMedS
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
                 fingerprintReadingQualityScores, sources, fingerprint, this,
-                RobustEstimatorMethod.PROMedS);
+                RobustEstimatorMethod.PROMEDS);
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingQualityScores);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
 
         // create with default method
         estimator = RobustMixedPositionEstimator2D.create();
@@ -891,55 +833,54 @@ public class RobustMixedPositionEstimator2DTest implements
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
 
         // create with fingerprint and default method
         estimator = RobustMixedPositionEstimator2D.create(fingerprint);
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // create with sources, fingerprint and default method
         estimator = RobustMixedPositionEstimator2D.create(sources, fingerprint);
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // create with listener and default method
         estimator = RobustMixedPositionEstimator2D.create(this);
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
 
         // create with sources, listener and default method
         estimator = RobustMixedPositionEstimator2D.create(sources, this);
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getListener(), this);
+        assertSame(sources, estimator.getSources());
+        assertSame(this, estimator.getListener());
 
         // create with fingerprint, listener and default method
         estimator = RobustMixedPositionEstimator2D.create(fingerprint, this);
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
 
         // create with sources, fingerprint, listener and default method
-        estimator = RobustMixedPositionEstimator2D.create(sources, fingerprint,
-                this);
+        estimator = RobustMixedPositionEstimator2D.create(sources, fingerprint, this);
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
 
         // create with quality scores and default method
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
@@ -947,9 +888,8 @@ public class RobustMixedPositionEstimator2DTest implements
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingQualityScores);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
 
         // create with quality scores, sources and default method
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
@@ -957,10 +897,9 @@ public class RobustMixedPositionEstimator2DTest implements
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingQualityScores);
-        assertSame(estimator.getSources(), sources);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
+        assertSame(sources, estimator.getSources());
 
         // create with quality scores, fingerprint and default method
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
@@ -968,10 +907,9 @@ public class RobustMixedPositionEstimator2DTest implements
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingQualityScores);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // create with quality scores, sources, fingerprint and default method
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
@@ -979,11 +917,10 @@ public class RobustMixedPositionEstimator2DTest implements
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingQualityScores);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // create with quality scores, listener and default method
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
@@ -991,10 +928,9 @@ public class RobustMixedPositionEstimator2DTest implements
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingQualityScores);
-        assertSame(estimator.getListener(), this);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
+        assertSame(this, estimator.getListener());
 
         // create with quality scores, sources, listener and default method
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
@@ -1002,11 +938,10 @@ public class RobustMixedPositionEstimator2DTest implements
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingQualityScores);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getListener(), this);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
+        assertSame(sources, estimator.getSources());
+        assertSame(this, estimator.getListener());
 
         // create with quality scores, fingerprint, listener and default method
         estimator = RobustMixedPositionEstimator2D.create(sourceQualityScores,
@@ -1014,11 +949,10 @@ public class RobustMixedPositionEstimator2DTest implements
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingQualityScores);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
 
         // create with quality scores, sources, fingerprint, listener and default
         // method
@@ -1027,12 +961,11 @@ public class RobustMixedPositionEstimator2DTest implements
 
         // check
         assertTrue(estimator instanceof PROMedSRobustMixedPositionEstimator2D);
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingQualityScores);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
     }
 
     @Override

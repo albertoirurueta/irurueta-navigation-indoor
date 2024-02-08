@@ -20,12 +20,11 @@ import com.irurueta.geometry.Point3D;
 
 /**
  * Contains a 3D located signal strength reading associated to a given radio source
- * (e.g. WiFi access point or bluetooth beacon).
+ * (e.g. Wi-Fi access point or bluetooth beacon).
  *
  * @param <S> a {@link RadioSource} type.
  */
-public class RssiReadingLocated3D<S extends RadioSource> extends
-        RssiReadingLocated<S, Point3D> {
+public class RssiReadingLocated3D<S extends RadioSource> extends RssiReadingLocated<S, Point3D> {
 
     /**
      * Constructor.

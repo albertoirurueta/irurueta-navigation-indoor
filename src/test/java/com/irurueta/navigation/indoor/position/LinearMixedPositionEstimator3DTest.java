@@ -43,8 +43,7 @@ import java.util.List;
 import java.util.Random;
 import org.junit.Test;
 
-public class LinearMixedPositionEstimator3DTest implements
-        MixedPositionEstimatorListener<Point3D> {
+public class LinearMixedPositionEstimator3DTest implements MixedPositionEstimatorListener<Point3D> {
 
     private static final double FREQUENCY = 2.4e9; // (Hz)
 
@@ -75,13 +74,12 @@ public class LinearMixedPositionEstimator3DTest implements
     @Test
     public void testConstructor() {
         // empty constructor
-        LinearMixedPositionEstimator3D estimator =
-                new LinearMixedPositionEstimator3D();
+        LinearMixedPositionEstimator3D estimator = new LinearMixedPositionEstimator3D();
 
         // check default values
         assertNull(estimator.getEstimatedPosition());
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
         assertNull(estimator.getSources());
@@ -94,18 +92,17 @@ public class LinearMixedPositionEstimator3DTest implements
         // constructor with sources
         final List<WifiAccessPointLocated3D> sources = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
-            sources.add(new WifiAccessPointLocated3D("id1", FREQUENCY,
-                    new InhomogeneousPoint3D()));
+            sources.add(new WifiAccessPointLocated3D("id1", FREQUENCY, new InhomogeneousPoint3D()));
         }
         estimator = new LinearMixedPositionEstimator3D(sources);
 
         // check default values
         assertNull(estimator.getEstimatedPosition());
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
         assertNull(estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
@@ -115,32 +112,29 @@ public class LinearMixedPositionEstimator3DTest implements
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new LinearMixedPositionEstimator3D(
-                    (List<WifiAccessPointLocated3D>) null);
+            estimator = new LinearMixedPositionEstimator3D((List<WifiAccessPointLocated3D>) null);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new LinearMixedPositionEstimator3D(
-                    new ArrayList<WifiAccessPointLocated3D>());
+            estimator = new LinearMixedPositionEstimator3D(new ArrayList<WifiAccessPointLocated3D>());
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
 
         // constructor with fingerprint
-        final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
-                new Fingerprint<>();
+        final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint = new Fingerprint<>();
         estimator = new LinearMixedPositionEstimator3D(fingerprint);
 
         // check default value
         assertNull(estimator.getEstimatedPosition());
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
         assertNull(estimator.getSources());
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
@@ -162,11 +156,11 @@ public class LinearMixedPositionEstimator3DTest implements
         // check default values
         assertNull(estimator.getEstimatedPosition());
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
@@ -175,8 +169,7 @@ public class LinearMixedPositionEstimator3DTest implements
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new LinearMixedPositionEstimator3D(null,
-                    fingerprint);
+            estimator = new LinearMixedPositionEstimator3D(null, fingerprint);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -200,12 +193,12 @@ public class LinearMixedPositionEstimator3DTest implements
         // check
         assertNull(estimator.getEstimatedPosition());
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
         assertNull(estimator.getSources());
         assertNull(estimator.getFingerprint());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
@@ -216,12 +209,12 @@ public class LinearMixedPositionEstimator3DTest implements
         // check default values
         assertNull(estimator.getEstimatedPosition());
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
         assertNull(estimator.getFingerprint());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
@@ -243,18 +236,17 @@ public class LinearMixedPositionEstimator3DTest implements
         assertNull(estimator);
 
         // constructor with fingerprint and listener
-        estimator = new LinearMixedPositionEstimator3D(fingerprint,
-                this);
+        estimator = new LinearMixedPositionEstimator3D(fingerprint, this);
 
         // check default values
         assertNull(estimator.getEstimatedPosition());
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
         assertNull(estimator.getSources());
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
@@ -263,26 +255,24 @@ public class LinearMixedPositionEstimator3DTest implements
         estimator = null;
         try {
             estimator = new LinearMixedPositionEstimator3D(
-                    (Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>>) null,
-                    this);
+                    (Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>>) null, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
 
         // constructor with sources, fingerprint and listener
-        estimator = new LinearMixedPositionEstimator3D(sources, fingerprint,
-                this);
+        estimator = new LinearMixedPositionEstimator3D(sources, fingerprint, this);
 
         // check default values
         assertNull(estimator.getEstimatedPosition());
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
@@ -290,21 +280,18 @@ public class LinearMixedPositionEstimator3DTest implements
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new LinearMixedPositionEstimator3D(null,
+            estimator = new LinearMixedPositionEstimator3D(null, fingerprint, this);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            estimator = new LinearMixedPositionEstimator3D(new ArrayList<WifiAccessPointLocated3D>(),
                     fingerprint, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new LinearMixedPositionEstimator3D(
-                    new ArrayList<WifiAccessPointLocated3D>(), fingerprint,
-                    this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new LinearMixedPositionEstimator3D(sources,
-                    null, this);
+            estimator = new LinearMixedPositionEstimator3D(sources, null, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -313,8 +300,7 @@ public class LinearMixedPositionEstimator3DTest implements
 
     @Test
     public void testGetSetSources() throws LockedException {
-        final LinearMixedPositionEstimator3D estimator =
-                new LinearMixedPositionEstimator3D();
+        final LinearMixedPositionEstimator3D estimator = new LinearMixedPositionEstimator3D();
 
         // check default value
         assertNull(estimator.getSources());
@@ -322,14 +308,13 @@ public class LinearMixedPositionEstimator3DTest implements
         // set new value
         final List<WifiAccessPointLocated3D> sources = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
-            sources.add(new WifiAccessPointLocated3D("id1", FREQUENCY,
-                    new InhomogeneousPoint3D()));
+            sources.add(new WifiAccessPointLocated3D("id1", FREQUENCY, new InhomogeneousPoint3D()));
         }
 
         estimator.setSources(sources);
 
         // check
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
 
         // force IllegalArgumentException
         try {
@@ -346,19 +331,17 @@ public class LinearMixedPositionEstimator3DTest implements
 
     @Test
     public void testGetSetFingerprint() throws LockedException {
-        final LinearMixedPositionEstimator3D estimator =
-                new LinearMixedPositionEstimator3D();
+        final LinearMixedPositionEstimator3D estimator = new LinearMixedPositionEstimator3D();
 
         // check default value
         assertNull(estimator.getFingerprint());
 
         // set new value
-        final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
-                new Fingerprint<>();
+        final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint = new Fingerprint<>();
         estimator.setFingerprint(fingerprint);
 
         // check
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // force IllegalArgumentException
         try {
@@ -370,8 +353,7 @@ public class LinearMixedPositionEstimator3DTest implements
 
     @Test
     public void testGetSetListener() throws LockedException {
-        final LinearMixedPositionEstimator3D estimator =
-                new LinearMixedPositionEstimator3D();
+        final LinearMixedPositionEstimator3D estimator = new LinearMixedPositionEstimator3D();
 
         // check default size
         assertNull(estimator.getListener());
@@ -380,12 +362,12 @@ public class LinearMixedPositionEstimator3DTest implements
         estimator.setListener(this);
 
         // check
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
     }
 
     @Test
-    public void testEstimateRssiNoErrorHomogeneous() throws LockedException,
-            NotReadyException, PositionEstimationException {
+    public void testEstimateRssiNoErrorHomogeneous() throws LockedException, NotReadyException,
+            PositionEstimationException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         for (int t = 0; t < TIMES; t++) {
@@ -395,8 +377,8 @@ public class LinearMixedPositionEstimator3DTest implements
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT,
-                    MAX_PATH_LOSS_EXPONENT);
+            final double pathLossExponent = randomizer.nextDouble(
+                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
             final List<WifiAccessPointWithPowerAndLocated3D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -411,17 +393,16 @@ public class LinearMixedPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 readings.add(new RssiReading<>(accessPoint, rssi));
             }
@@ -430,8 +411,7 @@ public class LinearMixedPositionEstimator3DTest implements
                     new Fingerprint<>(readings);
 
             final LinearMixedPositionEstimator3D estimator =
-                    new LinearMixedPositionEstimator3D(sources, fingerprint,
-                            this);
+                    new LinearMixedPositionEstimator3D(sources, fingerprint, this);
 
             reset();
 
@@ -443,13 +423,13 @@ public class LinearMixedPositionEstimator3DTest implements
             assertNull(estimator.getEstimatedPositionCoordinates());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -458,8 +438,7 @@ public class LinearMixedPositionEstimator3DTest implements
         }
 
         // force NotReadyException
-        final LinearMixedPositionEstimator3D estimator =
-                new LinearMixedPositionEstimator3D();
+        final LinearMixedPositionEstimator3D estimator = new LinearMixedPositionEstimator3D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -468,8 +447,8 @@ public class LinearMixedPositionEstimator3DTest implements
     }
 
     @Test
-    public void testEstimateRssiWithErrorHomogeneous() throws LockedException,
-            NotReadyException, PositionEstimationException {
+    public void testEstimateRssiWithErrorHomogeneous() throws LockedException, NotReadyException,
+            PositionEstimationException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(),
                 0.0, ERROR_STD);
@@ -482,8 +461,8 @@ public class LinearMixedPositionEstimator3DTest implements
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT,
-                    MAX_PATH_LOSS_EXPONENT);
+            final double pathLossExponent = randomizer.nextDouble(
+                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
             final List<WifiAccessPointWithPowerAndLocated3D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -498,9 +477,8 @@ public class LinearMixedPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -508,8 +486,8 @@ public class LinearMixedPositionEstimator3DTest implements
                 final double distance = position.distanceTo(accessPointPosition);
 
                 final double error = errorRandomizer.nextDouble();
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent)) + error;
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent)) + error;
 
                 readings.add(new RssiReading<>(accessPoint, rssi));
             }
@@ -518,8 +496,7 @@ public class LinearMixedPositionEstimator3DTest implements
                     new Fingerprint<>(readings);
 
             final LinearMixedPositionEstimator3D estimator =
-                    new LinearMixedPositionEstimator3D(sources, fingerprint,
-                            this);
+                    new LinearMixedPositionEstimator3D(sources, fingerprint, this);
 
             reset();
 
@@ -531,13 +508,13 @@ public class LinearMixedPositionEstimator3DTest implements
             assertNull(estimator.getEstimatedPositionCoordinates());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -554,8 +531,7 @@ public class LinearMixedPositionEstimator3DTest implements
         assertTrue(numValid > 0);
 
         // force NotReadyException
-        final LinearMixedPositionEstimator2D estimator =
-                new LinearMixedPositionEstimator2D();
+        final LinearMixedPositionEstimator2D estimator = new LinearMixedPositionEstimator2D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -564,8 +540,8 @@ public class LinearMixedPositionEstimator3DTest implements
     }
 
     @Test
-    public void testEstimateRssiNoErrorInhomogeneous() throws LockedException,
-            NotReadyException, PositionEstimationException {
+    public void testEstimateRssiNoErrorInhomogeneous() throws LockedException, NotReadyException,
+            PositionEstimationException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         for (int t = 0; t < TIMES; t++) {
@@ -575,8 +551,8 @@ public class LinearMixedPositionEstimator3DTest implements
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT,
-                    MAX_PATH_LOSS_EXPONENT);
+            final double pathLossExponent = randomizer.nextDouble(
+                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
             final List<WifiAccessPointWithPowerAndLocated3D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -591,17 +567,16 @@ public class LinearMixedPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 readings.add(new RssiReading<>(accessPoint, rssi));
             }
@@ -610,8 +585,7 @@ public class LinearMixedPositionEstimator3DTest implements
                     new Fingerprint<>(readings);
 
             final LinearMixedPositionEstimator3D estimator =
-                    new LinearMixedPositionEstimator3D(sources, fingerprint,
-                            this);
+                    new LinearMixedPositionEstimator3D(sources, fingerprint, this);
             estimator.setHomogeneousLinearSolverUsed(false);
 
             reset();
@@ -624,13 +598,13 @@ public class LinearMixedPositionEstimator3DTest implements
             assertNull(estimator.getEstimatedPositionCoordinates());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -639,8 +613,7 @@ public class LinearMixedPositionEstimator3DTest implements
         }
 
         // force NotReadyException
-        final LinearMixedPositionEstimator3D estimator =
-                new LinearMixedPositionEstimator3D();
+        final LinearMixedPositionEstimator3D estimator = new LinearMixedPositionEstimator3D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -649,8 +622,8 @@ public class LinearMixedPositionEstimator3DTest implements
     }
 
     @Test
-    public void testEstimateRssiWithErrorInhomogeneous() throws LockedException,
-            NotReadyException, PositionEstimationException {
+    public void testEstimateRssiWithErrorInhomogeneous() throws LockedException, NotReadyException,
+            PositionEstimationException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(),
                 0.0, ERROR_STD);
@@ -663,8 +636,8 @@ public class LinearMixedPositionEstimator3DTest implements
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT,
-                    MAX_PATH_LOSS_EXPONENT);
+            final double pathLossExponent = randomizer.nextDouble(
+                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
             final List<WifiAccessPointWithPowerAndLocated3D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -679,9 +652,8 @@ public class LinearMixedPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -689,8 +661,8 @@ public class LinearMixedPositionEstimator3DTest implements
                 final double distance = position.distanceTo(accessPointPosition);
 
                 final double error = errorRandomizer.nextDouble();
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent)) + error;
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent)) + error;
 
                 readings.add(new RssiReading<>(accessPoint, rssi));
             }
@@ -699,8 +671,7 @@ public class LinearMixedPositionEstimator3DTest implements
                     new Fingerprint<>(readings);
 
             final LinearMixedPositionEstimator3D estimator =
-                    new LinearMixedPositionEstimator3D(sources, fingerprint,
-                            this);
+                    new LinearMixedPositionEstimator3D(sources, fingerprint, this);
             estimator.setHomogeneousLinearSolverUsed(false);
 
             reset();
@@ -713,13 +684,13 @@ public class LinearMixedPositionEstimator3DTest implements
             assertNull(estimator.getEstimatedPositionCoordinates());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -736,8 +707,7 @@ public class LinearMixedPositionEstimator3DTest implements
         assertTrue(numValid > 0);
 
         // force NotReadyException
-        final LinearMixedPositionEstimator3D estimator =
-                new LinearMixedPositionEstimator3D();
+        final LinearMixedPositionEstimator3D estimator = new LinearMixedPositionEstimator3D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -746,8 +716,8 @@ public class LinearMixedPositionEstimator3DTest implements
     }
 
     @Test
-    public void testEstimateRangingNoErrorHomogeneous() throws LockedException,
-            NotReadyException, PositionEstimationException {
+    public void testEstimateRangingNoErrorHomogeneous() throws LockedException, NotReadyException,
+            PositionEstimationException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         for (int t = 0; t < TIMES; t++) {
@@ -757,8 +727,8 @@ public class LinearMixedPositionEstimator3DTest implements
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT,
-                    MAX_PATH_LOSS_EXPONENT);
+            final double pathLossExponent = randomizer.nextDouble(
+                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
             final List<WifiAccessPointWithPowerAndLocated3D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -772,9 +742,8 @@ public class LinearMixedPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -788,8 +757,7 @@ public class LinearMixedPositionEstimator3DTest implements
                     new Fingerprint<>(readings);
 
             final LinearMixedPositionEstimator3D estimator =
-                    new LinearMixedPositionEstimator3D(sources, fingerprint,
-                            this);
+                    new LinearMixedPositionEstimator3D(sources, fingerprint, this);
 
             reset();
 
@@ -801,13 +769,13 @@ public class LinearMixedPositionEstimator3DTest implements
             assertNull(estimator.getEstimatedPositionCoordinates());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -816,8 +784,7 @@ public class LinearMixedPositionEstimator3DTest implements
         }
 
         // force NotReadyException
-        final LinearMixedPositionEstimator3D estimator =
-                new LinearMixedPositionEstimator3D();
+        final LinearMixedPositionEstimator3D estimator = new LinearMixedPositionEstimator3D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -826,8 +793,8 @@ public class LinearMixedPositionEstimator3DTest implements
     }
 
     @Test
-    public void testEstimateRangingWithErrorHomogeneous() throws LockedException,
-            NotReadyException, PositionEstimationException {
+    public void testEstimateRangingWithErrorHomogeneous() throws LockedException, NotReadyException,
+            PositionEstimationException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(),
                 0.0, ERROR_STD);
@@ -840,8 +807,8 @@ public class LinearMixedPositionEstimator3DTest implements
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT,
-                    MAX_PATH_LOSS_EXPONENT);
+            final double pathLossExponent = randomizer.nextDouble(
+                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
             final List<WifiAccessPointWithPowerAndLocated3D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -855,9 +822,8 @@ public class LinearMixedPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -866,16 +832,14 @@ public class LinearMixedPositionEstimator3DTest implements
 
                 final double error = errorRandomizer.nextDouble();
 
-                readings.add(new RangingReading<>(accessPoint,
-                        distance + error));
+                readings.add(new RangingReading<>(accessPoint, distance + error));
             }
 
             final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
                     new Fingerprint<>(readings);
 
             final LinearMixedPositionEstimator3D estimator =
-                    new LinearMixedPositionEstimator3D(sources, fingerprint,
-                            this);
+                    new LinearMixedPositionEstimator3D(sources, fingerprint, this);
 
             reset();
 
@@ -887,13 +851,13 @@ public class LinearMixedPositionEstimator3DTest implements
             assertNull(estimator.getEstimatedPositionCoordinates());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -910,8 +874,7 @@ public class LinearMixedPositionEstimator3DTest implements
         assertTrue(numValid > 0);
 
         // force NotReadyException
-        final LinearMixedPositionEstimator3D estimator =
-                new LinearMixedPositionEstimator3D();
+        final LinearMixedPositionEstimator3D estimator = new LinearMixedPositionEstimator3D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -920,8 +883,8 @@ public class LinearMixedPositionEstimator3DTest implements
     }
 
     @Test
-    public void testEstimateRangingNoErrorInhomogeneous() throws LockedException,
-            NotReadyException, PositionEstimationException {
+    public void testEstimateRangingNoErrorInhomogeneous() throws LockedException, NotReadyException,
+            PositionEstimationException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         for (int t = 0; t < TIMES; t++) {
@@ -931,8 +894,8 @@ public class LinearMixedPositionEstimator3DTest implements
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT,
-                    MAX_PATH_LOSS_EXPONENT);
+            final double pathLossExponent = randomizer.nextDouble(
+                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
             final List<WifiAccessPointWithPowerAndLocated3D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -946,9 +909,8 @@ public class LinearMixedPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -962,8 +924,7 @@ public class LinearMixedPositionEstimator3DTest implements
                     new Fingerprint<>(readings);
 
             final LinearMixedPositionEstimator3D estimator =
-                    new LinearMixedPositionEstimator3D(sources, fingerprint,
-                            this);
+                    new LinearMixedPositionEstimator3D(sources, fingerprint, this);
             estimator.setHomogeneousLinearSolverUsed(false);
 
             reset();
@@ -976,13 +937,13 @@ public class LinearMixedPositionEstimator3DTest implements
             assertNull(estimator.getEstimatedPositionCoordinates());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -991,8 +952,7 @@ public class LinearMixedPositionEstimator3DTest implements
         }
 
         // force NotReadyException
-        final LinearMixedPositionEstimator3D estimator =
-                new LinearMixedPositionEstimator3D();
+        final LinearMixedPositionEstimator3D estimator = new LinearMixedPositionEstimator3D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -1001,8 +961,8 @@ public class LinearMixedPositionEstimator3DTest implements
     }
 
     @Test
-    public void testEstimateRangingWithErrorInhomogeneous() throws LockedException,
-            NotReadyException, PositionEstimationException {
+    public void testEstimateRangingWithErrorInhomogeneous() throws LockedException, NotReadyException,
+            PositionEstimationException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(),
                 0.0, ERROR_STD);
@@ -1030,9 +990,8 @@ public class LinearMixedPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -1041,16 +1000,14 @@ public class LinearMixedPositionEstimator3DTest implements
 
                 final double error = errorRandomizer.nextDouble();
 
-                readings.add(new RangingReading<>(accessPoint,
-                        distance + error));
+                readings.add(new RangingReading<>(accessPoint, distance + error));
             }
 
             final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
                     new Fingerprint<>(readings);
 
             final LinearMixedPositionEstimator3D estimator =
-                    new LinearMixedPositionEstimator3D(sources, fingerprint,
-                            this);
+                    new LinearMixedPositionEstimator3D(sources, fingerprint, this);
             estimator.setHomogeneousLinearSolverUsed(false);
 
             reset();
@@ -1063,13 +1020,13 @@ public class LinearMixedPositionEstimator3DTest implements
             assertNull(estimator.getEstimatedPositionCoordinates());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -1086,8 +1043,7 @@ public class LinearMixedPositionEstimator3DTest implements
         assertTrue(numValid > 0);
 
         // force NotReadyException
-        final LinearMixedPositionEstimator3D estimator =
-                new LinearMixedPositionEstimator3D();
+        final LinearMixedPositionEstimator3D estimator = new LinearMixedPositionEstimator3D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -1096,8 +1052,8 @@ public class LinearMixedPositionEstimator3DTest implements
     }
 
     @Test
-    public void testEstimateRangingAndRssiNoErrorHomogeneous() throws LockedException,
-            NotReadyException, PositionEstimationException {
+    public void testEstimateRangingAndRssiNoErrorHomogeneous() throws LockedException, NotReadyException,
+            PositionEstimationException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         for (int t = 0; t < TIMES; t++) {
@@ -1107,8 +1063,8 @@ public class LinearMixedPositionEstimator3DTest implements
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT,
-                    MAX_PATH_LOSS_EXPONENT);
+            final double pathLossExponent = randomizer.nextDouble(
+                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
             final List<WifiAccessPointWithPowerAndLocated3D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -1123,17 +1079,16 @@ public class LinearMixedPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 readings.add(new RangingAndRssiReading<>(accessPoint, distance, rssi));
             }
@@ -1142,8 +1097,7 @@ public class LinearMixedPositionEstimator3DTest implements
                     new Fingerprint<>(readings);
 
             final LinearMixedPositionEstimator3D estimator =
-                    new LinearMixedPositionEstimator3D(sources, fingerprint,
-                            this);
+                    new LinearMixedPositionEstimator3D(sources, fingerprint, this);
 
             reset();
 
@@ -1155,13 +1109,13 @@ public class LinearMixedPositionEstimator3DTest implements
             assertNull(estimator.getEstimatedPositionCoordinates());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -1170,8 +1124,7 @@ public class LinearMixedPositionEstimator3DTest implements
         }
 
         // force NotReadyException
-        final LinearMixedPositionEstimator3D estimator =
-                new LinearMixedPositionEstimator3D();
+        final LinearMixedPositionEstimator3D estimator = new LinearMixedPositionEstimator3D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -1180,8 +1133,8 @@ public class LinearMixedPositionEstimator3DTest implements
     }
 
     @Test
-    public void testEstimateRangingAndRssiWithErrorHomogeneous() throws LockedException,
-            NotReadyException, PositionEstimationException {
+    public void testEstimateRangingAndRssiWithErrorHomogeneous() throws LockedException, NotReadyException,
+            PositionEstimationException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(),
                 0.0, ERROR_STD);
@@ -1194,8 +1147,8 @@ public class LinearMixedPositionEstimator3DTest implements
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT,
-                    MAX_PATH_LOSS_EXPONENT);
+            final double pathLossExponent = randomizer.nextDouble(
+                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
             final List<WifiAccessPointWithPowerAndLocated3D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -1210,9 +1163,8 @@ public class LinearMixedPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -1220,8 +1172,8 @@ public class LinearMixedPositionEstimator3DTest implements
                 final double distance = position.distanceTo(accessPointPosition);
 
                 final double error = errorRandomizer.nextDouble();
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent)) + error;
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent)) + error;
 
                 readings.add(new RangingAndRssiReading<>(accessPoint, distance, rssi));
             }
@@ -1230,8 +1182,7 @@ public class LinearMixedPositionEstimator3DTest implements
                     new Fingerprint<>(readings);
 
             final LinearMixedPositionEstimator3D estimator =
-                    new LinearMixedPositionEstimator3D(sources, fingerprint,
-                            this);
+                    new LinearMixedPositionEstimator3D(sources, fingerprint, this);
 
             reset();
 
@@ -1243,13 +1194,13 @@ public class LinearMixedPositionEstimator3DTest implements
             assertNull(estimator.getEstimatedPositionCoordinates());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -1266,8 +1217,7 @@ public class LinearMixedPositionEstimator3DTest implements
         assertTrue(numValid > 0);
 
         // force NotReadyException
-        final LinearMixedPositionEstimator3D estimator =
-                new LinearMixedPositionEstimator3D();
+        final LinearMixedPositionEstimator3D estimator = new LinearMixedPositionEstimator3D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -1287,8 +1237,8 @@ public class LinearMixedPositionEstimator3DTest implements
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT,
-                    MAX_PATH_LOSS_EXPONENT);
+            final double pathLossExponent = randomizer.nextDouble(
+                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
             final List<WifiAccessPointWithPowerAndLocated3D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -1303,17 +1253,16 @@ public class LinearMixedPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 readings.add(new RangingAndRssiReading<>(accessPoint, distance, rssi));
             }
@@ -1322,8 +1271,7 @@ public class LinearMixedPositionEstimator3DTest implements
                     new Fingerprint<>(readings);
 
             final LinearMixedPositionEstimator3D estimator =
-                    new LinearMixedPositionEstimator3D(sources, fingerprint,
-                            this);
+                    new LinearMixedPositionEstimator3D(sources, fingerprint, this);
             estimator.setHomogeneousLinearSolverUsed(false);
 
             reset();
@@ -1336,13 +1284,13 @@ public class LinearMixedPositionEstimator3DTest implements
             assertNull(estimator.getEstimatedPositionCoordinates());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -1351,8 +1299,7 @@ public class LinearMixedPositionEstimator3DTest implements
         }
 
         // force NotReadyException
-        final LinearMixedPositionEstimator3D estimator =
-                new LinearMixedPositionEstimator3D();
+        final LinearMixedPositionEstimator3D estimator = new LinearMixedPositionEstimator3D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -1375,8 +1322,8 @@ public class LinearMixedPositionEstimator3DTest implements
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT,
-                    MAX_PATH_LOSS_EXPONENT);
+            final double pathLossExponent = randomizer.nextDouble(
+                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
             final List<WifiAccessPointWithPowerAndLocated3D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -1391,9 +1338,8 @@ public class LinearMixedPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -1401,8 +1347,8 @@ public class LinearMixedPositionEstimator3DTest implements
                 final double distance = position.distanceTo(accessPointPosition);
 
                 final double error = errorRandomizer.nextDouble();
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent)) + error;
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent)) + error;
 
                 readings.add(new RangingAndRssiReading<>(accessPoint, distance, rssi));
             }
@@ -1411,8 +1357,7 @@ public class LinearMixedPositionEstimator3DTest implements
                     new Fingerprint<>(readings);
 
             final LinearMixedPositionEstimator3D estimator =
-                    new LinearMixedPositionEstimator3D(sources, fingerprint,
-                            this);
+                    new LinearMixedPositionEstimator3D(sources, fingerprint, this);
             estimator.setHomogeneousLinearSolverUsed(false);
 
             reset();
@@ -1425,13 +1370,13 @@ public class LinearMixedPositionEstimator3DTest implements
             assertNull(estimator.getEstimatedPositionCoordinates());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -1448,8 +1393,7 @@ public class LinearMixedPositionEstimator3DTest implements
         assertTrue(numValid > 0);
 
         // force NotReadyException
-        final LinearMixedPositionEstimator3D estimator =
-                new LinearMixedPositionEstimator3D();
+        final LinearMixedPositionEstimator3D estimator = new LinearMixedPositionEstimator3D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -1458,8 +1402,8 @@ public class LinearMixedPositionEstimator3DTest implements
     }
 
     @Test
-    public void testEstimateMixedNoErrorHomogeneous() throws LockedException,
-            NotReadyException, PositionEstimationException {
+    public void testEstimateMixedNoErrorHomogeneous() throws LockedException, NotReadyException,
+            PositionEstimationException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         for (int t = 0; t < TIMES; t++) {
@@ -1469,8 +1413,8 @@ public class LinearMixedPositionEstimator3DTest implements
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT,
-                    MAX_PATH_LOSS_EXPONENT);
+            final double pathLossExponent = randomizer.nextDouble(
+                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
             final List<WifiAccessPointWithPowerAndLocated3D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -1485,17 +1429,16 @@ public class LinearMixedPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 readings.add(new RssiReading<>(accessPoint, rssi));
                 readings.add(new RangingReading<>(accessPoint, distance));
@@ -1506,8 +1449,7 @@ public class LinearMixedPositionEstimator3DTest implements
                     new Fingerprint<>(readings);
 
             final LinearMixedPositionEstimator3D estimator =
-                    new LinearMixedPositionEstimator3D(sources, fingerprint,
-                            this);
+                    new LinearMixedPositionEstimator3D(sources, fingerprint, this);
 
             reset();
 
@@ -1519,13 +1461,13 @@ public class LinearMixedPositionEstimator3DTest implements
             assertNull(estimator.getEstimatedPositionCoordinates());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -1534,8 +1476,7 @@ public class LinearMixedPositionEstimator3DTest implements
         }
 
         // force NotReadyException
-        final LinearMixedPositionEstimator3D estimator =
-                new LinearMixedPositionEstimator3D();
+        final LinearMixedPositionEstimator3D estimator = new LinearMixedPositionEstimator3D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -1544,8 +1485,8 @@ public class LinearMixedPositionEstimator3DTest implements
     }
 
     @Test
-    public void testEstimateMixedWithErrorHomogeneous() throws LockedException,
-            NotReadyException, PositionEstimationException {
+    public void testEstimateMixedWithErrorHomogeneous() throws LockedException, NotReadyException,
+            PositionEstimationException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(),
                 0.0, ERROR_STD);
@@ -1558,8 +1499,8 @@ public class LinearMixedPositionEstimator3DTest implements
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT,
-                    MAX_PATH_LOSS_EXPONENT);
+            final double pathLossExponent = randomizer.nextDouble(
+                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
             final List<WifiAccessPointWithPowerAndLocated3D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -1574,9 +1515,8 @@ public class LinearMixedPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -1584,22 +1524,19 @@ public class LinearMixedPositionEstimator3DTest implements
                 final double distance = position.distanceTo(accessPointPosition);
 
                 final double error = errorRandomizer.nextDouble();
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent)) + error;
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent)) + error;
 
                 readings.add(new RssiReading<>(accessPoint, rssi));
-                readings.add(new RangingReading<>(accessPoint,
-                        distance + error));
-                readings.add(new RangingAndRssiReading<>(accessPoint,
-                        distance + error, rssi));
+                readings.add(new RangingReading<>(accessPoint, distance + error));
+                readings.add(new RangingAndRssiReading<>(accessPoint, distance + error, rssi));
             }
 
             final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
                     new Fingerprint<>(readings);
 
             final LinearMixedPositionEstimator3D estimator =
-                    new LinearMixedPositionEstimator3D(sources, fingerprint,
-                            this);
+                    new LinearMixedPositionEstimator3D(sources, fingerprint, this);
 
             reset();
 
@@ -1611,13 +1548,13 @@ public class LinearMixedPositionEstimator3DTest implements
             assertNull(estimator.getEstimatedPositionCoordinates());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -1634,8 +1571,7 @@ public class LinearMixedPositionEstimator3DTest implements
         assertTrue(numValid > 0);
 
         // force NotReadyException
-        final LinearMixedPositionEstimator3D estimator =
-                new LinearMixedPositionEstimator3D();
+        final LinearMixedPositionEstimator3D estimator = new LinearMixedPositionEstimator3D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -1644,8 +1580,8 @@ public class LinearMixedPositionEstimator3DTest implements
     }
 
     @Test
-    public void testEstimateMixedNoErrorInhomogeneous() throws LockedException,
-            NotReadyException, PositionEstimationException {
+    public void testEstimateMixedNoErrorInhomogeneous() throws LockedException, NotReadyException,
+            PositionEstimationException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         for (int t = 0; t < TIMES; t++) {
@@ -1655,8 +1591,8 @@ public class LinearMixedPositionEstimator3DTest implements
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT,
-                    MAX_PATH_LOSS_EXPONENT);
+            final double pathLossExponent = randomizer.nextDouble(
+                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
             final List<WifiAccessPointWithPowerAndLocated3D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -1671,9 +1607,8 @@ public class LinearMixedPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -1692,8 +1627,7 @@ public class LinearMixedPositionEstimator3DTest implements
                     new Fingerprint<>(readings);
 
             final LinearMixedPositionEstimator3D estimator =
-                    new LinearMixedPositionEstimator3D(sources, fingerprint,
-                            this);
+                    new LinearMixedPositionEstimator3D(sources, fingerprint, this);
             estimator.setHomogeneousLinearSolverUsed(false);
 
             reset();
@@ -1706,13 +1640,13 @@ public class LinearMixedPositionEstimator3DTest implements
             assertNull(estimator.getEstimatedPositionCoordinates());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -1721,8 +1655,7 @@ public class LinearMixedPositionEstimator3DTest implements
         }
 
         // force NotReadyException
-        final LinearMixedPositionEstimator3D estimator =
-                new LinearMixedPositionEstimator3D();
+        final LinearMixedPositionEstimator3D estimator = new LinearMixedPositionEstimator3D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -1745,8 +1678,8 @@ public class LinearMixedPositionEstimator3DTest implements
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT,
-                    MAX_PATH_LOSS_EXPONENT);
+            final double pathLossExponent = randomizer.nextDouble(
+                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
             final List<WifiAccessPointWithPowerAndLocated3D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -1761,9 +1694,8 @@ public class LinearMixedPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -1771,22 +1703,19 @@ public class LinearMixedPositionEstimator3DTest implements
                 final double distance = position.distanceTo(accessPointPosition);
 
                 final double error = errorRandomizer.nextDouble();
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent)) + error;
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent)) + error;
 
                 readings.add(new RssiReading<>(accessPoint, rssi));
-                readings.add(new RangingReading<>(accessPoint,
-                        distance + error));
-                readings.add(new RangingAndRssiReading<>(accessPoint,
-                        distance + error, rssi));
+                readings.add(new RangingReading<>(accessPoint, distance + error));
+                readings.add(new RangingAndRssiReading<>(accessPoint, distance + error, rssi));
             }
 
             final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
                     new Fingerprint<>(readings);
 
             final LinearMixedPositionEstimator3D estimator =
-                    new LinearMixedPositionEstimator3D(sources, fingerprint,
-                            this);
+                    new LinearMixedPositionEstimator3D(sources, fingerprint, this);
             estimator.setHomogeneousLinearSolverUsed(false);
 
             reset();
@@ -1799,13 +1728,13 @@ public class LinearMixedPositionEstimator3DTest implements
             assertNull(estimator.getEstimatedPositionCoordinates());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -1822,8 +1751,7 @@ public class LinearMixedPositionEstimator3DTest implements
         assertTrue(numValid > 0);
 
         // force NotReadyException
-        final LinearMixedPositionEstimator3D estimator =
-                new LinearMixedPositionEstimator3D();
+        final LinearMixedPositionEstimator3D estimator = new LinearMixedPositionEstimator3D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -1847,8 +1775,8 @@ public class LinearMixedPositionEstimator3DTest implements
         estimateStart = estimateEnd = 0;
     }
 
-    private double receivedPower(final double equivalentTransmittedPower,
-                                 final double distance, final double pathLossExponent) {
+    private double receivedPower(final double equivalentTransmittedPower, final double distance,
+                                 final double pathLossExponent) {
         // Pr = Pt*Gt*Gr*lambda^2/(4*pi*d)^2,    where Pr is the received power
         // lambda = c/f, where lambda is wavelength,
         // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the received Gain
