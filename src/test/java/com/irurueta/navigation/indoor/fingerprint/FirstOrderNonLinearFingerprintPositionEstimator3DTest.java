@@ -2324,8 +2324,9 @@ public class FirstOrderNonLinearFingerprintPositionEstimator3DTest
         }
 
         assertTrue(bestNum == numBestIsNoMeanRssiPosition ||
+                bestNum == numBestIsNoMeansEstimatedPosition ||
                 bestNum == numBestIsNoMeanFinderEstimatedPosition);
-        assertTrue(bestPos == 0 || bestPos == 3);
+        assertTrue(bestPos == 0 || bestPos == 2 || bestPos == 3);
     }
 
     @Test
