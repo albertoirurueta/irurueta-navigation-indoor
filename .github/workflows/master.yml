@@ -15,11 +15,11 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Set up JDK 21
-      uses: actions/setup-java@v2
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
       with:
         distribution: adopt
-        java-version: 21
+        java-version: 17
         server-id: ossrh # Value of the distributionManagement/repository/id field of the pom.xml
         server-username: OSSRH_USERNAME # env variable for username in deploy
         server-password: OSSRH_PASSWORD # env variable for token in deploy
@@ -32,7 +32,7 @@ jobs:
         mvn site -Djacoco.skip -DskipTests -P '!extras'        
 
     - name: Setup sonarqube
-      uses: warchant/setup-sonar-scanner@v3
+      uses: warchant/setup-sonar-scanner@v7
 
     - name: Send to sonarqube
       env:
