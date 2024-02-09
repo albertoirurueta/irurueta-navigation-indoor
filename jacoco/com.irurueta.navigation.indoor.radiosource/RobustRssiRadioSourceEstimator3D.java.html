@@ -1,0 +1,3068 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RobustRssiRadioSourceEstimator3D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-indoor</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.indoor.radiosource</a> &gt; <span class="el_source">RobustRssiRadioSourceEstimator3D.java</span></div><h1>RobustRssiRadioSourceEstimator3D.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2018 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.indoor.radiosource;
+
+import com.irurueta.algebra.Matrix;
+import com.irurueta.geometry.Point3D;
+import com.irurueta.navigation.NavigationException;
+import com.irurueta.navigation.indoor.Beacon;
+import com.irurueta.navigation.indoor.BeaconWithPowerAndLocated3D;
+import com.irurueta.navigation.indoor.RadioSource;
+import com.irurueta.navigation.indoor.RadioSourceWithPowerAndLocated;
+import com.irurueta.navigation.indoor.RssiReadingLocated;
+import com.irurueta.navigation.indoor.WifiAccessPoint;
+import com.irurueta.navigation.indoor.WifiAccessPointWithPowerAndLocated3D;
+import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
+import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.List;
+
+/**
+ * This is an abstract class to robustly estimate 3D position, transmitted power and
+ * path-loss exponent of a radio source (e.g. Wi-Fi access point or bluetooth beacon),
+ * by discarding outliers and assuming that the radio source emits isotropically
+ * following the expression below:
+ * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,
+ * where Pr is the received power (expressed in mW),
+ * Gt is the Gain of the transmission antenna
+ * Gr is the Gain of the receiver antenna
+ * d is the distance between emitter and receiver
+ * and lambda is the wavelength and is equal to: lambda = c / f,
+ * where c is the speed of light
+ * and f is the carrier frequency of the radio signal.
+ * Because usually information about the antenna of the radio source cannot be
+ * retrieved (because many measurements are made on unknown access points where
+ * physical access is not possible), this implementation will estimate the
+ * equivalent transmitted power as: Pte = Pt * Gt * Gr.
+ * If RssiReadings contain RSSI standard deviations, those values will be used,
+ * otherwise it will be assumed an RSSI standard deviation of 1 dB.
+ * Implementations of this class should be able to detect and discard outliers in
+ * order to find the best solution.
+ * &lt;p&gt;
+ * IMPORTANT: Implementations of this class can choose to estimate a
+ * combination of radio source position, transmitted power and path loss
+ * exponent. However enabling all three estimations usually achieves
+ * inaccurate results. When using this class, estimation must be of at least
+ * one parameter (position, transmitted power or path loss exponent) when
+ * initial values are provided for the other two, and at most it should consist
+ * of two parameters (either position and transmitted power, position and
+ * path loss exponent or transmitted power and path loss exponent), providing an
+ * initial value for the remaining parameter.
+ *
+ * @param &lt;S&gt; a {@link RadioSource} type.
+ */
+@SuppressWarnings(&quot;Duplicates&quot;)
+public abstract class RobustRssiRadioSourceEstimator3D&lt;S extends RadioSource&gt; extends
+        RobustRssiRadioSourceEstimator&lt;S, Point3D&gt; {
+
+    /**
+     * Power and 3D position estimator used internally.
+     */
+<span class="fc" id="L75">    protected final RssiRadioSourceEstimator3D&lt;S&gt; mInnerEstimator =</span>
+            new RssiRadioSourceEstimator3D&lt;&gt;();
+
+    /**
+     * Subset of readings used by inner estimator.
+     */
+<span class="fc" id="L81">    private final List&lt;RssiReadingLocated&lt;S, Point3D&gt;&gt; mInnerReadings = new ArrayList&lt;&gt;();</span>
+
+    /**
+     * Constructor.
+     */
+    protected RobustRssiRadioSourceEstimator3D() {
+<span class="fc" id="L87">        super();</span>
+<span class="fc" id="L88">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L89">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings signal readings belonging to the same radio source.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected RobustRssiRadioSourceEstimator3D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings) {
+<span class="fc" id="L100">        super(readings);</span>
+<span class="fc" id="L101">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L102">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener in charge of attending events raised by this instance.
+     */
+    protected RobustRssiRadioSourceEstimator3D(
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L111">        super(listener);</span>
+<span class="fc" id="L112">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L113">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings signal readings belonging to the same radio source.
+     * @param listener listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if fingerprints are not valid.
+     */
+    protected RobustRssiRadioSourceEstimator3D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L126">        super(readings, listener);</span>
+<span class="fc" id="L127">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L128">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @throws IllegalArgumentException if fingerprints are not valid.
+     */
+    protected RobustRssiRadioSourceEstimator3D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition) {
+<span class="fc" id="L142">        super(readings, initialPosition);</span>
+<span class="fc" id="L143">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L144">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     */
+    protected RobustRssiRadioSourceEstimator3D(
+            final Point3D initialPosition) {
+<span class="fc" id="L154">        super(initialPosition);</span>
+<span class="fc" id="L155">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L156">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     */
+    protected RobustRssiRadioSourceEstimator3D(
+            final Point3D initialPosition,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L168">        super(initialPosition, listener);</span>
+<span class="fc" id="L169">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L170">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if fingerprints are not valid.
+     */
+    protected RobustRssiRadioSourceEstimator3D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L186">        super(readings, initialPosition, listener);</span>
+<span class="fc" id="L187">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L188">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     */
+    protected RobustRssiRadioSourceEstimator3D(
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L199">        super(initialTransmittedPowerdBm);</span>
+<span class="fc" id="L200">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L201">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected RobustRssiRadioSourceEstimator3D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L216">        super(readings, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L217">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L218">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     */
+    protected RobustRssiRadioSourceEstimator3D(
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L231">        super(initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L232">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L233">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected RobustRssiRadioSourceEstimator3D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L250">        super(readings, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L251">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L252">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected RobustRssiRadioSourceEstimator3D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L270">        super(readings, initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L271">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L272">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     */
+    protected RobustRssiRadioSourceEstimator3D(
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L286">        super(initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L287">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L288">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   in charge of attending events raised by this instance.
+     */
+    protected RobustRssiRadioSourceEstimator3D(
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L304">        super(initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L305">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L306">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected RobustRssiRadioSourceEstimator3D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L326">        super(readings, initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L327">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L328">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected RobustRssiRadioSourceEstimator3D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent) {
+<span class="fc" id="L348">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
+                initialPathLossExponent);
+<span class="fc" id="L350">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L351">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     */
+    protected RobustRssiRadioSourceEstimator3D(
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent) {
+<span class="fc" id="L367">        super(initialPosition, initialTransmittedPowerdBm,</span>
+                initialPathLossExponent);
+<span class="fc" id="L369">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L370">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     */
+    protected RobustRssiRadioSourceEstimator3D(
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L388">        super(initialPosition, initialTransmittedPowerdBm,</span>
+                initialPathLossExponent, listener);
+<span class="fc" id="L390">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L391">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected RobustRssiRadioSourceEstimator3D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L413">        super(readings, initialPosition, initialTransmittedPowerdBm,</span>
+                initialPathLossExponent, listener);
+<span class="fc" id="L415">        mPreliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L416">    }</span>
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param method robust estimator method.
+     * @param &lt;S&gt;    a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L427" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L429">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;();</span>
+            case LMEDS:
+<span class="fc" id="L431">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;();</span>
+            case MSAC:
+<span class="fc" id="L433">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;();</span>
+            case PROSAC:
+<span class="fc" id="L435">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;();</span>
+            case PROMEDS:
+            default:
+<span class="fc" id="L438">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;();</span>
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param readings signal readings belonging to the same radio source.
+     * @param method   robust estimator method.
+     * @param &lt;S&gt;      a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L454" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L456">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings);
+            case LMEDS:
+<span class="fc" id="L459">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings);
+            case MSAC:
+<span class="fc" id="L462">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings);
+            case PROSAC:
+<span class="fc" id="L465">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings);
+            case PROMEDS:
+            default:
+<span class="fc" id="L469">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param listener listener in charge of attending events raised by this instance.
+     * @param method   robust estimator method.
+     * @param &lt;S&gt;      a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L485" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L487">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        listener);
+            case LMEDS:
+<span class="fc" id="L490">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        listener);
+            case MSAC:
+<span class="fc" id="L493">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        listener);
+            case PROSAC:
+<span class="fc" id="L496">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        listener);
+            case PROMEDS:
+            default:
+<span class="fc" id="L500">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        listener);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param readings signal readings belonging to the same radio source.
+     * @param listener listener in charge of attending events raised by this instance.
+     * @param method   robust estimator method.
+     * @param &lt;S&gt;      a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L519" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L521">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, listener);
+            case LMEDS:
+<span class="fc" id="L524">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, listener);
+            case MSAC:
+<span class="fc" id="L527">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, listener);
+            case PROSAC:
+<span class="fc" id="L530">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, listener);
+            case PROMEDS:
+            default:
+<span class="fc" id="L534">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param method          robust estimator method.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L554" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L556">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition);
+            case LMEDS:
+<span class="fc" id="L559">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition);
+            case MSAC:
+<span class="fc" id="L562">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition);
+            case PROSAC:
+<span class="fc" id="L565">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition);
+            case PROMEDS:
+            default:
+<span class="fc" id="L569">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param method          robust estimator method.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final Point3D initialPosition,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L586" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L588">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition);
+            case LMEDS:
+<span class="fc" id="L591">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition);
+            case MSAC:
+<span class="fc" id="L594">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition);
+            case PROSAC:
+<span class="fc" id="L597">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition);
+            case PROMEDS:
+            default:
+<span class="fc" id="L601">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     * @param method          robust estimator method.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final Point3D initialPosition,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L620" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L622">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, listener);
+            case LMEDS:
+<span class="fc" id="L625">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, listener);
+            case MSAC:
+<span class="fc" id="L628">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, listener);
+            case PROSAC:
+<span class="fc" id="L631">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, listener);
+            case PROMEDS:
+            default:
+<span class="fc" id="L635">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance
+     * @param method          robust estimator method.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L657" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L659">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, listener);
+            case LMEDS:
+<span class="fc" id="L662">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, listener);
+            case MSAC:
+<span class="fc" id="L665">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, listener);
+            case PROSAC:
+<span class="fc" id="L668">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, listener);
+            case PROMEDS:
+            default:
+<span class="fc" id="L672">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final Double initialTransmittedPowerdBm,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L690" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L692">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm);
+            case LMEDS:
+<span class="fc" id="L695">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm);
+            case MSAC:
+<span class="fc" id="L698">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm);
+            case PROSAC:
+<span class="fc" id="L701">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm);
+            case PROMEDS:
+            default:
+<span class="fc" id="L705">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Double initialTransmittedPowerdBm,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L726" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L728">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm);
+            case LMEDS:
+<span class="fc" id="L731">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm);
+            case MSAC:
+<span class="fc" id="L734">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm);
+            case PROSAC:
+<span class="fc" id="L737">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm);
+            case PROMEDS:
+            default:
+<span class="fc" id="L741">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L761" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L763">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm, listener);
+            case LMEDS:
+<span class="fc" id="L766">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm, listener);
+            case MSAC:
+<span class="fc" id="L769">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm, listener);
+            case PROSAC:
+<span class="fc" id="L772">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm, listener);
+            case PROMEDS:
+            default:
+<span class="fc" id="L776">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L799" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L801">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm, listener);
+            case LMEDS:
+<span class="fc" id="L804">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm, listener);
+            case MSAC:
+<span class="fc" id="L807">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm, listener);
+            case PROSAC:
+<span class="fc" id="L810">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm, listener);
+            case PROMEDS:
+            default:
+<span class="fc" id="L814">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L838" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L840">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm);
+            case LMEDS:
+<span class="fc" id="L843">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm);
+            case MSAC:
+<span class="fc" id="L846">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm);
+            case PROSAC:
+<span class="fc" id="L849">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm);
+            case PROMEDS:
+            default:
+<span class="fc" id="L853">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L874" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L876">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm);
+            case LMEDS:
+<span class="fc" id="L879">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm);
+            case MSAC:
+<span class="fc" id="L882">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm);
+            case PROSAC:
+<span class="fc" id="L885">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm);
+            case PROMEDS:
+            default:
+<span class="fc" id="L889">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L912" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L914">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm, listener);
+            case LMEDS:
+<span class="fc" id="L917">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm, listener);
+            case MSAC:
+<span class="fc" id="L920">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm, listener);
+            case PROSAC:
+<span class="fc" id="L923">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm, listener);
+            case PROMEDS:
+            default:
+<span class="fc" id="L927">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L953" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L955">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm, listener);
+            case LMEDS:
+<span class="fc" id="L958">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm, listener);
+            case MSAC:
+<span class="fc" id="L961">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm, listener);
+            case PROSAC:
+<span class="fc" id="L964">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm, listener);
+            case PROMEDS:
+            default:
+<span class="fc" id="L968">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L994" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L996">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+            case LMEDS:
+<span class="fc" id="L1000">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+            case MSAC:
+<span class="fc" id="L1004">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+            case PROSAC:
+<span class="fc" id="L1008">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+            case PROMEDS:
+            default:
+<span class="fc" id="L1013">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1037" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1039">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+            case LMEDS:
+<span class="fc" id="L1043">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+            case MSAC:
+<span class="fc" id="L1047">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+            case PROSAC:
+<span class="fc" id="L1051">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+            case PROMEDS:
+            default:
+<span class="fc" id="L1056">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1082" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1084">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+            case LMEDS:
+<span class="fc" id="L1088">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+            case MSAC:
+<span class="fc" id="L1092">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+            case PROSAC:
+<span class="fc" id="L1096">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+            case PROMEDS:
+            default:
+<span class="fc" id="L1101">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1130" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1132">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+            case LMEDS:
+<span class="fc" id="L1136">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+            case MSAC:
+<span class="fc" id="L1140">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+            case PROSAC:
+<span class="fc" id="L1144">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+            case PROMEDS:
+            default:
+<span class="fc" id="L1149">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      sample. The larger the score value the better
+     *                      the quality of the sample.
+     * @param method        robust estimator method.
+     * @param &lt;S&gt;           a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1168" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1170">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;();</span>
+            case LMEDS:
+<span class="fc" id="L1172">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;();</span>
+            case MSAC:
+<span class="fc" id="L1174">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;();</span>
+            case PROSAC:
+<span class="fc" id="L1176">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores);
+            case PROMEDS:
+            default:
+<span class="fc" id="L1180">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      sample. The larger the score value the better
+     *                      the quality of the sample.
+     * @param readings      signal readings belonging to the same radio source.
+     * @param method        robust estimator method.
+     * @param &lt;S&gt;           a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1201" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1203">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings);
+            case LMEDS:
+<span class="fc" id="L1206">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings);
+            case MSAC:
+<span class="fc" id="L1209">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings);
+            case PROSAC:
+<span class="fc" id="L1212">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, readings);
+            case PROMEDS:
+            default:
+<span class="fc" id="L1216">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, readings);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      sample. The larger the score value the better
+     *                      the quality of the sample.
+     * @param listener      listener in charge of attending events raised by this instance.
+     * @param method        robust estimator method.
+     * @param &lt;S&gt;           a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1236" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1238">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        listener);
+            case LMEDS:
+<span class="fc" id="L1241">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        listener);
+            case MSAC:
+<span class="fc" id="L1244">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        listener);
+            case PROSAC:
+<span class="fc" id="L1247">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, listener);
+            case PROMEDS:
+            default:
+<span class="fc" id="L1251">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      sample. The larger the score value the better
+     *                      the quality of the sample.
+     * @param readings      signal readings belonging to the same radio source.
+     * @param listener      listener in charge of attending events raised by this instance.
+     * @param method        robust estimator method.
+     * @param &lt;S&gt;           a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1274" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1276">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, listener);
+            case LMEDS:
+<span class="fc" id="L1279">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, listener);
+            case MSAC:
+<span class="fc" id="L1282">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, listener);
+            case PROSAC:
+<span class="fc" id="L1285">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, readings, listener);
+            case PROMEDS:
+            default:
+<span class="fc" id="L1289">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, readings, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        sample. The larger the score value the better
+     *                        the quality of the sample.
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param method          robust estimator method.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1313" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1315">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition);
+            case LMEDS:
+<span class="fc" id="L1318">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition);
+            case MSAC:
+<span class="fc" id="L1321">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition);
+            case PROSAC:
+<span class="fc" id="L1324">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, readings, initialPosition);
+            case PROMEDS:
+            default:
+<span class="fc" id="L1328">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, readings, initialPosition);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        sample. The larger the score value the better
+     *                        the quality of the sample.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param method          robust estimator method.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Point3D initialPosition,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1349" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1351">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition);
+            case LMEDS:
+<span class="fc" id="L1354">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition);
+            case MSAC:
+<span class="fc" id="L1357">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition);
+            case PROSAC:
+<span class="fc" id="L1360">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, initialPosition);
+            case PROMEDS:
+            default:
+<span class="fc" id="L1364">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, initialPosition);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        sample. The larger the score value the better
+     *                        the quality of the sample.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     * @param method          robust estimator method.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Point3D initialPosition,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1387" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1389">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, listener);
+            case LMEDS:
+<span class="fc" id="L1392">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, listener);
+            case MSAC:
+<span class="fc" id="L1395">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, listener);
+            case PROSAC:
+<span class="fc" id="L1398">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, initialPosition, listener);
+            case PROMEDS:
+            default:
+<span class="fc" id="L1402">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, initialPosition, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        sample. The larger the score value the better
+     *                        the quality of the sample.
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance
+     * @param method          robust estimator method.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1428" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1430">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, listener);
+            case LMEDS:
+<span class="fc" id="L1433">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, listener);
+            case MSAC:
+<span class="fc" id="L1436">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, listener);
+            case PROSAC:
+<span class="fc" id="L1439">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, readings, initialPosition, listener);
+            case PROMEDS:
+            default:
+<span class="fc" id="L1443">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, readings, initialPosition, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Double initialTransmittedPowerdBm,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1465" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1467">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm);
+            case LMEDS:
+<span class="fc" id="L1470">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm);
+            case MSAC:
+<span class="fc" id="L1473">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm);
+            case PROSAC:
+<span class="fc" id="L1476">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, initialTransmittedPowerdBm);
+            case PROMEDS:
+            default:
+<span class="fc" id="L1480">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, initialTransmittedPowerdBm);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Double initialTransmittedPowerdBm,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1505" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1507">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm);
+            case LMEDS:
+<span class="fc" id="L1510">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm);
+            case MSAC:
+<span class="fc" id="L1513">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm);
+            case PROSAC:
+<span class="fc" id="L1516">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, readings, initialTransmittedPowerdBm);
+            case PROMEDS:
+            default:
+<span class="fc" id="L1520">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, readings, initialTransmittedPowerdBm);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1544" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1546">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm, listener);
+            case LMEDS:
+<span class="fc" id="L1549">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm, listener);
+            case MSAC:
+<span class="fc" id="L1552">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialTransmittedPowerdBm, listener);
+            case PROSAC:
+<span class="fc" id="L1555">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, initialTransmittedPowerdBm, listener);
+            case PROMEDS:
+            default:
+<span class="fc" id="L1559">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, initialTransmittedPowerdBm, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1586" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1588">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm, listener);
+            case LMEDS:
+<span class="fc" id="L1591">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm, listener);
+            case MSAC:
+<span class="fc" id="L1594">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialTransmittedPowerdBm, listener);
+            case PROSAC:
+<span class="fc" id="L1597">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, readings, initialTransmittedPowerdBm, listener);
+            case PROMEDS:
+            default:
+<span class="fc" id="L1601">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, readings, initialTransmittedPowerdBm, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1629" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1631">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm);
+            case LMEDS:
+<span class="fc" id="L1634">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm);
+            case MSAC:
+<span class="fc" id="L1637">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm);
+            case PROSAC:
+<span class="fc" id="L1640">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, readings, initialPosition,
+                        initialTransmittedPowerdBm);
+            case PROMEDS:
+            default:
+<span class="fc" id="L1645">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, readings, initialPosition,
+                        initialTransmittedPowerdBm);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1671" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1673">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm);
+            case LMEDS:
+<span class="fc" id="L1676">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm);
+            case MSAC:
+<span class="fc" id="L1679">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm);
+            case PROSAC:
+<span class="fc" id="L1682">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, initialPosition, initialTransmittedPowerdBm);
+            case PROMEDS:
+            default:
+<span class="fc" id="L1686">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, initialPosition, initialTransmittedPowerdBm);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1713" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1715">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm, listener);
+            case LMEDS:
+<span class="fc" id="L1718">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm, listener);
+            case MSAC:
+<span class="fc" id="L1721">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm, listener);
+            case PROSAC:
+<span class="fc" id="L1724">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, initialPosition, initialTransmittedPowerdBm,
+                        listener);
+            case PROMEDS:
+            default:
+<span class="fc" id="L1729">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, initialPosition, initialTransmittedPowerdBm,
+                        listener);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1760" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1762">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm, listener);
+            case LMEDS:
+<span class="fc" id="L1765">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm, listener);
+            case MSAC:
+<span class="fc" id="L1768">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm, listener);
+            case PROSAC:
+<span class="fc" id="L1771">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, readings, initialPosition,
+                        initialTransmittedPowerdBm, listener);
+            case PROMEDS:
+            default:
+<span class="fc" id="L1776">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, readings, initialPosition,
+                        initialTransmittedPowerdBm, listener);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1807" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1809">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+            case LMEDS:
+<span class="fc" id="L1813">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+            case MSAC:
+<span class="fc" id="L1817">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+            case PROSAC:
+<span class="fc" id="L1821">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, readings, initialPosition,
+                        initialTransmittedPowerdBm, initialPathLossExponent);
+            case PROMEDS:
+            default:
+<span class="fc" id="L1826">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, readings, initialPosition,
+                        initialTransmittedPowerdBm, initialPathLossExponent);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1854" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1856">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+            case LMEDS:
+<span class="fc" id="L1860">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+            case MSAC:
+<span class="fc" id="L1864">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent);
+            case PROSAC:
+<span class="fc" id="L1868">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, initialPosition,
+                        initialTransmittedPowerdBm, initialPathLossExponent);
+            case PROMEDS:
+            default:
+<span class="fc" id="L1873">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, initialPosition,
+                        initialTransmittedPowerdBm, initialPathLossExponent);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1903" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1905">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+            case LMEDS:
+<span class="fc" id="L1909">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+            case MSAC:
+<span class="fc" id="L1913">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+            case PROSAC:
+<span class="fc" id="L1917">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, initialPosition,
+                        initialTransmittedPowerdBm, initialPathLossExponent,
+                        listener);
+            case PROMEDS:
+            default:
+<span class="fc" id="L1923">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, initialPosition,
+                        initialTransmittedPowerdBm, initialPathLossExponent,
+                        listener);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source .
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of access point transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param method                     robust estimator method.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L1957" title="All 5 branches covered.">        switch (method) {</span>
+            case RANSAC:
+<span class="fc" id="L1959">                return new RANSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+            case LMEDS:
+<span class="fc" id="L1963">                return new LMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+            case MSAC:
+<span class="fc" id="L1967">                return new MSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        readings, initialPosition, initialTransmittedPowerdBm,
+                        initialPathLossExponent, listener);
+            case PROSAC:
+<span class="fc" id="L1971">                return new PROSACRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, readings, initialPosition,
+                        initialTransmittedPowerdBm, initialPathLossExponent,
+                        listener);
+            case PROMEDS:
+            default:
+<span class="fc" id="L1977">                return new PROMedSRobustRssiRadioSourceEstimator3D&lt;&gt;(</span>
+                        qualityScores, readings, initialPosition,
+                        initialTransmittedPowerdBm, initialPathLossExponent,
+                        listener);
+        }
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param &lt;S&gt; a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create() {
+<span class="fc" id="L1992">        return create(DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param readings signal readings belonging to the same radio source.
+     * @param &lt;S&gt;      a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings) {
+<span class="fc" id="L2006">        return create(readings, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param listener listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;      a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L2019">        return create(listener, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param readings signal readings belonging to the same radio source.
+     * @param listener listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;      a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L2035">        return create(readings, listener, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition) {
+<span class="fc" id="L2052">        return create(readings, initialPosition, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final Point3D initialPosition) {
+<span class="fc" id="L2066">        return create(initialPosition, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final Point3D initialPosition,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L2082">        return create(initialPosition, listener, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L2101">        return create(readings, initialPosition, listener, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L2116">        return create(initialTransmittedPowerdBm, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L2134">        return create(readings, initialTransmittedPowerdBm, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L2151">        return create(initialTransmittedPowerdBm, listener, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L2171">        return create(readings, initialTransmittedPowerdBm, listener,</span>
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of access
+     *                                   point position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L2193">        return create(readings, initialPosition, initialTransmittedPowerdBm,</span>
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L2212">        return create(initialPosition, initialTransmittedPowerdBm,</span>
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L2233">        return create(initialPosition, initialTransmittedPowerdBm, listener,</span>
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L2257">        return create(readings, initialPosition, initialTransmittedPowerdBm, listener,</span>
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent) {
+<span class="fc" id="L2281">        return create(readings, initialPosition, initialTransmittedPowerdBm,</span>
+                initialPathLossExponent, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent) {
+<span class="fc" id="L2302">        return create(initialPosition, initialTransmittedPowerdBm,</span>
+                initialPathLossExponent, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L2325">        return create(initialPosition, initialTransmittedPowerdBm,</span>
+                initialPathLossExponent, listener, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L2351">        return create(readings, initialPosition, initialTransmittedPowerdBm,</span>
+                initialPathLossExponent, listener, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      sample. The larger the score value the better
+     *                      the quality of the sample.
+     * @param &lt;S&gt;           a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores) {
+<span class="fc" id="L2367">        return create(qualityScores, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      sample. The larger the score value the better
+     *                      the quality of the sample.
+     * @param readings      signal readings belonging to the same radio source.
+     * @param &lt;S&gt;           a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings) {
+<span class="fc" id="L2385">        return create(qualityScores, readings, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      sample. The larger the score value the better
+     *                      the quality of the sample.
+     * @param listener      listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;           a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L2402">        return create(qualityScores, listener, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      sample. The larger the score value the better
+     *                      the quality of the sample.
+     * @param readings      signal readings belonging to the same radio source.
+     * @param listener      listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;           a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L2422">        return create(qualityScores, readings, listener, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        sample. The larger the score value the better
+     *                        the quality of the sample.
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition) {
+<span class="fc" id="L2443">        return create(qualityScores, readings, initialPosition,</span>
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        sample. The larger the score value the better
+     *                        the quality of the sample.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Point3D initialPosition) {
+<span class="fc" id="L2462">        return create(qualityScores, initialPosition, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        sample. The larger the score value the better
+     *                        the quality of the sample.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Point3D initialPosition,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L2482">        return create(qualityScores, initialPosition, listener, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        sample. The larger the score value the better
+     *                        the quality of the sample.
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L2505">        return create(qualityScores, readings, initialPosition, listener,</span>
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L2525">        return create(qualityScores, initialTransmittedPowerdBm,</span>
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L2548">        return create(qualityScores, readings, initialTransmittedPowerdBm,</span>
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L2570">        return create(qualityScores, initialTransmittedPowerdBm, listener,</span>
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L2595">        return create(qualityScores, readings, initialTransmittedPowerdBm, listener,</span>
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L2621">        return create(qualityScores, readings, initialPosition,</span>
+                initialTransmittedPowerdBm, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L2644">        return create(qualityScores, initialPosition, initialTransmittedPowerdBm,</span>
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialPosition            initial position to start the estimation of access
+     *                                   point position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L2669">        return create(qualityScores, initialPosition, initialTransmittedPowerdBm,</span>
+                listener, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L2697">        return create(qualityScores, readings, initialPosition,</span>
+                initialTransmittedPowerdBm, listener, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent) {
+<span class="fc" id="L2725">        return create(qualityScores, readings, initialPosition,</span>
+                initialTransmittedPowerdBm, initialPathLossExponent,
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent) {
+<span class="fc" id="L2751">        return create(qualityScores, initialPosition,</span>
+                initialTransmittedPowerdBm, initialPathLossExponent,
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L2779">        return create(qualityScores, initialPosition, initialTransmittedPowerdBm,</span>
+                initialPathLossExponent, listener, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param &lt;S&gt;                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRssiRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores,
+            final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L2809">        return create(qualityScores, readings, initialPosition,</span>
+                initialTransmittedPowerdBm, initialPathLossExponent, listener,
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Gets minimum required number of readings to estimate
+     * power, position and path-loss exponent.
+     * This value depends on the number of parameters to
+     * be estimated, but for position only, this is 4
+     * readings for 3D.
+     *
+     * @return minimum required number of readings.
+     */
+    @Override
+    public int getMinReadings() {
+<span class="fc" id="L2825">        int minReadings = 0;</span>
+<span class="fc bfc" id="L2826" title="All 2 branches covered.">        if (isPositionEstimationEnabled()) {</span>
+<span class="fc" id="L2827">            minReadings += Point3D.POINT3D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
+        }
+<span class="fc bfc" id="L2829" title="All 2 branches covered.">        if (isTransmittedPowerEstimationEnabled()) {</span>
+<span class="fc" id="L2830">            minReadings++;</span>
+        }
+<span class="fc bfc" id="L2832" title="All 2 branches covered.">        if (isPathLossEstimationEnabled()) {</span>
+<span class="fc" id="L2833">            minReadings++;</span>
+        }
+<span class="fc" id="L2835">        return ++minReadings;</span>
+    }
+
+    /**
+     * Gets number of dimensions of position points.
+     *
+     * @return always returns 3 dimensions.
+     */
+    @Override
+    public int getNumberOfDimensions() {
+<span class="fc" id="L2845">        return Point3D.POINT3D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
+    }
+
+    /**
+     * Gets estimated located radio source with estimated transmitted power.
+     *
+     * @return estimated located radio source with estimated transmitted power or null.
+     */
+    @Override
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public RadioSourceWithPowerAndLocated&lt;Point3D&gt; getEstimatedRadioSource() {
+<span class="fc" id="L2856">        final List&lt;? extends RssiReadingLocated&lt;S, Point3D&gt;&gt; readings = getReadings();</span>
+<span class="pc bpc" id="L2857" title="1 of 4 branches missed.">        if (readings == null || readings.isEmpty()) {</span>
+<span class="fc" id="L2858">            return null;</span>
+        }
+<span class="fc" id="L2860">        final S source = readings.get(0).getSource();</span>
+
+<span class="fc" id="L2862">        final Point3D estimatedPosition = getEstimatedPosition();</span>
+<span class="fc bfc" id="L2863" title="All 2 branches covered.">        if (estimatedPosition == null) {</span>
+<span class="fc" id="L2864">            return null;</span>
+        }
+
+<span class="fc" id="L2867">        final Matrix estimatedPositionCovariance = getEstimatedPositionCovariance();</span>
+
+<span class="fc" id="L2869">        final Double transmittedPowerVariance =</span>
+<span class="fc" id="L2870">                getEstimatedTransmittedPowerVariance();</span>
+<span class="fc bfc" id="L2871" title="All 2 branches covered.">        final Double transmittedPowerStandardDeviation = transmittedPowerVariance != null ?</span>
+<span class="fc" id="L2872">                Math.sqrt(transmittedPowerVariance) : null;</span>
+
+<span class="fc" id="L2874">        final Double pathlossExponentVariance =</span>
+<span class="fc" id="L2875">                getEstimatedPathLossExponentVariance();</span>
+<span class="fc bfc" id="L2876" title="All 2 branches covered.">        final Double pathlossExponentStandardDeviation = pathlossExponentVariance != null ?</span>
+<span class="fc" id="L2877">                Math.sqrt(pathlossExponentVariance) : null;</span>
+
+<span class="fc bfc" id="L2879" title="All 2 branches covered.">        if (source instanceof WifiAccessPoint) {</span>
+<span class="fc" id="L2880">            final WifiAccessPoint accessPoint = (WifiAccessPoint) source;</span>
+<span class="fc" id="L2881">            return new WifiAccessPointWithPowerAndLocated3D(accessPoint.getBssid(),</span>
+<span class="fc" id="L2882">                    source.getFrequency(), accessPoint.getSsid(),</span>
+<span class="fc" id="L2883">                    getEstimatedTransmittedPowerdBm(),</span>
+                    transmittedPowerStandardDeviation,
+<span class="fc" id="L2885">                    getEstimatedPathLossExponent(),</span>
+                    pathlossExponentStandardDeviation,
+                    estimatedPosition,
+                    estimatedPositionCovariance);
+<span class="pc bpc" id="L2889" title="1 of 2 branches missed.">        } else if (source instanceof Beacon) {</span>
+<span class="fc" id="L2890">            final Beacon beacon = (Beacon) source;</span>
+<span class="fc" id="L2891">            return new BeaconWithPowerAndLocated3D(beacon.getIdentifiers(),</span>
+<span class="fc" id="L2892">                    getEstimatedTransmittedPowerdBm(), beacon.getFrequency(),</span>
+<span class="fc" id="L2893">                    beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(),</span>
+<span class="fc" id="L2894">                    beacon.getManufacturer(), beacon.getServiceUuid(),</span>
+<span class="fc" id="L2895">                    beacon.getBluetoothName(),</span>
+<span class="fc" id="L2896">                    getEstimatedPathLossExponent(),</span>
+                    transmittedPowerStandardDeviation,
+                    pathlossExponentStandardDeviation,
+                    estimatedPosition, estimatedPositionCovariance);
+        } else {
+<span class="nc" id="L2901">            return null;</span>
+        }
+    }
+
+    /**
+     * Solves preliminary solution for a subset of samples.
+     *
+     * @param samplesIndices indices of subset samples.
+     * @param solutions      instance where solution will be stored.
+     */
+    protected void solvePreliminarySolutions(
+            final int[] samplesIndices,
+            final List&lt;Solution&lt;Point3D&gt;&gt; solutions) {
+
+        try {
+            int index;
+
+<span class="fc" id="L2918">            mInnerReadings.clear();</span>
+<span class="fc bfc" id="L2919" title="All 2 branches covered.">            for (final int samplesIndex : samplesIndices) {</span>
+<span class="fc" id="L2920">                index = samplesIndex;</span>
+<span class="fc" id="L2921">                mInnerReadings.add(mReadings.get(index));</span>
+            }
+
+            // initial transmitted power and position might or might not be available
+<span class="fc" id="L2925">            mInnerEstimator.setInitialTransmittedPowerdBm(</span>
+                    mInitialTransmittedPowerdBm);
+<span class="fc" id="L2927">            mInnerEstimator.setInitialPosition(mInitialPosition);</span>
+<span class="fc" id="L2928">            mInnerEstimator.setInitialPathLossExponent(mInitialPathLossExponent);</span>
+
+<span class="fc" id="L2930">            mInnerEstimator.setTransmittedPowerEstimationEnabled(mTransmittedPowerEstimationEnabled);</span>
+<span class="fc" id="L2931">            mInnerEstimator.setPositionEstimationEnabled(mPositionEstimationEnabled);</span>
+<span class="fc" id="L2932">            mInnerEstimator.setPathLossEstimationEnabled(mPathLossEstimationEnabled);</span>
+
+<span class="fc" id="L2934">            mInnerEstimator.setReadings(mInnerReadings);</span>
+
+<span class="fc" id="L2936">            mInnerEstimator.estimate();</span>
+
+<span class="fc" id="L2938">            final Point3D estimatedPosition = mInnerEstimator.getEstimatedPosition();</span>
+<span class="fc" id="L2939">            final double estimatedTransmittedPowerdBm =</span>
+<span class="fc" id="L2940">                    mInnerEstimator.getEstimatedTransmittedPowerdBm();</span>
+<span class="fc" id="L2941">            final double estimatedPathLossExponent =</span>
+<span class="fc" id="L2942">                    mInnerEstimator.getEstimatedPathLossExponent();</span>
+<span class="fc" id="L2943">            solutions.add(new Solution&lt;&gt;(estimatedPosition,</span>
+                    estimatedTransmittedPowerdBm, estimatedPathLossExponent));
+<span class="fc" id="L2945">        } catch (final NavigationException ignore) {</span>
+            // if anything fails, no solution is added
+<span class="fc" id="L2947">        }</span>
+<span class="fc" id="L2948">    }</span>
+
+    /**
+     * Attempts to refine estimated position and transmitted power contained in
+     * provided solution if refinement is requested.
+     * This method sets a refined result and transmitted power or provided input
+     * result if refinement is not requested or has failed.
+     * If refinement is enabled, and it is requested to keep covariance, this method
+     * will also keep covariance of refined result.
+     * solution if not requested or refinement failed.
+     *
+     * @param result result to be refined.
+     */
+    protected void attemptRefine(final Solution&lt;Point3D&gt; result) {
+<span class="fc" id="L2962">        final Point3D initialPosition = result.getEstimatedPosition();</span>
+<span class="fc" id="L2963">        final double initialTransmittedPowerdBm =</span>
+<span class="fc" id="L2964">                result.getEstimatedTransmittedPowerdBm();</span>
+<span class="fc" id="L2965">        final double initialPathLossExponent = result.getEstimatedPathLossExponent();</span>
+
+<span class="pc bpc" id="L2967" title="1 of 4 branches missed.">        if (mRefineResult &amp;&amp; mInliersData != null) {</span>
+<span class="fc" id="L2968">            final BitSet inliers = mInliersData.getInliers();</span>
+<span class="fc" id="L2969">            final int nSamples = mReadings.size();</span>
+
+<span class="fc" id="L2971">            mInnerReadings.clear();</span>
+
+<span class="fc bfc" id="L2973" title="All 2 branches covered.">            for (int i = 0; i &lt; nSamples; i++) {</span>
+<span class="fc bfc" id="L2974" title="All 2 branches covered.">                if (inliers.get(i)) {</span>
+                    // sample is inlier
+<span class="fc" id="L2976">                    mInnerReadings.add(mReadings.get(i));</span>
+                }
+            }
+
+            try {
+<span class="fc" id="L2981">                mInnerEstimator.setInitialPosition(initialPosition);</span>
+<span class="fc" id="L2982">                mInnerEstimator.setInitialTransmittedPowerdBm(initialTransmittedPowerdBm);</span>
+<span class="fc" id="L2983">                mInnerEstimator.setInitialPathLossExponent(initialPathLossExponent);</span>
+<span class="fc" id="L2984">                mInnerEstimator.setTransmittedPowerEstimationEnabled(mTransmittedPowerEstimationEnabled);</span>
+<span class="fc" id="L2985">                mInnerEstimator.setPositionEstimationEnabled(mPositionEstimationEnabled);</span>
+<span class="fc" id="L2986">                mInnerEstimator.setPathLossEstimationEnabled(mPathLossEstimationEnabled);</span>
+<span class="fc" id="L2987">                mInnerEstimator.setReadings(mInnerReadings);</span>
+
+<span class="fc" id="L2989">                mInnerEstimator.estimate();</span>
+
+<span class="fc" id="L2991">                final Matrix cov = mInnerEstimator.getEstimatedCovariance();</span>
+<span class="pc bpc" id="L2992" title="2 of 4 branches missed.">                if (mKeepCovariance &amp;&amp; cov != null) {</span>
+                    // keep covariance
+<span class="fc" id="L2994">                    mCovariance = cov;</span>
+
+<span class="fc" id="L2996">                    final int dims = getNumberOfDimensions();</span>
+<span class="fc" id="L2997">                    int pos = 0;</span>
+<span class="fc bfc" id="L2998" title="All 2 branches covered.">                    if (mPositionEstimationEnabled) {</span>
+                        // position estimation enabled
+<span class="fc" id="L3000">                        final int d = dims - 1;</span>
+<span class="fc bfc" id="L3001" title="All 2 branches covered.">                        if (mEstimatedPositionCovariance == null) {</span>
+<span class="fc" id="L3002">                            mEstimatedPositionCovariance = mCovariance.</span>
+<span class="fc" id="L3003">                                    getSubmatrix(0, 0, d, d);</span>
+                        } else {
+<span class="fc" id="L3005">                            mCovariance.getSubmatrix(0, 0, d, d,</span>
+                                    mEstimatedPositionCovariance);
+                        }
+<span class="fc" id="L3008">                        pos += dims;</span>
+<span class="fc" id="L3009">                    } else {</span>
+                        // position estimation disabled
+<span class="fc" id="L3011">                        mEstimatedPositionCovariance = null;</span>
+                    }
+
+<span class="fc bfc" id="L3014" title="All 2 branches covered.">                    if (mTransmittedPowerEstimationEnabled) {</span>
+                        // transmitted power estimation enabled
+<span class="fc" id="L3016">                        mEstimatedTransmittedPowerVariance = mCovariance.</span>
+<span class="fc" id="L3017">                                getElementAt(pos, pos);</span>
+<span class="fc" id="L3018">                        pos++;</span>
+                    } else {
+                        // transmitted power estimation disabled
+<span class="fc" id="L3021">                        mEstimatedTransmittedPowerVariance = null;</span>
+                    }
+
+<span class="fc bfc" id="L3024" title="All 2 branches covered.">                    if (mPathLossEstimationEnabled) {</span>
+                        // path-loss exponent estimation enabled
+<span class="fc" id="L3026">                        mEstimatedPathLossExponentVariance = mCovariance.</span>
+<span class="fc" id="L3027">                                getElementAt(pos, pos);</span>
+                    } else {
+                        // path-loss exponent estimation disabled
+<span class="fc" id="L3030">                        mEstimatedPathLossExponentVariance = null;</span>
+                    }
+<span class="fc" id="L3032">                } else {</span>
+<span class="nc" id="L3033">                    mCovariance = null;</span>
+<span class="nc" id="L3034">                    mEstimatedPositionCovariance = null;</span>
+<span class="nc" id="L3035">                    mEstimatedTransmittedPowerVariance = null;</span>
+<span class="nc" id="L3036">                    mEstimatedPathLossExponentVariance = null;</span>
+                }
+
+<span class="fc" id="L3039">                mEstimatedPosition = mInnerEstimator.getEstimatedPosition();</span>
+<span class="fc" id="L3040">                mEstimatedTransmittedPowerdBm =</span>
+<span class="fc" id="L3041">                        mInnerEstimator.getEstimatedTransmittedPowerdBm();</span>
+<span class="fc" id="L3042">                mEstimatedPathLossExponent =</span>
+<span class="fc" id="L3043">                        mInnerEstimator.getEstimatedPathLossExponent();</span>
+<span class="nc" id="L3044">            } catch (final Exception e) {</span>
+                // refinement failed, so we return input value, and covariance
+                // becomes unavailable
+<span class="nc" id="L3047">                mCovariance = null;</span>
+<span class="nc" id="L3048">                mEstimatedPositionCovariance = null;</span>
+<span class="nc" id="L3049">                mEstimatedTransmittedPowerVariance = null;</span>
+<span class="nc" id="L3050">                mEstimatedPathLossExponentVariance = null;</span>
+
+<span class="nc" id="L3052">                mEstimatedPosition = initialPosition;</span>
+<span class="nc" id="L3053">                mEstimatedTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="nc" id="L3054">                mEstimatedPathLossExponent = initialPathLossExponent;</span>
+<span class="fc" id="L3055">            }</span>
+<span class="fc" id="L3056">        } else {</span>
+<span class="fc" id="L3057">            mCovariance = null;</span>
+<span class="fc" id="L3058">            mEstimatedPositionCovariance = null;</span>
+<span class="fc" id="L3059">            mEstimatedTransmittedPowerVariance = null;</span>
+<span class="fc" id="L3060">            mEstimatedPathLossExponentVariance = null;</span>
+
+<span class="fc" id="L3062">            mEstimatedPosition = initialPosition;</span>
+<span class="fc" id="L3063">            mEstimatedTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L3064">            mEstimatedPathLossExponent = initialPathLossExponent;</span>
+        }
+<span class="fc" id="L3066">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

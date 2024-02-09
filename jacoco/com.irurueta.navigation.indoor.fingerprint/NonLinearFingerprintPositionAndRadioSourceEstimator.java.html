@@ -1,0 +1,1438 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NonLinearFingerprintPositionAndRadioSourceEstimator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-indoor</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.indoor.fingerprint</a> &gt; <span class="el_source">NonLinearFingerprintPositionAndRadioSourceEstimator.java</span></div><h1>NonLinearFingerprintPositionAndRadioSourceEstimator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2019 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.indoor.fingerprint;
+
+import com.irurueta.algebra.AlgebraException;
+import com.irurueta.algebra.Matrix;
+import com.irurueta.geometry.Point;
+import com.irurueta.geometry.Point2D;
+import com.irurueta.geometry.Point3D;
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.NotReadyException;
+import com.irurueta.navigation.indoor.*;
+import com.irurueta.numerical.NumericalException;
+import com.irurueta.numerical.fitting.FittingException;
+import com.irurueta.numerical.fitting.LevenbergMarquardtMultiDimensionFitter;
+import com.irurueta.numerical.fitting.LevenbergMarquardtMultiDimensionFunctionEvaluator;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+
+/**
+ * Base class for position and radio source estimators based only on located
+ * fingerprints containing RSSI readings.
+ * All implementations of this class estimate the position of a new fingerprint
+ * and the position of all radio sources associated to fingerprints whose location
+ * is known.
+ * All implementations solve the problem in a non-linear way using Levenberg-Marquardt
+ * algorithm.
+ */
+public abstract class NonLinearFingerprintPositionAndRadioSourceEstimator&lt;P extends Point&lt;?&gt;&gt; extends
+        FingerprintPositionAndRadioSourceEstimator&lt;P&gt; {
+
+    /**
+     * Default RSSI standard deviation assumed for provided fingerprints as a fallback
+     * when none can be determined.
+     */
+    public static final double FALLBACK_RSSI_STANDARD_DEVIATION = 1e-3;
+
+    /**
+     * Indicates that by default measured RSSI standard deviation of closest fingerprint
+     * must be propagated into measured RSSI reading variance at unknown location.
+     */
+    public static final boolean DEFAULT_PROPAGATE_FINGERPRINT_RSSI_STANDARD_DEVIATION = true;
+
+    /**
+     * Indicates that by default path-loss exponent standard deviation of radio source
+     * must be propagated into measured RSSI reading variance at unknown location.
+     */
+    public static final boolean DEFAULT_PROPAGATE_PATHLOSS_EXPONENT_STANDARD_DEVIATION = true;
+
+    /**
+     * Indicates that by default covariance of closest fingerprint position must be
+     * propagated into measured RSSI reading variance at unknown location.
+     */
+    public static final boolean DEFAULT_PROPAGATE_FINGERPRINT_POSITION_COVARIANCE = true;
+
+    /**
+     * Indicates that by default covariance of radio source position must be propagated
+     * into measured RSSI reading variance at unknown location.
+     */
+    public static final boolean DEFAULT_PROPAGATE_RADIO_SOURCE_POSITION_COVARIANCE = true;
+
+    /**
+     * Small value to be used as machine precision.
+     */
+    private static final double TINY = 1e-12;
+
+    /**
+     * Initial sources whose location is known.
+     * If provided, their location will be used as initial values, but
+     * after executing this estimator they will be refined.
+     */
+    protected List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; mInitialLocatedSources;
+
+    /**
+     * Initial position to start the estimation.
+     * This should be a value close to the expected solution.
+     * If no value is provided, the average position among all selected nearest
+     * located fingerprints will be used.
+     */
+    private P mInitialPosition;
+
+    /**
+     * Indicates whether path loss exponent of provided sources must be used when
+     * available (if true), or if fallback path loss exponent must be used instead.
+     */
+<span class="fc" id="L103">    protected boolean mUseSourcesPathLossExponentWhenAvailable = true;</span>
+
+    /**
+     * RSSI standard deviation fallback value to use when none can be
+     * determined from provided readings. This fallback value is only used if
+     * no variance is propagated or the resulting value is too small to allow
+     * convergence to a solution.
+     */
+<span class="fc" id="L111">    private double mFallbackRssiStandardDeviation =</span>
+            FALLBACK_RSSI_STANDARD_DEVIATION;
+
+    /**
+     * Indicates whether measured RSSI standard deviation of closest fingerprint must
+     * be propagated into measured RSSI reading variance at unknown location.
+     */
+<span class="fc" id="L118">    private boolean mPropagateFingerprintRssiStandardDeviation =</span>
+            DEFAULT_PROPAGATE_FINGERPRINT_RSSI_STANDARD_DEVIATION;
+
+    /**
+     * Indicates whether path-loss exponent standard deviation of radio source must
+     * be propagated into measured RSSI reading variance at unknown location.
+     */
+<span class="fc" id="L125">    private boolean mPropagatePathlossExponentStandardDeviation =</span>
+            DEFAULT_PROPAGATE_PATHLOSS_EXPONENT_STANDARD_DEVIATION;
+
+    /**
+     * Indicates whether covariance of closest fingerprint position must be
+     * propagated into measured RSSI reading variance at unknown location.
+     */
+<span class="fc" id="L132">    private boolean mPropagateFingerprintPositionCovariance =</span>
+            DEFAULT_PROPAGATE_FINGERPRINT_POSITION_COVARIANCE;
+
+    /**
+     * Indicates whether covariance of radio source position must be propagated
+     * into measured RSSI reading variance at unknown location.
+     */
+<span class="fc" id="L139">    private boolean mPropagateRadioSourcePositionCovariance =</span>
+            DEFAULT_PROPAGATE_RADIO_SOURCE_POSITION_COVARIANCE;
+
+    /**
+     * Levenberg-Marquardt fitter to find a non-linear solution.
+     */
+<span class="fc" id="L145">    private final LevenbergMarquardtMultiDimensionFitter mFitter = new LevenbergMarquardtMultiDimensionFitter();</span>
+
+    /**
+     * Estimated covariance matrix for estimated non-located fingerprint position and
+     * estimated located radio sources position.
+     */
+    private Matrix mCovariance;
+
+    /**
+     * Covariance of estimated position for non-located fingerprint.
+     */
+    private Matrix mEstimatedPositionCovariance;
+
+    /**
+     * Estimated chi square value.
+     */
+    private double mChiSq;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L166">    protected NonLinearFingerprintPositionAndRadioSourceEstimator() {</span>
+<span class="fc" id="L167">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener in charge of handling events.
+     */
+    protected NonLinearFingerprintPositionAndRadioSourceEstimator(
+            final FingerprintPositionAndRadioSourceEstimatorListener&lt;P&gt; listener) {
+<span class="fc" id="L176">        super(listener);</span>
+<span class="fc" id="L177">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param locatedFingerprints located fingerprints containing RSSI readings.
+     * @param fingerprint         fingerprint containing readings at an unknown location
+     *                            for provided located fingerprints.
+     * @throws IllegalArgumentException if either non located fingerprint or located
+     *                                  fingerprints are null.
+     */
+    protected NonLinearFingerprintPositionAndRadioSourceEstimator(
+            final List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
+                    ? extends RssiReading&lt;? extends RadioSource&gt;, P&gt;&gt; locatedFingerprints,
+            final RssiFingerprint&lt;? extends RadioSource,
+                    ? extends RssiReading&lt;? extends RadioSource&gt;&gt; fingerprint) {
+<span class="fc" id="L193">        super(locatedFingerprints, fingerprint);</span>
+<span class="fc" id="L194">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param locatedFingerprints located fingerprints containing RSSI readings.
+     * @param fingerprint         fingerprint containing readings at an unknown location
+     *                            for provided located fingerprints.
+     * @param listener            listener in charge of handling events.
+     * @throws IllegalArgumentException if either non located fingerprint or located
+     *                                  fingerprints are null.
+     */
+    protected NonLinearFingerprintPositionAndRadioSourceEstimator(
+            final List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
+                    ? extends RssiReading&lt;? extends RadioSource&gt;, P&gt;&gt; locatedFingerprints,
+            final RssiFingerprint&lt;? extends RadioSource,
+                    ? extends RssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final FingerprintPositionAndRadioSourceEstimatorListener&lt;P&gt; listener) {
+<span class="fc" id="L212">        super(locatedFingerprints, fingerprint, listener);</span>
+<span class="fc" id="L213">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param locatedFingerprints located fingerprints containing RSSI readings.
+     * @param fingerprint         fingerprint containing readings at an unknown location
+     *                            for provided located fingerprints.
+     * @param initialPosition     initial position to be assumed on non located fingerprint or
+     *                            null if unknown.
+     * @throws IllegalArgumentException if either non located fingerprint or located
+     *                                  fingerprints are null.
+     */
+    protected NonLinearFingerprintPositionAndRadioSourceEstimator(
+            final List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
+                    ? extends RssiReading&lt;? extends RadioSource&gt;, P&gt;&gt; locatedFingerprints,
+            final RssiFingerprint&lt;? extends RadioSource,
+                    ? extends RssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final P initialPosition) {
+<span class="fc" id="L232">        super(locatedFingerprints, fingerprint);</span>
+<span class="fc" id="L233">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L234">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param locatedFingerprints located fingerprints containing RSSI readings.
+     * @param fingerprint         fingerprint containing readings at an unknown location
+     *                            for provided located fingerprints.
+     * @param initialPosition     initial position to be assumed on non located fingerprint or
+     *                            null if unknown.
+     * @param listener            listener in charge of handling events.
+     * @throws IllegalArgumentException if either non located fingerprint or located
+     *                                  fingerprints are null.
+     */
+    protected NonLinearFingerprintPositionAndRadioSourceEstimator(
+            final List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
+                    ? extends RssiReading&lt;? extends RadioSource&gt;, P&gt;&gt; locatedFingerprints,
+            final RssiFingerprint&lt;? extends RadioSource,
+                    ? extends RssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final P initialPosition,
+            final FingerprintPositionAndRadioSourceEstimatorListener&lt;P&gt; listener) {
+<span class="fc" id="L255">        super(locatedFingerprints, fingerprint, listener);</span>
+<span class="fc" id="L256">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L257">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param locatedFingerprints   located fingerprints containing RSSI readings.
+     * @param fingerprint           fingerprint containing readings at an unknown location
+     *                              for provided located fingerprints.
+     * @param initialLocatedSources sources containing initial location to be refined or null
+     *                              if unknown.
+     * @throws IllegalArgumentException if either non located fingerprint or located
+     *                                  fingerprints are null.
+     */
+    protected NonLinearFingerprintPositionAndRadioSourceEstimator(
+            final List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
+                    ? extends RssiReading&lt;? extends RadioSource&gt;, P&gt;&gt; locatedFingerprints,
+            final RssiFingerprint&lt;? extends RadioSource,
+                    ? extends RssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; initialLocatedSources) {
+<span class="fc" id="L276">        super(locatedFingerprints, fingerprint);</span>
+<span class="fc" id="L277">        mInitialLocatedSources = initialLocatedSources;</span>
+<span class="fc" id="L278">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param locatedFingerprints   located fingerprints containing RSSI readings.
+     * @param fingerprint           fingerprint containing readings at an unknown location
+     *                              for provided located fingerprints.
+     * @param initialLocatedSources sources containing initial location to be refined or null
+     *                              if unknown.
+     * @param listener              listener in charge of handling events.
+     * @throws IllegalArgumentException if either non located fingerprint or located
+     *                                  fingerprints are null.
+     */
+    protected NonLinearFingerprintPositionAndRadioSourceEstimator(
+            final List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
+                    ? extends RssiReading&lt;? extends RadioSource&gt;, P&gt;&gt; locatedFingerprints,
+            final RssiFingerprint&lt;? extends RadioSource,
+                    ? extends RssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; initialLocatedSources,
+            final FingerprintPositionAndRadioSourceEstimatorListener&lt;P&gt; listener) {
+<span class="fc" id="L299">        super(locatedFingerprints, fingerprint, listener);</span>
+<span class="fc" id="L300">        mInitialLocatedSources = initialLocatedSources;</span>
+<span class="fc" id="L301">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param locatedFingerprints   located fingerprints containing RSSI readings.
+     * @param fingerprint           fingerprint containing readings at an unknown location
+     *                              for provided located fingerprints.
+     * @param initialPosition       initial position to be assumed on non located fingerprint or
+     *                              null if unknown.
+     * @param initialLocatedSources sources containing initial location to be refined or null
+     *                              if unknown.
+     * @throws IllegalArgumentException if either non located fingerprint or located
+     *                                  fingerprints are null.
+     */
+    protected NonLinearFingerprintPositionAndRadioSourceEstimator(
+            final List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
+                    ? extends RssiReading&lt;? extends RadioSource&gt;, P&gt;&gt; locatedFingerprints,
+            final RssiFingerprint&lt;? extends RadioSource,
+                    ? extends RssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final P initialPosition,
+            final List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; initialLocatedSources) {
+<span class="fc" id="L323">        this(locatedFingerprints, fingerprint, initialPosition);</span>
+<span class="fc" id="L324">        mInitialLocatedSources = initialLocatedSources;</span>
+<span class="fc" id="L325">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param locatedFingerprints   located fingerprints containing RSSI readings.
+     * @param fingerprint           fingerprint containing readings at an unknown location
+     *                              for provided located fingerprints.
+     * @param initialPosition       initial position to be assumed on non located fingerprint or
+     *                              null if unknown.
+     * @param initialLocatedSources sources containing initial location to be refined or null
+     *                              if unknown.
+     * @param listener              listener in charge of handling events.
+     * @throws IllegalArgumentException if either non located fingerprint or located
+     *                                  fingerprints are null.
+     */
+    protected NonLinearFingerprintPositionAndRadioSourceEstimator(
+            final List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
+                    ? extends RssiReading&lt;? extends RadioSource&gt;, P&gt;&gt; locatedFingerprints,
+            final RssiFingerprint&lt;? extends RadioSource,
+                    ? extends RssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final P initialPosition,
+            final List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; initialLocatedSources,
+            final FingerprintPositionAndRadioSourceEstimatorListener&lt;P&gt; listener) {
+<span class="fc" id="L349">        this(locatedFingerprints, fingerprint, initialPosition, listener);</span>
+<span class="fc" id="L350">        mInitialLocatedSources = initialLocatedSources;</span>
+<span class="fc" id="L351">    }</span>
+
+    /**
+     * Gets initial radio sources whose location is known.
+     *
+     * @return initial radio sources.
+     */
+    public List&lt;RadioSourceLocated&lt;P&gt;&gt; getInitialLocatedSources() {
+        //noinspection unchecked
+<span class="fc" id="L360">        return (List&lt;RadioSourceLocated&lt;P&gt;&gt;) mInitialLocatedSources;</span>
+    }
+
+    /**
+     * Sets initial radio sources whose location is known.
+     *
+     * @param initialLocatedSources initial radio sources.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setInitialLocatedSources(
+            final List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; initialLocatedSources)
+            throws LockedException {
+<span class="fc bfc" id="L372" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L373">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L376">        mInitialLocatedSources = initialLocatedSources;</span>
+<span class="fc" id="L377">    }</span>
+
+    /**
+     * Gets initial position to start the solving algorithm.
+     * This should be a value close to the expected solution.
+     * If no value is provided, the average position among all selected nearest
+     * located fingerprints will be used.
+     *
+     * @return initial position to start the solving algorithm or null.
+     */
+    public P getInitialPosition() {
+<span class="fc" id="L388">        return mInitialPosition;</span>
+    }
+
+    /**
+     * Sets initial position to start the solving algorithm.
+     * This should be a value close to the expected solution.
+     * If no value is provided, the average position among all selected nearest
+     * located fingerprints will be used.
+     *
+     * @param initialPosition initial position to start the solving algorithm or null.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setInitialPosition(final P initialPosition) throws LockedException {
+<span class="fc bfc" id="L401" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L402">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L405">        mInitialPosition = initialPosition;</span>
+<span class="fc" id="L406">    }</span>
+
+    /**
+     * Gets estimated covariance matrix for estimated non-located fingerprint position
+     * and estimated located radio sources position.
+     *
+     * @return estimated covariance matrix for estimated non-located fingerprint
+     * position and estimated located radio sources position.
+     */
+    public Matrix getCovariance() {
+<span class="fc" id="L416">        return mCovariance;</span>
+    }
+
+    /**
+     * Gets covariance of estimated position for non-located fingerprint.
+     *
+     * @return covariance of estimated position for non-located fingerprint.
+     */
+    public Matrix getEstimatedPositionCovariance() {
+<span class="fc" id="L425">        return mEstimatedPositionCovariance;</span>
+    }
+
+    /**
+     * Gets estimated chi square value.
+     *
+     * @return estimated chi square value.
+     */
+    public double getChiSq() {
+<span class="fc" id="L434">        return mChiSq;</span>
+    }
+
+    /**
+     * Indicates whether path loss exponent of provided sources must be used when
+     * available (if true), or if fallback path loss exponent must be used instead.
+     *
+     * @return true to use path loss exponent of provided sources when available,
+     * false otherwise.
+     */
+    public boolean getUseSourcesPathLossExponentWhenAvailable() {
+<span class="fc" id="L445">        return mUseSourcesPathLossExponentWhenAvailable;</span>
+    }
+
+    /**
+     * Specifies whether path loss exponent of provided sources must be used when
+     * available (if true), or if fallback path loss exponent must be used instead.
+     *
+     * @param useSourcesPathLossExponentWhenAvailable true to use path loss exponent of
+     *                                                provided sources when available,
+     *                                                false otherwise.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setUseSourcesPathLossExponentWhenAvailable(
+            final boolean useSourcesPathLossExponentWhenAvailable) throws LockedException {
+<span class="fc bfc" id="L459" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L460">            throw new LockedException();</span>
+        }
+<span class="fc" id="L462">        mUseSourcesPathLossExponentWhenAvailable =</span>
+                useSourcesPathLossExponentWhenAvailable;
+<span class="fc" id="L464">    }</span>
+
+    /**
+     * Gets RSSI standard deviation fallback value to use when none can be
+     * determined from provided readings.
+     *
+     * @return RSSI standard deviation fallback.
+     */
+    public double getFallbackRssiStandardDeviation() {
+<span class="fc" id="L473">        return mFallbackRssiStandardDeviation;</span>
+    }
+
+    /**
+     * Sets RSSI standard deviation fallback value to use when none can be
+     * determined from provided readings.
+     *
+     * @param fallbackRssiStandardDeviation RSSI standard deviation fallback
+     * @throws LockedException          if estimator is locked.
+     * @throws IllegalArgumentException if provided value is smaller than
+     *                                  {@link #TINY}.
+     */
+    public void setFallbackRssiStandardDeviation(
+            final double fallbackRssiStandardDeviation) throws LockedException {
+<span class="fc bfc" id="L487" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L488">            throw new LockedException();</span>
+        }
+<span class="pc bpc" id="L490" title="1 of 2 branches missed.">        if (fallbackRssiStandardDeviation &lt; TINY) {</span>
+<span class="nc" id="L491">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L493">        mFallbackRssiStandardDeviation = fallbackRssiStandardDeviation;</span>
+<span class="fc" id="L494">    }</span>
+
+    /**
+     * Indicates whether measured RSSI standard deviation of closest fingerprint must be
+     * propagated into measured RSSI reading variance at unknown location.
+     *
+     * @return true to propagate RSSI standard deviation of closest fingerprint,
+     * false otherwise.
+     */
+    public boolean isFingerprintRssiStandardDeviationPropagated() {
+<span class="fc" id="L504">        return mPropagateFingerprintRssiStandardDeviation;</span>
+    }
+
+    /**
+     * Specifies whether measured RSSI standard deviation of closest fingerprint must be
+     * propagated into measured RSSI reading variance at unknown location.
+     *
+     * @param propagateFingerprintRssiStandardDeviation true to propagate RSSI standard
+     *                                                  deviation of closest fingerprint,
+     *                                                  false otherwise.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setFingerprintRssiStandardDeviationPropagated(
+            final boolean propagateFingerprintRssiStandardDeviation) throws LockedException {
+<span class="fc bfc" id="L518" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L519">            throw new LockedException();</span>
+        }
+<span class="fc" id="L521">        mPropagateFingerprintRssiStandardDeviation =</span>
+                propagateFingerprintRssiStandardDeviation;
+<span class="fc" id="L523">    }</span>
+
+    /**
+     * Indicates whether path-loss exponent standard deviation of radio source must be
+     * propagated into measured RSSI reading variance at unknown location.
+     *
+     * @return true to propagate  path-loss exponent standard deviation of radio source,
+     * false otherwise.
+     */
+    public boolean isPathlossExponentStandardDeviationPropagated() {
+<span class="fc" id="L533">        return mPropagatePathlossExponentStandardDeviation;</span>
+    }
+
+    /**
+     * Specifies whether path-loss exponent standard deviation of radio source must be
+     * propagated into measured RSSI reading variance at unknown location.
+     *
+     * @param propagatePathlossExponentStandardDeviation true to propagate path-loss
+     *                                                   exponent standard deviation of
+     *                                                   radio source, false otherwise.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setPathlossExponentStandardDeviationPropagated(
+            final boolean propagatePathlossExponentStandardDeviation) throws LockedException {
+<span class="fc bfc" id="L547" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L548">            throw new LockedException();</span>
+        }
+<span class="fc" id="L550">        mPropagatePathlossExponentStandardDeviation =</span>
+                propagatePathlossExponentStandardDeviation;
+<span class="fc" id="L552">    }</span>
+
+    /**
+     * Indicates whether covariance of closest fingerprint position must be propagated
+     * into measured RSSI reading variance at unknown location.
+     *
+     * @return true to propagate fingerprint position covariance, false otherwise.
+     */
+    public boolean isFingerprintPositionCovariancePropagated() {
+<span class="fc" id="L561">        return mPropagateFingerprintPositionCovariance;</span>
+    }
+
+    /**
+     * Specifies whether covariance of closest fingerprint position must be propagated
+     * into measured RSSI reading variance at unknown location.
+     *
+     * @param propagateFingerprintPositionCovariance true to propagate fingerprint
+     *                                               position covariance, false otherwise.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setFingerprintPositionCovariancePropagated(
+            final boolean propagateFingerprintPositionCovariance) throws LockedException {
+<span class="fc bfc" id="L574" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L575">            throw new LockedException();</span>
+        }
+<span class="fc" id="L577">        mPropagateFingerprintPositionCovariance =</span>
+                propagateFingerprintPositionCovariance;
+<span class="fc" id="L579">    }</span>
+
+    /**
+     * Indicates whether covariance of radio source position must be propagated into
+     * measured RSSI reading variance at unknown location.
+     *
+     * @return true to propagate radio source position covariance, false otherwise.
+     */
+    public boolean isRadioSourcePositionCovariancePropagated() {
+<span class="fc" id="L588">        return mPropagateRadioSourcePositionCovariance;</span>
+    }
+
+    /**
+     * Specifies whether covariance of radio source position must be propagated into
+     * measured RSSI reading variance at unknown location.
+     *
+     * @param propagateRadioSourcePositionCovariance true to propagate radio source
+     *                                               position covariance, false otherwise.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setRadioSourcePositionCovariancePropagated(
+            final boolean propagateRadioSourcePositionCovariance) throws LockedException {
+<span class="fc bfc" id="L601" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L602">            throw new LockedException();</span>
+        }
+<span class="fc" id="L604">        mPropagateRadioSourcePositionCovariance =</span>
+                propagateRadioSourcePositionCovariance;
+<span class="fc" id="L606">    }</span>
+
+    /**
+     * Estimates position and radio sources based on provided located radio sources and readings of
+     * such radio sources at an unknown location.
+     *
+     * @throws LockedException                if estimator is locked.
+     * @throws NotReadyException              if estimator is not ready.
+     * @throws FingerprintEstimationException if estimation fails for some other reason.
+     */
+    @Override
+    @SuppressWarnings(&quot;Duplicates&quot;)
+    public void estimate() throws LockedException, NotReadyException,
+            FingerprintEstimationException {
+
+<span class="pc bpc" id="L621" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L622">            throw new NotReadyException();</span>
+        }
+<span class="fc bfc" id="L624" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L625">            throw new LockedException();</span>
+        }
+
+        try {
+<span class="fc" id="L629">            mLocked = true;</span>
+
+<span class="pc bpc" id="L631" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L632">                mListener.onEstimateStart(this);</span>
+            }
+
+<span class="fc" id="L635">            RadioSourceNoMeanKNearestFinder&lt;P, RadioSource&gt; noMeanFinder = null;</span>
+<span class="fc" id="L636">            RadioSourceKNearestFinder&lt;P, RadioSource&gt; finder = null;</span>
+<span class="pc bpc" id="L637" title="1 of 2 branches missed.">            if (mUseNoMeanNearestFingerprintFinder) {</span>
+                //noinspection unchecked
+<span class="fc" id="L639">                noMeanFinder = new RadioSourceNoMeanKNearestFinder&lt;&gt;(</span>
+                        (Collection&lt;RssiFingerprintLocated&lt;RadioSource,
+                                RssiReading&lt;RadioSource&gt;, P&gt;&gt;) mLocatedFingerprints);
+            } else {
+                //noinspection unchecked
+<span class="nc" id="L644">                finder = new RadioSourceKNearestFinder&lt;&gt;(</span>
+                        (Collection&lt;RssiFingerprintLocated&lt;RadioSource,
+                                RssiReading&lt;RadioSource&gt;, P&gt;&gt;) mLocatedFingerprints);
+            }
+
+<span class="fc" id="L649">            mEstimatedPositionCoordinates = null;</span>
+<span class="fc" id="L650">            mCovariance = null;</span>
+<span class="fc" id="L651">            mEstimatedPositionCovariance = null;</span>
+<span class="fc" id="L652">            mNearestFingerprints = null;</span>
+<span class="fc" id="L653">            mEstimatedLocatedSources = null;</span>
+
+<span class="fc" id="L655">            final int min = Math.max(1, mMinNearestFingerprints);</span>
+<span class="pc bpc" id="L656" title="1 of 2 branches missed.">            final int max = mMaxNearestFingerprints &lt; 0 ?</span>
+<span class="fc" id="L657">                    mLocatedFingerprints.size() :</span>
+<span class="pc" id="L658">                    Math.min(mMaxNearestFingerprints, mLocatedFingerprints.size());</span>
+<span class="fc bfc" id="L659" title="All 2 branches covered.">            for (int k = min; k &lt;= max; k++) {</span>
+<span class="pc bpc" id="L660" title="1 of 2 branches missed.">                if (noMeanFinder != null) {</span>
+                    //noinspection unchecked
+<span class="fc" id="L662">                    mNearestFingerprints = noMeanFinder.findKNearestTo(</span>
+                            (RssiFingerprint&lt;RadioSource, RssiReading&lt;RadioSource&gt;&gt;) mFingerprint, k);
+                } else {
+                    //noinspection unchecked
+<span class="nc" id="L666">                    mNearestFingerprints = finder.findKNearestTo(</span>
+                            (RssiFingerprint&lt;RadioSource, RssiReading&lt;RadioSource&gt;&gt;) mFingerprint, k);
+                }
+
+                // Demonstration in 2D:
+                // --------------------
+
+                // The expression of received power expressed in dBm's is:
+                // k = (c/(4*pi*f))
+                // Pr = Pte*k^n / d^n
+
+                // where c is the speed of light, pi is 3.14159..., f is the frequency of the radio source,
+                // Pte is the equivalent transmitted power by the radio source, n is the path-loss exponent
+                // (typically 2.0), and d is the distance from a point to the location of the radio source.
+
+                // Hence:
+                // Pr(dBm) = 10*log(Pte*k^n/d^n) = 10*n*log(k) + 10*log(Pte) - 10*n*log(d) =
+                //           10*n*log(k) + 10*log(Pte) - 5*n*log(d^2)
+
+                // where d^2 = dia^2 = (xi - xa)^2 + (yi - ya)^2 is the squared distance between
+                // fingerprint and unknown point pi = (xi, yi) and
+                // radio source a = a,b... M
+                // 10*n*log(k) is constant for a given radio source &quot;a&quot;, and
+                // Pte is the equivalent transmitted power of radio source &quot;a&quot;.
+
+                // We assume that the 2 former terms are constant and known for a given radio source
+                // K = 10*n*log(k) + 10*log(Pte), and the only unknown term is
+                // the latter one depending on the distance of the
+                // measuring point and the radio source.
+
+                // Hence for a given radio source &quot;a&quot; at unknown location &quot;i&quot;:
+                // Pr(pi) = K - 5*n*log((xi - xa)^2 + (yi - ya)^2)
+
+                // we assume that a known located fingerprint is located at p1 = (x1, y1),
+                // Both readings Pr(pi) and Pr(p1) belong to the same radio source &quot;a&quot;, hence
+                // K term is the same.
+
+                // Pr(p1) = K - 5*n*log((x1 - xa)^2 + (y1 - ya)^2)
+
+                // where d1a^2 = (x1 - xa)^2 + (y1 - ya)^2 is the squared distance between
+                // fingerprint 1 and radio source 2
+
+                // To remove possible bias effects on readings, we consider the difference of received
+                // power for fingerprint &quot;1&quot; and radio source &quot;a&quot; as:
+
+                // Prdiff1a = Pr(pi) - Pr(p1) = (K - 5*n*log(dia^2)) - (K - 5*n*log(d1a^2)) =
+                //   = 5*n*log(d1a^2) - 5*n*log(dia^2)
+
+                // where both d1a^2 and dia^2 are unknown, because location pi=(xi,yi) and pa=(xa,ya) are unknown.
+                // Now we have no dependencies on the amount of transmitted power of each radio source
+                // contained on constant term K, and we only depend on squared distances d1a^2 and dia^2.
+
+                // Consequently, the difference of received power for fingerprint &quot;2&quot; and radio source &quot;a&quot; is:
+                // Prdiff2a = 5*n*log(d2a^2) - 5*n*log(dia^2)
+
+                // the difference of received power for fingerprint &quot;1&quot; and radio source &quot;b&quot; is:
+                // Prdiff1b = 5*n*log(d1b^2) - 5*n*log(dib^2)
+
+                // and so on.
+
+                // we want to find unknown location pi, and location of radio source pa, pb,... pM so that Prdiff
+                // errors are minimized in LMSE (Least Mean Square Error) terms.
+
+                // Assuming that we have M radio sources and N fingerprints, we have
+                // y = [Prdiff1a Prdiff2a Prdiff1b Prdiff2b ... PrdiffNa PrdiffNb ... PrdiffNM]
+
+                // and the unknowns to be found are:
+                // x = [xi yi xa ya xb yb ... xM yM], which are the location of the unknown fingerprint
+                // pi = (xi, yi) and the locations of the radio sources a, b ... M that we want to find pa = (xa, ya),
+                // pb = (xb, yb) ... pM = (xM, yM)
+
+                try {
+<span class="fc" id="L738">                    final List&lt;RadioSource&gt; sourcesToBeEstimated = setupFitter();</span>
+<span class="fc bfc" id="L739" title="All 2 branches covered.">                    if (mMinNearestFingerprints &lt; 0) {</span>
+                        // if no limit is set in minimum value, then a minimum of
+                        // dims * (1 + numSources) is used
+<span class="fc" id="L742">                        final int numSources = sourcesToBeEstimated.size();</span>
+<span class="fc" id="L743">                        final int dims = getNumberOfDimensions();</span>
+<span class="fc" id="L744">                        final int minNearest = dims * (1 + numSources);</span>
+<span class="fc bfc" id="L745" title="All 2 branches covered.">                        if (k &lt; minNearest) {</span>
+<span class="fc" id="L746">                            continue;</span>
+                        }
+                    }
+
+<span class="fc" id="L750">                    mFitter.fit();</span>
+
+                    // estimated position
+<span class="fc" id="L753">                    final double[] a = mFitter.getA();</span>
+<span class="fc" id="L754">                    mCovariance = mFitter.getCovar();</span>
+<span class="fc" id="L755">                    mChiSq = mFitter.getChisq();</span>
+
+<span class="fc" id="L757">                    final int dims = getNumberOfDimensions();</span>
+
+                    // obtain estimated position coordinates and covariance
+<span class="fc" id="L760">                    mEstimatedPositionCoordinates = new double[dims];</span>
+<span class="fc" id="L761">                    System.arraycopy(a, 0, mEstimatedPositionCoordinates,</span>
+                            0, dims);
+
+<span class="fc" id="L764">                    final int dimsMinusOne = dims - 1;</span>
+<span class="fc" id="L765">                    mEstimatedPositionCovariance = mCovariance.getSubmatrix(0, 0,</span>
+                            dimsMinusOne, dimsMinusOne);
+
+                    // obtain radio sources estimated positions and covariance
+<span class="fc" id="L769">                    final int totalSources = sourcesToBeEstimated.size();</span>
+<span class="fc" id="L770">                    mEstimatedLocatedSources = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L771" title="All 2 branches covered.">                    for (int j = 0; j &lt; totalSources; j++) {</span>
+<span class="fc" id="L772">                        final P sourcePosition = createPoint();</span>
+
+<span class="fc" id="L774">                        final int start = dims * (1 + j);</span>
+<span class="fc" id="L775">                        final int end = start + dimsMinusOne;</span>
+<span class="fc bfc" id="L776" title="All 2 branches covered.">                        for (int i = 0; i &lt; dims; i++) {</span>
+<span class="fc" id="L777">                            sourcePosition.setInhomogeneousCoordinate(i, a[start + i]);</span>
+                        }
+
+<span class="fc" id="L780">                        final Matrix sourceCovariance = mCovariance.getSubmatrix(</span>
+                                start, start, end, end);
+
+<span class="fc" id="L783">                        final RadioSource source = sourcesToBeEstimated.get(j);</span>
+<span class="fc" id="L784">                        mEstimatedLocatedSources.add(</span>
+<span class="fc" id="L785">                                createRadioSource(source, sourcePosition,</span>
+                                        sourceCovariance));
+                    }
+
+                    // a solution was found so we exit loop
+<span class="fc" id="L790">                    break;</span>
+<span class="fc" id="L791">                } catch (final NumericalException e) {</span>
+                    // solution could not be found with current data
+                    // Iterate to use additional nearby fingerprints
+<span class="fc" id="L794">                    mEstimatedPositionCoordinates = null;</span>
+<span class="fc" id="L795">                    mCovariance = null;</span>
+<span class="fc" id="L796">                    mEstimatedPositionCovariance = null;</span>
+<span class="fc" id="L797">                    mEstimatedLocatedSources = null;</span>
+                }
+            }
+
+<span class="pc bpc" id="L801" title="1 of 4 branches missed.">            if (mEstimatedPositionCoordinates == null ||</span>
+                    mEstimatedLocatedSources == null) {
+                // no position could be estimated
+<span class="fc" id="L804">                throw new FingerprintEstimationException();</span>
+            }
+
+<span class="pc bpc" id="L807" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L808">                mListener.onEstimateEnd(this);</span>
+            }
+        } finally {
+<span class="fc" id="L811">            mLocked = false;</span>
+        }
+<span class="fc" id="L813">    }</span>
+
+    /**
+     * Propagates provided variances into RSSI differences.
+     *
+     * @param pathlossExponent              path-loss exponent.
+     * @param fingerprintPosition           position of closest located fingerprint.
+     * @param radioSourcePosition           radio source position associated to fingerprint reading.
+     * @param estimatedPosition             position to be estimated. Usually this is equal to the
+     *                                      initial position used by a non-linear algorithm.
+     * @param pathlossExponentVariance      variance of path-loss exponent or null if unknown.
+     * @param fingerprintPositionCovariance covariance of fingerprint position or null if
+     *                                      unknown.
+     * @param radioSourcePositionCovariance covariance of radio source position or null if
+     *                                      unknown.
+     * @return variance of RSSI difference measured at non located fingerprint reading.
+     */
+    protected abstract Double propagateVariances(
+            final double pathlossExponent, final P fingerprintPosition,
+            final P radioSourcePosition, final P estimatedPosition,
+            final Double pathlossExponentVariance,
+            final Matrix fingerprintPositionCovariance,
+            final Matrix radioSourcePositionCovariance);
+
+    /**
+     * Creates a located radio source from provided radio source, position and
+     * covariance.
+     *
+     * @param source           radio source.
+     * @param sourcePosition   radio source position.
+     * @param sourceCovariance radio source position covariance.
+     * @return located radio source.
+     */
+    private RadioSourceLocated&lt;P&gt; createRadioSource(
+            final RadioSource source, final P sourcePosition,
+            final Matrix sourceCovariance) {
+
+<span class="fc" id="L850">        final int dims = getNumberOfDimensions();</span>
+
+<span class="fc bfc" id="L852" title="All 2 branches covered.">        switch (source.getType()) {</span>
+            case BEACON:
+<span class="fc" id="L854">                final Beacon beacon = (Beacon) source;</span>
+<span class="fc bfc" id="L855" title="All 2 branches covered.">                if (dims == Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH) {</span>
+                    // 2D
+
+                    //noinspection unchecked
+<span class="fc" id="L859">                    return (RadioSourceLocated&lt;P&gt;) new BeaconLocated2D(</span>
+<span class="fc" id="L860">                            beacon.getIdentifiers(), beacon.getTransmittedPower(),</span>
+<span class="fc" id="L861">                            beacon.getFrequency(), beacon.getBluetoothAddress(),</span>
+<span class="fc" id="L862">                            beacon.getBeaconTypeCode(), beacon.getManufacturer(),</span>
+<span class="fc" id="L863">                            beacon.getServiceUuid(), beacon.getBluetoothName(),</span>
+                            (Point2D) sourcePosition, sourceCovariance);
+                } else {
+                    // 3D
+
+                    //noinspection unchecked
+<span class="fc" id="L869">                    return (RadioSourceLocated&lt;P&gt;) new BeaconLocated3D(</span>
+<span class="fc" id="L870">                            beacon.getIdentifiers(), beacon.getTransmittedPower(),</span>
+<span class="fc" id="L871">                            beacon.getFrequency(), beacon.getBluetoothAddress(),</span>
+<span class="fc" id="L872">                            beacon.getBeaconTypeCode(), beacon.getManufacturer(),</span>
+<span class="fc" id="L873">                            beacon.getServiceUuid(), beacon.getBluetoothName(),</span>
+                            (Point3D) sourcePosition, sourceCovariance);
+                }
+            case WIFI_ACCESS_POINT:
+            default:
+<span class="fc" id="L878">                final WifiAccessPoint accessPoint = (WifiAccessPoint) source;</span>
+<span class="fc bfc" id="L879" title="All 2 branches covered.">                if (dims == Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH) {</span>
+                    // 2D
+
+                    //noinspection unchecked
+<span class="fc" id="L883">                    return (RadioSourceLocated&lt;P&gt;) new WifiAccessPointLocated2D(</span>
+<span class="fc" id="L884">                            accessPoint.getBssid(), accessPoint.getFrequency(),</span>
+<span class="fc" id="L885">                            accessPoint.getSsid(), (Point2D) sourcePosition,</span>
+                            sourceCovariance);
+                } else {
+                    // 3D
+
+                    //noinspection unchecked
+<span class="fc" id="L891">                    return (RadioSourceLocated&lt;P&gt;) new WifiAccessPointLocated3D(</span>
+<span class="fc" id="L892">                            accessPoint.getBssid(), accessPoint.getFrequency(),</span>
+<span class="fc" id="L893">                            accessPoint.getSsid(), (Point3D) sourcePosition,</span>
+                            sourceCovariance);
+                }
+        }
+    }
+
+    /**
+     * Builds data required to solve the problem.
+     * This method takes into account current nearest fingerprints and discards those
+     * readings belonging to radio sources not having enough data to be estimated.
+     *
+     * @param allPowerDiffs               list of received power differences of RSSI readings between a
+     *                                    located fingerprint and an unknown fingerprint for a given radio
+     *                                    source.
+     * @param allFingerprintPositions     positions of all located fingerprints being taken into
+     *                                    account.
+     * @param allInitialSourcesPositions  initial positions of all radio sources to be taken
+     *                                    into account. If initial located sources where provided,
+     *                                    their positions will be used, otherwise the centroid of
+     *                                    all located fingerprints associated to a radio source will
+     *                                    be used as initial position.
+     * @param allSourcesToBeEstimated     all radio sources that will be estimated.
+     * @param allSourcesIndices           indices indicating the position radio source being used
+     *                                    within the list of sources for current reading.
+     * @param allPathLossExponents        list of path loss exponents.
+     * @param allStandardDeviations       list of standard deviations for readings being used.
+     * @param nearestFingerprintsCentroid centroid of nearest fingerprints being taken into account.
+     */
+    @SuppressWarnings(&quot;Duplicates&quot;)
+    private void buildData(
+            final List&lt;Double&gt; allPowerDiffs,
+            final List&lt;P&gt; allFingerprintPositions,
+            final List&lt;P&gt; allInitialSourcesPositions,
+            final List&lt;RadioSource&gt; allSourcesToBeEstimated,
+            final List&lt;Integer&gt; allSourcesIndices,
+            final List&lt;Double&gt; allPathLossExponents,
+            final List&lt;Double&gt; allStandardDeviations,
+            final P nearestFingerprintsCentroid) {
+
+<span class="fc" id="L932">        final int dims = getNumberOfDimensions();</span>
+<span class="fc" id="L933">        int num = 0;</span>
+<span class="fc" id="L934">        final double[] centroidCoords = new double[dims];</span>
+        for (final RssiFingerprintLocated&lt;? extends RadioSource,
+<span class="fc bfc" id="L936" title="All 2 branches covered.">                ? extends RssiReading&lt;? extends RadioSource&gt;, P&gt; fingerprint : mNearestFingerprints) {</span>
+<span class="fc" id="L937">            final P position = fingerprint.getPosition();</span>
+<span class="pc bpc" id="L938" title="1 of 2 branches missed.">            if (position == null) {</span>
+<span class="nc" id="L939">                continue;</span>
+            }
+
+<span class="fc bfc" id="L942" title="All 2 branches covered.">            for (int i = 0; i &lt; dims; i++) {</span>
+<span class="fc" id="L943">                centroidCoords[i] += position.getInhomogeneousCoordinate(i);</span>
+            }
+<span class="fc" id="L945">            num++;</span>
+<span class="fc" id="L946">        }</span>
+
+<span class="pc bpc" id="L948" title="1 of 2 branches missed.">        if (num &gt; 0) {</span>
+<span class="fc bfc" id="L949" title="All 2 branches covered.">            for (int i = 0; i &lt; dims; i++) {</span>
+<span class="fc" id="L950">                centroidCoords[i] /= num;</span>
+<span class="fc" id="L951">                nearestFingerprintsCentroid.setInhomogeneousCoordinate(i, centroidCoords[i]);</span>
+            }
+        }
+
+        // maps to keep cached in memory computed values to speed up computations
+<span class="fc" id="L956">        final HashMap&lt;RadioSource, Integer&gt; numReadingsMap = new HashMap&lt;&gt;();</span>
+<span class="fc" id="L957">        final HashMap&lt;RadioSource, P&gt; centroidsMap = new HashMap&lt;&gt;();</span>
+
+        for (final RssiFingerprintLocated&lt;RadioSource, RssiReading&lt;RadioSource&gt;, P&gt; locatedFingerprint :
+<span class="fc bfc" id="L960" title="All 2 branches covered.">                mNearestFingerprints) {</span>
+
+<span class="fc" id="L962">            final List&lt;RssiReading&lt;RadioSource&gt;&gt; locatedReadings =</span>
+<span class="fc" id="L963">                    locatedFingerprint.getReadings();</span>
+<span class="pc bpc" id="L964" title="1 of 2 branches missed.">            if (locatedReadings == null) {</span>
+<span class="nc" id="L965">                continue;</span>
+            }
+
+<span class="fc" id="L968">            final P fingerprintPosition = locatedFingerprint.getPosition();</span>
+<span class="fc" id="L969">            final Matrix fingerprintPositionCovariance = locatedFingerprint.</span>
+<span class="fc" id="L970">                    getPositionCovariance();</span>
+
+<span class="fc bfc" id="L972" title="All 2 branches covered.">            for (final RssiReading&lt;RadioSource&gt; locatedReading : locatedReadings) {</span>
+<span class="fc" id="L973">                final RadioSource source = locatedReading.getSource();</span>
+
+                // obtain the total number of readings available for this source and
+                // the centroid of all located fingerprints containing readings for
+                // such source
+                final int numReadings;
+<span class="fc bfc" id="L979" title="All 2 branches covered.">                if (!numReadingsMap.containsKey(source)) {</span>
+<span class="fc" id="L980">                    numReadings = totalReadingsForSource(source, mNearestFingerprints, null);</span>
+<span class="fc" id="L981">                    numReadingsMap.put(source, numReadings);</span>
+                } else {
+<span class="fc" id="L983">                    numReadings = numReadingsMap.get(source);</span>
+                }
+
+<span class="fc bfc" id="L986" title="All 2 branches covered.">                if (numReadings &lt; dims) {</span>
+<span class="fc" id="L987">                    continue;</span>
+                }
+
+                final P centroid;
+<span class="fc bfc" id="L991" title="All 2 branches covered.">                if (!centroidsMap.containsKey(source)) {</span>
+<span class="fc" id="L992">                    centroid = createPoint();</span>
+
+                    //noinspection unchecked
+<span class="fc" id="L995">                    totalReadingsForSource(source,</span>
+                            (List&lt;RssiFingerprintLocated&lt;RadioSource, RssiReading&lt;RadioSource&gt;, P&gt;&gt;) mLocatedFingerprints,
+                            centroid);
+
+<span class="fc" id="L999">                    centroidsMap.put(source, centroid);</span>
+                } else {
+<span class="fc" id="L1001">                    centroid = centroidsMap.get(source);</span>
+                }
+
+                // find within the list of located sources (if available) the source
+                // of current located fingerprint
+
+                //noinspection SuspiciousMethodCalls
+<span class="fc bfc" id="L1008" title="All 2 branches covered.">                final int pos = mInitialLocatedSources != null ?</span>
+<span class="fc" id="L1009">                        mInitialLocatedSources.indexOf(source) : -1;</span>
+
+<span class="fc" id="L1011">                double pathLossExponent = mPathLossExponent;</span>
+<span class="fc" id="L1012">                Double pathLossExponentVariance = null;</span>
+<span class="pc bpc" id="L1013" title="1 of 4 branches missed.">                if (mUseSourcesPathLossExponentWhenAvailable &amp;&amp;</span>
+                        source instanceof RadioSourceWithPower) {
+<span class="fc" id="L1015">                    RadioSourceWithPower sourceWithPower = (RadioSourceWithPower) source;</span>
+<span class="fc" id="L1016">                    pathLossExponent = sourceWithPower.getPathLossExponent();</span>
+<span class="fc" id="L1017">                    final Double std = sourceWithPower.getPathLossExponentStandardDeviation();</span>
+<span class="fc bfc" id="L1018" title="All 2 branches covered.">                    pathLossExponentVariance = std != null ? std * std : null;</span>
+                }
+
+                final P sourcePosition;
+<span class="fc" id="L1022">                Matrix sourcePositionCovariance = null;</span>
+<span class="fc bfc" id="L1023" title="All 2 branches covered.">                if (pos &lt; 0) {</span>
+                    // located source is not available, so we use centroid
+<span class="fc" id="L1025">                    sourcePosition = centroid;</span>
+                } else {
+<span class="fc" id="L1027">                    final RadioSourceLocated&lt;P&gt; locatedSource = mInitialLocatedSources.get(pos);</span>
+<span class="fc" id="L1028">                    sourcePosition = locatedSource.getPosition();</span>
+
+<span class="pc bpc" id="L1030" title="1 of 6 branches missed.">                    if (mUseSourcesPathLossExponentWhenAvailable &amp;&amp;</span>
+                            locatedSource instanceof RadioSourceWithPower &amp;&amp;
+                            pathLossExponentVariance == null) {
+<span class="fc" id="L1033">                        final RadioSourceWithPower locatedSourceWithPower =</span>
+                                (RadioSourceWithPower) locatedSource;
+<span class="fc" id="L1035">                        pathLossExponent = locatedSourceWithPower.getPathLossExponent();</span>
+<span class="fc" id="L1036">                        final Double std = locatedSourceWithPower.</span>
+<span class="fc" id="L1037">                                getPathLossExponentStandardDeviation();</span>
+<span class="pc bpc" id="L1038" title="1 of 2 branches missed.">                        pathLossExponentVariance = std != null ? std * std : null;</span>
+                    }
+
+<span class="fc" id="L1041">                    sourcePositionCovariance = locatedSource.getPositionCovariance();</span>
+                }
+
+                final int sourceIndex;
+<span class="fc bfc" id="L1045" title="All 2 branches covered.">                if (!allSourcesToBeEstimated.contains(source)) {</span>
+<span class="fc" id="L1046">                    sourceIndex = allSourcesToBeEstimated.size();</span>
+
+<span class="fc" id="L1048">                    allSourcesToBeEstimated.add(source);</span>
+<span class="fc" id="L1049">                    allInitialSourcesPositions.add(sourcePosition);</span>
+                } else {
+<span class="fc" id="L1051">                    sourceIndex = allSourcesToBeEstimated.indexOf(source);</span>
+                }
+
+<span class="fc" id="L1054">                final double locatedRssi = locatedReading.getRssi();</span>
+
+<span class="fc" id="L1056">                final Double locatedRssiStd = locatedReading.getRssiStandardDeviation();</span>
+<span class="fc bfc" id="L1057" title="All 2 branches covered.">                final Double locatedRssiVariance = locatedRssiStd != null ?</span>
+<span class="fc" id="L1058">                        locatedRssiStd * locatedRssiStd : null;</span>
+
+<span class="fc" id="L1060">                final List&lt;? extends RssiReading&lt;? extends RadioSource&gt;&gt; readings =</span>
+<span class="fc" id="L1061">                        mFingerprint.getReadings();</span>
+<span class="fc bfc" id="L1062" title="All 2 branches covered.">                for (final RssiReading&lt;? extends RadioSource&gt; reading : readings) {</span>
+<span class="pc bpc" id="L1063" title="1 of 2 branches missed.">                    if (reading.getSource() == null ||</span>
+<span class="fc bfc" id="L1064" title="All 2 branches covered.">                            !reading.getSource().equals(source)) {</span>
+<span class="fc" id="L1065">                        continue;</span>
+                    }
+
+                    // only take into account reading for matching sources on located
+                    // and non-located readings
+<span class="fc" id="L1070">                    final double rssi = reading.getRssi();</span>
+
+<span class="fc" id="L1072">                    final double powerDiff = rssi - locatedRssi;</span>
+
+<span class="fc" id="L1074">                    Double standardDeviation = null;</span>
+<span class="pc bpc" id="L1075" title="5 of 6 branches missed.">                    if (mPropagatePathlossExponentStandardDeviation ||</span>
+                            mPropagateFingerprintPositionCovariance ||
+                            mPropagateRadioSourcePositionCovariance) {
+
+                        // compute initial position
+<span class="fc bfc" id="L1080" title="All 2 branches covered.">                        final P initialPosition = mInitialPosition != null ?</span>
+<span class="fc" id="L1081">                                mInitialPosition : nearestFingerprintsCentroid;</span>
+
+<span class="fc" id="L1083">                        final Double variance = propagateVariances(pathLossExponent,</span>
+                                fingerprintPosition, sourcePosition, initialPosition,
+<span class="pc bpc" id="L1085" title="1 of 2 branches missed.">                                mPropagatePathlossExponentStandardDeviation ? pathLossExponentVariance : null,</span>
+<span class="pc bpc" id="L1086" title="1 of 2 branches missed.">                                mPropagateFingerprintPositionCovariance ? fingerprintPositionCovariance : null,</span>
+<span class="pc bpc" id="L1087" title="1 of 2 branches missed.">                                mPropagateRadioSourcePositionCovariance ? sourcePositionCovariance : null);</span>
+<span class="pc bpc" id="L1088" title="1 of 2 branches missed.">                        if (variance != null) {</span>
+<span class="fc" id="L1089">                            standardDeviation = Math.sqrt(variance);</span>
+                        }
+                    }
+
+<span class="pc bpc" id="L1093" title="1 of 2 branches missed.">                    if (standardDeviation == null) {</span>
+<span class="nc" id="L1094">                        standardDeviation = reading.getRssiStandardDeviation();</span>
+                    }
+
+<span class="pc bpc" id="L1097" title="1 of 2 branches missed.">                    if (mPropagateFingerprintRssiStandardDeviation) {</span>
+<span class="pc bpc" id="L1098" title="1 of 2 branches missed.">                        if (standardDeviation != null &amp;&amp;</span>
+<span class="pc bpc" id="L1099" title="1 of 2 branches missed.">                                reading.getRssiStandardDeviation() != null) {</span>
+                            // consider propagated variance and reading variance independent, so we
+                            // sum them both
+<span class="nc" id="L1102">                            standardDeviation = standardDeviation * standardDeviation +</span>
+<span class="nc" id="L1103">                                    reading.getRssiStandardDeviation() * reading.getRssiStandardDeviation();</span>
+<span class="nc" id="L1104">                            standardDeviation = Math.sqrt(standardDeviation);</span>
+                        }
+
+<span class="pc bpc" id="L1107" title="1 of 4 branches missed.">                        if (locatedRssiVariance != null &amp;&amp; standardDeviation != null) {</span>
+                            // consider propagated variance and located reading variance
+                            // independent, so we sum them both
+<span class="fc" id="L1110">                            standardDeviation = standardDeviation * standardDeviation +</span>
+<span class="fc" id="L1111">                                    locatedRssiVariance;</span>
+<span class="fc" id="L1112">                            standardDeviation = Math.sqrt(standardDeviation);</span>
+                        }
+                    }
+
+<span class="pc bpc" id="L1116" title="1 of 4 branches missed.">                    if (standardDeviation == null || standardDeviation &lt; TINY) {</span>
+<span class="fc" id="L1117">                        standardDeviation = mFallbackRssiStandardDeviation;</span>
+                    }
+
+<span class="fc" id="L1120">                    allPowerDiffs.add(powerDiff);</span>
+<span class="fc" id="L1121">                    allFingerprintPositions.add(fingerprintPosition);</span>
+<span class="fc" id="L1122">                    allSourcesIndices.add(sourceIndex);</span>
+<span class="fc" id="L1123">                    allPathLossExponents.add(pathLossExponent);</span>
+<span class="fc" id="L1124">                    allStandardDeviations.add(standardDeviation);</span>
+<span class="fc" id="L1125">                }</span>
+<span class="fc" id="L1126">            }</span>
+<span class="fc" id="L1127">        }</span>
+<span class="fc" id="L1128">    }</span>
+
+    /**
+     * Setups fitter to solve positions.
+     *
+     * @return list of radio sources whose location will be estimated.
+     * @throws FittingException if Levenberg-Marquardt fitting fails.
+     */
+    @SuppressWarnings(&quot;Duplicates&quot;)
+    private List&lt;RadioSource&gt; setupFitter() throws FittingException {
+        // build lists of data
+<span class="fc" id="L1139">        final List&lt;Double&gt; allPowerDiffs = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L1140">        final List&lt;P&gt; allFingerprintPositions = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L1141">        final List&lt;P&gt; allInitialSourcesPositions = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L1142">        final List&lt;RadioSource&gt; allSourcesToBeEstimated = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L1143">        final List&lt;Integer&gt; allSourcesIndices = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L1144">        final List&lt;Double&gt; allPathLossExponents = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L1145">        final List&lt;Double&gt; allStandardDeviations = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L1146">        final P nearestFingerprintsCentroid = createPoint();</span>
+<span class="fc" id="L1147">        buildData(allPowerDiffs, allFingerprintPositions, allInitialSourcesPositions,</span>
+                allSourcesToBeEstimated, allSourcesIndices, allPathLossExponents,
+                allStandardDeviations, nearestFingerprintsCentroid);
+
+<span class="fc" id="L1151">        final int totalReadings = allPowerDiffs.size();</span>
+<span class="fc" id="L1152">        final int totalSources = allSourcesToBeEstimated.size();</span>
+<span class="fc" id="L1153">        final int dims = getNumberOfDimensions();</span>
+<span class="fc" id="L1154">        final int n = 1 + dims;</span>
+
+<span class="fc" id="L1156">        mFitter.setFunctionEvaluator(new LevenbergMarquardtMultiDimensionFunctionEvaluator() {</span>
+            @Override
+            public int getNumberOfDimensions() {
+<span class="fc" id="L1159">                return n;</span>
+            }
+
+            @Override
+            public double[] createInitialParametersArray() {
+<span class="fc" id="L1164">                final double[] initial = new double[dims * (totalSources + 1)];</span>
+
+<span class="fc bfc" id="L1166" title="All 2 branches covered.">                if (mInitialPosition == null) {</span>
+                    // use centroid of nearest fingerprints as initial value
+<span class="fc bfc" id="L1168" title="All 2 branches covered.">                    for (int i = 0; i &lt; dims; i++) {</span>
+<span class="fc" id="L1169">                        initial[i] = nearestFingerprintsCentroid.getInhomogeneousCoordinate(i);</span>
+                    }
+                } else {
+                    // use provided initial position
+<span class="fc bfc" id="L1173" title="All 2 branches covered.">                    for (int i = 0; i &lt; dims; i++) {</span>
+<span class="fc" id="L1174">                        initial[i] = mInitialPosition.getInhomogeneousCoordinate(i);</span>
+                    }
+                }
+
+<span class="fc" id="L1178">                int pos = dims;</span>
+<span class="fc bfc" id="L1179" title="All 2 branches covered.">                for (int j = 0; j &lt; totalSources; j++) {</span>
+<span class="fc" id="L1180">                    final P initialSourcePosition = allInitialSourcesPositions.get(j);</span>
+<span class="fc bfc" id="L1181" title="All 2 branches covered.">                    for (int i = 0; i &lt; dims; i++) {</span>
+<span class="fc" id="L1182">                        initial[pos] = initialSourcePosition.</span>
+<span class="fc" id="L1183">                                getInhomogeneousCoordinate(i);</span>
+<span class="fc" id="L1184">                        pos++;</span>
+                    }
+                }
+
+<span class="fc" id="L1188">                return initial;</span>
+            }
+
+            @Override
+            public double evaluate(
+                    final int i, final double[] point, final double[] params,
+                    final double[] derivatives) {
+
+                // For 2D:
+                // -------
+
+                // Prdiff1a = Pr(pi) - Pr(p1) = 5*n*log(d1a^2) - 5*n*log(dia^2) =
+                //   = 5*n*log((x1 - xa)^2 + (y1 - ya)^2) - 5*n*log((xi - xa)^2 + (yi - ya)^2)
+
+                // derivatives respect parameters being estimated (xi,yi,xa,ya...,xM,yM)
+                // for unknown point pi = (xi, yi)
+                // diff(Prdiff1a)/diff(xi) = -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2))*2*(xi - xa)
+                //   = -10*n*(xi - xa)/(log(10)*((xi - xa)^2 + (yi - ya)^2))
+                //   = -10*n*(xi - xa)/(log(10)*dia^2)
+
+                // diff(Prdiff1a)/diff(yi) = -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2))*2*(yi - ya)
+                //   = -10*n*(yi - ya)/(log(10)*((xi - xa)^2 + (yi - ya)^2))
+                //   = -10*n*(yi - ya)/(log(10)*dia^2)
+
+                // for same radio source pa=(xa,ya)
+                // diff(Prdiff1a)/diff(xa) = 5*n/(log(10)*((x1 - xa)^2 + (y1 - ya)^2))*-2*(x1 - xa) -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2))*-2*(xi - xa) =
+                //   = -10*n*(x1 - xa)/(log(10)*((x1 - xa)^2 + (y1 - ya)^2)) + 10*n*(xi - xa)/(log(10)*((xi - xa)^2 + (yi - ya)^2))
+                //   = 10*n*(-(x1 - xa)/(log(10)*d1a^2) + (xi - xa)/(log(10)*dia^2))
+
+                // diff(Prdiff1a)/diff(ya) = 5*n/(log(10)*((x1 - xa)^2 + (y1 - ya)^2))*-2*(y1 - ya) -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2))*-2*(yi - ya) =
+                //   = -10*n*(y1 - ya)/(log(10)*((x1 - xa)^2 + (y1 - ya)^2)) + 10*n*(yi - ya)/(log(10)*((xi - xa)^2 + (yi - ya)^2))
+                //   = 10*n*(-(y1 - ya)/(log(10)*d1a^2) + (xi - xa)/(log(10)*dia^2))
+
+                // for other radio source pb=(xb,yb)
+                // diff(Prdiff1a)/diff(xb) = diff(Prdiff1a)/diff(yb) = 0
+
+                // For 3D:
+                // -------
+
+                // Prdiff1a = Pr(pi) - Pr(p1) = 5*n*log(d1a^2) - 5*n*log(dia^2) =
+                //   = 5*n*log((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - 5*n*log((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2)
+
+                // derivatives respect parameters being estimated (xi,yi,zi,xa,ya,za...,xM,yM,zM)
+                // for unknown point pi = (xi, yi,zi)
+                // diff(Prdiff1a)/diff(xi) = -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*2*(xi - xa)
+                //   = -10*n*(xi - xa)/(log(10)*((xi - xa)^2 + (yi - ya)^2) + (zi - za)^2))
+                //   = -10*n*(xi - xa)/(log(10)*dia^2)
+
+                // diff(Prdiff1a)/diff(yi) = -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*2*(yi - ya)
+                //   = -10*n*(yi - ya)/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))
+                //   = -10*n*(yi - ya)/(log(10)*dia^2)
+
+                // diff(Prdiff1a)/diff(zi) = -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*2*(zi - za)
+                //   = -10*n*(zi - za)/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))
+                //   = -10*n*(zi - za)/(log(10)*dia^2)
+
+                // for same radio source pa=(xa,ya)
+                // diff(Prdiff1a)/diff(xa) = 5*n/(log(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*-2*(x1 - xa) -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*-2*(xi - xa) =
+                //   = -10*n*(x1 - xa)/(log(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)) + 10*n*(xi - xa)/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2)) =
+                //   = 10*n*(-(x1 -xa)/(log(10)*d1a^2) + (xi - xa)/(log(10)*dia^2))
+
+                // diff(Prdiff1a)/diff(ya) = 5*n/(log(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*-2*(y1 - ya) -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*-2*(yi - ya) =
+                //   = -10*n*(y1 - ya)/(log(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)) + 10*n*(yi - ya)/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2)) =
+                //   = 10*n(-(y1 - ya)/(log(10)*d1a^2) + (xi - xa)/(log(10)*dia^2))
+
+                // diff(Prdiff1a)/diff(za) = 5*n/(log(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2))*-2*(z1 - za) -5*n/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2))*-2*(zi - za) =
+                //   = -10*n*(z1 - za)/(log(10)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)) + 10*n*(zi - za)/(log(10)*((xi - xa)^2 + (yi - ya)^2 + (zi - za)^2)) =
+                //   = 10*n(-(z1 - za)/(log(10)*d1a^2) + (zi - za)/(log(10)*dia^2))
+
+                // for other radio source pb=(xb,yb)
+                // diff(Prdiff1a)/diff(xb) = diff(Prdiff1a)/diff(yb) = 0
+
+<span class="fc" id="L1260">                final int dims = NonLinearFingerprintPositionAndRadioSourceEstimator.this.</span>
+<span class="fc" id="L1261">                        getNumberOfDimensions();</span>
+
+                // path loss exponent
+<span class="fc" id="L1264">                final double n = point[0];</span>
+
+<span class="fc" id="L1266">                final double ln10 = Math.log(10.0);</span>
+
+<span class="fc" id="L1268">                final int sourceIndex = allSourcesIndices.get(i);</span>
+<span class="fc" id="L1269">                final int start = dims * (1 + sourceIndex);</span>
+
+                // d1a^2, d2a^2, ...
+<span class="fc" id="L1272">                double distanceFingerprint2 = 0.0;</span>
+
+                // dia^2, dib^2, ...
+<span class="fc" id="L1275">                double distancePoint2 = 0.0;</span>
+<span class="fc bfc" id="L1276" title="All 2 branches covered.">                for (int j = 0; j &lt; dims; j++) {</span>
+                    // fingerprint coordinate p1=(x1,y1,z1), ...
+<span class="fc" id="L1278">                    final double fingerprintCoord = point[1 + j];</span>
+
+                    // unknown point &quot;pi&quot; coordinate
+<span class="fc" id="L1281">                    final double pointCoord = params[j];</span>
+
+                    // radio source coordinate pa=(xa,ya,za), ...
+<span class="fc" id="L1284">                    final double sourceCoord = params[start + j];</span>
+
+                    // x1 - xa, y1 - ya, ...
+<span class="fc" id="L1287">                    final double diffFingerprint = fingerprintCoord - sourceCoord;</span>
+
+                    // xi - xa, yi - ya, ...
+<span class="fc" id="L1290">                    final double diffPoint = pointCoord - sourceCoord;</span>
+
+<span class="fc" id="L1292">                    final double diffFingerprint2 = diffFingerprint * diffFingerprint;</span>
+<span class="fc" id="L1293">                    final double diffPoint2 = diffPoint * diffPoint;</span>
+
+<span class="fc" id="L1295">                    distanceFingerprint2 += diffFingerprint2;</span>
+<span class="fc" id="L1296">                    distancePoint2 += diffPoint2;</span>
+                }
+
+<span class="fc" id="L1299">                distanceFingerprint2 = Math.max(distanceFingerprint2, TINY);</span>
+<span class="fc" id="L1300">                distancePoint2 = Math.max(distancePoint2, TINY);</span>
+
+<span class="fc" id="L1302">                final double result = 5 * n * (Math.log10(distanceFingerprint2) -</span>
+<span class="fc" id="L1303">                        Math.log10(distancePoint2));</span>
+
+
+                // we clear derivatives array to ensure that derivatives respect other
+                // radio sources are zero
+<span class="fc" id="L1308">                Arrays.fill(derivatives, 0.0);</span>
+
+<span class="fc bfc" id="L1310" title="All 2 branches covered.">                for (int j = 0; j &lt; dims; j++) {</span>
+                    // fingerprint coordinate p1=(x1,y1,z1), ...
+<span class="fc" id="L1312">                    final double fingerprintCoord = point[1 + j];</span>
+
+                    // unknown point &quot;pi&quot; coordinate
+<span class="fc" id="L1315">                    final double pointCoord = params[j];</span>
+
+                    // radio source coordinate pa=(xa,ya,za), ...
+<span class="fc" id="L1318">                    final double sourceCoord = params[start + j];</span>
+
+                    // x1 - xa, y1 - ya, ...
+<span class="fc" id="L1321">                    final double diffFingerprint = fingerprintCoord - sourceCoord;</span>
+
+                    // xi - xa, yi - ya, ...
+<span class="fc" id="L1324">                    final double diffPoint = pointCoord - sourceCoord;</span>
+
+
+                    // Example: diff(Prdiff1a)/diff(xi) =  -10*n*(xi - xa)/(log(10)*dia^2)
+<span class="fc" id="L1328">                    final double derivativePointCoord = -10.0 * n * diffPoint / (ln10 * distancePoint2);</span>
+
+                    // Example: diff(Prdiff1a)/diff(xa) = 10*n*(-(x1 - xa)/(log(10)*d1a^2) + (xi - xa)/(log(10)*dia^2)) =
+                    //   -10*n*(x1 - xa)/(log(10)*d1a^2) - diff(Prdiff1a)/diff(xi)
+<span class="fc" id="L1332">                    final double derivativeSameRadioSourceCoord =</span>
+                            -10.0 * n * diffFingerprint / (ln10 * distanceFingerprint2)
+                                    - derivativePointCoord;
+
+                    // derivatives respect point pi = (xi, yi, zi)
+<span class="fc" id="L1337">                    derivatives[j] = derivativePointCoord;</span>
+
+                    // derivatives respect same radio source pa = (xa, ya, za)
+<span class="fc" id="L1340">                    derivatives[dims * (1 + sourceIndex) + j] = derivativeSameRadioSourceCoord;</span>
+                }
+
+<span class="fc" id="L1343">                return result;</span>
+            }
+        });
+
+        try {
+            // In 2D we know that for fingerprint &quot;1&quot; and radio source &quot;a&quot;:
+            // Prdiff1a = Pr(pi) - Pr(p1) = 5*n*log(d1a^2) - 5*n*log(dia^2) =
+            //   = 5*n*log((x1 - xa)^2 + (y1 - ya)^2) - 5*n*log((xi - xa)^2 + (yi - ya)^2)
+
+            // Therefore x must have 1 + dims columns (for path-loss n and fingerprint position (x1,y1)
+
+<span class="fc" id="L1354">            final Matrix x = new Matrix(totalReadings, n);</span>
+<span class="fc" id="L1355">            final double[] y = new double[totalReadings];</span>
+<span class="fc" id="L1356">            final double[] standardDeviations = new double[totalReadings];</span>
+<span class="fc bfc" id="L1357" title="All 2 branches covered.">            for (int i = 0; i &lt; totalReadings; i++) {</span>
+                // path loss exponent
+<span class="fc" id="L1359">                x.setElementAt(i, 0, allPathLossExponents.get(i));</span>
+
+<span class="fc" id="L1361">                final P fingerprintPosition = allFingerprintPositions.get(i);</span>
+<span class="fc" id="L1362">                int col = 1;</span>
+<span class="fc bfc" id="L1363" title="All 2 branches covered.">                for (int j = 0; j &lt; dims; j++) {</span>
+<span class="fc" id="L1364">                    x.setElementAt(i, col,</span>
+<span class="fc" id="L1365">                            fingerprintPosition.getInhomogeneousCoordinate(j));</span>
+<span class="fc" id="L1366">                    col++;</span>
+                }
+
+<span class="fc" id="L1369">                y[i] = allPowerDiffs.get(i);</span>
+
+<span class="fc" id="L1371">                standardDeviations[i] = allStandardDeviations.get(i);</span>
+            }
+
+<span class="fc" id="L1374">            mFitter.setInputData(x, y, standardDeviations);</span>
+
+<span class="fc" id="L1376">            return allSourcesToBeEstimated;</span>
+<span class="fc" id="L1377">        } catch (final AlgebraException e) {</span>
+<span class="fc" id="L1378">            throw new FittingException(e);</span>
+        }
+    }
+
+    /**
+     * Gets the total number of readings associated to provided radio source.
+     * This method uses only current nearest fingerprints.
+     *
+     * @param source       radio source to be checked
+     * @param centroid     centroid to be computed.
+     * @param fingerprints fingerprints where search is made.
+     * @return total number of readings associated to provided radio source.
+     */
+    private int totalReadingsForSource(
+            final RadioSource source,
+            final List&lt;RssiFingerprintLocated&lt;RadioSource, RssiReading&lt;RadioSource&gt;, P&gt;&gt; fingerprints,
+            final P centroid) {
+<span class="pc bpc" id="L1395" title="1 of 2 branches missed.">        if (source == null) {</span>
+<span class="nc" id="L1396">            return 0;</span>
+        }
+
+<span class="fc" id="L1399">        final int dims = getNumberOfDimensions();</span>
+
+<span class="fc" id="L1401">        int result = 0;</span>
+<span class="fc bfc" id="L1402" title="All 2 branches covered.">        final double[] centroidCoords = centroid != null ?</span>
+<span class="fc" id="L1403">                new double[dims] : null;</span>
+
+<span class="fc bfc" id="L1405" title="All 2 branches covered.">        for (final RssiFingerprintLocated&lt;RadioSource, RssiReading&lt;RadioSource&gt;, P&gt; fingerprint : fingerprints) {</span>
+<span class="fc" id="L1406">            final List&lt;RssiReading&lt;RadioSource&gt;&gt; readings = fingerprint.getReadings();</span>
+<span class="pc bpc" id="L1407" title="1 of 2 branches missed.">            if (readings == null) {</span>
+<span class="nc" id="L1408">                continue;</span>
+            }
+
+<span class="fc" id="L1411">            final P fingerprintPosition = fingerprint.getPosition();</span>
+
+<span class="fc bfc" id="L1413" title="All 2 branches covered.">            for (final RssiReading&lt;RadioSource&gt; reading : readings) {</span>
+<span class="fc" id="L1414">                final RadioSource readingSource = reading.getSource();</span>
+<span class="pc bpc" id="L1415" title="1 of 4 branches missed.">                if (readingSource != null &amp;&amp; readingSource.equals(source)) {</span>
+<span class="fc" id="L1416">                    result++;</span>
+
+<span class="fc bfc" id="L1418" title="All 2 branches covered.">                    if (centroid != null) {</span>
+<span class="fc bfc" id="L1419" title="All 2 branches covered.">                        for (int i = 0; i &lt; dims; i++) {</span>
+<span class="fc" id="L1420">                            final double coord = fingerprintPosition.getInhomogeneousCoordinate(i);</span>
+<span class="fc" id="L1421">                            centroidCoords[i] += coord;</span>
+                        }
+                    }
+                }
+<span class="fc" id="L1425">            }</span>
+<span class="fc" id="L1426">        }</span>
+
+<span class="pc bpc" id="L1428" title="1 of 4 branches missed.">        if (centroid != null &amp;&amp; result &gt; 0) {</span>
+<span class="fc bfc" id="L1429" title="All 2 branches covered.">            for (int i = 0; i &lt; dims; i++) {</span>
+<span class="fc" id="L1430">                centroidCoords[i] /= result;</span>
+<span class="fc" id="L1431">                centroid.setInhomogeneousCoordinate(i, centroidCoords[i]);</span>
+            }
+        }
+
+<span class="fc" id="L1435">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
