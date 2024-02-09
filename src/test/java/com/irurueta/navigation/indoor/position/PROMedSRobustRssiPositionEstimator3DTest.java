@@ -102,32 +102,26 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
     @Test
     public void testConstructor() {
         // empty constructor
-        PROMedSRobustRssiPositionEstimator3D estimator =
-                new PROMedSRobustRssiPositionEstimator3D();
+        PROMedSRobustRssiPositionEstimator3D estimator = new PROMedSRobustRssiPositionEstimator3D();
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 4);
-        assertEquals(estimator.getPreliminarySubsetSize(), 4);
+        assertEquals(PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
+        assertEquals(4, estimator.getMinRequiredSources());
+        assertEquals(4, estimator.getPreliminarySubsetSize());
         assertNull(estimator.getSources());
         assertNull(estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -141,8 +135,8 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 3);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROMedS);
+        assertEquals(3, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROMEDS, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // constructor with sources
@@ -154,28 +148,23 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         estimator = new PROMedSRobustRssiPositionEstimator3D(sources);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 4);
-        assertEquals(estimator.getPreliminarySubsetSize(), 4);
-        assertSame(estimator.getSources(), sources);
+        assertEquals(PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
+        assertEquals(4, estimator.getMinRequiredSources());
+        assertEquals(4, estimator.getPreliminarySubsetSize());
+        assertSame(sources, estimator.getSources());
         assertNull(estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -189,21 +178,19 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 3);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROMedS);
+        assertEquals(3, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROMEDS, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new PROMedSRobustRssiPositionEstimator3D(
-                    (List<WifiAccessPointLocated3D>) null);
+            estimator = new PROMedSRobustRssiPositionEstimator3D((List<WifiAccessPointLocated3D>) null);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new PROMedSRobustRssiPositionEstimator3D(
-                    new ArrayList<WifiAccessPointLocated3D>());
+            estimator = new PROMedSRobustRssiPositionEstimator3D(new ArrayList<WifiAccessPointLocated3D>());
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -215,28 +202,23 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         estimator = new PROMedSRobustRssiPositionEstimator3D(fingerprint);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 4);
-        assertEquals(estimator.getPreliminarySubsetSize(), 4);
+        assertEquals(PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
+        assertEquals(4, estimator.getMinRequiredSources());
+        assertEquals(4, estimator.getPreliminarySubsetSize());
         assertNull(estimator.getSources());
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -250,8 +232,8 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 3);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROMedS);
+        assertEquals(3, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROMEDS, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
@@ -268,28 +250,23 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         estimator = new PROMedSRobustRssiPositionEstimator3D(sources, fingerprint);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 4);
-        assertEquals(estimator.getPreliminarySubsetSize(), 4);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertEquals(PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
+        assertEquals(4, estimator.getMinRequiredSources());
+        assertEquals(4, estimator.getPreliminarySubsetSize());
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -303,15 +280,14 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 3);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROMedS);
+        assertEquals(3, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROMEDS, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new PROMedSRobustRssiPositionEstimator3D(null,
-                    fingerprint);
+            estimator = new PROMedSRobustRssiPositionEstimator3D(null, fingerprint);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -333,28 +309,24 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         estimator = new PROMedSRobustRssiPositionEstimator3D(this);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 4);
-        assertEquals(estimator.getPreliminarySubsetSize(), 4);
+        assertEquals(PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
+        assertEquals(4, estimator.getMinRequiredSources());
+        assertEquals(4, estimator.getPreliminarySubsetSize());
         assertNull(estimator.getSources());
         assertNull(estimator.getFingerprint());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT,
+                estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -368,36 +340,31 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 3);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROMedS);
+        assertEquals(3, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROMEDS, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // constructor with sources and listener
         estimator = new PROMedSRobustRssiPositionEstimator3D(sources, this);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 4);
-        assertEquals(estimator.getPreliminarySubsetSize(), 4);
-        assertSame(estimator.getSources(), sources);
+        assertEquals(PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
+        assertEquals(4, estimator.getMinRequiredSources());
+        assertEquals(4, estimator.getPreliminarySubsetSize());
+        assertSame(sources, estimator.getSources());
         assertNull(estimator.getFingerprint());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -411,8 +378,8 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 3);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROMedS);
+        assertEquals(3, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROMEDS, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
@@ -435,28 +402,23 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         estimator = new PROMedSRobustRssiPositionEstimator3D(fingerprint, this);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 4);
-        assertEquals(estimator.getPreliminarySubsetSize(), 4);
+        assertEquals(PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
+        assertEquals(4, estimator.getMinRequiredSources());
+        assertEquals(4, estimator.getPreliminarySubsetSize());
         assertNull(estimator.getSources());
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -470,48 +432,41 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 3);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROMedS);
+        assertEquals(3, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROMEDS, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
         estimator = null;
         try {
             estimator = new PROMedSRobustRssiPositionEstimator3D(
-                    (RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>>) null,
-                    this);
+                    (RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>>) null, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
 
         // constructor with sources, fingerprint and listener
-        estimator = new PROMedSRobustRssiPositionEstimator3D(sources, fingerprint,
-                this);
+        estimator = new PROMedSRobustRssiPositionEstimator3D(sources, fingerprint, this);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 4);
-        assertEquals(estimator.getPreliminarySubsetSize(), 4);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertEquals(PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
+        assertEquals(4, estimator.getMinRequiredSources());
+        assertEquals(4, estimator.getPreliminarySubsetSize());
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -525,28 +480,25 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 3);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROMedS);
+        assertEquals(3, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROMEDS, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new PROMedSRobustRssiPositionEstimator3D(null, fingerprint,
-                    this);
+            estimator = new PROMedSRobustRssiPositionEstimator3D(null, fingerprint, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
             estimator = new PROMedSRobustRssiPositionEstimator3D(
-                    new ArrayList<WifiAccessPointLocated3D>(), fingerprint,
-                    this);
+                    new ArrayList<WifiAccessPointLocated3D>(), fingerprint, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new PROMedSRobustRssiPositionEstimator3D(sources,
-                    null, this);
+            estimator = new PROMedSRobustRssiPositionEstimator3D(sources, null, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -559,28 +511,23 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
                 fingerprintReadingsQualityScores);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 4);
-        assertEquals(estimator.getPreliminarySubsetSize(), 4);
+        assertEquals(PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
+        assertEquals(4, estimator.getMinRequiredSources());
+        assertEquals(4, estimator.getPreliminarySubsetSize());
         assertNull(estimator.getSources());
         assertNull(estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -590,13 +537,12 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertFalse(estimator.isReady());
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingsQualityScores);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingsQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 3);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROMedS);
+        assertEquals(3, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROMEDS, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
@@ -632,28 +578,23 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
                 fingerprintReadingsQualityScores, sources);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 4);
-        assertEquals(estimator.getPreliminarySubsetSize(), 4);
-        assertSame(estimator.getSources(), sources);
+        assertEquals(PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
+        assertEquals(4, estimator.getMinRequiredSources());
+        assertEquals(4, estimator.getPreliminarySubsetSize());
+        assertSame(sources, estimator.getSources());
         assertNull(estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -663,13 +604,12 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertFalse(estimator.isReady());
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingsQualityScores);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingsQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 3);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROMedS);
+        assertEquals(3, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROMEDS, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
@@ -700,15 +640,13 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         }
         try {
             estimator = new PROMedSRobustRssiPositionEstimator3D(sourceQualityScores,
-                    fingerprintReadingsQualityScores,
-                    (List<WifiAccessPointLocated3D>) null);
+                    fingerprintReadingsQualityScores, (List<WifiAccessPointLocated3D>) null);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
             estimator = new PROMedSRobustRssiPositionEstimator3D(sourceQualityScores,
-                    fingerprintReadingsQualityScores,
-                    new ArrayList<WifiAccessPointLocated3D>());
+                    fingerprintReadingsQualityScores, new ArrayList<WifiAccessPointLocated3D>());
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -719,28 +657,23 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
                 fingerprintReadingsQualityScores, fingerprint);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 4);
-        assertEquals(estimator.getPreliminarySubsetSize(), 4);
+        assertEquals(PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
+        assertEquals(4, estimator.getMinRequiredSources());
+        assertEquals(4, estimator.getPreliminarySubsetSize());
         assertNull(estimator.getSources());
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -750,13 +683,13 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertFalse(estimator.isReady());
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
         assertSame(estimator.getFingerprintReadingsQualityScores(),
                 fingerprintReadingsQualityScores);
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 3);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROMedS);
+        assertEquals(3, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROMEDS, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
@@ -799,28 +732,23 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
                 fingerprintReadingsQualityScores, sources, fingerprint);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 4);
-        assertEquals(estimator.getPreliminarySubsetSize(), 4);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertEquals(PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
+        assertEquals(4, estimator.getMinRequiredSources());
+        assertEquals(4, estimator.getPreliminarySubsetSize());
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -830,13 +758,12 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertFalse(estimator.isReady());
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingsQualityScores);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingsQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 3);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROMedS);
+        assertEquals(3, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROMEDS, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
@@ -874,8 +801,8 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         }
         try {
             estimator = new PROMedSRobustRssiPositionEstimator3D(sourceQualityScores,
-                    fingerprintReadingsQualityScores,
-                    new ArrayList<WifiAccessPointLocated3D>(), fingerprint);
+                    fingerprintReadingsQualityScores, new ArrayList<WifiAccessPointLocated3D>(),
+                    fingerprint);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -893,28 +820,23 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
                 fingerprintReadingsQualityScores, this);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 4);
-        assertEquals(estimator.getPreliminarySubsetSize(), 4);
+        assertEquals(PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
+        assertEquals(4, estimator.getMinRequiredSources());
+        assertEquals(4, estimator.getPreliminarySubsetSize());
         assertNull(estimator.getSources());
         assertNull(estimator.getFingerprint());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -924,21 +846,19 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertFalse(estimator.isReady());
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingsQualityScores);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingsQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 3);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROMedS);
+        assertEquals(3, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROMEDS, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new PROMedSRobustRssiPositionEstimator3D(
-                    null, fingerprintReadingsQualityScores,
-                    this);
+            estimator = new PROMedSRobustRssiPositionEstimator3D(null,
+                    fingerprintReadingsQualityScores, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -967,28 +887,23 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
                 fingerprintReadingsQualityScores, sources, this);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 4);
-        assertEquals(estimator.getPreliminarySubsetSize(), 4);
-        assertSame(estimator.getSources(), sources);
+        assertEquals(PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
+        assertEquals(4, estimator.getMinRequiredSources());
+        assertEquals(4, estimator.getPreliminarySubsetSize());
+        assertSame(sources, estimator.getSources());
         assertNull(estimator.getFingerprint());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -998,13 +913,12 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertFalse(estimator.isReady());
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingsQualityScores);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingsQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 3);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROMedS);
+        assertEquals(3, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROMEDS, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
@@ -1054,28 +968,23 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
                 fingerprintReadingsQualityScores, fingerprint, this);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 4);
-        assertEquals(estimator.getPreliminarySubsetSize(), 4);
+        assertEquals(PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
+        assertEquals(4, estimator.getMinRequiredSources());
+        assertEquals(4, estimator.getPreliminarySubsetSize());
         assertNull(estimator.getSources());
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -1085,13 +994,12 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertFalse(estimator.isReady());
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingsQualityScores);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingsQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 3);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROMedS);
+        assertEquals(3, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROMEDS, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
@@ -1123,8 +1031,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         try {
             estimator = new PROMedSRobustRssiPositionEstimator3D(sourceQualityScores,
                     fingerprintReadingsQualityScores,
-                    (RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>>) null,
-                    this);
+                    (RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>>) null, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -1132,32 +1039,26 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
 
         // constructor with sources, fingerprint and listener
         estimator = new PROMedSRobustRssiPositionEstimator3D(sourceQualityScores,
-                fingerprintReadingsQualityScores, sources, fingerprint,
-                this);
+                fingerprintReadingsQualityScores, sources, fingerprint, this);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 4);
-        assertEquals(estimator.getPreliminarySubsetSize(), 4);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertEquals(PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
+        assertEquals(4, estimator.getMinRequiredSources());
+        assertEquals(4, estimator.getPreliminarySubsetSize());
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -1167,13 +1068,12 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         assertNull(estimator.getDistances());
         assertNull(estimator.getDistanceStandardDeviations());
         assertFalse(estimator.isReady());
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingsQualityScores);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingsQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 3);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.PROMedS);
+        assertEquals(3, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.PROMEDS, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
@@ -1204,23 +1104,20 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         }
         try {
             estimator = new PROMedSRobustRssiPositionEstimator3D(sourceQualityScores,
-                    fingerprintReadingsQualityScores, null, fingerprint,
-                    this);
+                    fingerprintReadingsQualityScores, null, fingerprint, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
             estimator = new PROMedSRobustRssiPositionEstimator3D(sourceQualityScores,
                     fingerprintReadingsQualityScores,
-                    new ArrayList<WifiAccessPointLocated3D>(), fingerprint,
-                    this);
+                    new ArrayList<WifiAccessPointLocated3D>(), fingerprint, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
             estimator = new PROMedSRobustRssiPositionEstimator3D(sourceQualityScores,
-                    fingerprintReadingsQualityScores, sources,
-                    null, this);
+                    fingerprintReadingsQualityScores, sources, null, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -1229,18 +1126,17 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
 
     @Test
     public void testGetSetStopThreshold() throws LockedException {
-        final PROMedSRobustRssiPositionEstimator3D estimator =
-                new PROMedSRobustRssiPositionEstimator3D();
+        final PROMedSRobustRssiPositionEstimator3D estimator = new PROMedSRobustRssiPositionEstimator3D();
 
         // check default value
-        assertEquals(estimator.getStopThreshold(),
-                PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
+        assertEquals(PROMedSRobustLateration3DSolver.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
 
         // set new value
         estimator.setStopThreshold(1.0);
 
         // check
-        assertEquals(estimator.getStopThreshold(), 1.0, 0.0);
+        assertEquals(1.0, estimator.getStopThreshold(), 0.0);
 
         // force IllegalArgumentException
         try {
@@ -1252,8 +1148,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
 
     @Test
     public void testGetSetSources() throws LockedException {
-        final PROMedSRobustRssiPositionEstimator3D estimator =
-                new PROMedSRobustRssiPositionEstimator3D();
+        final PROMedSRobustRssiPositionEstimator3D estimator = new PROMedSRobustRssiPositionEstimator3D();
 
         // check default value
         assertNull(estimator.getSources());
@@ -1261,14 +1156,13 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         // set new value
         final List<WifiAccessPointLocated3D> sources = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
-            sources.add(new WifiAccessPointLocated3D("id1", FREQUENCY,
-                    new InhomogeneousPoint3D()));
+            sources.add(new WifiAccessPointLocated3D("id1", FREQUENCY, new InhomogeneousPoint3D()));
         }
 
         estimator.setSources(sources);
 
         // check
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
 
         // force IllegalArgumentException
         try {
@@ -1285,8 +1179,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
 
     @Test
     public void testGetSetFingerprint() throws LockedException {
-        final PROMedSRobustRssiPositionEstimator3D estimator =
-                new PROMedSRobustRssiPositionEstimator3D();
+        final PROMedSRobustRssiPositionEstimator3D estimator = new PROMedSRobustRssiPositionEstimator3D();
 
         // check default value
         assertNull(estimator.getFingerprint());
@@ -1297,7 +1190,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         estimator.setFingerprint(fingerprint);
 
         // check
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // force IllegalArgumentException
         try {
@@ -1309,8 +1202,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
 
     @Test
     public void testGetSetListener() throws LockedException {
-        final PROMedSRobustRssiPositionEstimator3D estimator =
-                new PROMedSRobustRssiPositionEstimator3D();
+        final PROMedSRobustRssiPositionEstimator3D estimator = new PROMedSRobustRssiPositionEstimator3D();
 
         // check default value
         assertNull(estimator.getListener());
@@ -1319,13 +1211,12 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         estimator.setListener(this);
 
         // check
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
     }
 
     @Test
     public void testGetSetInitialPosition() throws LockedException {
-        final PROMedSRobustRssiPositionEstimator3D estimator =
-                new PROMedSRobustRssiPositionEstimator3D();
+        final PROMedSRobustRssiPositionEstimator3D estimator = new PROMedSRobustRssiPositionEstimator3D();
 
         // check default value
         assertNull(estimator.getInitialPosition());
@@ -1335,13 +1226,12 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         estimator.setInitialPosition(p);
 
         // check
-        assertSame(estimator.getInitialPosition(), p);
+        assertSame(p, estimator.getInitialPosition());
     }
 
     @Test
     public void testIsSetRadioSourcePositionCovarianceUsed() throws LockedException {
-        final PROMedSRobustRssiPositionEstimator3D estimator =
-                new PROMedSRobustRssiPositionEstimator3D();
+        final PROMedSRobustRssiPositionEstimator3D estimator = new PROMedSRobustRssiPositionEstimator3D();
 
         // check default value
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
@@ -1355,36 +1245,32 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
 
     @Test
     public void testGetSetFallbackDistanceStandardDeviation() throws LockedException {
-        final PROMedSRobustRssiPositionEstimator3D estimator =
-                new PROMedSRobustRssiPositionEstimator3D();
+        final PROMedSRobustRssiPositionEstimator3D estimator = new PROMedSRobustRssiPositionEstimator3D();
 
         // check default value
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
 
         // set new value
         estimator.setFallbackDistanceStandardDeviation(1.0);
 
         // check
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                1.0, 0.0);
+        assertEquals(1.0, estimator.getFallbackDistanceStandardDeviation(), 0.0);
     }
 
     @Test
     public void testGetSetProgressDelta() throws LockedException {
-        final PROMedSRobustRssiPositionEstimator3D estimator =
-                new PROMedSRobustRssiPositionEstimator3D();
+        final PROMedSRobustRssiPositionEstimator3D estimator = new PROMedSRobustRssiPositionEstimator3D();
 
         // check default value
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
 
         // set new value
         estimator.setProgressDelta(0.5f);
 
         // check
-        assertEquals(estimator.getProgressDelta(), 0.5f, 0.0);
+        assertEquals(0.5f, estimator.getProgressDelta(), 0.0);
 
         // force IllegalArgumentException
         try {
@@ -1396,12 +1282,16 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
 
     @Test
     public void testGetSetConfidence() throws LockedException {
-        final PROMedSRobustRssiPositionEstimator3D estimator =
-                new PROMedSRobustRssiPositionEstimator3D();
+        final PROMedSRobustRssiPositionEstimator3D estimator = new PROMedSRobustRssiPositionEstimator3D();
 
         // check default value
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+
+        // set new value
+        estimator.setConfidence(0.8);
+
+        // check
+        assertEquals(0.8, estimator.getConfidence(), 0.0);
 
         // set new value
         try {
@@ -1418,18 +1308,16 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
 
     @Test
     public void testGetSetMaxIterations() throws LockedException {
-        final PROMedSRobustRssiPositionEstimator3D estimator =
-                new PROMedSRobustRssiPositionEstimator3D();
+        final PROMedSRobustRssiPositionEstimator3D estimator = new PROMedSRobustRssiPositionEstimator3D();
 
         // check default value
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
 
         // set new value
         estimator.setMaxIterations(100);
 
         // check
-        assertEquals(estimator.getMaxIterations(), 100);
+        assertEquals(100, estimator.getMaxIterations());
 
         // force IllegalArgumentException
         try {
@@ -1441,8 +1329,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
 
     @Test
     public void testIsSetResultRefined() throws LockedException {
-        final PROMedSRobustRssiPositionEstimator3D estimator =
-                new PROMedSRobustRssiPositionEstimator3D();
+        final PROMedSRobustRssiPositionEstimator3D estimator = new PROMedSRobustRssiPositionEstimator3D();
 
         // check default value
         assertTrue(estimator.isResultRefined());
@@ -1456,8 +1343,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
 
     @Test
     public void testIsSetCovarianceKept() throws LockedException {
-        final PROMedSRobustRssiPositionEstimator3D estimator =
-                new PROMedSRobustRssiPositionEstimator3D();
+        final PROMedSRobustRssiPositionEstimator3D estimator = new PROMedSRobustRssiPositionEstimator3D();
 
         // check default value
         assertTrue(estimator.isCovarianceKept());
@@ -1471,8 +1357,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
 
     @Test
     public void testIsSetLinearSolverUsed() throws LockedException {
-        final PROMedSRobustRssiPositionEstimator3D estimator =
-                new PROMedSRobustRssiPositionEstimator3D();
+        final PROMedSRobustRssiPositionEstimator3D estimator = new PROMedSRobustRssiPositionEstimator3D();
 
         // check default value
         assertTrue(estimator.isLinearSolverUsed());
@@ -1486,8 +1371,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
 
     @Test
     public void testIsSetHomogeneousLinearSolverUsed() throws LockedException {
-        final PROMedSRobustRssiPositionEstimator3D estimator =
-                new PROMedSRobustRssiPositionEstimator3D();
+        final PROMedSRobustRssiPositionEstimator3D estimator = new PROMedSRobustRssiPositionEstimator3D();
 
         // check default value
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -1501,8 +1385,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
 
     @Test
     public void testIsSetPreliminarySolutionRefined() throws LockedException {
-        final PROMedSRobustRssiPositionEstimator3D estimator =
-                new PROMedSRobustRssiPositionEstimator3D();
+        final PROMedSRobustRssiPositionEstimator3D estimator = new PROMedSRobustRssiPositionEstimator3D();
 
         // check default value
         assertTrue(estimator.isPreliminarySolutionRefined());
@@ -1516,8 +1399,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
 
     @Test
     public void testGetSetSourceQualityScores() throws LockedException {
-        final PROMedSRobustRssiPositionEstimator3D estimator =
-                new PROMedSRobustRssiPositionEstimator3D();
+        final PROMedSRobustRssiPositionEstimator3D estimator = new PROMedSRobustRssiPositionEstimator3D();
 
         // check default value
         assertNull(estimator.getSourceQualityScores());
@@ -1527,7 +1409,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         estimator.setSourceQualityScores(qualityScores);
 
         // check
-        assertSame(estimator.getSourceQualityScores(), qualityScores);
+        assertSame(qualityScores, estimator.getSourceQualityScores());
 
         // force IllegalArgumentException
         try {
@@ -1544,8 +1426,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
 
     @Test
     public void testGetSetFingerprintReadingsQualityScores() throws LockedException {
-        final PROMedSRobustRssiPositionEstimator3D estimator =
-                new PROMedSRobustRssiPositionEstimator3D();
+        final PROMedSRobustRssiPositionEstimator3D estimator = new PROMedSRobustRssiPositionEstimator3D();
 
         // check default value
         assertNull(estimator.getFingerprintReadingsQualityScores());
@@ -1555,7 +1436,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         estimator.setFingerprintReadingsQualityScores(qualityScores);
 
         // check
-        assertSame(estimator.getFingerprintReadingsQualityScores(), qualityScores);
+        assertSame(qualityScores, estimator.getFingerprintReadingsQualityScores());
 
         // force IllegalArgumentException
         try {
@@ -1572,8 +1453,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
 
     @Test
     public void testGetSetEvenlyDistributeReadings() throws LockedException {
-        final PROMedSRobustRssiPositionEstimator3D estimator =
-                new PROMedSRobustRssiPositionEstimator3D();
+        final PROMedSRobustRssiPositionEstimator3D estimator = new PROMedSRobustRssiPositionEstimator3D();
 
         // check default value
         assertTrue(estimator.getEvenlyDistributeReadings());
@@ -1591,13 +1471,13 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
                 spy(new PROMedSRobustRssiPositionEstimator3D());
 
         // check default value
-        assertEquals(estimator.getPreliminarySubsetSize(), 4);
+        assertEquals(4, estimator.getPreliminarySubsetSize());
 
         // set new value
         estimator.setPreliminarySubsetSize(5);
 
         // check
-        assertEquals(estimator.getPreliminarySubsetSize(), 5);
+        assertEquals(5, estimator.getPreliminarySubsetSize());
         verify(estimator, times(1))
                 .buildPositionsDistancesDistanceStandardDeviationsAndQualityScores();
 
@@ -1610,8 +1490,8 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
     }
 
     @Test
-    public void testEstimate() throws LockedException, RobustEstimatorException,
-            NotReadyException, NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimate() throws LockedException, RobustEstimatorException, NotReadyException,
+            NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -1648,12 +1528,9 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -1685,8 +1562,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
 
             final PROMedSRobustRssiPositionEstimator3D estimator =
                     new PROMedSRobustRssiPositionEstimator3D(sourceQualityScores,
-                            fingerprintReadingsQualityScores, sources, fingerprint,
-                            this);
+                            fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
 
             reset();
@@ -1698,20 +1574,20 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point3D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
             final Point3D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -1798,19 +1674,16 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -1843,8 +1716,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
 
             final PROMedSRobustRssiPositionEstimator3D estimator =
                     new PROMedSRobustRssiPositionEstimator3D(sourceQualityScores,
-                            fingerprintReadingsQualityScores, sources, fingerprint,
-                            this);
+                            fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
 
             reset();
@@ -1856,20 +1728,20 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point3D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
             final Point3D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -1908,8 +1780,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
                 positionAccuracy, formattedConfidence));
 
         // force NotReadyException
-        final PROMedSRobustRssiPositionEstimator3D estimator =
-                new PROMedSRobustRssiPositionEstimator3D();
+        final PROMedSRobustRssiPositionEstimator3D estimator = new PROMedSRobustRssiPositionEstimator3D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -1959,20 +1830,17 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -1989,8 +1857,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
                 sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(error1));
                 fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(error2));
 
-                readings.add(new RssiReading<>(accessPoint,
-                        rssi + error1 + error2 + inlierError,
+                readings.add(new RssiReading<>(accessPoint, rssi + error1 + error2 + inlierError,
                         Math.sqrt(RX_POWER_VARIANCE)));
             }
 
@@ -1999,8 +1866,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
 
             final PROMedSRobustRssiPositionEstimator3D estimator =
                     new PROMedSRobustRssiPositionEstimator3D(sourceQualityScores,
-                            fingerprintReadingsQualityScores, sources, fingerprint,
-                            this);
+                            fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
 
             reset();
@@ -2012,20 +1878,20 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point3D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
             final Point3D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -2064,8 +1930,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
                 positionAccuracy, formattedConfidence));
 
         // force NotReadyException
-        final PROMedSRobustRssiPositionEstimator3D estimator =
-                new PROMedSRobustRssiPositionEstimator3D();
+        final PROMedSRobustRssiPositionEstimator3D estimator = new PROMedSRobustRssiPositionEstimator3D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -2074,9 +1939,8 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
     }
 
     @Test
-    public void testEstimateMultipleReadingsPerSourceWithInlierError()
-            throws LockedException, RobustEstimatorException,
-            NotReadyException, NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateMultipleReadingsPerSourceWithInlierError() throws LockedException,
+            RobustEstimatorException, NotReadyException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -2116,19 +1980,16 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -2153,8 +2014,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
                     inlierError = inlierErrorRandomizer.nextDouble();
 
                     readings.add(new RssiReading<>(accessPoint,
-                            rssi + error1 + error2 + inlierError,
-                            Math.sqrt(RX_POWER_VARIANCE)));
+                            rssi + error1 + error2 + inlierError, Math.sqrt(RX_POWER_VARIANCE)));
                 }
             }
 
@@ -2163,8 +2023,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
 
             final PROMedSRobustRssiPositionEstimator3D estimator =
                     new PROMedSRobustRssiPositionEstimator3D(sourceQualityScores,
-                            fingerprintReadingsQualityScores, sources, fingerprint,
-                            this);
+                            fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
 
             reset();
@@ -2176,20 +2035,20 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point3D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
             final Point3D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -2277,20 +2136,17 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -2314,8 +2170,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
 
             final PROMedSRobustRssiPositionEstimator3D estimator =
                     new PROMedSRobustRssiPositionEstimator3D(sourceQualityScores,
-                            fingerprintReadingsQualityScores, sources, fingerprint,
-                            this);
+                            fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setLinearSolverUsed(true);
             estimator.setHomogeneousLinearSolverUsed(true);
@@ -2330,20 +2185,20 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point3D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
             final Point3D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -2383,9 +2238,8 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
     }
 
     @Test
-    public void testEstimateLinearSolverUsedInhomogeneousAndPreliminaryRefined()
-            throws LockedException, RobustEstimatorException,
-            NotReadyException, NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateLinearSolverUsedInhomogeneousAndPreliminaryRefined() throws LockedException,
+            RobustEstimatorException, NotReadyException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -2422,20 +2276,17 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -2459,8 +2310,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
 
             final PROMedSRobustRssiPositionEstimator3D estimator =
                     new PROMedSRobustRssiPositionEstimator3D(sourceQualityScores,
-                            fingerprintReadingsQualityScores, sources, fingerprint,
-                            this);
+                            fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setLinearSolverUsed(true);
             estimator.setHomogeneousLinearSolverUsed(false);
@@ -2475,20 +2325,20 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point3D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
             final Point3D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -2528,8 +2378,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
     }
 
     @Test
-    public void testEstimatePreliminaryNotRefined()
-            throws LockedException, RobustEstimatorException,
+    public void testEstimatePreliminaryNotRefined() throws LockedException, RobustEstimatorException,
             NotReadyException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
@@ -2567,20 +2416,17 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -2604,8 +2450,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
 
             final PROMedSRobustRssiPositionEstimator3D estimator =
                     new PROMedSRobustRssiPositionEstimator3D(sourceQualityScores,
-                            fingerprintReadingsQualityScores, sources, fingerprint,
-                            this);
+                            fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setLinearSolverUsed(true);
             estimator.setPreliminarySolutionRefined(false);
@@ -2619,20 +2464,20 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point3D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
             final Point3D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -2672,8 +2517,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
     }
 
     @Test
-    public void testEstimateLinearDisabled()
-            throws LockedException, RobustEstimatorException,
+    public void testEstimateLinearDisabled() throws LockedException, RobustEstimatorException,
             NotReadyException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
@@ -2711,12 +2555,9 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -2748,8 +2589,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
 
             final PROMedSRobustRssiPositionEstimator3D estimator =
                     new PROMedSRobustRssiPositionEstimator3D(sourceQualityScores,
-                            fingerprintReadingsQualityScores, sources, fingerprint,
-                            this);
+                            fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setLinearSolverUsed(false);
             estimator.setPreliminarySolutionRefined(true);
@@ -2763,20 +2603,20 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point3D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
             final Point3D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -2816,9 +2656,8 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
     }
 
     @Test
-    public void testEstimateLinearDisabledAndNotPreliminaryRefined()
-            throws LockedException, RobustEstimatorException,
-            NotReadyException, NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateLinearDisabledAndNotPreliminaryRefined() throws LockedException,
+            RobustEstimatorException, NotReadyException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -2855,20 +2694,17 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -2892,8 +2728,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
 
             final PROMedSRobustRssiPositionEstimator3D estimator =
                     new PROMedSRobustRssiPositionEstimator3D(sourceQualityScores,
-                            fingerprintReadingsQualityScores, sources, fingerprint,
-                            this);
+                            fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setLinearSolverUsed(false);
             estimator.setPreliminarySolutionRefined(false);
@@ -2907,20 +2742,20 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point3D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
             final Point3D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -2960,9 +2795,8 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
     }
 
     @Test
-    public void testEstimateLinearDisabledWithInitialPosition()
-            throws LockedException, RobustEstimatorException,
-            NotReadyException, NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateLinearDisabledWithInitialPosition() throws LockedException,
+            RobustEstimatorException, NotReadyException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -2999,20 +2833,17 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -3036,8 +2867,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
 
             final PROMedSRobustRssiPositionEstimator3D estimator =
                     new PROMedSRobustRssiPositionEstimator3D(sourceQualityScores,
-                            fingerprintReadingsQualityScores, sources, fingerprint,
-                            this);
+                            fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setLinearSolverUsed(false);
             estimator.setPreliminarySolutionRefined(true);
@@ -3052,20 +2882,20 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point3D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
             final Point3D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -3143,20 +2973,17 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -3180,8 +3007,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
 
             final PROMedSRobustRssiPositionEstimator3D estimator =
                     new PROMedSRobustRssiPositionEstimator3D(sourceQualityScores,
-                            fingerprintReadingsQualityScores, sources, fingerprint,
-                            this);
+                            fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setPreliminarySubsetSize(5);
 
@@ -3194,20 +3020,20 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point3D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
             final Point3D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -3246,8 +3072,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
                 positionAccuracy, formattedConfidence));
 
         // force NotReadyException
-        final PROMedSRobustRssiPositionEstimator3D estimator =
-                new PROMedSRobustRssiPositionEstimator3D();
+        final PROMedSRobustRssiPositionEstimator3D estimator = new PROMedSRobustRssiPositionEstimator3D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -3282,8 +3107,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
     }
 
     private void reset() {
-        estimateStart = estimateEnd = estimateNextIteration =
-                estimateProgressChange = 0;
+        estimateStart = estimateEnd = estimateNextIteration = estimateProgressChange = 0;
     }
 
     private double receivedPower(final double equivalentTransmittedPower,
@@ -3293,8 +3117,7 @@ public class PROMedSRobustRssiPositionEstimator3DTest implements
         // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the received Gain
         // Pr = Pte*c^2/((4*pi*f)^2 * d^2)
         final double k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI * FREQUENCY), pathLossExponent);
-        return equivalentTransmittedPower * k /
-                Math.pow(distance, pathLossExponent);
+        return equivalentTransmittedPower * k / Math.pow(distance, pathLossExponent);
     }
 
     private void checkLocked(final PROMedSRobustRssiPositionEstimator3D estimator) {

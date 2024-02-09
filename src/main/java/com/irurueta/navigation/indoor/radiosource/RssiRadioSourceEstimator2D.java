@@ -60,8 +60,7 @@ import java.util.List;
  * @param <S> a {@link RadioSource} type.
  */
 @SuppressWarnings("Duplicates")
-public class RssiRadioSourceEstimator2D<S extends RadioSource> extends
-        RssiRadioSourceEstimator<S, Point2D> {
+public class RssiRadioSourceEstimator2D<S extends RadioSource> extends RssiRadioSourceEstimator<S, Point2D> {
 
     /**
      * Constructor.

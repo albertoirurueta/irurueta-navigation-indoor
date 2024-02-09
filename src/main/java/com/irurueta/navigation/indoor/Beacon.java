@@ -32,7 +32,10 @@ import java.util.List;
  * Bluetooth transmitter.
  * </pre>
  * <p>
- * Based on: https://github.com/AltBeacon/android-beacon-library/blob/master/src/main/java/org/altbeacon/beacon/Beacon.java
+ * Based on:
+ * <a href="https://github.com/AltBeacon/android-beacon-library/blob/master/src/main/java/org/altbeacon/beacon/Beacon.java">
+ *   https://github.com/AltBeacon/android-beacon-library/blob/master/src/main/java/org/altbeacon/beacon/Beacon.java
+ * </a>
  */
 public class Beacon implements Serializable, RadioSource {
 
@@ -42,7 +45,7 @@ public class Beacon implements Serializable, RadioSource {
     public static final double DEFAULT_FREQUENCY = 2.4e9;
 
     /**
-     * The list of the multi-part identifiers of the beacon. Together, these identifiers signify
+     * The list of the multipart identifiers of the beacon. Together, these identifiers signify
      * a unique beacon. The identifiers are ordered by significance for the purpose of grouping
      * beacons.
      */
@@ -69,7 +72,9 @@ public class Beacon implements Serializable, RadioSource {
     /**
      * A two byte code indicating the beacon manufacturer. A list of registered manufacturer codes
      * may be found here:
-     * https://www.bluetooth.org/en-us/specification/assigned-numbers/company-identifiers
+     * <a href="https://www.bluetooth.org/en-us/specification/assigned-numbers/company-identifiers">
+     *   https://www.bluetooth.org/en-us/specification/assigned-numbers/company-identifiers
+     * </a>
      * <p>
      * If the beacon is a GATT-based beacon, this field will be set to -1.
      */
@@ -96,7 +101,7 @@ public class Beacon implements Serializable, RadioSource {
     /**
      * Constructor.
      *
-     * @param identifiers      list of the multi-part identifiers of the beacon.
+     * @param identifiers      list of the multipart identifiers of the beacon.
      * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @throws IllegalArgumentException if identifiers is null.
      */
@@ -113,7 +118,7 @@ public class Beacon implements Serializable, RadioSource {
     /**
      * Constructor.
      *
-     * @param identifiers      list of the multi-part identifiers of the beacon.
+     * @param identifiers      list of the multipart identifiers of the beacon.
      * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param bluetoothAddress the bluetooth mac address.
      * @param beaconTypeCode   the two byte value indicating the type of beacon.
@@ -141,7 +146,7 @@ public class Beacon implements Serializable, RadioSource {
     /**
      * Constructor.
      *
-     * @param identifiers      list of the multi-part identifiers of the beacon.
+     * @param identifiers      list of the multipart identifiers of the beacon.
      * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency        frequency used by this Beacon.
      * @throws IllegalArgumentException if identifiers is null or frequency is negative.
@@ -161,7 +166,7 @@ public class Beacon implements Serializable, RadioSource {
     /**
      * Constructor.
      *
-     * @param identifiers      list of the multi-part identifiers of the beacon.
+     * @param identifiers      list of the multipart identifiers of the beacon.
      * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency        frequency used by this Beacon.
      * @param bluetoothAddress the bluetooth mac address.
@@ -246,7 +251,7 @@ public class Beacon implements Serializable, RadioSource {
     }
 
     /**
-     * Gets the list of the multi-part identifiers of the beacon. Together, these identifiers signify
+     * Gets the list of the multipart identifiers of the beacon. Together, these identifiers signify
      * a unique beacon. The identifiers are ordered by significance for the purpose of grouping
      * beacons.
      *
@@ -300,7 +305,9 @@ public class Beacon implements Serializable, RadioSource {
     /**
      * Gets a two byte code indicating the beacon manufacturer. A list of registered manufacturer codes
      * may be found here:
-     * https://www.bluetooth.org/en-us/specification/assigned-numbers/company-identifiers
+     * <a href="https://www.bluetooth.org/en-us/specification/assigned-numbers/company-identifiers">
+     *   https://www.bluetooth.org/en-us/specification/assigned-numbers/company-identifiers
+     * </a>
      * <p>
      * If the beacon is a GATT-based beacon, this field will be set to -1.
      *
@@ -359,7 +366,7 @@ public class Beacon implements Serializable, RadioSource {
     }
 
     /**
-     * Gets radio source type, which can be either a WiFi Access point or a bluetooth Beacon.
+     * Gets radio source type, which can be either a Wi-Fi Access point or a bluetooth Beacon.
      *
      * @return radio source type.
      */

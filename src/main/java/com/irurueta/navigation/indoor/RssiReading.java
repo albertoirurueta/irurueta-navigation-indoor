@@ -17,7 +17,7 @@ package com.irurueta.navigation.indoor;
 
 /**
  * Contains a signal strength reading associated to a given radio source
- * (e.g. WiFi access point or bluetooth beacon).
+ * (e.g. Wi-Fi access point or bluetooth beacon).
  *
  * @param <S> a {@link RadioSource} type.
  */

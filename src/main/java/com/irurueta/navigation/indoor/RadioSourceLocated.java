@@ -21,7 +21,7 @@ import com.irurueta.geometry.Point;
 import java.io.Serializable;
 
 /**
- * Interface defining any radio source (e.g. Wifi access point or
+ * Interface defining any radio source (e.g. Wi-fi access point or
  * Bluetooth beacon) whose location is known.
  *
  * @param <P> a {@link Point} type.

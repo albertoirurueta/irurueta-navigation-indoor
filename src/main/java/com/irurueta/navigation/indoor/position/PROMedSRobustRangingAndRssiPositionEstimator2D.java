@@ -34,8 +34,7 @@ import java.util.List;
  * device by getting ranging+RSSI readings at an unknown location of different radio
  * sources whose 2D locations are known.
  */
-public class PROMedSRobustRangingAndRssiPositionEstimator2D extends
-        RobustRangingAndRssiPositionEstimator2D {
+public class PROMedSRobustRangingAndRssiPositionEstimator2D extends RobustRangingAndRssiPositionEstimator2D {
 
     /**
      * Quality scores corresponding to each provided located radio source.
@@ -386,6 +385,7 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2D extends
      *
      * @return quality scores corresponding to each radio source.
      */
+    @Override
     public double[] getSourceQualityScores() {
         return mSourceQualityScores;
     }
@@ -399,6 +399,7 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2D extends
      * @throws IllegalArgumentException if provided quality scores length is smaller
      *                                  than minimum required samples.
      */
+    @Override
     public void setSourceQualityScores(final double[] sourceQualityScores)
             throws LockedException {
         if (isLocked()) {
@@ -416,6 +417,7 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2D extends
      * @return quality scores corresponding to each reading within provided
      * fingerprint.
      */
+    @Override
     public double[] getFingerprintReadingsQualityScores() {
         return mFingerprintReadingsQualityScores;
     }
@@ -432,6 +434,7 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2D extends
      * @throws IllegalArgumentException if provided quality scores length is smaller
      *                                  than minimum required samples.
      */
+    @Override
     public void setFingerprintReadingsQualityScores(
             final double[] fingerprintReadingsQualityScores) throws LockedException {
         if (isLocked()) {
@@ -497,7 +500,7 @@ public class PROMedSRobustRangingAndRssiPositionEstimator2D extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-        return RobustEstimatorMethod.PROMedS;
+        return RobustEstimatorMethod.PROMEDS;
     }
 
     /**

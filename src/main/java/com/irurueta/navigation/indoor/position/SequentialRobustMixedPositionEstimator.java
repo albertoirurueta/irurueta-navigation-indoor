@@ -53,14 +53,14 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
      * data when no robust method is provided.
      */
     public static final RobustEstimatorMethod DEFAULT_RANGING_ROBUST_METHOD =
-            RobustEstimatorMethod.PROMedS;
+            RobustEstimatorMethod.PROMEDS;
 
     /**
      * Default robust method for coarse robust position estimation using RSSI
      * data when no robust method is provided.
      */
     public static final RobustEstimatorMethod DEFAULT_RSSI_ROBUST_METHOD =
-            RobustEstimatorMethod.PROMedS;
+            RobustEstimatorMethod.PROMEDS;
 
     /**
      * Indicates that by default located radio source position covariance is taken
@@ -99,7 +99,7 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
 
     /**
      * Default amount of progress variation before notifying a change in estimation progress.
-     * By default this is set to 5%.
+     * By default, this is set to 5%.
      */
     public static final float DEFAULT_PROGRESS_DELTA = 0.05f;
 
@@ -1294,8 +1294,8 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
     /**
      * Indicates whether preliminary ranging solutions are refined after an initial
      * linear solution is found.
-     * If no initial preliminary solution is found using a linear solver, a non
-     * linear solver will be used regardless of this value using an average solution
+     * If no initial preliminary solution is found using a linear solver, a non-linear
+     * solver will be used regardless of this value using an average solution
      * as the initial value to be refined.
      *
      * @return true if preliminary ranging solutions must be refined after an initial
@@ -1308,8 +1308,8 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
     /**
      * Specifies whether preliminary ranging solutions are refined after an initial
      * linear solution is found.
-     * If no initial preliminary solution is found using a linear solver, a non
-     * linear solver will be used regardless of this value using an average solution
+     * If no initial preliminary solution is found using a linear solver, a non-linear
+     * solver will be used regardless of this value using an average solution
      * as the initial value to be refined.
      *
      * @param refineRangingPreliminarySolutions true if preliminary ranging solutions
@@ -1328,8 +1328,8 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
     /**
      * Indicates whether preliminary RSSI solutions are refined after an initial
      * linear solution is found.
-     * If no initial preliminary solution is found using a linear solver, a non
-     * linear solver will be used regardless of this value using an average solution
+     * If no initial preliminary solution is found using a linear solver, a non-linear
+     * solver will be used regardless of this value using an average solution
      * as the initial value to be refined.
      *
      * @return true if preliminary RSSI solutions must be refined after an initial
@@ -1342,8 +1342,8 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
     /**
      * Specifies whether preliminary RSSI solutions are refined after an initial
      * linear solution is found.
-     * If no initial preliminary solution is found using a linear solver, a non
-     * linear solver will be used regardless of this value using an average solution
+     * If no initial preliminary solution is found using a linear solver, a non-linear
+     * solver will be used regardless of this value using an average solution
      * as the initial value ot be refined.
      *
      * @param refineRssiPreliminarySolutions true if preliminary RSSI solutions must
@@ -1756,11 +1756,11 @@ public abstract class SequentialRobustMixedPositionEstimator<P extends Point<?>>
     }
 
     /**
-     * Gets euclidean distances from known located radio sources to the location of
+     * Gets Euclidean distances from known located radio sources to the location of
      * provided readings in a fingerprint.
      * Distance values are used internally to solve lateration.
      *
-     * @return euclidean distances used internally.
+     * @return Euclidean distances used internally.
      */
     public double[] getDistances() {
         if (mRangingEstimator != null) {

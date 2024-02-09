@@ -26,7 +26,7 @@ import java.util.List;
 
 /**
  * This is an abstract class to robustly estimate position, transmitted power and path-loss
- * exponent of a radio source (e.g. WiFi access point or bluetooth beacon), by discarding
+ * exponent of a radio source (e.g. Wi-Fi access point or bluetooth beacon), by discarding
  * outliers and assuming that the radio source emits isotropically following the
  * expression below:
  * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,
@@ -825,7 +825,7 @@ public abstract class RobustRssiRadioSourceEstimator<S extends RadioSource, P ex
      *
      * @param <P> a {@link Point} type.
      */
-    static class Solution<P extends Point<?>> {
+    protected static class Solution<P extends Point<?>> {
         /**
          * Estimated position for a subset of samples.
          */

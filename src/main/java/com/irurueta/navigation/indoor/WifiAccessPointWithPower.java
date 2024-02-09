@@ -16,7 +16,7 @@
 package com.irurueta.navigation.indoor;
 
 /**
- * Data related to a WiFi access point with estimated transmitted power.
+ * Data related to a Wi-Fi access point with estimated transmitted power.
  */
 public class WifiAccessPointWithPower extends WifiAccessPoint implements
         RadioSourceWithPower {
@@ -143,7 +143,7 @@ public class WifiAccessPointWithPower extends WifiAccessPoint implements
      *                         xx:xx:xx:xx:xx:xx.
      * @param frequency        frequency used by this Access Point (expressed in Hz).
      * @param transmittedPower transmitted power by this access point (expressed in dBm's).
-     * @param pathLossExponent path loss exponent. By default this is 2.0.
+     * @param pathLossExponent path loss exponent. By default, this is 2.0.
      * @throws IllegalArgumentException if BSSID is null or frequency is negative.
      */
     public WifiAccessPointWithPower(
@@ -162,7 +162,7 @@ public class WifiAccessPointWithPower extends WifiAccessPoint implements
      * @param transmittedPower                  transmitted power by this access point (expressed in dBm's).
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value or null if
      *                                          unknown.
-     * @param pathLossExponent                  path loss exponent. By default this is 2.0.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @throws IllegalArgumentException if either BSSID is null, frequency is negative
      *                                  or transmitted power standard deviation is negative.
      */
@@ -185,7 +185,7 @@ public class WifiAccessPointWithPower extends WifiAccessPoint implements
      * @param transmittedPower                  transmitted power by this access point (expressed in dBM's).
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value or null if
      *                                          unknown.
-     * @param pathLossExponent                  path loss exponent. By default this is 2.0.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @throws IllegalArgumentException if either BSSID is null, frequency is negative,
      *                                  or transmitted power standard deviation is negative.
      */
@@ -208,7 +208,7 @@ public class WifiAccessPointWithPower extends WifiAccessPoint implements
      * @param transmittedPower                  transmitted power by this access point (expressed in dBm's).
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value or null if
      *                                          unknown.
-     * @param pathLossExponent                  path loss exponent. By default this is 2.0.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @param pathLossExponentStandardDeviation standard deviation of path loss exponent or null if
      *                                          unknown.
      * @throws IllegalArgumentException if either BSSID is null, frequency is negative
@@ -239,7 +239,7 @@ public class WifiAccessPointWithPower extends WifiAccessPoint implements
      * @param transmittedPower                  transmitted power by this access point (expressed in dBM's).
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value or null if
      *                                          unknown.
-     * @param pathLossExponent                  path loss exponent. By default this is 2.0.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @param pathLossExponentStandardDeviation standard deviation of path loss exponent or null if
      *                                          unknown.
      * @throws IllegalArgumentException if either BSSID is null, frequency is negative,

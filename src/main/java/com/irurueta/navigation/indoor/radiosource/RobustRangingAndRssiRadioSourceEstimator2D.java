@@ -34,7 +34,7 @@ import java.util.List;
 
 /**
  * This is an abstract class to robustly estimate 2D position, transmitted power and path-loss
- * exponent of a radio source (e.g. WiFi access point or bluetooth beacon), by discarding
+ * exponent of a radio source (e.g. Wi-Fi access point or bluetooth beacon), by discarding
  * outliers and assuming that the ranging data is available to obtain position with
  * greater accuracy and that the radio source emits isotropically following the
  * expression below:
@@ -199,7 +199,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
      * Constructor.
      * Sets signal readings belonging to the same radio source.
      *
-     * @param readings                   WiFi signal readings belonging to the same radio source.
+     * @param readings                   Wi-Fi signal readings belonging to the same radio source.
      * @param initialTransmittedPowerdBm initial transmitted power to start the
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's)
@@ -231,7 +231,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
      * Constructor.
      * Sets signal readings belonging to the same radio source.
      *
-     * @param readings                   WiFi signal readings belonging to the radio source point.
+     * @param readings                   Wi-Fi signal readings belonging to the radio source point.
      * @param initialTransmittedPowerdBm initial transmitted power to start the
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's)
@@ -418,13 +418,13 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
         switch (method) {
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>();
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>();
             case MSAC:
                 return new MSACRobustRangingAndRssiRadioSourceEstimator2D<>();
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>();
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>();
         }
@@ -446,7 +446,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings);
             case MSAC:
@@ -455,7 +455,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings);
@@ -477,7 +477,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         listener);
             case MSAC:
@@ -486,7 +486,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         listener);
@@ -511,7 +511,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, listener);
             case MSAC:
@@ -520,7 +520,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, listener);
@@ -545,7 +545,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition);
             case MSAC:
@@ -554,7 +554,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition);
@@ -576,7 +576,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition);
             case MSAC:
@@ -585,7 +585,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition);
@@ -610,7 +610,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, listener);
             case MSAC:
@@ -619,7 +619,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, listener);
@@ -647,7 +647,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, listener);
             case MSAC:
@@ -656,7 +656,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, listener);
@@ -680,7 +680,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialTransmittedPowerdBm);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialTransmittedPowerdBm);
             case MSAC:
@@ -689,7 +689,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialTransmittedPowerdBm);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialTransmittedPowerdBm);
@@ -716,7 +716,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialTransmittedPowerdBm);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialTransmittedPowerdBm);
             case MSAC:
@@ -725,7 +725,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialTransmittedPowerdBm);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialTransmittedPowerdBm);
@@ -751,7 +751,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialTransmittedPowerdBm, listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialTransmittedPowerdBm, listener);
             case MSAC:
@@ -760,7 +760,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialTransmittedPowerdBm, listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialTransmittedPowerdBm, listener);
@@ -789,7 +789,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialTransmittedPowerdBm, listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialTransmittedPowerdBm, listener);
             case MSAC:
@@ -798,7 +798,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialTransmittedPowerdBm, listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialTransmittedPowerdBm, listener);
@@ -827,7 +827,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, initialTransmittedPowerdBm);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, initialTransmittedPowerdBm);
             case MSAC:
@@ -836,7 +836,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, initialTransmittedPowerdBm);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, initialTransmittedPowerdBm);
@@ -862,7 +862,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, initialTransmittedPowerdBm);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, initialTransmittedPowerdBm);
             case MSAC:
@@ -871,7 +871,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, initialTransmittedPowerdBm);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, initialTransmittedPowerdBm);
@@ -900,7 +900,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, initialTransmittedPowerdBm, listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, initialTransmittedPowerdBm, listener);
             case MSAC:
@@ -909,7 +909,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, initialTransmittedPowerdBm, listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, initialTransmittedPowerdBm, listener);
@@ -941,7 +941,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, initialTransmittedPowerdBm, listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, initialTransmittedPowerdBm, listener);
             case MSAC:
@@ -950,7 +950,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, initialTransmittedPowerdBm, listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, initialTransmittedPowerdBm, listener);
@@ -982,7 +982,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent);
@@ -994,7 +994,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, initialTransmittedPowerdBm,
@@ -1025,7 +1025,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent);
@@ -1037,7 +1037,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, initialTransmittedPowerdBm,
@@ -1070,7 +1070,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent, listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent, listener);
@@ -1082,7 +1082,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent, listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, initialTransmittedPowerdBm,
@@ -1118,7 +1118,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent, listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent, listener);
@@ -1130,7 +1130,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent, listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, initialTransmittedPowerdBm,
@@ -1154,14 +1154,14 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
         switch (method) {
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>();
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>();
             case MSAC:
                 return new MSACRobustRangingAndRssiRadioSourceEstimator2D<>();
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores);
@@ -1188,7 +1188,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings);
             case MSAC:
@@ -1197,7 +1197,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, readings);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, readings);
@@ -1223,7 +1223,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         listener);
             case MSAC:
@@ -1232,7 +1232,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, listener);
@@ -1261,7 +1261,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, listener);
             case MSAC:
@@ -1270,7 +1270,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, readings, listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, readings, listener);
@@ -1300,7 +1300,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition);
             case MSAC:
@@ -1309,7 +1309,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, readings, initialPosition);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, readings, initialPosition);
@@ -1336,7 +1336,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition);
             case MSAC:
@@ -1345,7 +1345,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, initialPosition);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, initialPosition);
@@ -1374,7 +1374,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, listener);
             case MSAC:
@@ -1383,7 +1383,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, initialPosition, listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, initialPosition, listener);
@@ -1415,7 +1415,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, listener);
             case MSAC:
@@ -1424,7 +1424,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, readings, initialPosition, listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, readings, initialPosition, listener);
@@ -1452,7 +1452,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialTransmittedPowerdBm);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialTransmittedPowerdBm);
             case MSAC:
@@ -1461,7 +1461,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, initialTransmittedPowerdBm);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, initialTransmittedPowerdBm);
@@ -1492,7 +1492,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialTransmittedPowerdBm);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialTransmittedPowerdBm);
             case MSAC:
@@ -1501,7 +1501,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, readings, initialTransmittedPowerdBm);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, readings, initialTransmittedPowerdBm);
@@ -1531,7 +1531,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialTransmittedPowerdBm, listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialTransmittedPowerdBm, listener);
             case MSAC:
@@ -1540,7 +1540,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, initialTransmittedPowerdBm, listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, initialTransmittedPowerdBm, listener);
@@ -1573,7 +1573,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialTransmittedPowerdBm, listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialTransmittedPowerdBm, listener);
             case MSAC:
@@ -1582,7 +1582,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, readings, initialTransmittedPowerdBm, listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, readings, initialTransmittedPowerdBm, listener);
@@ -1616,7 +1616,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, initialTransmittedPowerdBm);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, initialTransmittedPowerdBm);
             case MSAC:
@@ -1626,7 +1626,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, readings, initialPosition,
                         initialTransmittedPowerdBm);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, readings, initialPosition,
@@ -1658,7 +1658,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, initialTransmittedPowerdBm);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, initialTransmittedPowerdBm);
             case MSAC:
@@ -1667,7 +1667,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case PROSAC:
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, initialPosition, initialTransmittedPowerdBm);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, initialPosition, initialTransmittedPowerdBm);
@@ -1700,7 +1700,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, initialTransmittedPowerdBm, listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, initialTransmittedPowerdBm, listener);
             case MSAC:
@@ -1710,7 +1710,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, initialPosition, initialTransmittedPowerdBm,
                         listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, initialPosition, initialTransmittedPowerdBm,
@@ -1747,7 +1747,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
             case RANSAC:
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, initialTransmittedPowerdBm, listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, initialTransmittedPowerdBm, listener);
             case MSAC:
@@ -1757,7 +1757,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, readings, initialPosition,
                         initialTransmittedPowerdBm, listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, readings, initialPosition,
@@ -1795,7 +1795,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent);
@@ -1807,7 +1807,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, readings, initialPosition,
                         initialTransmittedPowerdBm, initialPathLossExponent);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, readings, initialPosition,
@@ -1842,7 +1842,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent);
@@ -1854,7 +1854,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
                 return new PROSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, initialPosition,
                         initialTransmittedPowerdBm, initialPathLossExponent);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, initialPosition,
@@ -1891,7 +1891,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent, listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent, listener);
@@ -1904,7 +1904,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
                         qualityScores, initialPosition,
                         initialTransmittedPowerdBm, initialPathLossExponent,
                         listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, initialPosition,
@@ -1945,7 +1945,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
                 return new RANSACRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent, listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         readings, initialPosition, initialTransmittedPowerdBm,
                         initialPathLossExponent, listener);
@@ -1958,7 +1958,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
                         qualityScores, readings, initialPosition,
                         initialTransmittedPowerdBm, initialPathLossExponent,
                         listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingAndRssiRadioSourceEstimator2D<>(
                         qualityScores, readings, initialPosition,
@@ -2970,7 +2970,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator2D<S extends Radio
      * provided solution if refinement is requested.
      * This method sets a refined result and transmitted power or provided input
      * result if refinement is not requested or has failed.
-     * If refinement is enabled and it is requested to keep covariance, this method
+     * If refinement is enabled, and it is requested to keep covariance, this method
      * will also keep covariance of refined result.
      * solution if not requested or refinement failed.
      *

@@ -109,9 +109,9 @@ public abstract class PositionEstimator<P extends Point<?>,
      * @return fingerprint containing readings at an unknown location for provided
      * located radio sources.
      */
-    public Fingerprint<RadioSource, ? extends R> getFingerprint() {
+    public Fingerprint<RadioSource, Reading<RadioSource>> getFingerprint() {
         //noinspection unchecked
-        return (Fingerprint<RadioSource, ? extends R>) mFingerprint;
+        return (Fingerprint<RadioSource, Reading<RadioSource>>) mFingerprint;
     }
 
     /**
@@ -164,10 +164,9 @@ public abstract class PositionEstimator<P extends Point<?>,
     }
 
     /**
-     * Gets estimated estimated position and stores result into provided instance.
+     * Gets estimated position and stores result into provided instance.
      *
-     * @param estimatedPosition instance where estimated estimated position will be
-     *                          stored.
+     * @param estimatedPosition instance where estimated position will be stored.
      */
     public void getEstimatedPosition(final P estimatedPosition) {
         if (mEstimatedPositionCoordinates != null) {
@@ -226,11 +225,11 @@ public abstract class PositionEstimator<P extends Point<?>,
     public abstract P[] getPositions();
 
     /**
-     * Gets euclidean distances from known located radio sources to
+     * Gets Euclidean distances from known located radio sources to
      * the location of provided readings in a fingerprint.
      * Distance values are used internally to solve lateration.
      *
-     * @return euclidean distances used internally.
+     * @return Euclidean distances used internally.
      */
     public abstract double[] getDistances();
 

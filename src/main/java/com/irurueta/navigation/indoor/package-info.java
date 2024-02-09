@@ -19,7 +19,7 @@
  * as required measurements to make such estimations.
  * There are two kinds of radio sources:
  * - Beacons
- * - Wifi Access Points
+ * - Wi-fi Access Points
  * <p>
  * All radio sources can be located (either in 2D or 3D), can have power measurements
  * (RSSI and path-loss exponent), or can be both located and have power measurements.
@@ -32,7 +32,7 @@
  * RSSI readings contain measurements of received signal power for a given radio source.
  * Ranging readings contains distance measurements for a given radio source.
  * <p>
- * Readings can also contains RSSI and ranging data at the same time, and can be
+ * Readings can also contain RSSI and ranging data at the same time, and can be
  * located (either in 2D or 3D).
  * <p>
  * One reading can only be associated to a single radio source.

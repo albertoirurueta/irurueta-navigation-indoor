@@ -33,8 +33,7 @@ import java.util.List;
  * device by getting RSSI readings at an unknown location of different radio sources whose
  * 3D locations are known.
  */
-public class PROMedSRobustRssiPositionEstimator3D extends
-        RobustRssiPositionEstimator3D {
+public class PROMedSRobustRssiPositionEstimator3D extends RobustRssiPositionEstimator3D {
 
     /**
      * Quality scores corresponding to each provided located radio source.
@@ -378,6 +377,7 @@ public class PROMedSRobustRssiPositionEstimator3D extends
      *
      * @return quality scores corresponding to each radio source.
      */
+    @Override
     public double[] getSourceQualityScores() {
         return mSourceQualityScores;
     }
@@ -391,6 +391,7 @@ public class PROMedSRobustRssiPositionEstimator3D extends
      * @throws IllegalArgumentException if provided quality scores length is smaller
      *                                  than minimum required samples.
      */
+    @Override
     public void setSourceQualityScores(final double[] sourceQualityScores)
             throws LockedException {
         if (isLocked()) {
@@ -408,6 +409,7 @@ public class PROMedSRobustRssiPositionEstimator3D extends
      * @return quality scores corresponding to each reading within provided
      * fingerprint.
      */
+    @Override
     public double[] getFingerprintReadingsQualityScores() {
         return mFingerprintReadingsQualityScores;
     }
@@ -424,6 +426,7 @@ public class PROMedSRobustRssiPositionEstimator3D extends
      * @throws IllegalArgumentException if provided quality scores length is smaller
      *                                  than minimum required samples.
      */
+    @Override
     public void setFingerprintReadingsQualityScores(
             final double[] fingerprintReadingsQualityScores) throws LockedException {
         if (isLocked()) {
@@ -489,7 +492,7 @@ public class PROMedSRobustRssiPositionEstimator3D extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-        return RobustEstimatorMethod.PROMedS;
+        return RobustEstimatorMethod.PROMEDS;
     }
 
     /**

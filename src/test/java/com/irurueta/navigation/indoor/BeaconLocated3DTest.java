@@ -41,16 +41,16 @@ public class BeaconLocated3DTest {
         assertNull(b.getId2());
         assertNull(b.getId3());
         assertNull(b.getIdentifiers());
-        assertEquals(b.getTransmittedPower(), 0.0, 0.0);
+        assertEquals(0.0, b.getTransmittedPower(), 0.0);
         assertNull(b.getBluetoothAddress());
-        assertEquals(b.getBeaconTypeCode(), 0);
+        assertEquals(0, b.getBeaconTypeCode());
         assertNull(b.getBluetoothName());
-        assertEquals(b.getManufacturer(), 0);
-        assertEquals(b.getServiceUuid(), -1);
+        assertEquals(0, b.getManufacturer());
+        assertEquals(-1, b.getServiceUuid());
         assertNull(b.getPosition());
         assertNull(b.getPositionCovariance());
-        assertEquals(b.getType(), RadioSourceType.BEACON);
-        assertEquals(b.getFrequency(), Beacon.DEFAULT_FREQUENCY, 0.0);
+        assertEquals(RadioSourceType.BEACON, b.getType());
+        assertEquals(Beacon.DEFAULT_FREQUENCY, b.getFrequency(), 0.0);
 
         // test constructor with identifiers, transmitted power and position
         final List<BeaconIdentifier> identifiers = new ArrayList<>();
@@ -61,17 +61,17 @@ public class BeaconLocated3DTest {
         assertNull(b.getId1());
         assertNull(b.getId2());
         assertNull(b.getId3());
-        assertEquals(b.getIdentifiers(), identifiers);
-        assertEquals(b.getTransmittedPower(), -50.0, 0.0);
+        assertEquals(identifiers, b.getIdentifiers());
+        assertEquals(-50.0, b.getTransmittedPower(), 0.0);
         assertNull(b.getBluetoothAddress());
-        assertEquals(b.getBeaconTypeCode(), 0);
+        assertEquals(0, b.getBeaconTypeCode());
         assertNull(b.getBluetoothName());
-        assertEquals(b.getManufacturer(), 0);
-        assertEquals(b.getServiceUuid(), -1);
-        assertSame(b.getPosition(), position);
+        assertEquals(0, b.getManufacturer());
+        assertEquals(-1, b.getServiceUuid());
+        assertSame(position, b.getPosition());
         assertNull(b.getPositionCovariance());
-        assertEquals(b.getType(), RadioSourceType.BEACON);
-        assertEquals(b.getFrequency(), Beacon.DEFAULT_FREQUENCY, 0.0);
+        assertEquals(RadioSourceType.BEACON, b.getType());
+        assertEquals(Beacon.DEFAULT_FREQUENCY, b.getFrequency(), 0.0);
 
         // force IllegalArgumentException
         b = null;
@@ -95,17 +95,17 @@ public class BeaconLocated3DTest {
         assertNull(b.getId1());
         assertNull(b.getId2());
         assertNull(b.getId3());
-        assertEquals(b.getIdentifiers(), identifiers);
-        assertEquals(b.getTransmittedPower(), -50.0, 0.0);
-        assertEquals(b.getBluetoothAddress(), "address");
-        assertEquals(b.getBeaconTypeCode(), 1);
-        assertEquals(b.getBluetoothName(), "name");
-        assertEquals(b.getManufacturer(), 2);
-        assertEquals(b.getServiceUuid(), 3);
-        assertSame(b.getPosition(), position);
+        assertEquals(identifiers, b.getIdentifiers());
+        assertEquals(-50.0, b.getTransmittedPower(), 0.0);
+        assertEquals("address", b.getBluetoothAddress());
+        assertEquals(1, b.getBeaconTypeCode());
+        assertEquals("name", b.getBluetoothName());
+        assertEquals(2, b.getManufacturer());
+        assertEquals(3, b.getServiceUuid());
+        assertSame(position, b.getPosition());
         assertNull(b.getPositionCovariance());
-        assertEquals(b.getType(), RadioSourceType.BEACON);
-        assertEquals(b.getFrequency(), Beacon.DEFAULT_FREQUENCY, 0.0);
+        assertEquals(RadioSourceType.BEACON, b.getType());
+        assertEquals(Beacon.DEFAULT_FREQUENCY, b.getFrequency(), 0.0);
 
         // force IllegalArgumentException
         b = null;
@@ -132,54 +132,50 @@ public class BeaconLocated3DTest {
         assertNull(b.getId1());
         assertNull(b.getId2());
         assertNull(b.getId3());
-        assertEquals(b.getIdentifiers(), identifiers);
-        assertEquals(b.getTransmittedPower(), -50.0, 0.0);
+        assertEquals(identifiers, b.getIdentifiers());
+        assertEquals(-50.0, b.getTransmittedPower(), 0.0);
         assertNull(b.getBluetoothAddress());
-        assertEquals(b.getBeaconTypeCode(), 0);
+        assertEquals(0, b.getBeaconTypeCode());
         assertNull(b.getBluetoothName());
-        assertEquals(b.getManufacturer(), 0);
-        assertEquals(b.getServiceUuid(), -1);
-        assertSame(b.getPosition(), position);
-        assertSame(b.getPositionCovariance(), cov);
-        assertEquals(b.getType(), RadioSourceType.BEACON);
-        assertEquals(b.getFrequency(), Beacon.DEFAULT_FREQUENCY, 0.0);
+        assertEquals(0, b.getManufacturer());
+        assertEquals(-1, b.getServiceUuid());
+        assertSame(position, b.getPosition());
+        assertSame(cov, b.getPositionCovariance());
+        assertEquals(RadioSourceType.BEACON, b.getType());
+        assertEquals(Beacon.DEFAULT_FREQUENCY, b.getFrequency(), 0.0);
 
-        b = new BeaconLocated3D(identifiers, -50.0, position,
-                null);
+        b = new BeaconLocated3D(identifiers, -50.0, position, null);
 
         // check
         assertNull(b.getId1());
         assertNull(b.getId2());
         assertNull(b.getId3());
-        assertEquals(b.getIdentifiers(), identifiers);
-        assertEquals(b.getTransmittedPower(), -50.0, 0.0);
+        assertEquals(identifiers, b.getIdentifiers());
+        assertEquals(-50.0, b.getTransmittedPower(), 0.0);
         assertNull(b.getBluetoothAddress());
-        assertEquals(b.getBeaconTypeCode(), 0);
+        assertEquals(0, b.getBeaconTypeCode());
         assertNull(b.getBluetoothName());
-        assertEquals(b.getManufacturer(), 0);
-        assertEquals(b.getServiceUuid(), -1);
-        assertSame(b.getPosition(), position);
+        assertEquals(0, b.getManufacturer());
+        assertEquals(-1, b.getServiceUuid());
+        assertSame(position, b.getPosition());
         assertNull(b.getPositionCovariance());
-        assertEquals(b.getType(), RadioSourceType.BEACON);
-        assertEquals(b.getFrequency(), Beacon.DEFAULT_FREQUENCY, 0.0);
+        assertEquals(RadioSourceType.BEACON, b.getType());
+        assertEquals(Beacon.DEFAULT_FREQUENCY, b.getFrequency(), 0.0);
 
         // force IllegalArgumentException
         b = null;
         try {
-            b = new BeaconLocated3D(null, -50.0,
-                    position, cov);
+            b = new BeaconLocated3D(null, -50.0, position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            b = new BeaconLocated3D(identifiers, -50.0,
-                    null, cov);
+            b = new BeaconLocated3D(identifiers, -50.0, null, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            b = new BeaconLocated3D(identifiers, -50.0, position,
-                    new Matrix(1, 1));
+            b = new BeaconLocated3D(identifiers, -50.0, position, new Matrix(1, 1));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -193,17 +189,17 @@ public class BeaconLocated3DTest {
         assertNull(b.getId1());
         assertNull(b.getId2());
         assertNull(b.getId3());
-        assertEquals(b.getIdentifiers(), identifiers);
-        assertEquals(b.getTransmittedPower(), -50.0, 0.0);
-        assertEquals(b.getBluetoothAddress(), "address");
-        assertEquals(b.getBeaconTypeCode(), 1);
-        assertEquals(b.getBluetoothName(), "name");
-        assertEquals(b.getManufacturer(), 2);
-        assertEquals(b.getServiceUuid(), 3);
-        assertSame(b.getPosition(), position);
-        assertSame(b.getPositionCovariance(), cov);
-        assertEquals(b.getType(), RadioSourceType.BEACON);
-        assertEquals(b.getFrequency(), Beacon.DEFAULT_FREQUENCY, 0.0);
+        assertEquals(identifiers, b.getIdentifiers());
+        assertEquals(-50.0, b.getTransmittedPower(), 0.0);
+        assertEquals("address", b.getBluetoothAddress());
+        assertEquals(1, b.getBeaconTypeCode());
+        assertEquals("name", b.getBluetoothName());
+        assertEquals(2, b.getManufacturer());
+        assertEquals(3, b.getServiceUuid());
+        assertSame(position, b.getPosition());
+        assertSame(cov, b.getPositionCovariance());
+        assertEquals(RadioSourceType.BEACON, b.getType());
+        assertEquals(Beacon.DEFAULT_FREQUENCY, b.getFrequency(), 0.0);
 
         b = new BeaconLocated3D(identifiers, -50.0, "address", 1,
                 2, 3, "name", position, null);
@@ -212,17 +208,17 @@ public class BeaconLocated3DTest {
         assertNull(b.getId1());
         assertNull(b.getId2());
         assertNull(b.getId3());
-        assertEquals(b.getIdentifiers(), identifiers);
-        assertEquals(b.getTransmittedPower(), -50.0, 0.0);
-        assertEquals(b.getBluetoothAddress(), "address");
-        assertEquals(b.getBeaconTypeCode(), 1);
-        assertEquals(b.getBluetoothName(), "name");
-        assertEquals(b.getManufacturer(), 2);
-        assertEquals(b.getServiceUuid(), 3);
-        assertSame(b.getPosition(), position);
+        assertEquals(identifiers, b.getIdentifiers());
+        assertEquals(-50.0, b.getTransmittedPower(), 0.0);
+        assertEquals("address", b.getBluetoothAddress());
+        assertEquals(1, b.getBeaconTypeCode());
+        assertEquals("name", b.getBluetoothName());
+        assertEquals(2, b.getManufacturer());
+        assertEquals(3, b.getServiceUuid());
+        assertSame(position, b.getPosition());
         assertNull(b.getPositionCovariance());
-        assertEquals(b.getType(), RadioSourceType.BEACON);
-        assertEquals(b.getFrequency(), Beacon.DEFAULT_FREQUENCY, 0.0);
+        assertEquals(RadioSourceType.BEACON, b.getType());
+        assertEquals(Beacon.DEFAULT_FREQUENCY, b.getFrequency(), 0.0);
 
         // force IllegalArgumentException
         b = null;
@@ -254,17 +250,17 @@ public class BeaconLocated3DTest {
         assertNull(b.getId1());
         assertNull(b.getId2());
         assertNull(b.getId3());
-        assertEquals(b.getIdentifiers(), identifiers);
-        assertEquals(b.getTransmittedPower(), -50.0, 0.0);
+        assertEquals(identifiers, b.getIdentifiers());
+        assertEquals(-50.0, b.getTransmittedPower(), 0.0);
         assertNull(b.getBluetoothAddress());
-        assertEquals(b.getBeaconTypeCode(), 0);
+        assertEquals(0, b.getBeaconTypeCode());
         assertNull(b.getBluetoothName());
-        assertEquals(b.getManufacturer(), 0);
-        assertEquals(b.getServiceUuid(), -1);
-        assertSame(b.getPosition(), position);
+        assertEquals(0, b.getManufacturer());
+        assertEquals(-1, b.getServiceUuid());
+        assertSame(position, b.getPosition());
         assertNull(b.getPositionCovariance());
-        assertEquals(b.getType(), RadioSourceType.BEACON);
-        assertEquals(b.getFrequency(), 5.0e9, 0.0);
+        assertEquals(RadioSourceType.BEACON, b.getType());
+        assertEquals(5.0e9, b.getFrequency(), 0.0);
 
         // force IllegalArgumentException
         b = null;
@@ -294,17 +290,17 @@ public class BeaconLocated3DTest {
         assertNull(b.getId1());
         assertNull(b.getId2());
         assertNull(b.getId3());
-        assertEquals(b.getIdentifiers(), identifiers);
-        assertEquals(b.getTransmittedPower(), -50.0, 0.0);
-        assertEquals(b.getBluetoothAddress(), "address");
-        assertEquals(b.getBeaconTypeCode(), 1);
-        assertEquals(b.getBluetoothName(), "name");
-        assertEquals(b.getManufacturer(), 2);
-        assertEquals(b.getServiceUuid(), 3);
-        assertSame(b.getPosition(), position);
+        assertEquals(identifiers, b.getIdentifiers());
+        assertEquals(-50.0, b.getTransmittedPower(), 0.0);
+        assertEquals("address", b.getBluetoothAddress());
+        assertEquals(1, b.getBeaconTypeCode());
+        assertEquals("name", b.getBluetoothName());
+        assertEquals(2, b.getManufacturer());
+        assertEquals(3, b.getServiceUuid());
+        assertSame(position, b.getPosition());
         assertNull(b.getPositionCovariance());
-        assertEquals(b.getType(), RadioSourceType.BEACON);
-        assertEquals(b.getFrequency(), 5.0e9, 0.0);
+        assertEquals(RadioSourceType.BEACON, b.getType());
+        assertEquals(5.0e9, b.getFrequency(), 0.0);
 
         // force IllegalArgumentException
         b = null;
@@ -339,54 +335,50 @@ public class BeaconLocated3DTest {
         assertNull(b.getId1());
         assertNull(b.getId2());
         assertNull(b.getId3());
-        assertEquals(b.getIdentifiers(), identifiers);
-        assertEquals(b.getTransmittedPower(), -50.0, 0.0);
+        assertEquals(identifiers, b.getIdentifiers());
+        assertEquals(-50.0, b.getTransmittedPower(), 0.0);
         assertNull(b.getBluetoothAddress());
-        assertEquals(b.getBeaconTypeCode(), 0);
+        assertEquals(0, b.getBeaconTypeCode());
         assertNull(b.getBluetoothName());
-        assertEquals(b.getManufacturer(), 0);
-        assertEquals(b.getServiceUuid(), -1);
-        assertSame(b.getPosition(), position);
-        assertSame(b.getPositionCovariance(), cov);
-        assertEquals(b.getType(), RadioSourceType.BEACON);
-        assertEquals(b.getFrequency(), 5.0e9, 0.0);
+        assertEquals(0, b.getManufacturer());
+        assertEquals(-1, b.getServiceUuid());
+        assertSame(position, b.getPosition());
+        assertSame(cov, b.getPositionCovariance());
+        assertEquals(RadioSourceType.BEACON, b.getType());
+        assertEquals(5.0e9, b.getFrequency(), 0.0);
 
-        b = new BeaconLocated3D(identifiers, -50.0, 5.0e9, position,
-                null);
+        b = new BeaconLocated3D(identifiers, -50.0, 5.0e9, position, null);
 
         // check
         assertNull(b.getId1());
         assertNull(b.getId2());
         assertNull(b.getId3());
-        assertEquals(b.getIdentifiers(), identifiers);
-        assertEquals(b.getTransmittedPower(), -50.0, 0.0);
+        assertEquals(identifiers, b.getIdentifiers());
+        assertEquals(-50.0, b.getTransmittedPower(), 0.0);
         assertNull(b.getBluetoothAddress());
-        assertEquals(b.getBeaconTypeCode(), 0);
+        assertEquals(0, b.getBeaconTypeCode());
         assertNull(b.getBluetoothName());
-        assertEquals(b.getManufacturer(), 0);
-        assertEquals(b.getServiceUuid(), -1);
-        assertSame(b.getPosition(), position);
+        assertEquals(0, b.getManufacturer());
+        assertEquals(-1, b.getServiceUuid());
+        assertSame(position, b.getPosition());
         assertNull(b.getPositionCovariance());
-        assertEquals(b.getType(), RadioSourceType.BEACON);
-        assertEquals(b.getFrequency(), 5.0e9, 0.0);
+        assertEquals(RadioSourceType.BEACON, b.getType());
+        assertEquals(5.0e9, b.getFrequency(), 0.0);
 
         // force IllegalArgumentException
         b = null;
         try {
-            b = new BeaconLocated3D(null, -50.0, 5.0e9,
-                    position, cov);
+            b = new BeaconLocated3D(null, -50.0, 5.0e9, position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            b = new BeaconLocated3D(identifiers, -50.0, -5.0e9,
-                    position, cov);
+            b = new BeaconLocated3D(identifiers, -50.0, -5.0e9, position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            b = new BeaconLocated3D(identifiers, -50.0, 5.0e9,
-                    null, cov);
+            b = new BeaconLocated3D(identifiers, -50.0, 5.0e9, null, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -407,17 +399,17 @@ public class BeaconLocated3DTest {
         assertNull(b.getId1());
         assertNull(b.getId2());
         assertNull(b.getId3());
-        assertEquals(b.getIdentifiers(), identifiers);
-        assertEquals(b.getTransmittedPower(), -50.0, 0.0);
-        assertEquals(b.getBluetoothAddress(), "address");
-        assertEquals(b.getBeaconTypeCode(), 1);
-        assertEquals(b.getBluetoothName(), "name");
-        assertEquals(b.getManufacturer(), 2);
-        assertEquals(b.getServiceUuid(), 3);
-        assertSame(b.getPosition(), position);
-        assertSame(b.getPositionCovariance(), cov);
-        assertEquals(b.getType(), RadioSourceType.BEACON);
-        assertEquals(b.getFrequency(), 5.0e9, 0.0);
+        assertEquals(identifiers, b.getIdentifiers());
+        assertEquals(-50.0, b.getTransmittedPower(), 0.0);
+        assertEquals("address", b.getBluetoothAddress());
+        assertEquals(1, b.getBeaconTypeCode());
+        assertEquals("name", b.getBluetoothName());
+        assertEquals(2, b.getManufacturer());
+        assertEquals(3, b.getServiceUuid());
+        assertSame(position, b.getPosition());
+        assertSame(cov, b.getPositionCovariance());
+        assertEquals(RadioSourceType.BEACON, b.getType());
+        assertEquals(5.0e9, b.getFrequency(), 0.0);
 
         b = new BeaconLocated3D(identifiers, -50.0, 5.0e9,
                 "address", 1, 2,
@@ -427,45 +419,41 @@ public class BeaconLocated3DTest {
         assertNull(b.getId1());
         assertNull(b.getId2());
         assertNull(b.getId3());
-        assertEquals(b.getIdentifiers(), identifiers);
-        assertEquals(b.getTransmittedPower(), -50.0, 0.0);
-        assertEquals(b.getBluetoothAddress(), "address");
-        assertEquals(b.getBeaconTypeCode(), 1);
-        assertEquals(b.getBluetoothName(), "name");
-        assertEquals(b.getManufacturer(), 2);
-        assertEquals(b.getServiceUuid(), 3);
-        assertSame(b.getPosition(), position);
+        assertEquals(identifiers, b.getIdentifiers());
+        assertEquals(-50.0, b.getTransmittedPower(), 0.0);
+        assertEquals("address", b.getBluetoothAddress());
+        assertEquals(1, b.getBeaconTypeCode());
+        assertEquals("name", b.getBluetoothName());
+        assertEquals(2, b.getManufacturer());
+        assertEquals(3, b.getServiceUuid());
+        assertSame(position, b.getPosition());
         assertNull(b.getPositionCovariance());
-        assertEquals(b.getType(), RadioSourceType.BEACON);
-        assertEquals(b.getFrequency(), 5.0e9, 0.0);
+        assertEquals(RadioSourceType.BEACON, b.getType());
+        assertEquals(5.0e9, b.getFrequency(), 0.0);
 
         // force IllegalArgumentException
         b = null;
         try {
-            b = new BeaconLocated3D(null, -50.0, 5.0e9,
-                    "address", 1,
-                    2, 3, "name", position, cov);
+            b = new BeaconLocated3D(null, -50.0, 5.0e9, "address",
+                    1, 2, 3, "name", position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            b = new BeaconLocated3D(identifiers, -50.0, -5.0e9,
-                    "address", 1, 2,
-                    3, "name", position, cov);
+            b = new BeaconLocated3D(identifiers, -50.0, -5.0e9, "address",
+                    1, 2, 3, "name", position, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            b = new BeaconLocated3D(identifiers, -50.0, 5.0e9,
-                    "address", 1,
-                    2, 3, "name", null, cov);
+            b = new BeaconLocated3D(identifiers, -50.0, 5.0e9, "address",
+                    1, 2, 3, "name", null, cov);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            b = new BeaconLocated3D(identifiers, -50.0, 5.0e9,
-                    "address", 1,
-                    2, 3, "name", position,
+            b = new BeaconLocated3D(identifiers, -50.0, 5.0e9, "address",
+                    1, 2, 3, "name", position,
                     new Matrix(1, 1));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -478,16 +466,13 @@ public class BeaconLocated3DTest {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         final long value1 = randomizer.nextLong();
-        final BeaconIdentifier id1 = BeaconIdentifier.fromLong(value1,
-                Long.SIZE / Byte.SIZE);
+        final BeaconIdentifier id1 = BeaconIdentifier.fromLong(value1, Long.SIZE / Byte.SIZE);
 
         final long value2 = randomizer.nextLong();
-        final BeaconIdentifier id2 = BeaconIdentifier.fromLong(value2,
-                Long.SIZE / Byte.SIZE);
+        final BeaconIdentifier id2 = BeaconIdentifier.fromLong(value2, Long.SIZE / Byte.SIZE);
 
         final long value3 = randomizer.nextLong();
-        final BeaconIdentifier id3 = BeaconIdentifier.fromLong(value3,
-                Long.SIZE / Byte.SIZE);
+        final BeaconIdentifier id3 = BeaconIdentifier.fromLong(value3, Long.SIZE / Byte.SIZE);
 
         final List<BeaconIdentifier> identifiers1 = new ArrayList<>();
         identifiers1.add(id1);
@@ -495,16 +480,13 @@ public class BeaconLocated3DTest {
         identifiers1.add(id3);
 
         final long value4 = value1 + 1;
-        final BeaconIdentifier id4 = BeaconIdentifier.fromLong(value4,
-                Long.SIZE / Byte.SIZE);
+        final BeaconIdentifier id4 = BeaconIdentifier.fromLong(value4, Long.SIZE / Byte.SIZE);
 
         final long value5 = value2 + 1;
-        final BeaconIdentifier id5 = BeaconIdentifier.fromLong(value5,
-                Long.SIZE / Byte.SIZE);
+        final BeaconIdentifier id5 = BeaconIdentifier.fromLong(value5, Long.SIZE / Byte.SIZE);
 
         final long value6 = value3 + 1;
-        final BeaconIdentifier id6 = BeaconIdentifier.fromLong(value6,
-                Long.SIZE / Byte.SIZE);
+        final BeaconIdentifier id6 = BeaconIdentifier.fromLong(value6, Long.SIZE / Byte.SIZE);
 
         final List<BeaconIdentifier> identifiers2 = new ArrayList<>();
         identifiers2.add(id4);
@@ -513,14 +495,12 @@ public class BeaconLocated3DTest {
 
         final InhomogeneousPoint3D position = new InhomogeneousPoint3D();
 
-        final BeaconLocated3D b1 = new BeaconLocated3D(identifiers1,
-                -60.0, position);
-        final BeaconLocated3D b2 = new BeaconLocated3D(identifiers1,
-                -50.0, position);
-        final BeaconLocated3D b3 = new BeaconLocated3D(identifiers2,
-                -60.0, position);
+        final BeaconLocated3D b1 = new BeaconLocated3D(identifiers1, -60.0, position);
+        final BeaconLocated3D b2 = new BeaconLocated3D(identifiers1, -50.0, position);
+        final BeaconLocated3D b3 = new BeaconLocated3D(identifiers2, -60.0, position);
 
         // check
+        //noinspection EqualsWithItself
         assertEquals(b1, b1);
         assertEquals(b1, b2);
         assertNotEquals(b1, b3);
@@ -536,16 +516,13 @@ public class BeaconLocated3DTest {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         final long value1 = randomizer.nextLong();
-        final BeaconIdentifier id1 = BeaconIdentifier.fromLong(value1,
-                Long.SIZE / Byte.SIZE);
+        final BeaconIdentifier id1 = BeaconIdentifier.fromLong(value1, Long.SIZE / Byte.SIZE);
 
         final long value2 = randomizer.nextLong();
-        final BeaconIdentifier id2 = BeaconIdentifier.fromLong(value2,
-                Long.SIZE / Byte.SIZE);
+        final BeaconIdentifier id2 = BeaconIdentifier.fromLong(value2, Long.SIZE / Byte.SIZE);
 
         final long value3 = randomizer.nextLong();
-        final BeaconIdentifier id3 = BeaconIdentifier.fromLong(value3,
-                Long.SIZE / Byte.SIZE);
+        final BeaconIdentifier id3 = BeaconIdentifier.fromLong(value3, Long.SIZE / Byte.SIZE);
 
         final List<BeaconIdentifier> identifiers = new ArrayList<>();
         identifiers.add(id1);
@@ -562,17 +539,17 @@ public class BeaconLocated3DTest {
         assertEquals(id1, b1.getId1());
         assertEquals(id2, b1.getId2());
         assertEquals(id3, b1.getId3());
-        assertEquals(b1.getIdentifiers(), identifiers);
-        assertEquals(b1.getTransmittedPower(), -50.0, 0.0);
-        assertEquals(b1.getBluetoothAddress(), "address");
-        assertEquals(b1.getBeaconTypeCode(), 1);
-        assertEquals(b1.getBluetoothName(), "name");
-        assertEquals(b1.getManufacturer(), 2);
-        assertEquals(b1.getServiceUuid(), 3);
-        assertSame(b1.getPosition(), position);
-        assertSame(b1.getPositionCovariance(), cov);
-        assertEquals(b1.getType(), RadioSourceType.BEACON);
-        assertEquals(b1.getFrequency(), 5.0e9, 0.0);
+        assertEquals(identifiers, b1.getIdentifiers());
+        assertEquals(-50.0, b1.getTransmittedPower(), 0.0);
+        assertEquals("address", b1.getBluetoothAddress());
+        assertEquals(1, b1.getBeaconTypeCode());
+        assertEquals("name", b1.getBluetoothName());
+        assertEquals(2, b1.getManufacturer());
+        assertEquals(3, b1.getServiceUuid());
+        assertSame(position, b1.getPosition());
+        assertSame(cov, b1.getPositionCovariance());
+        assertEquals(RadioSourceType.BEACON, b1.getType());
+        assertEquals(5.0e9, b1.getFrequency(), 0.0);
 
         // serialize and deserialize
         final byte[] bytes = SerializationHelper.serialize(b1);

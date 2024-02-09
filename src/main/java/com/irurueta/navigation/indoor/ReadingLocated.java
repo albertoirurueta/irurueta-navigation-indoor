@@ -22,7 +22,7 @@ import java.io.Serializable;
 
 /**
  * Contains a located signal reading associated to a given radio source
- * (e.g. WiFi access point or bluetooth beacon).
+ * (e.g. Wi-Fi access point or bluetooth beacon).
  *
  * @param <P> a {@link Point} type.
  */

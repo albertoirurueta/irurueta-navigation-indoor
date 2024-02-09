@@ -19,11 +19,10 @@ import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.Point3D;
 
 /**
- * Data related to a WiFi access point with estimated transmitted power and
+ * Data related to a Wi-Fi access point with estimated transmitted power and
  * known 3D location.
  */
-public class WifiAccessPointWithPowerAndLocated3D extends
-        WifiAccessPointWithPowerAndLocated<Point3D> {
+public class WifiAccessPointWithPowerAndLocated3D extends WifiAccessPointWithPowerAndLocated<Point3D> {
 
     /**
      * Constructor.
@@ -196,7 +195,7 @@ public class WifiAccessPointWithPowerAndLocated3D extends
      *                         xx:xx:xx:xx:xx:xx.
      * @param frequency        frequency used by this Access Point (expressed in Hz).
      * @param transmittedPower transmitted power by this access point (expressed in dBm's).
-     * @param pathLossExponent path loss exponent. By default this is 2.0.
+     * @param pathLossExponent path loss exponent. By default, this is 2.0.
      * @param position         position where access point is located.
      * @throws IllegalArgumentException if either BSSID is null or frequency is negative
      */
@@ -216,7 +215,7 @@ public class WifiAccessPointWithPowerAndLocated3D extends
      * @param frequency                         frequency used by this Access Point (expressed in Hz).
      * @param transmittedPower                  transmitted power by this access point (expressed in dBm's).
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value.
-     * @param pathLossExponent                  path loss exponent. By default this is 2.0.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @param position                          position where access point is located.
      * @throws IllegalArgumentException if either BSSID is null, frequency is negative
      *                                  or transmitted power standard deviation is negative.
@@ -240,7 +239,7 @@ public class WifiAccessPointWithPowerAndLocated3D extends
      * @param ssid                              service set identifier (SSID) of this 802.11 network.
      * @param transmittedPower                  transmitted power by this access point (expressed in dBM's).
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value.
-     * @param pathLossExponent                  path loss exponent. By default this is 2.0.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @param position                          position where access point is located.
      * @throws IllegalArgumentException if either BSSID is null, frequency is negative,
      *                                  or transmitted power standard deviation is negative.
@@ -263,7 +262,7 @@ public class WifiAccessPointWithPowerAndLocated3D extends
      *                           xx:xx:xx:xx:xx:xx.
      * @param frequency          frequency used by this Access Point (expressed in Hz).
      * @param transmittedPower   transmitted power by this access point (expressed in dBm's).
-     * @param pathLossExponent   path loss exponent. By default this is 2.0.
+     * @param pathLossExponent   path loss exponent. By default, this is 2.0.
      * @param position           position where access point is located.
      * @param positionCovariance covariance of inhomogeneous coordinates of current
      *                           position (if available).
@@ -286,7 +285,7 @@ public class WifiAccessPointWithPowerAndLocated3D extends
      * @param frequency                         frequency used by this Access Point (expressed in Hz).
      * @param transmittedPower                  transmitted power by this access point (expressed in dBm's).
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value.
-     * @param pathLossExponent                  path loss exponent. By default this is 2.0.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @param position                          position where access point is located.
      * @param positionCovariance                covariance of inhomogeneous coordinates of current
      *                                          position (if available).
@@ -311,7 +310,7 @@ public class WifiAccessPointWithPowerAndLocated3D extends
      * @param ssid                              service set identifier (SSID) of this 802.11 network.
      * @param transmittedPower                  transmitted power by this access point (expressed in dBM's).
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value.
-     * @param pathLossExponent                  path loss exponent. By default this is 2.0.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @param position                          position where access point is located.
      * @param positionCovariance                covariance of inhomogeneous coordinates of current
      *                                          position (if available).
@@ -338,7 +337,7 @@ public class WifiAccessPointWithPowerAndLocated3D extends
      * @param transmittedPower                  transmitted power by this access point (expressed in dBm's).
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value or null
      *                                          if unknown.
-     * @param pathLossExponent                  path loss exponent. By default this is 2.0.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @param pathLossExponentStandardDeviation standard deviation of path loss exponent or null if
      *                                          unknown.
      * @param position                          position where access point is located.
@@ -366,7 +365,7 @@ public class WifiAccessPointWithPowerAndLocated3D extends
      * @param transmittedPower                  transmitted power by this access point (expressed in dBM's).
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value or null
      *                                          if unknown.
-     * @param pathLossExponent                  path loss exponent. By default this is 2.0.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @param pathLossExponentStandardDeviation standard deviation of path loss exponent or null if
      *                                          unknown.
      * @param position                          position where access point is located.
@@ -394,7 +393,7 @@ public class WifiAccessPointWithPowerAndLocated3D extends
      * @param transmittedPower                  transmitted power by this access point (expressed in dBm's).
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value or null
      *                                          if unknown.
-     * @param pathLossExponent                  path loss exponent. By default this is 2.0.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @param pathLossExponentStandardDeviation standard deviation of path loss exponent or null if
      *                                          unknown.
      * @param position                          position where access point is located.
@@ -426,7 +425,7 @@ public class WifiAccessPointWithPowerAndLocated3D extends
      * @param transmittedPower                  transmitted power by this access point (expressed in dBM's).
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value or null
      *                                          if unknown.
-     * @param pathLossExponent                  path loss exponent. By default this is 2.0.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @param pathLossExponentStandardDeviation standard deviation of path loss exponent or null if
      *                                          unknown.
      * @param position                          position where access point is located.

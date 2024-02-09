@@ -25,7 +25,10 @@ import java.util.regex.Pattern;
 /**
  * Encapsulates a beacon identifier of arbitrary byte length.
  * It can encapsulate an identifier that is a 16-byte UUID, or an integer.
- * Based on: https://github.com/AltBeacon/android-beacon-library/blob/master/src/main/java/org/altbeacon/beacon/Identifier.java
+ * Based on:
+ * <a href="https://github.com/AltBeacon/android-beacon-library/blob/master/src/main/java/org/altbeacon/beacon/Identifier.java">
+ *   https://github.com/AltBeacon/android-beacon-library/blob/master/src/main/java/org/altbeacon/beacon/Identifier.java
+ * </a>
  */
 public class BeaconIdentifier implements Comparable<BeaconIdentifier>, Serializable {
     /**
@@ -103,7 +106,7 @@ public class BeaconIdentifier implements Comparable<BeaconIdentifier>, Serializa
      * @param stringValue string to be parsed.
      * @return an identifier representing the specified value.
      * @throws NullPointerException     if string value is null.
-     * @throws IllegalArgumentException if parsing fails for some other reason (invalid format, etc).
+     * @throws IllegalArgumentException if parsing fails for some other reason (invalid format, etc.).
      * @see <a href="https://www.ietf.org/rfc/rfc4122.txt">RFC 4122 on UUIDs</a>
      */
     public static BeaconIdentifier parse(final String stringValue) {
@@ -117,7 +120,7 @@ public class BeaconIdentifier implements Comparable<BeaconIdentifier>, Serializa
      * @param desiredByteLength requested number of bytes to hold the identifier or -1 if not specified.
      * @return the parsed identifier.
      * @throws NullPointerException     if string value is null.
-     * @throws IllegalArgumentException if parsing fails for some other reason (invalid format, etc).
+     * @throws IllegalArgumentException if parsing fails for some other reason (invalid format, etc.).
      */
     public static BeaconIdentifier parse(
             final String stringValue, final int desiredByteLength) {
@@ -340,8 +343,10 @@ public class BeaconIdentifier implements Comparable<BeaconIdentifier>, Serializa
         out[0] = '0';
         out[1] = 'x';
         for (int i = 0, j = 2; i < l; i++) {
-            out[j++] = HEX_DIGITS[(0xF0 & mValue[i]) >>> 4];
-            out[j++] = HEX_DIGITS[0x0F & mValue[i]];
+            out[j] = HEX_DIGITS[(0xF0 & mValue[i]) >>> 4];
+            j++;
+            out[j] = HEX_DIGITS[0x0F & mValue[i]];
+            j++;
         }
         return new String(out);
     }
@@ -406,7 +411,7 @@ public class BeaconIdentifier implements Comparable<BeaconIdentifier>, Serializa
      * array is considered smaller than the other.
      *
      * @param that the other identifier.
-     * @return 0 if both identifiers are equal. Otherwise returns -1 or 1 depending on
+     * @return 0 if both identifiers are equal. Otherwise, returns -1 or 1 depending on
      * which is bigger than th other.
      * @see Comparable#compareTo(Object)
      */

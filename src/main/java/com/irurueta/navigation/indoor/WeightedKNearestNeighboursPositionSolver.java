@@ -20,16 +20,16 @@ import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 
 /**
- * Estimates position using WiFi signals indoor and the Weighted k-Nearest
+ * Estimates position using Wi-Fi signals indoor and the Weighted k-Nearest
  * Neighbours (WkNN) algorithm.
- * WkNN algorithm is based on https://github.com/ajnas/WiFiPS.
+ * WkNN algorithm is based on <a href="https://github.com/ajnas/WiFiPS">https://github.com/ajnas/WiFiPS</a>.
  *
  * @param <P> a {@link Point} type.
  */
 public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?>> {
 
     /**
-     * Default minimum allowed distance between received WiFi fingerprints.
+     * Default minimum allowed distance between received Wi-Fi fingerprints.
      */
     public static final double DEFAULT_EPSILON = 1e-7;
 
@@ -43,7 +43,7 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
     public static final int MIN_FINGERPRINTS = 1;
 
     /**
-     * Known located WiFi fingerprints.
+     * Known located Wi-Fi fingerprints.
      */
     protected RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, P>[] mFingerprints;
 
@@ -69,7 +69,7 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
     protected boolean mLocked;
 
     /**
-     * Minimum allowed distance between received WiFi signal strengths.
+     * Minimum allowed distance between received Wi-Fi signal strengths.
      */
     private double mEpsilon = DEFAULT_EPSILON;
 
@@ -81,11 +81,11 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
 
     /**
      * Constructor.
-     * Sets known located WiFi fingerprints and euclidean distances between WiFi
+     * Sets known located Wi-Fi fingerprints and Euclidean distances between Wi-Fi
      * signal fingerprints.
      *
-     * @param fingerprints known located WiFi fingerprints.
-     * @param distances    euclidean distances between WiFi signal fingerprints
+     * @param fingerprints known located Wi-Fi fingerprints.
+     * @param distances    Euclidean distances between Wi-Fi signal fingerprints
      *                     (expressed in dB's).
      * @throws IllegalArgumentException if either fingerprints or distances are null,
      *                                  don't have the same length or their length is smaller than 1.
@@ -108,11 +108,11 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
 
     /**
      * Constructor.
-     * Sets known located WiFi fingerprints and euclidean distances between WiFi
+     * Sets known located Wi-Fi fingerprints and Euclidean distances between Wi-Fi
      * signal fingerprints.
      *
-     * @param fingerprints known located WiFi fingerprints.
-     * @param distances    euclidean distances between WiFi signal fingerprints
+     * @param fingerprints known located Wi-Fi fingerprints.
+     * @param distances    Euclidean distances between Wi-Fi signal fingerprints
      *                     (expressed in dB's).
      * @param listener     listener to be notified of events raised by this instance.
      * @throws IllegalArgumentException if either fingerprints or distances are null,
@@ -151,9 +151,9 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
     }
 
     /**
-     * Gets known located WiFi fingerprints.
+     * Gets known located Wi-Fi fingerprints.
      *
-     * @return known located WiFi fingerprints.
+     * @return known located Wi-Fi fingerprints.
      */
     public RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, P>[] getFingerprints() {
         return mFingerprints;
@@ -190,11 +190,11 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
     }
 
     /**
-     * Sets known located WiFi fingerprints and euclidean distances between WiFi
+     * Sets known located Wi-Fi fingerprints and Euclidean distances between Wi-Fi
      * signal fingerprints.
      *
-     * @param fingerprints known located WiFi fingerprints.
-     * @param distances    euclidean distances between WiFi signal fingerprints
+     * @param fingerprints known located Wi-Fi fingerprints.
+     * @param distances    Euclidean distances between Wi-Fi signal fingerprints
      *                     (expressed in dB's).
      * @throws IllegalArgumentException if either fingerprints or distances are null,
      *                                  don't have the same length or their length is smaller than 1.
@@ -210,9 +210,9 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
     }
 
     /**
-     * Gets minimum allowed distance between WiFi signal fingerprints.
+     * Gets minimum allowed distance between Wi-Fi signal fingerprints.
      *
-     * @return minimum allowed distance between WiFi signal fingerprints.
+     * @return minimum allowed distance between Wi-Fi signal fingerprints.
      */
     public double getEpsilon() {
         return mEpsilon;
@@ -340,11 +340,11 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
     public abstract int getNumberOfDimensions();
 
     /**
-     * Sets known located WiFi fingerprints and euclidean distances between WiFi
+     * Sets known located Wi-Fi fingerprints and Euclidean distances between Wi-Fi
      * signal fingerprints.
      *
-     * @param fingerprints known located WiFi fingerprints.
-     * @param distances    euclidean distances between WiFi signal fingerprints
+     * @param fingerprints known located Wi-Fi fingerprints.
+     * @param distances    Euclidean distances between Wi-Fi signal fingerprints
      *                     (expressed in dB's).
      * @throws IllegalArgumentException if either fingerprints or distances are null,
      *                                  don't have the same length or their length is smaller than 1.

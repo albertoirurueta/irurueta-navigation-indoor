@@ -41,7 +41,7 @@ public abstract class FingerprintPositionAndRadioSourceEstimator<P extends Point
      * based on RSSI readings. False indicates that RSSI readings are directly used, which
      * might be inaccurate due to bias effects on new fingerprint readings for unknown
      * locations.
-     * By default mean effects are removed to remove possible bias effects due to
+     * By default, mean effects are removed to remove possible bias effects due to
      * readings measured by different devices with different hardware.
      */
     protected boolean mUseNoMeanNearestFingerprintFinder = true;
@@ -104,7 +104,7 @@ public abstract class FingerprintPositionAndRadioSourceEstimator<P extends Point
      * based on RSSI readings. False indicates that RSSI readings are directly used, which
      * might be inaccurate due to bias effects on new fingerprint readings for unknown
      * locations.
-     * By default mean effects are removed to remove possible bias effects due to
+     * By default, mean effects are removed to remove possible bias effects due to
      * readings measured by different devices with different hardware.
      *
      * @return indicates which fingerprint finder is used.
@@ -119,7 +119,7 @@ public abstract class FingerprintPositionAndRadioSourceEstimator<P extends Point
      * based on RSSI readings. False indicates that RSSI readings are directly used, which
      * might be inaccurate due to bias effects on new fingerprint readings for unknown
      * locations.
-     * By default mean effects are removed to remove possible bias effects due to
+     * By default, mean effects are removed to remove possible bias effects due to
      * readings measured by different devices with different hardware.
      *
      * @param useNoMeanNearestFingerprintFinder indicates which fingerprint finder is used.

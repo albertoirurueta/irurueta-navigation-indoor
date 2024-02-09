@@ -31,9 +31,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Estimates position of a radio source (e.g. WiFi access point or bluetooth beacon)
+ * Estimates position of a radio source (e.g. Wi-Fi access point or bluetooth beacon)
  * by using ranging measurements.
- * Ranging measurements can be obtained by protocols such as ieee 802.11mc (WiFi RTT) which
+ * Ranging measurements can be obtained by protocols such as ieee 802.11mc (Wi-Fi RTT) which
  * measures travel time of signal and converts the result into distances by taking into
  * account the speed of light as the propagation speed.
  */
@@ -67,7 +67,7 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
     protected InhomogeneousLinearLeastSquaresLaterationSolver<P> mInhomogeneousLinearSolver;
 
     /**
-     * Internal non linear solver to estimate radio source position and covariance
+     * Internal non-linear solver to estimate radio source position and covariance
      * for an initial provided or estimated position.
      */
     protected NonLinearLeastSquaresLaterationSolver<P> mNonLinearSolver;
@@ -377,7 +377,7 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
                 mEstimatedPositionCovariance = mEstimatedCovariance =
                         mNonLinearSolver.getCovariance();
             } else {
-                // non linear solver disabled
+                // non-linear solver disabled
                 if (mUseHomogeneousLinearSolver) {
                     mEstimatedPositionCoordinates =
                             mHomogeneousLinearSolver != null ?

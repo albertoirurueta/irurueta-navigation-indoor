@@ -28,7 +28,7 @@ public class BeaconLocated3D extends BeaconLocated<Point3D> {
     /**
      * Constructor.
      *
-     * @param identifiers      list of the multi-part identifiers of the beacon.
+     * @param identifiers      list of the multipart identifiers of the beacon.
      * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI
      *                         (expressed in dBm's).
      * @param position         position where beacon is located.
@@ -43,7 +43,7 @@ public class BeaconLocated3D extends BeaconLocated<Point3D> {
     /**
      * Constructor.
      *
-     * @param identifiers      list of the multi-part identifiers of the beacon.
+     * @param identifiers      list of the multipart identifiers of the beacon.
      * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param bluetoothAddress the bluetooth mac address.
      * @param beaconTypeCode   the two byte value indicating the type of beacon.
@@ -68,7 +68,7 @@ public class BeaconLocated3D extends BeaconLocated<Point3D> {
     /**
      * Constructor.
      *
-     * @param identifiers        list of the multi-part identifiers of the beacon.
+     * @param identifiers        list of the multipart identifiers of the beacon.
      * @param transmittedPower   calibrated measured Tx power of the Beacon in RSSI
      *                           (expressed in dBm's).
      * @param position           position where beacon is located.
@@ -86,7 +86,7 @@ public class BeaconLocated3D extends BeaconLocated<Point3D> {
     /**
      * Constructor.
      *
-     * @param identifiers        list of the multi-part identifiers of the beacon.
+     * @param identifiers        list of the multipart identifiers of the beacon.
      * @param transmittedPower   calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param bluetoothAddress   the bluetooth mac address.
      * @param beaconTypeCode     the two byte value indicating the type of beacon.
@@ -115,7 +115,7 @@ public class BeaconLocated3D extends BeaconLocated<Point3D> {
     /**
      * Constructor.
      *
-     * @param identifiers      list of the multi-part identifiers of the beacon.
+     * @param identifiers      list of the multipart identifiers of the beacon.
      * @param transmittedPower calibrated measured Tx power of the beacon in RSSI (expressed in dBm's).
      * @param frequency        frequency used by this Beacon.
      * @param position         position where beacon is located.
@@ -132,7 +132,7 @@ public class BeaconLocated3D extends BeaconLocated<Point3D> {
     /**
      * Constructor.
      *
-     * @param identifiers      list of the multi-part identifiers of the beacon.
+     * @param identifiers      list of the multipart identifiers of the beacon.
      * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency        frequency used by this Beacon.
      * @param bluetoothAddress the bluetooth mac address.
@@ -160,7 +160,7 @@ public class BeaconLocated3D extends BeaconLocated<Point3D> {
     /**
      * Constructor.
      *
-     * @param identifiers        list of the multi-part identifiers of the beacon.
+     * @param identifiers        list of the multipart identifiers of the beacon.
      * @param transmittedPower   calibrated measured Tx power of the Beacon in RSSI
      *                           (expressed in dBm's).
      * @param frequency          frequency used by this Beacon.
@@ -181,7 +181,7 @@ public class BeaconLocated3D extends BeaconLocated<Point3D> {
     /**
      * Constructor.
      *
-     * @param identifiers        list of the multi-part identifiers of the beacon.
+     * @param identifiers        list of the multipart identifiers of the beacon.
      * @param transmittedPower   calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency          frequency used by this Beacon.
      * @param bluetoothAddress   the bluetooth mac address.

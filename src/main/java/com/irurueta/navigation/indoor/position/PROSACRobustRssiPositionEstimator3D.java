@@ -376,6 +376,7 @@ public class PROSACRobustRssiPositionEstimator3D extends RobustRssiPositionEstim
      *
      * @return quality scores corresponding to each radio source.
      */
+    @Override
     public double[] getSourceQualityScores() {
         return mSourceQualityScores;
     }
@@ -389,6 +390,7 @@ public class PROSACRobustRssiPositionEstimator3D extends RobustRssiPositionEstim
      * @throws IllegalArgumentException if provided quality scores length is smaller
      *                                  than minimum required samples.
      */
+    @Override
     public void setSourceQualityScores(final double[] sourceQualityScores)
             throws LockedException {
         if (isLocked()) {
@@ -406,6 +408,7 @@ public class PROSACRobustRssiPositionEstimator3D extends RobustRssiPositionEstim
      * @return quality scores corresponding to each reading within provided
      * fingerprint.
      */
+    @Override
     public double[] getFingerprintReadingsQualityScores() {
         return mFingerprintReadingsQualityScores;
     }
@@ -422,6 +425,7 @@ public class PROSACRobustRssiPositionEstimator3D extends RobustRssiPositionEstim
      * @throws IllegalArgumentException if provided quality scores length is smaller
      *                                  than minimum required samples.
      */
+    @Override
     public void setFingerprintReadingsQualityScores(
             final double[] fingerprintReadingsQualityScores) throws LockedException {
         if (isLocked()) {

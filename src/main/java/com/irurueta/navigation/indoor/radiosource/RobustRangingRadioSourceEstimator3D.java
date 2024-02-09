@@ -33,7 +33,7 @@ import java.util.BitSet;
 import java.util.List;
 
 /**
- * This is an abstract class to robustly estimate 3D position of a radio source (e.g. WiFi
+ * This is an abstract class to robustly estimate 3D position of a radio source (e.g. Wi-Fi
  * access point or bluetooth beacon), by discarding outliers.
  *
  * @param <S> a {@link RadioSource} type.
@@ -172,13 +172,13 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
         switch (method) {
             case RANSAC:
                 return new RANSACRobustRangingRadioSourceEstimator3D<>();
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingRadioSourceEstimator3D<>();
             case MSAC:
                 return new MSACRobustRangingRadioSourceEstimator3D<>();
             case PROSAC:
                 return new PROSACRobustRangingRadioSourceEstimator3D<>();
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingRadioSourceEstimator3D<>();
         }
@@ -198,13 +198,13 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
         switch (method) {
             case RANSAC:
                 return new RANSACRobustRangingRadioSourceEstimator3D<>(readings);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingRadioSourceEstimator3D<>(readings);
             case MSAC:
                 return new MSACRobustRangingRadioSourceEstimator3D<>(readings);
             case PROSAC:
                 return new PROSACRobustRangingRadioSourceEstimator3D<>(readings);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingRadioSourceEstimator3D<>(readings);
         }
@@ -224,13 +224,13 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
         switch (method) {
             case RANSAC:
                 return new RANSACRobustRangingRadioSourceEstimator3D<>(listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingRadioSourceEstimator3D<>(listener);
             case MSAC:
                 return new MSACRobustRangingRadioSourceEstimator3D<>(listener);
             case PROSAC:
                 return new PROSACRobustRangingRadioSourceEstimator3D<>(listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingRadioSourceEstimator3D<>(listener);
         }
@@ -253,7 +253,7 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
             case RANSAC:
                 return new RANSACRobustRangingRadioSourceEstimator3D<>(readings,
                         listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingRadioSourceEstimator3D<>(readings,
                         listener);
             case MSAC:
@@ -262,7 +262,7 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
             case PROSAC:
                 return new PROSACRobustRangingRadioSourceEstimator3D<>(readings,
                         listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingRadioSourceEstimator3D<>(readings,
                         listener);
@@ -284,13 +284,13 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
         switch (method) {
             case RANSAC:
                 return new RANSACRobustRangingRadioSourceEstimator3D<>(initialPosition);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingRadioSourceEstimator3D<>(initialPosition);
             case MSAC:
                 return new MSACRobustRangingRadioSourceEstimator3D<>(initialPosition);
             case PROSAC:
                 return new PROSACRobustRangingRadioSourceEstimator3D<>(initialPosition);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingRadioSourceEstimator3D<>(initialPosition);
         }
@@ -314,7 +314,7 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
             case RANSAC:
                 return new RANSACRobustRangingRadioSourceEstimator3D<>(readings,
                         initialPosition);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingRadioSourceEstimator3D<>(readings,
                         initialPosition);
             case MSAC:
@@ -323,7 +323,7 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
             case PROSAC:
                 return new PROSACRobustRangingRadioSourceEstimator3D<>(readings,
                         initialPosition);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingRadioSourceEstimator3D<>(readings,
                         initialPosition);
@@ -348,7 +348,7 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
             case RANSAC:
                 return new RANSACRobustRangingRadioSourceEstimator3D<>(initialPosition,
                         listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingRadioSourceEstimator3D<>(initialPosition,
                         listener);
             case MSAC:
@@ -357,7 +357,7 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
             case PROSAC:
                 return new PROSACRobustRangingRadioSourceEstimator3D<>(initialPosition,
                         listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingRadioSourceEstimator3D<>(initialPosition,
                         listener);
@@ -384,7 +384,7 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
             case RANSAC:
                 return new RANSACRobustRangingRadioSourceEstimator3D<>(readings,
                         initialPosition, listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingRadioSourceEstimator3D<>(readings,
                         initialPosition, listener);
             case MSAC:
@@ -393,7 +393,7 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
             case PROSAC:
                 return new PROSACRobustRangingRadioSourceEstimator3D<>(readings,
                         initialPosition, listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingRadioSourceEstimator3D<>(readings,
                         initialPosition, listener);
@@ -415,13 +415,13 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
         switch (method) {
             case RANSAC:
                 return new RANSACRobustRangingRadioSourceEstimator3D<>();
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingRadioSourceEstimator3D<>();
             case MSAC:
                 return new MSACRobustRangingRadioSourceEstimator3D<>();
             case PROSAC:
                 return new PROSACRobustRangingRadioSourceEstimator3D<>(qualityScores);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingRadioSourceEstimator3D<>(qualityScores);
         }
@@ -445,14 +445,14 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
         switch (method) {
             case RANSAC:
                 return new RANSACRobustRangingRadioSourceEstimator3D<>(readings);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingRadioSourceEstimator3D<>(readings);
             case MSAC:
                 return new MSACRobustRangingRadioSourceEstimator3D<>(readings);
             case PROSAC:
                 return new PROSACRobustRangingRadioSourceEstimator3D<>(qualityScores,
                         readings);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingRadioSourceEstimator3D<>(qualityScores,
                         readings);
@@ -477,14 +477,14 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
         switch (method) {
             case RANSAC:
                 return new RANSACRobustRangingRadioSourceEstimator3D<>(listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingRadioSourceEstimator3D<>(listener);
             case MSAC:
                 return new MSACRobustRangingRadioSourceEstimator3D<>(listener);
             case PROSAC:
                 return new PROSACRobustRangingRadioSourceEstimator3D<>(qualityScores,
                         listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingRadioSourceEstimator3D<>(qualityScores,
                         listener);
@@ -512,7 +512,7 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
             case RANSAC:
                 return new RANSACRobustRangingRadioSourceEstimator3D<>(readings,
                         listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingRadioSourceEstimator3D<>(readings,
                         listener);
             case MSAC:
@@ -521,7 +521,7 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
             case PROSAC:
                 return new PROSACRobustRangingRadioSourceEstimator3D<>(qualityScores,
                         readings, listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingRadioSourceEstimator3D<>(qualityScores,
                         readings, listener);
@@ -547,14 +547,14 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
         switch (method) {
             case RANSAC:
                 return new RANSACRobustRangingRadioSourceEstimator3D<>(initialPosition);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingRadioSourceEstimator3D<>(initialPosition);
             case MSAC:
                 return new MSACRobustRangingRadioSourceEstimator3D<>(initialPosition);
             case PROSAC:
                 return new PROSACRobustRangingRadioSourceEstimator3D<>(qualityScores,
                         initialPosition);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingRadioSourceEstimator3D<>(qualityScores,
                         initialPosition);
@@ -583,7 +583,7 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
             case RANSAC:
                 return new RANSACRobustRangingRadioSourceEstimator3D<>(readings,
                         initialPosition);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingRadioSourceEstimator3D<>(readings,
                         initialPosition);
             case MSAC:
@@ -592,7 +592,7 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
             case PROSAC:
                 return new PROSACRobustRangingRadioSourceEstimator3D<>(qualityScores,
                         readings, initialPosition);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingRadioSourceEstimator3D<>(qualityScores,
                         readings, initialPosition);
@@ -621,7 +621,7 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
             case RANSAC:
                 return new RANSACRobustRangingRadioSourceEstimator3D<>(initialPosition,
                         listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingRadioSourceEstimator3D<>(initialPosition,
                         listener);
             case MSAC:
@@ -630,7 +630,7 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
             case PROSAC:
                 return new PROSACRobustRangingRadioSourceEstimator3D<>(qualityScores,
                         initialPosition, listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingRadioSourceEstimator3D<>(qualityScores,
                         initialPosition, listener);
@@ -661,7 +661,7 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
             case RANSAC:
                 return new RANSACRobustRangingRadioSourceEstimator3D<>(readings,
                         initialPosition, listener);
-            case LMedS:
+            case LMEDS:
                 return new LMedSRobustRangingRadioSourceEstimator3D<>(readings,
                         initialPosition, listener);
             case MSAC:
@@ -670,7 +670,7 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
             case PROSAC:
                 return new PROSACRobustRangingRadioSourceEstimator3D<>(qualityScores,
                         readings, initialPosition, listener);
-            case PROMedS:
+            case PROMEDS:
             default:
                 return new PROMedSRobustRangingRadioSourceEstimator3D<>(qualityScores,
                         readings, initialPosition, listener);
@@ -791,7 +791,7 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
 
             mInnerEstimator.setReadings(mInnerReadings);
 
-            // for preliminary solutions, non linear solver is not needed, and if no
+            // for preliminary solutions, non-linear solver is not needed, and if no
             // initial position is used, we can obtain faster solutions disabling
             // non-linear solver and using a linear one only (because covariance is not
             // required)
@@ -814,7 +814,7 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
      * provided solution if refinement is requested.
      * This method sets a refined result and transmitted power or provided input
      * result if refinement is not requested or has failed.
-     * If refinement is enabled and it is requested to keep covariance, this method
+     * If refinement is enabled, and it is requested to keep covariance, this method
      * will also keep covariance of refined result.
      * solution if not requested or refinement failed.
      *

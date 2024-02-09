@@ -34,18 +34,18 @@ public class WifiAccessPointTest {
 
         // check default values
         assertNull(ap.getBssid());
-        assertEquals(ap.getFrequency(), 0.0, 0.0);
+        assertEquals(0.0, ap.getFrequency(), 0.0);
         assertNull(ap.getSsid());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // test constructor with BSSID
         ap = new WifiAccessPoint(BSSID, FREQUENCY);
 
         // check default values
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
         assertNull(ap.getSsid());
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // Force IllegalArgumentException
         ap = null;
@@ -65,10 +65,10 @@ public class WifiAccessPointTest {
         ap = new WifiAccessPoint(BSSID, FREQUENCY, SSID);
 
         // check default value
-        assertEquals(ap.getBssid(), BSSID);
-        assertEquals(ap.getFrequency(), FREQUENCY, 0.0);
-        assertEquals(ap.getSsid(), SSID);
-        assertEquals(ap.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(BSSID, ap.getBssid());
+        assertEquals(FREQUENCY, ap.getFrequency(), 0.0);
+        assertEquals(SSID, ap.getSsid());
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // Force IllegalArgumentException
         ap = null;
@@ -92,12 +92,13 @@ public class WifiAccessPointTest {
         final WifiAccessPoint ap3 = new WifiAccessPoint("bssid2", FREQUENCY);
 
         // check
+        //noinspection EqualsWithItself
         assertEquals(ap1, ap1);
         assertEquals(ap1, ap2);
         assertNotEquals(ap1, ap3);
 
         assertNotEquals(null, ap1);
-        assertNotEquals(ap1, new Object());
+        assertNotEquals(new Object(), ap1);
     }
 
     @Test
@@ -117,10 +118,10 @@ public class WifiAccessPointTest {
         final WifiAccessPoint ap1 = new WifiAccessPoint(BSSID, FREQUENCY, SSID);
 
         // check
-        assertEquals(ap1.getBssid(), BSSID);
-        assertEquals(ap1.getFrequency(), FREQUENCY, 0.0);
-        assertEquals(ap1.getSsid(), SSID);
-        assertEquals(ap1.getType(), RadioSourceType.WIFI_ACCESS_POINT);
+        assertEquals(BSSID, ap1.getBssid());
+        assertEquals(FREQUENCY, ap1.getFrequency(), 0.0);
+        assertEquals(SSID, ap1.getSsid());
+        assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap1.getType());
 
         // serialize and deserialize
         final byte[] bytes = SerializationHelper.serialize(ap1);

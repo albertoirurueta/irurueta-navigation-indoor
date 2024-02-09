@@ -275,11 +275,11 @@ public abstract class NonLinearRangingAndRssiPositionEstimator<P extends Point<?
     }
 
     /**
-     * Gets euclidean distances from known located radio sources to the location of
+     * Gets Euclidean distances from known located radio sources to the location of
      * provided readings in a fingerprint.
      * Distance values are used internally to solve lateration.
      *
-     * @return euclidean distances used internally.
+     * @return Euclidean distances used internally.
      */
     @Override
     public double[] getDistances() {
@@ -302,6 +302,7 @@ public abstract class NonLinearRangingAndRssiPositionEstimator<P extends Point<?
      * @throws IllegalArgumentException if provided value is null or the number of
      *                                  provided sources is less than the required minimum.
      */
+    @Override
     protected void internalSetSources(final List<? extends RadioSourceLocated<P>> sources) {
         super.internalSetSources(sources);
         buildPositionsDistancesAndDistanceStandardDeviations();
@@ -315,6 +316,7 @@ public abstract class NonLinearRangingAndRssiPositionEstimator<P extends Point<?
      *                    provided located radio sources.
      * @throws IllegalArgumentException if provided value is null.
      */
+    @Override
     protected void internalSetFingerprint(
             final Fingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
                     extends RadioSource>> fingerprint) {

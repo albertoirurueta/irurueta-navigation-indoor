@@ -42,8 +42,7 @@ import java.util.List;
 import java.util.Random;
 import org.junit.Test;
 
-public class NonLinearMixedPositionEstimator3DTest implements
-        MixedPositionEstimatorListener<Point3D> {
+public class NonLinearMixedPositionEstimator3DTest implements MixedPositionEstimatorListener<Point3D> {
 
     private static final double FREQUENCY = 2.4e9; // (Hz)
 
@@ -71,17 +70,15 @@ public class NonLinearMixedPositionEstimator3DTest implements
     @Test
     public void testConstructor() {
         // empty constructor
-        NonLinearMixedPositionEstimator3D estimator =
-                new NonLinearMixedPositionEstimator3D();
+        NonLinearMixedPositionEstimator3D estimator = new NonLinearMixedPositionEstimator3D();
 
         // check default values
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
         assertNull(estimator.getSources());
@@ -96,22 +93,20 @@ public class NonLinearMixedPositionEstimator3DTest implements
         // constructor with sources
         final List<WifiAccessPointLocated3D> sources = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
-            sources.add(new WifiAccessPointLocated3D("id1", FREQUENCY,
-                    new InhomogeneousPoint3D()));
+            sources.add(new WifiAccessPointLocated3D("id1", FREQUENCY, new InhomogeneousPoint3D()));
         }
         estimator = new NonLinearMixedPositionEstimator3D(sources);
 
         // check default values
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
         assertNull(estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
@@ -123,36 +118,32 @@ public class NonLinearMixedPositionEstimator3DTest implements
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new NonLinearMixedPositionEstimator3D(
-                    (List<WifiAccessPointLocated3D>) null);
+            estimator = new NonLinearMixedPositionEstimator3D((List<WifiAccessPointLocated3D>) null);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new NonLinearMixedPositionEstimator3D(
-                    new ArrayList<WifiAccessPointLocated3D>());
+            estimator = new NonLinearMixedPositionEstimator3D(new ArrayList<WifiAccessPointLocated3D>());
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
 
         // constructor with fingerprint
-        final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
-                new Fingerprint<>();
+        final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint = new Fingerprint<>();
         estimator = new NonLinearMixedPositionEstimator3D(fingerprint);
 
         // check default values
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
         assertNull(estimator.getSources());
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
@@ -176,15 +167,14 @@ public class NonLinearMixedPositionEstimator3DTest implements
         // check default values
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
@@ -195,8 +185,7 @@ public class NonLinearMixedPositionEstimator3DTest implements
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new NonLinearMixedPositionEstimator3D(null,
-                    fingerprint);
+            estimator = new NonLinearMixedPositionEstimator3D(null, fingerprint);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -220,16 +209,15 @@ public class NonLinearMixedPositionEstimator3DTest implements
         // check default values
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
         assertNull(estimator.getSources());
         assertNull(estimator.getFingerprint());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
@@ -242,16 +230,15 @@ public class NonLinearMixedPositionEstimator3DTest implements
         // check default values
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
         assertNull(estimator.getFingerprint());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
@@ -267,8 +254,7 @@ public class NonLinearMixedPositionEstimator3DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new NonLinearMixedPositionEstimator3D(
-                    new ArrayList<WifiAccessPointLocated3D>(), this);
+            estimator = new NonLinearMixedPositionEstimator3D(new ArrayList<WifiAccessPointLocated3D>(), this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -280,16 +266,15 @@ public class NonLinearMixedPositionEstimator3DTest implements
         // check default values
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
         assertNull(estimator.getSources());
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
@@ -300,30 +285,27 @@ public class NonLinearMixedPositionEstimator3DTest implements
         estimator = null;
         try {
             estimator = new NonLinearMixedPositionEstimator3D(
-                    (Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>>) null,
-                    this);
+                    (Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>>) null, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
 
         // constructor with sources, fingerprint and listener
-        estimator = new NonLinearMixedPositionEstimator3D(sources, fingerprint,
-                this);
+        estimator = new NonLinearMixedPositionEstimator3D(sources, fingerprint, this);
 
         // check default values
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
@@ -340,15 +322,13 @@ public class NonLinearMixedPositionEstimator3DTest implements
         }
         try {
             estimator = new NonLinearMixedPositionEstimator3D(
-                    new ArrayList<WifiAccessPointLocated3D>(), fingerprint,
-                    this);
+                    new ArrayList<WifiAccessPointLocated3D>(), fingerprint, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
             estimator = new NonLinearMixedPositionEstimator3D(sources,
-                    (Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>>) null,
-                    this);
+                    (Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>>) null, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -359,13 +339,12 @@ public class NonLinearMixedPositionEstimator3DTest implements
         estimator = new NonLinearMixedPositionEstimator3D(initialPosition);
 
         // check default values
-        assertSame(estimator.getInitialPosition(), initialPosition);
+        assertSame(initialPosition, estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
         assertNull(estimator.getSources());
@@ -381,16 +360,15 @@ public class NonLinearMixedPositionEstimator3DTest implements
         estimator = new NonLinearMixedPositionEstimator3D(sources, initialPosition);
 
         // check default values
-        assertSame(estimator.getInitialPosition(), initialPosition);
+        assertSame(initialPosition, estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
         assertNull(estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
@@ -402,16 +380,14 @@ public class NonLinearMixedPositionEstimator3DTest implements
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new NonLinearMixedPositionEstimator3D(
-                    (List<WifiAccessPointLocated3D>) null,
+            estimator = new NonLinearMixedPositionEstimator3D((List<WifiAccessPointLocated3D>) null,
                     initialPosition);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
             estimator = new NonLinearMixedPositionEstimator3D(
-                    new ArrayList<WifiAccessPointLocated3D>(),
-                    initialPosition);
+                    new ArrayList<WifiAccessPointLocated3D>(), initialPosition);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -421,17 +397,16 @@ public class NonLinearMixedPositionEstimator3DTest implements
         estimator = new NonLinearMixedPositionEstimator3D(fingerprint, initialPosition);
 
         // check default values
-        assertSame(estimator.getInitialPosition(), initialPosition);
+        assertSame(initialPosition, estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
         assertNull(estimator.getSources());
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
@@ -443,29 +418,26 @@ public class NonLinearMixedPositionEstimator3DTest implements
         estimator = null;
         try {
             estimator = new NonLinearMixedPositionEstimator3D(
-                    (Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>>) null,
-                    initialPosition);
+                    (Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>>) null, initialPosition);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
 
         // constructor with sources, fingerprint and initial position
-        estimator = new NonLinearMixedPositionEstimator3D(sources, fingerprint,
-                initialPosition);
+        estimator = new NonLinearMixedPositionEstimator3D(sources, fingerprint, initialPosition);
 
         // check default values
-        assertSame(estimator.getInitialPosition(), initialPosition);
+        assertSame(initialPosition, estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
@@ -476,43 +448,38 @@ public class NonLinearMixedPositionEstimator3DTest implements
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new NonLinearMixedPositionEstimator3D(null, fingerprint,
-                    initialPosition);
+            estimator = new NonLinearMixedPositionEstimator3D(null, fingerprint, initialPosition);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
             estimator = new NonLinearMixedPositionEstimator3D(
-                    new ArrayList<WifiAccessPointLocated3D>(), fingerprint,
-                    initialPosition);
+                    new ArrayList<WifiAccessPointLocated3D>(), fingerprint, initialPosition);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new NonLinearMixedPositionEstimator3D(sources,
-                    null, initialPosition);
+            estimator = new NonLinearMixedPositionEstimator3D(sources, null, initialPosition);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
 
         // constructor with initial position and listener
-        estimator = new NonLinearMixedPositionEstimator3D(initialPosition,
-                this);
+        estimator = new NonLinearMixedPositionEstimator3D(initialPosition, this);
 
         // check default values
         assertSame(estimator.getInitialPosition(), initialPosition);
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
         assertNull(estimator.getSources());
         assertNull(estimator.getFingerprint());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
@@ -520,22 +487,20 @@ public class NonLinearMixedPositionEstimator3DTest implements
         assertNull(estimator.getCovariance());
 
         // constructor with sources, initial position and listener
-        estimator = new NonLinearMixedPositionEstimator3D(sources, initialPosition,
-                this);
+        estimator = new NonLinearMixedPositionEstimator3D(sources, initialPosition, this);
 
         // check default values
-        assertSame(estimator.getInitialPosition(), initialPosition);
+        assertSame(initialPosition, estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
         assertNull(estimator.getFingerprint());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
@@ -545,15 +510,13 @@ public class NonLinearMixedPositionEstimator3DTest implements
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new NonLinearMixedPositionEstimator3D(
-                    (List<WifiAccessPointLocated3D>) null,
+            estimator = new NonLinearMixedPositionEstimator3D((List<WifiAccessPointLocated3D>) null,
                     initialPosition, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new NonLinearMixedPositionEstimator3D(
-                    new ArrayList<WifiAccessPointLocated3D>(),
+            estimator = new NonLinearMixedPositionEstimator3D(new ArrayList<WifiAccessPointLocated3D>(),
                     initialPosition, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -561,22 +524,20 @@ public class NonLinearMixedPositionEstimator3DTest implements
         assertNull(estimator);
 
         // constructor with fingerprint, initial position and listener
-        estimator = new NonLinearMixedPositionEstimator3D(fingerprint, initialPosition,
-                this);
+        estimator = new NonLinearMixedPositionEstimator3D(fingerprint, initialPosition, this);
 
         // check default values
         assertSame(estimator.getInitialPosition(), initialPosition);
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
         assertNull(estimator.getSources());
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
@@ -587,30 +548,29 @@ public class NonLinearMixedPositionEstimator3DTest implements
         estimator = null;
         try {
             estimator = new NonLinearMixedPositionEstimator3D(
-                    (Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>>) null,
-                    initialPosition, this);
+                    (Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>>) null, initialPosition,
+                    this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
 
         // constructor with sources, fingerprint, initial position and listener
-        estimator = new NonLinearMixedPositionEstimator3D(sources, fingerprint,
-                initialPosition, this);
+        estimator = new NonLinearMixedPositionEstimator3D(sources, fingerprint, initialPosition,
+                this);
 
         // check default values
-        assertSame(estimator.getInitialPosition(), initialPosition);
+        assertSame(initialPosition, estimator.getInitialPosition());
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertNull(estimator.getEstimatedPosition());
-        assertEquals(estimator.getMinRequiredSources(), 4);
+        assertEquals(4, estimator.getMinRequiredSources());
         assertFalse(estimator.isReady());
         assertFalse(estimator.isLocked());
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getPositions());
         assertNull(estimator.getDistances());
@@ -620,21 +580,21 @@ public class NonLinearMixedPositionEstimator3DTest implements
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new NonLinearMixedPositionEstimator3D(null, fingerprint,
-                    initialPosition, this);
+            estimator = new NonLinearMixedPositionEstimator3D(null, fingerprint, initialPosition,
+                    this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
             estimator = new NonLinearMixedPositionEstimator3D(
-                    new ArrayList<WifiAccessPointLocated3D>(), fingerprint,
-                    initialPosition, this);
+                    new ArrayList<WifiAccessPointLocated3D>(), fingerprint, initialPosition,
+                    this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new NonLinearMixedPositionEstimator3D(sources,
-                    null, initialPosition, this);
+            estimator = new NonLinearMixedPositionEstimator3D(sources, null, initialPosition,
+                    this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -643,8 +603,7 @@ public class NonLinearMixedPositionEstimator3DTest implements
 
     @Test
     public void testGetSetInitialPosition() throws LockedException {
-        final NonLinearMixedPositionEstimator3D estimator =
-                new NonLinearMixedPositionEstimator3D();
+        final NonLinearMixedPositionEstimator3D estimator = new NonLinearMixedPositionEstimator3D();
 
         // check default value
         assertNull(estimator.getInitialPosition());
@@ -654,13 +613,12 @@ public class NonLinearMixedPositionEstimator3DTest implements
         estimator.setInitialPosition(initialPosition);
 
         // check
-        assertSame(estimator.getInitialPosition(), initialPosition);
+        assertSame(initialPosition, estimator.getInitialPosition());
     }
 
     @Test
     public void testIsSetRadioSourcePositionCovarianceUsed() throws LockedException {
-        final NonLinearMixedPositionEstimator3D estimator =
-                new NonLinearMixedPositionEstimator3D();
+        final NonLinearMixedPositionEstimator3D estimator = new NonLinearMixedPositionEstimator3D();
 
         // check default value
         assertFalse(estimator.isRadioSourcePositionCovarianceUsed());
@@ -674,26 +632,22 @@ public class NonLinearMixedPositionEstimator3DTest implements
 
     @Test
     public void testGetSetFallbackDistanceStandardDeviation() throws LockedException {
-        final NonLinearMixedPositionEstimator3D estimator =
-                new NonLinearMixedPositionEstimator3D();
+        final NonLinearMixedPositionEstimator3D estimator = new NonLinearMixedPositionEstimator3D();
 
         // check default value
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(NonLinearMixedPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
 
         // set new value
         estimator.setFallbackDistanceStandardDeviation(5.0);
 
         // check
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                5.0, 0.0);
+        assertEquals(5.0, estimator.getFallbackDistanceStandardDeviation(), 0.0);
     }
 
     @Test
     public void testGetSetSources() throws LockedException {
-        final NonLinearMixedPositionEstimator3D estimator =
-                new NonLinearMixedPositionEstimator3D();
+        final NonLinearMixedPositionEstimator3D estimator = new NonLinearMixedPositionEstimator3D();
 
         // check default value
         assertNull(estimator.getSources());
@@ -701,14 +655,13 @@ public class NonLinearMixedPositionEstimator3DTest implements
         // set new value
         final List<WifiAccessPointLocated3D> sources = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
-            sources.add(new WifiAccessPointLocated3D("id1", FREQUENCY,
-                    new InhomogeneousPoint3D()));
+            sources.add(new WifiAccessPointLocated3D("id1", FREQUENCY, new InhomogeneousPoint3D()));
         }
 
         estimator.setSources(sources);
 
         // check
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
 
         // force IllegalArgumentException
         try {
@@ -725,19 +678,17 @@ public class NonLinearMixedPositionEstimator3DTest implements
 
     @Test
     public void testGetSetFingerprint() throws LockedException {
-        final NonLinearMixedPositionEstimator3D estimator =
-                new NonLinearMixedPositionEstimator3D();
+        final NonLinearMixedPositionEstimator3D estimator = new NonLinearMixedPositionEstimator3D();
 
         // check default value
         assertNull(estimator.getFingerprint());
 
         // set new value
-        final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
-                new Fingerprint<>();
+        final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint = new Fingerprint<>();
         estimator.setFingerprint(fingerprint);
 
         // check
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // force IllegalArgumentException
         try {
@@ -749,8 +700,7 @@ public class NonLinearMixedPositionEstimator3DTest implements
 
     @Test
     public void testGetSetListener() throws LockedException {
-        final NonLinearMixedPositionEstimator3D estimator =
-                new NonLinearMixedPositionEstimator3D();
+        final NonLinearMixedPositionEstimator3D estimator = new NonLinearMixedPositionEstimator3D();
 
         // check default size
         assertNull(estimator.getListener());
@@ -759,7 +709,7 @@ public class NonLinearMixedPositionEstimator3DTest implements
         estimator.setListener(this);
 
         // check
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
     }
 
     @Test
@@ -791,17 +741,16 @@ public class NonLinearMixedPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 readings.add(new RssiReading<>(accessPoint, rssi));
             }
@@ -810,8 +759,7 @@ public class NonLinearMixedPositionEstimator3DTest implements
                     new Fingerprint<>(readings);
 
             final NonLinearMixedPositionEstimator3D estimator =
-                    new NonLinearMixedPositionEstimator3D(sources, fingerprint,
-                            this);
+                    new NonLinearMixedPositionEstimator3D(sources, fingerprint, this);
 
             reset();
 
@@ -824,13 +772,13 @@ public class NonLinearMixedPositionEstimator3DTest implements
             assertNotNull(estimator.getDistances());
             assertNotNull(estimator.getDistanceStandardDeviations());
             assertNull(estimator.getCovariance());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -848,8 +796,7 @@ public class NonLinearMixedPositionEstimator3DTest implements
         assertTrue(numValid > 0);
 
         // force NotReadyException
-        final NonLinearMixedPositionEstimator3D estimator =
-                new NonLinearMixedPositionEstimator3D();
+        final NonLinearMixedPositionEstimator3D estimator = new NonLinearMixedPositionEstimator3D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -858,8 +805,8 @@ public class NonLinearMixedPositionEstimator3DTest implements
     }
 
     @Test
-    public void testEstimateRssidNoErrorWithInitialPosition() throws LockedException,
-            NotReadyException, PositionEstimationException {
+    public void testEstimateRssidNoErrorWithInitialPosition() throws LockedException, NotReadyException,
+            PositionEstimationException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         int numValid = 0;
@@ -886,17 +833,16 @@ public class NonLinearMixedPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 readings.add(new RssiReading<>(accessPoint, rssi));
             }
@@ -905,8 +851,7 @@ public class NonLinearMixedPositionEstimator3DTest implements
                     new Fingerprint<>(readings);
 
             final NonLinearMixedPositionEstimator3D estimator =
-                    new NonLinearMixedPositionEstimator3D(sources, fingerprint, position,
-                            this);
+                    new NonLinearMixedPositionEstimator3D(sources, fingerprint, position, this);
 
             reset();
 
@@ -919,13 +864,13 @@ public class NonLinearMixedPositionEstimator3DTest implements
             assertNotNull(estimator.getDistances());
             assertNotNull(estimator.getDistanceStandardDeviations());
             assertNull(estimator.getCovariance());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -943,8 +888,7 @@ public class NonLinearMixedPositionEstimator3DTest implements
         assertTrue(numValid > 0);
 
         // force NotReadyException
-        final NonLinearMixedPositionEstimator3D estimator =
-                new NonLinearMixedPositionEstimator3D();
+        final NonLinearMixedPositionEstimator3D estimator = new NonLinearMixedPositionEstimator3D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -980,9 +924,8 @@ public class NonLinearMixedPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -996,8 +939,7 @@ public class NonLinearMixedPositionEstimator3DTest implements
                     new Fingerprint<>(readings);
 
             final NonLinearMixedPositionEstimator3D estimator =
-                    new NonLinearMixedPositionEstimator3D(sources, fingerprint,
-                            this);
+                    new NonLinearMixedPositionEstimator3D(sources, fingerprint, this);
 
             reset();
 
@@ -1010,13 +952,13 @@ public class NonLinearMixedPositionEstimator3DTest implements
             assertNotNull(estimator.getDistances());
             assertNotNull(estimator.getDistanceStandardDeviations());
             assertNull(estimator.getCovariance());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -1034,8 +976,7 @@ public class NonLinearMixedPositionEstimator3DTest implements
         assertTrue(numValid > 0);
 
         // force NotReadyException
-        final NonLinearMixedPositionEstimator3D estimator =
-                new NonLinearMixedPositionEstimator3D();
+        final NonLinearMixedPositionEstimator3D estimator = new NonLinearMixedPositionEstimator3D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -1044,8 +985,8 @@ public class NonLinearMixedPositionEstimator3DTest implements
     }
 
     @Test
-    public void testEstimateRangingNoErrorWithInitialPosition() throws LockedException,
-            NotReadyException, PositionEstimationException {
+    public void testEstimateRangingNoErrorWithInitialPosition() throws LockedException, NotReadyException,
+            PositionEstimationException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         int numValid = 0;
@@ -1071,9 +1012,8 @@ public class NonLinearMixedPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -1087,8 +1027,7 @@ public class NonLinearMixedPositionEstimator3DTest implements
                     new Fingerprint<>(readings);
 
             final NonLinearMixedPositionEstimator3D estimator =
-                    new NonLinearMixedPositionEstimator3D(sources, fingerprint, position,
-                            this);
+                    new NonLinearMixedPositionEstimator3D(sources, fingerprint, position, this);
 
             reset();
 
@@ -1101,13 +1040,13 @@ public class NonLinearMixedPositionEstimator3DTest implements
             assertNotNull(estimator.getDistances());
             assertNotNull(estimator.getDistanceStandardDeviations());
             assertNull(estimator.getCovariance());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -1125,8 +1064,7 @@ public class NonLinearMixedPositionEstimator3DTest implements
         assertTrue(numValid > 0);
 
         // force NotReadyException
-        final NonLinearMixedPositionEstimator3D estimator =
-                new NonLinearMixedPositionEstimator3D();
+        final NonLinearMixedPositionEstimator3D estimator = new NonLinearMixedPositionEstimator3D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -1163,17 +1101,16 @@ public class NonLinearMixedPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 readings.add(new RangingAndRssiReading<>(accessPoint, distance, rssi));
             }
@@ -1182,8 +1119,7 @@ public class NonLinearMixedPositionEstimator3DTest implements
                     new Fingerprint<>(readings);
 
             final NonLinearMixedPositionEstimator3D estimator =
-                    new NonLinearMixedPositionEstimator3D(sources, fingerprint,
-                            this);
+                    new NonLinearMixedPositionEstimator3D(sources, fingerprint, this);
 
             reset();
 
@@ -1196,13 +1132,13 @@ public class NonLinearMixedPositionEstimator3DTest implements
             assertNotNull(estimator.getDistances());
             assertNotNull(estimator.getDistanceStandardDeviations());
             assertNull(estimator.getCovariance());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -1220,8 +1156,7 @@ public class NonLinearMixedPositionEstimator3DTest implements
         assertTrue(numValid > 0);
 
         // force NotReadyException
-        final NonLinearMixedPositionEstimator3D estimator =
-                new NonLinearMixedPositionEstimator3D();
+        final NonLinearMixedPositionEstimator3D estimator = new NonLinearMixedPositionEstimator3D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -1230,8 +1165,8 @@ public class NonLinearMixedPositionEstimator3DTest implements
     }
 
     @Test
-    public void testEstimateRangingAndNoErrorWithInitialPosition()
-            throws LockedException, NotReadyException, PositionEstimationException {
+    public void testEstimateRangingAndNoErrorWithInitialPosition() throws LockedException,
+            NotReadyException, PositionEstimationException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         int numValid = 0;
@@ -1258,17 +1193,16 @@ public class NonLinearMixedPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 readings.add(new RangingAndRssiReading<>(accessPoint, distance, rssi));
             }
@@ -1277,8 +1211,7 @@ public class NonLinearMixedPositionEstimator3DTest implements
                     new Fingerprint<>(readings);
 
             final NonLinearMixedPositionEstimator3D estimator =
-                    new NonLinearMixedPositionEstimator3D(sources, fingerprint, position,
-                            this);
+                    new NonLinearMixedPositionEstimator3D(sources, fingerprint, position, this);
 
             reset();
 
@@ -1291,13 +1224,13 @@ public class NonLinearMixedPositionEstimator3DTest implements
             assertNotNull(estimator.getDistances());
             assertNotNull(estimator.getDistanceStandardDeviations());
             assertNull(estimator.getCovariance());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -1315,8 +1248,7 @@ public class NonLinearMixedPositionEstimator3DTest implements
         assertTrue(numValid > 0);
 
         // force NotReadyException
-        final NonLinearMixedPositionEstimator3D estimator =
-                new NonLinearMixedPositionEstimator3D();
+        final NonLinearMixedPositionEstimator3D estimator = new NonLinearMixedPositionEstimator3D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -1353,17 +1285,16 @@ public class NonLinearMixedPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 readings.add(new RssiReading<>(accessPoint, rssi));
                 readings.add(new RangingReading<>(accessPoint, distance));
@@ -1374,8 +1305,7 @@ public class NonLinearMixedPositionEstimator3DTest implements
                     new Fingerprint<>(readings);
 
             final NonLinearMixedPositionEstimator3D estimator =
-                    new NonLinearMixedPositionEstimator3D(sources, fingerprint,
-                            this);
+                    new NonLinearMixedPositionEstimator3D(sources, fingerprint, this);
 
             reset();
 
@@ -1388,13 +1318,13 @@ public class NonLinearMixedPositionEstimator3DTest implements
             assertNotNull(estimator.getDistances());
             assertNotNull(estimator.getDistanceStandardDeviations());
             assertNull(estimator.getCovariance());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -1412,8 +1342,7 @@ public class NonLinearMixedPositionEstimator3DTest implements
         assertTrue(numValid > 0);
 
         // force NotReadyException
-        final NonLinearMixedPositionEstimator3D estimator =
-                new NonLinearMixedPositionEstimator3D();
+        final NonLinearMixedPositionEstimator3D estimator = new NonLinearMixedPositionEstimator3D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -1450,17 +1379,16 @@ public class NonLinearMixedPositionEstimator3DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated3D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated3D(bssid,
-                                FREQUENCY, transmittedPowerdBm, pathLossExponent,
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated3D(bssid, FREQUENCY, transmittedPowerdBm,
+                                pathLossExponent, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance,
+                        pathLossExponent));
 
                 readings.add(new RssiReading<>(accessPoint, rssi));
                 readings.add(new RangingReading<>(accessPoint, distance));
@@ -1471,8 +1399,7 @@ public class NonLinearMixedPositionEstimator3DTest implements
                     new Fingerprint<>(readings);
 
             final NonLinearMixedPositionEstimator3D estimator =
-                    new NonLinearMixedPositionEstimator3D(sources, fingerprint, position,
-                            this);
+                    new NonLinearMixedPositionEstimator3D(sources, fingerprint, position, this);
 
             reset();
 
@@ -1485,13 +1412,13 @@ public class NonLinearMixedPositionEstimator3DTest implements
             assertNotNull(estimator.getDistances());
             assertNotNull(estimator.getDistanceStandardDeviations());
             assertNull(estimator.getCovariance());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
@@ -1509,8 +1436,7 @@ public class NonLinearMixedPositionEstimator3DTest implements
         assertTrue(numValid > 0);
 
         // force NotReadyException
-        final NonLinearMixedPositionEstimator3D estimator =
-                new NonLinearMixedPositionEstimator3D();
+        final NonLinearMixedPositionEstimator3D estimator = new NonLinearMixedPositionEstimator3D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -1541,8 +1467,7 @@ public class NonLinearMixedPositionEstimator3DTest implements
         // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the received Gain
         // Pr = Pte*c^2/((4*pi*f)^2 * d^2)
         final double k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI * FREQUENCY), pathLossExponent);
-        return equivalentTransmittedPower * k /
-                Math.pow(distance, pathLossExponent);
+        return equivalentTransmittedPower * k / Math.pow(distance, pathLossExponent);
     }
 
     private void checkLocked(final NonLinearMixedPositionEstimator3D estimator) {

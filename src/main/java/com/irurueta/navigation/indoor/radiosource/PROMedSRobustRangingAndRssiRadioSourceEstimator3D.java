@@ -30,7 +30,7 @@ import java.util.List;
 
 /**
  * Robustly estimate 3D position, transmitted power and path-loss
- * exponent of a radio source (e.g. WiFi access point or bluetooth beacon), by discarding
+ * exponent of a radio source (e.g. Wi-Fi access point or bluetooth beacon), by discarding
  * outliers using PROMedS algorithm and assuming that the ranging data is available to
  * obtain position with greater accuracy and that the radio source emits isotropically
  * following the expression below:
@@ -316,7 +316,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3D<S extends RadioSo
      * Constructor.
      * Sets signal readings belonging to the same radio source.
      *
-     * @param readings                   WiFi signal readings belonging to the same radio source.
+     * @param readings                   Wi-Fi signal readings belonging to the same radio source.
      * @param initialPosition            initial position to start the estimation of radio
      *                                   source position.
      * @param initialTransmittedPowerdBm initial transmitted power to start the
@@ -926,6 +926,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3D<S extends RadioSo
      * @throws LockedException          if robust solver is locked because an
      *                                  estimation is already in progress.
      */
+    @Override
     public void setQualityScores(final double[] qualityScores) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
@@ -1079,7 +1080,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator3D<S extends RadioSo
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-        return RobustEstimatorMethod.PROMedS;
+        return RobustEstimatorMethod.PROMEDS;
     }
 
     /**

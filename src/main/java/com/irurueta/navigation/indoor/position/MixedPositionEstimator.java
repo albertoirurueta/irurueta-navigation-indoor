@@ -29,8 +29,7 @@ import com.irurueta.navigation.indoor.Reading;
  * @param <P> a {@link Point} type.
  */
 public abstract class MixedPositionEstimator<P extends Point<?>> extends PositionEstimator<P,
-        Reading<? extends RadioSource>,
-        MixedPositionEstimatorListener<P>> {
+        Reading<? extends RadioSource>, MixedPositionEstimatorListener<P>> {
 
     /**
      * Constructor.

@@ -30,7 +30,7 @@ import java.util.List;
 
 /**
  * Robustly estimates 2D position, transmitted power and path-loss exponent of a radio
- * source (e.g. WiFi access point or bluetooth beacon), by discarding
+ * source (e.g. Wi-Fi access point or bluetooth beacon), by discarding
  * outliers and assuming that the ranging data is available to obtain position with
  * greater accuracy and that the radio source emits isotropically following the
  * expression below:
@@ -974,7 +974,7 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
                         setThreshold(mRangingThreshold != null ? mRangingThreshold :
                                 RANSACRobustRangingRadioSourceEstimator2D.DEFAULT_THRESHOLD);
                 break;
-            case LMedS:
+            case LMEDS:
                 ((LMedSRobustRangingRadioSourceEstimator2D<S>) mRangingEstimator).
                         setStopThreshold(mRangingThreshold != null ? mRangingThreshold :
                                 LMedSRobustRangingRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD);
@@ -989,7 +989,7 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
                         setThreshold(mRangingThreshold != null ? mRangingThreshold :
                                 PROSACRobustRangingRadioSourceEstimator2D.DEFAULT_THRESHOLD);
                 break;
-            case PROMedS:
+            case PROMEDS:
                 ((PROMedSRobustRangingRadioSourceEstimator2D<S>) mRangingEstimator).
                         setStopThreshold(mRangingThreshold != null ? mRangingThreshold :
                                 PROMedSRobustRangingRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD);
@@ -1014,7 +1014,7 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
                         setThreshold(mRssiThreshold != null ? mRssiThreshold :
                                 RANSACRobustRssiRadioSourceEstimator2D.DEFAULT_THRESHOLD);
                 break;
-            case LMedS:
+            case LMEDS:
                 ((LMedSRobustRssiRadioSourceEstimator2D<S>) mRssiEstimator).
                         setStopThreshold(mRssiThreshold != null ? mRssiThreshold :
                                 LMedSRobustRssiRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD);
@@ -1029,7 +1029,7 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
                         setThreshold(mRssiThreshold != null ? mRssiThreshold :
                                 PROSACRobustRssiRadioSourceEstimator2D.DEFAULT_THRESHOLD);
                 break;
-            case PROMedS:
+            case PROMEDS:
                 ((PROMedSRobustRssiRadioSourceEstimator2D<S>) mRssiEstimator).
                         setStopThreshold(mRssiThreshold != null ? mRssiThreshold :
                                 PROMedSRobustRssiRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD);

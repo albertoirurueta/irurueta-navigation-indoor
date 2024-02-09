@@ -22,7 +22,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Finds k-nearest radio source fingerprints based on their signal euclidean distances (not their actual location).
+ * Finds k-nearest radio source fingerprints based on their signal Euclidean distances (not their actual location).
  *
  * @param <P> a {@link Point} type.
  * @param <S> a {@link RadioSource} type.
@@ -49,7 +49,7 @@ public class RadioSourceKNearestFinder<P extends Point<?>, S extends RadioSource
     }
 
     /**
-     * Finds nearest fingerprint to provided one, in terms of signal euclidean distances, within the collection of
+     * Finds nearest fingerprint to provided one, in terms of signal Euclidean distances, within the collection of
      * provided fingerprints.
      *
      * @param fingerprint fingerprint to find the nearest to.
@@ -61,13 +61,13 @@ public class RadioSourceKNearestFinder<P extends Point<?>, S extends RadioSource
     }
 
     /**
-     * Finds k-nearest fingerprints to provided one, in terms of signal euclidean distances, within the collection
+     * Finds k-nearest fingerprints to provided one, in terms of signal Euclidean distances, within the collection
      * of provided fingerprints.
      *
      * @param fingerprint fingerprint to find the k-nearest ones to.
      * @param k           number of nearest fingerprints to find.
      * @return nearest fingerprints ordered from closest to farthest or an empty list if none could be found.
-     * @throws IllegalArgumentException if either fingerprint is null or k is les than 1.
+     * @throws IllegalArgumentException if either fingerprint is null or k is less than 1.
      */
     public List<RssiFingerprintLocated<S, RssiReading<S>, P>> findKNearestTo(
             final RssiFingerprint<S, RssiReading<S>> fingerprint,
@@ -76,14 +76,14 @@ public class RadioSourceKNearestFinder<P extends Point<?>, S extends RadioSource
     }
 
     /**
-     * Finds k-nearest fingerprints to provided one, in terms of signal euclidean distances, within the collection
+     * Finds k-nearest fingerprints to provided one, in terms of signal Euclidean distances, within the collection
      * of provided fingerprints.
      *
      * @param fingerprint         fingerprint to find the k-nearest ones to.
      * @param k                   number of nearest fingerprints to find.
      * @param nearestFingerprints list where found nearest fingerprints will be stored ordered from closest to farthest
      *                            or an empty list if none could be found.
-     * @param nearestSqrDistances list where squared signal euclidean distances corresponding to found fingerprints will
+     * @param nearestSqrDistances list where squared signal Euclidean distances corresponding to found fingerprints will
      *                            be stored or an empty list if no fingerprint is found.
      * @throws IllegalArgumentException if any parameter is null or k is less than 1.
      */
@@ -106,7 +106,7 @@ public class RadioSourceKNearestFinder<P extends Point<?>, S extends RadioSource
     }
 
     /**
-     * Finds nearest fingerprint to provided one, in terms of signal euclidean distances, within the collection of
+     * Finds nearest fingerprint to provided one, in terms of signal Euclidean distances, within the collection of
      * provided fingerprints.
      *
      * @param fingerprint  fingerprint to find the nearest to.
@@ -138,7 +138,7 @@ public class RadioSourceKNearestFinder<P extends Point<?>, S extends RadioSource
     }
 
     /**
-     * Finds k-nearest fingerprints to provided one, in terms of signal euclidean distances, within the collection
+     * Finds k-nearest fingerprints to provided one, in terms of signal Euclidean distances, within the collection
      * of provided fingerprints.
      *
      * @param fingerprint  fingerprint to find the k-nearest ones to.
@@ -165,7 +165,7 @@ public class RadioSourceKNearestFinder<P extends Point<?>, S extends RadioSource
     }
 
     /**
-     * Finds k-nearest fingerprints to provided one, in terms of signal euclidean distances, within the collection
+     * Finds k-nearest fingerprints to provided one, in terms of signal Euclidean distances, within the collection
      * of provided fingerprints.
      *
      * @param fingerprint         fingerprint to find the k-nearest ones to.
@@ -173,7 +173,7 @@ public class RadioSourceKNearestFinder<P extends Point<?>, S extends RadioSource
      * @param k                   number of nearest fingerprints to find.
      * @param nearestFingerprints list where found nearest fingerprints will be stored ordered from closest to farthest
      *                            or an empty list if none could be found.
-     * @param nearestSqrDistances list where squared signal euclidean distances corresponding to found fingerprints will
+     * @param nearestSqrDistances list where squared signal Euclidean distances corresponding to found fingerprints will
      *                            be stored or an empty list if no fingerprint is found.
      * @param <P>                 a {@link Point} type.
      * @param <S>                 a {@link RadioSource} type.

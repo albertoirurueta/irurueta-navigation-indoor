@@ -34,8 +34,7 @@ import java.util.List;
  * device by getting ranging+RSSI readings at an unknown location of different radio
  * sources whose 2D locations are known.
  */
-public class PROMedSRobustMixedPositionEstimator2D extends
-        RobustMixedPositionEstimator2D {
+public class PROMedSRobustMixedPositionEstimator2D extends RobustMixedPositionEstimator2D {
 
     /**
      * Quality scores corresponding to each provided located radio source.
@@ -378,6 +377,7 @@ public class PROMedSRobustMixedPositionEstimator2D extends
      *
      * @return quality scores corresponding to each radio source.
      */
+    @Override
     public double[] getSourceQualityScores() {
         return mSourceQualityScores;
     }
@@ -391,6 +391,7 @@ public class PROMedSRobustMixedPositionEstimator2D extends
      * @throws IllegalArgumentException if provided quality scores length is smaller
      *                                  than minimum required samples.
      */
+    @Override
     public void setSourceQualityScores(final double[] sourceQualityScores)
             throws LockedException {
         if (isLocked()) {
@@ -408,6 +409,7 @@ public class PROMedSRobustMixedPositionEstimator2D extends
      * @return quality scores corresponding to each reading within provided
      * fingerprint.
      */
+    @Override
     public double[] getFingerprintReadingsQualityScores() {
         return mFingerprintReadingsQualityScores;
     }
@@ -424,6 +426,7 @@ public class PROMedSRobustMixedPositionEstimator2D extends
      * @throws IllegalArgumentException if provided quality scores length is smaller
      *                                  than minimum required samples.
      */
+    @Override
     public void setFingerprintReadingsQualityScores(
             final double[] fingerprintReadingsQualityScores) throws LockedException {
         if (isLocked()) {
@@ -437,7 +440,7 @@ public class PROMedSRobustMixedPositionEstimator2D extends
      * best estimated threshold using median of residuals is not small enough.
      * Once a solution is found that generates a threshold below this value, the
      * algorithm will stop.
-     * The stop threshold can be used to prevent the LMedS algrithm to iterate
+     * The stop threshold can be used to prevent the LMedS algorithm to iterate
      * too many times in cases where samples have a very similar accuracy.
      * For instance, in cases where proportion of outliers is very small (close
      * to 0%), and samples are very accurate (i.e. 1e-6), the algorithm would
@@ -489,7 +492,7 @@ public class PROMedSRobustMixedPositionEstimator2D extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-        return RobustEstimatorMethod.PROMedS;
+        return RobustEstimatorMethod.PROMEDS;
     }
 
     /**

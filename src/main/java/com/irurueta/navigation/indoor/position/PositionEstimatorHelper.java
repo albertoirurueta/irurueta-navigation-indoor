@@ -278,8 +278,8 @@ public class PositionEstimatorHelper {
 
                         positionStandardDeviation = Math.sqrt(variance);
 
-                    } catch (final AlgebraException e) {
-                        positionStandardDeviation = null;
+                    } catch (final AlgebraException ignore) {
+                        // no action needed
                     }
                 }
 

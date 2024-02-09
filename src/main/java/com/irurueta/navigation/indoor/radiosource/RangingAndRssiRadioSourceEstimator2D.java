@@ -29,7 +29,7 @@ import java.util.List;
 
 /**
  * Estimates 2D position, transmitted power and path loss exponent of a
- * radio source (e.g. WiFi access point or bluetooth beacon) assuming
+ * radio source (e.g. Wi-Fi access point or bluetooth beacon) assuming
  * that the ranging data is available to obtain position with greater
  * accuracy and that the radio source emits isotropically following the
  * expression below:

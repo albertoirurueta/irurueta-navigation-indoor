@@ -16,7 +16,7 @@
 package com.irurueta.navigation.indoor;
 
 /**
- * Contains a reading associated to a given radio source (e.e. WiFi access point or
+ * Contains a reading associated to a given radio source (e.e. Wi-Fi access point or
  * bluetooth beacon) containing signal strength and distance to associated access
  * point.
  *
@@ -51,7 +51,7 @@ public class RangingAndRssiReading<S extends RadioSource> extends Reading<S> {
     private int mNumSuccessfulMeasurements = DEFAULT_NUM_MEASUREMENTS;
 
     /**
-     * Received signal strength indicator (of this 802.11 network for a WiFi access point or
+     * Received signal strength indicator (of this 802.11 network for a Wi-Fi access point or
      * of this bluetooth beacon), in dBm.
      */
     private double mRssi;
@@ -221,7 +221,7 @@ public class RangingAndRssiReading<S extends RadioSource> extends Reading<S> {
     }
 
     /**
-     * Gets received signal strength indicator of (of this 802.11 network for a WiFi access point or
+     * Gets received signal strength indicator of (of this 802.11 network for a Wi-Fi access point or
      * of this bluetooth beacon), in dBm.
      *
      * @return received signal strength indicator.

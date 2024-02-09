@@ -28,8 +28,7 @@ public class FingerprintTest {
     @Test
     public void testConstructor() {
         // empty constructor
-        Fingerprint<RadioSource, Reading<RadioSource>> fingerprint =
-                new Fingerprint<>();
+        Fingerprint<RadioSource, Reading<RadioSource>> fingerprint = new Fingerprint<>();
 
         // check
         assertNotNull(fingerprint.getReadings());
@@ -40,8 +39,8 @@ public class FingerprintTest {
         fingerprint = new Fingerprint<>(readings);
 
         // check
-        assertEquals(fingerprint.getReadings(), readings);
-        assertNotSame(fingerprint.getReadings(), readings);
+        assertEquals(readings, fingerprint.getReadings());
+        assertNotSame(readings, fingerprint.getReadings());
 
         // force IllegalArgumentException
         fingerprint = null;
@@ -56,8 +55,7 @@ public class FingerprintTest {
 
     @Test
     public void testGetSetReadings() {
-        final Fingerprint<RadioSource, Reading<RadioSource>> fingerprint =
-                new Fingerprint<>();
+        final Fingerprint<RadioSource, Reading<RadioSource>> fingerprint = new Fingerprint<>();
 
         // check
         assertNotNull(fingerprint.getReadings());
@@ -68,8 +66,8 @@ public class FingerprintTest {
         fingerprint.setReadings(readings);
 
         // check
-        assertEquals(fingerprint.getReadings(), readings);
-        assertNotSame(fingerprint.getReadings(), readings);
+        assertEquals(readings, fingerprint.getReadings());
+        assertNotSame(readings, fingerprint.getReadings());
 
         // force IllegalArgumentException;
         try {
@@ -84,13 +82,12 @@ public class FingerprintTest {
         final List<Reading<RadioSource>> readings = new ArrayList<>();
         final Fingerprint<RadioSource, Reading<RadioSource>> fingerprint1 = new Fingerprint<>(readings);
 
-        assertEquals(fingerprint1.getReadings(), readings);
-        assertNotSame(fingerprint1.getReadings(), readings);
+        assertEquals(readings, fingerprint1.getReadings());
+        assertNotSame(readings, fingerprint1.getReadings());
 
         // serialize and deserialize
         final byte[] bytes = SerializationHelper.serialize(fingerprint1);
-        final Fingerprint<RadioSource, Reading<RadioSource>> fingerprint2 =
-                SerializationHelper.deserialize(bytes);
+        final Fingerprint<RadioSource, Reading<RadioSource>> fingerprint2 = SerializationHelper.deserialize(bytes);
 
         // check
         assertNotSame(fingerprint1, fingerprint2);

@@ -91,78 +91,58 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     @Test
     public void testConstructor() {
         // empty constructor
-        SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default values
-        assertEquals(estimator.getNumberOfDimensions(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH);
-        assertEquals(estimator.getMinRequiredSources(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRssiPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RANGING_ROBUST_METHOD);
-        assertEquals(estimator.getRssiRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RSSI_ROBUST_METHOD);
-        assertEquals(estimator.isRangingRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRssiRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRangingReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS);
-        assertEquals(estimator.getRssiFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.getRangingFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.isRssiReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS);
-        assertEquals(estimator.getProgressDelta(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
-                0.0);
-        assertEquals(estimator.getRangingConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRssiConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRangingMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.getRssiMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_KEEP_COVARIANCE);
-        assertEquals(estimator.isRangingLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS);
-        assertEquals(estimator.isRssiPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS);
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH, estimator.getNumberOfDimensions());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1, estimator.getMinRequiredSources());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRangingPreliminarySubsetSize());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRssiPreliminarySubsetSize());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RANGING_ROBUST_METHOD,
+                estimator.getRangingRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RSSI_ROBUST_METHOD,
+                estimator.getRssiRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.
+                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRangingRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRssiRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS,
+                estimator.isRangingReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRssiFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRangingFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS,
+                estimator.isRssiReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRangingConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRssiConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRangingMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRssiMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT,
+                estimator.isResultRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_KEEP_COVARIANCE,
+                estimator.isCovarianceKept());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_LINEAR_SOLVER,
+                estimator.isRangingLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_LINEAR_SOLVER,
+                estimator.isRssiLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRangingHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRssiHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS,
+                estimator.isRangingPreliminarySolutionRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS,
+                estimator.isRssiPreliminarySolutionRefined());
         assertNull(estimator.getRangingThreshold());
         assertNull(estimator.getRssiThreshold());
         assertNull(estimator.getSources());
@@ -183,83 +163,63 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         // test constructor with sources
         final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            sources.add(new WifiAccessPointLocated2D("id1", FREQUENCY,
-                    new InhomogeneousPoint2D()));
+            sources.add(new WifiAccessPointLocated2D("id1", FREQUENCY, new InhomogeneousPoint2D()));
         }
         estimator = new SequentialRobustMixedPositionEstimator2D(sources);
 
         // check default values
-        assertEquals(estimator.getNumberOfDimensions(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH);
-        assertEquals(estimator.getMinRequiredSources(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRssiPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RANGING_ROBUST_METHOD);
-        assertEquals(estimator.getRssiRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RSSI_ROBUST_METHOD);
-        assertEquals(estimator.isRangingRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRssiRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRangingReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS);
-        assertEquals(estimator.getRssiFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.getRangingFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.isRssiReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS);
-        assertEquals(estimator.getProgressDelta(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
-                0.0);
-        assertEquals(estimator.getRangingConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRssiConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRangingMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.getRssiMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_KEEP_COVARIANCE);
-        assertEquals(estimator.isRangingLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS);
-        assertEquals(estimator.isRssiPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS);
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH, estimator.getNumberOfDimensions());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1, estimator.getMinRequiredSources());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRangingPreliminarySubsetSize());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRssiPreliminarySubsetSize());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RANGING_ROBUST_METHOD,
+                estimator.getRangingRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RSSI_ROBUST_METHOD,
+                estimator.getRssiRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.
+                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRangingRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRssiRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS,
+                estimator.isRangingReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRssiFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRangingFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS,
+                estimator.isRssiReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRangingConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRssiConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRangingMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRssiMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT,
+                estimator.isResultRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_KEEP_COVARIANCE,
+                estimator.isCovarianceKept());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_LINEAR_SOLVER,
+                estimator.isRangingLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_LINEAR_SOLVER,
+                estimator.isRssiLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRangingHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRssiHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS,
+                estimator.isRangingPreliminarySolutionRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS,
+                estimator.isRssiPreliminarySolutionRefined());
         assertNull(estimator.getRangingThreshold());
         assertNull(estimator.getRssiThreshold());
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
         assertNull(estimator.getFingerprint());
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
@@ -283,8 +243,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    new ArrayList<WifiAccessPointLocated2D>());
+            estimator = new SequentialRobustMixedPositionEstimator2D(new ArrayList<WifiAccessPointLocated2D>());
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -293,82 +252,62 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         // test constructor with fingerprint
         final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
                 new RangingAndRssiFingerprint<>();
-        estimator = new SequentialRobustMixedPositionEstimator2D(
-                fingerprint);
+        estimator = new SequentialRobustMixedPositionEstimator2D(fingerprint);
 
         // check default values
-        assertEquals(estimator.getNumberOfDimensions(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH);
-        assertEquals(estimator.getMinRequiredSources(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRssiPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RANGING_ROBUST_METHOD);
-        assertEquals(estimator.getRssiRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RSSI_ROBUST_METHOD);
-        assertEquals(estimator.isRangingRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRssiRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRangingReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS);
-        assertEquals(estimator.getRssiFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.getRangingFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.isRssiReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS);
-        assertEquals(estimator.getProgressDelta(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
-                0.0);
-        assertEquals(estimator.getRangingConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRssiConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRangingMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.getRssiMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_KEEP_COVARIANCE);
-        assertEquals(estimator.isRangingLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS);
-        assertEquals(estimator.isRssiPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS);
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH, estimator.getNumberOfDimensions());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1, estimator.getMinRequiredSources());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRangingPreliminarySubsetSize());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRssiPreliminarySubsetSize());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RANGING_ROBUST_METHOD,
+                estimator.getRangingRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RSSI_ROBUST_METHOD,
+                estimator.getRssiRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.
+                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRangingRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRssiRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS,
+                estimator.isRangingReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRssiFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRangingFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS,
+                estimator.isRssiReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRangingConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRssiConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRangingMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRssiMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT,
+                estimator.isResultRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_KEEP_COVARIANCE,
+                estimator.isCovarianceKept());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_LINEAR_SOLVER,
+                estimator.isRangingLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_LINEAR_SOLVER,
+                estimator.isRssiLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRangingHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRssiHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS,
+                estimator.isRangingPreliminarySolutionRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS,
+                estimator.isRssiPreliminarySolutionRefined());
         assertNull(estimator.getRangingThreshold());
         assertNull(estimator.getRssiThreshold());
         assertNull(estimator.getSources());
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getListener());
@@ -393,82 +332,62 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         assertNull(estimator);
 
         // test constructor with sources and fingerprint
-        estimator = new SequentialRobustMixedPositionEstimator2D(
-                sources, fingerprint);
+        estimator = new SequentialRobustMixedPositionEstimator2D(sources, fingerprint);
 
         // check default values
-        assertEquals(estimator.getNumberOfDimensions(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH);
-        assertEquals(estimator.getMinRequiredSources(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRssiPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RANGING_ROBUST_METHOD);
-        assertEquals(estimator.getRssiRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RSSI_ROBUST_METHOD);
-        assertEquals(estimator.isRangingRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRssiRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRangingReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS);
-        assertEquals(estimator.getRssiFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.getRangingFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.isRssiReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS);
-        assertEquals(estimator.getProgressDelta(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH, estimator.getNumberOfDimensions());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1, estimator.getMinRequiredSources());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRangingPreliminarySubsetSize());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRssiPreliminarySubsetSize());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RANGING_ROBUST_METHOD,
+                estimator.getRangingRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RSSI_ROBUST_METHOD,
+                estimator.getRssiRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.
+                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRangingRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRssiRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS,
+                estimator.isRangingReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRssiFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRangingFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS,
+                estimator.isRssiReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRangingConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE, estimator.getRssiConfidence(),
                 0.0);
-        assertEquals(estimator.getRangingConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRssiConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRangingMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.getRssiMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_KEEP_COVARIANCE);
-        assertEquals(estimator.isRangingLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS);
-        assertEquals(estimator.isRssiPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRangingMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRssiMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT,
+                estimator.isResultRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_KEEP_COVARIANCE,
+                estimator.isCovarianceKept());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_LINEAR_SOLVER,
+                estimator.isRangingLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_LINEAR_SOLVER,
+                estimator.isRssiLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRangingHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRssiHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS,
+                estimator.isRangingPreliminarySolutionRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS,
+                estimator.isRssiPreliminarySolutionRefined());
         assertNull(estimator.getRangingThreshold());
         assertNull(estimator.getRssiThreshold());
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getListener());
@@ -485,8 +404,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(null,
-                    fingerprint);
+            estimator = new SequentialRobustMixedPositionEstimator2D(null, fingerprint);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -506,85 +424,65 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         assertNull(estimator);
 
         // test constructor with listener
-        estimator = new SequentialRobustMixedPositionEstimator2D(
-                this);
+        estimator = new SequentialRobustMixedPositionEstimator2D(this);
 
         // check default values
-        assertEquals(estimator.getNumberOfDimensions(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH);
-        assertEquals(estimator.getMinRequiredSources(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRssiPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RANGING_ROBUST_METHOD);
-        assertEquals(estimator.getRssiRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RSSI_ROBUST_METHOD);
-        assertEquals(estimator.isRangingRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRssiRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRangingReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS);
-        assertEquals(estimator.getRssiFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.getRangingFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.isRssiReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS);
-        assertEquals(estimator.getProgressDelta(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
-                0.0);
-        assertEquals(estimator.getRangingConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRssiConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRangingMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.getRssiMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_KEEP_COVARIANCE);
-        assertEquals(estimator.isRangingLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS);
-        assertEquals(estimator.isRssiPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS);
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH, estimator.getNumberOfDimensions());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1, estimator.getMinRequiredSources());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRangingPreliminarySubsetSize());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRssiPreliminarySubsetSize());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RANGING_ROBUST_METHOD,
+                estimator.getRangingRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RSSI_ROBUST_METHOD,
+                estimator.getRssiRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.
+                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRangingRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRssiRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS,
+                estimator.isRangingReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRssiFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRangingFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS,
+                estimator.isRssiReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRangingConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRssiConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRangingMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRssiMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT,
+                estimator.isResultRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_KEEP_COVARIANCE,
+                estimator.isCovarianceKept());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_LINEAR_SOLVER,
+                estimator.isRangingLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_LINEAR_SOLVER,
+                estimator.isRssiLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRangingHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRssiHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS,
+                estimator.isRangingPreliminarySolutionRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS,
+                estimator.isRssiPreliminarySolutionRefined());
         assertNull(estimator.getRangingThreshold());
         assertNull(estimator.getRssiThreshold());
         assertNull(estimator.getSources());
         assertNull(estimator.getFingerprint());
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isLocked());
         assertFalse(estimator.isReady());
@@ -596,85 +494,65 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         assertNull(estimator.getEstimatedPosition());
 
         // test constructor with sources and listener
-        estimator = new SequentialRobustMixedPositionEstimator2D(sources,
-                this);
+        estimator = new SequentialRobustMixedPositionEstimator2D(sources, this);
 
         // check default values
-        assertEquals(estimator.getNumberOfDimensions(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH);
-        assertEquals(estimator.getMinRequiredSources(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRssiPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RANGING_ROBUST_METHOD);
-        assertEquals(estimator.getRssiRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RSSI_ROBUST_METHOD);
-        assertEquals(estimator.isRangingRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRssiRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRangingReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS);
-        assertEquals(estimator.getRssiFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.getRangingFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.isRssiReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS);
-        assertEquals(estimator.getProgressDelta(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
-                0.0);
-        assertEquals(estimator.getRangingConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRssiConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRangingMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.getRssiMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_KEEP_COVARIANCE);
-        assertEquals(estimator.isRangingLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS);
-        assertEquals(estimator.isRssiPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS);
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH, estimator.getNumberOfDimensions());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1, estimator.getMinRequiredSources());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRangingPreliminarySubsetSize());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRssiPreliminarySubsetSize());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RANGING_ROBUST_METHOD,
+                estimator.getRangingRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RSSI_ROBUST_METHOD,
+                estimator.getRssiRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.
+                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRangingRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRssiRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS,
+                estimator.isRangingReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRssiFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRangingFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS,
+                estimator.isRssiReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRangingConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRssiConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRangingMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRssiMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT,
+                estimator.isResultRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_KEEP_COVARIANCE,
+                estimator.isCovarianceKept());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_LINEAR_SOLVER,
+                estimator.isRangingLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_LINEAR_SOLVER,
+                estimator.isRssiLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRangingHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRssiHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS,
+                estimator.isRangingPreliminarySolutionRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS,
+                estimator.isRssiPreliminarySolutionRefined());
         assertNull(estimator.getRangingThreshold());
         assertNull(estimator.getRssiThreshold());
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
         assertNull(estimator.getFingerprint());
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isLocked());
         assertFalse(estimator.isReady());
@@ -702,85 +580,65 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         assertNull(estimator);
 
         // test constructor with fingerprint and listener
-        estimator = new SequentialRobustMixedPositionEstimator2D(
-                fingerprint, this);
+        estimator = new SequentialRobustMixedPositionEstimator2D(fingerprint, this);
 
         // check default values
-        assertEquals(estimator.getNumberOfDimensions(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH);
-        assertEquals(estimator.getMinRequiredSources(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRssiPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RANGING_ROBUST_METHOD);
-        assertEquals(estimator.getRssiRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RSSI_ROBUST_METHOD);
-        assertEquals(estimator.isRangingRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRssiRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRangingReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS);
-        assertEquals(estimator.getRssiFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.getRangingFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.isRssiReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS);
-        assertEquals(estimator.getProgressDelta(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
-                0.0);
-        assertEquals(estimator.getRangingConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRssiConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRangingMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.getRssiMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_KEEP_COVARIANCE);
-        assertEquals(estimator.isRangingLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS);
-        assertEquals(estimator.isRssiPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS);
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH, estimator.getNumberOfDimensions());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1, estimator.getMinRequiredSources());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRangingPreliminarySubsetSize());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRssiPreliminarySubsetSize());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RANGING_ROBUST_METHOD,
+                estimator.getRangingRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RSSI_ROBUST_METHOD,
+                estimator.getRssiRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.
+                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRangingRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRssiRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS,
+                estimator.isRangingReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRssiFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRangingFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS,
+                estimator.isRssiReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRangingConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRssiConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRangingMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRssiMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT,
+                estimator.isResultRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_KEEP_COVARIANCE,
+                estimator.isCovarianceKept());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_LINEAR_SOLVER,
+                estimator.isRangingLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_LINEAR_SOLVER,
+                estimator.isRssiLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRangingHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRssiHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS,
+                estimator.isRangingPreliminarySolutionRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS,
+                estimator.isRssiPreliminarySolutionRefined());
         assertNull(estimator.getRangingThreshold());
         assertNull(estimator.getRssiThreshold());
         assertNull(estimator.getSources());
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isLocked());
         assertFalse(estimator.isReady());
@@ -803,85 +661,158 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         assertNull(estimator);
 
         // test constructor with sources, fingerprint and listener
-        estimator = new SequentialRobustMixedPositionEstimator2D(
-                sources, fingerprint, this);
+        estimator = new SequentialRobustMixedPositionEstimator2D(sources, fingerprint, this);
 
         // check default values
-        assertEquals(estimator.getNumberOfDimensions(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH);
-        assertEquals(estimator.getMinRequiredSources(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH, estimator.getNumberOfDimensions());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1, estimator.getMinRequiredSources());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRangingPreliminarySubsetSize());
         assertEquals(estimator.getRssiPreliminarySubsetSize(),
                 Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RANGING_ROBUST_METHOD);
-        assertEquals(estimator.getRssiRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RSSI_ROBUST_METHOD);
-        assertEquals(estimator.isRangingRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRssiRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRangingReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS);
-        assertEquals(estimator.getRssiFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.getRangingFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.isRssiReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS);
-        assertEquals(estimator.getProgressDelta(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RANGING_ROBUST_METHOD,
+                estimator.getRangingRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RSSI_ROBUST_METHOD,
+                estimator.getRssiRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.
+                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRangingRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRssiRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS,
+                estimator.isRangingReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRssiFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRangingFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS,
+                estimator.isRssiReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRangingConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE, estimator.getRssiConfidence(),
                 0.0);
-        assertEquals(estimator.getRangingConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRssiConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRangingMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.getRssiMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_KEEP_COVARIANCE);
-        assertEquals(estimator.isRangingLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS);
-        assertEquals(estimator.isRssiPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRangingMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRssiMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT,
+                estimator.isResultRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_KEEP_COVARIANCE,
+                estimator.isCovarianceKept());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_LINEAR_SOLVER,
+                estimator.isRangingLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_LINEAR_SOLVER,
+                estimator.isRssiLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRangingHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRssiHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS,
+                estimator.isRangingPreliminarySolutionRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS,
+                estimator.isRssiPreliminarySolutionRefined());
         assertNull(estimator.getRangingThreshold());
         assertNull(estimator.getRssiThreshold());
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
+        assertNull(estimator.getInitialPosition());
+        assertFalse(estimator.isLocked());
+        assertFalse(estimator.isReady());
+        assertNull(estimator.getInliersData());
+        assertNull(estimator.getPositions());
+        assertNull(estimator.getDistances());
+        assertNull(estimator.getDistanceStandardDeviations());
+        assertNull(estimator.getCovariance());
+        assertNull(estimator.getEstimatedPosition());
+
+        // force IllegalArgumentException
+        estimator = null;
+        try {
+            estimator = new SequentialRobustMixedPositionEstimator2D(null, fingerprint, this);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            estimator = new SequentialRobustMixedPositionEstimator2D(
+                    new ArrayList<WifiAccessPointLocated2D>(), fingerprint, this);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            estimator = new SequentialRobustMixedPositionEstimator2D(sources, null, this);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        assertNull(estimator);
+
+        // test constructor with quality scores
+        final double[] sourceQualityScores = new double[3];
+        final double[] fingerprintReadingsQualityScores = new double[3];
+        estimator = new SequentialRobustMixedPositionEstimator2D(
+                sourceQualityScores, fingerprintReadingsQualityScores);
+
+        // check default values
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH, estimator.getNumberOfDimensions());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1, estimator.getMinRequiredSources());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRangingPreliminarySubsetSize());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRssiPreliminarySubsetSize());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RANGING_ROBUST_METHOD,
+                estimator.getRangingRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RSSI_ROBUST_METHOD,
+                estimator.getRssiRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.
+                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRangingRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRssiRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS,
+                estimator.isRangingReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRssiFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRangingFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS,
+                estimator.isRssiReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRangingConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRssiConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRangingMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRssiMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT,
+                estimator.isResultRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_KEEP_COVARIANCE,
+                estimator.isCovarianceKept());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_LINEAR_SOLVER,
+                estimator.isRangingLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_LINEAR_SOLVER,
+                estimator.isRssiLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRangingHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRssiHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS,
+                estimator.isRangingPreliminarySolutionRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS,
+                estimator.isRssiPreliminarySolutionRefined());
+        assertNull(estimator.getRangingThreshold());
+        assertNull(estimator.getRssiThreshold());
+        assertNull(estimator.getSources());
+        assertNull(estimator.getFingerprint());
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingsQualityScores, estimator.getFingerprintReadingsQualityScores());
+        assertNull(estimator.getListener());
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isLocked());
         assertFalse(estimator.isReady());
@@ -896,226 +827,88 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         estimator = null;
         try {
             estimator = new SequentialRobustMixedPositionEstimator2D(null,
-                    fingerprint, this);
+                    fingerprintReadingsQualityScores);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    new ArrayList<WifiAccessPointLocated2D>(), fingerprint, this);
+            estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
+                    null);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(sources,
-                    null, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
-
-        // test constructor with quality scores
-        final double[] sourceQualityScores = new double[3];
-        final double[] fingerprintReadingsQualityScores = new double[3];
-        estimator = new SequentialRobustMixedPositionEstimator2D(
-                sourceQualityScores, fingerprintReadingsQualityScores);
-
-        // check default values
-        assertEquals(estimator.getNumberOfDimensions(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH);
-        assertEquals(estimator.getMinRequiredSources(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRssiPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RANGING_ROBUST_METHOD);
-        assertEquals(estimator.getRssiRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RSSI_ROBUST_METHOD);
-        assertEquals(estimator.isRangingRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRssiRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRangingReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS);
-        assertEquals(estimator.getRssiFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.getRangingFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.isRssiReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS);
-        assertEquals(estimator.getProgressDelta(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
-                0.0);
-        assertEquals(estimator.getRangingConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRssiConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRangingMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.getRssiMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_KEEP_COVARIANCE);
-        assertEquals(estimator.isRangingLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS);
-        assertEquals(estimator.isRssiPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS);
-        assertNull(estimator.getRangingThreshold());
-        assertNull(estimator.getRssiThreshold());
-        assertNull(estimator.getSources());
-        assertNull(estimator.getFingerprint());
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingsQualityScores);
-        assertNull(estimator.getListener());
-        assertNull(estimator.getInitialPosition());
-        assertFalse(estimator.isLocked());
-        assertFalse(estimator.isReady());
-        assertNull(estimator.getInliersData());
-        assertNull(estimator.getPositions());
-        assertNull(estimator.getDistances());
-        assertNull(estimator.getDistanceStandardDeviations());
-        assertNull(estimator.getCovariance());
-        assertNull(estimator.getEstimatedPosition());
-
-        // force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    null, fingerprintReadingsQualityScores);
+            estimator = new SequentialRobustMixedPositionEstimator2D(new double[1], fingerprintReadingsQualityScores);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    sourceQualityScores, null);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    new double[1], fingerprintReadingsQualityScores);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    sourceQualityScores, new double[1]);
+            estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, new double[1]);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
 
         // test constructor with quality scores and sources
-        estimator = new SequentialRobustMixedPositionEstimator2D(
-                sourceQualityScores, fingerprintReadingsQualityScores,
+        estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
                 sources);
 
         // check default values
-        assertEquals(estimator.getNumberOfDimensions(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH);
-        assertEquals(estimator.getMinRequiredSources(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRssiPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RANGING_ROBUST_METHOD);
-        assertEquals(estimator.getRssiRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RSSI_ROBUST_METHOD);
-        assertEquals(estimator.isRangingRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRssiRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRangingReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS);
-        assertEquals(estimator.getRssiFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.getRangingFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.isRssiReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS);
-        assertEquals(estimator.getProgressDelta(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH, estimator.getNumberOfDimensions());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1, estimator.getMinRequiredSources());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRangingPreliminarySubsetSize());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRssiPreliminarySubsetSize());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RANGING_ROBUST_METHOD,
+                estimator.getRangingRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RSSI_ROBUST_METHOD,
+                estimator.getRssiRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.
+                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRangingRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRssiRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS,
+                estimator.isRangingReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRssiFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRangingFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS,
+                estimator.isRssiReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRangingConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE, estimator.getRssiConfidence(),
                 0.0);
-        assertEquals(estimator.getRangingConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRssiConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRangingMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.getRssiMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_KEEP_COVARIANCE);
-        assertEquals(estimator.isRangingLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS);
-        assertEquals(estimator.isRssiPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRangingMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRssiMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT,
+                estimator.isResultRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_KEEP_COVARIANCE,
+                estimator.isCovarianceKept());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_LINEAR_SOLVER,
+                estimator.isRangingLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_LINEAR_SOLVER,
+                estimator.isRssiLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRangingHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRssiHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS,
+                estimator.isRangingPreliminarySolutionRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS,
+                estimator.isRssiPreliminarySolutionRefined());
         assertNull(estimator.getRangingThreshold());
         assertNull(estimator.getRssiThreshold());
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
         assertNull(estimator.getFingerprint());
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingsQualityScores);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingsQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getListener());
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isLocked());
@@ -1130,128 +923,102 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    null, fingerprintReadingsQualityScores,
+            estimator = new SequentialRobustMixedPositionEstimator2D(null,
+                    fingerprintReadingsQualityScores, sources);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
+                    null, sources);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            estimator = new SequentialRobustMixedPositionEstimator2D(new double[1], fingerprintReadingsQualityScores,
                     sources);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    sourceQualityScores, null,
-                    sources);
+            estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, new double[1], sources);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    new double[1], fingerprintReadingsQualityScores, sources);
+            estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
+                    fingerprintReadingsQualityScores, (List<? extends RadioSourceLocated<Point2D>>) null);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    sourceQualityScores, new double[1], sources);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    sourceQualityScores, fingerprintReadingsQualityScores,
-                    (List<? extends RadioSourceLocated<Point2D>>) null);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    sourceQualityScores, fingerprintReadingsQualityScores,
-                    new ArrayList<WifiAccessPointLocated2D>());
+            estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
+                    fingerprintReadingsQualityScores, new ArrayList<WifiAccessPointLocated2D>());
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
 
         // test constructor with quality scores and fingerprint
-        estimator = new SequentialRobustMixedPositionEstimator2D(
-                sourceQualityScores, fingerprintReadingsQualityScores,
+        estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
                 fingerprint);
 
         // check default values
-        assertEquals(estimator.getNumberOfDimensions(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH);
-        assertEquals(estimator.getMinRequiredSources(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRssiPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RANGING_ROBUST_METHOD);
-        assertEquals(estimator.getRssiRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RSSI_ROBUST_METHOD);
-        assertEquals(estimator.isRangingRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRssiRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRangingReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS);
-        assertEquals(estimator.getRssiFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.getRangingFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.isRssiReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS);
-        assertEquals(estimator.getProgressDelta(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
-                0.0);
-        assertEquals(estimator.getRangingConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRssiConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRangingMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.getRssiMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_KEEP_COVARIANCE);
-        assertEquals(estimator.isRangingLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS);
-        assertEquals(estimator.isRssiPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS);
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH, estimator.getNumberOfDimensions());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1, estimator.getMinRequiredSources());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRangingPreliminarySubsetSize());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRssiPreliminarySubsetSize());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RANGING_ROBUST_METHOD,
+                estimator.getRangingRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RSSI_ROBUST_METHOD,
+                estimator.getRssiRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.
+                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRangingRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRssiRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS,
+                estimator.isRangingReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRssiFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRangingFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS,
+                estimator.isRssiReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRangingConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRssiConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRangingMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRssiMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT,
+                estimator.isResultRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_KEEP_COVARIANCE,
+                estimator.isCovarianceKept());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_LINEAR_SOLVER,
+                estimator.isRangingLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_LINEAR_SOLVER,
+                estimator.isRssiLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRangingHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRssiHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS,
+                estimator.isRangingPreliminarySolutionRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS,
+                estimator.isRssiPreliminarySolutionRefined());
         assertNull(estimator.getRangingThreshold());
         assertNull(estimator.getRssiThreshold());
         assertNull(estimator.getSources());
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingsQualityScores);
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingsQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getListener());
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isLocked());
@@ -1266,34 +1033,31 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    null, fingerprintReadingsQualityScores,
-                    fingerprint);
+            estimator = new SequentialRobustMixedPositionEstimator2D(null,
+                    fingerprintReadingsQualityScores, fingerprint);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    sourceQualityScores, null,
-                    fingerprint);
+            estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
+                    null, fingerprint);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    new double[1], fingerprintReadingsQualityScores, fingerprint);
+            estimator = new SequentialRobustMixedPositionEstimator2D(new double[1],
+                    fingerprintReadingsQualityScores, fingerprint);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    sourceQualityScores, new double[1], fingerprint);
+            estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, new double[1], fingerprint);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    sourceQualityScores, fingerprintReadingsQualityScores,
+            estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
+                    fingerprintReadingsQualityScores,
                     (RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>>) null);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -1301,86 +1065,65 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         assertNull(estimator);
 
         // test constructor with quality scores, sources and fingerprint
-        estimator = new SequentialRobustMixedPositionEstimator2D(
-                sourceQualityScores, fingerprintReadingsQualityScores,
+        estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
                 sources, fingerprint);
 
         // check default values
-        assertEquals(estimator.getNumberOfDimensions(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH);
-        assertEquals(estimator.getMinRequiredSources(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRssiPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RANGING_ROBUST_METHOD);
-        assertEquals(estimator.getRssiRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RSSI_ROBUST_METHOD);
-        assertEquals(estimator.isRangingRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRssiRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRangingReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS);
-        assertEquals(estimator.getRssiFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.getRangingFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.isRssiReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS);
-        assertEquals(estimator.getProgressDelta(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
-                0.0);
-        assertEquals(estimator.getRangingConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRssiConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRangingMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.getRssiMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_KEEP_COVARIANCE);
-        assertEquals(estimator.isRangingLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS);
-        assertEquals(estimator.isRssiPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS);
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH, estimator.getNumberOfDimensions());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1, estimator.getMinRequiredSources());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRangingPreliminarySubsetSize());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRssiPreliminarySubsetSize());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RANGING_ROBUST_METHOD,
+                estimator.getRangingRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RSSI_ROBUST_METHOD,
+                estimator.getRssiRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.
+                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRangingRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRssiRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS,
+                estimator.isRangingReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRssiFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRangingFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS,
+                estimator.isRssiReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRangingConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRssiConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRangingMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRssiMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT,
+                estimator.isResultRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_KEEP_COVARIANCE,
+                estimator.isCovarianceKept());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_LINEAR_SOLVER,
+                estimator.isRangingLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_LINEAR_SOLVER,
+                estimator.isRssiLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRangingHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRssiHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS,
+                estimator.isRangingPreliminarySolutionRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS,
+                estimator.isRssiPreliminarySolutionRefined());
         assertNull(estimator.getRangingThreshold());
         assertNull(estimator.getRssiThreshold());
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingsQualityScores);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingsQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getListener());
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isLocked());
@@ -1395,50 +1138,44 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    null, fingerprintReadingsQualityScores,
-                    sources, fingerprint);
+            estimator = new SequentialRobustMixedPositionEstimator2D(null,
+                    fingerprintReadingsQualityScores, sources, fingerprint);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    sourceQualityScores, null,
-                    sources, fingerprint);
+            estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
+                    null, sources, fingerprint);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    new double[1], fingerprintReadingsQualityScores, sources,
+            estimator = new SequentialRobustMixedPositionEstimator2D(new double[1],
+                    fingerprintReadingsQualityScores, sources, fingerprint);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, new double[1], sources,
                     fingerprint);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    sourceQualityScores, new double[1], sources, fingerprint);
+            estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
+                    fingerprintReadingsQualityScores, null, fingerprint);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    sourceQualityScores, fingerprintReadingsQualityScores,
-                    null, fingerprint);
+            estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
+                    fingerprintReadingsQualityScores, new ArrayList<WifiAccessPointLocated2D>(), fingerprint);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    sourceQualityScores, fingerprintReadingsQualityScores,
-                    new ArrayList<WifiAccessPointLocated2D>(), fingerprint);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    sourceQualityScores, fingerprintReadingsQualityScores,
-                    sources,
+            estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
+                    fingerprintReadingsQualityScores, sources,
                     (RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>>) null);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -1446,86 +1183,67 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         assertNull(estimator);
 
         // test constructor with quality scores and listener
-        estimator = new SequentialRobustMixedPositionEstimator2D(
-                sourceQualityScores, fingerprintReadingsQualityScores, this);
+        estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
+                fingerprintReadingsQualityScores, this);
 
         // check default values
-        assertEquals(estimator.getNumberOfDimensions(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH);
-        assertEquals(estimator.getMinRequiredSources(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH,
+                estimator.getNumberOfDimensions());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1, estimator.getMinRequiredSources());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRangingPreliminarySubsetSize());
         assertEquals(estimator.getRssiPreliminarySubsetSize(),
                 Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RANGING_ROBUST_METHOD);
-        assertEquals(estimator.getRssiRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RSSI_ROBUST_METHOD);
-        assertEquals(estimator.isRangingRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRssiRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRangingReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS);
-        assertEquals(estimator.getRssiFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.getRangingFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.isRssiReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS);
-        assertEquals(estimator.getProgressDelta(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
-                0.0);
-        assertEquals(estimator.getRangingConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRssiConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRangingMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.getRssiMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_KEEP_COVARIANCE);
-        assertEquals(estimator.isRangingLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS);
-        assertEquals(estimator.isRssiPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RANGING_ROBUST_METHOD,
+                estimator.getRangingRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RSSI_ROBUST_METHOD,
+                estimator.getRssiRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.
+                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRangingRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRssiRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS,
+                estimator.isRangingReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRssiFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRangingFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS,
+                estimator.isRssiReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRangingConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRssiConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRangingMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRssiMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT,
+                estimator.isResultRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_KEEP_COVARIANCE,
+                estimator.isCovarianceKept());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_LINEAR_SOLVER,
+                estimator.isRangingLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_LINEAR_SOLVER,
+                estimator.isRssiLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRangingHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRssiHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS,
+                estimator.isRangingPreliminarySolutionRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS,
+                estimator.isRssiPreliminarySolutionRefined());
         assertNull(estimator.getRangingThreshold());
         assertNull(estimator.getRssiThreshold());
         assertNull(estimator.getSources());
         assertNull(estimator.getFingerprint());
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingsQualityScores);
-        assertSame(estimator.getListener(), this);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingsQualityScores, estimator.getFingerprintReadingsQualityScores());
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isLocked());
         assertFalse(estimator.isReady());
@@ -1539,116 +1257,91 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    null, fingerprintReadingsQualityScores,
+            estimator = new SequentialRobustMixedPositionEstimator2D(null,
+                    fingerprintReadingsQualityScores, this);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
+                    null, this);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            estimator = new SequentialRobustMixedPositionEstimator2D(new double[1], fingerprintReadingsQualityScores,
                     this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    sourceQualityScores, null,
-                    this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    new double[1], fingerprintReadingsQualityScores,
-                    this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    sourceQualityScores, new double[1], this);
+            estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, new double[1], this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
 
         // test constructor with quality scores and sources and listener
-        estimator = new SequentialRobustMixedPositionEstimator2D(
-                sourceQualityScores, fingerprintReadingsQualityScores,
+        estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
                 sources, this);
 
         // check default values
-        assertEquals(estimator.getNumberOfDimensions(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH);
-        assertEquals(estimator.getMinRequiredSources(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRssiPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RANGING_ROBUST_METHOD);
-        assertEquals(estimator.getRssiRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RSSI_ROBUST_METHOD);
-        assertEquals(estimator.isRangingRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRssiRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRangingReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS);
-        assertEquals(estimator.getRssiFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.getRangingFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.isRssiReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS);
-        assertEquals(estimator.getProgressDelta(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
-                0.0);
-        assertEquals(estimator.getRangingConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRssiConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRangingMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.getRssiMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_KEEP_COVARIANCE);
-        assertEquals(estimator.isRangingLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS);
-        assertEquals(estimator.isRssiPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS);
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH, estimator.getNumberOfDimensions());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1, estimator.getMinRequiredSources());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRangingPreliminarySubsetSize());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRssiPreliminarySubsetSize());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RANGING_ROBUST_METHOD,
+                estimator.getRangingRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RSSI_ROBUST_METHOD,
+                estimator.getRssiRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.
+                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRangingRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRssiRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS,
+                estimator.isRangingReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRssiFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRangingFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS,
+                estimator.isRssiReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRangingConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRssiConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRangingMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRssiMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT,
+                estimator.isResultRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_KEEP_COVARIANCE,
+                estimator.isCovarianceKept());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_LINEAR_SOLVER,
+                estimator.isRangingLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_LINEAR_SOLVER,
+                estimator.isRssiLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRangingHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRssiHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS,
+                estimator.isRangingPreliminarySolutionRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS,
+                estimator.isRssiPreliminarySolutionRefined());
         assertNull(estimator.getRangingThreshold());
         assertNull(estimator.getRssiThreshold());
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
         assertNull(estimator.getFingerprint());
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingsQualityScores);
-        assertSame(estimator.getListener(), this);
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingsQualityScores, estimator.getFingerprintReadingsQualityScores());
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isLocked());
         assertFalse(estimator.isReady());
@@ -1662,131 +1355,105 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    null, fingerprintReadingsQualityScores,
+            estimator = new SequentialRobustMixedPositionEstimator2D(null,
+                    fingerprintReadingsQualityScores, sources, this);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
+                    null, sources, this);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            estimator = new SequentialRobustMixedPositionEstimator2D(new double[1], fingerprintReadingsQualityScores,
                     sources, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    sourceQualityScores, null,
-                    sources, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    new double[1], fingerprintReadingsQualityScores, sources,
+            estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, new double[1], sources,
                     this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    sourceQualityScores, new double[1], sources, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    sourceQualityScores, fingerprintReadingsQualityScores,
-                    (List<? extends RadioSourceLocated<Point2D>>) null,
+            estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
+                    fingerprintReadingsQualityScores, (List<? extends RadioSourceLocated<Point2D>>) null,
                     this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    sourceQualityScores, fingerprintReadingsQualityScores,
-                    new ArrayList<WifiAccessPointLocated2D>(), this);
+            estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
+                    fingerprintReadingsQualityScores, new ArrayList<WifiAccessPointLocated2D>(), this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
 
         // test constructor with quality scores, fingerprint and listener
-        estimator = new SequentialRobustMixedPositionEstimator2D(
-                sourceQualityScores, fingerprintReadingsQualityScores,
+        estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
                 fingerprint, this);
 
         // check default values
-        assertEquals(estimator.getNumberOfDimensions(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH);
-        assertEquals(estimator.getMinRequiredSources(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRssiPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RANGING_ROBUST_METHOD);
-        assertEquals(estimator.getRssiRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RSSI_ROBUST_METHOD);
-        assertEquals(estimator.isRangingRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRssiRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRangingReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS);
-        assertEquals(estimator.getRssiFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.getRangingFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.isRssiReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS);
-        assertEquals(estimator.getProgressDelta(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
-                0.0);
-        assertEquals(estimator.getRangingConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRssiConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRangingMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.getRssiMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_KEEP_COVARIANCE);
-        assertEquals(estimator.isRangingLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS);
-        assertEquals(estimator.isRssiPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS);
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH, estimator.getNumberOfDimensions());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1, estimator.getMinRequiredSources());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRangingPreliminarySubsetSize());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRssiPreliminarySubsetSize());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RANGING_ROBUST_METHOD,
+                estimator.getRangingRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RSSI_ROBUST_METHOD,
+                estimator.getRssiRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.
+                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRangingRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRssiRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS,
+                estimator.isRangingReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRssiFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRangingFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS,
+                estimator.isRssiReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRangingConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRssiConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRangingMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRssiMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT,
+                estimator.isResultRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_KEEP_COVARIANCE,
+                estimator.isCovarianceKept());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_LINEAR_SOLVER,
+                estimator.isRangingLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_LINEAR_SOLVER,
+                estimator.isRssiLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRangingHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRssiHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS,
+                estimator.isRangingPreliminarySolutionRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS,
+                estimator.isRssiPreliminarySolutionRefined());
         assertNull(estimator.getRangingThreshold());
         assertNull(estimator.getRssiThreshold());
         assertNull(estimator.getSources());
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingsQualityScores);
-        assertSame(estimator.getListener(), this);
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingsQualityScores, estimator.getFingerprintReadingsQualityScores());
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isLocked());
         assertFalse(estimator.isReady());
@@ -1800,35 +1467,32 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    null, fingerprintReadingsQualityScores,
+            estimator = new SequentialRobustMixedPositionEstimator2D(null,
+                    fingerprintReadingsQualityScores, fingerprint, this);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
+                    null, fingerprint, this);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            estimator = new SequentialRobustMixedPositionEstimator2D(new double[1], fingerprintReadingsQualityScores,
                     fingerprint, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    sourceQualityScores, null,
-                    fingerprint, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    new double[1], fingerprintReadingsQualityScores, fingerprint,
+            estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, new double[1], fingerprint,
                     this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    sourceQualityScores, new double[1], fingerprint, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    sourceQualityScores, fingerprintReadingsQualityScores,
+            estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
+                    fingerprintReadingsQualityScores,
                     (RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>>) null,
                     this);
             fail("IllegalArgumentException expected but not thrown");
@@ -1837,87 +1501,66 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         assertNull(estimator);
 
         // test constructor with quality scores, sources, fingerprint and listener
-        estimator = new SequentialRobustMixedPositionEstimator2D(
-                sourceQualityScores, fingerprintReadingsQualityScores,
+        estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
                 sources, fingerprint, this);
 
         // check default values
-        assertEquals(estimator.getNumberOfDimensions(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH);
-        assertEquals(estimator.getMinRequiredSources(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRssiPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
-        assertEquals(estimator.getRangingRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RANGING_ROBUST_METHOD);
-        assertEquals(estimator.getRssiRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RSSI_ROBUST_METHOD);
-        assertEquals(estimator.isRangingRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRssiRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE);
-        assertEquals(estimator.isRangingReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS);
-        assertEquals(estimator.getRssiFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.getRangingFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
-        assertEquals(estimator.isRssiReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS);
-        assertEquals(estimator.getProgressDelta(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
-                0.0);
-        assertEquals(estimator.getRangingConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRssiConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
-        assertEquals(estimator.getRangingMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.getRssiMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_KEEP_COVARIANCE);
-        assertEquals(estimator.isRangingLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRssiHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.isRangingPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS);
-        assertEquals(estimator.isRssiPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS);
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH, estimator.getNumberOfDimensions());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1, estimator.getMinRequiredSources());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRangingPreliminarySubsetSize());
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRssiPreliminarySubsetSize());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RANGING_ROBUST_METHOD,
+                estimator.getRangingRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RSSI_ROBUST_METHOD,
+                estimator.getRssiRobustMethod());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.
+                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRangingRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRssiRadioSourcePositionCovarianceUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS,
+                estimator.isRangingReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRssiFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRangingFallbackDistanceStandardDeviation(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS,
+                estimator.isRssiReadingsEvenlyDistributed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRangingConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRssiConfidence(), 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRangingMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRssiMaxIterations());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT,
+                estimator.isResultRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_KEEP_COVARIANCE,
+                estimator.isCovarianceKept());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_LINEAR_SOLVER,
+                estimator.isRangingLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_LINEAR_SOLVER,
+                estimator.isRssiLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRangingHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRssiHomogeneousLinearSolverUsed());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS,
+                estimator.isRangingPreliminarySolutionRefined());
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS,
+                estimator.isRssiPreliminarySolutionRefined());
         assertNull(estimator.getRangingThreshold());
         assertNull(estimator.getRssiThreshold());
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getSourceQualityScores(), sourceQualityScores);
-        assertSame(estimator.getFingerprintReadingsQualityScores(),
-                fingerprintReadingsQualityScores);
-        assertSame(estimator.getListener(), this);
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(sourceQualityScores, estimator.getSourceQualityScores());
+        assertSame(fingerprintReadingsQualityScores, estimator.getFingerprintReadingsQualityScores());
+        assertSame(this, estimator.getListener());
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isLocked());
         assertFalse(estimator.isReady());
@@ -1932,51 +1575,44 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         estimator = null;
         try {
             estimator = new SequentialRobustMixedPositionEstimator2D(
-                    null, fingerprintReadingsQualityScores,
-                    sources, fingerprint, this);
+                    null, fingerprintReadingsQualityScores, sources, fingerprint, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
             estimator = new SequentialRobustMixedPositionEstimator2D(
-                    sourceQualityScores, null,
-                    sources, fingerprint, this);
+                    sourceQualityScores, null, sources, fingerprint, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
             estimator = new SequentialRobustMixedPositionEstimator2D(
-                    new double[1], fingerprintReadingsQualityScores, sources,
-                    fingerprint, this);
+                    new double[1], fingerprintReadingsQualityScores, sources, fingerprint, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
             estimator = new SequentialRobustMixedPositionEstimator2D(
-                    sourceQualityScores, new double[1], sources, fingerprint,
+                    sourceQualityScores, new double[1], sources, fingerprint, this);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            estimator = new SequentialRobustMixedPositionEstimator2D(
+                    sourceQualityScores, fingerprintReadingsQualityScores, null, fingerprint, this);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
+                    fingerprintReadingsQualityScores, new ArrayList<WifiAccessPointLocated2D>(), fingerprint,
                     this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    sourceQualityScores, fingerprintReadingsQualityScores,
-                    null, fingerprint, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    sourceQualityScores, fingerprintReadingsQualityScores,
-                    new ArrayList<WifiAccessPointLocated2D>(), fingerprint,
-                    this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new SequentialRobustMixedPositionEstimator2D(
-                    sourceQualityScores, fingerprintReadingsQualityScores,
-                    sources, null, this);
+            estimator = new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
+                    fingerprintReadingsQualityScores, sources, null, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -1985,50 +1621,42 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
 
     @Test
     public void testGetSetRangingRobustMethod() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.getRangingRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RANGING_ROBUST_METHOD);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RANGING_ROBUST_METHOD,
+                estimator.getRangingRobustMethod());
 
         // set new value
         estimator.setRangingRobustMethod(RobustEstimatorMethod.PROSAC);
 
         // check
-        assertEquals(estimator.getRangingRobustMethod(),
-                RobustEstimatorMethod.PROSAC);
+        assertEquals(RobustEstimatorMethod.PROSAC, estimator.getRangingRobustMethod());
     }
 
     @Test
     public void testGetSetRssiRobustMethod() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.getRssiRobustMethod(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_RANGING_ROBUST_METHOD);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_RANGING_ROBUST_METHOD,
+                estimator.getRssiRobustMethod());
 
         // set new value
         estimator.setRssiRobustMethod(RobustEstimatorMethod.RANSAC);
 
         // check
-        assertEquals(estimator.getRssiRobustMethod(),
-                RobustEstimatorMethod.RANSAC);
+        assertEquals(RobustEstimatorMethod.RANSAC, estimator.getRssiRobustMethod());
     }
 
     @Test
-    public void testIsSetRangingRadioSourcePositionCovarianceUsed()
-            throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+    public void testIsSetRangingRadioSourcePositionCovarianceUsed() throws LockedException {
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.isRangingRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.
+                        DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRangingRadioSourcePositionCovarianceUsed());
         assertTrue(estimator.isRangingRadioSourcePositionCovarianceUsed());
 
         // set new value
@@ -2039,16 +1667,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testIsSetRssiRadioSourcePositionCovarianceUsed()
-            throws LockedException {
+    public void testIsSetRssiRadioSourcePositionCovarianceUsed() throws LockedException {
 
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.isRssiRadioSourcePositionCovarianceUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE,
+                estimator.isRssiRadioSourcePositionCovarianceUsed());
         assertTrue(estimator.isRssiRadioSourcePositionCovarianceUsed());
 
         // set new value
@@ -2060,13 +1685,11 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
 
     @Test
     public void testIsSetRangingReadingEvenlyDistributed() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.isRangingReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS,
+                estimator.isRangingReadingsEvenlyDistributed());
         assertTrue(estimator.isRangingReadingsEvenlyDistributed());
 
         // set new value
@@ -2077,54 +1700,44 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testGetSetRssiFallbackDistanceStandardDeviation()
-            throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+    public void testGetSetRssiFallbackDistanceStandardDeviation() throws LockedException {
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.getRssiFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRssiFallbackDistanceStandardDeviation(), 0.0);
 
         // set new value
         final double value = new Random().nextDouble();
         estimator.setRssiFallbackDistanceStandardDeviation(value);
 
         // check
-        assertEquals(estimator.getRssiFallbackDistanceStandardDeviation(),
-                value, 0.0);
+        assertEquals(estimator.getRssiFallbackDistanceStandardDeviation(), value, 0.0);
     }
 
     @Test
-    public void testGetSetRangingFallbackDistanceStandardDeviation()
-            throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+    public void testGetSetRangingFallbackDistanceStandardDeviation() throws LockedException {
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.getRangingFallbackDistanceStandardDeviation(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        FALLBACK_DISTANCE_STANDARD_DEVIATION, 0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getRangingFallbackDistanceStandardDeviation(), 0.0);
 
         // set new value
         final double value = new Random().nextDouble();
         estimator.setRangingFallbackDistanceStandardDeviation(value);
 
         // check
-        assertEquals(estimator.getRangingFallbackDistanceStandardDeviation(),
-                value, 0.0);
+        assertEquals(estimator.getRangingFallbackDistanceStandardDeviation(), value, 0.0);
     }
 
     @Test
     public void testIsSetRssiReadingsEvenlyDistributed() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.isRssiReadingsEvenlyDistributed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS,
+                estimator.isRssiReadingsEvenlyDistributed());
         assertTrue(estimator.isRssiReadingsEvenlyDistributed());
 
         // set new value
@@ -2136,95 +1749,86 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
 
     @Test
     public void testGetSetProgressDelta() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.getProgressDelta(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
-                0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
 
         // set new value
         estimator.setProgressDelta(0.5f);
 
         // check
-        assertEquals(estimator.getProgressDelta(), 0.5f, 0.0);
+        assertEquals(0.5f, estimator.getProgressDelta(), 0.0);
     }
 
     @Test
     public void testGetSetRangingConfidence() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.getRangingConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRangingConfidence(), 0.0);
 
         // set new value
         estimator.setRangingConfidence(0.7);
 
         // check
-        assertEquals(estimator.getRangingConfidence(), 0.7, 0.0);
+        assertEquals(0.7, estimator.getRangingConfidence(), 0.0);
     }
 
     @Test
     public void testGetSetRssiConfidence() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.getRssiConfidence(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
-                0.0);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_CONFIDENCE,
+                estimator.getRssiConfidence(), 0.0);
 
         // set new value
         estimator.setRssiConfidence(0.8);
 
         // check
-        assertEquals(estimator.getRssiConfidence(), 0.8, 0.0);
+        assertEquals(0.8, estimator.getRssiConfidence(), 0.0);
     }
 
     @Test
     public void testGetSetRangingMaxIterations() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.getRangingMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRangingMaxIterations());
 
         // set new value
         estimator.setRangingMaxIterations(100);
 
         // check
-        assertEquals(estimator.getRangingMaxIterations(), 100);
+        assertEquals(100, estimator.getRangingMaxIterations());
     }
 
     @Test
     public void testGetSetRssiMaxIterations() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.getRssiMaxIterations(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_MAX_ITERATIONS,
+                estimator.getRssiMaxIterations());
 
         // set new value
         estimator.setRssiMaxIterations(200);
 
         // check
-        assertEquals(estimator.getRssiMaxIterations(), 200);
+        assertEquals(200, estimator.getRssiMaxIterations());
     }
 
     @Test
     public void testIsSetResultRefined() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.isResultRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RESULT,
+                estimator.isResultRefined());
         assertTrue(estimator.isResultRefined());
 
         // set new value
@@ -2236,13 +1840,11 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
 
     @Test
     public void testIsSetCovarianceKept() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.isCovarianceKept(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_KEEP_COVARIANCE);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_KEEP_COVARIANCE,
+                estimator.isCovarianceKept());
         assertTrue(estimator.isCovarianceKept());
 
         // set new value
@@ -2254,13 +1856,11 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
 
     @Test
     public void testIsSetRangingLinearSolverUsed() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.isRangingLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_LINEAR_SOLVER);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_LINEAR_SOLVER,
+                estimator.isRangingLinearSolverUsed());
         assertTrue(estimator.isRangingLinearSolverUsed());
 
         // set new value
@@ -2272,13 +1872,11 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
 
     @Test
     public void testIsSetRssiLinearSolverUsed() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.isRssiLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_LINEAR_SOLVER);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_LINEAR_SOLVER,
+                estimator.isRssiLinearSolverUsed());
         assertTrue(estimator.isRssiLinearSolverUsed());
 
         // set new value
@@ -2290,13 +1888,11 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
 
     @Test
     public void testIsSetRangingHomogeneousLinearSolverUsed() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.isRangingHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRangingHomogeneousLinearSolverUsed());
         assertFalse(estimator.isRangingHomogeneousLinearSolverUsed());
 
         // set new value
@@ -2308,13 +1904,11 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
 
     @Test
     public void testIsSetRssiHomogeneousLinearSolverUsed() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.isRssiHomogeneousLinearSolverUsed(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isRssiHomogeneousLinearSolverUsed());
         assertFalse(estimator.isRssiHomogeneousLinearSolverUsed());
 
         // set new value
@@ -2326,13 +1920,11 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
 
     @Test
     public void testIsSetRangingPreliminarySolutionRefined() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.isRangingPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS,
+                estimator.isRangingPreliminarySolutionRefined());
         assertTrue(estimator.isRangingPreliminarySolutionRefined());
 
         // set new value
@@ -2344,13 +1936,11 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
 
     @Test
     public void testIsSetRssiPreliminarySolutionRefined() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.isRssiPreliminarySolutionRefined(),
-                SequentialRobustRangingAndRssiPositionEstimator.
-                        DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS);
+        assertEquals(SequentialRobustRangingAndRssiPositionEstimator.DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS,
+                estimator.isRssiPreliminarySolutionRefined());
         assertTrue(estimator.isRssiPreliminarySolutionRefined());
 
         // set new value
@@ -2362,17 +1952,16 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
 
     @Test
     public void testGetSetRangingPreliminarySubsetSize() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
-        assertEquals(estimator.getRangingPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRangingPreliminarySubsetSize());
 
         // set new value
         estimator.setRangingPreliminarySubsetSize(4);
 
         // check
-        assertEquals(estimator.getRangingPreliminarySubsetSize(), 4);
+        assertEquals(4, estimator.getRangingPreliminarySubsetSize());
 
         // force IllegalArgumentException
         try {
@@ -2384,17 +1973,16 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
 
     @Test
     public void testGetSetRssiPreliminarySubsetSize() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
-        assertEquals(estimator.getRssiPreliminarySubsetSize(),
-                Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1);
+        assertEquals(Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH + 1,
+                estimator.getRssiPreliminarySubsetSize());
 
         // set new value
         estimator.setRssiPreliminarySubsetSize(4);
 
         // check
-        assertEquals(estimator.getRssiPreliminarySubsetSize(), 4);
+        assertEquals(4, estimator.getRssiPreliminarySubsetSize());
 
         // force IllegalArgumentException
         try {
@@ -2406,8 +1994,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
 
     @Test
     public void testGetSetRangingThreshold() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
         assertNull(estimator.getRangingThreshold());
@@ -2417,13 +2004,12 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         estimator.setRangingThreshold(value);
 
         // check
-        assertEquals(estimator.getRangingThreshold(), value, 0.0);
+        assertEquals(value, estimator.getRangingThreshold(), 0.0);
     }
 
     @Test
     public void testGetSetRangingThresholdRANSAC() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
         estimator.setRangingRobustMethod(RobustEstimatorMethod.RANSAC);
 
         // check default value
@@ -2435,32 +2021,31 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         estimator.buildRangingEstimator();
         estimator.setupRangingEstimator();
 
-        assertEquals(estimator.mRangingEstimator.getMethod(), RobustEstimatorMethod.RANSAC);
-        assertEquals(((RANSACRobustRangingPositionEstimator2D) estimator.mRangingEstimator).getThreshold(),
-                RANSACRobustLateration2DSolver.DEFAULT_THRESHOLD, 0.0);
+        assertEquals(RobustEstimatorMethod.RANSAC, estimator.mRangingEstimator.getMethod());
+        assertEquals(RANSACRobustLateration2DSolver.DEFAULT_THRESHOLD,
+                ((RANSACRobustRangingPositionEstimator2D) estimator.mRangingEstimator).getThreshold(), 0.0);
 
         // set new value
         final double value = new Random().nextDouble();
         estimator.setRangingThreshold(value);
 
         // check
-        assertEquals(estimator.getRangingThreshold(), value, 0.0);
+        assertEquals(value, estimator.getRangingThreshold(), 0.0);
 
         // check that internal ranging estimator also has new value
 
         // setup ranging estimator
         estimator.setupRangingEstimator();
 
-        assertEquals(estimator.mRangingEstimator.getMethod(), RobustEstimatorMethod.RANSAC);
-        assertEquals(((RANSACRobustRangingPositionEstimator2D) estimator.mRangingEstimator).getThreshold(),
-                value, 0.0);
+        assertEquals(RobustEstimatorMethod.RANSAC, estimator.mRangingEstimator.getMethod());
+        assertEquals(value, ((RANSACRobustRangingPositionEstimator2D) estimator.mRangingEstimator).getThreshold(),
+                0.0);
     }
 
     @Test
     public void testGetSetRangingThresholdLMedS() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
-        estimator.setRangingRobustMethod(RobustEstimatorMethod.LMedS);
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
+        estimator.setRangingRobustMethod(RobustEstimatorMethod.LMEDS);
 
         // check default value
         assertNull(estimator.getRangingThreshold());
@@ -2471,31 +2056,30 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         estimator.buildRangingEstimator();
         estimator.setupRangingEstimator();
 
-        assertEquals(estimator.mRangingEstimator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertEquals(((LMedSRobustRangingPositionEstimator2D) estimator.mRangingEstimator).getStopThreshold(),
-                LMedSRobustLateration2DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
+        assertEquals(RobustEstimatorMethod.LMEDS, estimator.mRangingEstimator.getMethod());
+        assertEquals(LMedSRobustLateration2DSolver.DEFAULT_STOP_THRESHOLD,
+                ((LMedSRobustRangingPositionEstimator2D) estimator.mRangingEstimator).getStopThreshold(), 0.0);
 
         // set new value
         final double value = new Random().nextDouble();
         estimator.setRangingThreshold(value);
 
         // check
-        assertEquals(estimator.getRangingThreshold(), value, 0.0);
+        assertEquals(value, estimator.getRangingThreshold(), 0.0);
 
         // check that internal ranging estimator also has new value
 
         // setup ranging estimator
         estimator.setupRangingEstimator();
 
-        assertEquals(estimator.mRangingEstimator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertEquals(((LMedSRobustRangingPositionEstimator2D) estimator.mRangingEstimator).getStopThreshold(),
-                value, 0.0);
+        assertEquals(RobustEstimatorMethod.LMEDS, estimator.mRangingEstimator.getMethod());
+        assertEquals(value, ((LMedSRobustRangingPositionEstimator2D) estimator.mRangingEstimator).getStopThreshold(),
+                0.0);
     }
 
     @Test
     public void testGetSetRangingThresholdMSAC() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
         estimator.setRangingRobustMethod(RobustEstimatorMethod.MSAC);
 
         // check default value
@@ -2507,32 +2091,31 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         estimator.buildRangingEstimator();
         estimator.setupRangingEstimator();
 
-        assertEquals(estimator.mRangingEstimator.getMethod(), RobustEstimatorMethod.MSAC);
-        assertEquals(((MSACRobustRangingPositionEstimator2D) estimator.mRangingEstimator).getThreshold(),
-                MSACRobustLateration2DSolver.DEFAULT_THRESHOLD, 0.0);
+        assertEquals(RobustEstimatorMethod.MSAC, estimator.mRangingEstimator.getMethod());
+        assertEquals(MSACRobustLateration2DSolver.DEFAULT_THRESHOLD,
+                ((MSACRobustRangingPositionEstimator2D) estimator.mRangingEstimator).getThreshold(), 0.0);
 
         // set new value
         final double value = new Random().nextDouble();
         estimator.setRangingThreshold(value);
 
         // check
-        assertEquals(estimator.getRangingThreshold(), value, 0.0);
+        assertEquals(value, estimator.getRangingThreshold(), 0.0);
 
         // check that internal ranging estimator also has new value
 
         // setup ranging estimator
         estimator.setupRangingEstimator();
 
-        assertEquals(estimator.mRangingEstimator.getMethod(), RobustEstimatorMethod.MSAC);
-        assertEquals(((MSACRobustRangingPositionEstimator2D) estimator.mRangingEstimator).getThreshold(),
-                value, 0.0);
+        assertEquals(RobustEstimatorMethod.MSAC, estimator.mRangingEstimator.getMethod());
+        assertEquals(value, ((MSACRobustRangingPositionEstimator2D) estimator.mRangingEstimator).getThreshold(),
+                0.0);
     }
 
     @Test
     public void testGetSetRangingThresholdPROMedS() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
-        estimator.setRangingRobustMethod(RobustEstimatorMethod.PROMedS);
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
+        estimator.setRangingRobustMethod(RobustEstimatorMethod.PROMEDS);
 
         // check default value
         assertNull(estimator.getRangingThreshold());
@@ -2543,31 +2126,30 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         estimator.buildRangingEstimator();
         estimator.setupRangingEstimator();
 
-        assertEquals(estimator.mRangingEstimator.getMethod(), RobustEstimatorMethod.PROMedS);
-        assertEquals(((PROMedSRobustRangingPositionEstimator2D) estimator.mRangingEstimator).getStopThreshold(),
-                PROMedSRobustLateration2DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
+        assertEquals(RobustEstimatorMethod.PROMEDS, estimator.mRangingEstimator.getMethod());
+        assertEquals(PROMedSRobustLateration2DSolver.DEFAULT_STOP_THRESHOLD,
+                ((PROMedSRobustRangingPositionEstimator2D) estimator.mRangingEstimator).getStopThreshold(), 0.0);
 
         // set new value
         final double value = new Random().nextDouble();
         estimator.setRangingThreshold(value);
 
         // check
-        assertEquals(estimator.getRangingThreshold(), value, 0.0);
+        assertEquals(value, estimator.getRangingThreshold(), 0.0);
 
         // check that internal ranging estimator also has new value
 
         // setup ranging estimator
         estimator.setupRangingEstimator();
 
-        assertEquals(estimator.mRangingEstimator.getMethod(), RobustEstimatorMethod.PROMedS);
-        assertEquals(((PROMedSRobustRangingPositionEstimator2D) estimator.mRangingEstimator).getStopThreshold(),
-                value, 0.0);
+        assertEquals(RobustEstimatorMethod.PROMEDS, estimator.mRangingEstimator.getMethod());
+        assertEquals(value, ((PROMedSRobustRangingPositionEstimator2D) estimator.mRangingEstimator).getStopThreshold(),
+                0.0);
     }
 
     @Test
     public void testGetSetRangingThresholdPROSAC() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
         estimator.setRangingRobustMethod(RobustEstimatorMethod.PROSAC);
 
         // check default value
@@ -2579,31 +2161,30 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         estimator.buildRangingEstimator();
         estimator.setupRangingEstimator();
 
-        assertEquals(estimator.mRangingEstimator.getMethod(), RobustEstimatorMethod.PROSAC);
-        assertEquals(((PROSACRobustRangingPositionEstimator2D) estimator.mRangingEstimator).getThreshold(),
-                PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD, 0.0);
+        assertEquals(RobustEstimatorMethod.PROSAC, estimator.mRangingEstimator.getMethod());
+        assertEquals(PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD,
+                ((PROSACRobustRangingPositionEstimator2D) estimator.mRangingEstimator).getThreshold(), 0.0);
 
         // set new value
         final double value = new Random().nextDouble();
         estimator.setRangingThreshold(value);
 
         // check
-        assertEquals(estimator.getRangingThreshold(), value, 0.0);
+        assertEquals(value, estimator.getRangingThreshold(), 0.0);
 
         // check that internal ranging estimator also has new value
 
         // setup ranging estimator
         estimator.setupRangingEstimator();
 
-        assertEquals(estimator.mRangingEstimator.getMethod(), RobustEstimatorMethod.PROSAC);
-        assertEquals(((PROSACRobustRangingPositionEstimator2D) estimator.mRangingEstimator).getThreshold(),
-                value, 0.0);
+        assertEquals(RobustEstimatorMethod.PROSAC, estimator.mRangingEstimator.getMethod());
+        assertEquals(value, ((PROSACRobustRangingPositionEstimator2D) estimator.mRangingEstimator).getThreshold(),
+                0.0);
     }
 
     @Test
     public void testGetSetRssiThreshold() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
         assertNull(estimator.getRssiThreshold());
@@ -2613,13 +2194,12 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         estimator.setRssiThreshold(value);
 
         // check
-        assertEquals(estimator.getRssiThreshold(), value, 0.0);
+        assertEquals(value, estimator.getRssiThreshold(), 0.0);
     }
 
     @Test
     public void testGetSetRssiThresholdRANSAC() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
         estimator.setRssiRobustMethod(RobustEstimatorMethod.RANSAC);
 
         // check default value
@@ -2631,32 +2211,31 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         estimator.buildRssiEstimator();
         estimator.setupRssiEstimator();
 
-        assertEquals(estimator.mRssiEstimator.getMethod(), RobustEstimatorMethod.RANSAC);
-        assertEquals(((RANSACRobustRssiPositionEstimator2D) estimator.mRssiEstimator).getThreshold(),
-                RANSACRobustLateration2DSolver.DEFAULT_THRESHOLD, 0.0);
+        assertEquals(RobustEstimatorMethod.RANSAC, estimator.mRssiEstimator.getMethod());
+        assertEquals(RANSACRobustLateration2DSolver.DEFAULT_THRESHOLD,
+                ((RANSACRobustRssiPositionEstimator2D) estimator.mRssiEstimator).getThreshold(), 0.0);
 
         // set new value
         final double value = new Random().nextDouble();
         estimator.setRssiThreshold(value);
 
         // check
-        assertEquals(estimator.getRssiThreshold(), value, 0.0);
+        assertEquals(value, estimator.getRssiThreshold(), 0.0);
 
         // check that internal rssi estimator also has new value
 
         // setup rssi estimator
         estimator.setupRssiEstimator();
 
-        assertEquals(estimator.mRssiEstimator.getMethod(), RobustEstimatorMethod.RANSAC);
-        assertEquals(((RANSACRobustRssiPositionEstimator2D) estimator.mRssiEstimator).getThreshold(),
-                value, 0.0);
+        assertEquals(RobustEstimatorMethod.RANSAC, estimator.mRssiEstimator.getMethod());
+        assertEquals(value, ((RANSACRobustRssiPositionEstimator2D) estimator.mRssiEstimator).getThreshold(),
+                0.0);
     }
 
     @Test
     public void testGetSetRssiThresholdLMedS() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
-        estimator.setRssiRobustMethod(RobustEstimatorMethod.LMedS);
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
+        estimator.setRssiRobustMethod(RobustEstimatorMethod.LMEDS);
 
         // check default value
         assertNull(estimator.getRssiThreshold());
@@ -2667,31 +2246,30 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         estimator.buildRssiEstimator();
         estimator.setupRssiEstimator();
 
-        assertEquals(estimator.mRssiEstimator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertEquals(((LMedSRobustRssiPositionEstimator2D) estimator.mRssiEstimator).getStopThreshold(),
-                LMedSRobustLateration2DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
+        assertEquals(RobustEstimatorMethod.LMEDS, estimator.mRssiEstimator.getMethod());
+        assertEquals(LMedSRobustLateration2DSolver.DEFAULT_STOP_THRESHOLD,
+                ((LMedSRobustRssiPositionEstimator2D) estimator.mRssiEstimator).getStopThreshold(), 0.0);
 
         // set new value
         final double value = new Random().nextDouble();
         estimator.setRssiThreshold(value);
 
         // check
-        assertEquals(estimator.getRssiThreshold(), value, 0.0);
+        assertEquals(value, estimator.getRssiThreshold(), 0.0);
 
         // check that internal rssi estimator also has new value
 
         // setup rssi estimator
         estimator.setupRssiEstimator();
 
-        assertEquals(estimator.mRssiEstimator.getMethod(), RobustEstimatorMethod.LMedS);
-        assertEquals(((LMedSRobustRssiPositionEstimator2D) estimator.mRssiEstimator).getStopThreshold(),
-                value, 0.0);
+        assertEquals(RobustEstimatorMethod.LMEDS, estimator.mRssiEstimator.getMethod());
+        assertEquals(value, ((LMedSRobustRssiPositionEstimator2D) estimator.mRssiEstimator).getStopThreshold(),
+                0.0);
     }
 
     @Test
     public void testGetSetRssiThresholdMSAC() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
         estimator.setRssiRobustMethod(RobustEstimatorMethod.MSAC);
 
         // check default value
@@ -2703,32 +2281,31 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         estimator.buildRssiEstimator();
         estimator.setupRssiEstimator();
 
-        assertEquals(estimator.mRssiEstimator.getMethod(), RobustEstimatorMethod.MSAC);
-        assertEquals(((MSACRobustRssiPositionEstimator2D) estimator.mRssiEstimator).getThreshold(),
-                MSACRobustLateration2DSolver.DEFAULT_THRESHOLD, 0.0);
+        assertEquals(RobustEstimatorMethod.MSAC, estimator.mRssiEstimator.getMethod());
+        assertEquals(MSACRobustLateration2DSolver.DEFAULT_THRESHOLD,
+                ((MSACRobustRssiPositionEstimator2D) estimator.mRssiEstimator).getThreshold(), 0.0);
 
         // set new value
         final double value = new Random().nextDouble();
         estimator.setRssiThreshold(value);
 
         // check
-        assertEquals(estimator.getRssiThreshold(), value, 0.0);
+        assertEquals(value, estimator.getRssiThreshold(), 0.0);
 
         // check that internal rssi estimator also has new value
 
         // setup rssi estimator
         estimator.setupRssiEstimator();
 
-        assertEquals(estimator.mRssiEstimator.getMethod(), RobustEstimatorMethod.MSAC);
-        assertEquals(((MSACRobustRssiPositionEstimator2D) estimator.mRssiEstimator).getThreshold(),
-                value, 0.0);
+        assertEquals(RobustEstimatorMethod.MSAC, estimator.mRssiEstimator.getMethod());
+        assertEquals(value, ((MSACRobustRssiPositionEstimator2D) estimator.mRssiEstimator).getThreshold(),
+                0.0);
     }
 
     @Test
     public void testGetSetRssiThresholdPROMedS() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
-        estimator.setRssiRobustMethod(RobustEstimatorMethod.PROMedS);
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
+        estimator.setRssiRobustMethod(RobustEstimatorMethod.PROMEDS);
 
         // check default value
         assertNull(estimator.getRssiThreshold());
@@ -2739,31 +2316,30 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         estimator.buildRssiEstimator();
         estimator.setupRssiEstimator();
 
-        assertEquals(estimator.mRssiEstimator.getMethod(), RobustEstimatorMethod.PROMedS);
-        assertEquals(((PROMedSRobustRssiPositionEstimator2D) estimator.mRssiEstimator).getStopThreshold(),
-                PROMedSRobustLateration2DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
+        assertEquals(RobustEstimatorMethod.PROMEDS, estimator.mRssiEstimator.getMethod());
+        assertEquals(PROMedSRobustLateration2DSolver.DEFAULT_STOP_THRESHOLD,
+                ((PROMedSRobustRssiPositionEstimator2D) estimator.mRssiEstimator).getStopThreshold(), 0.0);
 
         // set new value
         final double value = new Random().nextDouble();
         estimator.setRssiThreshold(value);
 
         // check
-        assertEquals(estimator.getRssiThreshold(), value, 0.0);
+        assertEquals(value, estimator.getRssiThreshold(), 0.0);
 
         // check that internal rssi estimator also has new value
 
         // setup rssi estimator
         estimator.setupRssiEstimator();
 
-        assertEquals(estimator.mRssiEstimator.getMethod(), RobustEstimatorMethod.PROMedS);
-        assertEquals(((PROMedSRobustRssiPositionEstimator2D) estimator.mRssiEstimator).getStopThreshold(),
-                value, 0.0);
+        assertEquals(RobustEstimatorMethod.PROMEDS, estimator.mRssiEstimator.getMethod());
+        assertEquals(value, ((PROMedSRobustRssiPositionEstimator2D) estimator.mRssiEstimator).getStopThreshold(),
+                0.0);
     }
 
     @Test
     public void testGetSetRssiThresholdPROSAC() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
         estimator.setRssiRobustMethod(RobustEstimatorMethod.PROSAC);
 
         // check default value
@@ -2775,31 +2351,30 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         estimator.buildRssiEstimator();
         estimator.setupRssiEstimator();
 
-        assertEquals(estimator.mRssiEstimator.getMethod(), RobustEstimatorMethod.PROSAC);
-        assertEquals(((PROSACRobustRssiPositionEstimator2D) estimator.mRssiEstimator).getThreshold(),
-                PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD, 0.0);
+        assertEquals(RobustEstimatorMethod.PROSAC, estimator.mRssiEstimator.getMethod());
+        assertEquals(PROSACRobustLateration2DSolver.DEFAULT_THRESHOLD,
+                ((PROSACRobustRssiPositionEstimator2D) estimator.mRssiEstimator).getThreshold(), 0.0);
 
         // set new value
         final double value = new Random().nextDouble();
         estimator.setRssiThreshold(value);
 
         // check
-        assertEquals(estimator.getRssiThreshold(), value, 0.0);
+        assertEquals(value, estimator.getRssiThreshold(), 0.0);
 
         // check that internal rssi estimator also has new value
 
         // setup rssi estimator
         estimator.setupRssiEstimator();
 
-        assertEquals(estimator.mRssiEstimator.getMethod(), RobustEstimatorMethod.PROSAC);
-        assertEquals(((PROSACRobustRssiPositionEstimator2D) estimator.mRssiEstimator).getThreshold(),
-                value, 0.0);
+        assertEquals(RobustEstimatorMethod.PROSAC, estimator.mRssiEstimator.getMethod());
+        assertEquals(value, ((PROSACRobustRssiPositionEstimator2D) estimator.mRssiEstimator).getThreshold(),
+                0.0);
     }
 
     @Test
     public void testGetSetSources() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
         assertNull(estimator.getSources());
@@ -2807,13 +2382,12 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         // set new value
         final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            sources.add(new WifiAccessPointLocated2D("id1", FREQUENCY,
-                    new InhomogeneousPoint2D()));
+            sources.add(new WifiAccessPointLocated2D("id1", FREQUENCY, new InhomogeneousPoint2D()));
         }
         estimator.setSources(sources);
 
         // check
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
 
         // force IllegalArgumentException
         try {
@@ -2830,8 +2404,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
 
     @Test
     public void testGetSetFingerprint() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
         assertNull(estimator.getFingerprint());
@@ -2842,13 +2415,12 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         estimator.setFingerprint(fingerprint);
 
         // check
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
     }
 
     @Test
     public void testGetSetSourceQualityScores() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
         assertNull(estimator.getSourceQualityScores());
@@ -2858,7 +2430,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         estimator.setSourceQualityScores(value);
 
         // check
-        assertSame(estimator.getSourceQualityScores(), value);
+        assertSame(value, estimator.getSourceQualityScores());
 
         // force IllegalArgumentException
         try {
@@ -2869,10 +2441,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testGetSetFingerprintReadingsQualityScores()
-            throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+    public void testGetSetFingerprintReadingsQualityScores() throws LockedException {
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
         assertNull(estimator.getFingerprintReadingsQualityScores());
@@ -2882,7 +2452,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         estimator.setFingerprintReadingsQualityScores(value);
 
         // check
-        assertSame(estimator.getFingerprintReadingsQualityScores(), value);
+        assertSame(value, estimator.getFingerprintReadingsQualityScores());
 
         // force IllegalArgumentException
         try {
@@ -2894,8 +2464,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
 
     @Test
     public void testGetSetListener() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
         assertNull(estimator.getListener());
@@ -2904,13 +2473,12 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         estimator.setListener(this);
 
         // check
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
     }
 
     @Test
     public void testGetSetInitialPosition() throws LockedException {
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
 
         // check default value
         assertNull(estimator.getInitialPosition());
@@ -2920,12 +2488,12 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         estimator.setInitialPosition(p);
 
         // check
-        assertSame(estimator.getInitialPosition(), p);
+        assertSame(p, estimator.getInitialPosition());
     }
 
     @Test
-    public void testEstimateRanging() throws LockedException, NotReadyException,
-            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateRanging() throws LockedException, NotReadyException, RobustEstimatorException,
+            NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -2956,8 +2524,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointLocated2D locatedAccessPoint =
-                        new WifiAccessPointLocated2D(bssid, FREQUENCY,
-                                accessPointPosition);
+                        new WifiAccessPointLocated2D(bssid, FREQUENCY, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -2974,13 +2541,10 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRanging1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRanging2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRanging1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRanging2));
 
-                readings.add(new RangingReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
+                readings.add(new RangingReading<>(accessPoint, Math.max(0.0, distance + errorRanging1 + errorRanging2),
                         RANGING_STD));
             }
 
@@ -2988,8 +2552,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     new RangingFingerprint<>(readings);
 
             final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
-                            fingerprintReadingsQualityScores, sources, fingerprint, this);
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
+                            sources, fingerprint, this);
             estimator.setResultRefined(true);
 
             reset();
@@ -3001,14 +2565,14 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
-            assertEquals(estimateProgressChange, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
+            assertEquals(0, estimateProgressChange);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -3016,7 +2580,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -3065,8 +2629,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateRssi() throws LockedException, NotReadyException,
-            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateRssi() throws LockedException, NotReadyException, RobustEstimatorException,
+            NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -3101,20 +2665,16 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -3126,13 +2686,10 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRssi2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi2));
 
-                readings.add(new RssiReading<>(accessPoint,
-                        rssi + errorRssi1 + errorRssi2,
+                readings.add(new RssiReading<>(accessPoint, rssi + errorRssi1 + errorRssi2,
                         Math.sqrt(RX_POWER_VARIANCE)));
             }
 
@@ -3140,8 +2697,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     new RssiFingerprint<>(readings);
 
             final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
-                            fingerprintReadingsQualityScores, sources, fingerprint, this);
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
+                            sources, fingerprint, this);
             estimator.setResultRefined(true);
 
             reset();
@@ -3153,14 +2710,14 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
-            assertEquals(estimateProgressChange, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
+            assertEquals(0, estimateProgressChange);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -3168,7 +2725,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -3207,8 +2764,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                 positionAccuracy, formattedConfidence));
 
         // force NotReadyException
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -3217,8 +2773,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateRangingAndRssi() throws LockedException, NotReadyException,
-            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateRangingAndRssi() throws LockedException, NotReadyException, RobustEstimatorException,
+            NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -3255,20 +2811,16 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -3284,24 +2836,20 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2 + errorRanging2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
 
                 readings.add(new RangingAndRssiReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                        rssi + errorRssi1 + errorRssi2,
-                        RANGING_STD,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                        Math.max(0.0, distance + errorRanging1 + errorRanging2), rssi + errorRssi1 + errorRssi2,
+                        RANGING_STD, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
             final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
                     new RangingAndRssiFingerprint<>(readings);
 
             final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
-                            fingerprintReadingsQualityScores, sources, fingerprint, this);
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
+                            sources, fingerprint, this);
             estimator.setResultRefined(true);
 
             reset();
@@ -3313,14 +2861,14 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
-            assertEquals(estimateProgressChange, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
+            assertEquals(0, estimateProgressChange);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -3377,8 +2925,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateMixed() throws LockedException, NotReadyException,
-            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateMixed() throws LockedException, NotReadyException, RobustEstimatorException,
+            NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -3415,11 +2963,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent, Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
                                 accessPointPosition);
                 sources.add(locatedAccessPoint);
 
@@ -3427,8 +2972,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -3444,1327 +2988,18 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
 
-                fingerprintReadingsQualityScores[3 * i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2));
-                fingerprintReadingsQualityScores[3 * i + 1] = 1.0 /
-                        (1.0 + Math.abs(errorRanging2));
-                fingerprintReadingsQualityScores[3 * i + 2] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2 + errorRanging2));
+                fingerprintReadingsQualityScores[3 * i] = 1.0 / (1.0 + Math.abs(errorRssi2));
+                fingerprintReadingsQualityScores[3 * i + 1] = 1.0 / (1.0 + Math.abs(errorRanging2));
+                fingerprintReadingsQualityScores[3 * i + 2] = 1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
 
-                readings.add(new RssiReading<>(accessPoint,
-                        rssi + errorRssi1 + errorRssi2,
+                readings.add(new RssiReading<>(accessPoint, rssi + errorRssi1 + errorRssi2,
                         Math.sqrt(RX_POWER_VARIANCE)));
-                readings.add(new RangingReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
+                readings.add(new RangingReading<>(accessPoint, Math.max(0.0, distance + errorRanging1 + errorRanging2),
                         RANGING_STD));
                 readings.add(new RangingAndRssiReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                        rssi + errorRssi1 + errorRssi2,
-                        RANGING_STD,
-                        Math.sqrt(RX_POWER_VARIANCE)));
-            }
-
-            final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
-                    new Fingerprint<>(readings);
-
-            final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
-                            fingerprintReadingsQualityScores, sources, fingerprint,
-                            this);
-            estimator.setResultRefined(true);
-
-            reset();
-
-            // check initial state
-            assertTrue(estimator.isReady());
-            assertFalse(estimator.isLocked());
-            assertNull(estimator.getEstimatedPosition());
-            assertNull(estimator.getCovariance());
-            assertNull(estimator.getPositions());
-            assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
-            assertEquals(estimateProgressChange, 0);
-
-            final Point2D p = estimator.estimate();
-
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
-            assertTrue(estimateProgressChange >= 0);
-            assertTrue(estimator.isReady());
-            assertFalse(estimator.isLocked());
-            assertNotNull(estimator.getPositions());
-            assertNotNull(estimator.getDistances());
-
-            final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
-            assertNotNull(estimator.getInliersData());
-            assertNotNull(estimator.getCovariance());
-
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getCovariance());
-            accuracyStd.setStandardDeviationFactor(1.0);
-
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getCovariance());
-            accuracy.setConfidence(0.99);
-
-            positionStd = accuracyStd.getAverageAccuracy();
-            positionStdConfidence = accuracyStd.getConfidence();
-            positionAccuracy = accuracy.getAverageAccuracy();
-            positionAccuracyConfidence = accuracy.getConfidence();
-
-            final double positionDistance = position.distanceTo(estimatedPosition);
-            if (positionDistance > ABSOLUTE_ERROR) {
-                continue;
-            }
-
-            assertTrue(position.equals(estimatedPosition, ABSOLUTE_ERROR));
-            numValidPosition++;
-            break;
-        }
-
-        assertTrue(numValidPosition > 0);
-
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
-                positionStd, formattedConfidence));
-
-        formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
-                positionAccuracy, formattedConfidence));
-
-        // force NotReadyException
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
-    }
-
-    @Test
-    public void testEstimateRangingMultipleReadingsPerSource()
-            throws LockedException, NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, STD_OUTLIER_ERROR);
-
-        int numValidPosition = 0;
-        double positionStd = 0.0;
-        double positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0;
-        double positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-
-            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-
-            final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-            final List<RangingReading<WifiAccessPoint>> readings = new ArrayList<>();
-            final double[] sourceQualityScores = new double[numSources];
-            final double[] fingerprintReadingsQualityScores = new double[NUM_READINGS * numSources];
-            double errorRanging1;
-            double errorRanging2;
-            for (int i = 0; i < numSources; i++) {
-                final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
-
-                final String bssid = String.valueOf(i);
-
-                final WifiAccessPointLocated2D locatedAccessPoint =
-                        new WifiAccessPointLocated2D(bssid, FREQUENCY,
-                                accessPointPosition);
-                sources.add(locatedAccessPoint);
-
-                final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
-
-                final double distance = position.distanceTo(accessPointPosition);
-
-                if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    // outlier
-                    errorRanging1 = errorRandomizer.nextDouble();
-                } else {
-                    errorRanging1 = 0.0;
-                }
-
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRanging1));
-                for (int j = 0; j < NUM_READINGS; j++) {
-
-                    if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                        // outlier
-                        errorRanging2 = errorRandomizer.nextDouble();
-                    } else {
-                        // inlier
-                        errorRanging2 = 0.0;
-                    }
-
-                    fingerprintReadingsQualityScores[i * NUM_READINGS + j] =
-                            1.0 / (1.0 + Math.abs(errorRanging2));
-
-                    readings.add(new RangingReading<>(accessPoint,
-                            Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                            RANGING_STD));
-                }
-            }
-
-            final RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
-                    new RangingFingerprint<>(readings);
-
-            final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
-                            fingerprintReadingsQualityScores, sources, fingerprint,
-                            this);
-            estimator.setResultRefined(true);
-
-            reset();
-
-            // check initial state
-            assertTrue(estimator.isReady());
-            assertFalse(estimator.isLocked());
-            assertNull(estimator.getEstimatedPosition());
-            assertNull(estimator.getCovariance());
-            assertNull(estimator.getPositions());
-            assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
-
-            final Point2D p = estimator.estimate();
-
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
-            assertTrue(estimateProgressChange >= 0);
-            assertTrue(estimator.isReady());
-            assertFalse(estimator.isLocked());
-            assertNotNull(estimator.getPositions());
-            assertNotNull(estimator.getDistances());
-
-            final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
-            assertNotNull(estimator.getInliersData());
-            assertNotNull(estimator.getCovariance());
-
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getCovariance());
-            accuracyStd.setStandardDeviationFactor(1.0);
-
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getCovariance());
-            accuracy.setConfidence(0.99);
-
-            positionStd = accuracyStd.getAverageAccuracy();
-            positionStdConfidence = accuracyStd.getConfidence();
-            positionAccuracy = accuracy.getAverageAccuracy();
-            positionAccuracyConfidence = accuracy.getConfidence();
-
-            final double positionDistance = position.distanceTo(estimatedPosition);
-            if (positionDistance > ABSOLUTE_ERROR) {
-                continue;
-            }
-
-            assertTrue(position.equals(estimatedPosition, ABSOLUTE_ERROR));
-            numValidPosition++;
-            break;
-        }
-
-        assertTrue(numValidPosition > 0);
-
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
-                positionStd, formattedConfidence));
-
-        formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
-                positionAccuracy, formattedConfidence));
-
-        // force NotReadyException
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
-    }
-
-    @Test
-    public void testEstimateRssiMultipleReadingsPerSource()
-            throws LockedException, NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, STD_OUTLIER_ERROR);
-
-        int numValidPosition = 0;
-        double positionStd = 0.0;
-        double positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0;
-        double positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-
-            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(
-                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
-
-            final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
-            final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-            final double[] sourceQualityScores = new double[numSources];
-            final double[] fingerprintReadingsQualityScores = new double[NUM_READINGS * numSources];
-            double errorRssi1;
-            double errorRssi2;
-            for (int i = 0; i < numSources; i++) {
-                final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
-
-                final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-                final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
-                final String bssid = String.valueOf(i);
-
-                final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
-                sources.add(locatedAccessPoint);
-
-                final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
-
-                final double distance = position.distanceTo(accessPointPosition);
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
-
-                if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    // outlier
-                    errorRssi1 = errorRandomizer.nextDouble();
-                } else {
-                    errorRssi1 = 0.0;
-                }
-
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1));
-                for (int j = 0; j < NUM_READINGS; j++) {
-                    if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                        // outlier
-                        errorRssi2 = errorRandomizer.nextDouble();
-                    } else {
-                        // inlier
-                        errorRssi2 = 0.0;
-                    }
-
-                    fingerprintReadingsQualityScores[i * NUM_READINGS + j] =
-                            1.0 / (1.0 + Math.abs(errorRssi2));
-
-                    readings.add(new RssiReading<>(accessPoint,
-                            rssi + errorRssi1 + errorRssi2,
-                            Math.sqrt(RX_POWER_VARIANCE)));
-                }
-            }
-
-            final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
-                    new RssiFingerprint<>(readings);
-
-            final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
-                            fingerprintReadingsQualityScores, sources, fingerprint,
-                            this);
-            estimator.setResultRefined(true);
-
-            reset();
-
-            // check initial state
-            assertTrue(estimator.isReady());
-            assertFalse(estimator.isLocked());
-            assertNull(estimator.getEstimatedPosition());
-            assertNull(estimator.getCovariance());
-            assertNull(estimator.getPositions());
-            assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
-
-            final Point2D p = estimator.estimate();
-
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
-            assertTrue(estimateProgressChange >= 0);
-            assertTrue(estimator.isReady());
-            assertFalse(estimator.isLocked());
-            assertNotNull(estimator.getPositions());
-            assertNotNull(estimator.getDistances());
-
-            final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
-            assertNotNull(estimator.getInliersData());
-            assertNotNull(estimator.getCovariance());
-
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getCovariance());
-            accuracyStd.setStandardDeviationFactor(1.0);
-
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getCovariance());
-            accuracy.setConfidence(0.99);
-
-            positionStd = accuracyStd.getAverageAccuracy();
-            positionStdConfidence = accuracyStd.getConfidence();
-            positionAccuracy = accuracy.getAverageAccuracy();
-            positionAccuracyConfidence = accuracy.getConfidence();
-
-            final double positionDistance = position.distanceTo(estimatedPosition);
-            if (positionDistance > ABSOLUTE_ERROR) {
-                continue;
-            }
-
-            assertTrue(position.equals(estimatedPosition, ABSOLUTE_ERROR));
-            numValidPosition++;
-            break;
-        }
-
-        assertTrue(numValidPosition > 0);
-
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
-                positionStd, formattedConfidence));
-
-        formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
-                positionAccuracy, formattedConfidence));
-
-        // force NotReadyException
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
-    }
-
-    @Test
-    public void testEstimateRangingAndRssiMultipleReadingsPerSource()
-            throws LockedException, NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, STD_OUTLIER_ERROR);
-
-        int numValidPosition = 0;
-        double positionStd = 0.0;
-        double positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0;
-        double positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-
-            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(
-                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
-
-            final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
-            final List<RangingAndRssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-            final double[] sourceQualityScores = new double[numSources];
-            final double[] fingerprintReadingsQualityScores = new double[NUM_READINGS * numSources];
-            double errorRssi1;
-            double errorRanging1;
-            double errorRssi2;
-            double errorRanging2;
-            for (int i = 0; i < numSources; i++) {
-                final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
-
-                final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-                final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
-                final String bssid = String.valueOf(i);
-
-                final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
-                sources.add(locatedAccessPoint);
-
-                final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
-
-                final double distance = position.distanceTo(accessPointPosition);
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
-
-                if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    // outlier
-                    errorRssi1 = errorRandomizer.nextDouble();
-                    errorRanging1 = errorRandomizer.nextDouble();
-                } else {
-                    errorRssi1 = 0.0;
-                    errorRanging1 = 0.0;
-                }
-
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
-                for (int j = 0; j < NUM_READINGS; j++) {
-
-                    if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                        // outlier
-                        errorRssi2 = errorRandomizer.nextDouble();
-                        errorRanging2 = errorRandomizer.nextDouble();
-                    } else {
-                        // inlier
-                        errorRssi2 = 0.0;
-                        errorRanging2 = 0.0;
-                    }
-
-                    fingerprintReadingsQualityScores[i * NUM_READINGS + j] =
-                            1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
-
-                    readings.add(new RangingAndRssiReading<>(accessPoint,
-                            Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                            rssi + errorRssi1 + errorRssi2,
-                            RANGING_STD,
-                            Math.sqrt(RX_POWER_VARIANCE)));
-                }
-            }
-
-            final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
-                    new RangingAndRssiFingerprint<>(readings);
-
-            final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
-                            fingerprintReadingsQualityScores, sources, fingerprint,
-                            this);
-            estimator.setResultRefined(true);
-
-            reset();
-
-            // check initial state
-            assertTrue(estimator.isReady());
-            assertFalse(estimator.isLocked());
-            assertNull(estimator.getEstimatedPosition());
-            assertNull(estimator.getCovariance());
-            assertNull(estimator.getPositions());
-            assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
-
-            final Point2D p = estimator.estimate();
-
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
-            assertTrue(estimateProgressChange >= 0);
-            assertTrue(estimator.isReady());
-            assertFalse(estimator.isLocked());
-            assertNotNull(estimator.getPositions());
-            assertNotNull(estimator.getDistances());
-
-            final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
-            assertNotNull(estimator.getInliersData());
-            assertNotNull(estimator.getCovariance());
-
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getCovariance());
-            accuracyStd.setStandardDeviationFactor(1.0);
-
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getCovariance());
-            accuracy.setConfidence(0.99);
-
-            positionStd = accuracyStd.getAverageAccuracy();
-            positionStdConfidence = accuracyStd.getConfidence();
-            positionAccuracy = accuracy.getAverageAccuracy();
-            positionAccuracyConfidence = accuracy.getConfidence();
-
-            final double positionDistance = position.distanceTo(estimatedPosition);
-            if (positionDistance > ABSOLUTE_ERROR) {
-                continue;
-            }
-
-            assertTrue(position.equals(estimatedPosition, ABSOLUTE_ERROR));
-            numValidPosition++;
-            break;
-        }
-
-        assertTrue(numValidPosition > 0);
-
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
-                positionStd, formattedConfidence));
-
-        formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
-                positionAccuracy, formattedConfidence));
-
-        // force NotReadyException
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
-    }
-
-    @Test
-    public void testEstimateMixedMultipleReadingsPerSource()
-            throws LockedException, NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, STD_OUTLIER_ERROR);
-
-        int numValidPosition = 0;
-        double positionStd = 0.0;
-        double positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0;
-        double positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-
-            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(
-                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
-
-            final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
-            final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
-            final double[] sourceQualityScores = new double[numSources];
-            final double[] fingerprintReadingsQualityScores = new double[3 * NUM_READINGS * numSources];
-            double errorRssi1;
-            double errorRanging1;
-            double errorRssi2;
-            double errorRanging2;
-            for (int i = 0; i < numSources; i++) {
-                final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
-
-                final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-                final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
-                final String bssid = String.valueOf(i);
-
-                final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
-                sources.add(locatedAccessPoint);
-
-                final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
-
-                final double distance = position.distanceTo(accessPointPosition);
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
-
-                if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    // outlier
-                    errorRssi1 = errorRandomizer.nextDouble();
-                    errorRanging1 = errorRandomizer.nextDouble();
-                } else {
-                    errorRssi1 = 0.0;
-                    errorRanging1 = 0.0;
-                }
-
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
-                for (int j = 0; j < NUM_READINGS; j++) {
-
-                    if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                        // outlier
-                        errorRssi2 = errorRandomizer.nextDouble();
-                        errorRanging2 = errorRandomizer.nextDouble();
-                    } else {
-                        // inlier
-                        errorRssi2 = 0.0;
-                        errorRanging2 = 0.0;
-                    }
-
-                    fingerprintReadingsQualityScores[3 * (i * NUM_READINGS + j)] =
-                            1.0 / (1.0 + Math.abs(errorRssi2));
-                    fingerprintReadingsQualityScores[3 * (i * NUM_READINGS + j) + 1] =
-                            1.0 / (1.0 + Math.abs(errorRanging2));
-                    fingerprintReadingsQualityScores[3 * (i * NUM_READINGS + j) + 2] =
-                            1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
-
-                    readings.add(new RssiReading<>(accessPoint,
-                            rssi + errorRssi1 + errorRssi2,
-                            Math.sqrt(RX_POWER_VARIANCE)));
-                    readings.add(new RangingReading<>(accessPoint,
-                            Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                            RANGING_STD));
-                    readings.add(new RangingAndRssiReading<>(accessPoint,
-                            Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                            rssi + errorRssi1 + errorRssi2,
-                            RANGING_STD,
-                            Math.sqrt(RX_POWER_VARIANCE)));
-                }
-            }
-
-            final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
-                    new Fingerprint<>(readings);
-
-            final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
-                            fingerprintReadingsQualityScores, sources, fingerprint,
-                            this);
-            estimator.setResultRefined(true);
-
-            reset();
-
-            // check initial state
-            assertTrue(estimator.isReady());
-            assertFalse(estimator.isLocked());
-            assertNull(estimator.getEstimatedPosition());
-            assertNull(estimator.getCovariance());
-            assertNull(estimator.getPositions());
-            assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
-
-            final Point2D p = estimator.estimate();
-
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
-            assertTrue(estimateProgressChange >= 0);
-            assertTrue(estimator.isReady());
-            assertFalse(estimator.isLocked());
-            assertNotNull(estimator.getPositions());
-            assertNotNull(estimator.getDistances());
-
-            final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
-            assertNotNull(estimator.getInliersData());
-            assertNotNull(estimator.getCovariance());
-
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getCovariance());
-            accuracyStd.setStandardDeviationFactor(1.0);
-
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getCovariance());
-            accuracy.setConfidence(0.99);
-
-            positionStd = accuracyStd.getAverageAccuracy();
-            positionStdConfidence = accuracyStd.getConfidence();
-            positionAccuracy = accuracy.getAverageAccuracy();
-            positionAccuracyConfidence = accuracy.getConfidence();
-
-            final double positionDistance = position.distanceTo(estimatedPosition);
-            if (positionDistance > ABSOLUTE_ERROR) {
-                continue;
-            }
-
-            assertTrue(position.equals(estimatedPosition, ABSOLUTE_ERROR));
-            numValidPosition++;
-            break;
-        }
-
-        assertTrue(numValidPosition > 0);
-
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
-                positionStd, formattedConfidence));
-
-        formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
-                positionAccuracy, formattedConfidence));
-
-        // force NotReadyException
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
-    }
-
-    @Test
-    public void testEstimateRangingWithInlierError() throws LockedException,
-            NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, STD_OUTLIER_ERROR);
-        final GaussianRandomizer inlierErrorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, INLIER_ERROR_STD);
-
-        int numValidPosition = 0;
-        double positionStd = 0.0;
-        double positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0;
-        double positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-
-            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-
-            final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-            final List<RangingReading<WifiAccessPoint>> readings = new ArrayList<>();
-            final double[] sourceQualityScores = new double[numSources];
-            final double[] fingerprintReadingsQualityScores = new double[numSources];
-            double errorRanging1;
-            double errorRanging2;
-            double inlierError;
-            for (int i = 0; i < numSources; i++) {
-                final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
-
-                final String bssid = String.valueOf(i);
-
-                final WifiAccessPointLocated2D locatedAccessPoint =
-                        new WifiAccessPointLocated2D(bssid,
-                                FREQUENCY, accessPointPosition);
-                sources.add(locatedAccessPoint);
-
-                final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
-
-                final double distance = position.distanceTo(accessPointPosition);
-
-                if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    // outlier
-                    errorRanging1 = errorRandomizer.nextDouble();
-                    errorRanging2 = errorRandomizer.nextDouble();
-                } else {
-                    // inlier
-                    errorRanging1 = 0.0;
-                    errorRanging2 = 0.0;
-                }
-
-                inlierError = inlierErrorRandomizer.nextDouble();
-
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRanging1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRanging2));
-
-                readings.add(new RangingReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 +
-                                errorRanging2 + inlierError), RANGING_STD));
-            }
-
-            final RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
-                    new RangingFingerprint<>(readings);
-
-            final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores,
-                            sources, fingerprint, this);
-            estimator.setResultRefined(true);
-
-            reset();
-
-            // check initial state
-            assertTrue(estimator.isReady());
-            assertFalse(estimator.isLocked());
-            assertNull(estimator.getEstimatedPosition());
-            assertNull(estimator.getCovariance());
-            assertNull(estimator.getPositions());
-            assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
-
-            final Point2D p = estimator.estimate();
-
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
-            assertTrue(estimateProgressChange >= 0);
-            assertTrue(estimator.isReady());
-            assertFalse(estimator.isLocked());
-            assertNotNull(estimator.getPositions());
-            assertNotNull(estimator.getDistances());
-
-            final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
-            assertNotNull(estimator.getInliersData());
-            assertNotNull(estimator.getCovariance());
-
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getCovariance());
-            accuracyStd.setStandardDeviationFactor(1.0);
-
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getCovariance());
-            accuracy.setConfidence(0.99);
-
-            positionStd = accuracyStd.getAverageAccuracy();
-            positionStdConfidence = accuracyStd.getConfidence();
-            positionAccuracy = accuracy.getAverageAccuracy();
-            positionAccuracyConfidence = accuracy.getConfidence();
-
-            final double positionDistance = position.distanceTo(estimatedPosition);
-            if (positionDistance > LARGE_ABSOLUTE_ERROR) {
-                continue;
-            }
-
-            assertTrue(position.equals(estimatedPosition, LARGE_ABSOLUTE_ERROR));
-            numValidPosition++;
-            break;
-        }
-
-        assertTrue(numValidPosition > 0);
-
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
-                positionStd, formattedConfidence));
-
-        formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
-                positionAccuracy, formattedConfidence));
-
-        // force NotReadyException
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
-    }
-
-    @Test
-    public void testEstimateRssiWithInlierError() throws LockedException,
-            NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, STD_OUTLIER_ERROR);
-        final GaussianRandomizer inlierErrorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, INLIER_ERROR_STD);
-
-        int numValidPosition = 0;
-        double positionStd = 0.0;
-        double positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0;
-        double positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-
-            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(
-                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
-
-            final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
-            final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-            final double[] sourceQualityScores = new double[numSources];
-            final double[] fingerprintReadingsQualityScores = new double[numSources];
-            double errorRssi1;
-            double errorRssi2;
-            double inlierError;
-            for (int i = 0; i < numSources; i++) {
-                final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
-
-                final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-                final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
-                final String bssid = String.valueOf(i);
-
-                final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
-                sources.add(locatedAccessPoint);
-
-                final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
-
-                final double distance = position.distanceTo(accessPointPosition);
-
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
-
-                if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    // outlier
-                    errorRssi1 = errorRandomizer.nextDouble();
-                    errorRssi2 = errorRandomizer.nextDouble();
-                } else {
-                    // inlier
-                    errorRssi1 = 0.0;
-                    errorRssi2 = 0.0;
-                }
-
-                inlierError = inlierErrorRandomizer.nextDouble();
-
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2));
-
-                readings.add(new RssiReading<>(accessPoint,
-                        rssi + errorRssi1 + errorRssi2 + inlierError,
-                        Math.sqrt(RX_POWER_VARIANCE)));
-            }
-
-            final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
-                    new RssiFingerprint<>(readings);
-
-            final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores,
-                            sources, fingerprint, this);
-            estimator.setResultRefined(true);
-
-            reset();
-
-            // check initial state
-            assertTrue(estimator.isReady());
-            assertFalse(estimator.isLocked());
-            assertNull(estimator.getEstimatedPosition());
-            assertNull(estimator.getCovariance());
-            assertNull(estimator.getPositions());
-            assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
-
-            final Point2D p = estimator.estimate();
-
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
-            assertTrue(estimateProgressChange >= 0);
-            assertTrue(estimator.isReady());
-            assertFalse(estimator.isLocked());
-            assertNotNull(estimator.getPositions());
-            assertNotNull(estimator.getDistances());
-
-            final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
-            assertNotNull(estimator.getInliersData());
-            assertNotNull(estimator.getCovariance());
-
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getCovariance());
-            accuracyStd.setStandardDeviationFactor(1.0);
-
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getCovariance());
-            accuracy.setConfidence(0.99);
-
-            positionStd = accuracyStd.getAverageAccuracy();
-            positionStdConfidence = accuracyStd.getConfidence();
-            positionAccuracy = accuracy.getAverageAccuracy();
-            positionAccuracyConfidence = accuracy.getConfidence();
-
-            final double positionDistance = position.distanceTo(estimatedPosition);
-            if (positionDistance > LARGE_ABSOLUTE_ERROR) {
-                continue;
-            }
-
-            assertTrue(position.equals(estimatedPosition, LARGE_ABSOLUTE_ERROR));
-            numValidPosition++;
-            break;
-        }
-
-        assertTrue(numValidPosition > 0);
-
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
-                positionStd, formattedConfidence));
-
-        formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
-                positionAccuracy, formattedConfidence));
-
-        // force NotReadyException
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
-    }
-
-    @Test
-    public void testEstimateRangingAndRssiWithInlierError() throws LockedException,
-            NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, STD_OUTLIER_ERROR);
-        final GaussianRandomizer inlierErrorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, INLIER_ERROR_STD);
-
-        int numValidPosition = 0;
-        double positionStd = 0.0;
-        double positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0;
-        double positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-
-            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(
-                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
-
-            final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
-            final List<RangingAndRssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-            final double[] sourceQualityScores = new double[numSources];
-            final double[] fingerprintReadingsQualityScores = new double[numSources];
-            double errorRssi1;
-            double errorRanging1;
-            double errorRssi2;
-            double errorRanging2;
-            double inlierError;
-            for (int i = 0; i < numSources; i++) {
-                final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
-
-                final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-                final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
-                final String bssid = String.valueOf(i);
-
-                final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
-                sources.add(locatedAccessPoint);
-
-                final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
-
-                final double distance = position.distanceTo(accessPointPosition);
-
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
-
-                if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    // outlier
-                    errorRssi1 = errorRandomizer.nextDouble();
-                    errorRanging1 = errorRandomizer.nextDouble();
-                    errorRssi2 = errorRandomizer.nextDouble();
-                    errorRanging2 = errorRandomizer.nextDouble();
-                } else {
-                    // inlier
-                    errorRssi1 = 0.0;
-                    errorRanging1 = 0.0;
-                    errorRssi2 = 0.0;
-                    errorRanging2 = 0.0;
-                }
-
-                inlierError = inlierErrorRandomizer.nextDouble();
-
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2 + errorRanging2));
-
-                readings.add(new RangingAndRssiReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2 + inlierError),
-                        rssi + errorRssi1 + errorRssi2 + inlierError,
-                        RANGING_STD,
-                        Math.sqrt(RX_POWER_VARIANCE)));
-            }
-
-            final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
-                    new RangingAndRssiFingerprint<>(readings);
-
-            final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores,
-                            sources, fingerprint, this);
-            estimator.setResultRefined(true);
-
-            reset();
-
-            // check initial state
-            assertTrue(estimator.isReady());
-            assertFalse(estimator.isLocked());
-            assertNull(estimator.getEstimatedPosition());
-            assertNull(estimator.getCovariance());
-            assertNull(estimator.getPositions());
-            assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
-
-            final Point2D p = estimator.estimate();
-
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
-            assertTrue(estimateProgressChange >= 0);
-            assertTrue(estimator.isReady());
-            assertFalse(estimator.isLocked());
-            assertNotNull(estimator.getPositions());
-            assertNotNull(estimator.getDistances());
-
-            final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
-            assertNotNull(estimator.getInliersData());
-            assertNotNull(estimator.getCovariance());
-
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getCovariance());
-            accuracyStd.setStandardDeviationFactor(1.0);
-
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getCovariance());
-            accuracy.setConfidence(0.99);
-
-            positionStd = accuracyStd.getAverageAccuracy();
-            positionStdConfidence = accuracyStd.getConfidence();
-            positionAccuracy = accuracy.getAverageAccuracy();
-            positionAccuracyConfidence = accuracy.getConfidence();
-
-            final double positionDistance = position.distanceTo(estimatedPosition);
-            if (positionDistance > LARGE_ABSOLUTE_ERROR) {
-                continue;
-            }
-
-            assertTrue(position.equals(estimatedPosition, LARGE_ABSOLUTE_ERROR));
-            numValidPosition++;
-            break;
-        }
-
-        assertTrue(numValidPosition > 0);
-
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
-                positionStd, formattedConfidence));
-
-        formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
-                positionAccuracy, formattedConfidence));
-
-        // force NotReadyException
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
-    }
-
-    @Test
-    public void testEstimateMixedWithInlierError() throws LockedException,
-            NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, STD_OUTLIER_ERROR);
-        final GaussianRandomizer inlierErrorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, INLIER_ERROR_STD);
-
-        int numValidPosition = 0;
-        double positionStd = 0.0;
-        double positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0;
-        double positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-
-            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(
-                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
-
-            final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
-            final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
-            final double[] sourceQualityScores = new double[numSources];
-            final double[] fingerprintReadingsQualityScores = new double[3 * numSources];
-            double errorRssi1;
-            double errorRanging1;
-            double errorRssi2;
-            double errorRanging2;
-            double inlierError;
-            for (int i = 0; i < numSources; i++) {
-                final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
-
-                final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-                final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
-                final String bssid = String.valueOf(i);
-
-                final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
-                sources.add(locatedAccessPoint);
-
-                final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
-
-                final double distance = position.distanceTo(accessPointPosition);
-
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
-
-                if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                    // outlier
-                    errorRssi1 = errorRandomizer.nextDouble();
-                    errorRanging1 = errorRandomizer.nextDouble();
-                    errorRssi2 = errorRandomizer.nextDouble();
-                    errorRanging2 = errorRandomizer.nextDouble();
-                } else {
-                    // inlier
-                    errorRssi1 = 0.0;
-                    errorRanging1 = 0.0;
-                    errorRssi2 = 0.0;
-                    errorRanging2 = 0.0;
-                }
-
-                inlierError = inlierErrorRandomizer.nextDouble();
-
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
-
-                fingerprintReadingsQualityScores[3 * i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2));
-                fingerprintReadingsQualityScores[3 * i + 1] = 1.0 /
-                        (1.0 + Math.abs(errorRanging2));
-                fingerprintReadingsQualityScores[3 * i + 2] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2 + errorRanging2));
-
-                readings.add(new RssiReading<>(accessPoint,
-                        rssi + errorRssi1 + errorRssi2 + inlierError,
-                        Math.sqrt(RX_POWER_VARIANCE)));
-                final double dist = Math.max(0.0, distance + errorRanging1 + errorRanging2 + inlierError);
-                readings.add(new RangingReading<>(accessPoint, dist, RANGING_STD));
-                readings.add(new RangingAndRssiReading<>(accessPoint,
-                        dist, rssi + errorRssi1 + errorRssi2 + inlierError,
+                        Math.max(0.0, distance + errorRanging1 + errorRanging2), rssi + errorRssi1 + errorRssi2,
                         RANGING_STD, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
@@ -4772,8 +3007,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     new Fingerprint<>(readings);
 
             final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores,
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
                             sources, fingerprint, this);
             estimator.setResultRefined(true);
 
@@ -4786,13 +3020,14 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
+            assertEquals(0, estimateProgressChange);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -4800,7 +3035,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -4816,11 +3051,11 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             positionAccuracyConfidence = accuracy.getConfidence();
 
             final double positionDistance = position.distanceTo(estimatedPosition);
-            if (positionDistance > LARGE_ABSOLUTE_ERROR) {
+            if (positionDistance > ABSOLUTE_ERROR) {
                 continue;
             }
 
-            assertTrue(position.equals(estimatedPosition, LARGE_ABSOLUTE_ERROR));
+            assertTrue(position.equals(estimatedPosition, ABSOLUTE_ERROR));
             numValidPosition++;
             break;
         }
@@ -4839,8 +3074,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                 positionAccuracy, formattedConfidence));
 
         // force NotReadyException
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -4849,14 +3083,11 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateRangingMultipleReadingsPerSourceWithInlierError()
-            throws LockedException, NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateRangingMultipleReadingsPerSource() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
-        final GaussianRandomizer inlierErrorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, INLIER_ERROR_STD);
 
         int numValidPosition = 0;
         double positionStd = 0.0;
@@ -4876,7 +3107,6 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final double[] fingerprintReadingsQualityScores = new double[NUM_READINGS * numSources];
             double errorRanging1;
             double errorRanging2;
-            double inlierError;
             for (int i = 0; i < numSources; i++) {
                 final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
                         randomizer.nextDouble(MIN_POS, MAX_POS),
@@ -4885,8 +3115,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointLocated2D locatedAccessPoint =
-                        new WifiAccessPointLocated2D(bssid,
-                                FREQUENCY, accessPointPosition);
+                        new WifiAccessPointLocated2D(bssid, FREQUENCY, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -4900,8 +3129,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRanging1 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRanging1));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRanging1));
                 for (int j = 0; j < NUM_READINGS; j++) {
 
                     if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
@@ -4912,14 +3140,10 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                         errorRanging2 = 0.0;
                     }
 
-                    fingerprintReadingsQualityScores[i * NUM_READINGS + j] =
-                            1.0 / (1.0 + Math.abs(errorRanging2));
-
-                    inlierError = inlierErrorRandomizer.nextDouble();
+                    fingerprintReadingsQualityScores[i * NUM_READINGS + j] = 1.0 / (1.0 + Math.abs(errorRanging2));
 
                     readings.add(new RangingReading<>(accessPoint,
-                            Math.max(0.0, distance + errorRanging1 + errorRanging2 + inlierError),
-                            RANGING_STD));
+                            Math.max(0.0, distance + errorRanging1 + errorRanging2), RANGING_STD));
                 }
             }
 
@@ -4927,8 +3151,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     new RangingFingerprint<>(readings);
 
             final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores,
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
                             sources, fingerprint, this);
             estimator.setResultRefined(true);
 
@@ -4941,13 +3164,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -4955,7 +3178,618 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
+            assertNotNull(estimator.getInliersData());
+            assertNotNull(estimator.getCovariance());
+
+            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getCovariance());
+            accuracyStd.setStandardDeviationFactor(1.0);
+
+            final Accuracy2D accuracy = new Accuracy2D(estimator.getCovariance());
+            accuracy.setConfidence(0.99);
+
+            positionStd = accuracyStd.getAverageAccuracy();
+            positionStdConfidence = accuracyStd.getConfidence();
+            positionAccuracy = accuracy.getAverageAccuracy();
+            positionAccuracyConfidence = accuracy.getConfidence();
+
+            final double positionDistance = position.distanceTo(estimatedPosition);
+            if (positionDistance > ABSOLUTE_ERROR) {
+                continue;
+            }
+
+            assertTrue(position.equals(estimatedPosition, ABSOLUTE_ERROR));
+            numValidPosition++;
+            break;
+        }
+
+        assertTrue(numValidPosition > 0);
+
+        final NumberFormat format = NumberFormat.getPercentInstance();
+        String formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format(
+                "Position standard deviation {0} meters ({1} confidence)",
+                positionStd, formattedConfidence));
+
+        formattedConfidence = format.format(positionAccuracyConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format(
+                "Position accuracy {0} meters ({1} confidence)",
+                positionAccuracy, formattedConfidence));
+
+        // force NotReadyException
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
+        try {
+            estimator.estimate();
+            fail("NotReadyException expected but not thrown");
+        } catch (final NotReadyException ignore) {
+        }
+    }
+
+    @Test
+    public void testEstimateRssiMultipleReadingsPerSource() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
+                new Random(), 0.0, STD_OUTLIER_ERROR);
+
+        int numValidPosition = 0;
+        double positionStd = 0.0;
+        double positionStdConfidence = 0.0;
+        double positionAccuracy = 0.0;
+        double positionAccuracyConfidence = 0.0;
+        for (int t = 0; t < TIMES; t++) {
+            final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+
+            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
+            final double pathLossExponent = randomizer.nextDouble(
+                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
+
+            final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
+            final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
+            final double[] sourceQualityScores = new double[numSources];
+            final double[] fingerprintReadingsQualityScores = new double[NUM_READINGS * numSources];
+            double errorRssi1;
+            double errorRssi2;
+            for (int i = 0; i < numSources; i++) {
+                final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                        randomizer.nextDouble(MIN_POS, MAX_POS),
+                        randomizer.nextDouble(MIN_POS, MAX_POS));
+
+                final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+                final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
+                final String bssid = String.valueOf(i);
+
+                final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
+                sources.add(locatedAccessPoint);
+
+                final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
+
+                final double distance = position.distanceTo(accessPointPosition);
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
+
+                if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
+                    // outlier
+                    errorRssi1 = errorRandomizer.nextDouble();
+                } else {
+                    errorRssi1 = 0.0;
+                }
+
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1));
+                for (int j = 0; j < NUM_READINGS; j++) {
+                    if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
+                        // outlier
+                        errorRssi2 = errorRandomizer.nextDouble();
+                    } else {
+                        // inlier
+                        errorRssi2 = 0.0;
+                    }
+
+                    fingerprintReadingsQualityScores[i * NUM_READINGS + j] = 1.0 / (1.0 + Math.abs(errorRssi2));
+
+                    readings.add(new RssiReading<>(accessPoint, rssi + errorRssi1 + errorRssi2,
+                            Math.sqrt(RX_POWER_VARIANCE)));
+                }
+            }
+
+            final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
+                    new RssiFingerprint<>(readings);
+
+            final SequentialRobustMixedPositionEstimator2D estimator =
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
+                            sources, fingerprint, this);
+            estimator.setResultRefined(true);
+
+            reset();
+
+            // check initial state
+            assertTrue(estimator.isReady());
+            assertFalse(estimator.isLocked());
+            assertNull(estimator.getEstimatedPosition());
+            assertNull(estimator.getCovariance());
+            assertNull(estimator.getPositions());
+            assertNull(estimator.getDistances());
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
+
+            final Point2D p = estimator.estimate();
+
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
+            assertTrue(estimateProgressChange >= 0);
+            assertTrue(estimator.isReady());
+            assertFalse(estimator.isLocked());
+            assertNotNull(estimator.getPositions());
+            assertNotNull(estimator.getDistances());
+
+            final Point2D estimatedPosition = estimator.getEstimatedPosition();
+            assertSame(p, estimatedPosition);
+            assertNotNull(estimator.getInliersData());
+            assertNotNull(estimator.getCovariance());
+
+            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getCovariance());
+            accuracyStd.setStandardDeviationFactor(1.0);
+
+            final Accuracy2D accuracy = new Accuracy2D(estimator.getCovariance());
+            accuracy.setConfidence(0.99);
+
+            positionStd = accuracyStd.getAverageAccuracy();
+            positionStdConfidence = accuracyStd.getConfidence();
+            positionAccuracy = accuracy.getAverageAccuracy();
+            positionAccuracyConfidence = accuracy.getConfidence();
+
+            final double positionDistance = position.distanceTo(estimatedPosition);
+            if (positionDistance > ABSOLUTE_ERROR) {
+                continue;
+            }
+
+            assertTrue(position.equals(estimatedPosition, ABSOLUTE_ERROR));
+            numValidPosition++;
+            break;
+        }
+
+        assertTrue(numValidPosition > 0);
+
+        final NumberFormat format = NumberFormat.getPercentInstance();
+        String formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format(
+                "Position standard deviation {0} meters ({1} confidence)",
+                positionStd, formattedConfidence));
+
+        formattedConfidence = format.format(positionAccuracyConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format(
+                "Position accuracy {0} meters ({1} confidence)",
+                positionAccuracy, formattedConfidence));
+
+        // force NotReadyException
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
+        try {
+            estimator.estimate();
+            fail("NotReadyException expected but not thrown");
+        } catch (final NotReadyException ignore) {
+        }
+    }
+
+    @Test
+    public void testEstimateRangingAndRssiMultipleReadingsPerSource() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
+                new Random(), 0.0, STD_OUTLIER_ERROR);
+
+        int numValidPosition = 0;
+        double positionStd = 0.0;
+        double positionStdConfidence = 0.0;
+        double positionAccuracy = 0.0;
+        double positionAccuracyConfidence = 0.0;
+        for (int t = 0; t < TIMES; t++) {
+            final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+
+            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
+            final double pathLossExponent = randomizer.nextDouble(
+                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
+
+            final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
+            final List<RangingAndRssiReading<WifiAccessPoint>> readings = new ArrayList<>();
+            final double[] sourceQualityScores = new double[numSources];
+            final double[] fingerprintReadingsQualityScores = new double[NUM_READINGS * numSources];
+            double errorRssi1;
+            double errorRanging1;
+            double errorRssi2;
+            double errorRanging2;
+            for (int i = 0; i < numSources; i++) {
+                final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                        randomizer.nextDouble(MIN_POS, MAX_POS),
+                        randomizer.nextDouble(MIN_POS, MAX_POS));
+
+                final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+                final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
+                final String bssid = String.valueOf(i);
+
+                final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
+                sources.add(locatedAccessPoint);
+
+                final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
+
+                final double distance = position.distanceTo(accessPointPosition);
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
+
+                if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
+                    // outlier
+                    errorRssi1 = errorRandomizer.nextDouble();
+                    errorRanging1 = errorRandomizer.nextDouble();
+                } else {
+                    errorRssi1 = 0.0;
+                    errorRanging1 = 0.0;
+                }
+
+                sourceQualityScores[i] = 1.0 /
+                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                for (int j = 0; j < NUM_READINGS; j++) {
+
+                    if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
+                        // outlier
+                        errorRssi2 = errorRandomizer.nextDouble();
+                        errorRanging2 = errorRandomizer.nextDouble();
+                    } else {
+                        // inlier
+                        errorRssi2 = 0.0;
+                        errorRanging2 = 0.0;
+                    }
+
+                    fingerprintReadingsQualityScores[i * NUM_READINGS + j] =
+                            1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
+
+                    readings.add(new RangingAndRssiReading<>(accessPoint,
+                            Math.max(0.0, distance + errorRanging1 + errorRanging2),
+                            rssi + errorRssi1 + errorRssi2, RANGING_STD, Math.sqrt(RX_POWER_VARIANCE)));
+                }
+            }
+
+            final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
+                    new RangingAndRssiFingerprint<>(readings);
+
+            final SequentialRobustMixedPositionEstimator2D estimator =
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
+                            fingerprintReadingsQualityScores, sources, fingerprint, this);
+            estimator.setResultRefined(true);
+
+            reset();
+
+            // check initial state
+            assertTrue(estimator.isReady());
+            assertFalse(estimator.isLocked());
+            assertNull(estimator.getEstimatedPosition());
+            assertNull(estimator.getCovariance());
+            assertNull(estimator.getPositions());
+            assertNull(estimator.getDistances());
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
+
+            final Point2D p = estimator.estimate();
+
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
+            assertTrue(estimateProgressChange >= 0);
+            assertTrue(estimator.isReady());
+            assertFalse(estimator.isLocked());
+            assertNotNull(estimator.getPositions());
+            assertNotNull(estimator.getDistances());
+
+            final Point2D estimatedPosition = estimator.getEstimatedPosition();
+            assertSame(p, estimatedPosition);
+            assertNotNull(estimator.getInliersData());
+            assertNotNull(estimator.getCovariance());
+
+            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getCovariance());
+            accuracyStd.setStandardDeviationFactor(1.0);
+
+            final Accuracy2D accuracy = new Accuracy2D(estimator.getCovariance());
+            accuracy.setConfidence(0.99);
+
+            positionStd = accuracyStd.getAverageAccuracy();
+            positionStdConfidence = accuracyStd.getConfidence();
+            positionAccuracy = accuracy.getAverageAccuracy();
+            positionAccuracyConfidence = accuracy.getConfidence();
+
+            final double positionDistance = position.distanceTo(estimatedPosition);
+            if (positionDistance > ABSOLUTE_ERROR) {
+                continue;
+            }
+
+            assertTrue(position.equals(estimatedPosition, ABSOLUTE_ERROR));
+            numValidPosition++;
+            break;
+        }
+
+        assertTrue(numValidPosition > 0);
+
+        final NumberFormat format = NumberFormat.getPercentInstance();
+        String formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format(
+                "Position standard deviation {0} meters ({1} confidence)",
+                positionStd, formattedConfidence));
+
+        formattedConfidence = format.format(positionAccuracyConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format(
+                "Position accuracy {0} meters ({1} confidence)",
+                positionAccuracy, formattedConfidence));
+
+        // force NotReadyException
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
+        try {
+            estimator.estimate();
+            fail("NotReadyException expected but not thrown");
+        } catch (final NotReadyException ignore) {
+        }
+    }
+
+    @Test
+    public void testEstimateMixedMultipleReadingsPerSource() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
+                new Random(), 0.0, STD_OUTLIER_ERROR);
+
+        int numValidPosition = 0;
+        double positionStd = 0.0;
+        double positionStdConfidence = 0.0;
+        double positionAccuracy = 0.0;
+        double positionAccuracyConfidence = 0.0;
+        for (int t = 0; t < TIMES; t++) {
+            final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+
+            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
+            final double pathLossExponent = randomizer.nextDouble(
+                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
+
+            final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
+            final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
+            final double[] sourceQualityScores = new double[numSources];
+            final double[] fingerprintReadingsQualityScores = new double[3 * NUM_READINGS * numSources];
+            double errorRssi1;
+            double errorRanging1;
+            double errorRssi2;
+            double errorRanging2;
+            for (int i = 0; i < numSources; i++) {
+                final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                        randomizer.nextDouble(MIN_POS, MAX_POS),
+                        randomizer.nextDouble(MIN_POS, MAX_POS));
+
+                final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+                final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
+                final String bssid = String.valueOf(i);
+
+                final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
+                sources.add(locatedAccessPoint);
+
+                final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
+
+                final double distance = position.distanceTo(accessPointPosition);
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
+
+                if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
+                    // outlier
+                    errorRssi1 = errorRandomizer.nextDouble();
+                    errorRanging1 = errorRandomizer.nextDouble();
+                } else {
+                    errorRssi1 = 0.0;
+                    errorRanging1 = 0.0;
+                }
+
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                for (int j = 0; j < NUM_READINGS; j++) {
+
+                    if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
+                        // outlier
+                        errorRssi2 = errorRandomizer.nextDouble();
+                        errorRanging2 = errorRandomizer.nextDouble();
+                    } else {
+                        // inlier
+                        errorRssi2 = 0.0;
+                        errorRanging2 = 0.0;
+                    }
+
+                    fingerprintReadingsQualityScores[3 * (i * NUM_READINGS + j)] = 1.0 / (1.0 + Math.abs(errorRssi2));
+                    fingerprintReadingsQualityScores[3 * (i * NUM_READINGS + j) + 1] =
+                            1.0 / (1.0 + Math.abs(errorRanging2));
+                    fingerprintReadingsQualityScores[3 * (i * NUM_READINGS + j) + 2] =
+                            1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
+
+                    readings.add(new RssiReading<>(accessPoint, rssi + errorRssi1 + errorRssi2,
+                            Math.sqrt(RX_POWER_VARIANCE)));
+                    readings.add(new RangingReading<>(accessPoint,
+                            Math.max(0.0, distance + errorRanging1 + errorRanging2), RANGING_STD));
+                    readings.add(new RangingAndRssiReading<>(accessPoint,
+                            Math.max(0.0, distance + errorRanging1 + errorRanging2),
+                            rssi + errorRssi1 + errorRssi2, RANGING_STD, Math.sqrt(RX_POWER_VARIANCE)));
+                }
+            }
+
+            final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
+                    new Fingerprint<>(readings);
+
+            final SequentialRobustMixedPositionEstimator2D estimator =
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
+                            sources, fingerprint, this);
+            estimator.setResultRefined(true);
+
+            reset();
+
+            // check initial state
+            assertTrue(estimator.isReady());
+            assertFalse(estimator.isLocked());
+            assertNull(estimator.getEstimatedPosition());
+            assertNull(estimator.getCovariance());
+            assertNull(estimator.getPositions());
+            assertNull(estimator.getDistances());
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
+
+            final Point2D p = estimator.estimate();
+
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
+            assertTrue(estimateProgressChange >= 0);
+            assertTrue(estimator.isReady());
+            assertFalse(estimator.isLocked());
+            assertNotNull(estimator.getPositions());
+            assertNotNull(estimator.getDistances());
+
+            final Point2D estimatedPosition = estimator.getEstimatedPosition();
+            assertSame(p, estimatedPosition);
+            assertNotNull(estimator.getInliersData());
+            assertNotNull(estimator.getCovariance());
+
+            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getCovariance());
+            accuracyStd.setStandardDeviationFactor(1.0);
+
+            final Accuracy2D accuracy = new Accuracy2D(estimator.getCovariance());
+            accuracy.setConfidence(0.99);
+
+            positionStd = accuracyStd.getAverageAccuracy();
+            positionStdConfidence = accuracyStd.getConfidence();
+            positionAccuracy = accuracy.getAverageAccuracy();
+            positionAccuracyConfidence = accuracy.getConfidence();
+
+            final double positionDistance = position.distanceTo(estimatedPosition);
+            if (positionDistance > ABSOLUTE_ERROR) {
+                continue;
+            }
+
+            assertTrue(position.equals(estimatedPosition, ABSOLUTE_ERROR));
+            numValidPosition++;
+            break;
+        }
+
+        assertTrue(numValidPosition > 0);
+
+        final NumberFormat format = NumberFormat.getPercentInstance();
+        String formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format(
+                "Position standard deviation {0} meters ({1} confidence)",
+                positionStd, formattedConfidence));
+
+        formattedConfidence = format.format(positionAccuracyConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format(
+                "Position accuracy {0} meters ({1} confidence)",
+                positionAccuracy, formattedConfidence));
+
+        // force NotReadyException
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
+        try {
+            estimator.estimate();
+            fail("NotReadyException expected but not thrown");
+        } catch (final NotReadyException ignore) {
+        }
+    }
+
+    @Test
+    public void testEstimateRangingWithInlierError() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, STD_OUTLIER_ERROR);
+        final GaussianRandomizer inlierErrorRandomizer = new GaussianRandomizer(
+                new Random(), 0.0, INLIER_ERROR_STD);
+
+        int numValidPosition = 0;
+        double positionStd = 0.0;
+        double positionStdConfidence = 0.0;
+        double positionAccuracy = 0.0;
+        double positionAccuracyConfidence = 0.0;
+        for (int t = 0; t < TIMES; t++) {
+            final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+
+            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
+
+            final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
+            final List<RangingReading<WifiAccessPoint>> readings = new ArrayList<>();
+            final double[] sourceQualityScores = new double[numSources];
+            final double[] fingerprintReadingsQualityScores = new double[numSources];
+            double errorRanging1;
+            double errorRanging2;
+            double inlierError;
+            for (int i = 0; i < numSources; i++) {
+                final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+
+                final String bssid = String.valueOf(i);
+
+                final WifiAccessPointLocated2D locatedAccessPoint =
+                        new WifiAccessPointLocated2D(bssid, FREQUENCY, accessPointPosition);
+                sources.add(locatedAccessPoint);
+
+                final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
+
+                final double distance = position.distanceTo(accessPointPosition);
+
+                if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
+                    // outlier
+                    errorRanging1 = errorRandomizer.nextDouble();
+                    errorRanging2 = errorRandomizer.nextDouble();
+                } else {
+                    // inlier
+                    errorRanging1 = 0.0;
+                    errorRanging2 = 0.0;
+                }
+
+                inlierError = inlierErrorRandomizer.nextDouble();
+
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRanging1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRanging2));
+
+                readings.add(new RangingReading<>(accessPoint,
+                        Math.max(0.0, distance + errorRanging1 + errorRanging2 + inlierError), RANGING_STD));
+            }
+
+            final RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
+                    new RangingFingerprint<>(readings);
+
+            final SequentialRobustMixedPositionEstimator2D estimator =
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
+                            fingerprintReadingsQualityScores, sources, fingerprint, this);
+            estimator.setResultRefined(true);
+
+            reset();
+
+            // check initial state
+            assertTrue(estimator.isReady());
+            assertFalse(estimator.isLocked());
+            assertNull(estimator.getEstimatedPosition());
+            assertNull(estimator.getCovariance());
+            assertNull(estimator.getPositions());
+            assertNull(estimator.getDistances());
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
+
+            final Point2D p = estimator.estimate();
+
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
+            assertTrue(estimateProgressChange >= 0);
+            assertTrue(estimator.isReady());
+            assertFalse(estimator.isLocked());
+            assertNotNull(estimator.getPositions());
+            assertNotNull(estimator.getDistances());
+
+            final Point2D estimatedPosition = estimator.getEstimatedPosition();
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -4994,8 +3828,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                 positionAccuracy, formattedConfidence));
 
         // force NotReadyException
-        final SequentialRobustMixedPositionEstimator2D estimator =
-                new SequentialRobustMixedPositionEstimator2D();
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -5004,8 +3837,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateRssiMultipleReadingsPerSourceWithInlierError()
-            throws LockedException, NotReadyException, RobustEstimatorException,
+    public void testEstimateRssiWithInlierError() throws LockedException, NotReadyException, RobustEstimatorException,
             NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
@@ -5030,7 +3862,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
             final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
             final double[] sourceQualityScores = new double[numSources];
-            final double[] fingerprintReadingsQualityScores = new double[NUM_READINGS * numSources];
+            final double[] fingerprintReadingsQualityScores = new double[numSources];
             double errorRssi1;
             double errorRssi2;
             double inlierError;
@@ -5044,56 +3876,41 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
                     errorRssi1 = errorRandomizer.nextDouble();
+                    errorRssi2 = errorRandomizer.nextDouble();
                 } else {
+                    // inlier
                     errorRssi1 = 0.0;
+                    errorRssi2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1));
-                for (int j = 0; j < NUM_READINGS; j++) {
+                inlierError = inlierErrorRandomizer.nextDouble();
 
-                    if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                        // outlier
-                        errorRssi2 = errorRandomizer.nextDouble();
-                    } else {
-                        // inlier
-                        errorRssi2 = 0.0;
-                    }
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi2));
 
-                    fingerprintReadingsQualityScores[i * NUM_READINGS + j] =
-                            1.0 / (1.0 + Math.abs(errorRssi2));
-
-                    inlierError = inlierErrorRandomizer.nextDouble();
-
-                    readings.add(new RssiReading<>(accessPoint,
-                            rssi + errorRssi1 + errorRssi2 + inlierError,
-                            Math.sqrt(RX_POWER_VARIANCE)));
-                }
+                readings.add(new RssiReading<>(accessPoint, rssi + errorRssi1 + errorRssi2 + inlierError,
+                        Math.sqrt(RX_POWER_VARIANCE)));
             }
 
             final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
                     new RssiFingerprint<>(readings);
 
             final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores,
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
                             sources, fingerprint, this);
             estimator.setResultRefined(true);
 
@@ -5106,13 +3923,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -5120,7 +3937,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -5169,9 +3986,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateRangingAndRssiMultipleReadingsPerSourceWithInlierError()
-            throws LockedException, NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateRangingAndRssiWithInlierError() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -5195,7 +4011,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
             final List<RangingAndRssiReading<WifiAccessPoint>> readings = new ArrayList<>();
             final double[] sourceQualityScores = new double[numSources];
-            final double[] fingerprintReadingsQualityScores = new double[NUM_READINGS * numSources];
+            final double[] fingerprintReadingsQualityScores = new double[numSources];
             double errorRssi1;
             double errorRanging1;
             double errorRssi2;
@@ -5203,25 +4019,22 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             double inlierError;
             for (int i = 0; i < numSources; i++) {
                 final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
                 final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
                 final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
+
                 final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
                         distance, pathLossExponent));
 
@@ -5229,44 +4042,31 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     // outlier
                     errorRssi1 = errorRandomizer.nextDouble();
                     errorRanging1 = errorRandomizer.nextDouble();
+                    errorRssi2 = errorRandomizer.nextDouble();
+                    errorRanging2 = errorRandomizer.nextDouble();
                 } else {
+                    // inlier
                     errorRssi1 = 0.0;
                     errorRanging1 = 0.0;
+                    errorRssi2 = 0.0;
+                    errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
-                for (int j = 0; j < NUM_READINGS; j++) {
+                inlierError = inlierErrorRandomizer.nextDouble();
 
-                    if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                        // outlier
-                        errorRssi2 = errorRandomizer.nextDouble();
-                        errorRanging2 = errorRandomizer.nextDouble();
-                    } else {
-                        // inlier
-                        errorRssi2 = 0.0;
-                        errorRanging2 = 0.0;
-                    }
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
 
-                    fingerprintReadingsQualityScores[i * NUM_READINGS + j] =
-                            1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
-
-                    inlierError = inlierErrorRandomizer.nextDouble();
-
-                    readings.add(new RangingAndRssiReading<>(accessPoint,
-                            Math.max(0.0, distance + errorRanging1 + errorRanging2 + inlierError),
-                            rssi + errorRssi1 + errorRssi2 + inlierError,
-                            RANGING_STD,
-                            Math.sqrt(RX_POWER_VARIANCE)));
-                }
+                readings.add(new RangingAndRssiReading<>(accessPoint,
+                        Math.max(0.0, distance + errorRanging1 + errorRanging2 + inlierError),
+                        rssi + errorRssi1 + errorRssi2 + inlierError, RANGING_STD, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
             final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
                     new RangingAndRssiFingerprint<>(readings);
 
             final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores,
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
                             sources, fingerprint, this);
             estimator.setResultRefined(true);
 
@@ -5279,13 +4079,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -5293,7 +4093,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -5342,8 +4142,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateMixedMultipleReadingsPerSourceWithInlierError()
-            throws LockedException, NotReadyException, RobustEstimatorException,
+    public void testEstimateMixedWithInlierError() throws LockedException, NotReadyException, RobustEstimatorException,
             NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
@@ -5368,7 +4167,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
             final double[] sourceQualityScores = new double[numSources];
-            final double[] fingerprintReadingsQualityScores = new double[3 * NUM_READINGS * numSources];
+            final double[] fingerprintReadingsQualityScores = new double[3 * numSources];
             double errorRssi1;
             double errorRanging1;
             double errorRssi2;
@@ -5376,77 +4175,58 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             double inlierError;
             for (int i = 0; i < numSources; i++) {
                 final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
                 final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
                 final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
                     errorRssi1 = errorRandomizer.nextDouble();
                     errorRanging1 = errorRandomizer.nextDouble();
+                    errorRssi2 = errorRandomizer.nextDouble();
+                    errorRanging2 = errorRandomizer.nextDouble();
                 } else {
+                    // inlier
                     errorRssi1 = 0.0;
                     errorRanging1 = 0.0;
+                    errorRssi2 = 0.0;
+                    errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
-                for (int j = 0; j < NUM_READINGS; j++) {
+                inlierError = inlierErrorRandomizer.nextDouble();
 
-                    if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
-                        // outlier
-                        errorRssi2 = errorRandomizer.nextDouble();
-                        errorRanging2 = errorRandomizer.nextDouble();
-                    } else {
-                        // inlier
-                        errorRssi2 = 0.0;
-                        errorRanging2 = 0.0;
-                    }
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
 
-                    fingerprintReadingsQualityScores[3 * (i * NUM_READINGS + j)] =
-                            1.0 / (1.0 + Math.abs(errorRssi2));
-                    fingerprintReadingsQualityScores[3 * (i * NUM_READINGS + j) + 1] =
-                            1.0 / (1.0 + Math.abs(errorRanging2));
-                    fingerprintReadingsQualityScores[3 * (i * NUM_READINGS + j) + 2] =
-                            1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
+                fingerprintReadingsQualityScores[3 * i] = 1.0 / (1.0 + Math.abs(errorRssi2));
+                fingerprintReadingsQualityScores[3 * i + 1] = 1.0 / (1.0 + Math.abs(errorRanging2));
+                fingerprintReadingsQualityScores[3 * i + 2] = 1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
 
-                    inlierError = inlierErrorRandomizer.nextDouble();
-
-                    readings.add(new RssiReading<>(accessPoint,
-                            rssi + errorRssi1 + errorRssi2 + inlierError,
-                            Math.sqrt(RX_POWER_VARIANCE)));
-                    final double dist = Math.max(0.0, distance + errorRanging1 + errorRanging2 + inlierError);
-                    readings.add(new RangingReading<>(accessPoint, dist, RANGING_STD));
-                    readings.add(new RangingAndRssiReading<>(accessPoint,
-                            dist, rssi + errorRssi1 + errorRssi2 + inlierError,
-                            RANGING_STD, Math.sqrt(RX_POWER_VARIANCE)));
-                }
+                readings.add(new RssiReading<>(accessPoint, rssi + errorRssi1 + errorRssi2 + inlierError,
+                        Math.sqrt(RX_POWER_VARIANCE)));
+                final double dist = Math.max(0.0, distance + errorRanging1 + errorRanging2 + inlierError);
+                readings.add(new RangingReading<>(accessPoint, dist, RANGING_STD));
+                readings.add(new RangingAndRssiReading<>(accessPoint, dist,
+                        rssi + errorRssi1 + errorRssi2 + inlierError, RANGING_STD, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
-            final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
-                    new Fingerprint<>(readings);
+            final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint = new Fingerprint<>(readings);
 
             final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores,
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
                             sources, fingerprint, this);
             estimator.setResultRefined(true);
 
@@ -5459,13 +4239,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -5473,7 +4253,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -5522,12 +4302,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateRangingLinearSolverUsedHomogeneousAndPreliminaryRefined()
-            throws LockedException, NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateRangingMultipleReadingsPerSourceWithInlierError() throws LockedException,
+            NotReadyException, RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
+        final GaussianRandomizer inlierErrorRandomizer = new GaussianRandomizer(
+                new Random(), 0.0, INLIER_ERROR_STD);
 
         int numValidPosition = 0;
         double positionStd = 0.0;
@@ -5544,19 +4325,646 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
             final List<RangingReading<WifiAccessPoint>> readings = new ArrayList<>();
             final double[] sourceQualityScores = new double[numSources];
-            final double[] fingerprintReadingsQualityScores = new double[numSources];
+            final double[] fingerprintReadingsQualityScores = new double[NUM_READINGS * numSources];
             double errorRanging1;
             double errorRanging2;
+            double inlierError;
+            for (int i = 0; i < numSources; i++) {
+                final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+
+                final String bssid = String.valueOf(i);
+
+                final WifiAccessPointLocated2D locatedAccessPoint =
+                        new WifiAccessPointLocated2D(bssid, FREQUENCY, accessPointPosition);
+                sources.add(locatedAccessPoint);
+
+                final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
+
+                final double distance = position.distanceTo(accessPointPosition);
+
+                if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
+                    // outlier
+                    errorRanging1 = errorRandomizer.nextDouble();
+                } else {
+                    errorRanging1 = 0.0;
+                }
+
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRanging1));
+                for (int j = 0; j < NUM_READINGS; j++) {
+
+                    if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
+                        // outlier
+                        errorRanging2 = errorRandomizer.nextDouble();
+                    } else {
+                        // inlier
+                        errorRanging2 = 0.0;
+                    }
+
+                    fingerprintReadingsQualityScores[i * NUM_READINGS + j] = 1.0 / (1.0 + Math.abs(errorRanging2));
+
+                    inlierError = inlierErrorRandomizer.nextDouble();
+
+                    readings.add(new RangingReading<>(accessPoint,
+                            Math.max(0.0, distance + errorRanging1 + errorRanging2 + inlierError), RANGING_STD));
+                }
+            }
+
+            final RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
+                    new RangingFingerprint<>(readings);
+
+            final SequentialRobustMixedPositionEstimator2D estimator =
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
+                            sources, fingerprint, this);
+            estimator.setResultRefined(true);
+
+            reset();
+
+            // check initial state
+            assertTrue(estimator.isReady());
+            assertFalse(estimator.isLocked());
+            assertNull(estimator.getEstimatedPosition());
+            assertNull(estimator.getCovariance());
+            assertNull(estimator.getPositions());
+            assertNull(estimator.getDistances());
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
+
+            final Point2D p = estimator.estimate();
+
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
+            assertTrue(estimateProgressChange >= 0);
+            assertTrue(estimator.isReady());
+            assertFalse(estimator.isLocked());
+            assertNotNull(estimator.getPositions());
+            assertNotNull(estimator.getDistances());
+
+            final Point2D estimatedPosition = estimator.getEstimatedPosition();
+            assertSame(p, estimatedPosition);
+            assertNotNull(estimator.getInliersData());
+            assertNotNull(estimator.getCovariance());
+
+            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getCovariance());
+            accuracyStd.setStandardDeviationFactor(1.0);
+
+            final Accuracy2D accuracy = new Accuracy2D(estimator.getCovariance());
+            accuracy.setConfidence(0.99);
+
+            positionStd = accuracyStd.getAverageAccuracy();
+            positionStdConfidence = accuracyStd.getConfidence();
+            positionAccuracy = accuracy.getAverageAccuracy();
+            positionAccuracyConfidence = accuracy.getConfidence();
+
+            final double positionDistance = position.distanceTo(estimatedPosition);
+            if (positionDistance > LARGE_ABSOLUTE_ERROR) {
+                continue;
+            }
+
+            assertTrue(position.equals(estimatedPosition, LARGE_ABSOLUTE_ERROR));
+            numValidPosition++;
+            break;
+        }
+
+        assertTrue(numValidPosition > 0);
+
+        final NumberFormat format = NumberFormat.getPercentInstance();
+        String formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format(
+                "Position standard deviation {0} meters ({1} confidence)",
+                positionStd, formattedConfidence));
+
+        formattedConfidence = format.format(positionAccuracyConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format(
+                "Position accuracy {0} meters ({1} confidence)",
+                positionAccuracy, formattedConfidence));
+
+        // force NotReadyException
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
+        try {
+            estimator.estimate();
+            fail("NotReadyException expected but not thrown");
+        } catch (final NotReadyException ignore) {
+        }
+    }
+
+    @Test
+    public void testEstimateRssiMultipleReadingsPerSourceWithInlierError() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
+                new Random(), 0.0, STD_OUTLIER_ERROR);
+        final GaussianRandomizer inlierErrorRandomizer = new GaussianRandomizer(
+                new Random(), 0.0, INLIER_ERROR_STD);
+
+        int numValidPosition = 0;
+        double positionStd = 0.0;
+        double positionStdConfidence = 0.0;
+        double positionAccuracy = 0.0;
+        double positionAccuracyConfidence = 0.0;
+        for (int t = 0; t < TIMES; t++) {
+            final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+
+            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
+            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
+
+            final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
+            final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
+            final double[] sourceQualityScores = new double[numSources];
+            final double[] fingerprintReadingsQualityScores = new double[NUM_READINGS * numSources];
+            double errorRssi1;
+            double errorRssi2;
+            double inlierError;
             for (int i = 0; i < numSources; i++) {
                 final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS));
 
+                final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+                final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
                 final String bssid = String.valueOf(i);
 
-                final WifiAccessPointLocated2D locatedAccessPoint =
-                        new WifiAccessPointLocated2D(bssid, FREQUENCY,
-                                accessPointPosition);
+                final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
+                sources.add(locatedAccessPoint);
+
+                final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
+
+                final double distance = position.distanceTo(accessPointPosition);
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
+
+                if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
+                    // outlier
+                    errorRssi1 = errorRandomizer.nextDouble();
+                } else {
+                    errorRssi1 = 0.0;
+                }
+
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1));
+                for (int j = 0; j < NUM_READINGS; j++) {
+
+                    if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
+                        // outlier
+                        errorRssi2 = errorRandomizer.nextDouble();
+                    } else {
+                        // inlier
+                        errorRssi2 = 0.0;
+                    }
+
+                    fingerprintReadingsQualityScores[i * NUM_READINGS + j] = 1.0 / (1.0 + Math.abs(errorRssi2));
+
+                    inlierError = inlierErrorRandomizer.nextDouble();
+
+                    readings.add(new RssiReading<>(accessPoint, rssi + errorRssi1 + errorRssi2 + inlierError,
+                            Math.sqrt(RX_POWER_VARIANCE)));
+                }
+            }
+
+            final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
+                    new RssiFingerprint<>(readings);
+
+            final SequentialRobustMixedPositionEstimator2D estimator =
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
+                            sources, fingerprint, this);
+            estimator.setResultRefined(true);
+
+            reset();
+
+            // check initial state
+            assertTrue(estimator.isReady());
+            assertFalse(estimator.isLocked());
+            assertNull(estimator.getEstimatedPosition());
+            assertNull(estimator.getCovariance());
+            assertNull(estimator.getPositions());
+            assertNull(estimator.getDistances());
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
+
+            final Point2D p = estimator.estimate();
+
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
+            assertTrue(estimateProgressChange >= 0);
+            assertTrue(estimator.isReady());
+            assertFalse(estimator.isLocked());
+            assertNotNull(estimator.getPositions());
+            assertNotNull(estimator.getDistances());
+
+            final Point2D estimatedPosition = estimator.getEstimatedPosition();
+            assertSame(p, estimatedPosition);
+            assertNotNull(estimator.getInliersData());
+            assertNotNull(estimator.getCovariance());
+
+            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getCovariance());
+            accuracyStd.setStandardDeviationFactor(1.0);
+
+            final Accuracy2D accuracy = new Accuracy2D(estimator.getCovariance());
+            accuracy.setConfidence(0.99);
+
+            positionStd = accuracyStd.getAverageAccuracy();
+            positionStdConfidence = accuracyStd.getConfidence();
+            positionAccuracy = accuracy.getAverageAccuracy();
+            positionAccuracyConfidence = accuracy.getConfidence();
+
+            final double positionDistance = position.distanceTo(estimatedPosition);
+            if (positionDistance > LARGE_ABSOLUTE_ERROR) {
+                continue;
+            }
+
+            assertTrue(position.equals(estimatedPosition, LARGE_ABSOLUTE_ERROR));
+            numValidPosition++;
+            break;
+        }
+
+        assertTrue(numValidPosition > 0);
+
+        final NumberFormat format = NumberFormat.getPercentInstance();
+        String formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format(
+                "Position standard deviation {0} meters ({1} confidence)",
+                positionStd, formattedConfidence));
+
+        formattedConfidence = format.format(positionAccuracyConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format(
+                "Position accuracy {0} meters ({1} confidence)",
+                positionAccuracy, formattedConfidence));
+
+        // force NotReadyException
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
+        try {
+            estimator.estimate();
+            fail("NotReadyException expected but not thrown");
+        } catch (final NotReadyException ignore) {
+        }
+    }
+
+    @Test
+    public void testEstimateRangingAndRssiMultipleReadingsPerSourceWithInlierError() throws LockedException,
+            NotReadyException, RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
+                new Random(), 0.0, STD_OUTLIER_ERROR);
+        final GaussianRandomizer inlierErrorRandomizer = new GaussianRandomizer(
+                new Random(), 0.0, INLIER_ERROR_STD);
+
+        int numValidPosition = 0;
+        double positionStd = 0.0;
+        double positionStdConfidence = 0.0;
+        double positionAccuracy = 0.0;
+        double positionAccuracyConfidence = 0.0;
+        for (int t = 0; t < TIMES; t++) {
+            final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+
+            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final double pathLossExponent = randomizer.nextDouble(
+                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
+
+            final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
+            final List<RangingAndRssiReading<WifiAccessPoint>> readings = new ArrayList<>();
+            final double[] sourceQualityScores = new double[numSources];
+            final double[] fingerprintReadingsQualityScores = new double[NUM_READINGS * numSources];
+            double errorRssi1;
+            double errorRanging1;
+            double errorRssi2;
+            double errorRanging2;
+            double inlierError;
+            for (int i = 0; i < numSources; i++) {
+                final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+
+                final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+                final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
+                final String bssid = String.valueOf(i);
+
+                final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
+                sources.add(locatedAccessPoint);
+
+                final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
+
+                final double distance = position.distanceTo(accessPointPosition);
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
+
+                if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
+                    // outlier
+                    errorRssi1 = errorRandomizer.nextDouble();
+                    errorRanging1 = errorRandomizer.nextDouble();
+                } else {
+                    errorRssi1 = 0.0;
+                    errorRanging1 = 0.0;
+                }
+
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                for (int j = 0; j < NUM_READINGS; j++) {
+
+                    if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
+                        // outlier
+                        errorRssi2 = errorRandomizer.nextDouble();
+                        errorRanging2 = errorRandomizer.nextDouble();
+                    } else {
+                        // inlier
+                        errorRssi2 = 0.0;
+                        errorRanging2 = 0.0;
+                    }
+
+                    fingerprintReadingsQualityScores[i * NUM_READINGS + j] =
+                            1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
+
+                    inlierError = inlierErrorRandomizer.nextDouble();
+
+                    readings.add(new RangingAndRssiReading<>(accessPoint,
+                            Math.max(0.0, distance + errorRanging1 + errorRanging2 + inlierError),
+                            rssi + errorRssi1 + errorRssi2 + inlierError, RANGING_STD,
+                            Math.sqrt(RX_POWER_VARIANCE)));
+                }
+            }
+
+            final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
+                    new RangingAndRssiFingerprint<>(readings);
+
+            final SequentialRobustMixedPositionEstimator2D estimator =
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
+                            sources, fingerprint, this);
+            estimator.setResultRefined(true);
+
+            reset();
+
+            // check initial state
+            assertTrue(estimator.isReady());
+            assertFalse(estimator.isLocked());
+            assertNull(estimator.getEstimatedPosition());
+            assertNull(estimator.getCovariance());
+            assertNull(estimator.getPositions());
+            assertNull(estimator.getDistances());
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
+
+            final Point2D p = estimator.estimate();
+
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
+            assertTrue(estimateProgressChange >= 0);
+            assertTrue(estimator.isReady());
+            assertFalse(estimator.isLocked());
+            assertNotNull(estimator.getPositions());
+            assertNotNull(estimator.getDistances());
+
+            final Point2D estimatedPosition = estimator.getEstimatedPosition();
+            assertSame(p, estimatedPosition);
+            assertNotNull(estimator.getInliersData());
+            assertNotNull(estimator.getCovariance());
+
+            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getCovariance());
+            accuracyStd.setStandardDeviationFactor(1.0);
+
+            final Accuracy2D accuracy = new Accuracy2D(estimator.getCovariance());
+            accuracy.setConfidence(0.99);
+
+            positionStd = accuracyStd.getAverageAccuracy();
+            positionStdConfidence = accuracyStd.getConfidence();
+            positionAccuracy = accuracy.getAverageAccuracy();
+            positionAccuracyConfidence = accuracy.getConfidence();
+
+            final double positionDistance = position.distanceTo(estimatedPosition);
+            if (positionDistance > LARGE_ABSOLUTE_ERROR) {
+                continue;
+            }
+
+            assertTrue(position.equals(estimatedPosition, LARGE_ABSOLUTE_ERROR));
+            numValidPosition++;
+            break;
+        }
+
+        assertTrue(numValidPosition > 0);
+
+        final NumberFormat format = NumberFormat.getPercentInstance();
+        String formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format(
+                "Position standard deviation {0} meters ({1} confidence)",
+                positionStd, formattedConfidence));
+
+        formattedConfidence = format.format(positionAccuracyConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format(
+                "Position accuracy {0} meters ({1} confidence)",
+                positionAccuracy, formattedConfidence));
+
+        // force NotReadyException
+        final SequentialRobustMixedPositionEstimator2D estimator =
+                new SequentialRobustMixedPositionEstimator2D();
+        try {
+            estimator.estimate();
+            fail("NotReadyException expected but not thrown");
+        } catch (final NotReadyException ignore) {
+        }
+    }
+
+    @Test
+    public void testEstimateMixedMultipleReadingsPerSourceWithInlierError() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
+                new Random(), 0.0, STD_OUTLIER_ERROR);
+        final GaussianRandomizer inlierErrorRandomizer = new GaussianRandomizer(
+                new Random(), 0.0, INLIER_ERROR_STD);
+
+        int numValidPosition = 0;
+        double positionStd = 0.0;
+        double positionStdConfidence = 0.0;
+        double positionAccuracy = 0.0;
+        double positionAccuracyConfidence = 0.0;
+        for (int t = 0; t < TIMES; t++) {
+            final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+
+            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final double pathLossExponent = randomizer.nextDouble(
+                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
+
+            final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
+            final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
+            final double[] sourceQualityScores = new double[numSources];
+            final double[] fingerprintReadingsQualityScores = new double[3 * NUM_READINGS * numSources];
+            double errorRssi1;
+            double errorRanging1;
+            double errorRssi2;
+            double errorRanging2;
+            double inlierError;
+            for (int i = 0; i < numSources; i++) {
+                final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+
+                final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+                final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
+                final String bssid = String.valueOf(i);
+
+                final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
+                sources.add(locatedAccessPoint);
+
+                final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
+
+                final double distance = position.distanceTo(accessPointPosition);
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
+
+                if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
+                    // outlier
+                    errorRssi1 = errorRandomizer.nextDouble();
+                    errorRanging1 = errorRandomizer.nextDouble();
+                } else {
+                    errorRssi1 = 0.0;
+                    errorRanging1 = 0.0;
+                }
+
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                for (int j = 0; j < NUM_READINGS; j++) {
+
+                    if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
+                        // outlier
+                        errorRssi2 = errorRandomizer.nextDouble();
+                        errorRanging2 = errorRandomizer.nextDouble();
+                    } else {
+                        // inlier
+                        errorRssi2 = 0.0;
+                        errorRanging2 = 0.0;
+                    }
+
+                    fingerprintReadingsQualityScores[3 * (i * NUM_READINGS + j)] = 1.0 / (1.0 + Math.abs(errorRssi2));
+                    fingerprintReadingsQualityScores[3 * (i * NUM_READINGS + j) + 1] =
+                            1.0 / (1.0 + Math.abs(errorRanging2));
+                    fingerprintReadingsQualityScores[3 * (i * NUM_READINGS + j) + 2] =
+                            1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
+
+                    inlierError = inlierErrorRandomizer.nextDouble();
+
+                    readings.add(new RssiReading<>(accessPoint, rssi + errorRssi1 + errorRssi2 + inlierError,
+                            Math.sqrt(RX_POWER_VARIANCE)));
+                    final double dist = Math.max(0.0, distance + errorRanging1 + errorRanging2 + inlierError);
+                    readings.add(new RangingReading<>(accessPoint, dist, RANGING_STD));
+                    readings.add(new RangingAndRssiReading<>(accessPoint, dist,
+                            rssi + errorRssi1 + errorRssi2 + inlierError, RANGING_STD,
+                            Math.sqrt(RX_POWER_VARIANCE)));
+                }
+            }
+
+            final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
+                    new Fingerprint<>(readings);
+
+            final SequentialRobustMixedPositionEstimator2D estimator =
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
+                            sources, fingerprint, this);
+            estimator.setResultRefined(true);
+
+            reset();
+
+            // check initial state
+            assertTrue(estimator.isReady());
+            assertFalse(estimator.isLocked());
+            assertNull(estimator.getEstimatedPosition());
+            assertNull(estimator.getCovariance());
+            assertNull(estimator.getPositions());
+            assertNull(estimator.getDistances());
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
+
+            final Point2D p = estimator.estimate();
+
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
+            assertTrue(estimateProgressChange >= 0);
+            assertTrue(estimator.isReady());
+            assertFalse(estimator.isLocked());
+            assertNotNull(estimator.getPositions());
+            assertNotNull(estimator.getDistances());
+
+            final Point2D estimatedPosition = estimator.getEstimatedPosition();
+            assertSame(p, estimatedPosition);
+            assertNotNull(estimator.getInliersData());
+            assertNotNull(estimator.getCovariance());
+
+            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getCovariance());
+            accuracyStd.setStandardDeviationFactor(1.0);
+
+            final Accuracy2D accuracy = new Accuracy2D(estimator.getCovariance());
+            accuracy.setConfidence(0.99);
+
+            positionStd = accuracyStd.getAverageAccuracy();
+            positionStdConfidence = accuracyStd.getConfidence();
+            positionAccuracy = accuracy.getAverageAccuracy();
+            positionAccuracyConfidence = accuracy.getConfidence();
+
+            final double positionDistance = position.distanceTo(estimatedPosition);
+            if (positionDistance > LARGE_ABSOLUTE_ERROR) {
+                continue;
+            }
+
+            assertTrue(position.equals(estimatedPosition, LARGE_ABSOLUTE_ERROR));
+            numValidPosition++;
+            break;
+        }
+
+        assertTrue(numValidPosition > 0);
+
+        final NumberFormat format = NumberFormat.getPercentInstance();
+        String formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format(
+                "Position standard deviation {0} meters ({1} confidence)",
+                positionStd, formattedConfidence));
+
+        formattedConfidence = format.format(positionAccuracyConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format(
+                "Position accuracy {0} meters ({1} confidence)",
+                positionAccuracy, formattedConfidence));
+
+        // force NotReadyException
+        final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D();
+        try {
+            estimator.estimate();
+            fail("NotReadyException expected but not thrown");
+        } catch (final NotReadyException ignore) {
+        }
+    }
+
+    @Test
+    public void testEstimateRangingLinearSolverUsedHomogeneousAndPreliminaryRefined() throws LockedException,
+            NotReadyException, RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
+                new Random(), 0.0, STD_OUTLIER_ERROR);
+
+        int numValidPosition = 0;
+        double positionStd = 0.0;
+        double positionStdConfidence = 0.0;
+        double positionAccuracy = 0.0;
+        double positionAccuracyConfidence = 0.0;
+        for (int t = 0; t < TIMES; t++) {
+            final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+
+            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+
+            final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
+            final List<RangingReading<WifiAccessPoint>> readings = new ArrayList<>();
+            final double[] sourceQualityScores = new double[numSources];
+            final double[] fingerprintReadingsQualityScores = new double[numSources];
+            double errorRanging1;
+            double errorRanging2;
+            for (int i = 0; i < numSources; i++) {
+                final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+
+                final String bssid = String.valueOf(i);
+
+                final WifiAccessPointLocated2D locatedAccessPoint = new WifiAccessPointLocated2D(bssid, FREQUENCY,
+                        accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -5573,14 +4981,11 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRanging1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRanging2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRanging1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRanging2));
 
                 readings.add(new RangingReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                        RANGING_STD));
+                        Math.max(0.0, distance + errorRanging1 + errorRanging2), RANGING_STD));
             }
 
             final RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
@@ -5588,8 +4993,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
 
             final SequentialRobustMixedPositionEstimator2D estimator =
                     new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores, sources,
-                            fingerprint, this);
+                            sourceQualityScores, fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setRssiLinearSolverUsed(true);
             estimator.setRangingLinearSolverUsed(true);
@@ -5607,13 +5011,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -5621,7 +5025,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -5661,9 +5065,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateRssiLinearSolverUsedHomogeneousAndPreliminaryRefined()
-            throws LockedException, NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateRssiLinearSolverUsedHomogeneousAndPreliminaryRefined() throws LockedException,
+            NotReadyException, RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -5677,8 +5080,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
 
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
@@ -5690,28 +5092,23 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             double errorRssi2;
             for (int i = 0; i < numSources; i++) {
                 final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
                 final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
                 final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -5723,13 +5120,10 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRssi2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi2));
 
-                readings.add(new RssiReading<>(accessPoint,
-                        rssi + errorRssi1 + errorRssi2,
+                readings.add(new RssiReading<>(accessPoint, rssi + errorRssi1 + errorRssi2,
                         Math.sqrt(RX_POWER_VARIANCE)));
             }
 
@@ -5737,9 +5131,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     new RssiFingerprint<>(readings);
 
             final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores, sources,
-                            fingerprint, this);
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
+                            sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setRssiLinearSolverUsed(true);
             estimator.setRangingLinearSolverUsed(true);
@@ -5757,13 +5150,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -5771,7 +5164,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -5827,8 +5220,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
 
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
@@ -5842,28 +5234,23 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             double errorRanging2;
             for (int i = 0; i < numSources; i++) {
                 final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
                 final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
                 final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -5879,25 +5266,20 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2 + errorRanging2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
 
                 readings.add(new RangingAndRssiReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                        rssi + errorRssi1 + errorRssi2,
-                        RANGING_STD,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                        Math.max(0.0, distance + errorRanging1 + errorRanging2), rssi + errorRssi1 + errorRssi2,
+                        RANGING_STD, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
             final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
                     new RangingAndRssiFingerprint<>(readings);
 
             final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores, sources,
-                            fingerprint, this);
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
+                            sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setRssiLinearSolverUsed(true);
             estimator.setRangingLinearSolverUsed(true);
@@ -5915,13 +5297,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -5929,7 +5311,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -5969,9 +5351,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateMixedLinearSolverUsedHomogeneousAndPreliminaryRefined()
-            throws LockedException, NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateMixedLinearSolverUsedHomogeneousAndPreliminaryRefined() throws LockedException,
+            NotReadyException, RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -5985,8 +5366,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
 
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
@@ -6000,28 +5380,23 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             double errorRanging2;
             for (int i = 0; i < numSources; i++) {
                 final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
                 final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
                 final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -6037,36 +5412,26 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
 
-                fingerprintReadingsQualityScores[3 * i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2));
-                fingerprintReadingsQualityScores[3 * i + 1] = 1.0 /
-                        (1.0 + Math.abs(errorRanging2));
-                fingerprintReadingsQualityScores[3 * i + 2] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2 + errorRanging2));
+                fingerprintReadingsQualityScores[3 * i] = 1.0 / (1.0 + Math.abs(errorRssi2));
+                fingerprintReadingsQualityScores[3 * i + 1] = 1.0 / (1.0 + Math.abs(errorRanging2));
+                fingerprintReadingsQualityScores[3 * i + 2] = 1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
 
-                readings.add(new RssiReading<>(accessPoint,
-                        rssi + errorRssi1 + errorRssi2,
+                readings.add(new RssiReading<>(accessPoint, rssi + errorRssi1 + errorRssi2,
                         Math.sqrt(RX_POWER_VARIANCE)));
                 readings.add(new RangingReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                        RANGING_STD));
+                        Math.max(0.0, distance + errorRanging1 + errorRanging2), RANGING_STD));
                 readings.add(new RangingAndRssiReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                        rssi + errorRssi1 + errorRssi2,
-                        RANGING_STD,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                        Math.max(0.0, distance + errorRanging1 + errorRanging2), rssi + errorRssi1 + errorRssi2,
+                        RANGING_STD, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
-            final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
-                    new Fingerprint<>(readings);
+            final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint = new Fingerprint<>(readings);
 
             final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores, sources,
-                            fingerprint, this);
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
+                            sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setRssiLinearSolverUsed(true);
             estimator.setRangingLinearSolverUsed(true);
@@ -6084,13 +5449,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -6098,7 +5463,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -6138,9 +5503,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateRangingLinearSolverUsedInhomogeneousAndPreliminaryRefined()
-            throws LockedException, NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateRangingLinearSolverUsedInhomogeneousAndPreliminaryRefined() throws LockedException,
+            NotReadyException, RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -6154,8 +5518,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
 
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
             final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
             final List<RangingReading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -6165,14 +5528,12 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             double errorRanging2;
             for (int i = 0; i < numSources; i++) {
                 final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
                 final String bssid = String.valueOf(i);
 
-                final WifiAccessPointLocated2D locatedAccessPoint =
-                        new WifiAccessPointLocated2D(bssid, FREQUENCY,
-                                accessPointPosition);
+                final WifiAccessPointLocated2D locatedAccessPoint = new WifiAccessPointLocated2D(bssid, FREQUENCY,
+                        accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -6189,13 +5550,10 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRanging1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRanging2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRanging1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRanging2));
 
-                readings.add(new RangingReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
+                readings.add(new RangingReading<>(accessPoint, Math.max(0.0, distance + errorRanging1 + errorRanging2),
                         RANGING_STD));
             }
 
@@ -6203,9 +5561,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     new RangingFingerprint<>(readings);
 
             final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores, sources,
-                            fingerprint, this);
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
+                            sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setRssiLinearSolverUsed(true);
             estimator.setRangingLinearSolverUsed(true);
@@ -6223,13 +5580,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -6237,7 +5594,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -6277,9 +5634,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateRssiLinearSolverUsedInhomogeneousAndPreliminaryRefined()
-            throws LockedException, NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateRssiLinearSolverUsedInhomogeneousAndPreliminaryRefined() throws LockedException,
+            NotReadyException, RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -6293,8 +5649,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
 
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
@@ -6306,28 +5661,23 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             double errorRssi2;
             for (int i = 0; i < numSources; i++) {
                 final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
                 final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
                 final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -6339,13 +5689,10 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRssi2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi2));
 
-                readings.add(new RssiReading<>(accessPoint,
-                        rssi + errorRssi1 + errorRssi2,
+                readings.add(new RssiReading<>(accessPoint, rssi + errorRssi1 + errorRssi2,
                         Math.sqrt(RX_POWER_VARIANCE)));
             }
 
@@ -6353,9 +5700,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     new RssiFingerprint<>(readings);
 
             final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores, sources,
-                            fingerprint, this);
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
+                            sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setRssiLinearSolverUsed(true);
             estimator.setRangingLinearSolverUsed(true);
@@ -6373,13 +5719,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -6387,7 +5733,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -6427,9 +5773,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateRangingAndRssiLinearSolverUsedInhomogeneousAndPreliminaryRefined()
-            throws LockedException, NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateRangingAndRssiLinearSolverUsedInhomogeneousAndPreliminaryRefined() throws LockedException,
+            NotReadyException, RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -6443,8 +5788,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
 
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
@@ -6458,28 +5802,23 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             double errorRanging2;
             for (int i = 0; i < numSources; i++) {
                 final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
                 final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
                 final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -6495,25 +5834,20 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2 + errorRanging2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
 
                 readings.add(new RangingAndRssiReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                        rssi + errorRssi1 + errorRssi2,
-                        RANGING_STD,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                        Math.max(0.0, distance + errorRanging1 + errorRanging2), rssi + errorRssi1 + errorRssi2,
+                        RANGING_STD, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
             final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
                     new RangingAndRssiFingerprint<>(readings);
 
             final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores, sources,
-                            fingerprint, this);
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
+                            sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setRssiLinearSolverUsed(true);
             estimator.setRangingLinearSolverUsed(true);
@@ -6531,13 +5865,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -6545,7 +5879,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -6585,9 +5919,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateMixedLinearSolverUsedInhomogeneousAndPreliminaryRefined()
-            throws LockedException, NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateMixedLinearSolverUsedInhomogeneousAndPreliminaryRefined() throws LockedException,
+            NotReadyException, RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -6601,10 +5934,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
 
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(
-                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
             final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -6616,28 +5947,23 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             double errorRanging2;
             for (int i = 0; i < numSources; i++) {
                 final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
                 final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
                 final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -6653,36 +5979,26 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
 
-                fingerprintReadingsQualityScores[3 * i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2));
-                fingerprintReadingsQualityScores[3 * i + 1] = 1.0 /
-                        (1.0 + Math.abs(errorRanging2));
-                fingerprintReadingsQualityScores[3 * i + 2] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2 + errorRanging2));
+                fingerprintReadingsQualityScores[3 * i] = 1.0 / (1.0 + Math.abs(errorRssi2));
+                fingerprintReadingsQualityScores[3 * i + 1] = 1.0 / (1.0 + Math.abs(errorRanging2));
+                fingerprintReadingsQualityScores[3 * i + 2] = 1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
 
-                readings.add(new RssiReading<>(accessPoint,
-                        rssi + errorRssi1 + errorRssi2,
+                readings.add(new RssiReading<>(accessPoint, rssi + errorRssi1 + errorRssi2,
                         Math.sqrt(RX_POWER_VARIANCE)));
-                readings.add(new RangingReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
+                readings.add(new RangingReading<>(accessPoint, Math.max(0.0, distance + errorRanging1 + errorRanging2),
                         RANGING_STD));
                 readings.add(new RangingAndRssiReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                        rssi + errorRssi1 + errorRssi2,
-                        RANGING_STD,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                        Math.max(0.0, distance + errorRanging1 + errorRanging2), rssi + errorRssi1 + errorRssi2,
+                        RANGING_STD, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
-            final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
-                    new Fingerprint<>(readings);
+            final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint = new Fingerprint<>(readings);
 
             final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores, sources,
-                            fingerprint, this);
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
+                            sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setRssiLinearSolverUsed(true);
             estimator.setRangingLinearSolverUsed(true);
@@ -6700,13 +6016,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -6714,7 +6030,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -6754,9 +6070,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateRangingPreliminaryNotRefined() throws LockedException,
-            NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateRangingPreliminaryNotRefined() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -6770,8 +6085,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
 
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
             final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
             final List<RangingReading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -6781,14 +6095,12 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             double errorRanging2;
             for (int i = 0; i < numSources; i++) {
                 final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
                 final String bssid = String.valueOf(i);
 
-                final WifiAccessPointLocated2D locatedAccessPoint =
-                        new WifiAccessPointLocated2D(bssid, FREQUENCY,
-                                accessPointPosition);
+                final WifiAccessPointLocated2D locatedAccessPoint = new WifiAccessPointLocated2D(bssid, FREQUENCY,
+                        accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -6805,13 +6117,10 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRanging1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRanging2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRanging1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRanging2));
 
-                readings.add(new RangingReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
+                readings.add(new RangingReading<>(accessPoint, Math.max(0.0, distance + errorRanging1 + errorRanging2),
                         RANGING_STD));
             }
 
@@ -6819,9 +6128,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     new RangingFingerprint<>(readings);
 
             final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores, sources,
-                            fingerprint, this);
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
+                            sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setRssiLinearSolverUsed(true);
             estimator.setRangingLinearSolverUsed(true);
@@ -6837,13 +6145,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -6851,7 +6159,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -6891,9 +6199,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateRssiPreliminaryNotRefined() throws LockedException,
-            NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateRssiPreliminaryNotRefined() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -6907,10 +6214,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
 
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(
-                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
             final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
             final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -6920,28 +6225,23 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             double errorRssi2;
             for (int i = 0; i < numSources; i++) {
                 final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
                 final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
                 final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -6953,13 +6253,10 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRssi2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi2));
 
-                readings.add(new RssiReading<>(accessPoint,
-                        rssi + errorRssi1 + errorRssi2,
+                readings.add(new RssiReading<>(accessPoint, rssi + errorRssi1 + errorRssi2,
                         Math.sqrt(RX_POWER_VARIANCE)));
             }
 
@@ -6967,9 +6264,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     new RssiFingerprint<>(readings);
 
             final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores, sources,
-                            fingerprint, this);
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
+                            sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setRssiLinearSolverUsed(true);
             estimator.setRangingLinearSolverUsed(true);
@@ -6985,13 +6281,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -6999,7 +6295,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -7039,9 +6335,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateRangingAndRssiPreliminaryNotRefined() throws LockedException,
-            NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateRangingAndRssiPreliminaryNotRefined() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -7055,8 +6350,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
 
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
@@ -7070,28 +6364,23 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             double errorRanging2;
             for (int i = 0; i < numSources; i++) {
                 final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
                 final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
                 final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -7107,25 +6396,19 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2 + errorRanging2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
 
                 readings.add(new RangingAndRssiReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                        rssi + errorRssi1 + errorRssi2,
-                        RANGING_STD,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                        Math.max(0.0, distance + errorRanging1 + errorRanging2), rssi + errorRssi1 + errorRssi2,
+                        RANGING_STD, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
             final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
                     new RangingAndRssiFingerprint<>(readings);
 
-            final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores, sources,
-                            fingerprint, this);
+            final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D(
+                    sourceQualityScores, fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setRssiLinearSolverUsed(true);
             estimator.setRangingLinearSolverUsed(true);
@@ -7141,13 +6424,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -7155,7 +6438,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -7195,9 +6478,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateMixedPreliminaryNotRefined() throws LockedException,
-            NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateMixedPreliminaryNotRefined() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -7211,8 +6493,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
 
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
@@ -7226,28 +6507,23 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             double errorRanging2;
             for (int i = 0; i < numSources; i++) {
                 final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
                 final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
                 final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -7263,36 +6539,26 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
 
-                fingerprintReadingsQualityScores[3 * i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2));
-                fingerprintReadingsQualityScores[3 * i + 1] = 1.0 /
-                        (1.0 + Math.abs(errorRanging2));
-                fingerprintReadingsQualityScores[3 * i + 2] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2 + errorRanging2));
+                fingerprintReadingsQualityScores[3 * i] = 1.0 / (1.0 + Math.abs(errorRssi2));
+                fingerprintReadingsQualityScores[3 * i + 1] = 1.0 / (1.0 + Math.abs(errorRanging2));
+                fingerprintReadingsQualityScores[3 * i + 2] = 1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
 
-                readings.add(new RssiReading<>(accessPoint,
-                        rssi + errorRssi1 + errorRssi2,
+                readings.add(new RssiReading<>(accessPoint, rssi + errorRssi1 + errorRssi2,
                         Math.sqrt(RX_POWER_VARIANCE)));
-                readings.add(new RangingReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
+                readings.add(new RangingReading<>(accessPoint, Math.max(0.0, distance + errorRanging1 + errorRanging2),
                         RANGING_STD));
                 readings.add(new RangingAndRssiReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                        rssi + errorRssi1 + errorRssi2,
-                        RANGING_STD,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                        Math.max(0.0, distance + errorRanging1 + errorRanging2), rssi + errorRssi1 + errorRssi2,
+                        RANGING_STD, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
-            final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
-                    new Fingerprint<>(readings);
+            final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint = new Fingerprint<>(readings);
 
             final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores, sources,
-                            fingerprint, this);
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
+                            sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setRssiLinearSolverUsed(true);
             estimator.setRangingLinearSolverUsed(true);
@@ -7308,13 +6574,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -7322,7 +6588,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -7362,9 +6628,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateRangingLinearDisabled() throws LockedException,
-            NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateRangingLinearDisabled() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -7378,8 +6643,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
 
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
             final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
             final List<RangingReading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -7394,9 +6658,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
 
                 final String bssid = String.valueOf(i);
 
-                final WifiAccessPointLocated2D locatedAccessPoint =
-                        new WifiAccessPointLocated2D(bssid, FREQUENCY,
-                                accessPointPosition);
+                final WifiAccessPointLocated2D locatedAccessPoint = new WifiAccessPointLocated2D(bssid, FREQUENCY,
+                        accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -7413,13 +6676,10 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRanging1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRanging2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRanging1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRanging2));
 
-                readings.add(new RangingReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
+                readings.add(new RangingReading<>(accessPoint, Math.max(0.0, distance + errorRanging1 + errorRanging2),
                         RANGING_STD));
             }
 
@@ -7427,9 +6687,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     new RangingFingerprint<>(readings);
 
             final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores, sources,
-                            fingerprint, this);
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
+                            sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setRssiLinearSolverUsed(false);
             estimator.setRangingLinearSolverUsed(false);
@@ -7445,13 +6704,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -7459,7 +6718,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -7499,8 +6758,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateRssiLinearDisabled() throws LockedException,
-            NotReadyException, RobustEstimatorException,
+    public void testEstimateRssiLinearDisabled() throws LockedException, NotReadyException, RobustEstimatorException,
             NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
@@ -7515,8 +6773,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
 
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
@@ -7528,28 +6785,23 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             double errorRssi2;
             for (int i = 0; i < numSources; i++) {
                 final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
                 final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
                 final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -7561,23 +6813,18 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRssi2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi2));
 
-                readings.add(new RssiReading<>(accessPoint,
-                        rssi + errorRssi1 + errorRssi2,
+                readings.add(new RssiReading<>(accessPoint, rssi + errorRssi1 + errorRssi2,
                         Math.sqrt(RX_POWER_VARIANCE)));
             }
 
             final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
                     new RssiFingerprint<>(readings);
 
-            final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores, sources,
-                            fingerprint, this);
+            final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D(
+                    sourceQualityScores, fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setRssiLinearSolverUsed(false);
             estimator.setRangingLinearSolverUsed(false);
@@ -7593,13 +6840,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -7607,7 +6854,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -7647,9 +6894,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateRangingAndRssiLinearDisabled() throws LockedException,
-            NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateRangingAndRssiLinearDisabled() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -7663,8 +6909,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
 
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
@@ -7678,28 +6923,23 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             double errorRanging2;
             for (int i = 0; i < numSources; i++) {
                 final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
                 final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
                 final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -7715,25 +6955,20 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2 + errorRanging2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
 
                 readings.add(new RangingAndRssiReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                        rssi + errorRssi1 + errorRssi2,
-                        RANGING_STD,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                        Math.max(0.0, distance + errorRanging1 + errorRanging2), rssi + errorRssi1 + errorRssi2,
+                        RANGING_STD, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
             final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
                     new RangingAndRssiFingerprint<>(readings);
 
             final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores, sources,
-                            fingerprint, this);
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
+                            sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setRssiLinearSolverUsed(false);
             estimator.setRangingLinearSolverUsed(false);
@@ -7749,13 +6984,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -7763,7 +6998,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -7803,8 +7038,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateMixedLinearDisabled() throws LockedException,
-            NotReadyException, RobustEstimatorException,
+    public void testEstimateMixedLinearDisabled() throws LockedException, NotReadyException, RobustEstimatorException,
             NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
@@ -7819,10 +7053,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
 
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(
-                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
             final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -7834,28 +7066,23 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             double errorRanging2;
             for (int i = 0; i < numSources; i++) {
                 final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
                 final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
                 final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -7871,36 +7098,26 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
 
-                fingerprintReadingsQualityScores[3 * i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2));
-                fingerprintReadingsQualityScores[3 * i + 1] = 1.0 /
-                        (1.0 + Math.abs(errorRanging2));
-                fingerprintReadingsQualityScores[3 * i + 2] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2 + errorRanging2));
+                fingerprintReadingsQualityScores[3 * i] = 1.0 / (1.0 + Math.abs(errorRssi2));
+                fingerprintReadingsQualityScores[3 * i + 1] = 1.0 / (1.0 + Math.abs(errorRanging2));
+                fingerprintReadingsQualityScores[3 * i + 2] = 1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
 
-                readings.add(new RssiReading<>(accessPoint,
-                        rssi + errorRssi1 + errorRssi2,
+                readings.add(new RssiReading<>(accessPoint, rssi + errorRssi1 + errorRssi2,
                         Math.sqrt(RX_POWER_VARIANCE)));
-                readings.add(new RangingReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
+                readings.add(new RangingReading<>(accessPoint, Math.max(0.0, distance + errorRanging1 + errorRanging2),
                         RANGING_STD));
                 readings.add(new RangingAndRssiReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                        rssi + errorRssi1 + errorRssi2,
-                        RANGING_STD,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                        Math.max(0.0, distance + errorRanging1 + errorRanging2), rssi + errorRssi1 + errorRssi2,
+                        RANGING_STD, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
-            final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
-                    new Fingerprint<>(readings);
+            final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint = new Fingerprint<>(readings);
 
             final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores, sources,
-                            fingerprint, this);
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
+                            sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setRssiLinearSolverUsed(false);
             estimator.setRangingLinearSolverUsed(false);
@@ -7916,13 +7133,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -7930,7 +7147,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -7970,13 +7187,10 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateRangingLinearDisabledAndNotPreliminaryRefined()
-            throws LockedException,
-            NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateRangingLinearDisabledAndNotPreliminaryRefined() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, STD_OUTLIER_ERROR);
+        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, STD_OUTLIER_ERROR);
 
         int numValidPosition = 0;
         double positionStd = 0.0;
@@ -7987,8 +7201,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
 
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
             final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
             final List<RangingReading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -7998,14 +7211,12 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             double errorRanging2;
             for (int i = 0; i < numSources; i++) {
                 final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
                 final String bssid = String.valueOf(i);
 
-                final WifiAccessPointLocated2D locatedAccessPoint =
-                        new WifiAccessPointLocated2D(bssid, FREQUENCY,
-                                accessPointPosition);
+                final WifiAccessPointLocated2D locatedAccessPoint = new WifiAccessPointLocated2D(bssid, FREQUENCY,
+                        accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -8022,23 +7233,18 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRanging1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRanging2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRanging1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRanging2));
 
-                readings.add(new RangingReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
+                readings.add(new RangingReading<>(accessPoint, Math.max(0.0, distance + errorRanging1 + errorRanging2),
                         RANGING_STD));
             }
 
             final RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
                     new RangingFingerprint<>(readings);
 
-            final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores, sources,
-                            fingerprint, this);
+            final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D(
+                    sourceQualityScores, fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setRssiLinearSolverUsed(false);
             estimator.setRangingLinearSolverUsed(false);
@@ -8054,13 +7260,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -8068,7 +7274,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -8108,10 +7314,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateRssiLinearDisabledAndNotPreliminaryRefined()
-            throws LockedException,
-            NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateRssiLinearDisabledAndNotPreliminaryRefined() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -8125,8 +7329,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
 
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
@@ -8138,28 +7341,23 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             double errorRssi2;
             for (int i = 0; i < numSources; i++) {
                 final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
                 final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
                 final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -8171,23 +7369,18 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRssi2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi2));
 
-                readings.add(new RssiReading<>(accessPoint,
-                        rssi + errorRssi1 + errorRssi2,
+                readings.add(new RssiReading<>(accessPoint, rssi + errorRssi1 + errorRssi2,
                         Math.sqrt(RX_POWER_VARIANCE)));
             }
 
             final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
                     new RssiFingerprint<>(readings);
 
-            final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores, sources,
-                            fingerprint, this);
+            final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D(
+                    sourceQualityScores, fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setRssiLinearSolverUsed(false);
             estimator.setRangingLinearSolverUsed(false);
@@ -8203,13 +7396,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -8217,7 +7410,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -8257,10 +7450,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateRangingAndRssiLinearDisabledAndNotPreliminaryRefined()
-            throws LockedException,
-            NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateRangingAndRssiLinearDisabledAndNotPreliminaryRefined() throws LockedException,
+            NotReadyException, RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -8274,10 +7465,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
 
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(
-                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
             final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
             final List<RangingAndRssiReading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -8289,20 +7478,16 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             double errorRanging2;
             for (int i = 0; i < numSources; i++) {
                 final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
                 final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
                 final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -8326,25 +7511,19 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2 + errorRanging2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
 
                 readings.add(new RangingAndRssiReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                        rssi + errorRssi1 + errorRssi2,
-                        RANGING_STD,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                        Math.max(0.0, distance + errorRanging1 + errorRanging2), rssi + errorRssi1 + errorRssi2,
+                        RANGING_STD, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
             final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
                     new RangingAndRssiFingerprint<>(readings);
 
-            final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores, sources,
-                            fingerprint, this);
+            final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D(
+                    sourceQualityScores, fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setRssiLinearSolverUsed(false);
             estimator.setRangingLinearSolverUsed(false);
@@ -8360,13 +7539,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -8374,7 +7553,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -8414,10 +7593,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateMixedLinearDisabledAndNotPreliminaryRefined()
-            throws LockedException,
-            NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateMixedLinearDisabledAndNotPreliminaryRefined() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -8431,8 +7608,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
 
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
@@ -8446,28 +7622,23 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             double errorRanging2;
             for (int i = 0; i < numSources; i++) {
                 final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
                 final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
                 final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -8483,36 +7654,26 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
 
-                fingerprintReadingsQualityScores[3 * i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2));
-                fingerprintReadingsQualityScores[3 * i + 1] = 1.0 /
-                        (1.0 + Math.abs(errorRanging2));
-                fingerprintReadingsQualityScores[3 * i + 2] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2 + errorRanging2));
+                fingerprintReadingsQualityScores[3 * i] = 1.0 / (1.0 + Math.abs(errorRssi2));
+                fingerprintReadingsQualityScores[3 * i + 1] = 1.0 / (1.0 + Math.abs(errorRanging2));
+                fingerprintReadingsQualityScores[3 * i + 2] = 1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
 
-                readings.add(new RssiReading<>(accessPoint,
-                        rssi + errorRssi1 + errorRssi2,
+                readings.add(new RssiReading<>(accessPoint, rssi + errorRssi1 + errorRssi2,
                         Math.sqrt(RX_POWER_VARIANCE)));
-                readings.add(new RangingReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
+                readings.add(new RangingReading<>(accessPoint, Math.max(0.0, distance + errorRanging1 + errorRanging2),
                         RANGING_STD));
                 readings.add(new RangingAndRssiReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                        rssi + errorRssi1 + errorRssi2,
-                        RANGING_STD,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                        Math.max(0.0, distance + errorRanging1 + errorRanging2), rssi + errorRssi1 + errorRssi2,
+                        RANGING_STD, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
-            final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
-                    new Fingerprint<>(readings);
+            final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint = new Fingerprint<>(readings);
 
             final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores, sources,
-                            fingerprint, this);
+                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingsQualityScores,
+                            sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setRssiLinearSolverUsed(false);
             estimator.setRangingLinearSolverUsed(false);
@@ -8528,13 +7689,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -8542,7 +7703,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -8582,13 +7743,10 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateRangingLinearDisabledWithInitialPosition()
-            throws LockedException,
-            NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateRangingLinearDisabledWithInitialPosition() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, STD_OUTLIER_ERROR);
+        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, STD_OUTLIER_ERROR);
 
         int numValidPosition = 0;
         double positionStd = 0.0;
@@ -8599,8 +7757,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
 
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
             final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
             final List<RangingReading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -8610,14 +7767,12 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             double errorRanging2;
             for (int i = 0; i < numSources; i++) {
                 final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
                 final String bssid = String.valueOf(i);
 
-                final WifiAccessPointLocated2D locatedAccessPoint =
-                        new WifiAccessPointLocated2D(bssid, FREQUENCY,
-                                accessPointPosition);
+                final WifiAccessPointLocated2D locatedAccessPoint = new WifiAccessPointLocated2D(bssid, FREQUENCY,
+                        accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -8634,23 +7789,18 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRanging1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRanging2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRanging1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRanging2));
 
-                readings.add(new RangingReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
+                readings.add(new RangingReading<>(accessPoint, Math.max(0.0, distance + errorRanging1 + errorRanging2),
                         RANGING_STD));
             }
 
             final RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
                     new RangingFingerprint<>(readings);
 
-            final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores, sources,
-                            fingerprint, this);
+            final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D(
+                    sourceQualityScores, fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setRssiLinearSolverUsed(false);
             estimator.setRangingLinearSolverUsed(false);
@@ -8667,13 +7817,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -8681,7 +7831,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -8721,13 +7871,10 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateRssiLinearDisabledWithInitialPosition()
-            throws LockedException,
-            NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateRssiLinearDisabledWithInitialPosition() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, STD_OUTLIER_ERROR);
+        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, STD_OUTLIER_ERROR);
 
         int numValidPosition = 0;
         double positionStd = 0.0;
@@ -8738,10 +7885,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
 
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(
-                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
             final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
             final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -8751,28 +7896,23 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             double errorRssi2;
             for (int i = 0; i < numSources; i++) {
                 final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
                 final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
                 final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -8784,23 +7924,18 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRssi2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi2));
 
-                readings.add(new RssiReading<>(accessPoint,
-                        rssi + errorRssi1 + errorRssi2,
+                readings.add(new RssiReading<>(accessPoint, rssi + errorRssi1 + errorRssi2,
                         Math.sqrt(RX_POWER_VARIANCE)));
             }
 
             final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
                     new RssiFingerprint<>(readings);
 
-            final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores, sources,
-                            fingerprint, this);
+            final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D(
+                    sourceQualityScores, fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setRssiLinearSolverUsed(false);
             estimator.setRangingLinearSolverUsed(false);
@@ -8817,13 +7952,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -8831,7 +7966,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -8871,13 +8006,10 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateRangingAndRssiLinearDisabledWithInitialPosition()
-            throws LockedException,
-            NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateRangingAndRssiLinearDisabledWithInitialPosition() throws LockedException,
+            NotReadyException, RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, STD_OUTLIER_ERROR);
+        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, STD_OUTLIER_ERROR);
 
         int numValidPosition = 0;
         double positionStd = 0.0;
@@ -8888,10 +8020,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
 
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(
-                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
             final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
             final List<RangingAndRssiReading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -8903,28 +8033,23 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             double errorRanging2;
             for (int i = 0; i < numSources; i++) {
                 final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
                 final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
                 final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -8940,25 +8065,19 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
-                fingerprintReadingsQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2 + errorRanging2));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                fingerprintReadingsQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
 
                 readings.add(new RangingAndRssiReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                        rssi + errorRssi1 + errorRssi2,
-                        RANGING_STD,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                        Math.max(0.0, distance + errorRanging1 + errorRanging2), rssi + errorRssi1 + errorRssi2,
+                        RANGING_STD, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
             final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
                     new RangingAndRssiFingerprint<>(readings);
 
-            final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores, sources,
-                            fingerprint, this);
+            final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D(
+                    sourceQualityScores, fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setRssiLinearSolverUsed(false);
             estimator.setRangingLinearSolverUsed(false);
@@ -8975,13 +8094,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -8989,7 +8108,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -9029,13 +8148,10 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateMixedLinearDisabledWithInitialPosition()
-            throws LockedException,
-            NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateMixedLinearDisabledWithInitialPosition() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, STD_OUTLIER_ERROR);
+        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, STD_OUTLIER_ERROR);
 
         int numValidPosition = 0;
         double positionStd = 0.0;
@@ -9046,10 +8162,8 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
 
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double pathLossExponent = randomizer.nextDouble(
-                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
             final List<WifiAccessPointWithPowerAndLocated2D> sources = new ArrayList<>();
             final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
@@ -9061,28 +8175,23 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             double errorRanging2;
             for (int i = 0; i < numSources; i++) {
                 final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
                 final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
                 final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -9098,36 +8207,25 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
 
-                fingerprintReadingsQualityScores[3 * i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2));
-                fingerprintReadingsQualityScores[3 * i + 1] = 1.0 /
-                        (1.0 + Math.abs(errorRanging2));
-                fingerprintReadingsQualityScores[3 * i + 2] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2 + errorRanging2));
+                fingerprintReadingsQualityScores[3 * i] = 1.0 / (1.0 + Math.abs(errorRssi2));
+                fingerprintReadingsQualityScores[3 * i + 1] = 1.0 / (1.0 + Math.abs(errorRanging2));
+                fingerprintReadingsQualityScores[3 * i + 2] = 1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
 
-                readings.add(new RssiReading<>(accessPoint,
-                        rssi + errorRssi1 + errorRssi2,
+                readings.add(new RssiReading<>(accessPoint, rssi + errorRssi1 + errorRssi2,
                         Math.sqrt(RX_POWER_VARIANCE)));
-                readings.add(new RangingReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
+                readings.add(new RangingReading<>(accessPoint, Math.max(0.0, distance + errorRanging1 + errorRanging2),
                         RANGING_STD));
                 readings.add(new RangingAndRssiReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                        rssi + errorRssi1 + errorRssi2,
-                        RANGING_STD,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                        Math.max(0.0, distance + errorRanging1 + errorRanging2), rssi + errorRssi1 + errorRssi2,
+                        RANGING_STD, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
-            final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
-                    new Fingerprint<>(readings);
+            final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint = new Fingerprint<>(readings);
 
-            final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(
-                            sourceQualityScores, fingerprintReadingsQualityScores, sources,
-                            fingerprint, this);
+            final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D(
+                    sourceQualityScores, fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setRssiLinearSolverUsed(false);
             estimator.setRangingLinearSolverUsed(false);
@@ -9144,13 +8242,13 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -9158,7 +8256,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNotNull(estimator.getDistances());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -9201,8 +8299,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     public void testEstimateLargerPreliminarySubsetSize() throws LockedException, NotReadyException,
             RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, STD_OUTLIER_ERROR);
+        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, STD_OUTLIER_ERROR);
 
         int numValidPosition = 0;
         double positionStd = 0.0;
@@ -9213,8 +8310,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
 
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
             final double pathLossExponent = randomizer.nextDouble(
                     MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
@@ -9228,28 +8324,23 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             double errorRanging2;
             for (int i = 0; i < numSources; i++) {
                 final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
                 final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
                 final double transmittedPower = Utils.dBmToPower(transmittedPowerdBm);
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointWithPowerAndLocated2D locatedAccessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(bssid,
-                                FREQUENCY, transmittedPowerdBm,
-                                Math.sqrt(TX_POWER_VARIANCE),
-                                pathLossExponent,
-                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE),
-                                accessPointPosition);
+                        new WifiAccessPointWithPowerAndLocated2D(bssid, FREQUENCY, transmittedPowerdBm,
+                                Math.sqrt(TX_POWER_VARIANCE), pathLossExponent,
+                                Math.sqrt(PATH_LOSS_EXPONENT_VARIANCE), accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
                 final double distance = position.distanceTo(accessPointPosition);
 
-                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower,
-                        distance, pathLossExponent));
+                final double rssi = Utils.powerTodBm(receivedPower(transmittedPower, distance, pathLossExponent));
 
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
                     // outlier
@@ -9265,36 +8356,25 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
                     errorRanging2 = 0.0;
                 }
 
-                sourceQualityScores[i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi1 + errorRanging1));
+                sourceQualityScores[i] = 1.0 / (1.0 + Math.abs(errorRssi1 + errorRanging1));
 
-                fingerprintReadingsQualityScores[3 * i] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2));
-                fingerprintReadingsQualityScores[3 * i + 1] = 1.0 /
-                        (1.0 + Math.abs(errorRanging2));
-                fingerprintReadingsQualityScores[3 * i + 2] = 1.0 /
-                        (1.0 + Math.abs(errorRssi2 + errorRanging2));
+                fingerprintReadingsQualityScores[3 * i] = 1.0 / (1.0 + Math.abs(errorRssi2));
+                fingerprintReadingsQualityScores[3 * i + 1] = 1.0 / (1.0 + Math.abs(errorRanging2));
+                fingerprintReadingsQualityScores[3 * i + 2] = 1.0 / (1.0 + Math.abs(errorRssi2 + errorRanging2));
 
-                readings.add(new RssiReading<>(accessPoint,
-                        rssi + errorRssi1 + errorRssi2,
+                readings.add(new RssiReading<>(accessPoint, rssi + errorRssi1 + errorRssi2,
                         Math.sqrt(RX_POWER_VARIANCE)));
-                readings.add(new RangingReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
+                readings.add(new RangingReading<>(accessPoint, Math.max(0.0, distance + errorRanging1 + errorRanging2),
                         RANGING_STD));
                 readings.add(new RangingAndRssiReading<>(accessPoint,
-                        Math.max(0.0, distance + errorRanging1 + errorRanging2),
-                        rssi + errorRssi1 + errorRssi2,
-                        RANGING_STD,
-                        Math.sqrt(RX_POWER_VARIANCE)));
+                        Math.max(0.0, distance + errorRanging1 + errorRanging2), rssi + errorRssi1 + errorRssi2,
+                        RANGING_STD, Math.sqrt(RX_POWER_VARIANCE)));
             }
 
-            final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint =
-                    new Fingerprint<>(readings);
+            final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint = new Fingerprint<>(readings);
 
-            final SequentialRobustMixedPositionEstimator2D estimator =
-                    new SequentialRobustMixedPositionEstimator2D(sourceQualityScores,
-                            fingerprintReadingsQualityScores, sources, fingerprint,
-                            this);
+            final SequentialRobustMixedPositionEstimator2D estimator = new SequentialRobustMixedPositionEstimator2D(
+                    sourceQualityScores, fingerprintReadingsQualityScores, sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setRangingPreliminarySubsetSize(4);
             estimator.setRssiPreliminarySubsetSize(4);
@@ -9308,14 +8388,14 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getPositions());
             assertNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
-            assertEquals(estimateProgressChange, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
+            assertEquals(0, estimateProgressChange);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
@@ -9324,7 +8404,7 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
 
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -9373,23 +8453,20 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
     }
 
     @Override
-    public void onEstimateStart(
-            final SequentialRobustMixedPositionEstimator<Point2D> estimator) {
+    public void onEstimateStart(final SequentialRobustMixedPositionEstimator<Point2D> estimator) {
         estimateStart++;
         checkLocked((SequentialRobustMixedPositionEstimator2D) estimator);
     }
 
     @Override
-    public void onEstimateEnd(
-            final SequentialRobustMixedPositionEstimator<Point2D> estimator) {
+    public void onEstimateEnd(final SequentialRobustMixedPositionEstimator<Point2D> estimator) {
         estimateEnd++;
         checkLocked((SequentialRobustMixedPositionEstimator2D) estimator);
     }
 
     @Override
-    public void onEstimateProgressChange(
-            final SequentialRobustMixedPositionEstimator<Point2D> estimator,
-            final float progress) {
+    public void onEstimateProgressChange(final SequentialRobustMixedPositionEstimator<Point2D> estimator,
+                                         final float progress) {
         estimateProgressChange++;
         checkLocked((SequentialRobustMixedPositionEstimator2D) estimator);
     }
@@ -9404,20 +8481,18 @@ public class SequentialRobustMixedPositionEstimator2DTest implements
         // lambda = c/f, where lambda is wavelength,
         // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the received Gain
         // Pr = Pte*c^2/((4*pi*f)^2 * d^2)
-        final double k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI * FREQUENCY),
-                pathLossExponent);
-        return equivalentTransmittedPower * k /
-                Math.pow(distance, pathLossExponent);
+        final double k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI * FREQUENCY), pathLossExponent);
+        return equivalentTransmittedPower * k / Math.pow(distance, pathLossExponent);
     }
 
     private void checkLocked(final SequentialRobustMixedPositionEstimator2D estimator) {
         try {
-            estimator.setRangingRobustMethod(RobustEstimatorMethod.PROMedS);
+            estimator.setRangingRobustMethod(RobustEstimatorMethod.PROMEDS);
             fail("LockedException expected but not thrown");
         } catch (final LockedException ignore) {
         }
         try {
-            estimator.setRssiRobustMethod(RobustEstimatorMethod.PROMedS);
+            estimator.setRssiRobustMethod(RobustEstimatorMethod.PROMEDS);
             fail("LockedException expected but not thrown");
         } catch (final LockedException ignore) {
         }

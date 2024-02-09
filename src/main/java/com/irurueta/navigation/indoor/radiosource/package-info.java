@@ -15,6 +15,6 @@
  */
 
 /**
- * Estimates radio sources using WiFi/Beacons signals.
+ * Estimates radio sources using Wi-Fi/Beacons signals.
  */
 package com.irurueta.navigation.indoor.radiosource;

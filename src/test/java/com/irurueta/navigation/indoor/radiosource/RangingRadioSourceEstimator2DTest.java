@@ -76,20 +76,19 @@ public class RangingRadioSourceEstimator2DTest implements
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         // test empty constructor
-        RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                new RangingRadioSourceEstimator2D<>();
+        RangingRadioSourceEstimator2D<WifiAccessPoint> estimator = new RangingRadioSourceEstimator2D<>();
 
         // check default values
-        assertEquals(estimator.getMinReadings(), 3);
-        assertEquals(estimator.getNumberOfDimensions(), 2);
+        assertEquals(3, estimator.getMinReadings());
+        assertEquals(2, estimator.getNumberOfDimensions());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getEstimatedRadioSource());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isNonLinearSolverEnabled());
-        assertEquals(estimator.isHomogeneousLinearSolverUsed(),
-                RangingRadioSourceEstimator.DEFAULT_USE_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.getUseReadingPositionCovariance(),
-                RangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES);
+        assertEquals(RangingRadioSourceEstimator.DEFAULT_USE_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isHomogeneousLinearSolverUsed());
+        assertEquals(RangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES,
+                estimator.getUseReadingPositionCovariance());
         assertFalse(estimator.isLocked());
         assertNull(estimator.getReadings());
         assertNull(estimator.getListener());
@@ -105,25 +104,24 @@ public class RangingRadioSourceEstimator2DTest implements
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            readings.add(new RangingReadingLocated2D<>(accessPoint, 0.0,
-                    position));
+            readings.add(new RangingReadingLocated2D<>(accessPoint, 0.0, position));
         }
 
         estimator = new RangingRadioSourceEstimator2D<>(readings);
 
         // check default values
-        assertEquals(estimator.getMinReadings(), 3);
-        assertEquals(estimator.getNumberOfDimensions(), 2);
+        assertEquals(3, estimator.getMinReadings());
+        assertEquals(2, estimator.getNumberOfDimensions());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getEstimatedRadioSource());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isNonLinearSolverEnabled());
-        assertEquals(estimator.isHomogeneousLinearSolverUsed(),
-                RangingRadioSourceEstimator.DEFAULT_USE_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.getUseReadingPositionCovariance(),
-                RangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES);
+        assertEquals(RangingRadioSourceEstimator.DEFAULT_USE_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isHomogeneousLinearSolverUsed());
+        assertEquals(RangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES,
+                estimator.getUseReadingPositionCovariance());
         assertFalse(estimator.isLocked());
-        assertSame(estimator.getReadings(), readings);
+        assertSame(readings, estimator.getReadings());
         assertNull(estimator.getListener());
         assertTrue(estimator.isReady());
         assertNull(estimator.getEstimatedPositionCoordinates());
@@ -150,19 +148,19 @@ public class RangingRadioSourceEstimator2DTest implements
         estimator = new RangingRadioSourceEstimator2D<>(this);
 
         // check default values
-        assertEquals(estimator.getMinReadings(), 3);
-        assertEquals(estimator.getNumberOfDimensions(), 2);
+        assertEquals(3, estimator.getMinReadings());
+        assertEquals(2, estimator.getNumberOfDimensions());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getEstimatedRadioSource());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isNonLinearSolverEnabled());
-        assertEquals(estimator.isHomogeneousLinearSolverUsed(),
-                RangingRadioSourceEstimator.DEFAULT_USE_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.getUseReadingPositionCovariance(),
-                RangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES);
+        assertEquals(RangingRadioSourceEstimator.DEFAULT_USE_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isHomogeneousLinearSolverUsed());
+        assertEquals(RangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES,
+                estimator.getUseReadingPositionCovariance());
         assertFalse(estimator.isLocked());
         assertNull(estimator.getReadings());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertFalse(estimator.isReady());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getEstimatedCovariance());
@@ -172,19 +170,19 @@ public class RangingRadioSourceEstimator2DTest implements
         estimator = new RangingRadioSourceEstimator2D<>(readings, this);
 
         // check default values
-        assertEquals(estimator.getMinReadings(), 3);
-        assertEquals(estimator.getNumberOfDimensions(), 2);
+        assertEquals(3, estimator.getMinReadings());
+        assertEquals(2, estimator.getNumberOfDimensions());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getEstimatedRadioSource());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isNonLinearSolverEnabled());
-        assertEquals(estimator.isHomogeneousLinearSolverUsed(),
-                RangingRadioSourceEstimator.DEFAULT_USE_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.getUseReadingPositionCovariance(),
-                RangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES);
+        assertEquals(RangingRadioSourceEstimator.DEFAULT_USE_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isHomogeneousLinearSolverUsed());
+        assertEquals(RangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES,
+                estimator.getUseReadingPositionCovariance());
         assertFalse(estimator.isLocked());
-        assertSame(estimator.getReadings(), readings);
-        assertSame(estimator.getListener(), this);
+        assertSame(readings, estimator.getReadings());
+        assertSame(this, estimator.getListener());
         assertTrue(estimator.isReady());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getEstimatedCovariance());
@@ -194,15 +192,13 @@ public class RangingRadioSourceEstimator2DTest implements
         estimator = null;
         try {
             estimator = new RangingRadioSourceEstimator2D<>(
-                    (List<RangingReadingLocated2D<WifiAccessPoint>>) null,
-                    this);
+                    (List<RangingReadingLocated2D<WifiAccessPoint>>) null, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
             estimator = new RangingRadioSourceEstimator2D<>(
-                    new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>(),
-                    this);
+                    new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>(), this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -215,16 +211,16 @@ public class RangingRadioSourceEstimator2DTest implements
         estimator = new RangingRadioSourceEstimator2D<>(initialPosition);
 
         // check default values
-        assertEquals(estimator.getMinReadings(), 3);
-        assertEquals(estimator.getNumberOfDimensions(), 2);
+        assertEquals(3, estimator.getMinReadings());
+        assertEquals(2, estimator.getNumberOfDimensions());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getEstimatedRadioSource());
-        assertSame(estimator.getInitialPosition(), initialPosition);
+        assertSame(initialPosition, estimator.getInitialPosition());
         assertTrue(estimator.isNonLinearSolverEnabled());
-        assertEquals(estimator.isHomogeneousLinearSolverUsed(),
-                RangingRadioSourceEstimator.DEFAULT_USE_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.getUseReadingPositionCovariance(),
-                RangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES);
+        assertEquals(RangingRadioSourceEstimator.DEFAULT_USE_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isHomogeneousLinearSolverUsed());
+        assertEquals(RangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES,
+                estimator.getUseReadingPositionCovariance());
         assertFalse(estimator.isLocked());
         assertNull(estimator.getReadings());
         assertNull(estimator.getListener());
@@ -237,18 +233,18 @@ public class RangingRadioSourceEstimator2DTest implements
         estimator = new RangingRadioSourceEstimator2D<>(readings, initialPosition);
 
         // check default values
-        assertEquals(estimator.getMinReadings(), 3);
-        assertEquals(estimator.getNumberOfDimensions(), 2);
+        assertEquals(3, estimator.getMinReadings());
+        assertEquals(2, estimator.getNumberOfDimensions());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getEstimatedRadioSource());
-        assertSame(estimator.getInitialPosition(), initialPosition);
+        assertSame(initialPosition, estimator.getInitialPosition());
         assertTrue(estimator.isNonLinearSolverEnabled());
-        assertEquals(estimator.isHomogeneousLinearSolverUsed(),
-                RangingRadioSourceEstimator.DEFAULT_USE_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.getUseReadingPositionCovariance(),
-                RangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES);
+        assertEquals(RangingRadioSourceEstimator.DEFAULT_USE_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isHomogeneousLinearSolverUsed());
+        assertEquals(RangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES,
+                estimator.getUseReadingPositionCovariance());
         assertFalse(estimator.isLocked());
-        assertSame(estimator.getReadings(), readings);
+        assertSame(readings, estimator.getReadings());
         assertNull(estimator.getListener());
         assertTrue(estimator.isReady());
         assertNull(estimator.getEstimatedPositionCoordinates());
@@ -258,15 +254,13 @@ public class RangingRadioSourceEstimator2DTest implements
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new RangingRadioSourceEstimator2D<>(null,
-                    initialPosition);
+            estimator = new RangingRadioSourceEstimator2D<>(null, initialPosition);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
             estimator = new RangingRadioSourceEstimator2D<>(
-                    new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>(),
-                    initialPosition);
+                    new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>(), initialPosition);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -276,42 +270,41 @@ public class RangingRadioSourceEstimator2DTest implements
         estimator = new RangingRadioSourceEstimator2D<>(initialPosition, this);
 
         // check default values
-        assertEquals(estimator.getMinReadings(), 3);
-        assertEquals(estimator.getNumberOfDimensions(), 2);
+        assertEquals(3, estimator.getMinReadings());
+        assertEquals(2, estimator.getNumberOfDimensions());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getEstimatedRadioSource());
-        assertSame(estimator.getInitialPosition(), initialPosition);
+        assertSame(initialPosition, estimator.getInitialPosition());
         assertTrue(estimator.isNonLinearSolverEnabled());
-        assertEquals(estimator.isHomogeneousLinearSolverUsed(),
-                RangingRadioSourceEstimator.DEFAULT_USE_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.getUseReadingPositionCovariance(),
-                RangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES);
+        assertEquals(RangingRadioSourceEstimator.DEFAULT_USE_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isHomogeneousLinearSolverUsed());
+        assertEquals(RangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES,
+                estimator.getUseReadingPositionCovariance());
         assertFalse(estimator.isLocked());
         assertNull(estimator.getReadings());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertFalse(estimator.isReady());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getEstimatedCovariance());
         assertNull(estimator.getEstimatedPositionCovariance());
 
         // test constructor with readings, initial position and listener
-        estimator = new RangingRadioSourceEstimator2D<>(readings, initialPosition,
-                this);
+        estimator = new RangingRadioSourceEstimator2D<>(readings, initialPosition, this);
 
         // check default values
-        assertEquals(estimator.getMinReadings(), 3);
-        assertEquals(estimator.getNumberOfDimensions(), 2);
+        assertEquals(3, estimator.getMinReadings());
+        assertEquals(2, estimator.getNumberOfDimensions());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getEstimatedRadioSource());
-        assertSame(estimator.getInitialPosition(), initialPosition);
+        assertSame(initialPosition, estimator.getInitialPosition());
         assertTrue(estimator.isNonLinearSolverEnabled());
-        assertEquals(estimator.isHomogeneousLinearSolverUsed(),
-                RangingRadioSourceEstimator.DEFAULT_USE_HOMOGENEOUS_LINEAR_SOLVER);
-        assertEquals(estimator.getUseReadingPositionCovariance(),
-                RangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES);
+        assertEquals(RangingRadioSourceEstimator.DEFAULT_USE_HOMOGENEOUS_LINEAR_SOLVER,
+                estimator.isHomogeneousLinearSolverUsed());
+        assertEquals(RangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES,
+                estimator.getUseReadingPositionCovariance());
         assertFalse(estimator.isLocked());
-        assertSame(estimator.getReadings(), readings);
-        assertSame(estimator.getListener(), this);
+        assertSame(readings, estimator.getReadings());
+        assertSame(this, estimator.getListener());
         assertTrue(estimator.isReady());
         assertNull(estimator.getEstimatedPositionCoordinates());
         assertNull(estimator.getEstimatedCovariance());
@@ -320,15 +313,13 @@ public class RangingRadioSourceEstimator2DTest implements
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new RangingRadioSourceEstimator2D<>(null,
-                    initialPosition, this);
+            estimator = new RangingRadioSourceEstimator2D<>(null, initialPosition, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
             estimator = new RangingRadioSourceEstimator2D<>(
-                    new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>(),
-                    initialPosition, this);
+                    new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>(), initialPosition, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -337,8 +328,7 @@ public class RangingRadioSourceEstimator2DTest implements
 
     @Test
     public void testGetSetInitialPosition() throws LockedException {
-        final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                new RangingRadioSourceEstimator2D<>();
+        final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator = new RangingRadioSourceEstimator2D<>();
 
         // check default value
         assertNull(estimator.getInitialPosition());
@@ -351,13 +341,12 @@ public class RangingRadioSourceEstimator2DTest implements
         estimator.setInitialPosition(initialPosition);
 
         // check
-        assertSame(estimator.getInitialPosition(), initialPosition);
+        assertSame(initialPosition, estimator.getInitialPosition());
     }
 
     @Test
     public void testIsSetNonLinearSolverEnabled() throws LockedException {
-        final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                new RangingRadioSourceEstimator2D<>();
+        final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator = new RangingRadioSourceEstimator2D<>();
 
         // check default value
         assertTrue(estimator.isNonLinearSolverEnabled());
@@ -377,8 +366,7 @@ public class RangingRadioSourceEstimator2DTest implements
 
     @Test
     public void testIsSetHomogeneousLinearSolverUsed() throws LockedException {
-        final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                new RangingRadioSourceEstimator2D<>();
+        final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator = new RangingRadioSourceEstimator2D<>();
 
         // check default value
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
@@ -398,20 +386,19 @@ public class RangingRadioSourceEstimator2DTest implements
 
     @Test
     public void testGetSetUseReadingPositionCovariance() throws LockedException {
-        final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                new RangingRadioSourceEstimator2D<>();
+        final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator = new RangingRadioSourceEstimator2D<>();
 
         // check default value
-        assertEquals(estimator.getUseReadingPositionCovariance(),
-                RangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES);
+        assertEquals(RangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES,
+                estimator.getUseReadingPositionCovariance());
 
         // set new value
         estimator.setUseReadingPositionCovariances(
                 !RangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES);
 
         // check
-        assertEquals(estimator.getUseReadingPositionCovariance(),
-                !RangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES);
+        assertEquals(!RangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES,
+                estimator.getUseReadingPositionCovariance());
     }
 
     @Test
@@ -424,8 +411,7 @@ public class RangingRadioSourceEstimator2DTest implements
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            readings.add(new RangingReadingLocated2D<>(accessPoint,
-                    0.0, position));
+            readings.add(new RangingReadingLocated2D<>(accessPoint, 0.0, position));
         }
 
         final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
@@ -434,8 +420,7 @@ public class RangingRadioSourceEstimator2DTest implements
         assertTrue(estimator.areValidReadings(readings));
 
         assertFalse(estimator.areValidReadings(null));
-        assertFalse(estimator.areValidReadings(
-                new ArrayList<RangingReadingLocated<WifiAccessPoint, Point2D>>()));
+        assertFalse(estimator.areValidReadings(new ArrayList<RangingReadingLocated<WifiAccessPoint, Point2D>>()));
     }
 
     @Test
@@ -448,12 +433,10 @@ public class RangingRadioSourceEstimator2DTest implements
             final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            readings.add(new RangingReadingLocated2D<>(accessPoint,
-                    0.0, position));
+            readings.add(new RangingReadingLocated2D<>(accessPoint, 0.0, position));
         }
 
-        final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                new RangingRadioSourceEstimator2D<>();
+        final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator = new RangingRadioSourceEstimator2D<>();
 
         // initial value
         assertNull(estimator.getReadings());
@@ -463,7 +446,7 @@ public class RangingRadioSourceEstimator2DTest implements
         estimator.setReadings(readings);
 
         // check
-        assertSame(estimator.getReadings(), readings);
+        assertSame(readings, estimator.getReadings());
         assertTrue(estimator.isReady());
 
         // force IllegalArgumentException
@@ -476,8 +459,7 @@ public class RangingRadioSourceEstimator2DTest implements
 
     @Test
     public void testGetSetListener() throws LockedException {
-        final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                new RangingRadioSourceEstimator2D<>();
+        final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator = new RangingRadioSourceEstimator2D<>();
 
         // check default value
         assertNull(estimator.getListener());
@@ -486,13 +468,12 @@ public class RangingRadioSourceEstimator2DTest implements
         estimator.setListener(this);
 
         // check
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
     }
 
     @Test
     public void testEstimateWithoutInitialPositionAndWithoutError()
-            throws LockedException, NotReadyException, AlgebraException,
-            RadioSourceEstimationException {
+            throws LockedException, NotReadyException, AlgebraException, RadioSourceEstimationException {
 
         int numValidPosition = 0;
         double positionError = 0.0;
@@ -501,10 +482,9 @@ public class RangingRadioSourceEstimator2DTest implements
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
-            final InhomogeneousPoint2D accessPointPosition =
-                    new InhomogeneousPoint2D(
-                            randomizer.nextDouble(MIN_POS, MAX_POS),
-                            randomizer.nextDouble(MIN_POS, MAX_POS));
+            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
             final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
             final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
@@ -517,8 +497,7 @@ public class RangingRadioSourceEstimator2DTest implements
 
                 final double distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                readings.add(new RangingReadingLocated2D<>(accessPoint, distance,
-                        readingsPositions[i]));
+                readings.add(new RangingReadingLocated2D<>(accessPoint, distance, readingsPositions[i]));
             }
 
             final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
@@ -529,8 +508,8 @@ public class RangingRadioSourceEstimator2DTest implements
             assertFalse(estimator.isLocked());
             assertNull(estimator.getEstimatedPosition());
             assertNull(estimator.getEstimatedPositionCoordinates());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             try {
                 estimator.estimate();
@@ -548,16 +527,13 @@ public class RangingRadioSourceEstimator2DTest implements
             final WifiAccessPointLocated2D estimatedAccessPoint =
                     (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
-            assertEquals(estimatedAccessPoint.getBssid(), "bssid");
-            assertEquals(estimatedAccessPoint.getFrequency(), FREQUENCY, 0.0);
+            assertEquals("bssid", estimatedAccessPoint.getBssid());
+            assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
             assertNull(estimatedAccessPoint.getSsid());
-            assertEquals(estimatedAccessPoint.getPosition(),
-                    estimator.getEstimatedPosition());
-            assertEquals(estimatedAccessPoint.getPositionCovariance(),
-                    estimator.getEstimatedPositionCovariance());
+            assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
+            assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(
-                    estimator.getEstimatedPositionCovariance());
+            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
             final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
@@ -568,20 +544,18 @@ public class RangingRadioSourceEstimator2DTest implements
             positionAccuracy = accuracy.getAverageAccuracy();
             positionAccuracyConfidence = accuracy.getConfidence();
 
-            positionError = estimator.getEstimatedPosition().
-                    distanceTo(accessPointPosition);
+            positionError = estimator.getEstimatedPosition().distanceTo(accessPointPosition);
             if (positionError > ABSOLUTE_ERROR) {
                 continue;
             }
 
-            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition,
-                    ABSOLUTE_ERROR));
+            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
             assertArrayEquals(estimator.getEstimatedPosition().asArray(),
                     estimator.getEstimatedPositionCoordinates(), 0.0);
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
 
             break;
         }
@@ -600,8 +574,7 @@ public class RangingRadioSourceEstimator2DTest implements
                 "Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
-        LOGGER.log(Level.INFO, "Position error: {0} meters",
-                positionError);
+        LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
 
         // force NotReadyException
         final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
@@ -615,9 +588,8 @@ public class RangingRadioSourceEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateWithInitialPositionAndWithoutError()
-            throws LockedException, NotReadyException, AlgebraException,
-            RadioSourceEstimationException {
+    public void testEstimateWithInitialPositionAndWithoutError() throws LockedException, NotReadyException,
+            AlgebraException, RadioSourceEstimationException {
 
         int numValidPosition = 0;
         double positionError;
@@ -626,10 +598,9 @@ public class RangingRadioSourceEstimator2DTest implements
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
-            final InhomogeneousPoint2D accessPointPosition =
-                    new InhomogeneousPoint2D(
-                            randomizer.nextDouble(MIN_POS, MAX_POS),
-                            randomizer.nextDouble(MIN_POS, MAX_POS));
+            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
             final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
             final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
@@ -642,21 +613,19 @@ public class RangingRadioSourceEstimator2DTest implements
 
                 final double distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                readings.add(new RangingReadingLocated2D<>(accessPoint, distance,
-                        readingsPositions[i]));
+                readings.add(new RangingReadingLocated2D<>(accessPoint, distance, readingsPositions[i]));
             }
 
             final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new RangingRadioSourceEstimator2D<>(readings, accessPointPosition,
-                            this);
+                    new RangingRadioSourceEstimator2D<>(readings, accessPointPosition, this);
 
             reset();
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
             assertNull(estimator.getEstimatedPosition());
             assertNull(estimator.getEstimatedPositionCoordinates());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             try {
                 estimator.estimate();
@@ -674,16 +643,13 @@ public class RangingRadioSourceEstimator2DTest implements
             final WifiAccessPointLocated2D estimatedAccessPoint =
                     (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
-            assertEquals(estimatedAccessPoint.getBssid(), "bssid");
-            assertEquals(estimatedAccessPoint.getFrequency(), FREQUENCY, 0.0);
+            assertEquals("bssid", estimatedAccessPoint.getBssid());
+            assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
             assertNull(estimatedAccessPoint.getSsid());
-            assertEquals(estimatedAccessPoint.getPosition(),
-                    estimator.getEstimatedPosition());
-            assertEquals(estimatedAccessPoint.getPositionCovariance(),
-                    estimator.getEstimatedPositionCovariance());
+            assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
+            assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(
-                    estimator.getEstimatedPositionCovariance());
+            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
             final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
@@ -694,26 +660,23 @@ public class RangingRadioSourceEstimator2DTest implements
             positionAccuracy = accuracy.getAverageAccuracy();
             positionAccuracyConfidence = accuracy.getConfidence();
 
-            positionError = estimator.getEstimatedPosition().
-                    distanceTo(accessPointPosition);
+            positionError = estimator.getEstimatedPosition().distanceTo(accessPointPosition);
             if (positionError > ABSOLUTE_ERROR) {
                 continue;
             }
 
-            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition,
-                    ABSOLUTE_ERROR));
+            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
             assertArrayEquals(estimator.getEstimatedPosition().asArray(),
                     estimator.getEstimatedPositionCoordinates(), 0.0);
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
 
             break;
         }
 
         assertTrue(numValidPosition > 0);
-
 
         final NumberFormat format = NumberFormat.getPercentInstance();
         String formattedConfidence = format.format(positionStdConfidence);
@@ -747,13 +710,11 @@ public class RangingRadioSourceEstimator2DTest implements
         double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(),
-                    0.0, ERROR_STD);
+            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
 
-            final InhomogeneousPoint2D accessPointPosition =
-                    new InhomogeneousPoint2D(
-                            randomizer.nextDouble(MIN_POS, MAX_POS),
-                            randomizer.nextDouble(MIN_POS, MAX_POS));
+            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
             final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
             final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
@@ -779,8 +740,8 @@ public class RangingRadioSourceEstimator2DTest implements
             assertFalse(estimator.isLocked());
             assertNull(estimator.getEstimatedPosition());
             assertNull(estimator.getEstimatedPositionCoordinates());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             try {
                 estimator.estimate();
@@ -798,16 +759,13 @@ public class RangingRadioSourceEstimator2DTest implements
             final WifiAccessPointLocated2D estimatedAccessPoint =
                     (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
-            assertEquals(estimatedAccessPoint.getBssid(), "bssid");
-            assertEquals(estimatedAccessPoint.getFrequency(), FREQUENCY, 0.0);
+            assertEquals("bssid", estimatedAccessPoint.getBssid());
+            assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
             assertNull(estimatedAccessPoint.getSsid());
-            assertEquals(estimatedAccessPoint.getPosition(),
-                    estimator.getEstimatedPosition());
-            assertEquals(estimatedAccessPoint.getPositionCovariance(),
-                    estimator.getEstimatedPositionCovariance());
+            assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
+            assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(
-                    estimator.getEstimatedPositionCovariance());
+            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
             final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
@@ -818,20 +776,18 @@ public class RangingRadioSourceEstimator2DTest implements
             positionAccuracy = accuracy.getAverageAccuracy();
             positionAccuracyConfidence = accuracy.getConfidence();
 
-            positionError = estimator.getEstimatedPosition().
-                    distanceTo(accessPointPosition);
+            positionError = estimator.getEstimatedPosition().distanceTo(accessPointPosition);
             if (positionError > LARGE_POSITION_ERROR) {
                 continue;
             }
 
-            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition,
-                    LARGE_POSITION_ERROR));
+            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, LARGE_POSITION_ERROR));
             numValidPosition++;
 
             assertArrayEquals(estimator.getEstimatedPosition().asArray(),
                     estimator.getEstimatedPositionCoordinates(), 0.0);
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
 
             break;
         }
@@ -852,8 +808,8 @@ public class RangingRadioSourceEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateWithInitialPositionAndDistanceErrors()
-            throws LockedException, NotReadyException, AlgebraException {
+    public void testEstimateWithInitialPositionAndDistanceErrors() throws LockedException, NotReadyException,
+            AlgebraException {
 
         int numValidPosition = 0;
         double positionError;
@@ -861,13 +817,11 @@ public class RangingRadioSourceEstimator2DTest implements
         double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(),
-                    0.0, ERROR_STD);
+            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
 
-            final InhomogeneousPoint2D accessPointPosition =
-                    new InhomogeneousPoint2D(
-                            randomizer.nextDouble(MIN_POS, MAX_POS),
-                            randomizer.nextDouble(MIN_POS, MAX_POS));
+            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
             final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
             final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
@@ -881,21 +835,20 @@ public class RangingRadioSourceEstimator2DTest implements
                 final double distance = readingsPositions[i].distanceTo(accessPointPosition);
                 final double error = Math.abs(errorRandomizer.nextDouble());
 
-                readings.add(new RangingReadingLocated2D<>(accessPoint,
-                        distance + error, readingsPositions[i]));
+                readings.add(new RangingReadingLocated2D<>(accessPoint, distance + error,
+                        readingsPositions[i]));
             }
 
             final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new RangingRadioSourceEstimator2D<>(readings, accessPointPosition,
-                            this);
+                    new RangingRadioSourceEstimator2D<>(readings, accessPointPosition, this);
 
             reset();
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
             assertNull(estimator.getEstimatedPosition());
             assertNull(estimator.getEstimatedPositionCoordinates());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             try {
                 estimator.estimate();
@@ -913,16 +866,13 @@ public class RangingRadioSourceEstimator2DTest implements
             final WifiAccessPointLocated2D estimatedAccessPoint =
                     (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
-            assertEquals(estimatedAccessPoint.getBssid(), "bssid");
-            assertEquals(estimatedAccessPoint.getFrequency(), FREQUENCY, 0.0);
+            assertEquals("bssid", estimatedAccessPoint.getBssid());
+            assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
             assertNull(estimatedAccessPoint.getSsid());
-            assertEquals(estimatedAccessPoint.getPosition(),
-                    estimator.getEstimatedPosition());
-            assertEquals(estimatedAccessPoint.getPositionCovariance(),
-                    estimator.getEstimatedPositionCovariance());
+            assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
+            assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(
-                    estimator.getEstimatedPositionCovariance());
+            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
             final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
@@ -933,20 +883,18 @@ public class RangingRadioSourceEstimator2DTest implements
             positionAccuracy = accuracy.getAverageAccuracy();
             positionAccuracyConfidence = accuracy.getConfidence();
 
-            positionError = estimator.getEstimatedPosition().
-                    distanceTo(accessPointPosition);
+            positionError = estimator.getEstimatedPosition().distanceTo(accessPointPosition);
             if (positionError > LARGE_POSITION_ERROR) {
                 continue;
             }
 
-            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition,
-                    LARGE_POSITION_ERROR));
+            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, LARGE_POSITION_ERROR));
             numValidPosition++;
 
             assertArrayEquals(estimator.getEstimatedPosition().asArray(),
                     estimator.getEstimatedPositionCoordinates(), 0.0);
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
 
             break;
         }
@@ -967,8 +915,8 @@ public class RangingRadioSourceEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateWithInitialPositionWithError()
-            throws LockedException, NotReadyException, AlgebraException {
+    public void testEstimateWithInitialPositionWithError() throws LockedException, NotReadyException,
+            AlgebraException {
 
         int numValidPosition = 0;
         double positionError = 0.0;
@@ -977,10 +925,9 @@ public class RangingRadioSourceEstimator2DTest implements
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
-            final InhomogeneousPoint2D accessPointPosition =
-                    new InhomogeneousPoint2D(
-                            randomizer.nextDouble(MIN_POS, MAX_POS),
-                            randomizer.nextDouble(MIN_POS, MAX_POS));
+            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
             final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
             final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
@@ -993,25 +940,22 @@ public class RangingRadioSourceEstimator2DTest implements
 
                 final double distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                readings.add(new RangingReadingLocated2D<>(accessPoint, distance,
-                        readingsPositions[i]));
+                readings.add(new RangingReadingLocated2D<>(accessPoint, distance, readingsPositions[i]));
             }
 
-            final InhomogeneousPoint2D initialPosition =
-                    new InhomogeneousPoint2D(
-                            accessPointPosition.getInhomX() + randomizer.nextDouble(MIN_POS, MAX_POS),
-                            accessPointPosition.getInhomY() + randomizer.nextDouble(MIN_POS, MAX_POS));
+            final InhomogeneousPoint2D initialPosition = new InhomogeneousPoint2D(
+                    accessPointPosition.getInhomX() + randomizer.nextDouble(MIN_POS, MAX_POS),
+                    accessPointPosition.getInhomY() + randomizer.nextDouble(MIN_POS, MAX_POS));
             final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new RangingRadioSourceEstimator2D<>(readings, initialPosition,
-                            this);
+                    new RangingRadioSourceEstimator2D<>(readings, initialPosition, this);
 
             reset();
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
             assertNull(estimator.getEstimatedPosition());
             assertNull(estimator.getEstimatedPositionCoordinates());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             try {
                 estimator.estimate();
@@ -1029,16 +973,13 @@ public class RangingRadioSourceEstimator2DTest implements
             final WifiAccessPointLocated2D estimatedAccessPoint =
                     (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
-            assertEquals(estimatedAccessPoint.getBssid(), "bssid");
-            assertEquals(estimatedAccessPoint.getFrequency(), FREQUENCY, 0.0);
+            assertEquals("bssid", estimatedAccessPoint.getBssid());
+            assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
             assertNull(estimatedAccessPoint.getSsid());
-            assertEquals(estimatedAccessPoint.getPosition(),
-                    estimator.getEstimatedPosition());
-            assertEquals(estimatedAccessPoint.getPositionCovariance(),
-                    estimator.getEstimatedPositionCovariance());
+            assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
+            assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(
-                    estimator.getEstimatedPositionCovariance());
+            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
             final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
@@ -1049,20 +990,18 @@ public class RangingRadioSourceEstimator2DTest implements
             positionAccuracy = accuracy.getAverageAccuracy();
             positionAccuracyConfidence = accuracy.getConfidence();
 
-            positionError = estimator.getEstimatedPosition().
-                    distanceTo(accessPointPosition);
+            positionError = estimator.getEstimatedPosition().distanceTo(accessPointPosition);
             if (positionError > ABSOLUTE_ERROR) {
                 continue;
             }
 
-            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition,
-                    ABSOLUTE_ERROR));
+            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
             assertArrayEquals(estimator.getEstimatedPosition().asArray(),
                     estimator.getEstimatedPositionCoordinates(), 0.0);
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
 
             break;
         }
@@ -1081,13 +1020,12 @@ public class RangingRadioSourceEstimator2DTest implements
                 "Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
-        LOGGER.log(Level.INFO, "Position error: {0} meters",
-                positionError);
+        LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
     }
 
     @Test
-    public void testEstimateWithInitialPositionWithPositionAndDistanceErrors()
-            throws LockedException, NotReadyException, AlgebraException {
+    public void testEstimateWithInitialPositionWithPositionAndDistanceErrors() throws LockedException,
+            NotReadyException, AlgebraException {
 
         int numValidPosition = 0;
         double positionError = 0.0;
@@ -1095,13 +1033,11 @@ public class RangingRadioSourceEstimator2DTest implements
         double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(),
-                    0.0, ERROR_STD);
+            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
 
-            final InhomogeneousPoint2D accessPointPosition =
-                    new InhomogeneousPoint2D(
-                            randomizer.nextDouble(MIN_POS, MAX_POS),
-                            randomizer.nextDouble(MIN_POS, MAX_POS));
+            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
             final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
             final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
@@ -1119,21 +1055,19 @@ public class RangingRadioSourceEstimator2DTest implements
                         distance + error, readingsPositions[i]));
             }
 
-            final InhomogeneousPoint2D initialPosition =
-                    new InhomogeneousPoint2D(
-                            accessPointPosition.getInhomX() + randomizer.nextDouble(MIN_POS, MAX_POS),
-                            accessPointPosition.getInhomY() + randomizer.nextDouble(MIN_POS, MAX_POS));
+            final InhomogeneousPoint2D initialPosition = new InhomogeneousPoint2D(
+                    accessPointPosition.getInhomX() + randomizer.nextDouble(MIN_POS, MAX_POS),
+                    accessPointPosition.getInhomY() + randomizer.nextDouble(MIN_POS, MAX_POS));
             final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new RangingRadioSourceEstimator2D<>(readings, initialPosition,
-                            this);
+                    new RangingRadioSourceEstimator2D<>(readings, initialPosition, this);
 
             reset();
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
             assertNull(estimator.getEstimatedPosition());
             assertNull(estimator.getEstimatedPositionCoordinates());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             try {
                 estimator.estimate();
@@ -1151,16 +1085,13 @@ public class RangingRadioSourceEstimator2DTest implements
             final WifiAccessPointLocated2D estimatedAccessPoint =
                     (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
-            assertEquals(estimatedAccessPoint.getBssid(), "bssid");
-            assertEquals(estimatedAccessPoint.getFrequency(), FREQUENCY, 0.0);
+            assertEquals("bssid", estimatedAccessPoint.getBssid());
+            assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
             assertNull(estimatedAccessPoint.getSsid());
-            assertEquals(estimatedAccessPoint.getPosition(),
-                    estimator.getEstimatedPosition());
-            assertEquals(estimatedAccessPoint.getPositionCovariance(),
-                    estimator.getEstimatedPositionCovariance());
+            assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
+            assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(
-                    estimator.getEstimatedPositionCovariance());
+            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
             final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
@@ -1171,20 +1102,18 @@ public class RangingRadioSourceEstimator2DTest implements
             positionAccuracy = accuracy.getAverageAccuracy();
             positionAccuracyConfidence = accuracy.getConfidence();
 
-            positionError = estimator.getEstimatedPosition().
-                    distanceTo(accessPointPosition);
+            positionError = estimator.getEstimatedPosition().distanceTo(accessPointPosition);
             if (positionError > LARGE_POSITION_ERROR) {
                 continue;
             }
 
-            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition,
-                    LARGE_POSITION_ERROR));
+            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, LARGE_POSITION_ERROR));
             numValidPosition++;
 
             assertArrayEquals(estimator.getEstimatedPosition().asArray(),
                     estimator.getEstimatedPositionCoordinates(), 0.0);
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
         }
 
         assertTrue(numValidPosition > 0);
@@ -1204,8 +1133,7 @@ public class RangingRadioSourceEstimator2DTest implements
                 "Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
-        LOGGER.log(Level.INFO, "Position error: {0} meters",
-                positionError);
+        LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
     }
 
     @Test
@@ -1219,14 +1147,12 @@ public class RangingRadioSourceEstimator2DTest implements
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
-            final InhomogeneousPoint2D accessPointPosition =
-                    new InhomogeneousPoint2D(
-                            randomizer.nextDouble(MIN_POS, MAX_POS),
-                            randomizer.nextDouble(MIN_POS, MAX_POS));
+            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
 
             final BeaconIdentifier identifier = BeaconIdentifier.fromUuid(UUID.randomUUID());
-            final Beacon beacon = new Beacon(Collections.singletonList(identifier),
-                    TRANSMITTED_POWER_DBM, FREQUENCY);
+            final Beacon beacon = new Beacon(Collections.singletonList(identifier), TRANSMITTED_POWER_DBM, FREQUENCY);
 
             final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
             final Point2D[] readingsPositions = new Point2D[numReadings];
@@ -1238,12 +1164,10 @@ public class RangingRadioSourceEstimator2DTest implements
 
                 final double distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                readings.add(new RangingReadingLocated2D<>(beacon, distance,
-                        readingsPositions[i]));
+                readings.add(new RangingReadingLocated2D<>(beacon, distance, readingsPositions[i]));
             }
 
-            final RangingRadioSourceEstimator2D<Beacon> estimator =
-                    new RangingRadioSourceEstimator2D<>(readings);
+            final RangingRadioSourceEstimator2D<Beacon> estimator = new RangingRadioSourceEstimator2D<>(readings);
 
             reset();
             assertTrue(estimator.isReady());
@@ -1264,18 +1188,14 @@ public class RangingRadioSourceEstimator2DTest implements
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final BeaconLocated2D estimatedBeacon =
-                    (BeaconLocated2D) estimator.getEstimatedRadioSource();
+            final BeaconLocated2D estimatedBeacon = (BeaconLocated2D) estimator.getEstimatedRadioSource();
 
-            assertEquals(estimatedBeacon.getIdentifiers(), beacon.getIdentifiers());
-            assertEquals(estimatedBeacon.getFrequency(), beacon.getFrequency(), 0.0);
-            assertEquals(estimatedBeacon.getPosition(),
-                    estimator.getEstimatedPosition());
-            assertEquals(estimatedBeacon.getPositionCovariance(),
-                    estimator.getEstimatedPositionCovariance());
+            assertEquals(beacon.getIdentifiers(), estimatedBeacon.getIdentifiers());
+            assertEquals(beacon.getFrequency(), estimatedBeacon.getFrequency(), 0.0);
+            assertEquals(estimator.getEstimatedPosition(), estimatedBeacon.getPosition());
+            assertEquals(estimator.getEstimatedPositionCovariance(), estimatedBeacon.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(
-                    estimator.getEstimatedPositionCovariance());
+            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
             final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
@@ -1286,14 +1206,12 @@ public class RangingRadioSourceEstimator2DTest implements
             positionAccuracy = accuracy.getAverageAccuracy();
             positionAccuracyConfidence = accuracy.getConfidence();
 
-            positionError = estimator.getEstimatedPosition().
-                    distanceTo(accessPointPosition);
+            positionError = estimator.getEstimatedPosition().distanceTo(accessPointPosition);
             if (positionError > ABSOLUTE_ERROR) {
                 continue;
             }
 
-            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition,
-                    ABSOLUTE_ERROR));
+            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
             assertArrayEquals(estimator.getEstimatedPosition().asArray(),
@@ -1317,8 +1235,7 @@ public class RangingRadioSourceEstimator2DTest implements
                 positionAccuracy, formattedConfidence));
 
         // force NotReadyException
-        final RangingRadioSourceEstimator3D<Beacon> estimator =
-                new RangingRadioSourceEstimator3D<>();
+        final RangingRadioSourceEstimator3D<Beacon> estimator = new RangingRadioSourceEstimator3D<>();
 
         try {
             estimator.estimate();
@@ -1328,18 +1245,17 @@ public class RangingRadioSourceEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateWithNonLinearSolverDisabledAndWithoutInitialPosition()
-            throws LockedException, NotReadyException {
+    public void testEstimateWithNonLinearSolverDisabledAndWithoutInitialPosition() throws LockedException,
+            NotReadyException {
 
         int numValidPosition = 0;
         double positionError = 0.0;
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
-            final InhomogeneousPoint2D accessPointPosition =
-                    new InhomogeneousPoint2D(
-                            randomizer.nextDouble(MIN_POS, MAX_POS),
-                            randomizer.nextDouble(MIN_POS, MAX_POS));
+            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
             final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
             final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
@@ -1352,8 +1268,7 @@ public class RangingRadioSourceEstimator2DTest implements
 
                 final double distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                readings.add(new RangingReadingLocated2D<>(accessPoint, distance,
-                        readingsPositions[i]));
+                readings.add(new RangingReadingLocated2D<>(accessPoint, distance, readingsPositions[i]));
             }
 
             final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
@@ -1365,8 +1280,8 @@ public class RangingRadioSourceEstimator2DTest implements
             assertFalse(estimator.isLocked());
             assertNull(estimator.getEstimatedPosition());
             assertNull(estimator.getEstimatedPositionCoordinates());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             try {
                 estimator.estimate();
@@ -1384,50 +1299,45 @@ public class RangingRadioSourceEstimator2DTest implements
             final WifiAccessPointLocated2D estimatedAccessPoint =
                     (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
-            assertEquals(estimatedAccessPoint.getBssid(), "bssid");
-            assertEquals(estimatedAccessPoint.getFrequency(), FREQUENCY, 0.0);
+            assertEquals("bssid", estimatedAccessPoint.getBssid());
+            assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
             assertNull(estimatedAccessPoint.getSsid());
-            assertEquals(estimatedAccessPoint.getPosition(),
-                    estimator.getEstimatedPosition());
+            assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
             assertNull(estimatedAccessPoint.getPositionCovariance());
 
-            positionError = estimator.getEstimatedPosition().
-                    distanceTo(accessPointPosition);
+            positionError = estimator.getEstimatedPosition().distanceTo(accessPointPosition);
             if (positionError > ABSOLUTE_ERROR) {
                 continue;
             }
 
-            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition,
-                    ABSOLUTE_ERROR));
+            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
             assertArrayEquals(estimator.getEstimatedPosition().asArray(),
                     estimator.getEstimatedPositionCoordinates(), 0.0);
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
 
             break;
         }
 
         assertTrue(numValidPosition > 0);
 
-        LOGGER.log(Level.INFO, "Position error: {0} meters",
-                positionError);
+        LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
     }
 
     @Test
-    public void testEstimateWithNonLinearSolverDisabledAndWithInitialPosition()
-            throws LockedException, NotReadyException {
+    public void testEstimateWithNonLinearSolverDisabledAndWithInitialPosition() throws LockedException,
+            NotReadyException {
 
         int numValidPosition = 0;
         double positionError = 0.0;
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
-            final InhomogeneousPoint2D accessPointPosition =
-                    new InhomogeneousPoint2D(
-                            randomizer.nextDouble(MIN_POS, MAX_POS),
-                            randomizer.nextDouble(MIN_POS, MAX_POS));
+            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
             final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
             final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
@@ -1440,8 +1350,7 @@ public class RangingRadioSourceEstimator2DTest implements
 
                 final double distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                readings.add(new RangingReadingLocated2D<>(accessPoint, distance,
-                        readingsPositions[i]));
+                readings.add(new RangingReadingLocated2D<>(accessPoint, distance, readingsPositions[i]));
             }
 
             final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
@@ -1453,8 +1362,8 @@ public class RangingRadioSourceEstimator2DTest implements
             assertFalse(estimator.isLocked());
             assertNull(estimator.getEstimatedPosition());
             assertNull(estimator.getEstimatedPositionCoordinates());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             try {
                 estimator.estimate();
@@ -1472,40 +1381,36 @@ public class RangingRadioSourceEstimator2DTest implements
             final WifiAccessPointLocated2D estimatedAccessPoint =
                     (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
-            assertEquals(estimatedAccessPoint.getBssid(), "bssid");
-            assertEquals(estimatedAccessPoint.getFrequency(), FREQUENCY, 0.0);
+            assertEquals("bssid", estimatedAccessPoint.getBssid());
+            assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
             assertNull(estimatedAccessPoint.getSsid());
-            assertEquals(estimatedAccessPoint.getPosition(),
-                    estimator.getEstimatedPosition());
+            assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
             assertNull(estimatedAccessPoint.getPositionCovariance());
 
-            positionError = estimator.getEstimatedPosition().
-                    distanceTo(accessPointPosition);
+            positionError = estimator.getEstimatedPosition().distanceTo(accessPointPosition);
             if (positionError > ABSOLUTE_ERROR) {
                 continue;
             }
 
-            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition,
-                    ABSOLUTE_ERROR));
+            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
             assertArrayEquals(estimator.getEstimatedPosition().asArray(),
                     estimator.getEstimatedPositionCoordinates(), 0.0);
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
 
             break;
         }
 
         assertTrue(numValidPosition > 0);
 
-        LOGGER.log(Level.INFO, "Position error: {0} meters",
-                positionError);
+        LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
     }
 
     @Test
-    public void testEstimateWithRangingStandardDeviations()
-            throws LockedException, NotReadyException, AlgebraException {
+    public void testEstimateWithRangingStandardDeviations() throws LockedException, NotReadyException,
+            AlgebraException {
 
         int numValidPosition = 0;
         double positionError = 0.0;
@@ -1513,13 +1418,11 @@ public class RangingRadioSourceEstimator2DTest implements
         double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(),
-                    0.0, ERROR_STD);
+            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
 
-            final InhomogeneousPoint2D accessPointPosition =
-                    new InhomogeneousPoint2D(
-                            randomizer.nextDouble(MIN_POS, MAX_POS),
-                            randomizer.nextDouble(MIN_POS, MAX_POS));
+            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
             final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
             final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
@@ -1533,8 +1436,8 @@ public class RangingRadioSourceEstimator2DTest implements
                 final double distance = readingsPositions[i].distanceTo(accessPointPosition);
                 final double error = Math.abs(errorRandomizer.nextDouble());
 
-                readings.add(new RangingReadingLocated2D<>(accessPoint,
-                        distance + error, readingsPositions[i], ERROR_STD));
+                readings.add(new RangingReadingLocated2D<>(accessPoint, distance + error,
+                        readingsPositions[i], ERROR_STD));
             }
 
             final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
@@ -1545,8 +1448,8 @@ public class RangingRadioSourceEstimator2DTest implements
             assertFalse(estimator.isLocked());
             assertNull(estimator.getEstimatedPosition());
             assertNull(estimator.getEstimatedPositionCoordinates());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             try {
                 estimator.estimate();
@@ -1564,16 +1467,13 @@ public class RangingRadioSourceEstimator2DTest implements
             final WifiAccessPointLocated2D estimatedAccessPoint =
                     (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
-            assertEquals(estimatedAccessPoint.getBssid(), "bssid");
-            assertEquals(estimatedAccessPoint.getFrequency(), FREQUENCY, 0.0);
+            assertEquals("bssid", estimatedAccessPoint.getBssid());
+            assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
             assertNull(estimatedAccessPoint.getSsid());
-            assertEquals(estimatedAccessPoint.getPosition(),
-                    estimator.getEstimatedPosition());
-            assertEquals(estimatedAccessPoint.getPositionCovariance(),
-                    estimator.getEstimatedPositionCovariance());
+            assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
+            assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(
-                    estimator.getEstimatedPositionCovariance());
+            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
             final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
@@ -1584,20 +1484,18 @@ public class RangingRadioSourceEstimator2DTest implements
             positionAccuracy = accuracy.getAverageAccuracy();
             positionAccuracyConfidence = accuracy.getConfidence();
 
-            positionError = estimator.getEstimatedPosition().
-                    distanceTo(accessPointPosition);
+            positionError = estimator.getEstimatedPosition().distanceTo(accessPointPosition);
             if (positionError > LARGE_POSITION_ERROR) {
                 continue;
             }
 
-            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition,
-                    LARGE_POSITION_ERROR));
+            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, LARGE_POSITION_ERROR));
             numValidPosition++;
 
             assertArrayEquals(estimator.getEstimatedPosition().asArray(),
                     estimator.getEstimatedPositionCoordinates(), 0.0);
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
 
             break;
         }
@@ -1616,13 +1514,12 @@ public class RangingRadioSourceEstimator2DTest implements
                 "Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
-        LOGGER.log(Level.INFO, "Position error: {0} meters",
-                positionError);
+        LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
     }
 
     @Test
-    public void testEstimateWithReadingPositionCovariances()
-            throws LockedException, NotReadyException, AlgebraException {
+    public void testEstimateWithReadingPositionCovariances() throws LockedException, NotReadyException,
+            AlgebraException {
 
         int numValidPosition = 0;
         double positionError = 0.0;
@@ -1630,13 +1527,11 @@ public class RangingRadioSourceEstimator2DTest implements
         double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(),
-                    0.0, ERROR_STD);
+            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
 
-            final InhomogeneousPoint2D accessPointPosition =
-                    new InhomogeneousPoint2D(
-                            randomizer.nextDouble(MIN_POS, MAX_POS),
-                            randomizer.nextDouble(MIN_POS, MAX_POS));
+            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
             final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
             final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
@@ -1669,8 +1564,8 @@ public class RangingRadioSourceEstimator2DTest implements
             assertFalse(estimator.isLocked());
             assertNull(estimator.getEstimatedPosition());
             assertNull(estimator.getEstimatedPositionCoordinates());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             try {
                 estimator.estimate();
@@ -1688,16 +1583,13 @@ public class RangingRadioSourceEstimator2DTest implements
             final WifiAccessPointLocated2D estimatedAccessPoint =
                     (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
-            assertEquals(estimatedAccessPoint.getBssid(), "bssid");
-            assertEquals(estimatedAccessPoint.getFrequency(), FREQUENCY, 0.0);
+            assertEquals("bssid", estimatedAccessPoint.getBssid());
+            assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
             assertNull(estimatedAccessPoint.getSsid());
-            assertEquals(estimatedAccessPoint.getPosition(),
-                    estimator.getEstimatedPosition());
-            assertEquals(estimatedAccessPoint.getPositionCovariance(),
-                    estimator.getEstimatedPositionCovariance());
+            assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
+            assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(
-                    estimator.getEstimatedPositionCovariance());
+            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
             final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
@@ -1708,20 +1600,18 @@ public class RangingRadioSourceEstimator2DTest implements
             positionAccuracy = accuracy.getAverageAccuracy();
             positionAccuracyConfidence = accuracy.getConfidence();
 
-            positionError = estimator.getEstimatedPosition().
-                    distanceTo(accessPointPosition);
+            positionError = estimator.getEstimatedPosition().distanceTo(accessPointPosition);
             if (positionError > LARGE_POSITION_ERROR) {
                 continue;
             }
 
-            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition,
-                    LARGE_POSITION_ERROR));
+            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, LARGE_POSITION_ERROR));
             numValidPosition++;
 
             assertArrayEquals(estimator.getEstimatedPosition().asArray(),
                     estimator.getEstimatedPositionCoordinates(), 0.0);
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
 
             break;
         }
@@ -1739,13 +1629,12 @@ public class RangingRadioSourceEstimator2DTest implements
                 "Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
-        LOGGER.log(Level.INFO, "Position error: {0} meters",
-                positionError);
+        LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
     }
 
     @Test
-    public void testEstimateWithRangingStandardDeviationsAndReadingPositionCovariances()
-            throws LockedException, NotReadyException, AlgebraException {
+    public void testEstimateWithRangingStandardDeviationsAndReadingPositionCovariances() throws LockedException,
+            NotReadyException, AlgebraException {
 
         int numValidPosition = 0;
         double positionError = 0.0;
@@ -1753,13 +1642,11 @@ public class RangingRadioSourceEstimator2DTest implements
         double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(),
-                    0.0, ERROR_STD);
+            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
 
-            final InhomogeneousPoint2D accessPointPosition =
-                    new InhomogeneousPoint2D(
-                            randomizer.nextDouble(MIN_POS, MAX_POS),
-                            randomizer.nextDouble(MIN_POS, MAX_POS));
+            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
             final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
             final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
@@ -1780,9 +1667,8 @@ public class RangingRadioSourceEstimator2DTest implements
                 final Matrix positionCovariance = Matrix.diagonal(
                         new double[]{ERROR_STD * ERROR_STD, ERROR_STD * ERROR_STD});
 
-                readings.add(new RangingReadingLocated2D<>(accessPoint,
-                        distance + error, readingsPositions[i], ERROR_STD,
-                        positionCovariance));
+                readings.add(new RangingReadingLocated2D<>(accessPoint, distance + error,
+                        readingsPositions[i], ERROR_STD, positionCovariance));
             }
 
             final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
@@ -1794,8 +1680,8 @@ public class RangingRadioSourceEstimator2DTest implements
             assertFalse(estimator.isLocked());
             assertNull(estimator.getEstimatedPosition());
             assertNull(estimator.getEstimatedPositionCoordinates());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             try {
                 estimator.estimate();
@@ -1813,16 +1699,13 @@ public class RangingRadioSourceEstimator2DTest implements
             final WifiAccessPointLocated2D estimatedAccessPoint =
                     (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
-            assertEquals(estimatedAccessPoint.getBssid(), "bssid");
-            assertEquals(estimatedAccessPoint.getFrequency(), FREQUENCY, 0.0);
+            assertEquals("bssid", estimatedAccessPoint.getBssid());
+            assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
             assertNull(estimatedAccessPoint.getSsid());
-            assertEquals(estimatedAccessPoint.getPosition(),
-                    estimator.getEstimatedPosition());
-            assertEquals(estimatedAccessPoint.getPositionCovariance(),
-                    estimator.getEstimatedPositionCovariance());
+            assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
+            assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(
-                    estimator.getEstimatedPositionCovariance());
+            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
             final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
@@ -1833,20 +1716,18 @@ public class RangingRadioSourceEstimator2DTest implements
             positionAccuracy = accuracy.getAverageAccuracy();
             positionAccuracyConfidence = accuracy.getConfidence();
 
-            positionError = estimator.getEstimatedPosition().
-                    distanceTo(accessPointPosition);
+            positionError = estimator.getEstimatedPosition().distanceTo(accessPointPosition);
             if (positionError > LARGE_POSITION_ERROR) {
                 continue;
             }
 
-            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition,
-                    LARGE_POSITION_ERROR));
+            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, LARGE_POSITION_ERROR));
             numValidPosition++;
 
             assertArrayEquals(estimator.getEstimatedPosition().asArray(),
                     estimator.getEstimatedPositionCoordinates(), 0.0);
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
 
             break;
         }
@@ -1864,13 +1745,12 @@ public class RangingRadioSourceEstimator2DTest implements
                 "Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
-        LOGGER.log(Level.INFO, "Position error: {0} meters",
-                positionError);
+        LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
     }
 
     @Test
-    public void testEstimateWithPositionCovariancesDisabled()
-            throws LockedException, NotReadyException, AlgebraException {
+    public void testEstimateWithPositionCovariancesDisabled() throws LockedException, NotReadyException,
+            AlgebraException {
 
         int numValidPosition = 0;
         double positionError = 0.0;
@@ -1878,13 +1758,11 @@ public class RangingRadioSourceEstimator2DTest implements
         double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(),
-                    0.0, ERROR_STD);
+            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
 
-            final InhomogeneousPoint2D accessPointPosition =
-                    new InhomogeneousPoint2D(
-                            randomizer.nextDouble(MIN_POS, MAX_POS),
-                            randomizer.nextDouble(MIN_POS, MAX_POS));
+            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
             final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
             final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
@@ -1906,8 +1784,7 @@ public class RangingRadioSourceEstimator2DTest implements
                         new double[]{ERROR_STD * ERROR_STD, ERROR_STD * ERROR_STD});
 
                 readings.add(new RangingReadingLocated2D<>(accessPoint,
-                        distance + error, readingsPositions[i], ERROR_STD,
-                        positionCovariance));
+                        distance + error, readingsPositions[i], ERROR_STD, positionCovariance));
             }
 
             final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
@@ -1919,8 +1796,8 @@ public class RangingRadioSourceEstimator2DTest implements
             assertFalse(estimator.isLocked());
             assertNull(estimator.getEstimatedPosition());
             assertNull(estimator.getEstimatedPositionCoordinates());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             try {
                 estimator.estimate();
@@ -1938,16 +1815,13 @@ public class RangingRadioSourceEstimator2DTest implements
             final WifiAccessPointLocated2D estimatedAccessPoint =
                     (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
-            assertEquals(estimatedAccessPoint.getBssid(), "bssid");
-            assertEquals(estimatedAccessPoint.getFrequency(), FREQUENCY, 0.0);
+            assertEquals("bssid", estimatedAccessPoint.getBssid());
+            assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
             assertNull(estimatedAccessPoint.getSsid());
-            assertEquals(estimatedAccessPoint.getPosition(),
-                    estimator.getEstimatedPosition());
-            assertEquals(estimatedAccessPoint.getPositionCovariance(),
-                    estimator.getEstimatedPositionCovariance());
+            assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
+            assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(
-                    estimator.getEstimatedPositionCovariance());
+            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
             final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
@@ -1958,20 +1832,18 @@ public class RangingRadioSourceEstimator2DTest implements
             positionAccuracy = accuracy.getAverageAccuracy();
             positionAccuracyConfidence = accuracy.getConfidence();
 
-            positionError = estimator.getEstimatedPosition().
-                    distanceTo(accessPointPosition);
+            positionError = estimator.getEstimatedPosition().distanceTo(accessPointPosition);
             if (positionError > LARGE_POSITION_ERROR) {
                 continue;
             }
 
-            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition,
-                    LARGE_POSITION_ERROR));
+            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, LARGE_POSITION_ERROR));
             numValidPosition++;
 
             assertArrayEquals(estimator.getEstimatedPosition().asArray(),
                     estimator.getEstimatedPositionCoordinates(), 0.0);
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
 
             break;
         }
@@ -1989,13 +1861,12 @@ public class RangingRadioSourceEstimator2DTest implements
                 "Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
-        LOGGER.log(Level.INFO, "Position error: {0} meters",
-                positionError);
+        LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
     }
 
     @Test
-    public void testEstimateInitialPositionHomogeneousSolver()
-            throws LockedException, NotReadyException, AlgebraException {
+    public void testEstimateInitialPositionHomogeneousSolver() throws LockedException, NotReadyException,
+            AlgebraException {
 
         int numValidPosition = 0;
         double positionError = 0.0;
@@ -2004,10 +1875,9 @@ public class RangingRadioSourceEstimator2DTest implements
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
-            final InhomogeneousPoint2D accessPointPosition =
-                    new InhomogeneousPoint2D(
-                            randomizer.nextDouble(MIN_POS, MAX_POS),
-                            randomizer.nextDouble(MIN_POS, MAX_POS));
+            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
             final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
             final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
@@ -2020,8 +1890,7 @@ public class RangingRadioSourceEstimator2DTest implements
 
                 final double distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                readings.add(new RangingReadingLocated2D<>(accessPoint, distance,
-                        readingsPositions[i]));
+                readings.add(new RangingReadingLocated2D<>(accessPoint, distance, readingsPositions[i]));
             }
 
             final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
@@ -2034,8 +1903,8 @@ public class RangingRadioSourceEstimator2DTest implements
             assertFalse(estimator.isLocked());
             assertNull(estimator.getEstimatedPosition());
             assertNull(estimator.getEstimatedPositionCoordinates());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             try {
                 estimator.estimate();
@@ -2053,16 +1922,13 @@ public class RangingRadioSourceEstimator2DTest implements
             final WifiAccessPointLocated2D estimatedAccessPoint =
                     (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
-            assertEquals(estimatedAccessPoint.getBssid(), "bssid");
-            assertEquals(estimatedAccessPoint.getFrequency(), FREQUENCY, 0.0);
+            assertEquals("bssid", estimatedAccessPoint.getBssid());
+            assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
             assertNull(estimatedAccessPoint.getSsid());
-            assertEquals(estimatedAccessPoint.getPosition(),
-                    estimator.getEstimatedPosition());
-            assertEquals(estimatedAccessPoint.getPositionCovariance(),
-                    estimator.getEstimatedPositionCovariance());
+            assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
+            assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(
-                    estimator.getEstimatedPositionCovariance());
+            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
             final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
@@ -2073,20 +1939,18 @@ public class RangingRadioSourceEstimator2DTest implements
             positionAccuracy = accuracy.getAverageAccuracy();
             positionAccuracyConfidence = accuracy.getConfidence();
 
-            positionError = estimator.getEstimatedPosition().
-                    distanceTo(accessPointPosition);
+            positionError = estimator.getEstimatedPosition().distanceTo(accessPointPosition);
             if (positionError > ABSOLUTE_ERROR) {
                 continue;
             }
 
-            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition,
-                    ABSOLUTE_ERROR));
+            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
             assertArrayEquals(estimator.getEstimatedPosition().asArray(),
                     estimator.getEstimatedPositionCoordinates(), 0.0);
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
 
             break;
         }
@@ -2104,13 +1968,12 @@ public class RangingRadioSourceEstimator2DTest implements
                 "Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
-        LOGGER.log(Level.INFO, "Position error: {0} meters",
-                positionError);
+        LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
     }
 
     @Test
-    public void testEstimateInitialPositionInhomogeneousSolver()
-            throws LockedException, NotReadyException, AlgebraException {
+    public void testEstimateInitialPositionInhomogeneousSolver() throws LockedException, NotReadyException,
+            AlgebraException {
 
         int numValidPosition = 0;
         double positionError = 0.0;
@@ -2119,10 +1982,9 @@ public class RangingRadioSourceEstimator2DTest implements
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
-            final InhomogeneousPoint2D accessPointPosition =
-                    new InhomogeneousPoint2D(
-                            randomizer.nextDouble(MIN_POS, MAX_POS),
-                            randomizer.nextDouble(MIN_POS, MAX_POS));
+            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
             final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
             final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
@@ -2135,8 +1997,7 @@ public class RangingRadioSourceEstimator2DTest implements
 
                 final double distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                readings.add(new RangingReadingLocated2D<>(accessPoint, distance,
-                        readingsPositions[i]));
+                readings.add(new RangingReadingLocated2D<>(accessPoint, distance, readingsPositions[i]));
             }
 
             final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
@@ -2149,8 +2010,8 @@ public class RangingRadioSourceEstimator2DTest implements
             assertFalse(estimator.isLocked());
             assertNull(estimator.getEstimatedPosition());
             assertNull(estimator.getEstimatedPositionCoordinates());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             try {
                 estimator.estimate();
@@ -2168,16 +2029,13 @@ public class RangingRadioSourceEstimator2DTest implements
             final WifiAccessPointLocated2D estimatedAccessPoint =
                     (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
-            assertEquals(estimatedAccessPoint.getBssid(), "bssid");
-            assertEquals(estimatedAccessPoint.getFrequency(), FREQUENCY, 0.0);
+            assertEquals("bssid", estimatedAccessPoint.getBssid());
+            assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
             assertNull(estimatedAccessPoint.getSsid());
-            assertEquals(estimatedAccessPoint.getPosition(),
-                    estimator.getEstimatedPosition());
-            assertEquals(estimatedAccessPoint.getPositionCovariance(),
-                    estimator.getEstimatedPositionCovariance());
+            assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
+            assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(
-                    estimator.getEstimatedPositionCovariance());
+            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
             final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
@@ -2188,20 +2046,18 @@ public class RangingRadioSourceEstimator2DTest implements
             positionAccuracy = accuracy.getAverageAccuracy();
             positionAccuracyConfidence = accuracy.getConfidence();
 
-            positionError = estimator.getEstimatedPosition().
-                    distanceTo(accessPointPosition);
+            positionError = estimator.getEstimatedPosition().distanceTo(accessPointPosition);
             if (positionError > ABSOLUTE_ERROR) {
                 continue;
             }
 
-            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition,
-                    ABSOLUTE_ERROR));
+            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
             assertArrayEquals(estimator.getEstimatedPosition().asArray(),
                     estimator.getEstimatedPositionCoordinates(), 0.0);
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
 
             break;
         }
@@ -2219,23 +2075,20 @@ public class RangingRadioSourceEstimator2DTest implements
                 "Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
-        LOGGER.log(Level.INFO, "Position error: {0} meters",
-                positionError);
+        LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
     }
 
     @Test
-    public void testEstimateNonLinearDisabledAndHomogeneousSolver()
-            throws LockedException, NotReadyException {
+    public void testEstimateNonLinearDisabledAndHomogeneousSolver() throws LockedException, NotReadyException {
 
         int numValidPosition = 0;
         double positionError = 0.0;
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
-            final InhomogeneousPoint2D accessPointPosition =
-                    new InhomogeneousPoint2D(
-                            randomizer.nextDouble(MIN_POS, MAX_POS),
-                            randomizer.nextDouble(MIN_POS, MAX_POS));
+            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
             final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
             final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
@@ -2248,8 +2101,7 @@ public class RangingRadioSourceEstimator2DTest implements
 
                 final double distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                readings.add(new RangingReadingLocated2D<>(accessPoint, distance,
-                        readingsPositions[i]));
+                readings.add(new RangingReadingLocated2D<>(accessPoint, distance, readingsPositions[i]));
             }
 
             final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
@@ -2262,8 +2114,8 @@ public class RangingRadioSourceEstimator2DTest implements
             assertFalse(estimator.isLocked());
             assertNull(estimator.getEstimatedPosition());
             assertNull(estimator.getEstimatedPositionCoordinates());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             try {
                 estimator.estimate();
@@ -2281,51 +2133,44 @@ public class RangingRadioSourceEstimator2DTest implements
             final WifiAccessPointLocated2D estimatedAccessPoint =
                     (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
-            assertEquals(estimatedAccessPoint.getBssid(), "bssid");
-            assertEquals(estimatedAccessPoint.getFrequency(), FREQUENCY, 0.0);
+            assertEquals("bssid", estimatedAccessPoint.getBssid());
+            assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
             assertNull(estimatedAccessPoint.getSsid());
-            assertEquals(estimatedAccessPoint.getPosition(),
-                    estimator.getEstimatedPosition());
-            assertEquals(estimatedAccessPoint.getPositionCovariance(),
-                    estimator.getEstimatedPositionCovariance());
+            assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
+            assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            positionError = estimator.getEstimatedPosition().
-                    distanceTo(accessPointPosition);
+            positionError = estimator.getEstimatedPosition().distanceTo(accessPointPosition);
             if (positionError > ABSOLUTE_ERROR) {
                 continue;
             }
 
-            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition,
-                    ABSOLUTE_ERROR));
+            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
             assertArrayEquals(estimator.getEstimatedPosition().asArray(),
                     estimator.getEstimatedPositionCoordinates(), 0.0);
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
 
             break;
         }
 
         assertTrue(numValidPosition > 0);
 
-        LOGGER.log(Level.INFO, "Position error: {0} meters",
-                positionError);
+        LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
     }
 
     @Test
-    public void testEstimateNonLinearDisableAndInhomogeneousSolver()
-            throws LockedException, NotReadyException {
+    public void testEstimateNonLinearDisableAndInhomogeneousSolver() throws LockedException, NotReadyException {
 
         int numValidPosition = 0;
         double positionError = 0.0;
         for (int t = 0; t < TIMES; t++) {
             final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
-            final InhomogeneousPoint2D accessPointPosition =
-                    new InhomogeneousPoint2D(
-                            randomizer.nextDouble(MIN_POS, MAX_POS),
-                            randomizer.nextDouble(MIN_POS, MAX_POS));
+            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
             final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
             final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
@@ -2338,8 +2183,7 @@ public class RangingRadioSourceEstimator2DTest implements
 
                 final double distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                readings.add(new RangingReadingLocated2D<>(accessPoint, distance,
-                        readingsPositions[i]));
+                readings.add(new RangingReadingLocated2D<>(accessPoint, distance, readingsPositions[i]));
             }
 
             final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
@@ -2352,8 +2196,8 @@ public class RangingRadioSourceEstimator2DTest implements
             assertFalse(estimator.isLocked());
             assertNull(estimator.getEstimatedPosition());
             assertNull(estimator.getEstimatedPositionCoordinates());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             try {
                 estimator.estimate();
@@ -2371,48 +2215,41 @@ public class RangingRadioSourceEstimator2DTest implements
             final WifiAccessPointLocated2D estimatedAccessPoint =
                     (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
-            assertEquals(estimatedAccessPoint.getBssid(), "bssid");
-            assertEquals(estimatedAccessPoint.getFrequency(), FREQUENCY, 0.0);
+            assertEquals("bssid", estimatedAccessPoint.getBssid());
+            assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
             assertNull(estimatedAccessPoint.getSsid());
-            assertEquals(estimatedAccessPoint.getPosition(),
-                    estimator.getEstimatedPosition());
-            assertEquals(estimatedAccessPoint.getPositionCovariance(),
-                    estimator.getEstimatedPositionCovariance());
+            assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
+            assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            positionError = estimator.getEstimatedPosition().
-                    distanceTo(accessPointPosition);
+            positionError = estimator.getEstimatedPosition().distanceTo(accessPointPosition);
             if (positionError > ABSOLUTE_ERROR) {
                 continue;
             }
 
-            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition,
-                    ABSOLUTE_ERROR));
+            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
             assertArrayEquals(estimator.getEstimatedPosition().asArray(),
                     estimator.getEstimatedPositionCoordinates(), 0.0);
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
 
             break;
         }
 
         assertTrue(numValidPosition > 0);
 
-        LOGGER.log(Level.INFO, "Position error: {0} meters",
-                positionError);
+        LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
     }
 
     @Override
-    public void onEstimateStart(
-            final RangingRadioSourceEstimator<WifiAccessPoint, Point2D> estimator) {
+    public void onEstimateStart(final RangingRadioSourceEstimator<WifiAccessPoint, Point2D> estimator) {
         estimateStart++;
         checkLocked(estimator);
     }
 
     @Override
-    public void onEstimateEnd(
-            final RangingRadioSourceEstimator<WifiAccessPoint, Point2D> estimator) {
+    public void onEstimateEnd(final RangingRadioSourceEstimator<WifiAccessPoint, Point2D> estimator) {
         estimateEnd++;
         checkLocked(estimator);
     }
@@ -2421,8 +2258,7 @@ public class RangingRadioSourceEstimator2DTest implements
         estimateStart = estimateEnd = 0;
     }
 
-    private void checkLocked(
-            final RangingRadioSourceEstimator<WifiAccessPoint, Point2D> estimator) {
+    private void checkLocked(final RangingRadioSourceEstimator<WifiAccessPoint, Point2D> estimator) {
         try {
             estimator.setNonLinearSolverEnabled(false);
             fail("LockedException expected but not thrown");

@@ -34,15 +34,14 @@ import java.util.List;
  * getting ranging readings at an unknown location of different radio sources whose
  * locations are known.
  */
-public class LinearMixedPositionEstimator2D extends
-        LinearMixedPositionEstimator<Point2D> {
+public class LinearMixedPositionEstimator2D extends LinearMixedPositionEstimator<Point2D> {
 
     /**
      * Constructor.
      */
     public LinearMixedPositionEstimator2D() {
         super();
-        init();
+        initialize();
     }
 
     /**
@@ -56,7 +55,7 @@ public class LinearMixedPositionEstimator2D extends
     public LinearMixedPositionEstimator2D(
             final List<? extends RadioSourceLocated<Point2D>> sources) {
         super();
-        init();
+        initialize();
         internalSetSources(sources);
     }
 
@@ -70,7 +69,7 @@ public class LinearMixedPositionEstimator2D extends
     public LinearMixedPositionEstimator2D(
             final Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> fingerprint) {
         super();
-        init();
+        initialize();
         internalSetFingerprint(fingerprint);
     }
 
@@ -88,7 +87,7 @@ public class LinearMixedPositionEstimator2D extends
             final List<? extends RadioSourceLocated<Point2D>> sources,
             final Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> fingerprint) {
         super();
-        init();
+        initialize();
         internalSetSources(sources);
         internalSetFingerprint(fingerprint);
     }
@@ -101,7 +100,7 @@ public class LinearMixedPositionEstimator2D extends
     public LinearMixedPositionEstimator2D(
             final MixedPositionEstimatorListener<Point2D> listener) {
         super(listener);
-        init();
+        initialize();
     }
 
     /**
@@ -117,7 +116,7 @@ public class LinearMixedPositionEstimator2D extends
             final List<? extends RadioSourceLocated<Point2D>> sources,
             final MixedPositionEstimatorListener<Point2D> listener) {
         super(listener);
-        init();
+        initialize();
         internalSetSources(sources);
     }
 
@@ -133,7 +132,7 @@ public class LinearMixedPositionEstimator2D extends
             final Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> fingerprint,
             final MixedPositionEstimatorListener<Point2D> listener) {
         super(listener);
-        init();
+        initialize();
         internalSetFingerprint(fingerprint);
     }
 
@@ -153,7 +152,7 @@ public class LinearMixedPositionEstimator2D extends
             final Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> fingerprint,
             final MixedPositionEstimatorListener<Point2D> listener) {
         super(listener);
-        init();
+        initialize();
         internalSetSources(sources);
         internalSetFingerprint(fingerprint);
     }
@@ -207,7 +206,7 @@ public class LinearMixedPositionEstimator2D extends
     /**
      * Initializes lateration solver.
      */
-    private void init() {
+    private void initialize() {
         mHomogeneousTrilaterationSolver = new HomogeneousLinearLeastSquaresLateration2DSolver(
                 mLaterationSolverListener);
         mInhomogeneousTrilaterationSolver = new InhomogeneousLinearLeastSquaresLateration2DSolver(

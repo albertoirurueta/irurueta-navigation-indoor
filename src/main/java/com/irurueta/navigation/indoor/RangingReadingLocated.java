@@ -19,7 +19,7 @@ import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.Point;
 
 /**
- * Contains a located ranging reading associated to a given radio source (e.g. WiFi access point or
+ * Contains a located ranging reading associated to a given radio source (e.g. Wi-Fi access point or
  * bluetooth beacon), indicating the distance to such access point.
  *
  * @param <S> a {@link RadioSource} type.
@@ -29,7 +29,7 @@ public class RangingReadingLocated<S extends RadioSource, P extends Point<?>> ex
         implements ReadingLocated<P> {
 
     /**
-     * Position where WiFi reading was made.
+     * Position where Wi-Fi reading was made.
      */
     private P mPosition;
 

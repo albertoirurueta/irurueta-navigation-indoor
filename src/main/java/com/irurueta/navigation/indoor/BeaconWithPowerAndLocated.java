@@ -42,7 +42,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers      list of the multi-part identifiers of the beacon.
+     * @param identifiers      list of the multipart identifiers of the beacon.
      * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param position         position where beacon is located.
      * @throws IllegalArgumentException if either identifiers or position are null.
@@ -63,7 +63,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers      list of the multi-part identifiers of the beacon.
+     * @param identifiers      list of the multipart identifiers of the beacon.
      * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param bluetoothAddress the bluetooth mac address.
      * @param beaconTypeCode   the two byte value indicating the type of beacon.
@@ -96,7 +96,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers                       list of the multi-part identifiers of the beacon.
+     * @param identifiers                       list of the multipart identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value.
      * @param position                          position where beacon is located.
@@ -120,7 +120,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers                       list of the multi-part identifiers of the beacon.
+     * @param identifiers                       list of the multipart identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
@@ -156,7 +156,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers        list of the multi-part identifiers of the beacon.
+     * @param identifiers        list of the multipart identifiers of the beacon.
      * @param transmittedPower   calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param position           position where beacon is located.
      * @param positionCovariance covariance of inhomogeneous coordinates of current
@@ -182,7 +182,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers        list of the multi-part identifiers of the beacon.
+     * @param identifiers        list of the multipart identifiers of the beacon.
      * @param transmittedPower   calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param bluetoothAddress   the bluetooth mac address.
      * @param beaconTypeCode     the two byte value indicating the type of beacon.
@@ -220,7 +220,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers                       list of the multi-part identifiers of the beacon.
+     * @param identifiers                       list of the multipart identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value.
      * @param position                          position where beacon is located.
@@ -249,7 +249,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers                       list of the multi-part identifiers of the beacon.
+     * @param identifiers                       list of the multipart identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
@@ -289,7 +289,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers      list of the multi-part identifiers of the beacon.
+     * @param identifiers      list of the multipart identifiers of the beacon.
      * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency        frequency used by this Beacon.
      * @param bluetoothAddress the bluetooth mac address.
@@ -324,7 +324,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers                       list of the multi-part identifiers of the beacon.
+     * @param identifiers                       list of the multipart identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency                         frequency used by this Beacon.
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value.
@@ -350,7 +350,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers                       list of the multi-part identifiers of the beacon.
+     * @param identifiers                       list of the multipart identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency                         frequency used by this Beacon.
      * @param bluetoothAddress                  the bluetooth mac address.
@@ -388,7 +388,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers        list of the multi-part identifiers of the beacon.
+     * @param identifiers        list of the multipart identifiers of the beacon.
      * @param transmittedPower   calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency          frequency used by this Beacon.
      * @param bluetoothAddress   the bluetooth mac address.
@@ -428,7 +428,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers                       list of the multi-part identifiers of the beacon.
+     * @param identifiers                       list of the multipart identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency                         frequency used by this Beacon.
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value.
@@ -459,7 +459,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers                       list of the multi-part identifiers of the beacon.
+     * @param identifiers                       list of the multipart identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency                         frequency used by this Beacon.
      * @param bluetoothAddress                  the bluetooth mac address.
@@ -501,9 +501,9 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers      list of the multi-part identifiers of the beacon.
+     * @param identifiers      list of the multipart identifiers of the beacon.
      * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
-     * @param pathLossExponent path loss exponent. By default this is 2.0.
+     * @param pathLossExponent path loss exponent. By default, this is 2.0.
      * @param position         position where beacon is located.
      * @throws IllegalArgumentException if either identifiers or position are null.
      */
@@ -524,14 +524,14 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers      list of the multi-part identifiers of the beacon.
+     * @param identifiers      list of the multipart identifiers of the beacon.
      * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param bluetoothAddress the bluetooth mac address.
      * @param beaconTypeCode   the two byte value indicating the type of beacon.
      * @param manufacturer     a two byte code indicating the beacon manufacturer.
      * @param serviceUuid      a 32 bit service uuid for the beacon.
      * @param bluetoothName    the bluetooth device name.
-     * @param pathLossExponent path loss exponent. By default this is 2.0.
+     * @param pathLossExponent path loss exponent. By default, this is 2.0.
      * @param position         position where beacon is located.
      * @throws IllegalArgumentException if either identifiers or position are null.
      */
@@ -559,10 +559,10 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers                       list of the multi-part identifiers of the beacon.
+     * @param identifiers                       list of the multipart identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value.
-     * @param pathLossExponent                  path loss exponent. By default this is 2.0.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @param position                          position where beacon is located.
      * @throws IllegalArgumentException if either identifiers or position are null or
      *                                  standard deviation is negative.
@@ -585,14 +585,14 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers                       list of the multi-part identifiers of the beacon.
+     * @param identifiers                       list of the multipart identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
      * @param bluetoothName                     the bluetooth device name.
-     * @param pathLossExponent                  path loss exponent. By default this is 2.0.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value.
      * @param position                          position where beacon is located.
      * @throws IllegalArgumentException if either identifiers or position are null or
@@ -623,9 +623,9 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers        list of the multi-part identifiers of the beacon.
+     * @param identifiers        list of the multipart identifiers of the beacon.
      * @param transmittedPower   calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
-     * @param pathLossExponent   path loss exponent. By default this is 2.0.
+     * @param pathLossExponent   path loss exponent. By default, this is 2.0.
      * @param position           position where beacon is located.
      * @param positionCovariance covariance of inhomogeneous coordinates of current
      *                           position (if available).
@@ -651,14 +651,14 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers        list of the multi-part identifiers of the beacon.
+     * @param identifiers        list of the multipart identifiers of the beacon.
      * @param transmittedPower   calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param bluetoothAddress   the bluetooth mac address.
      * @param beaconTypeCode     the two byte value indicating the type of beacon.
      * @param manufacturer       a two byte code indicating the beacon manufacturer.
      * @param serviceUuid        a 32 bit service uuid for the beacon.
      * @param bluetoothName      the bluetooth device name.
-     * @param pathLossExponent   path loss exponent. By default this is 2.0.
+     * @param pathLossExponent   path loss exponent. By default, this is 2.0.
      * @param position           position where beacon is located.
      * @param positionCovariance covariance of inhomogeneous coordinates of current
      *                           position (if available).
@@ -691,10 +691,10 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers                       list of the multi-part identifiers of the beacon.
+     * @param identifiers                       list of the multipart identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value.
-     * @param pathLossExponent                  path loss exponent. By default this is 2.0.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @param position                          position where beacon is located.
      * @param positionCovariance                covariance of inhomogeneous coordinates of current
      *                                          position (if available).
@@ -722,14 +722,14 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers                       list of the multi-part identifiers of the beacon.
+     * @param identifiers                       list of the multipart identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
      * @param bluetoothName                     the bluetooth device name.
-     * @param pathLossExponent                  path loss exponent. By default this is 2.0.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @param transmittedPowerStandardDeviation transmitted power standard deviation.
      * @param position                          position where beacon is located.
      * @param positionCovariance                covariance of inhomogeneous coordinates of current
@@ -764,7 +764,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers      list of the multi-part identifiers of the beacon.
+     * @param identifiers      list of the multipart identifiers of the beacon.
      * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency        frequency used by this Beacon.
      * @param bluetoothAddress the bluetooth mac address.
@@ -772,7 +772,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      * @param manufacturer     a two byte code indicating the beacon manufacturer.
      * @param serviceUuid      a 32 bit service uuid for the beacon.
      * @param bluetoothName    the bluetooth device name.
-     * @param pathLossExponent path loss exponent. By default this is 2.0.
+     * @param pathLossExponent path loss exponent. By default, this is 2.0.
      * @param position         position where beacon is located.
      * @throws IllegalArgumentException if either identifiers or position are null.
      */
@@ -801,10 +801,10 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers                       list of the multi-part identifiers of the beacon.
+     * @param identifiers                       list of the multipart identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency                         frequency used by this Beacon.
-     * @param pathLossExponent                  path loss exponent. By default this is 2.0.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value.
      * @param position                          position where beacon is located.
      * @throws IllegalArgumentException if either identifiers or position are null or
@@ -830,7 +830,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers                       list of the multi-part identifiers of the beacon.
+     * @param identifiers                       list of the multipart identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency                         frequency used by this Beacon.
      * @param bluetoothAddress                  the bluetooth mac address.
@@ -838,7 +838,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
      * @param bluetoothName                     the bluetooth device name.
-     * @param pathLossExponent                  path loss exponent. By default this is 2.0.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value.
      * @param position                          position where beacon is located.
      * @throws IllegalArgumentException if either identifiers or position are null or
@@ -870,7 +870,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers        list of the multi-part identifiers of the beacon.
+     * @param identifiers        list of the multipart identifiers of the beacon.
      * @param transmittedPower   calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency          frequency used by this Beacon.
      * @param bluetoothAddress   the bluetooth mac address.
@@ -878,7 +878,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      * @param manufacturer       a two byte code indicating the beacon manufacturer.
      * @param serviceUuid        a 32 bit service uuid for the beacon.
      * @param bluetoothName      the bluetooth device name.
-     * @param pathLossExponent   path loss exponent. By default this is 2.0.
+     * @param pathLossExponent   path loss exponent. By default, this is 2.0.
      * @param position           position where beacon is located.
      * @param positionCovariance covariance of inhomogeneous coordinates of current
      *                           position (if available).
@@ -912,11 +912,11 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers                       list of the multi-part identifiers of the beacon.
+     * @param identifiers                       list of the multipart identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency                         frequency used by this Beacon.
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value.
-     * @param pathLossExponent                  path loss exponent. By default this is 2.0.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @param position                          position where beacon is located.
      * @param positionCovariance                covariance of inhomogeneous coordinates of current
      *                                          position (if available).
@@ -945,7 +945,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers                       list of the multi-part identifiers of the beacon.
+     * @param identifiers                       list of the multipart identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency                         frequency used by this Beacon.
      * @param bluetoothAddress                  the bluetooth mac address.
@@ -953,7 +953,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
      * @param bluetoothName                     the bluetooth device name.
-     * @param pathLossExponent                  path loss exponent. By default this is 2.0.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @param transmittedPowerStandardDeviation transmitted power standard deviation.
      * @param position                          position where beacon is located.
      * @param positionCovariance                covariance of inhomogeneous coordinates of current
@@ -989,10 +989,10 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers                       list of the multi-part identifiers of the beacon.
+     * @param identifiers                       list of the multipart identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value.
-     * @param pathLossExponent                  path loss exponent. By default this is 2.0.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @param pathLossExponentStandardDeviation standard deviation of path loss exponent or null if
      *                                          unknown.
      * @param position                          position where beacon is located.
@@ -1019,14 +1019,14 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers                       list of the multi-part identifiers of the beacon.
+     * @param identifiers                       list of the multipart identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
      * @param bluetoothName                     the bluetooth device name.
-     * @param pathLossExponent                  path loss exponent. By default this is 2.0.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value.
      * @param pathLossExponentStandardDeviation standard deviation of path loss exponent or null if
      *                                          unknown.
@@ -1061,10 +1061,10 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers                       list of the multi-part identifiers of the beacon.
+     * @param identifiers                       list of the multipart identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value.
-     * @param pathLossExponent                  path loss exponent. By default this is 2.0.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @param pathLossExponentStandardDeviation standard deviation of path loss exponent or null if
      *                                          unknown.
      * @param position                          position where beacon is located.
@@ -1095,14 +1095,14 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers                       list of the multi-part identifiers of the beacon.
+     * @param identifiers                       list of the multipart identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param bluetoothAddress                  the bluetooth mac address.
      * @param beaconTypeCode                    the two byte value indicating the type of beacon.
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
      * @param bluetoothName                     the bluetooth device name.
-     * @param pathLossExponent                  path loss exponent. By default this is 2.0.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value or null
      *                                          if unknown.
      * @param pathLossExponentStandardDeviation standard deviation of path loss exponent or null if
@@ -1142,10 +1142,10 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers                       list of the multi-part identifiers of the beacon.
+     * @param identifiers                       list of the multipart identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency                         frequency used by this Beacon.
-     * @param pathLossExponent                  path loss exponent. By default this is 2.0.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value.
      * @param pathLossExponentStandardDeviation standard deviation of path loss exponent or null if
      *                                          unknown.
@@ -1175,7 +1175,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers                       list of the multi-part identifiers of the beacon.
+     * @param identifiers                       list of the multipart identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency                         frequency used by this Beacon.
      * @param bluetoothAddress                  the bluetooth mac address.
@@ -1183,7 +1183,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
      * @param bluetoothName                     the bluetooth device name.
-     * @param pathLossExponent                  path loss exponent. By default this is 2.0.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value.
      * @param pathLossExponentStandardDeviation standard deviation of path loss exponent or null if
      *                                          unknown.
@@ -1219,10 +1219,10 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers                       list of the multi-part identifiers of the beacon.
+     * @param identifiers                       list of the multipart identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency                         frequency used by this Beacon.
-     * @param pathLossExponent                  path loss exponent. By default this is 2.0.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value.
      * @param pathLossExponentStandardDeviation standard deviation of path loss exponent or null if
      *                                          unknown.
@@ -1256,7 +1256,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Constructor.
      *
-     * @param identifiers                       list of the multi-part identifiers of the beacon.
+     * @param identifiers                       list of the multipart identifiers of the beacon.
      * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @param frequency                         frequency used by this Beacon.
      * @param bluetoothAddress                  the bluetooth mac address.
@@ -1264,7 +1264,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      * @param manufacturer                      a two byte code indicating the beacon manufacturer.
      * @param serviceUuid                       a 32 bit service uuid for the beacon.
      * @param bluetoothName                     the bluetooth device name.
-     * @param pathLossExponent                  path loss exponent. By default this is 2.0.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @param transmittedPowerStandardDeviation standard deviation of transmitted power value or null
      *                                          if unknown.
      * @param pathLossExponentStandardDeviation standard deviation of path loss exponent or null if

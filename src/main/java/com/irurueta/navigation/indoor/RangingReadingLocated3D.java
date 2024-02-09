@@ -20,7 +20,7 @@ import com.irurueta.geometry.Point3D;
 
 /**
  * Contains a 3D located ranging reading associated to a given radio source
- * (e.g. WiFi access point or bluetooth beacon), indicating the distance
+ * (e.g. Wi-Fi access point or bluetooth beacon), indicating the distance
  * to such radio source.
  *
  * @param <S> a {@link RadioSource} type.

@@ -29,7 +29,7 @@ import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import java.util.List;
 
 /**
- * Robustly estimated 3D position of a radio source (e.g. WiFi
+ * Robustly estimated 3D position of a radio source (e.g. Wi-Fi
  * access point or bluetooth beacon), by discarding outliers using MSAC
  * algorithm.
  *

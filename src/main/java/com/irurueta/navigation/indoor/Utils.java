@@ -244,7 +244,7 @@ public class Utils {
      * @param fingerprintPosition           position of closest fingerprint.
      * @param radioSourcePosition           radio source position associated to fingerprint reading.
      * @param estimatedPosition             position to be estimated. Usually this is equal to the
-     *                                      initial position used by a non linear algorithm.
+     *                                      initial position used by a non-linear algorithm.
      * @param fingerprintRssiVariance       variance of fingerprint RSSI or null if unknown.
      * @param pathLossExponentVariance      variance of path-loss exponent or null if unknown.
      * @param fingerprintPositionCovariance covariance of fingerprint position or null if
@@ -482,7 +482,7 @@ public class Utils {
      * @param fingerprintPosition           position of closest fingerprint.
      * @param radioSourcePosition           radio source position associated to fingerprint reading.
      * @param estimatedPosition             position to be estimated. Usually this is equal to the
-     *                                      initial position used by a non linear algorithm.
+     *                                      initial position used by a non-linear algorithm.
      * @param fingerprintRssiVariance       variance of fingerprint RSSI or null if unknown.
      * @param pathLossExponentVariance      variance of path-loss exponent or null if unknown.
      * @param fingerprintPositionCovariance covariance of fingerprint position or null if
@@ -690,7 +690,7 @@ public class Utils {
                     // diff(Pr(pi))/diff(za) = -10*n/ln(10)*((z1 - zi)*((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2) - ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*-2*(z1 - za))/((x1 - xa)^2 + (y1 - ya)^2 + (z1 - za)^2)^2
                     // diff(Pr(pi))/diff(za) = -10*n/ln(10)*(-(zi - z1)*d1a^2 + ((x1 - xa)*(xi - x1) + (y1 - ya)*(yi - y1) + (z1 - za)*(zi - z1))*2*(z1 - za))/d1a^4
                     final double derivativeZa = -10.0 * pathLossExponent / ln10 * (-diffZi1 * d1a2 +
-                            +tmpZ) / d1a4;
+                            tmpZ) / d1a4;
 
                     // derivative of rssi respect to xi
 
@@ -769,7 +769,7 @@ public class Utils {
      * @param fingerprintPosition           position of closest fingerprint.
      * @param radioSourcePosition           radio source position associated to fingerprint reading.
      * @param estimatedPosition             position to be estimated. Usually this is equal to the
-     *                                      initial position used by a non linear algorithm.
+     *                                      initial position used by a non-linear algorithm.
      * @param fingerprintRssiVariance       variance of fingerprint RSSI or null if unknown.
      * @param pathLossExponentVariance      variance of path-loss exponent or null if unknown.
      * @param fingerprintPositionCovariance covariance of fingerprint position or null if
@@ -1164,7 +1164,7 @@ public class Utils {
      * @param fingerprintPosition           position of closest fingerprint.
      * @param radioSourcePosition           radio source position associated to fingerprint reading.
      * @param estimatedPosition             position to be estimated. Usually this is equal to the
-     *                                      initial position used by a non linear algorithm.
+     *                                      initial position used by a non-linear algorithm.
      * @param fingerprintRssiVariance       variance of fingerprint RSSI or null if unknown.
      * @param pathLossExponentVariance      variance of path-loss exponent or null if unknown.
      * @param fingerprintPositionCovariance covariance of fingerprint position or null if
@@ -1914,7 +1914,7 @@ public class Utils {
      * @param fingerprintPosition           position of closest fingerprint.
      * @param radioSourcePosition           radio source position associated to fingerprint reading.
      * @param estimatedPosition             position to be estimated. Usually this is equal to the
-     *                                      initial position used by a non linear algorithm.
+     *                                      initial position used by a non-linear algorithm.
      * @param fingerprintRssiVariance       variance of fingerprint RSSI or null if unknown.
      * @param pathLossExponentVariance      variance of path-loss exponent or null if unknown.
      * @param fingerprintPositionCovariance covariance of fingerprint position or null if
@@ -2110,7 +2110,7 @@ public class Utils {
      * @param fingerprintPosition           position of closest fingerprint.
      * @param radioSourcePosition           radio source position associated to fingerprint reading.
      * @param estimatedPosition             position to be estimated. Usually this is equal to the
-     *                                      initial position used by a non linear algorithm.
+     *                                      initial position used by a non-linear algorithm.
      * @param fingerprintRssiVariance       variance of fingerprint RSSI or null if unknown.
      * @param pathLossExponentVariance      variance of path-loss exponent or null if unknown.
      * @param fingerprintPositionCovariance covariance of fingerprint position or null if
@@ -2338,7 +2338,7 @@ public class Utils {
      * @param fingerprintPosition           position of closest fingerprint.
      * @param radioSourcePosition           radio source position associated to fingerprint reading.
      * @param estimatedPosition             position to be estimated. Usually this is equal to the
-     *                                      initial position used by a non linear algorithm.
+     *                                      initial position used by a non-linear algorithm.
      * @param pathLossExponentVariance      variance of path-loss exponent or null if unknown.
      * @param fingerprintPositionCovariance covariance of fingerprint position or null if
      *                                      unknown.
@@ -2517,7 +2517,7 @@ public class Utils {
      * @param fingerprintPosition           position of closest fingerprint.
      * @param radioSourcePosition           radio source position associated to fingerprint reading.
      * @param estimatedPosition             position to be estimated. Usually this is equal to the
-     *                                      initial position used by a non linear algorithm.
+     *                                      initial position used by a non-linear algorithm.
      * @param pathLossExponentVariance      variance of path-loss exponent or null if unknown.
      * @param fingerprintPositionCovariance covariance of fingerprint position or null if
      *                                      unknown.

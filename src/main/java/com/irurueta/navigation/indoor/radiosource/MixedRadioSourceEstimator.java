@@ -32,7 +32,7 @@ import java.util.List;
 
 /**
  * This is an abstract class to robustly estimate position, transmitted power and
- * path loss exponent of a radio source (e.g. WiFi access point or bluetooth
+ * path loss exponent of a radio source (e.g. Wi-Fi access point or bluetooth
  * beacon) assuming that the ranging data is available to obtain position with greater
  * accuracy and that the radio source emits isotropically following the
  * expression below:
@@ -74,7 +74,7 @@ public abstract class MixedRadioSourceEstimator<S extends RadioSource, P extends
 
     /**
      * Indicates whether radio source transmitted power estimation is enabled or not by
-     * default. Typically this data is required for WiFi Access points, but it is already
+     * default. Typically, this data is required for Wi-Fi Access points, but it is already
      * provided for Beacons (and hence its estimation is not needed).
      */
     public static final boolean DEFAULT_TRANSMITTED_POWER_ESTIMATION_ENABLED = true;

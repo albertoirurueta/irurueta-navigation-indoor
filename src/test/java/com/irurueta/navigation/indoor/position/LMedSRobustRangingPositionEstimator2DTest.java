@@ -90,32 +90,26 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
     @Test
     public void testConstructor() {
         // empty constructor
-        LMedSRobustRangingPositionEstimator2D estimator =
-                new LMedSRobustRangingPositionEstimator2D();
+        LMedSRobustRangingPositionEstimator2D estimator = new LMedSRobustRangingPositionEstimator2D();
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                LMedSRobustLateration2DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
+        assertEquals(LMedSRobustLateration2DSolver.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
+        assertEquals(3, estimator.getMinRequiredSources());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
         assertNull(estimator.getSources());
         assertNull(estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -129,8 +123,8 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 2);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(2, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.LMEDS, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // constructor with sources
@@ -142,28 +136,23 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
         estimator = new LMedSRobustRangingPositionEstimator2D(sources);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                LMedSRobustLateration2DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
-        assertSame(estimator.getSources(), sources);
+        assertEquals(LMedSRobustLateration2DSolver.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
+        assertEquals(3, estimator.getMinRequiredSources());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
+        assertSame(sources, estimator.getSources());
         assertNull(estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -177,15 +166,14 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 2);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(2, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.LMEDS, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
         estimator = null;
         try {
-            estimator = new LMedSRobustRangingPositionEstimator2D(
-                    (List<WifiAccessPointLocated2D>) null);
+            estimator = new LMedSRobustRangingPositionEstimator2D((List<WifiAccessPointLocated2D>) null);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -203,28 +191,23 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
         estimator = new LMedSRobustRangingPositionEstimator2D(fingerprint);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                LMedSRobustLateration2DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
+        assertEquals(LMedSRobustLateration2DSolver.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
+        assertEquals(3, estimator.getMinRequiredSources());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
         assertNull(estimator.getSources());
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -238,8 +221,8 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 2);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(2, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.LMEDS, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
@@ -256,28 +239,23 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
         estimator = new LMedSRobustRangingPositionEstimator2D(sources, fingerprint);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                LMedSRobustLateration2DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertEquals(LMedSRobustLateration2DSolver.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
+        assertEquals(3, estimator.getMinRequiredSources());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
         assertNull(estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -291,8 +269,8 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 2);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(2, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.LMEDS, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
@@ -320,28 +298,23 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
         estimator = new LMedSRobustRangingPositionEstimator2D(this);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                LMedSRobustLateration2DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
+        assertEquals(LMedSRobustLateration2DSolver.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
+        assertEquals(3, estimator.getMinRequiredSources());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
         assertNull(estimator.getSources());
         assertNull(estimator.getFingerprint());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -355,36 +328,31 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 2);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(2, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.LMEDS, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // constructor with sources and listener
         estimator = new LMedSRobustRangingPositionEstimator2D(sources, this);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                LMedSRobustLateration2DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
-        assertSame(estimator.getSources(), sources);
+        assertEquals(LMedSRobustLateration2DSolver.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
+        assertEquals(3, estimator.getMinRequiredSources());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
+        assertSame(sources, estimator.getSources());
         assertNull(estimator.getFingerprint());
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -398,8 +366,8 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 2);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(2, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.LMEDS, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
@@ -422,28 +390,23 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
         estimator = new LMedSRobustRangingPositionEstimator2D(fingerprint, this);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                LMedSRobustLateration2DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
+        assertEquals(LMedSRobustLateration2DSolver.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
+        assertEquals(3, estimator.getMinRequiredSources());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
         assertNull(estimator.getSources());
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -457,8 +420,8 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 2);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(2, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.LMEDS, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
@@ -473,32 +436,26 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
         assertNull(estimator);
 
         // constructor with sources, fingerprint and listener
-        estimator = new LMedSRobustRangingPositionEstimator2D(sources, fingerprint,
-                this);
+        estimator = new LMedSRobustRangingPositionEstimator2D(sources, fingerprint, this);
 
         // check default values
-        assertEquals(estimator.getStopThreshold(),
-                LMedSRobustLateration2DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
-        assertEquals(estimator.getMinRequiredSources(), 3);
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
-        assertSame(estimator.getSources(), sources);
-        assertSame(estimator.getFingerprint(), fingerprint);
-        assertSame(estimator.getListener(), this);
+        assertEquals(LMedSRobustLateration2DSolver.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
+        assertEquals(3, estimator.getMinRequiredSources());
+        assertEquals(3, estimator.getPreliminarySubsetSize());
+        assertSame(sources, estimator.getSources());
+        assertSame(fingerprint, estimator.getFingerprint());
+        assertSame(this, estimator.getListener());
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
         assertFalse(estimator.isLocked());
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
-        assertEquals(estimator.isResultRefined(),
-                RobustLaterationSolver.DEFAULT_REFINE_RESULT);
-        assertEquals(estimator.isCovarianceKept(),
-                RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
+        assertEquals(RobustLaterationSolver.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
+        assertEquals(RobustLaterationSolver.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
         assertNull(estimator.getInitialPosition());
         assertTrue(estimator.isLinearSolverUsed());
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -512,8 +469,8 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertNull(estimator.getEstimatedPosition());
         assertNull(estimator.getCovariance());
-        assertEquals(estimator.getNumberOfDimensions(), 2);
-        assertEquals(estimator.getMethod(), RobustEstimatorMethod.LMedS);
+        assertEquals(2, estimator.getNumberOfDimensions());
+        assertEquals(RobustEstimatorMethod.LMEDS, estimator.getMethod());
         assertTrue(estimator.getEvenlyDistributeReadings());
 
         // force IllegalArgumentException
@@ -526,14 +483,12 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
         }
         try {
             estimator = new LMedSRobustRangingPositionEstimator2D(
-                    new ArrayList<WifiAccessPointLocated2D>(), fingerprint,
-                    this);
+                    new ArrayList<WifiAccessPointLocated2D>(), fingerprint, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            estimator = new LMedSRobustRangingPositionEstimator2D(sources,
-                    null, this);
+            estimator = new LMedSRobustRangingPositionEstimator2D(sources, null, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -542,18 +497,17 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
 
     @Test
     public void testGetSetStopThreshold() throws LockedException {
-        final LMedSRobustRangingPositionEstimator2D estimator =
-                new LMedSRobustRangingPositionEstimator2D();
+        final LMedSRobustRangingPositionEstimator2D estimator = new LMedSRobustRangingPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.getStopThreshold(),
-                LMedSRobustLateration2DSolver.DEFAULT_STOP_THRESHOLD, 0.0);
+        assertEquals(LMedSRobustLateration2DSolver.DEFAULT_STOP_THRESHOLD,
+                estimator.getStopThreshold(), 0.0);
 
         // set new value
         estimator.setStopThreshold(1.0);
 
         // check
-        assertEquals(estimator.getStopThreshold(), 1.0, 0.0);
+        assertEquals(1.0, estimator.getStopThreshold(), 0.0);
 
         // force IllegalArgumentException
         try {
@@ -565,8 +519,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
 
     @Test
     public void testGetSetSources() throws LockedException {
-        final LMedSRobustRangingPositionEstimator2D estimator =
-                new LMedSRobustRangingPositionEstimator2D();
+        final LMedSRobustRangingPositionEstimator2D estimator = new LMedSRobustRangingPositionEstimator2D();
 
         // check default value
         assertNull(estimator.getSources());
@@ -574,14 +527,13 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
         // set new value
         final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            sources.add(new WifiAccessPointLocated2D("id1", FREQUENCY,
-                    new InhomogeneousPoint2D()));
+            sources.add(new WifiAccessPointLocated2D("id1", FREQUENCY, new InhomogeneousPoint2D()));
         }
 
         estimator.setSources(sources);
 
         // check
-        assertSame(estimator.getSources(), sources);
+        assertSame(sources, estimator.getSources());
 
         // force IllegalArgumentException
         try {
@@ -598,8 +550,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
 
     @Test
     public void testGetSetFingerprint() throws LockedException {
-        final LMedSRobustRangingPositionEstimator2D estimator =
-                new LMedSRobustRangingPositionEstimator2D();
+        final LMedSRobustRangingPositionEstimator2D estimator = new LMedSRobustRangingPositionEstimator2D();
 
         // check default value
         assertNull(estimator.getFingerprint());
@@ -610,7 +561,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
         estimator.setFingerprint(fingerprint);
 
         // check
-        assertSame(estimator.getFingerprint(), fingerprint);
+        assertSame(fingerprint, estimator.getFingerprint());
 
         // force IllegalArgumentException
         try {
@@ -622,8 +573,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
 
     @Test
     public void testGetSetListener() throws LockedException {
-        final LMedSRobustRangingPositionEstimator2D estimator =
-                new LMedSRobustRangingPositionEstimator2D();
+        final LMedSRobustRangingPositionEstimator2D estimator = new LMedSRobustRangingPositionEstimator2D();
 
         // check default value
         assertNull(estimator.getListener());
@@ -632,29 +582,27 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
         estimator.setListener(this);
 
         // check
-        assertSame(estimator.getListener(), this);
+        assertSame(this, estimator.getListener());
     }
 
     @Test
     public void testGetSetInitialPosition() throws LockedException {
-        final LMedSRobustRangingPositionEstimator2D solver =
-                new LMedSRobustRangingPositionEstimator2D();
+        final LMedSRobustRangingPositionEstimator2D estimator = new LMedSRobustRangingPositionEstimator2D();
 
         // check default value
-        assertNull(solver.getInitialPosition());
+        assertNull(estimator.getInitialPosition());
 
         // set new value
         final Point2D p = Point2D.create();
-        solver.setInitialPosition(p);
+        estimator.setInitialPosition(p);
 
         // check
-        assertSame(solver.getInitialPosition(), p);
+        assertSame(p, estimator.getInitialPosition());
     }
 
     @Test
     public void testIsSetRadioSourcePositionCovarianceUsed() throws LockedException {
-        final LMedSRobustRangingPositionEstimator2D estimator =
-                new LMedSRobustRangingPositionEstimator2D();
+        final LMedSRobustRangingPositionEstimator2D estimator = new LMedSRobustRangingPositionEstimator2D();
 
         // check default value
         assertTrue(estimator.isRadioSourcePositionCovarianceUsed());
@@ -668,36 +616,32 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
 
     @Test
     public void testGetSetFallbackDistanceStandardDeviation() throws LockedException {
-        final LMedSRobustRangingPositionEstimator2D estimator =
-                new LMedSRobustRangingPositionEstimator2D();
+        final LMedSRobustRangingPositionEstimator2D estimator = new LMedSRobustRangingPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
-                0.0);
+        assertEquals(RobustPositionEstimator.FALLBACK_DISTANCE_STANDARD_DEVIATION,
+                estimator.getFallbackDistanceStandardDeviation(), 0.0);
 
         // set new value
         estimator.setFallbackDistanceStandardDeviation(1.0);
 
         // check
-        assertEquals(estimator.getFallbackDistanceStandardDeviation(),
-                1.0, 0.0);
+        assertEquals(1.0, estimator.getFallbackDistanceStandardDeviation(), 0.0);
     }
 
     @Test
     public void testGetSetProgressDelta() throws LockedException {
-        final LMedSRobustRangingPositionEstimator2D estimator =
-                new LMedSRobustRangingPositionEstimator2D();
+        final LMedSRobustRangingPositionEstimator2D estimator = new LMedSRobustRangingPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.getProgressDelta(),
-                RobustLaterationSolver.DEFAULT_PROGRESS_DELTA, 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_PROGRESS_DELTA,
+                estimator.getProgressDelta(), 0.0);
 
         // set new value
         estimator.setProgressDelta(0.5f);
 
         // check
-        assertEquals(estimator.getProgressDelta(), 0.5f, 0.0);
+        assertEquals(0.5f, estimator.getProgressDelta(), 0.0);
 
         // force IllegalArgumentException
         try {
@@ -709,12 +653,16 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
 
     @Test
     public void testGetSetConfidence() throws LockedException {
-        final LMedSRobustRangingPositionEstimator2D estimator =
-                new LMedSRobustRangingPositionEstimator2D();
+        final LMedSRobustRangingPositionEstimator2D estimator = new LMedSRobustRangingPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.getConfidence(),
-                RobustLaterationSolver.DEFAULT_CONFIDENCE, 0.0);
+        assertEquals(RobustLaterationSolver.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
+
+        // set new value
+        estimator.setConfidence(0.8);
+
+        // check
+        assertEquals(0.8, estimator.getConfidence(), 0.0);
 
         // set new value
         try {
@@ -731,18 +679,17 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
 
     @Test
     public void testGetSetMaxIterations() throws LockedException {
-        final LMedSRobustRangingPositionEstimator2D estimator =
-                new LMedSRobustRangingPositionEstimator2D();
+        final LMedSRobustRangingPositionEstimator2D estimator = new LMedSRobustRangingPositionEstimator2D();
 
         // check default value
-        assertEquals(estimator.getMaxIterations(),
-                RobustLaterationSolver.DEFAULT_MAX_ITERATIONS);
+        assertEquals(RobustLaterationSolver.DEFAULT_MAX_ITERATIONS,
+                estimator.getMaxIterations());
 
         // set new value
         estimator.setMaxIterations(100);
 
         // check
-        assertEquals(estimator.getMaxIterations(), 100);
+        assertEquals(100, estimator.getMaxIterations());
 
         // force IllegalArgumentException
         try {
@@ -754,8 +701,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
 
     @Test
     public void testIsSetResultRefined() throws LockedException {
-        final LMedSRobustRangingPositionEstimator2D estimator =
-                new LMedSRobustRangingPositionEstimator2D();
+        final LMedSRobustRangingPositionEstimator2D estimator = new LMedSRobustRangingPositionEstimator2D();
 
         // check default value
         assertTrue(estimator.isResultRefined());
@@ -769,8 +715,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
 
     @Test
     public void testIsSetCovarianceKept() throws LockedException {
-        final LMedSRobustRangingPositionEstimator2D estimator =
-                new LMedSRobustRangingPositionEstimator2D();
+        final LMedSRobustRangingPositionEstimator2D estimator = new LMedSRobustRangingPositionEstimator2D();
 
         // check default value
         assertTrue(estimator.isCovarianceKept());
@@ -784,8 +729,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
 
     @Test
     public void testIsSetLinearSolverUsed() throws LockedException {
-        final LMedSRobustRangingPositionEstimator2D estimator =
-                new LMedSRobustRangingPositionEstimator2D();
+        final LMedSRobustRangingPositionEstimator2D estimator = new LMedSRobustRangingPositionEstimator2D();
 
         // check default value
         assertTrue(estimator.isLinearSolverUsed());
@@ -799,8 +743,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
 
     @Test
     public void testIsSetHomogeneousLinearSolverUsed() throws LockedException {
-        final LMedSRobustRangingPositionEstimator2D estimator =
-                new LMedSRobustRangingPositionEstimator2D();
+        final LMedSRobustRangingPositionEstimator2D estimator = new LMedSRobustRangingPositionEstimator2D();
 
         // check default value
         assertFalse(estimator.isHomogeneousLinearSolverUsed());
@@ -814,8 +757,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
 
     @Test
     public void testIsSetPreliminarySolutionRefined() throws LockedException {
-        final LMedSRobustRangingPositionEstimator2D estimator =
-                new LMedSRobustRangingPositionEstimator2D();
+        final LMedSRobustRangingPositionEstimator2D estimator = new LMedSRobustRangingPositionEstimator2D();
 
         // check default value
         assertTrue(estimator.isPreliminarySolutionRefined());
@@ -829,8 +771,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
 
     @Test
     public void testGetSetSourceQualityScores() throws LockedException {
-        final LMedSRobustRangingPositionEstimator2D estimator =
-                new LMedSRobustRangingPositionEstimator2D();
+        final LMedSRobustRangingPositionEstimator2D estimator = new LMedSRobustRangingPositionEstimator2D();
 
         // check default value
         assertNull(estimator.getSourceQualityScores());
@@ -845,8 +786,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
 
     @Test
     public void testGetSetFingerprintReadingsQualityScores() throws LockedException {
-        final LMedSRobustRangingPositionEstimator2D estimator =
-                new LMedSRobustRangingPositionEstimator2D();
+        final LMedSRobustRangingPositionEstimator2D estimator = new LMedSRobustRangingPositionEstimator2D();
 
         // check default value
         assertNull(estimator.getFingerprintReadingsQualityScores());
@@ -861,8 +801,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
 
     @Test
     public void testGetSetEvenlyDistributeReadings() throws LockedException {
-        final LMedSRobustRangingPositionEstimator2D estimator =
-                new LMedSRobustRangingPositionEstimator2D();
+        final LMedSRobustRangingPositionEstimator2D estimator = new LMedSRobustRangingPositionEstimator2D();
 
         // check default value
         assertTrue(estimator.getEvenlyDistributeReadings());
@@ -880,14 +819,15 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                 spy(new LMedSRobustRangingPositionEstimator2D());
 
         // check default value
-        assertEquals(estimator.getPreliminarySubsetSize(), 3);
+        assertEquals(3, estimator.getPreliminarySubsetSize());
 
         // set new value
         estimator.setPreliminarySubsetSize(4);
-        verify(estimator, times(1)).buildPositionsDistancesDistanceStandardDeviationsAndQualityScores();
+        verify(estimator, times(1))
+                .buildPositionsDistancesDistanceStandardDeviationsAndQualityScores();
 
         // check
-        assertEquals(estimator.getPreliminarySubsetSize(), 4);
+        assertEquals(4, estimator.getPreliminarySubsetSize());
 
         // force IllegalArgumentException
         try {
@@ -927,8 +867,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointLocated2D locatedAccessPoint =
-                        new WifiAccessPointLocated2D(bssid, FREQUENCY,
-                                accessPointPosition);
+                        new WifiAccessPointLocated2D(bssid, FREQUENCY, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -942,8 +881,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                     // inlier
                     error = 0.0;
                 }
-                readings.add(new RangingReading<>(accessPoint,
-                        Math.max(0.0, distance + error),
+                readings.add(new RangingReading<>(accessPoint, Math.max(0.0, distance + error),
                         RANGING_STD));
             }
 
@@ -951,8 +889,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                     new RangingFingerprint<>(readings);
 
             final LMedSRobustRangingPositionEstimator2D estimator =
-                    new LMedSRobustRangingPositionEstimator2D(sources, fingerprint,
-                            this);
+                    new LMedSRobustRangingPositionEstimator2D(sources, fingerprint, this);
             estimator.setResultRefined(true);
 
             reset();
@@ -964,20 +901,20 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -1016,8 +953,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                 positionAccuracy, formattedConfidence));
 
         // force NotReadyException
-        final LMedSRobustRangingPositionEstimator2D estimator =
-                new LMedSRobustRangingPositionEstimator2D();
+        final LMedSRobustRangingPositionEstimator2D estimator = new LMedSRobustRangingPositionEstimator2D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -1057,8 +993,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointLocated2D locatedAccessPoint =
-                        new WifiAccessPointLocated2D(bssid, FREQUENCY,
-                                accessPointPosition);
+                        new WifiAccessPointLocated2D(bssid, FREQUENCY, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -1075,8 +1010,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
 
                 error += inlierErrorRandomizer.nextDouble();
 
-                readings.add(new RangingReading<>(accessPoint,
-                        Math.max(0.0, distance + error),
+                readings.add(new RangingReading<>(accessPoint, Math.max(0.0, distance + error),
                         RANGING_STD));
             }
 
@@ -1085,8 +1019,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
 
 
             final LMedSRobustRangingPositionEstimator2D estimator =
-                    new LMedSRobustRangingPositionEstimator2D(sources, fingerprint,
-                            this);
+                    new LMedSRobustRangingPositionEstimator2D(sources, fingerprint, this);
             estimator.setResultRefined(true);
 
             reset();
@@ -1098,20 +1031,20 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -1150,8 +1083,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                 positionAccuracy, formattedConfidence));
 
         // force NotReadyException
-        final LMedSRobustRangingPositionEstimator2D estimator =
-                new LMedSRobustRangingPositionEstimator2D();
+        final LMedSRobustRangingPositionEstimator2D estimator = new LMedSRobustRangingPositionEstimator2D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");
@@ -1190,8 +1122,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointLocated2D locatedAccessPoint =
-                        new WifiAccessPointLocated2D(bssid, FREQUENCY,
-                                accessPointPosition);
+                        new WifiAccessPointLocated2D(bssid, FREQUENCY, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -1206,8 +1137,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                     error = 0.0;
                 }
 
-                readings.add(new RangingReading<>(accessPoint,
-                        Math.max(0.0, distance + error),
+                readings.add(new RangingReading<>(accessPoint, Math.max(0.0, distance + error),
                         RANGING_STD));
             }
 
@@ -1215,8 +1145,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                     new RangingFingerprint<>(readings);
 
             final LMedSRobustRangingPositionEstimator2D estimator =
-                    new LMedSRobustRangingPositionEstimator2D(sources, fingerprint,
-                            this);
+                    new LMedSRobustRangingPositionEstimator2D(sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setLinearSolverUsed(true);
             estimator.setHomogeneousLinearSolverUsed(true);
@@ -1231,20 +1160,20 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -1314,8 +1243,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointLocated2D locatedAccessPoint =
-                        new WifiAccessPointLocated2D(bssid, FREQUENCY,
-                                accessPointPosition);
+                        new WifiAccessPointLocated2D(bssid, FREQUENCY, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -1330,8 +1258,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                     error = 0.0;
                 }
 
-                readings.add(new RangingReading<>(accessPoint,
-                        Math.max(0.0, distance + error),
+                readings.add(new RangingReading<>(accessPoint, Math.max(0.0, distance + error),
                         RANGING_STD));
             }
 
@@ -1339,8 +1266,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                     new RangingFingerprint<>(readings);
 
             final LMedSRobustRangingPositionEstimator2D estimator =
-                    new LMedSRobustRangingPositionEstimator2D(sources, fingerprint,
-                            this);
+                    new LMedSRobustRangingPositionEstimator2D(sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setLinearSolverUsed(true);
             estimator.setHomogeneousLinearSolverUsed(false);
@@ -1355,20 +1281,20 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -1408,9 +1334,8 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimatePreliminaryNotRefined()
-            throws LockedException, NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimatePreliminaryNotRefined() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -1438,8 +1363,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointLocated2D locatedAccessPoint =
-                        new WifiAccessPointLocated2D(bssid, FREQUENCY,
-                                accessPointPosition);
+                        new WifiAccessPointLocated2D(bssid, FREQUENCY, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -1454,8 +1378,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                     error = 0.0;
                 }
 
-                readings.add(new RangingReading<>(accessPoint,
-                        Math.max(0.0, distance + error),
+                readings.add(new RangingReading<>(accessPoint, Math.max(0.0, distance + error),
                         RANGING_STD));
             }
 
@@ -1463,8 +1386,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                     new RangingFingerprint<>(readings);
 
             final LMedSRobustRangingPositionEstimator2D estimator =
-                    new LMedSRobustRangingPositionEstimator2D(sources, fingerprint,
-                            this);
+                    new LMedSRobustRangingPositionEstimator2D(sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setLinearSolverUsed(true);
             estimator.setPreliminarySolutionRefined(false);
@@ -1478,20 +1400,20 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -1532,9 +1454,8 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateLinearDisabled()
-            throws LockedException, NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateLinearDisabled() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -1562,8 +1483,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointLocated2D locatedAccessPoint =
-                        new WifiAccessPointLocated2D(bssid, FREQUENCY,
-                                accessPointPosition);
+                        new WifiAccessPointLocated2D(bssid, FREQUENCY, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -1578,8 +1498,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                     error = 0.0;
                 }
 
-                readings.add(new RangingReading<>(accessPoint,
-                        Math.max(0.0, distance + error),
+                readings.add(new RangingReading<>(accessPoint, Math.max(0.0, distance + error),
                         RANGING_STD));
             }
 
@@ -1587,8 +1506,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                     new RangingFingerprint<>(readings);
 
             final LMedSRobustRangingPositionEstimator2D estimator =
-                    new LMedSRobustRangingPositionEstimator2D(sources, fingerprint,
-                            this);
+                    new LMedSRobustRangingPositionEstimator2D(sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setLinearSolverUsed(false);
             estimator.setPreliminarySolutionRefined(true);
@@ -1602,13 +1520,13 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
@@ -1655,9 +1573,8 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateLinearDisabledAndNotPreliminaryRefined()
-            throws LockedException, NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateLinearDisabledAndNotPreliminaryRefined() throws LockedException,
+            NotReadyException, RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -1685,8 +1602,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointLocated2D locatedAccessPoint =
-                        new WifiAccessPointLocated2D(bssid, FREQUENCY,
-                                accessPointPosition);
+                        new WifiAccessPointLocated2D(bssid, FREQUENCY, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -1701,8 +1617,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                     error = 0.0;
                 }
 
-                readings.add(new RangingReading<>(accessPoint,
-                        Math.max(0.0, distance + error),
+                readings.add(new RangingReading<>(accessPoint, Math.max(0.0, distance + error),
                         RANGING_STD));
             }
 
@@ -1710,8 +1625,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                     new RangingFingerprint<>(readings);
 
             final LMedSRobustRangingPositionEstimator2D estimator =
-                    new LMedSRobustRangingPositionEstimator2D(sources, fingerprint,
-                            this);
+                    new LMedSRobustRangingPositionEstimator2D(sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setLinearSolverUsed(false);
             estimator.setPreliminarySolutionRefined(false);
@@ -1725,20 +1639,20 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -1778,9 +1692,8 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateLinearDisabledWithInitialPosition()
-            throws LockedException, NotReadyException, RobustEstimatorException,
-            NonSymmetricPositiveDefiniteMatrixException {
+    public void testEstimateLinearDisabledWithInitialPosition() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
                 new Random(), 0.0, STD_OUTLIER_ERROR);
@@ -1808,8 +1721,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointLocated2D locatedAccessPoint =
-                        new WifiAccessPointLocated2D(bssid, FREQUENCY,
-                                accessPointPosition);
+                        new WifiAccessPointLocated2D(bssid, FREQUENCY, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -1824,8 +1736,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                     error = 0.0;
                 }
 
-                readings.add(new RangingReading<>(accessPoint,
-                        Math.max(0.0, distance + error),
+                readings.add(new RangingReading<>(accessPoint, Math.max(0.0, distance + error),
                         RANGING_STD));
             }
 
@@ -1833,8 +1744,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                     new RangingFingerprint<>(readings);
 
             final LMedSRobustRangingPositionEstimator2D estimator =
-                    new LMedSRobustRangingPositionEstimator2D(sources, fingerprint,
-                            this);
+                    new LMedSRobustRangingPositionEstimator2D(sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setLinearSolverUsed(false);
             estimator.setPreliminarySolutionRefined(true);
@@ -1849,20 +1759,20 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -1931,8 +1841,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                 final String bssid = String.valueOf(i);
 
                 final WifiAccessPointLocated2D locatedAccessPoint =
-                        new WifiAccessPointLocated2D(bssid, FREQUENCY,
-                                accessPointPosition);
+                        new WifiAccessPointLocated2D(bssid, FREQUENCY, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
                 final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
@@ -1946,8 +1855,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                     // inlier
                     error = 0.0;
                 }
-                readings.add(new RangingReading<>(accessPoint,
-                        Math.max(0.0, distance + error),
+                readings.add(new RangingReading<>(accessPoint, Math.max(0.0, distance + error),
                         RANGING_STD));
             }
 
@@ -1955,8 +1863,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                     new RangingFingerprint<>(readings);
 
             final LMedSRobustRangingPositionEstimator2D estimator =
-                    new LMedSRobustRangingPositionEstimator2D(sources, fingerprint,
-                            this);
+                    new LMedSRobustRangingPositionEstimator2D(sources, fingerprint, this);
             estimator.setResultRefined(true);
             estimator.setPreliminarySubsetSize(4);
 
@@ -1969,20 +1876,20 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
             assertNull(estimator.getCovariance());
             assertNotNull(estimator.getPositions());
             assertNotNull(estimator.getDistances());
-            assertEquals(estimateStart, 0);
-            assertEquals(estimateEnd, 0);
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
 
             final Point2D p = estimator.estimate();
 
-            assertEquals(estimateStart, 1);
-            assertEquals(estimateEnd, 1);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
             assertTrue(estimateNextIteration > 0);
             assertTrue(estimateProgressChange >= 0);
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
             final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            assertSame(estimatedPosition, p);
+            assertSame(p, estimatedPosition);
             assertNotNull(estimator.getInliersData());
             assertNotNull(estimator.getCovariance());
 
@@ -2021,8 +1928,7 @@ public class LMedSRobustRangingPositionEstimator2DTest implements
                 positionAccuracy, formattedConfidence));
 
         // force NotReadyException
-        final LMedSRobustRangingPositionEstimator2D estimator =
-                new LMedSRobustRangingPositionEstimator2D();
+        final LMedSRobustRangingPositionEstimator2D estimator = new LMedSRobustRangingPositionEstimator2D();
         try {
             estimator.estimate();
             fail("NotReadyException expected but not thrown");

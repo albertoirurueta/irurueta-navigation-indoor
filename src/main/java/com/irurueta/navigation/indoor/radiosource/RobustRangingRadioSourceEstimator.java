@@ -24,7 +24,7 @@ import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import java.util.List;
 
 /**
- * This is an abstract class to robustly estimate position of a radio source (e.g. WiFi
+ * This is an abstract class to robustly estimate position of a radio source (e.g. Wi-Fi
  * access point or bluetooth beacon), by discarding outliers.
  *
  * @param <S> a {@link RadioSource} type.
@@ -279,7 +279,7 @@ public abstract class RobustRangingRadioSourceEstimator<S extends RadioSource, P
      *
      * @param <P> a {@link Point} type.
      */
-    static class Solution<P extends Point<?>> {
+    protected static class Solution<P extends Point<?>> {
         /**
          * Estimated position for a subset of samples.
          */

@@ -187,11 +187,11 @@ public abstract class LinearRangingPositionEstimator<P extends Point<P>> extends
     }
 
     /**
-     * Gets euclidean distances from known located radio sources to
+     * Gets Euclidean distances from known located radio sources to
      * the location of provided readings in a fingerprint.
      * Distance values are used internally to solve lateration.
      *
-     * @return euclidean distances used internally.
+     * @return Euclidean distances used internally.
      */
     @Override
     public double[] getDistances() {
@@ -208,6 +208,7 @@ public abstract class LinearRangingPositionEstimator<P extends Point<P>> extends
      *                                  provided sources is less than the required
      *                                  minimum.
      */
+    @Override
     protected void internalSetSources(final List<? extends RadioSourceLocated<P>> sources) {
         super.internalSetSources(sources);
         buildPositionsAndDistances();
@@ -221,6 +222,7 @@ public abstract class LinearRangingPositionEstimator<P extends Point<P>> extends
      *                    provided located radio sources.
      * @throws IllegalArgumentException if provided value is null.
      */
+    @Override
     protected void internalSetFingerprint(
             final Fingerprint<? extends RadioSource, ? extends RangingReading<? extends RadioSource>> fingerprint) {
         super.internalSetFingerprint(fingerprint);

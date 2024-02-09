@@ -33,8 +33,7 @@ import java.util.List;
  * device by getting ranging readings at an unknown location of different radio sources
  * whose 3D locations are known.
  */
-public class LMedSRobustRangingPositionEstimator3D extends
-        RobustRangingPositionEstimator3D {
+public class LMedSRobustRangingPositionEstimator3D extends RobustRangingPositionEstimator3D {
 
     /**
      * Constructor.
@@ -144,7 +143,7 @@ public class LMedSRobustRangingPositionEstimator3D extends
      *                    provided located radio sources.
      * @param listener    listener in charge of handling events.
      * @throws IllegalArgumentException if either provided sources or fingerprint is
-     *                                  null or the number of provided sources is les than the required minimum.
+     *                                  null or the number of provided sources is less than the required minimum.
      */
     public LMedSRobustRangingPositionEstimator3D(
             final List<? extends RadioSourceLocated<Point3D>> sources,
@@ -214,7 +213,7 @@ public class LMedSRobustRangingPositionEstimator3D extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-        return RobustEstimatorMethod.LMedS;
+        return RobustEstimatorMethod.LMEDS;
     }
 
     /**

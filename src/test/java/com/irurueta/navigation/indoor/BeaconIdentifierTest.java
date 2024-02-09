@@ -33,13 +33,13 @@ public class BeaconIdentifierTest {
 
         // check
         assertNotNull(id.toString());
-        assertEquals(id.toInt(), 0);
+        assertEquals(0, id.toInt());
         assertNull(id.toByteArrayOfSpecifiedEndianness(true));
-        assertEquals(id.getByteCount(), 0);
+        assertEquals(0, id.getByteCount());
         assertNull(id.toHexString());
         assertNull(id.toUuid());
         assertNull(id.toByteArray());
-        assertEquals(id.hashCode(), 0);
+        assertEquals(0, id.hashCode());
 
         // test constructor from byte array
         final Random r = new Random();
@@ -51,15 +51,14 @@ public class BeaconIdentifierTest {
         id = new BeaconIdentifier(value);
 
         // check
-        assertEquals(id.toString(), Integer.toString(id.toInt()));
+        assertEquals(Integer.toString(id.toInt()), id.toString());
         assertTrue(id.toInt() > 0);
-        assertArrayEquals(id.toByteArrayOfSpecifiedEndianness(true),
-                value);
+        assertArrayEquals(value, id.toByteArrayOfSpecifiedEndianness(true));
         final byte[] reversedValue = id.toByteArrayOfSpecifiedEndianness(false);
         for (int i = 0; i < value.length; i++) {
-            assertEquals(value[i], reversedValue[value.length - 1 - i]);
+            assertEquals(reversedValue[value.length - 1 - i], value[i]);
         }
-        assertEquals(id.getByteCount(), value.length);
+        assertEquals(value.length, id.getByteCount());
 
         assertNotNull(id.toHexString());
         BeaconIdentifier id2 = BeaconIdentifier.parse(id.toHexString());
@@ -100,8 +99,7 @@ public class BeaconIdentifierTest {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         final long value = randomizer.nextLong();
-        final BeaconIdentifier id = BeaconIdentifier.fromLong(value,
-                Long.SIZE / Byte.SIZE);
+        final BeaconIdentifier id = BeaconIdentifier.fromLong(value, Long.SIZE / Byte.SIZE);
 
         // force IllegalArgumentException
         try {
@@ -113,8 +111,7 @@ public class BeaconIdentifierTest {
         // parse
         final String str = id.toString();
         BeaconIdentifier id2 = BeaconIdentifier.parse(str);
-        BeaconIdentifier id3 = BeaconIdentifier.parse(str,
-                Long.SIZE / Byte.SIZE);
+        BeaconIdentifier id3 = BeaconIdentifier.parse(str, Long.SIZE / Byte.SIZE);
 
         assertEquals(id, id2);
         assertEquals(id, id3);
@@ -179,12 +176,10 @@ public class BeaconIdentifierTest {
     public void testParseFromBytes() {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final long value = randomizer.nextLong();
-        final BeaconIdentifier id = BeaconIdentifier.fromLong(value,
-                Long.SIZE / Byte.SIZE);
+        final BeaconIdentifier id = BeaconIdentifier.fromLong(value, Long.SIZE / Byte.SIZE);
         final byte[] bytes = id.toByteArray();
 
-        BeaconIdentifier id2 = BeaconIdentifier.fromBytes(bytes, 0, bytes.length,
-                false);
+        BeaconIdentifier id2 = BeaconIdentifier.fromBytes(bytes, 0, bytes.length, false);
         assertEquals(id, id2);
         assertArrayEquals(id.toByteArray(), id2.toByteArray());
 
@@ -250,12 +245,10 @@ public class BeaconIdentifierTest {
         final byte[] bytes = new byte[16];
         r.nextBytes(bytes);
 
-        final BeaconIdentifier id = BeaconIdentifier.fromBytes(bytes, 0, bytes.length,
-                false);
+        final BeaconIdentifier id = BeaconIdentifier.fromBytes(bytes, 0, bytes.length, false);
 
         final String str = id.toString();
-        assertEquals("0x" + str.replaceAll("-", ""),
-                id.toHexString());
+        assertEquals("0x" + str.replaceAll("-", ""), id.toHexString());
 
         final BeaconIdentifier id2 = BeaconIdentifier.parse(str);
         assertEquals(id, id2);
@@ -267,8 +260,7 @@ public class BeaconIdentifierTest {
         final byte[] bytes = new byte[32];
         r.nextBytes(bytes);
 
-        final BeaconIdentifier id = BeaconIdentifier.fromBytes(bytes, 0, bytes.length,
-                false);
+        final BeaconIdentifier id = BeaconIdentifier.fromBytes(bytes, 0, bytes.length, false);
 
         final String str = id.toHexString().substring(2);
 
@@ -300,7 +292,7 @@ public class BeaconIdentifierTest {
         int value = randomizer.nextInt(0, 65535);
         BeaconIdentifier id = BeaconIdentifier.fromInt(value);
 
-        assertEquals(id.toInt(), value);
+        assertEquals(value, id.toInt());
 
         // force UnsupportedOperationException
         value = 65536;
@@ -324,15 +316,15 @@ public class BeaconIdentifierTest {
         final BeaconIdentifier id5 = BeaconIdentifier.fromInt(value - 1);
 
         assertEquals(id, id2);
-        assertEquals(id.compareTo(id2), 0);
+        assertEquals(0, id.compareTo(id2));
 
-        assertNotEquals(id, new Object());
+        assertNotEquals(new Object(), id);
 
-        assertEquals(id3.compareTo(id4), -1);
-        assertEquals(id4.compareTo(id3), 1);
+        assertEquals(-1, id3.compareTo(id4));
+        assertEquals(1, id4.compareTo(id3));
 
-        assertEquals(id.compareTo(id5), 1);
-        assertEquals(id5.compareTo(id), -1);
+        assertEquals(1, id.compareTo(id5));
+        assertEquals(-1, id5.compareTo(id));
     }
 
     @Test

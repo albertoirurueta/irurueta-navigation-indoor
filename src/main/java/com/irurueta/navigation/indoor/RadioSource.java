@@ -18,7 +18,7 @@ package com.irurueta.navigation.indoor;
 import java.io.Serializable;
 
 /**
- * Interface defining any radio source (e.g. WiFi access point or Bluetooth beacon).
+ * Interface defining any radio source (e.g. Wi-Fi access point or Bluetooth beacon).
  */
 public interface RadioSource extends Serializable {
 
@@ -38,7 +38,7 @@ public interface RadioSource extends Serializable {
     boolean equals(final Object obj);
 
     /**
-     * Gets radio source type, which can be either a WiFi Access point or a bluetooth Beacon.
+     * Gets radio source type, which can be either a Wi-Fi Access point or a bluetooth Beacon.
      *
      * @return radio source type.
      */

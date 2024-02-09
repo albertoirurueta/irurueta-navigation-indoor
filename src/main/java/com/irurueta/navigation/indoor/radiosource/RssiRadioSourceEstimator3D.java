@@ -38,7 +38,7 @@ import java.util.List;
  * d is the distance between emitter and receiver
  * and lambda is the wavelength and is equal to: lambda = c / f,
  * where c is the speed of light
- * and f is the carrier frequency of the WiFi signal.
+ * and f is the carrier frequency of the Wi-Fi signal.
  * Because usually information about the antenna of the radio source cannot be
  * retrieved (because many measurements are made on unknown radio sources where
  * physical access is not possible), this implementation will estimate the
@@ -58,8 +58,7 @@ import java.util.List;
  *
  * @param <S> a {@link RadioSource} type.
  */
-public class RssiRadioSourceEstimator3D<S extends RadioSource> extends
-        RssiRadioSourceEstimator<S, Point3D> {
+public class RssiRadioSourceEstimator3D<S extends RadioSource> extends RssiRadioSourceEstimator<S, Point3D> {
 
     /**
      * Constructor.
