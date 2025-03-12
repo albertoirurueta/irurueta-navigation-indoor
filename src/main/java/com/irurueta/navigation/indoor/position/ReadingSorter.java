@@ -27,7 +27,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Evenly sorts readings of a fingerprint among different radio sources taking into
@@ -41,27 +40,27 @@ public class ReadingSorter<P extends Point<?>, R extends Reading<? extends Radio
     /**
      * Sources to be taken into account within readings.
      */
-    private final List<? extends RadioSourceLocated<P>> mSources;
+    private final List<? extends RadioSourceLocated<P>> sources;
 
     /**
      * Fingerprint containing readings of different sources.
      */
-    private final Fingerprint<? extends RadioSource, ? extends R> mFingerprint;
+    private final Fingerprint<? extends RadioSource, ? extends R> fingerprint;
 
     /**
      * Quality scores associated to each radio source.
      */
-    private final double[] mSourceQualityScores;
+    private final double[] sourceQualityScores;
 
     /**
      * Quality scores associated to each reading within the fingerprint.
      */
-    private final double[] mFingerprintReadingsQualityScores;
+    private final double[] fingerprintReadingsQualityScores;
 
     /**
      * Contains sorted sources and readings.
      */
-    private List<RadioSourceSourceWithQualityScore<P, R>> mSortedSourcesAndReadings;
+    private List<RadioSourceSourceWithQualityScore<P, R>> sortedSourcesAndReadings;
 
     /**
      * Constructor.
@@ -81,8 +80,7 @@ public class ReadingSorter<P extends Point<?>, R extends Reading<? extends Radio
      */
     ReadingSorter(final List<? extends RadioSourceLocated<P>> sources,
                   final Fingerprint<? extends RadioSource, ? extends R> fingerprint,
-                  final double[] sourceQualityScores,
-                  final double[] fingerprintReadingsQualityScores) {
+                  final double[] sourceQualityScores, final double[] fingerprintReadingsQualityScores) {
         if (sources.size() != sourceQualityScores.length) {
             throw new IllegalArgumentException();
         }
@@ -91,10 +89,10 @@ public class ReadingSorter<P extends Point<?>, R extends Reading<? extends Radio
             throw new IllegalArgumentException();
         }
 
-        mSources = sources;
-        mFingerprint = fingerprint;
-        mSourceQualityScores = sourceQualityScores;
-        mFingerprintReadingsQualityScores = fingerprintReadingsQualityScores;
+        this.sources = sources;
+        this.fingerprint = fingerprint;
+        this.sourceQualityScores = sourceQualityScores;
+        this.fingerprintReadingsQualityScores = fingerprintReadingsQualityScores;
     }
 
     /**
@@ -104,7 +102,7 @@ public class ReadingSorter<P extends Point<?>, R extends Reading<? extends Radio
      */
     public List<RadioSourceLocated<P>> getSources() {
         //noinspection unchecked
-        return (List<RadioSourceLocated<P>>) mSources;
+        return (List<RadioSourceLocated<P>>) sources;
     }
 
     /**
@@ -114,7 +112,7 @@ public class ReadingSorter<P extends Point<?>, R extends Reading<? extends Radio
      */
     public Fingerprint<RadioSource, Reading<RadioSource>> getFingerprint() {
         //noinspection unchecked
-        return (Fingerprint<RadioSource, Reading<RadioSource>>) mFingerprint;
+        return (Fingerprint<RadioSource, Reading<RadioSource>>) fingerprint;
     }
 
     /**
@@ -123,7 +121,7 @@ public class ReadingSorter<P extends Point<?>, R extends Reading<? extends Radio
      * @return quality scores associated to each radio source.
      */
     double[] getSourceQualityScores() {
-        return mSourceQualityScores;
+        return sourceQualityScores;
     }
 
     /**
@@ -132,7 +130,7 @@ public class ReadingSorter<P extends Point<?>, R extends Reading<? extends Radio
      * @return quality scores associated to each reading within the fingerprint.
      */
     double[] getFingerprintReadingsQualityScores() {
-        return mFingerprintReadingsQualityScores;
+        return fingerprintReadingsQualityScores;
     }
 
     /**
@@ -140,16 +138,15 @@ public class ReadingSorter<P extends Point<?>, R extends Reading<? extends Radio
      */
     void sort() {
 
-        final Map<RadioSourceLocated<P>, RadioSourceSourceWithQualityScore<P, R>> sourcesMap = new HashMap<>();
+        final var sourcesMap = new HashMap<RadioSourceLocated<P>, RadioSourceSourceWithQualityScore<P, R>>();
 
         // build sources
-        final List<RadioSourceSourceWithQualityScore<P, R>> sourcesWithQualityScores = new ArrayList<>();
-        int sourcePosition = 0;
-        for (final RadioSourceLocated<P> source : mSources) {
-            final RadioSourceSourceWithQualityScore<P, R> sourceWithQualityScore =
-                    new RadioSourceSourceWithQualityScore<>();
+        final var sourcesWithQualityScores = new ArrayList<RadioSourceSourceWithQualityScore<P, R>>();
+        var sourcePosition = 0;
+        for (final var source : sources) {
+            final var sourceWithQualityScore = new RadioSourceSourceWithQualityScore<P, R>();
             sourceWithQualityScore.source = source;
-            sourceWithQualityScore.qualityScore = mSourceQualityScores[sourcePosition];
+            sourceWithQualityScore.qualityScore = sourceQualityScores[sourcePosition];
             sourceWithQualityScore.position = sourcePosition;
             sourceWithQualityScore.readingsWithQualityScores = new ArrayList<>();
 
@@ -161,21 +158,25 @@ public class ReadingSorter<P extends Point<?>, R extends Reading<? extends Radio
         }
 
         // build readings
-        int readingPosition = 0;
-        for (@SuppressWarnings("unchecked") final R reading : mFingerprint.getReadings()) {
-            // noinspection all
-            final RadioSourceSourceWithQualityScore<P, R> sourceWithQualityScore =
-                    sourcesMap.get(reading.getSource());
+        var readingPosition = 0;
+        for (@SuppressWarnings("unchecked") final var reading : fingerprint.getReadings()) {
+            if (!(reading.getSource() instanceof RadioSourceLocated)) {
+                continue;
+            }
+
+            //noinspection unchecked
+            final var radioSourceLocated = (RadioSourceLocated<P>) reading.getSource();
+            final var sourceWithQualityScore = sourcesMap.get(radioSourceLocated);
+
             if (sourceWithQualityScore == null) {
                 continue;
             }
 
-            final List<ReadingWithQualityScore<R>> readingsWithQualityScores =
-                    sourceWithQualityScore.readingsWithQualityScores;
+            final var readingsWithQualityScores = sourceWithQualityScore.readingsWithQualityScores;
 
-            final ReadingWithQualityScore<R> readingWithQualityScore = new ReadingWithQualityScore<>();
+            final var readingWithQualityScore = new ReadingWithQualityScore<R>();
             readingWithQualityScore.reading = reading;
-            readingWithQualityScore.qualityScore = mFingerprintReadingsQualityScores[readingPosition];
+            readingWithQualityScore.qualityScore = fingerprintReadingsQualityScores[readingPosition];
             readingWithQualityScore.position = readingPosition;
 
             readingsWithQualityScores.add(readingWithQualityScore);
@@ -184,17 +185,16 @@ public class ReadingSorter<P extends Point<?>, R extends Reading<? extends Radio
         }
 
         // sort all readings within sources
-        for (final RadioSourceSourceWithQualityScore<P, R> sourceWithQualityScore : sourcesWithQualityScores) {
+        for (final var sourceWithQualityScore : sourcesWithQualityScores) {
             // sort all readings for this source from highest to lowest quality
 
             // noinspection unchecked
             final ReadingWithQualityScore<R>[] readingsWithQualityScoresArray =
                     new ReadingWithQualityScore[sourceWithQualityScore.readingsWithQualityScores.size()];
             sourceWithQualityScore.readingsWithQualityScores.toArray(readingsWithQualityScoresArray);
-            Arrays.sort(readingsWithQualityScoresArray, new ReadingComparator<R>());
+            Arrays.sort(readingsWithQualityScoresArray, new ReadingComparator<>());
 
-            sourceWithQualityScore.readingsWithQualityScores = Arrays.asList(
-                    readingsWithQualityScoresArray);
+            sourceWithQualityScore.readingsWithQualityScores = Arrays.asList(readingsWithQualityScoresArray);
         }
 
         // sort all sources from highest to lowest quality
@@ -203,9 +203,9 @@ public class ReadingSorter<P extends Point<?>, R extends Reading<? extends Radio
         final RadioSourceSourceWithQualityScore<P, R>[] sourcesWithQualityScoresArray =
                 new RadioSourceSourceWithQualityScore[sourcesWithQualityScores.size()];
         sourcesWithQualityScores.toArray(sourcesWithQualityScoresArray);
-        Arrays.sort(sourcesWithQualityScoresArray, new RadioSourceComparator<P, R>());
+        Arrays.sort(sourcesWithQualityScoresArray, new RadioSourceComparator<>());
 
-        mSortedSourcesAndReadings = Arrays.asList(sourcesWithQualityScoresArray);
+        sortedSourcesAndReadings = Arrays.asList(sourcesWithQualityScoresArray);
     }
 
     /**
@@ -214,7 +214,7 @@ public class ReadingSorter<P extends Point<?>, R extends Reading<? extends Radio
      * @return sorted sources and readings.
      */
     List<RadioSourceSourceWithQualityScore<P, R>> getSortedSourcesAndReadings() {
-        return mSortedSourcesAndReadings;
+        return sortedSourcesAndReadings;
     }
 
     /**
@@ -245,8 +245,7 @@ public class ReadingSorter<P extends Point<?>, R extends Reading<? extends Radio
      * @param <P> a {@link Point} type.
      * @param <R> a {@link Reading} type.
      */
-    static class RadioSourceSourceWithQualityScore<P extends Point<?>,
-            R extends Reading<? extends RadioSource>> {
+    static class RadioSourceSourceWithQualityScore<P extends Point<?>, R extends Reading<? extends RadioSource>> {
         /**
          * Radio source.
          */
@@ -309,7 +308,6 @@ public class ReadingSorter<P extends Point<?>, R extends Reading<? extends Radio
                 }
             }
 
-
             // same reading type
 
             // order by reading quality score
@@ -323,8 +321,7 @@ public class ReadingSorter<P extends Point<?>, R extends Reading<? extends Radio
      * @param <P> a {@link Point} type.
      * @param <R> a {@link Reading} type.
      */
-    private static class RadioSourceComparator<P extends Point<?>,
-            R extends Reading<? extends RadioSource>> implements
+    private static class RadioSourceComparator<P extends Point<?>, R extends Reading<? extends RadioSource>> implements
             Comparator<RadioSourceSourceWithQualityScore<P, R>> {
 
         /**

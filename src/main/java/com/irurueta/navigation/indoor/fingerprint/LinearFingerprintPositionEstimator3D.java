@@ -32,8 +32,7 @@ import java.util.List;
  * This implementation uses a first-order Taylor approximation over provided located
  * fingerprints to determine an approximate position for a non-located fingerprint.
  */
-public class LinearFingerprintPositionEstimator3D extends
-        LinearFingerprintPositionEstimator<Point3D> {
+public class LinearFingerprintPositionEstimator3D extends LinearFingerprintPositionEstimator<Point3D> {
 
     /**
      * Constructor.
@@ -46,8 +45,7 @@ public class LinearFingerprintPositionEstimator3D extends
      *
      * @param listener listener in charge of handling events.
      */
-    public LinearFingerprintPositionEstimator3D(
-            final FingerprintPositionEstimatorListener<Point3D> listener) {
+    public LinearFingerprintPositionEstimator3D(final FingerprintPositionEstimatorListener<Point3D> listener) {
         super(listener);
     }
 
@@ -112,11 +110,11 @@ public class LinearFingerprintPositionEstimator3D extends
      */
     @Override
     public Point3D getEstimatedPosition() {
-        if (mEstimatedPositionCoordinates == null) {
+        if (estimatedPositionCoordinates == null) {
             return null;
         }
 
-        final Point3D result = new InhomogeneousPoint3D();
+        final var result = new InhomogeneousPoint3D();
         getEstimatedPosition(result);
         return result;
     }

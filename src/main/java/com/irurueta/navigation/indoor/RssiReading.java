@@ -26,12 +26,12 @@ public class RssiReading<S extends RadioSource> extends Reading<S> {
     /**
      * Received signal strength indicator of a 802.11 network or bluetooth beacon, in dBm.
      */
-    private double mRssi;
+    private double rssi;
 
     /**
      * Standard deviation of RSSI, if available.
      */
-    private Double mRssiStandardDeviation;
+    private Double rssiStandardDeviation;
 
     /**
      * Constructor.
@@ -42,7 +42,7 @@ public class RssiReading<S extends RadioSource> extends Reading<S> {
      */
     public RssiReading(final S source, final double rssi) {
         super(source);
-        mRssi = rssi;
+        this.rssi = rssi;
     }
 
     /**
@@ -54,15 +54,14 @@ public class RssiReading<S extends RadioSource> extends Reading<S> {
      * @throws IllegalArgumentException if radio source data is null or
      *                                  standard deviation is zero or negative.
      */
-    public RssiReading(final S source, final double rssi,
-                       final Double rssiStandardDeviation) {
+    public RssiReading(final S source, final double rssi, final Double rssiStandardDeviation) {
         this(source, rssi);
 
         if (rssiStandardDeviation != null && rssiStandardDeviation <= 0.0) {
             throw new IllegalArgumentException();
         }
 
-        mRssiStandardDeviation = rssiStandardDeviation;
+        this.rssiStandardDeviation = rssiStandardDeviation;
     }
 
     /**
@@ -88,7 +87,7 @@ public class RssiReading<S extends RadioSource> extends Reading<S> {
      * @return received signal strength indicator.
      */
     public double getRssi() {
-        return mRssi;
+        return rssi;
     }
 
     /**
@@ -97,6 +96,6 @@ public class RssiReading<S extends RadioSource> extends Reading<S> {
      * @return standard deviation of RSSI, if available.
      */
     public Double getRssiStandardDeviation() {
-        return mRssiStandardDeviation;
+        return rssiStandardDeviation;
     }
 }

@@ -26,8 +26,8 @@ import java.util.List;
  * @param <S> a {@link RadioSource} type.
  * @param <R> a {@link RssiReading} type.
  */
-public class RssiFingerprintLocated3D<S extends RadioSource, R extends RssiReading<S>>
-        extends RssiFingerprintLocated<S, R, Point3D> {
+public class RssiFingerprintLocated3D<S extends RadioSource, R extends RssiReading<S>> extends
+        RssiFingerprintLocated<S, R, Point3D> {
 
     /**
      * Constructor.
@@ -36,8 +36,7 @@ public class RssiFingerprintLocated3D<S extends RadioSource, R extends RssiReadi
      * @param position position where readings were made.
      * @throws IllegalArgumentException if either readings or position are null.
      */
-    public RssiFingerprintLocated3D(
-            final List<R> readings, final Point3D position) {
+    public RssiFingerprintLocated3D(final List<R> readings, final Point3D position) {
         super(readings, position);
     }
 
@@ -50,9 +49,7 @@ public class RssiFingerprintLocated3D<S extends RadioSource, R extends RssiReadi
      *                           current position (if available).
      * @throws IllegalArgumentException if either readings or position are null.
      */
-    public RssiFingerprintLocated3D(
-            final List<R> readings, final Point3D position,
-            final Matrix positionCovariance) {
+    public RssiFingerprintLocated3D(final List<R> readings, final Point3D position, final Matrix positionCovariance) {
         super(readings, position, positionCovariance);
     }
 

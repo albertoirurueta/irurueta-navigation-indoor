@@ -35,8 +35,7 @@ public class RssiReadingLocated3D<S extends RadioSource> extends RssiReadingLoca
      * @throws IllegalArgumentException if either radio source data or position
      *                                  are null.
      */
-    public RssiReadingLocated3D(
-            final S source, final double rssi, final Point3D position) {
+    public RssiReadingLocated3D(final S source, final double rssi, final Point3D position) {
         super(source, rssi, position);
     }
 
@@ -51,8 +50,7 @@ public class RssiReadingLocated3D<S extends RadioSource> extends RssiReadingLoca
      *                                  are null.
      */
     public RssiReadingLocated3D(
-            final S source, final double rssi, final Point3D position,
-            final Double rssiStandardDeviation) {
+            final S source, final double rssi, final Point3D position, final Double rssiStandardDeviation) {
         super(source, rssi, position, rssiStandardDeviation);
     }
 
@@ -68,8 +66,7 @@ public class RssiReadingLocated3D<S extends RadioSource> extends RssiReadingLoca
      *                                  null, or covariance has invalid size.
      */
     public RssiReadingLocated3D(
-            final S source, final double rssi, final Point3D position,
-            final Matrix positionCovariance) {
+            final S source, final double rssi, final Point3D position, final Matrix positionCovariance) {
         super(source, rssi, position, positionCovariance);
     }
 
@@ -86,11 +83,9 @@ public class RssiReadingLocated3D<S extends RadioSource> extends RssiReadingLoca
      *                                  null, or covariance has invalid size.
      */
     public RssiReadingLocated3D(
-            final S source, final double rssi, final Point3D position,
-            final Double rssiStandardDeviation,
+            final S source, final double rssi, final Point3D position, final Double rssiStandardDeviation,
             final Matrix positionCovariance) {
-        super(source, rssi, position, rssiStandardDeviation,
-                positionCovariance);
+        super(source, rssi, position, rssiStandardDeviation, positionCovariance);
     }
 
     /**

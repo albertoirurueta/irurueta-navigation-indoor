@@ -38,13 +38,13 @@ public abstract class FingerprintPositionEstimator<P extends Point<?>> extends
     /**
      * Located radio sources.
      */
-    protected List<? extends RadioSourceLocated<P>> mSources;
+    protected List<? extends RadioSourceLocated<P>> sources;
 
     /**
      * Indicates whether path loss exponent of provided sources must be used when
      * available (if true), or if fallback path loss exponent must be used instead.
      */
-    protected boolean mUseSourcesPathLossExponentWhenAvailable = true;
+    protected boolean useSourcesPathLossExponentWhenAvailable = true;
 
     /**
      * True indicates that mean effects are removed to find nearest located fingerprints
@@ -54,14 +54,14 @@ public abstract class FingerprintPositionEstimator<P extends Point<?>> extends
      * By default, mean effects are removed to remove possible bias effects due to
      * readings measured by different devices with different hardware.
      */
-    protected boolean mUseNoMeanNearestFingerprintFinder = true;
+    protected boolean useNoMeanNearestFingerprintFinder = true;
 
     /**
      * True indicates that mean effects are removed from located fingerprints and from
      * new fingerprints whose location is unknown.
      * By default, this is disabled.
      */
-    protected boolean mRemoveMeansFromFingerprintReadings;
+    protected boolean removeMeansFromFingerprintReadings;
 
     /**
      * Constructor.
@@ -74,8 +74,7 @@ public abstract class FingerprintPositionEstimator<P extends Point<?>> extends
      *
      * @param listener listener in charge of handling events.
      */
-    protected FingerprintPositionEstimator(
-            final FingerprintPositionEstimatorListener<P> listener) {
+    protected FingerprintPositionEstimator(final FingerprintPositionEstimatorListener<P> listener) {
         super(listener);
     }
 
@@ -138,7 +137,7 @@ public abstract class FingerprintPositionEstimator<P extends Point<?>> extends
      */
     public List<RadioSourceLocated<P>> getSources() {
         //noinspection unchecked
-        return (List<RadioSourceLocated<P>>) mSources;
+        return (List<RadioSourceLocated<P>>) sources;
     }
 
     /**
@@ -147,8 +146,7 @@ public abstract class FingerprintPositionEstimator<P extends Point<?>> extends
      * @param sources located radio sources.
      * @throws LockedException if estimator is locked.
      */
-    public void setSources(final List<? extends RadioSourceLocated<P>> sources)
-            throws LockedException {
+    public void setSources(final List<? extends RadioSourceLocated<P>> sources) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
@@ -164,7 +162,7 @@ public abstract class FingerprintPositionEstimator<P extends Point<?>> extends
      * false otherwise.
      */
     public boolean getUseSourcesPathLossExponentWhenAvailable() {
-        return mUseSourcesPathLossExponentWhenAvailable;
+        return useSourcesPathLossExponentWhenAvailable;
     }
 
     /**
@@ -176,13 +174,12 @@ public abstract class FingerprintPositionEstimator<P extends Point<?>> extends
      *                                                false otherwise.
      * @throws LockedException if estimator is locked.
      */
-    public void setUseSourcesPathLossExponentWhenAvailable(
-            final boolean useSourcesPathLossExponentWhenAvailable) throws LockedException {
+    public void setUseSourcesPathLossExponentWhenAvailable(final boolean useSourcesPathLossExponentWhenAvailable)
+            throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
-        mUseSourcesPathLossExponentWhenAvailable =
-                useSourcesPathLossExponentWhenAvailable;
+        this.useSourcesPathLossExponentWhenAvailable = useSourcesPathLossExponentWhenAvailable;
     }
 
     /**
@@ -197,7 +194,7 @@ public abstract class FingerprintPositionEstimator<P extends Point<?>> extends
      * @return indicates which fingerprint finder is used.
      */
     public boolean getUseNoMeanNearestFingerprintFinder() {
-        return mUseNoMeanNearestFingerprintFinder;
+        return useNoMeanNearestFingerprintFinder;
     }
 
     /**
@@ -212,12 +209,12 @@ public abstract class FingerprintPositionEstimator<P extends Point<?>> extends
      * @param useNoMeanNearestFingerprintFinder indicates which fingerprint finder is used.
      * @throws LockedException if estimator is locked.
      */
-    public void setUseNoMeanNearestFingerprintFinder(
-            final boolean useNoMeanNearestFingerprintFinder) throws LockedException {
+    public void setUseNoMeanNearestFingerprintFinder(final boolean useNoMeanNearestFingerprintFinder)
+            throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
-        mUseNoMeanNearestFingerprintFinder = useNoMeanNearestFingerprintFinder;
+        this.useNoMeanNearestFingerprintFinder = useNoMeanNearestFingerprintFinder;
     }
 
     /**
@@ -229,7 +226,7 @@ public abstract class FingerprintPositionEstimator<P extends Point<?>> extends
      * @return true to remove mean effects, false otherwise.
      */
     public boolean isMeansFromFingerprintReadingsRemoved() {
-        return mRemoveMeansFromFingerprintReadings;
+        return removeMeansFromFingerprintReadings;
     }
 
     /**
@@ -241,12 +238,12 @@ public abstract class FingerprintPositionEstimator<P extends Point<?>> extends
      * @param removeMeansFromFingerprintReadings true to remove mean effects, false otherwise.
      * @throws LockedException if estimator is locked.
      */
-    public void setMeansFromFingerprintReadingsRemoved(
-            final boolean removeMeansFromFingerprintReadings) throws LockedException {
+    public void setMeansFromFingerprintReadingsRemoved(final boolean removeMeansFromFingerprintReadings)
+            throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
-        mRemoveMeansFromFingerprintReadings = removeMeansFromFingerprintReadings;
+        this.removeMeansFromFingerprintReadings = removeMeansFromFingerprintReadings;
     }
 
     /**
@@ -256,8 +253,7 @@ public abstract class FingerprintPositionEstimator<P extends Point<?>> extends
      */
     @Override
     public boolean isReady() {
-        return mSources != null && mLocatedFingerprints != null &&
-                mFingerprint != null;
+        return sources != null && locatedFingerprints != null && fingerprint != null;
     }
 
     /**
@@ -271,6 +267,6 @@ public abstract class FingerprintPositionEstimator<P extends Point<?>> extends
             throw new IllegalArgumentException();
         }
 
-        mSources = sources;
+        this.sources = sources;
     }
 }

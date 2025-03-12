@@ -35,8 +35,7 @@ public class WifiAccessPointWithPowerAndLocated3D extends WifiAccessPointWithPow
      * @throws IllegalArgumentException if BSSID is null or frequency is negative.
      */
     public WifiAccessPointWithPowerAndLocated3D(
-            final String bssid, final double frequency,
-            final double transmittedPower, final Point3D position) {
+            final String bssid, final double frequency, final double transmittedPower, final Point3D position) {
         super(bssid, frequency, transmittedPower, position);
     }
 
@@ -52,8 +51,8 @@ public class WifiAccessPointWithPowerAndLocated3D extends WifiAccessPointWithPow
      * @throws IllegalArgumentException if BSSID is null or frequency is negative.
      */
     public WifiAccessPointWithPowerAndLocated3D(
-            final String bssid, final double frequency, final String ssid,
-            final double transmittedPower, final Point3D position) {
+            final String bssid, final double frequency, final String ssid, final double transmittedPower,
+            final Point3D position) {
         super(bssid, frequency, ssid, transmittedPower, position);
     }
 
@@ -70,12 +69,9 @@ public class WifiAccessPointWithPowerAndLocated3D extends WifiAccessPointWithPow
      *                                  or transmitted power standard deviation is negative.
      */
     public WifiAccessPointWithPowerAndLocated3D(
-            final String bssid, final double frequency,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final Point3D position) {
-        super(bssid, frequency, transmittedPower,
-                transmittedPowerStandardDeviation, position);
+            final String bssid, final double frequency, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final Point3D position) {
+        super(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation, position);
     }
 
     /**
@@ -92,12 +88,9 @@ public class WifiAccessPointWithPowerAndLocated3D extends WifiAccessPointWithPow
      *                                  or transmitted power standard deviation is negative.
      */
     public WifiAccessPointWithPowerAndLocated3D(
-            final String bssid, final double frequency, final String ssid,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final Point3D position) {
-        super(bssid, frequency, ssid, transmittedPower,
-                transmittedPowerStandardDeviation, position);
+            final String bssid, final double frequency, final String ssid, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final Point3D position) {
+        super(bssid, frequency, ssid, transmittedPower, transmittedPowerStandardDeviation, position);
     }
 
     /**
@@ -113,8 +106,7 @@ public class WifiAccessPointWithPowerAndLocated3D extends WifiAccessPointWithPow
      * @throws IllegalArgumentException if BSSID is null or frequency is negative.
      */
     public WifiAccessPointWithPowerAndLocated3D(
-            final String bssid, final double frequency,
-            final double transmittedPower, final Point3D position,
+            final String bssid, final double frequency, final double transmittedPower, final Point3D position,
             final Matrix positionCovariance) {
         super(bssid, frequency, transmittedPower, position, positionCovariance);
     }
@@ -133,9 +125,8 @@ public class WifiAccessPointWithPowerAndLocated3D extends WifiAccessPointWithPow
      * @throws IllegalArgumentException if BSSID is null or frequency is negative.
      */
     public WifiAccessPointWithPowerAndLocated3D(
-            final String bssid, final double frequency, final String ssid,
-            final double transmittedPower, final Point3D position,
-            final Matrix positionCovariance) {
+            final String bssid, final double frequency, final String ssid, final double transmittedPower,
+            final Point3D position, final Matrix positionCovariance) {
         super(bssid, frequency, ssid, transmittedPower, position, positionCovariance);
     }
 
@@ -154,13 +145,9 @@ public class WifiAccessPointWithPowerAndLocated3D extends WifiAccessPointWithPow
      *                                  or transmitted power standard deviation is negative.
      */
     public WifiAccessPointWithPowerAndLocated3D(
-            final String bssid, final double frequency,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final Point3D position,
-            final Matrix positionCovariance) {
-        super(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation,
-                position, positionCovariance);
+            final String bssid, final double frequency, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final Point3D position, final Matrix positionCovariance) {
+        super(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation, position, positionCovariance);
     }
 
     /**
@@ -179,13 +166,10 @@ public class WifiAccessPointWithPowerAndLocated3D extends WifiAccessPointWithPow
      *                                  or transmitted power standard deviation is negative.
      */
     public WifiAccessPointWithPowerAndLocated3D(
-            final String bssid, final double frequency,
-            final String ssid, final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final Point3D position,
-            final Matrix positionCovariance) {
-        super(bssid, frequency, ssid, transmittedPower,
-                transmittedPowerStandardDeviation, position, positionCovariance);
+            final String bssid, final double frequency, final String ssid, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final Point3D position, final Matrix positionCovariance) {
+        super(bssid, frequency, ssid, transmittedPower, transmittedPowerStandardDeviation, position,
+                positionCovariance);
     }
 
     /**
@@ -200,9 +184,7 @@ public class WifiAccessPointWithPowerAndLocated3D extends WifiAccessPointWithPow
      * @throws IllegalArgumentException if either BSSID is null or frequency is negative
      */
     public WifiAccessPointWithPowerAndLocated3D(
-            final String bssid, final double frequency,
-            final double transmittedPower,
-            final double pathLossExponent,
+            final String bssid, final double frequency, final double transmittedPower, final double pathLossExponent,
             final Point3D position) {
         super(bssid, frequency, transmittedPower, pathLossExponent, position);
     }
@@ -221,13 +203,10 @@ public class WifiAccessPointWithPowerAndLocated3D extends WifiAccessPointWithPow
      *                                  or transmitted power standard deviation is negative.
      */
     public WifiAccessPointWithPowerAndLocated3D(
-            final String bssid, final double frequency,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final double pathLossExponent,
+            final String bssid, final double frequency, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final double pathLossExponent,
             final Point3D position) {
-        super(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation,
-                pathLossExponent, position);
+        super(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent, position);
     }
 
     /**
@@ -245,13 +224,9 @@ public class WifiAccessPointWithPowerAndLocated3D extends WifiAccessPointWithPow
      *                                  or transmitted power standard deviation is negative.
      */
     public WifiAccessPointWithPowerAndLocated3D(
-            final String bssid, final double frequency,
-            final String ssid, final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final double pathLossExponent,
-            final Point3D position) {
-        super(bssid, frequency, ssid, transmittedPower,
-                transmittedPowerStandardDeviation, pathLossExponent,
+            final String bssid, final double frequency, final String ssid, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final double pathLossExponent, final Point3D position) {
+        super(bssid, frequency, ssid, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent,
                 position);
     }
 
@@ -270,11 +245,9 @@ public class WifiAccessPointWithPowerAndLocated3D extends WifiAccessPointWithPow
      *                                  or covariance has invalid size.
      */
     public WifiAccessPointWithPowerAndLocated3D(
-            final String bssid, final double frequency,
-            final double transmittedPower, final double pathLossExponent,
+            final String bssid, final double frequency, final double transmittedPower, final double pathLossExponent,
             final Point3D position, final Matrix positionCovariance) {
-        super(bssid, frequency, transmittedPower, pathLossExponent, position,
-                positionCovariance);
+        super(bssid, frequency, transmittedPower, pathLossExponent, position, positionCovariance);
     }
 
     /**
@@ -293,12 +266,11 @@ public class WifiAccessPointWithPowerAndLocated3D extends WifiAccessPointWithPow
      *                                  or transmitted power standard deviation is negative.
      */
     public WifiAccessPointWithPowerAndLocated3D(
-            final String bssid, final double frequency,
-            final double transmittedPower, final Double transmittedPowerStandardDeviation,
-            final double pathLossExponent, final Point3D position,
+            final String bssid, final double frequency, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final double pathLossExponent, final Point3D position,
             final Matrix positionCovariance) {
-        super(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation,
-                pathLossExponent, position, positionCovariance);
+        super(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent, position,
+                positionCovariance);
     }
 
     /**
@@ -318,13 +290,10 @@ public class WifiAccessPointWithPowerAndLocated3D extends WifiAccessPointWithPow
      *                                  or transmitted power standard deviation is negative.
      */
     public WifiAccessPointWithPowerAndLocated3D(
-            final String bssid, final double frequency,
-            final String ssid, final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final double pathLossExponent, final Point3D position,
+            final String bssid, final double frequency, final String ssid, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final double pathLossExponent, final Point3D position,
             final Matrix positionCovariance) {
-        super(bssid, frequency, ssid, transmittedPower,
-                transmittedPowerStandardDeviation, pathLossExponent, position,
+        super(bssid, frequency, ssid, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent, position,
                 positionCovariance);
     }
 
@@ -345,14 +314,11 @@ public class WifiAccessPointWithPowerAndLocated3D extends WifiAccessPointWithPow
      *                                  or any standard deviation is negative.
      */
     public WifiAccessPointWithPowerAndLocated3D(
-            final String bssid, final double frequency,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final double pathLossExponent,
-            final Double pathLossExponentStandardDeviation,
-            final Point3D position) {
-        super(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation,
-                pathLossExponent, pathLossExponentStandardDeviation, position);
+            final String bssid, final double frequency, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final double pathLossExponent,
+            final Double pathLossExponentStandardDeviation, final Point3D position) {
+        super(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent,
+                pathLossExponentStandardDeviation, position);
     }
 
     /**
@@ -373,14 +339,10 @@ public class WifiAccessPointWithPowerAndLocated3D extends WifiAccessPointWithPow
      *                                  or any standard deviation is negative.
      */
     public WifiAccessPointWithPowerAndLocated3D(
-            final String bssid, final double frequency, final String ssid,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final double pathLossExponent,
-            final Double pathLossExponentStandardDeviation,
-            final Point3D position) {
-        super(bssid, frequency, ssid, transmittedPower,
-                transmittedPowerStandardDeviation, pathLossExponent,
+            final String bssid, final double frequency, final String ssid, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final double pathLossExponent,
+            final Double pathLossExponentStandardDeviation, final Point3D position) {
+        super(bssid, frequency, ssid, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent,
                 pathLossExponentStandardDeviation, position);
     }
 
@@ -403,16 +365,11 @@ public class WifiAccessPointWithPowerAndLocated3D extends WifiAccessPointWithPow
      *                                  any standard deviation is negative or covariance has invalid size.
      */
     public WifiAccessPointWithPowerAndLocated3D(
-            final String bssid, final double frequency,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final double pathLossExponent,
-            final Double pathLossExponentStandardDeviation,
-            final Point3D position,
-            final Matrix positionCovariance) {
-        super(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation,
-                pathLossExponent, pathLossExponentStandardDeviation, position,
-                positionCovariance);
+            final String bssid, final double frequency, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final double pathLossExponent,
+            final Double pathLossExponentStandardDeviation, final Point3D position, final Matrix positionCovariance) {
+        super(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent,
+                pathLossExponentStandardDeviation, position, positionCovariance);
     }
 
     /**
@@ -435,15 +392,10 @@ public class WifiAccessPointWithPowerAndLocated3D extends WifiAccessPointWithPow
      *                                  any standard deviation is negative or covariance has invalid size.
      */
     public WifiAccessPointWithPowerAndLocated3D(
-            final String bssid, final double frequency, final String ssid,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final double pathLossExponent,
-            final Double pathLossExponentStandardDeviation,
-            final Point3D position,
-            final Matrix positionCovariance) {
-        super(bssid, frequency, ssid, transmittedPower,
-                transmittedPowerStandardDeviation, pathLossExponent,
+            final String bssid, final double frequency, final String ssid, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final double pathLossExponent,
+            final Double pathLossExponentStandardDeviation, final Point3D position, final Matrix positionCovariance) {
+        super(bssid, frequency, ssid, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent,
                 pathLossExponentStandardDeviation, position, positionCovariance);
     }
 

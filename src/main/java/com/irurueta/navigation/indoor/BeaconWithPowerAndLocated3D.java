@@ -35,9 +35,7 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      * @throws IllegalArgumentException if either identifiers or position are null.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final Point3D position) {
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final Point3D position) {
         super(identifiers, transmittedPower, position);
     }
 
@@ -55,17 +53,11 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      * @throws IllegalArgumentException if either identifiers or position are null.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final String bluetoothAddress,
+            final int beaconTypeCode, final int manufacturer, final int serviceUuid, final String bluetoothName,
             final Point3D position) {
-        super(identifiers, transmittedPower, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName, position);
+        super(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid, bluetoothName,
+                position);
     }
 
     /**
@@ -79,12 +71,9 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      *                                  standard deviation is negative.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final Point3D position) {
-        super(identifiers, transmittedPower, transmittedPowerStandardDeviation,
-                position);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final Point3D position) {
+        super(identifiers, transmittedPower, transmittedPowerStandardDeviation, position);
     }
 
     /**
@@ -103,19 +92,11 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      *                                  standard deviation is negative.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final Double transmittedPowerStandardDeviation,
-            final Point3D position) {
-        super(identifiers, transmittedPower, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName, transmittedPowerStandardDeviation,
-                position);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final String bluetoothAddress,
+            final int beaconTypeCode, final int manufacturer, final int serviceUuid, final String bluetoothName,
+            final Double transmittedPowerStandardDeviation, final Point3D position) {
+        super(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid, bluetoothName,
+                transmittedPowerStandardDeviation, position);
     }
 
     /**
@@ -130,9 +111,7 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      *                                  covariance has invalid size.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final Point3D position,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final Point3D position,
             final Matrix positionCovariance) {
         super(identifiers, transmittedPower, position, positionCovariance);
     }
@@ -154,18 +133,11 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      *                                  covariance has invalid size.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final Point3D position,
-            final Matrix positionCovariance) {
-        super(identifiers, transmittedPower, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName, position, positionCovariance);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final String bluetoothAddress,
+            final int beaconTypeCode, final int manufacturer, final int serviceUuid, final String bluetoothName,
+            final Point3D position, final Matrix positionCovariance) {
+        super(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid, bluetoothName,
+                position, positionCovariance);
     }
 
     /**
@@ -181,13 +153,9 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      *                                  covariance has invalid size.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final Point3D position,
-            final Matrix positionCovariance) {
-        super(identifiers, transmittedPower, transmittedPowerStandardDeviation,
-                position, positionCovariance);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final Point3D position, final Matrix positionCovariance) {
+        super(identifiers, transmittedPower, transmittedPowerStandardDeviation, position, positionCovariance);
     }
 
     /**
@@ -208,20 +176,11 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      *                                  covariance has invalid size or standard deviation is negative.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final Double transmittedPowerStandardDeviation,
-            final Point3D position,
-            final Matrix positionCovariance) {
-        super(identifiers, transmittedPower, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName, transmittedPowerStandardDeviation, position,
-                positionCovariance);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final String bluetoothAddress,
+            final int beaconTypeCode, final int manufacturer, final int serviceUuid, final String bluetoothName,
+            final Double transmittedPowerStandardDeviation, final Point3D position, final Matrix positionCovariance) {
+        super(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid, bluetoothName,
+                transmittedPowerStandardDeviation, position, positionCovariance);
     }
 
     /**
@@ -239,17 +198,10 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      * @throws IllegalArgumentException if either identifiers or position are null.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final Point3D position) {
-        super(identifiers, transmittedPower, frequency, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final String bluetoothAddress, final int beaconTypeCode, final int manufacturer, final int serviceUuid,
+            final String bluetoothName, final Point3D position) {
+        super(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, position);
     }
 
@@ -264,13 +216,9 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      * @throws IllegalArgumentException if either identifiers or position are null.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final Double transmittedPowerStandardDeviation,
-            final Point3D position) {
-        super(identifiers, transmittedPower, frequency, transmittedPowerStandardDeviation,
-                position);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final Double transmittedPowerStandardDeviation, final Point3D position) {
+        super(identifiers, transmittedPower, frequency, transmittedPowerStandardDeviation, position);
     }
 
     /**
@@ -289,18 +237,10 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      * @throws IllegalArgumentException if either identifiers or position are null.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final Double transmittedPowerStandardDeviation,
-            final Point3D position) {
-        super(identifiers, transmittedPower, frequency, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final String bluetoothAddress, final int beaconTypeCode, final int manufacturer, final int serviceUuid,
+            final String bluetoothName, final Double transmittedPowerStandardDeviation, final Point3D position) {
+        super(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, transmittedPowerStandardDeviation, position);
     }
 
@@ -322,18 +262,10 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      *                                  covariance has invalid size.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final Point3D position,
-            final Matrix positionCovariance) {
-        super(identifiers, transmittedPower, frequency, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final String bluetoothAddress, final int beaconTypeCode, final int manufacturer, final int serviceUuid,
+            final String bluetoothName, final Point3D position, final Matrix positionCovariance) {
+        super(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, position, positionCovariance);
     }
 
@@ -351,14 +283,10 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      *                                  covariance has invalid size or standard deviation is negative.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final Double transmittedPowerStandardDeviation,
-            final Point3D position,
-            final Matrix positionCovariance) {
-        super(identifiers, transmittedPower, frequency, transmittedPowerStandardDeviation,
-                position, positionCovariance);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final Double transmittedPowerStandardDeviation, final Point3D position, final Matrix positionCovariance) {
+        super(identifiers, transmittedPower, frequency, transmittedPowerStandardDeviation, position,
+                positionCovariance);
     }
 
     /**
@@ -380,21 +308,12 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      *                                  covariance has invalid size or standard deviation is negative.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final Double transmittedPowerStandardDeviation,
-            final Point3D position,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final String bluetoothAddress, final int beaconTypeCode, final int manufacturer, final int serviceUuid,
+            final String bluetoothName, final Double transmittedPowerStandardDeviation, final Point3D position,
             final Matrix positionCovariance) {
-        super(identifiers, transmittedPower, frequency, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName, transmittedPowerStandardDeviation, position,
-                positionCovariance);
+        super(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
+                bluetoothName, transmittedPowerStandardDeviation, position, positionCovariance);
     }
 
     /**
@@ -407,9 +326,7 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      * @throws IllegalArgumentException if either identifiers or position are null.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double pathLossExponent,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double pathLossExponent,
             final Point3D position) {
         super(identifiers, transmittedPower, pathLossExponent, position);
     }
@@ -429,18 +346,11 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      * @throws IllegalArgumentException if either identifiers or position are null.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final double pathLossExponent,
-            final Point3D position) {
-        super(identifiers, transmittedPower, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName, pathLossExponent, position);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final String bluetoothAddress,
+            final int beaconTypeCode, final int manufacturer, final int serviceUuid, final String bluetoothName,
+            final double pathLossExponent, final Point3D position) {
+        super(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid, bluetoothName,
+                pathLossExponent, position);
     }
 
     /**
@@ -455,13 +365,9 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      *                                  standard deviation is negative.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final double pathLossExponent,
-            final Point3D position) {
-        super(identifiers, transmittedPower, transmittedPowerStandardDeviation,
-                pathLossExponent, position);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final double pathLossExponent, final Point3D position) {
+        super(identifiers, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent, position);
     }
 
     /**
@@ -481,20 +387,11 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      *                                  standard deviation is negative.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final double pathLossExponent,
-            final Double transmittedPowerStandardDeviation,
-            final Point3D position) {
-        super(identifiers, transmittedPower, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName, pathLossExponent, transmittedPowerStandardDeviation,
-                position);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final String bluetoothAddress,
+            final int beaconTypeCode, final int manufacturer, final int serviceUuid, final String bluetoothName,
+            final double pathLossExponent, final Double transmittedPowerStandardDeviation, final Point3D position) {
+        super(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid, bluetoothName,
+                pathLossExponent, transmittedPowerStandardDeviation, position);
     }
 
     /**
@@ -510,13 +407,9 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      *                                  covariance has invalid size.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double pathLossExponent,
-            final Point3D position,
-            final Matrix positionCovariance) {
-        super(identifiers, transmittedPower, pathLossExponent, position,
-                positionCovariance);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double pathLossExponent,
+            final Point3D position, final Matrix positionCovariance) {
+        super(identifiers, transmittedPower, pathLossExponent, position, positionCovariance);
     }
 
     /**
@@ -537,19 +430,11 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      *                                  covariance has invalid size.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final double pathLossExponent,
-            final Point3D position,
-            final Matrix positionCovariance) {
-        super(identifiers, transmittedPower, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName, pathLossExponent, position, positionCovariance);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final String bluetoothAddress,
+            final int beaconTypeCode, final int manufacturer, final int serviceUuid, final String bluetoothName,
+            final double pathLossExponent, final Point3D position, final Matrix positionCovariance) {
+        super(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid, bluetoothName,
+                pathLossExponent, position, positionCovariance);
     }
 
     /**
@@ -566,14 +451,11 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      *                                  covariance has invalid size or standard deviation is negative.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final double pathLossExponent,
-            final Point3D position,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final double pathLossExponent, final Point3D position,
             final Matrix positionCovariance) {
-        super(identifiers, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent,
-                position, positionCovariance);
+        super(identifiers, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent, position,
+                positionCovariance);
     }
 
     /**
@@ -595,21 +477,12 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      *                                  covariance has invalid size or standard deviation is negative.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final double pathLossExponent,
-            final Double transmittedPowerStandardDeviation,
-            final Point3D position,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final String bluetoothAddress,
+            final int beaconTypeCode, final int manufacturer, final int serviceUuid, final String bluetoothName,
+            final double pathLossExponent, final Double transmittedPowerStandardDeviation, final Point3D position,
             final Matrix positionCovariance) {
-        super(identifiers, transmittedPower, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName, pathLossExponent, transmittedPowerStandardDeviation, position,
-                positionCovariance);
+        super(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid, bluetoothName,
+                pathLossExponent, transmittedPowerStandardDeviation, position, positionCovariance);
     }
 
     /**
@@ -628,18 +501,10 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      * @throws IllegalArgumentException if either identifiers or position are null.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final double pathLossExponent,
-            final Point3D position) {
-        super(identifiers, transmittedPower, frequency, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final String bluetoothAddress, final int beaconTypeCode, final int manufacturer, final int serviceUuid,
+            final String bluetoothName, final double pathLossExponent, final Point3D position) {
+        super(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, pathLossExponent, position);
     }
 
@@ -656,14 +521,9 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      *                                  standard deviation is negative.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final double pathLossExponent,
-            final Double transmittedPowerStandardDeviation,
-            final Point3D position) {
-        super(identifiers, transmittedPower, frequency, pathLossExponent,
-                transmittedPowerStandardDeviation, position);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final double pathLossExponent, final Double transmittedPowerStandardDeviation, final Point3D position) {
+        super(identifiers, transmittedPower, frequency, pathLossExponent, transmittedPowerStandardDeviation, position);
     }
 
     /**
@@ -684,21 +544,12 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      *                                  standard deviation is negative.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final double pathLossExponent,
-            final Double transmittedPowerStandardDeviation,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final String bluetoothAddress, final int beaconTypeCode, final int manufacturer, final int serviceUuid,
+            final String bluetoothName, final double pathLossExponent, final Double transmittedPowerStandardDeviation,
             final Point3D position) {
-        super(identifiers, transmittedPower, frequency, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName, pathLossExponent, transmittedPowerStandardDeviation,
-                position);
+        super(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
+                bluetoothName, pathLossExponent, transmittedPowerStandardDeviation, position);
     }
 
     /**
@@ -720,19 +571,11 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      *                                  covariance has invalid size.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final double pathLossExponent,
-            final Point3D position,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final String bluetoothAddress, final int beaconTypeCode, final int manufacturer, final int serviceUuid,
+            final String bluetoothName, final double pathLossExponent, final Point3D position,
             final Matrix positionCovariance) {
-        super(identifiers, transmittedPower, frequency, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
+        super(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, pathLossExponent, position, positionCovariance);
     }
 
@@ -751,15 +594,11 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      *                                  covariance has invalid size or standard deviation is negative.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final double pathLossExponent,
-            final Double transmittedPowerStandardDeviation,
-            final Point3D position,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final double pathLossExponent, final Double transmittedPowerStandardDeviation, final Point3D position,
             final Matrix positionCovariance) {
-        super(identifiers, transmittedPower, frequency, pathLossExponent,
-                transmittedPowerStandardDeviation, position, positionCovariance);
+        super(identifiers, transmittedPower, frequency, pathLossExponent, transmittedPowerStandardDeviation, position,
+                positionCovariance);
     }
 
     /**
@@ -782,22 +621,12 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      *                                  covariance has invalid size or standard deviation is negative.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final double pathLossExponent,
-            final Double transmittedPowerStandardDeviation,
-            final Point3D position,
-            final Matrix positionCovariance) {
-        super(identifiers, transmittedPower, frequency, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName, pathLossExponent, transmittedPowerStandardDeviation,
-                position, positionCovariance);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final String bluetoothAddress, final int beaconTypeCode, final int manufacturer, final int serviceUuid,
+            final String bluetoothName, final double pathLossExponent, final Double transmittedPowerStandardDeviation,
+            final Point3D position, final Matrix positionCovariance) {
+        super(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
+                bluetoothName, pathLossExponent, transmittedPowerStandardDeviation, position, positionCovariance);
     }
 
     /**
@@ -814,12 +643,9 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      *                                  any standard deviation is negative.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final double pathLossExponent,
-            final Double pathLossExponentStandardDeviation,
-            final Point3D position) {
+            final List<BeaconIdentifier> identifiers, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final double pathLossExponent,
+            final Double pathLossExponentStandardDeviation, final Point3D position) {
         super(identifiers, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent,
                 pathLossExponentStandardDeviation, position);
     }
@@ -843,21 +669,12 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      *                                  any standard deviation is negative.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final double pathLossExponent,
-            final Double transmittedPowerStandardDeviation,
-            final Double pathLossExponentStandardDeviation,
-            final Point3D position) {
-        super(identifiers, transmittedPower, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName, pathLossExponent, transmittedPowerStandardDeviation,
-                pathLossExponentStandardDeviation, position);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final String bluetoothAddress,
+            final int beaconTypeCode, final int manufacturer, final int serviceUuid, final String bluetoothName,
+            final double pathLossExponent, final Double transmittedPowerStandardDeviation,
+            final Double pathLossExponentStandardDeviation, final Point3D position) {
+        super(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid, bluetoothName,
+                pathLossExponent, transmittedPowerStandardDeviation, pathLossExponentStandardDeviation, position);
     }
 
     /**
@@ -876,12 +693,9 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      *                                  covariance has invalid size or any standard deviation is negative.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final double pathLossExponent,
-            final Double pathLossExponentStandardDeviation,
-            final Point3D position,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final double pathLossExponent,
+            final Double pathLossExponentStandardDeviation, final Point3D position,
             final Matrix positionCovariance) {
         super(identifiers, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent,
                 pathLossExponentStandardDeviation, position, positionCovariance);
@@ -909,22 +723,13 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      *                                  covariance has invalid size or any standard deviation is negative.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final double pathLossExponent,
-            final Double transmittedPowerStandardDeviation,
-            final Double pathLossExponentStandardDeviation,
-            final Point3D position,
-            final Matrix positionCovariance) {
-        super(identifiers, transmittedPower, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName, pathLossExponent, transmittedPowerStandardDeviation,
-                pathLossExponentStandardDeviation, position, positionCovariance);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final String bluetoothAddress,
+            final int beaconTypeCode, final int manufacturer, final int serviceUuid, final String bluetoothName,
+            final double pathLossExponent, final Double transmittedPowerStandardDeviation,
+            final Double pathLossExponentStandardDeviation, final Point3D position, final Matrix positionCovariance) {
+        super(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid, bluetoothName,
+                pathLossExponent, transmittedPowerStandardDeviation, pathLossExponentStandardDeviation, position,
+                positionCovariance);
     }
 
     /**
@@ -942,15 +747,10 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      *                                  any standard deviation is negative.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final double pathLossExponent,
-            final Double transmittedPowerStandardDeviation,
-            final Double pathLossExponentStandardDeviation,
-            final Point3D position) {
-        super(identifiers, transmittedPower, frequency, pathLossExponent,
-                transmittedPowerStandardDeviation,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final double pathLossExponent, final Double transmittedPowerStandardDeviation,
+            final Double pathLossExponentStandardDeviation, final Point3D position) {
+        super(identifiers, transmittedPower, frequency, pathLossExponent, transmittedPowerStandardDeviation,
                 pathLossExponentStandardDeviation, position);
     }
 
@@ -974,22 +774,13 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      *                                  any standard deviation is negative.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final double pathLossExponent,
-            final Double transmittedPowerStandardDeviation,
-            final Double pathLossExponentStandardDeviation,
-            final Point3D position) {
-        super(identifiers, transmittedPower, frequency, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName, pathLossExponent, transmittedPowerStandardDeviation,
-                pathLossExponentStandardDeviation, position);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final String bluetoothAddress, final int beaconTypeCode, final int manufacturer, final int serviceUuid,
+            final String bluetoothName, final double pathLossExponent, final Double transmittedPowerStandardDeviation,
+            final Double pathLossExponentStandardDeviation, final Point3D position) {
+        super(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
+                bluetoothName, pathLossExponent, transmittedPowerStandardDeviation, pathLossExponentStandardDeviation,
+                position);
     }
 
     /**
@@ -1009,16 +800,11 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      *                                  covariance has invalid size or any standard deviation is negative.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final double pathLossExponent,
-            final Double transmittedPowerStandardDeviation,
-            final Double pathLossExponentStandardDeviation,
-            final Point3D position, Matrix positionCovariance) {
-        super(identifiers, transmittedPower, frequency, pathLossExponent,
-                transmittedPowerStandardDeviation, pathLossExponentStandardDeviation,
-                position, positionCovariance);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final double pathLossExponent, final Double transmittedPowerStandardDeviation,
+            final Double pathLossExponentStandardDeviation, final Point3D position, Matrix positionCovariance) {
+        super(identifiers, transmittedPower, frequency, pathLossExponent, transmittedPowerStandardDeviation,
+                pathLossExponentStandardDeviation, position, positionCovariance);
     }
 
     /**
@@ -1044,23 +830,13 @@ public class BeaconWithPowerAndLocated3D extends BeaconWithPowerAndLocated<Point
      *                                  covariance has invalid size or any standard deviation is negative.
      */
     public BeaconWithPowerAndLocated3D(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final double pathLossExponent,
-            final Double transmittedPowerStandardDeviation,
-            final Double pathLossExponentStandardDeviation,
-            final Point3D position,
-            final Matrix positionCovariance) {
-        super(identifiers, transmittedPower, frequency, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName, pathLossExponent, transmittedPowerStandardDeviation,
-                pathLossExponentStandardDeviation, position, positionCovariance);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final String bluetoothAddress, final int beaconTypeCode, final int manufacturer, final int serviceUuid,
+            final String bluetoothName, final double pathLossExponent, final Double transmittedPowerStandardDeviation,
+            final Double pathLossExponentStandardDeviation, final Point3D position, final Matrix positionCovariance) {
+        super(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
+                bluetoothName, pathLossExponent, transmittedPowerStandardDeviation, pathLossExponentStandardDeviation,
+                position, positionCovariance);
     }
 
     /**

@@ -40,8 +40,7 @@ import java.util.List;
  *
  * @param <P> a {@link Point} type.
  */
-public abstract class LinearMixedPositionEstimator<P extends Point<P>> extends
-        MixedPositionEstimator<P> {
+public abstract class LinearMixedPositionEstimator<P extends Point<P>> extends MixedPositionEstimator<P> {
 
     /**
      * Indicates that by default an homogeneous linear solver is used to estimate
@@ -52,22 +51,22 @@ public abstract class LinearMixedPositionEstimator<P extends Point<P>> extends
     /**
      * An homogeneous linear lateration solver to solve position.
      */
-    protected HomogeneousLinearLeastSquaresLaterationSolver<P> mHomogeneousTrilaterationSolver;
+    protected HomogeneousLinearLeastSquaresLaterationSolver<P> homogeneousTrilaterationSolver;
 
     /**
      * An inhomogeneous linear lateration solver to solve position.
      */
-    protected InhomogeneousLinearLeastSquaresLaterationSolver<P> mInhomogeneousTrilaterationSolver;
+    protected InhomogeneousLinearLeastSquaresLaterationSolver<P> inhomogeneousTrilaterationSolver;
 
     /**
      * Listener for the lateration solver.
      */
-    protected LaterationSolverListener<P> mLaterationSolverListener;
+    protected LaterationSolverListener<P> laterationSolverListener;
 
     /**
      * Indicates whether an homogeneous linear solver is used to estimate position.
      */
-    protected boolean mUseHomogeneousLinearSolver = DEFAULT_USE_HOMOGENEOUS_LINEAR_SOLVER;
+    protected boolean useHomogeneousLinearSolver = DEFAULT_USE_HOMOGENEOUS_LINEAR_SOLVER;
 
     /**
      * Constructor.
@@ -94,7 +93,7 @@ public abstract class LinearMixedPositionEstimator<P extends Point<P>> extends
      * linear one is used instead.
      */
     public boolean isHomogeneousLinearSolverUsed() {
-        return mUseHomogeneousLinearSolver;
+        return useHomogeneousLinearSolver;
     }
 
     /**
@@ -104,13 +103,12 @@ public abstract class LinearMixedPositionEstimator<P extends Point<P>> extends
      *                                   if an inhomogeneous linear one is used instead.
      * @throws LockedException if estimator is locked.
      */
-    public void setHomogeneousLinearSolverUsed(final boolean useHomogeneousLinearSolver)
-            throws LockedException {
+    public void setHomogeneousLinearSolverUsed(final boolean useHomogeneousLinearSolver) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
 
-        mUseHomogeneousLinearSolver = useHomogeneousLinearSolver;
+        this.useHomogeneousLinearSolver = useHomogeneousLinearSolver;
     }
 
     /**
@@ -120,9 +118,9 @@ public abstract class LinearMixedPositionEstimator<P extends Point<P>> extends
      */
     @Override
     public int getMinRequiredSources() {
-        return mUseHomogeneousLinearSolver ?
-                mHomogeneousTrilaterationSolver.getMinRequiredPositionsAndDistances() :
-                mInhomogeneousTrilaterationSolver.getMinRequiredPositionsAndDistances();
+        return useHomogeneousLinearSolver
+                ? homogeneousTrilaterationSolver.getMinRequiredPositionsAndDistances()
+                : inhomogeneousTrilaterationSolver.getMinRequiredPositionsAndDistances();
     }
 
     /**
@@ -132,8 +130,8 @@ public abstract class LinearMixedPositionEstimator<P extends Point<P>> extends
      */
     @Override
     public boolean isReady() {
-        return (!mUseHomogeneousLinearSolver && mInhomogeneousTrilaterationSolver.isReady()) ||
-                (mUseHomogeneousLinearSolver && mHomogeneousTrilaterationSolver.isReady());
+        return (!useHomogeneousLinearSolver && inhomogeneousTrilaterationSolver.isReady())
+                || (useHomogeneousLinearSolver && homogeneousTrilaterationSolver.isReady());
     }
 
     /**
@@ -143,8 +141,7 @@ public abstract class LinearMixedPositionEstimator<P extends Point<P>> extends
      */
     @Override
     public boolean isLocked() {
-        return mInhomogeneousTrilaterationSolver.isLocked() ||
-                mHomogeneousTrilaterationSolver.isLocked();
+        return inhomogeneousTrilaterationSolver.isLocked() || homogeneousTrilaterationSolver.isLocked();
     }
 
     /**
@@ -157,17 +154,14 @@ public abstract class LinearMixedPositionEstimator<P extends Point<P>> extends
      */
     @SuppressWarnings("Duplicates")
     @Override
-    public void estimate() throws LockedException, NotReadyException,
-            PositionEstimationException {
+    public void estimate() throws LockedException, NotReadyException, PositionEstimationException {
         try {
-            if (mUseHomogeneousLinearSolver) {
-                mHomogeneousTrilaterationSolver.solve();
-                mEstimatedPositionCoordinates =
-                        mHomogeneousTrilaterationSolver.getEstimatedPositionCoordinates();
+            if (useHomogeneousLinearSolver) {
+                homogeneousTrilaterationSolver.solve();
+                estimatedPositionCoordinates = homogeneousTrilaterationSolver.getEstimatedPositionCoordinates();
             } else {
-                mInhomogeneousTrilaterationSolver.solve();
-                mEstimatedPositionCoordinates =
-                        mInhomogeneousTrilaterationSolver.getEstimatedPositionCoordinates();
+                inhomogeneousTrilaterationSolver.solve();
+                estimatedPositionCoordinates = inhomogeneousTrilaterationSolver.getEstimatedPositionCoordinates();
             }
         } catch (LaterationException e) {
             throw new PositionEstimationException(e);
@@ -181,9 +175,8 @@ public abstract class LinearMixedPositionEstimator<P extends Point<P>> extends
      */
     @Override
     public P[] getPositions() {
-        return mUseHomogeneousLinearSolver ?
-                mHomogeneousTrilaterationSolver.getPositions() :
-                mInhomogeneousTrilaterationSolver.getPositions();
+        return useHomogeneousLinearSolver
+                ? homogeneousTrilaterationSolver.getPositions() : inhomogeneousTrilaterationSolver.getPositions();
     }
 
     /**
@@ -195,9 +188,8 @@ public abstract class LinearMixedPositionEstimator<P extends Point<P>> extends
      */
     @Override
     public double[] getDistances() {
-        return mUseHomogeneousLinearSolver ?
-                mHomogeneousTrilaterationSolver.getDistances() :
-                mInhomogeneousTrilaterationSolver.getDistances();
+        return useHomogeneousLinearSolver
+                ? homogeneousTrilaterationSolver.getDistances() : inhomogeneousTrilaterationSolver.getDistances();
     }
 
     /**
@@ -235,28 +227,25 @@ public abstract class LinearMixedPositionEstimator<P extends Point<P>> extends
      * @param positions positions to be set.
      * @param distances distances to be set.
      */
-    protected abstract void setPositionsAndDistances(
-            final List<P> positions, final List<Double> distances);
+    protected abstract void setPositionsAndDistances(final List<P> positions, final List<Double> distances);
 
     /**
      * Initializes lateration solver listener.
      */
     @SuppressWarnings("Duplicates")
     private void init() {
-        mLaterationSolverListener = new LaterationSolverListener<P>() {
+        laterationSolverListener = new LaterationSolverListener<>() {
             @Override
             public void onSolveStart(final LaterationSolver<P> solver) {
-                if (mListener != null) {
-                    mListener.onEstimateStart(
-                            LinearMixedPositionEstimator.this);
+                if (listener != null) {
+                    listener.onEstimateStart(LinearMixedPositionEstimator.this);
                 }
             }
 
             @Override
             public void onSolveEnd(final LaterationSolver<P> solver) {
-                if (mListener != null) {
-                    mListener.onEstimateEnd(
-                            LinearMixedPositionEstimator.this);
+                if (listener != null) {
+                    listener.onEstimateEnd(LinearMixedPositionEstimator.this);
                 }
             }
         };
@@ -267,23 +256,20 @@ public abstract class LinearMixedPositionEstimator<P extends Point<P>> extends
      */
     @SuppressWarnings("Duplicates")
     private void buildPositionsAndDistances() {
-        if ((mUseHomogeneousLinearSolver && mHomogeneousTrilaterationSolver == null) ||
-                (!mUseHomogeneousLinearSolver && mInhomogeneousTrilaterationSolver == null)) {
+        if ((useHomogeneousLinearSolver && homogeneousTrilaterationSolver == null)
+                || (!useHomogeneousLinearSolver && inhomogeneousTrilaterationSolver == null)) {
             return;
         }
 
-        final int min = getMinRequiredSources();
-        if (mSources == null || mFingerprint == null ||
-                mSources.size() < min ||
-                mFingerprint.getReadings() == null ||
-                mFingerprint.getReadings().size() < min) {
+        final var min = getMinRequiredSources();
+        if (sources == null || fingerprint == null || sources.size() < min || fingerprint.getReadings() == null
+                || fingerprint.getReadings().size() < min) {
             return;
         }
 
-        final List<P> positions = new ArrayList<>();
-        final List<Double> distances = new ArrayList<>();
-        PositionEstimatorHelper.buildPositionsAndDistances(
-                mSources, mFingerprint, positions, distances);
+        final var positions = new ArrayList<P>();
+        final var distances = new ArrayList<Double>();
+        PositionEstimatorHelper.buildPositionsAndDistances(sources, fingerprint, positions, distances);
 
         setPositionsAndDistances(positions, distances);
     }

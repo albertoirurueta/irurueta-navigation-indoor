@@ -66,17 +66,17 @@ public class RANSACRobustRangingRadioSourceEstimator3D<S extends RadioSource> ex
      * in dBm's between received value that should have been received on estimated
      * iso-tropical model and actual measured value.
      */
-    private double mThreshold = DEFAULT_THRESHOLD;
+    private double threshold = DEFAULT_THRESHOLD;
 
     /**
      * Indicates whether inliers must be computed and kept.
      */
-    private boolean mComputeAndKeepInliers = DEFAULT_COMPUTE_AND_KEEP_INLIERS;
+    private boolean computeAndKeepInliers = DEFAULT_COMPUTE_AND_KEEP_INLIERS;
 
     /**
      * Indicates whether residuals must be computed and kept.
      */
-    private boolean mComputeAndKeepResiduals = DEFAULT_COMPUTE_AND_KEEP_RESIDUALS;
+    private boolean computeAndKeepResiduals = DEFAULT_COMPUTE_AND_KEEP_RESIDUALS;
 
     /**
      * Constructor.
@@ -93,8 +93,7 @@ public class RANSACRobustRangingRadioSourceEstimator3D<S extends RadioSource> ex
      *                 radio source.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RANSACRobustRangingRadioSourceEstimator3D(
-            final List<? extends RangingReadingLocated<S, Point3D>> readings) {
+    public RANSACRobustRangingRadioSourceEstimator3D(final List<? extends RangingReadingLocated<S, Point3D>> readings) {
         super(readings);
     }
 
@@ -128,8 +127,7 @@ public class RANSACRobustRangingRadioSourceEstimator3D<S extends RadioSource> ex
      * @param initialPosition initial position to start the estimation or radio
      *                        source position.
      */
-    public RANSACRobustRangingRadioSourceEstimator3D(
-            final Point3D initialPosition) {
+    public RANSACRobustRangingRadioSourceEstimator3D(final Point3D initialPosition) {
         super(initialPosition);
     }
 
@@ -143,8 +141,7 @@ public class RANSACRobustRangingRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public RANSACRobustRangingRadioSourceEstimator3D(
-            final List<? extends RangingReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition) {
+            final List<? extends RangingReadingLocated<S, Point3D>> readings, final Point3D initialPosition) {
         super(readings, initialPosition);
     }
 
@@ -156,8 +153,7 @@ public class RANSACRobustRangingRadioSourceEstimator3D<S extends RadioSource> ex
      * @param listener        listener in charge of attending events raised by this instance.
      */
     public RANSACRobustRangingRadioSourceEstimator3D(
-            final Point3D initialPosition,
-            final RobustRangingRadioSourceEstimatorListener<S, Point3D> listener) {
+            final Point3D initialPosition, final RobustRangingRadioSourceEstimatorListener<S, Point3D> listener) {
         super(initialPosition, listener);
     }
 
@@ -172,8 +168,7 @@ public class RANSACRobustRangingRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public RANSACRobustRangingRadioSourceEstimator3D(
-            final List<? extends RangingReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
+            final List<? extends RangingReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
             final RobustRangingRadioSourceEstimatorListener<S, Point3D> listener) {
         super(readings, initialPosition, listener);
     }
@@ -185,7 +180,7 @@ public class RANSACRobustRangingRadioSourceEstimator3D<S extends RadioSource> ex
      * @return threshold to determine whether samples are inliers or not.
      */
     public double getThreshold() {
-        return mThreshold;
+        return threshold;
     }
 
     /**
@@ -203,7 +198,7 @@ public class RANSACRobustRangingRadioSourceEstimator3D<S extends RadioSource> ex
         if (threshold <= MIN_THRESHOLD) {
             throw new IllegalArgumentException();
         }
-        mThreshold = threshold;
+        this.threshold = threshold;
     }
 
 
@@ -214,7 +209,7 @@ public class RANSACRobustRangingRadioSourceEstimator3D<S extends RadioSource> ex
      * only need to be computed but not kept.
      */
     public boolean isComputeAndKeepInliersEnabled() {
-        return mComputeAndKeepInliers;
+        return computeAndKeepInliers;
     }
 
     /**
@@ -224,12 +219,11 @@ public class RANSACRobustRangingRadioSourceEstimator3D<S extends RadioSource> ex
      *                              false if inliers only need to be computed but not kept.
      * @throws LockedException if this solver is locked.
      */
-    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers)
-            throws LockedException {
+    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
-        mComputeAndKeepInliers = computeAndKeepInliers;
+        this.computeAndKeepInliers = computeAndKeepInliers;
     }
 
     /**
@@ -239,7 +233,7 @@ public class RANSACRobustRangingRadioSourceEstimator3D<S extends RadioSource> ex
      * only need to be computed but not kept.
      */
     public boolean isComputeAndKeepResidualsEnabled() {
-        return mComputeAndKeepResiduals;
+        return computeAndKeepResiduals;
     }
 
     /**
@@ -249,12 +243,11 @@ public class RANSACRobustRangingRadioSourceEstimator3D<S extends RadioSource> ex
      *                                false if residuals only need to be computed but not kept.
      * @throws LockedException if this solver is locked.
      */
-    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals)
-            throws LockedException {
+    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
-        mComputeAndKeepResiduals = computeAndKeepResiduals;
+        this.computeAndKeepResiduals = computeAndKeepResiduals;
     }
 
     /**
@@ -275,99 +268,86 @@ public class RANSACRobustRangingRadioSourceEstimator3D<S extends RadioSource> ex
             throw new NotReadyException();
         }
 
-        final RANSACRobustEstimator<Solution<Point3D>> innerEstimator =
-                new RANSACRobustEstimator<>(
-                        new RANSACRobustEstimatorListener<Solution<Point3D>>() {
-                            @Override
-                            public double getThreshold() {
-                                return mThreshold;
-                            }
-
-                            @Override
-                            public int getTotalSamples() {
-                                return mReadings.size();
-                            }
-
-                            @Override
-                            public int getSubsetSize() {
-                                return Math.max(mPreliminarySubsetSize, getMinReadings());
-                            }
-
-                            @Override
-                            public void estimatePreliminarSolutions(
-                                    final int[] samplesIndices,
-                                    final List<Solution<Point3D>> solutions) {
-                                solvePreliminarySolutions(samplesIndices, solutions);
-                            }
-
-                            @Override
-                            public double computeResidual(
-                                    final Solution<Point3D> currentEstimation,
-                                    final int i) {
-                                return residual(currentEstimation, i);
-                            }
-
-                            @Override
-                            public boolean isReady() {
-                                return RANSACRobustRangingRadioSourceEstimator3D.this.isReady();
-                            }
-
-                            @Override
-                            public void onEstimateStart(
-                                    final RobustEstimator<Solution<Point3D>> estimator) {
-                                // no action required
-                            }
-
-                            @Override
-                            public void onEstimateEnd(
-                                    final RobustEstimator<Solution<Point3D>> estimator) {
-                                // no action required
-                            }
-
-                            @Override
-                            public void onEstimateNextIteration(
-                                    final RobustEstimator<Solution<Point3D>> estimator,
-                                    final int iteration) {
-                                if (mListener != null) {
-                                    mListener.onEstimateNextIteration(
-                                            RANSACRobustRangingRadioSourceEstimator3D.this,
-                                            iteration);
-                                }
-                            }
-
-                            @Override
-                            public void onEstimateProgressChange(
-                                    final RobustEstimator<Solution<Point3D>> estimator,
-                                    final float progress) {
-                                if (mListener != null) {
-                                    mListener.onEstimateProgressChange(
-                                            RANSACRobustRangingRadioSourceEstimator3D.this,
-                                            progress);
-                                }
-                            }
-                        });
-
-        try {
-            mLocked = true;
-
-            if (mListener != null) {
-                mListener.onEstimateStart(this);
+        final var innerEstimator = new RANSACRobustEstimator<>(new RANSACRobustEstimatorListener<Solution<Point3D>>() {
+            @Override
+            public double getThreshold() {
+                return threshold;
             }
 
-            mInliersData = null;
-            innerEstimator.setComputeAndKeepInliersEnabled(
-                    mComputeAndKeepInliers || mRefineResult);
-            innerEstimator.setComputeAndKeepResidualsEnabled(
-                    mComputeAndKeepResiduals || mRefineResult);
-            innerEstimator.setConfidence(mConfidence);
-            innerEstimator.setMaxIterations(mMaxIterations);
-            innerEstimator.setProgressDelta(mProgressDelta);
-            final Solution<Point3D> result = innerEstimator.estimate();
-            mInliersData = innerEstimator.getInliersData();
+            @Override
+            public int getTotalSamples() {
+                return readings.size();
+            }
+
+            @Override
+            public int getSubsetSize() {
+                return Math.max(preliminarySubsetSize, getMinReadings());
+            }
+
+            @Override
+            public void estimatePreliminarSolutions(
+                    final int[] samplesIndices, final List<Solution<Point3D>> solutions) {
+                solvePreliminarySolutions(samplesIndices, solutions);
+            }
+
+            @Override
+            public double computeResidual(final Solution<Point3D> currentEstimation, final int i) {
+                return residual(currentEstimation, i);
+            }
+
+            @Override
+            public boolean isReady() {
+                return RANSACRobustRangingRadioSourceEstimator3D.this.isReady();
+            }
+
+            @Override
+            public void onEstimateStart(final RobustEstimator<Solution<Point3D>> estimator) {
+                // no action required
+            }
+
+            @Override
+            public void onEstimateEnd(final RobustEstimator<Solution<Point3D>> estimator) {
+                // no action required
+            }
+
+            @Override
+            public void onEstimateNextIteration(
+                    final RobustEstimator<Solution<Point3D>> estimator, final int iteration) {
+                if (listener != null) {
+                    listener.onEstimateNextIteration(
+                            RANSACRobustRangingRadioSourceEstimator3D.this, iteration);
+                }
+            }
+
+            @Override
+            public void onEstimateProgressChange(
+                    final RobustEstimator<Solution<Point3D>> estimator, final float progress) {
+                if (listener != null) {
+                    listener.onEstimateProgressChange(
+                            RANSACRobustRangingRadioSourceEstimator3D.this, progress);
+                }
+            }
+        });
+
+        try {
+            locked = true;
+
+            if (listener != null) {
+                listener.onEstimateStart(this);
+            }
+
+            inliersData = null;
+            innerEstimator.setComputeAndKeepInliersEnabled(computeAndKeepInliers || refineResult);
+            innerEstimator.setComputeAndKeepResidualsEnabled(computeAndKeepResiduals || refineResult);
+            innerEstimator.setConfidence(confidence);
+            innerEstimator.setMaxIterations(maxIterations);
+            innerEstimator.setProgressDelta(progressDelta);
+            final var result = innerEstimator.estimate();
+            inliersData = innerEstimator.getInliersData();
             attemptRefine(result);
 
-            if (mListener != null) {
-                mListener.onEstimateEnd(this);
+            if (listener != null) {
+                listener.onEstimateEnd(this);
             }
 
         } catch (final com.irurueta.numerical.LockedException e) {
@@ -375,7 +355,7 @@ public class RANSACRobustRangingRadioSourceEstimator3D<S extends RadioSource> ex
         } catch (final com.irurueta.numerical.NotReadyException e) {
             throw new NotReadyException(e);
         } finally {
-            mLocked = false;
+            locked = false;
         }
     }
 

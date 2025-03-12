@@ -25,7 +25,6 @@ import com.irurueta.navigation.indoor.RssiFingerprint;
 import com.irurueta.navigation.indoor.RssiFingerprintLocated;
 import com.irurueta.navigation.indoor.RssiReading;
 import com.irurueta.navigation.indoor.Utils;
-import com.irurueta.statistics.MultivariateNormalDist;
 
 import java.util.List;
 
@@ -219,8 +218,7 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator2D extends
             final Point2D initialPosition,
             final List<? extends RadioSourceLocated<Point2D>> initialLocatedSources,
             final FingerprintPositionAndRadioSourceEstimatorListener<Point2D> listener) {
-        super(locatedFingerprints, fingerprint, initialPosition, initialLocatedSources,
-                listener);
+        super(locatedFingerprints, fingerprint, initialPosition, initialLocatedSources, listener);
     }
 
     /**
@@ -241,22 +239,18 @@ public class NonLinearFingerprintPositionAndRadioSourceEstimator2D extends
     @Override
     @SuppressWarnings("Duplicates")
     protected Double propagateVariances(
-            final double pathlossExponent, final Point2D fingerprintPosition,
-            final Point2D radioSourcePosition, final Point2D estimatedPosition,
-            final Double pathlossExponentVariance,
-            final Matrix fingerprintPositionCovariance,
-            final Matrix radioSourcePositionCovariance) {
+            final double pathlossExponent, final Point2D fingerprintPosition, final Point2D radioSourcePosition,
+            final Point2D estimatedPosition, final Double pathlossExponentVariance,
+            final Matrix fingerprintPositionCovariance, final Matrix radioSourcePositionCovariance) {
         try {
-            final MultivariateNormalDist dist = Utils.propagateVariancesToRssiDifferenceVariance2D(
-                    pathlossExponent, fingerprintPosition, radioSourcePosition,
-                    estimatedPosition, pathlossExponentVariance,
-                    fingerprintPositionCovariance, radioSourcePositionCovariance,
-                    null);
+            final var dist = Utils.propagateVariancesToRssiDifferenceVariance2D(pathlossExponent, fingerprintPosition,
+                    radioSourcePosition, estimatedPosition, pathlossExponentVariance, fingerprintPositionCovariance,
+                    radioSourcePositionCovariance, null);
             if (dist == null) {
                 return null;
             }
 
-            final Matrix covariance = dist.getCovariance();
+            final var covariance = dist.getCovariance();
             if (covariance == null) {
                 return null;
             }

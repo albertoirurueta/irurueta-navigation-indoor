@@ -32,12 +32,12 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
     /**
      * Position where beacon is located.
      */
-    private P mPosition;
+    private P position;
 
     /**
      * Covariance of inhomogeneous coordinates of current position (if available).
      */
-    private Matrix mPositionCovariance;
+    private Matrix positionCovariance;
 
     /**
      * Constructor.
@@ -48,16 +48,14 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      * @throws IllegalArgumentException if either identifiers or position are null.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final P position) {
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final P position) {
         super(identifiers, transmittedPower);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -74,23 +72,17 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      * @throws IllegalArgumentException if either identifiers or position are null.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final String bluetoothAddress,
+            final int beaconTypeCode, final int manufacturer, final int serviceUuid, final String bluetoothName,
             final P position) {
-        super(identifiers, transmittedPower, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
+        super(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -104,17 +96,15 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  standard deviation is negative.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final P position) {
+            final List<BeaconIdentifier> identifiers, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final P position) {
         super(identifiers, transmittedPower, transmittedPowerStandardDeviation);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -133,24 +123,17 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  standard deviation is negative.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final Double transmittedPowerStandardDeviation,
-            final P position) {
-        super(identifiers, transmittedPower, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName, transmittedPowerStandardDeviation);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final String bluetoothAddress,
+            final int beaconTypeCode, final int manufacturer, final int serviceUuid, final String bluetoothName,
+            final Double transmittedPowerStandardDeviation, final P position) {
+        super(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid, bluetoothName,
+                transmittedPowerStandardDeviation);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -165,18 +148,15 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  covariance has invalid size.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final P position,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final P position,
             final Matrix positionCovariance) {
         this(identifiers, transmittedPower, position);
 
-        if (positionCovariance != null &&
-                (positionCovariance.getRows() != position.getDimensions() ||
-                        positionCovariance.getColumns() != position.getDimensions())) {
+        if (positionCovariance != null && (positionCovariance.getRows() != position.getDimensions()
+                || positionCovariance.getColumns() != position.getDimensions())) {
             throw new IllegalArgumentException();
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -196,25 +176,17 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  covariance has invalid size.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final P position,
-            final Matrix positionCovariance) {
-        this(identifiers, transmittedPower, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName, position);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final String bluetoothAddress,
+            final int beaconTypeCode, final int manufacturer, final int serviceUuid, final String bluetoothName,
+            final P position, final Matrix positionCovariance) {
+        this(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid, bluetoothName,
+                position);
 
-        if (positionCovariance != null &&
-                (positionCovariance.getRows() != position.getDimensions() ||
-                        positionCovariance.getColumns() != position.getDimensions())) {
+        if (positionCovariance != null && (positionCovariance.getRows() != position.getDimensions()
+                || positionCovariance.getColumns() != position.getDimensions())) {
             throw new IllegalArgumentException();
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -230,20 +202,15 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  covariance has invalid size or standard deviation is negative.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final P position,
-            final Matrix positionCovariance) {
-        this(identifiers, transmittedPower, transmittedPowerStandardDeviation,
-                position);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final P position, final Matrix positionCovariance) {
+        this(identifiers, transmittedPower, transmittedPowerStandardDeviation, position);
 
-        if (positionCovariance != null &&
-                (positionCovariance.getRows() != position.getDimensions() ||
-                        positionCovariance.getColumns() != position.getDimensions())) {
+        if (positionCovariance != null && (positionCovariance.getRows() != position.getDimensions()
+                || positionCovariance.getColumns() != position.getDimensions())) {
             throw new IllegalArgumentException();
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -264,26 +231,18 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  covariance has invalid size or standard deviation is negative.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final Double transmittedPowerStandardDeviation,
-            final P position,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final String bluetoothAddress,
+            final int beaconTypeCode, final int manufacturer, final int serviceUuid, final String bluetoothName,
+            final Double transmittedPowerStandardDeviation, final P position,
             final Matrix positionCovariance) {
-        this(identifiers, transmittedPower, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName, transmittedPowerStandardDeviation, position);
+        this(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid, bluetoothName,
+                transmittedPowerStandardDeviation, position);
 
-        if (positionCovariance != null &&
-                (positionCovariance.getRows() != position.getDimensions() ||
-                        positionCovariance.getColumns() != position.getDimensions())) {
+        if (positionCovariance != null && (positionCovariance.getRows() != position.getDimensions()
+                || positionCovariance.getColumns() != position.getDimensions())) {
             throw new IllegalArgumentException();
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -301,24 +260,17 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      * @throws IllegalArgumentException if either identifiers or position are null.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final P position) {
-        super(identifiers, transmittedPower, frequency, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final String bluetoothAddress, final int beaconTypeCode, final int manufacturer, final int serviceUuid,
+            final String bluetoothName, final P position) {
+        super(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -333,18 +285,15 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  standard deviation is negative.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final Double transmittedPowerStandardDeviation,
-            final P position) {
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final Double transmittedPowerStandardDeviation, final P position) {
         super(identifiers, transmittedPower, frequency, transmittedPowerStandardDeviation);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -364,25 +313,17 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  standard deviation is negative.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final Double transmittedPowerStandardDeviation,
-            final P position) {
-        super(identifiers, transmittedPower, frequency, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final String bluetoothAddress, final int beaconTypeCode, final int manufacturer, final int serviceUuid,
+            final String bluetoothName, final Double transmittedPowerStandardDeviation, final P position) {
+        super(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, transmittedPowerStandardDeviation);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -403,26 +344,17 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  covariance has invalid size.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final P position,
-            final Matrix positionCovariance) {
-        this(identifiers, transmittedPower, frequency, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final String bluetoothAddress, final int beaconTypeCode, final int manufacturer, final int serviceUuid,
+            final String bluetoothName, final P position, final Matrix positionCovariance) {
+        this(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, position);
 
-        if (positionCovariance != null &&
-                (positionCovariance.getRows() != position.getDimensions() ||
-                        positionCovariance.getColumns() != position.getDimensions())) {
+        if (positionCovariance != null && (positionCovariance.getRows() != position.getDimensions()
+                || positionCovariance.getColumns() != position.getDimensions())) {
             throw new IllegalArgumentException();
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -439,21 +371,15 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  covariance has invalid size or standard deviation is negative.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final Double transmittedPowerStandardDeviation,
-            final P position,
-            final Matrix positionCovariance) {
-        this(identifiers, transmittedPower, frequency, transmittedPowerStandardDeviation,
-                position);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final Double transmittedPowerStandardDeviation, final P position, final Matrix positionCovariance) {
+        this(identifiers, transmittedPower, frequency, transmittedPowerStandardDeviation, position);
 
-        if (positionCovariance != null &&
-                (positionCovariance.getRows() != position.getDimensions() ||
-                        positionCovariance.getColumns() != position.getDimensions())) {
+        if (positionCovariance != null && (positionCovariance.getRows() != position.getDimensions()
+                || positionCovariance.getColumns() != position.getDimensions())) {
             throw new IllegalArgumentException();
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -475,27 +401,18 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  covariance has invalid size or standard deviation is negative.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final Double transmittedPowerStandardDeviation,
-            final P position,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final String bluetoothAddress, final int beaconTypeCode, final int manufacturer, final int serviceUuid,
+            final String bluetoothName, final Double transmittedPowerStandardDeviation, final P position,
             final Matrix positionCovariance) {
-        this(identifiers, transmittedPower, frequency, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
+        this(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, transmittedPowerStandardDeviation, position);
 
-        if (positionCovariance != null &&
-                (positionCovariance.getRows() != position.getDimensions() ||
-                        positionCovariance.getColumns() != position.getDimensions())) {
+        if (positionCovariance != null && (positionCovariance.getRows() != position.getDimensions()
+                || positionCovariance.getColumns() != position.getDimensions())) {
             throw new IllegalArgumentException();
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -508,9 +425,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      * @throws IllegalArgumentException if either identifiers or position are null.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double pathLossExponent,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double pathLossExponent,
             final P position) {
         super(identifiers, transmittedPower, pathLossExponent);
 
@@ -518,7 +433,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -536,24 +451,17 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      * @throws IllegalArgumentException if either identifiers or position are null.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final double pathLossExponent,
-            final P position) {
-        super(identifiers, transmittedPower, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName, pathLossExponent);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final String bluetoothAddress,
+            final int beaconTypeCode, final int manufacturer, final int serviceUuid, final String bluetoothName,
+            final double pathLossExponent, final P position) {
+        super(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid, bluetoothName,
+                pathLossExponent);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -568,18 +476,15 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  standard deviation is negative.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final double pathLossExponent,
-            final P position) {
+            final List<BeaconIdentifier> identifiers, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final double pathLossExponent, final P position) {
         super(identifiers, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -599,25 +504,17 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  standard deviation is negative.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final double pathLossExponent,
-            final Double transmittedPowerStandardDeviation,
-            final P position) {
-        super(identifiers, transmittedPower, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName, pathLossExponent, transmittedPowerStandardDeviation);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final String bluetoothAddress,
+            final int beaconTypeCode, final int manufacturer, final int serviceUuid, final String bluetoothName,
+            final double pathLossExponent, final Double transmittedPowerStandardDeviation, final P position) {
+        super(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid, bluetoothName,
+                pathLossExponent, transmittedPowerStandardDeviation);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -633,19 +530,15 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  covariance has invalid size.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double pathLossExponent,
-            final P position,
-            final Matrix positionCovariance) {
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double pathLossExponent,
+            final P position, final Matrix positionCovariance) {
         this(identifiers, transmittedPower, pathLossExponent, position);
 
-        if (positionCovariance != null &&
-                (positionCovariance.getRows() != position.getDimensions() ||
-                        positionCovariance.getColumns() != position.getDimensions())) {
+        if (positionCovariance != null && (positionCovariance.getRows() != position.getDimensions()
+                || positionCovariance.getColumns() != position.getDimensions())) {
             throw new IllegalArgumentException();
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -666,26 +559,17 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  covariance has invalid size.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final double pathLossExponent,
-            final P position,
-            final Matrix positionCovariance) {
-        this(identifiers, transmittedPower, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName, pathLossExponent, position);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final String bluetoothAddress,
+            final int beaconTypeCode, final int manufacturer, final int serviceUuid, final String bluetoothName,
+            final double pathLossExponent, final P position, final Matrix positionCovariance) {
+        this(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid, bluetoothName,
+                pathLossExponent, position);
 
-        if (positionCovariance != null &&
-                (positionCovariance.getRows() != position.getDimensions() ||
-                        positionCovariance.getColumns() != position.getDimensions())) {
+        if (positionCovariance != null && (positionCovariance.getRows() != position.getDimensions()
+                || positionCovariance.getColumns() != position.getDimensions())) {
             throw new IllegalArgumentException();
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -702,21 +586,16 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  covariance has invalid size or standard deviation is negative.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final double pathLossExponent,
-            final P position,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final double pathLossExponent, final P position,
             final Matrix positionCovariance) {
-        this(identifiers, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent,
-                position);
+        this(identifiers, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent, position);
 
-        if (positionCovariance != null &&
-                (positionCovariance.getRows() != position.getDimensions() ||
-                        positionCovariance.getColumns() != position.getDimensions())) {
+        if (positionCovariance != null && (positionCovariance.getRows() != position.getDimensions()
+                || positionCovariance.getColumns() != position.getDimensions())) {
             throw new IllegalArgumentException();
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -738,27 +617,18 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  covariance has invalid size or standard deviation is negative.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final double pathLossExponent,
-            final Double transmittedPowerStandardDeviation,
-            final P position,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final String bluetoothAddress,
+            final int beaconTypeCode, final int manufacturer, final int serviceUuid, final String bluetoothName,
+            final double pathLossExponent, final Double transmittedPowerStandardDeviation, final P position,
             final Matrix positionCovariance) {
-        this(identifiers, transmittedPower, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName, pathLossExponent, transmittedPowerStandardDeviation, position);
+        this(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid, bluetoothName,
+                pathLossExponent, transmittedPowerStandardDeviation, position);
 
-        if (positionCovariance != null &&
-                (positionCovariance.getRows() != position.getDimensions() ||
-                        positionCovariance.getColumns() != position.getDimensions())) {
+        if (positionCovariance != null && (positionCovariance.getRows() != position.getDimensions()
+                || positionCovariance.getColumns() != position.getDimensions())) {
             throw new IllegalArgumentException();
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -777,25 +647,17 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      * @throws IllegalArgumentException if either identifiers or position are null.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final double pathLossExponent,
-            final P position) {
-        super(identifiers, transmittedPower, frequency, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final String bluetoothAddress, final int beaconTypeCode, final int manufacturer, final int serviceUuid,
+            final String bluetoothName, final double pathLossExponent, final P position) {
+        super(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, pathLossExponent);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -811,20 +673,15 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  standard deviation is negative.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final double pathLossExponent,
-            final Double transmittedPowerStandardDeviation,
-            final P position) {
-        super(identifiers, transmittedPower, frequency, pathLossExponent,
-                transmittedPowerStandardDeviation);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final double pathLossExponent, final Double transmittedPowerStandardDeviation, final P position) {
+        super(identifiers, transmittedPower, frequency, pathLossExponent, transmittedPowerStandardDeviation);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -845,26 +702,18 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  standard deviation is negative.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final double pathLossExponent,
-            final Double transmittedPowerStandardDeviation,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final String bluetoothAddress, final int beaconTypeCode, final int manufacturer, final int serviceUuid,
+            final String bluetoothName, final double pathLossExponent, final Double transmittedPowerStandardDeviation,
             final P position) {
-        super(identifiers, transmittedPower, frequency, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
+        super(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, pathLossExponent, transmittedPowerStandardDeviation);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -886,27 +735,18 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  covariance has invalid size.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final double pathLossExponent,
-            final P position,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final String bluetoothAddress, final int beaconTypeCode, final int manufacturer, final int serviceUuid,
+            final String bluetoothName, final double pathLossExponent, final P position,
             final Matrix positionCovariance) {
-        this(identifiers, transmittedPower, frequency, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
+        this(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, pathLossExponent, position);
 
-        if (positionCovariance != null &&
-                (positionCovariance.getRows() != position.getDimensions() ||
-                        positionCovariance.getColumns() != position.getDimensions())) {
+        if (positionCovariance != null && (positionCovariance.getRows() != position.getDimensions()
+                || positionCovariance.getColumns() != position.getDimensions())) {
             throw new IllegalArgumentException();
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -924,22 +764,16 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  covariance has invalid size or standard deviation is negative.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final double pathLossExponent,
-            final Double transmittedPowerStandardDeviation,
-            final P position,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final double pathLossExponent, final Double transmittedPowerStandardDeviation, final P position,
             final Matrix positionCovariance) {
-        this(identifiers, transmittedPower, frequency, pathLossExponent,
-                transmittedPowerStandardDeviation, position);
+        this(identifiers, transmittedPower, frequency, pathLossExponent, transmittedPowerStandardDeviation, position);
 
-        if (positionCovariance != null &&
-                (positionCovariance.getRows() != position.getDimensions() ||
-                        positionCovariance.getColumns() != position.getDimensions())) {
+        if (positionCovariance != null && (positionCovariance.getRows() != position.getDimensions()
+                || positionCovariance.getColumns() != position.getDimensions())) {
             throw new IllegalArgumentException();
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -962,28 +796,18 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  covariance has invalid size or standard deviation is negative.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final double pathLossExponent,
-            final Double transmittedPowerStandardDeviation,
-            final P position,
-            final Matrix positionCovariance) {
-        this(identifiers, transmittedPower, frequency, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final String bluetoothAddress, final int beaconTypeCode, final int manufacturer, final int serviceUuid,
+            final String bluetoothName, final double pathLossExponent, final Double transmittedPowerStandardDeviation,
+            final P position, final Matrix positionCovariance) {
+        this(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName, pathLossExponent, transmittedPowerStandardDeviation, position);
 
-        if (positionCovariance != null &&
-                (positionCovariance.getRows() != position.getDimensions() ||
-                        positionCovariance.getColumns() != position.getDimensions())) {
+        if (positionCovariance != null && (positionCovariance.getRows() != position.getDimensions()
+                || positionCovariance.getColumns() != position.getDimensions())) {
             throw new IllegalArgumentException();
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -1000,12 +824,9 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  any standard deviation is negative.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final double pathLossExponent,
-            final Double pathLossExponentStandardDeviation,
-            final P position) {
+            final List<BeaconIdentifier> identifiers, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final double pathLossExponent,
+            final Double pathLossExponentStandardDeviation, final P position) {
         super(identifiers, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent,
                 pathLossExponentStandardDeviation);
 
@@ -1013,7 +834,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -1035,27 +856,18 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  any standard deviation is negative.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final double pathLossExponent,
-            final Double transmittedPowerStandardDeviation,
-            final Double pathLossExponentStandardDeviation,
-            final P position) {
-        super(identifiers, transmittedPower, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName, pathLossExponent, transmittedPowerStandardDeviation,
-                pathLossExponentStandardDeviation);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final String bluetoothAddress,
+            final int beaconTypeCode, final int manufacturer, final int serviceUuid, final String bluetoothName,
+            final double pathLossExponent, final Double transmittedPowerStandardDeviation,
+            final Double pathLossExponentStandardDeviation, final P position) {
+        super(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid, bluetoothName,
+                pathLossExponent, transmittedPowerStandardDeviation, pathLossExponentStandardDeviation);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -1074,22 +886,17 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  covariance has invalid size or any standard deviation is negative.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final double pathLossExponent,
-            final Double pathLossExponentStandardDeviation,
-            final P position,
-            final Matrix positionCovariance) {
+            final List<BeaconIdentifier> identifiers, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final double pathLossExponent,
+            final Double pathLossExponentStandardDeviation, final P position, final Matrix positionCovariance) {
         this(identifiers, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent,
                 pathLossExponentStandardDeviation, position);
 
-        if (positionCovariance != null &&
-                (positionCovariance.getRows() != position.getDimensions() ||
-                        positionCovariance.getColumns() != position.getDimensions())) {
+        if (positionCovariance != null && (positionCovariance.getRows() != position.getDimensions()
+                || positionCovariance.getColumns() != position.getDimensions())) {
             throw new IllegalArgumentException();
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -1114,29 +921,18 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  covariance has invalid size or any standard deviation is negative.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final double pathLossExponent,
-            final Double transmittedPowerStandardDeviation,
-            final Double pathLossExponentStandardDeviation,
-            final P position,
-            final Matrix positionCovariance) {
-        this(identifiers, transmittedPower, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName, pathLossExponent, transmittedPowerStandardDeviation,
-                pathLossExponentStandardDeviation, position);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final String bluetoothAddress,
+            final int beaconTypeCode, final int manufacturer, final int serviceUuid, final String bluetoothName,
+            final double pathLossExponent, final Double transmittedPowerStandardDeviation,
+            final Double pathLossExponentStandardDeviation, final P position, final Matrix positionCovariance) {
+        this(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid, bluetoothName,
+                pathLossExponent, transmittedPowerStandardDeviation, pathLossExponentStandardDeviation, position);
 
-        if (positionCovariance != null &&
-                (positionCovariance.getRows() != position.getDimensions() ||
-                        positionCovariance.getColumns() != position.getDimensions())) {
+        if (positionCovariance != null && (positionCovariance.getRows() != position.getDimensions()
+                || positionCovariance.getColumns() != position.getDimensions())) {
             throw new IllegalArgumentException();
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -1154,22 +950,17 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  any standard deviation is negative.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final double pathLossExponent,
-            final Double transmittedPowerStandardDeviation,
-            final Double pathLossExponentStandardDeviation,
-            final P position) {
-        super(identifiers, transmittedPower, frequency, pathLossExponent,
-                transmittedPowerStandardDeviation,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final double pathLossExponent, final Double transmittedPowerStandardDeviation,
+            final Double pathLossExponentStandardDeviation, final P position) {
+        super(identifiers, transmittedPower, frequency, pathLossExponent, transmittedPowerStandardDeviation,
                 pathLossExponentStandardDeviation);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -1192,28 +983,18 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  any standard deviation is negative.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final double pathLossExponent,
-            final Double transmittedPowerStandardDeviation,
-            final Double pathLossExponentStandardDeviation,
-            final P position) {
-        super(identifiers, transmittedPower, frequency, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName, pathLossExponent, transmittedPowerStandardDeviation,
-                pathLossExponentStandardDeviation);
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final String bluetoothAddress, final int beaconTypeCode, final int manufacturer, final int serviceUuid,
+            final String bluetoothName, final double pathLossExponent, final Double transmittedPowerStandardDeviation,
+            final Double pathLossExponentStandardDeviation, final P position) {
+        super(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
+                bluetoothName, pathLossExponent, transmittedPowerStandardDeviation, pathLossExponentStandardDeviation);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -1233,73 +1014,55 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      *                                  covariance has invalid size or any standard deviation is negative.
      */
     public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final double pathLossExponent,
-            final Double transmittedPowerStandardDeviation,
-            final Double pathLossExponentStandardDeviation,
-            final P position,
-            final Matrix positionCovariance) {
-        this(identifiers, transmittedPower, frequency, pathLossExponent,
-                transmittedPowerStandardDeviation, pathLossExponentStandardDeviation,
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final double pathLossExponent, final Double transmittedPowerStandardDeviation,
+            final Double pathLossExponentStandardDeviation, final P position, final Matrix positionCovariance) {
+        this(identifiers, transmittedPower, frequency, pathLossExponent, transmittedPowerStandardDeviation,
+                pathLossExponentStandardDeviation, position);
+
+        if (positionCovariance != null && (positionCovariance.getRows() != position.getDimensions()
+                || positionCovariance.getColumns() != position.getDimensions())) {
+            throw new IllegalArgumentException();
+        }
+        this.positionCovariance = positionCovariance;
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param identifiers                       list of the multipart identifiers of the beacon.
+     * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
+     * @param frequency                         frequency used by this Beacon.
+     * @param bluetoothAddress                  the bluetooth mac address.
+     * @param beaconTypeCode                    the two byte value indicating the type of beacon.
+     * @param manufacturer                      a two byte code indicating the beacon manufacturer.
+     * @param serviceUuid                       a 32 bit service uuid for the beacon.
+     * @param bluetoothName                     the bluetooth device name.
+     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
+     * @param transmittedPowerStandardDeviation standard deviation of transmitted power value or null
+     *                                          if unknown.
+     * @param pathLossExponentStandardDeviation standard deviation of path loss exponent or null if
+     *                                          unknown.
+     * @param position                          position where beacon is located.
+     * @param positionCovariance                covariance of inhomogeneous coordinates of current
+     *                                          position (if available).
+     * @throws IllegalArgumentException if either identifiers or position are null,
+     *                                  covariance has invalid size or any standard deviation is negative.
+     */
+    public BeaconWithPowerAndLocated(
+            final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+            final String bluetoothAddress, final int beaconTypeCode, final int manufacturer, final int serviceUuid,
+            final String bluetoothName, final double pathLossExponent, final Double transmittedPowerStandardDeviation,
+            final Double pathLossExponentStandardDeviation, final P position, final Matrix positionCovariance) {
+        this(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
+                bluetoothName, pathLossExponent, transmittedPowerStandardDeviation, pathLossExponentStandardDeviation,
                 position);
 
-        if (positionCovariance != null &&
-                (positionCovariance.getRows() != position.getDimensions() ||
-                        positionCovariance.getColumns() != position.getDimensions())) {
+        if (positionCovariance != null && (positionCovariance.getRows() != position.getDimensions()
+                || positionCovariance.getColumns() != position.getDimensions())) {
             throw new IllegalArgumentException();
         }
-        mPositionCovariance = positionCovariance;
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param identifiers                       list of the multipart identifiers of the beacon.
-     * @param transmittedPower                  calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
-     * @param frequency                         frequency used by this Beacon.
-     * @param bluetoothAddress                  the bluetooth mac address.
-     * @param beaconTypeCode                    the two byte value indicating the type of beacon.
-     * @param manufacturer                      a two byte code indicating the beacon manufacturer.
-     * @param serviceUuid                       a 32 bit service uuid for the beacon.
-     * @param bluetoothName                     the bluetooth device name.
-     * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
-     * @param transmittedPowerStandardDeviation standard deviation of transmitted power value or null
-     *                                          if unknown.
-     * @param pathLossExponentStandardDeviation standard deviation of path loss exponent or null if
-     *                                          unknown.
-     * @param position                          position where beacon is located.
-     * @param positionCovariance                covariance of inhomogeneous coordinates of current
-     *                                          position (if available).
-     * @throws IllegalArgumentException if either identifiers or position are null,
-     *                                  covariance has invalid size or any standard deviation is negative.
-     */
-    public BeaconWithPowerAndLocated(
-            final List<BeaconIdentifier> identifiers,
-            final double transmittedPower,
-            final double frequency,
-            final String bluetoothAddress,
-            final int beaconTypeCode,
-            final int manufacturer,
-            final int serviceUuid,
-            final String bluetoothName,
-            final double pathLossExponent,
-            final Double transmittedPowerStandardDeviation,
-            final Double pathLossExponentStandardDeviation,
-            final P position,
-            final Matrix positionCovariance) {
-        this(identifiers, transmittedPower, frequency, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName, pathLossExponent, transmittedPowerStandardDeviation,
-                pathLossExponentStandardDeviation, position);
-
-        if (positionCovariance != null &&
-                (positionCovariance.getRows() != position.getDimensions() ||
-                        positionCovariance.getColumns() != position.getDimensions())) {
-            throw new IllegalArgumentException();
-        }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -1316,7 +1079,7 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      */
     @Override
     public P getPosition() {
-        return mPosition;
+        return position;
     }
 
     /**
@@ -1326,6 +1089,6 @@ public class BeaconWithPowerAndLocated<P extends Point<?>> extends BeaconWithPow
      */
     @Override
     public Matrix getPositionCovariance() {
-        return mPositionCovariance;
+        return positionCovariance;
     }
 }

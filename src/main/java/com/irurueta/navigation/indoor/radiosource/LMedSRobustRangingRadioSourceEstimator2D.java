@@ -78,7 +78,7 @@ public class LMedSRobustRangingRadioSourceEstimator2D<S extends RadioSource> ext
      * lower than the one typically used in RANSAC, and yet the algorithm could
      * still produce even smaller thresholds in estimated results.
      */
-    private double mStopThreshold = DEFAULT_STOP_THRESHOLD;
+    private double stopThreshold = DEFAULT_STOP_THRESHOLD;
 
     /**
      * Constructor.
@@ -95,8 +95,7 @@ public class LMedSRobustRangingRadioSourceEstimator2D<S extends RadioSource> ext
      *                 radio source.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public LMedSRobustRangingRadioSourceEstimator2D(
-            final List<? extends RangingReadingLocated<S, Point2D>> readings) {
+    public LMedSRobustRangingRadioSourceEstimator2D(final List<? extends RangingReadingLocated<S, Point2D>> readings) {
         super(readings);
     }
 
@@ -144,8 +143,7 @@ public class LMedSRobustRangingRadioSourceEstimator2D<S extends RadioSource> ext
      * @throws IllegalArgumentException if readings are not valid.
      */
     public LMedSRobustRangingRadioSourceEstimator2D(
-            final List<? extends RangingReadingLocated<S, Point2D>> readings,
-            final Point2D initialPosition) {
+            final List<? extends RangingReadingLocated<S, Point2D>> readings, final Point2D initialPosition) {
         super(readings, initialPosition);
     }
 
@@ -157,8 +155,7 @@ public class LMedSRobustRangingRadioSourceEstimator2D<S extends RadioSource> ext
      * @param listener        listener in charge of attending events raised by this instance.
      */
     public LMedSRobustRangingRadioSourceEstimator2D(
-            final Point2D initialPosition,
-            final RobustRangingRadioSourceEstimatorListener<S, Point2D> listener) {
+            final Point2D initialPosition, final RobustRangingRadioSourceEstimatorListener<S, Point2D> listener) {
         super(initialPosition, listener);
     }
 
@@ -173,8 +170,7 @@ public class LMedSRobustRangingRadioSourceEstimator2D<S extends RadioSource> ext
      * @throws IllegalArgumentException if readings are not valid.
      */
     public LMedSRobustRangingRadioSourceEstimator2D(
-            final List<? extends RangingReadingLocated<S, Point2D>> readings,
-            final Point2D initialPosition,
+            final List<? extends RangingReadingLocated<S, Point2D>> readings, final Point2D initialPosition,
             final RobustRangingRadioSourceEstimatorListener<S, Point2D> listener) {
         super(readings, initialPosition, listener);
     }
@@ -199,7 +195,7 @@ public class LMedSRobustRangingRadioSourceEstimator2D<S extends RadioSource> ext
      * accuracy has been reached.
      */
     public double getStopThreshold() {
-        return mStopThreshold;
+        return stopThreshold;
     }
 
     /**
@@ -231,7 +227,7 @@ public class LMedSRobustRangingRadioSourceEstimator2D<S extends RadioSource> ext
             throw new IllegalArgumentException();
         }
 
-        mStopThreshold = stopThreshold;
+        this.stopThreshold = stopThreshold;
     }
 
     /**
@@ -244,8 +240,7 @@ public class LMedSRobustRangingRadioSourceEstimator2D<S extends RadioSource> ext
      */
     @SuppressWarnings("DuplicatedCode")
     @Override
-    public void estimate() throws LockedException, NotReadyException,
-            RobustEstimatorException {
+    public void estimate() throws LockedException, NotReadyException, RobustEstimatorException {
         if (isLocked()) {
             throw new LockedException();
         }
@@ -253,89 +248,79 @@ public class LMedSRobustRangingRadioSourceEstimator2D<S extends RadioSource> ext
             throw new NotReadyException();
         }
 
-        final LMedSRobustEstimator<Solution<Point2D>> innerEstimator =
-                new LMedSRobustEstimator<>(
-                        new LMedSRobustEstimatorListener<Solution<Point2D>>() {
-                            @Override
-                            public int getTotalSamples() {
-                                return mReadings.size();
-                            }
-
-                            @Override
-                            public int getSubsetSize() {
-                                return Math.max(mPreliminarySubsetSize, getMinReadings());
-                            }
-
-                            @Override
-                            public void estimatePreliminarSolutions(
-                                    final int[] sampleIndices,
-                                    final List<Solution<Point2D>> solutions) {
-                                solvePreliminarySolutions(sampleIndices, solutions);
-                            }
-
-                            @Override
-                            public double computeResidual(
-                                    final Solution<Point2D> currentEstimation, final int i) {
-                                return residual(currentEstimation, i);
-                            }
-
-                            @Override
-                            public boolean isReady() {
-                                return LMedSRobustRangingRadioSourceEstimator2D.this.isReady();
-                            }
-
-                            @Override
-                            public void onEstimateStart(
-                                    final RobustEstimator<Solution<Point2D>> estimator) {
-                                // no action needed
-                            }
-
-                            @Override
-                            public void onEstimateEnd(
-                                    final RobustEstimator<Solution<Point2D>> estimator) {
-                                // no action needed
-                            }
-
-                            @Override
-                            public void onEstimateNextIteration(
-                                    final RobustEstimator<Solution<Point2D>> estimator,
-                                    final int iteration) {
-                                if (mListener != null) {
-                                    mListener.onEstimateNextIteration(
-                                            LMedSRobustRangingRadioSourceEstimator2D.this,
-                                            iteration);
-                                }
-                            }
-
-                            @Override
-                            public void onEstimateProgressChange(
-                                    final RobustEstimator<Solution<Point2D>> estimator,
-                                    final float progress) {
-                                if (mListener != null) {
-                                    mListener.onEstimateProgressChange(
-                                            LMedSRobustRangingRadioSourceEstimator2D.this,
-                                            progress);
-                                }
-                            }
-                        });
-
-        try {
-            mLocked = true;
-
-            if (mListener != null) {
-                mListener.onEstimateStart(this);
+        final var innerEstimator = new LMedSRobustEstimator<>(new LMedSRobustEstimatorListener<Solution<Point2D>>() {
+            @Override
+            public int getTotalSamples() {
+                return readings.size();
             }
 
-            mInliersData = null;
-            innerEstimator.setConfidence(mConfidence);
-            innerEstimator.setMaxIterations(mMaxIterations);
-            innerEstimator.setProgressDelta(mProgressDelta);
-            final Solution<Point2D> result = innerEstimator.estimate();
-            mInliersData = innerEstimator.getInliersData();
+            @Override
+            public int getSubsetSize() {
+                return Math.max(preliminarySubsetSize, getMinReadings());
+            }
+
+            @Override
+            public void estimatePreliminarSolutions(
+                    final int[] sampleIndices, final List<Solution<Point2D>> solutions) {
+                solvePreliminarySolutions(sampleIndices, solutions);
+            }
+
+            @Override
+            public double computeResidual(final Solution<Point2D> currentEstimation, final int i) {
+                return residual(currentEstimation, i);
+            }
+
+            @Override
+            public boolean isReady() {
+                return LMedSRobustRangingRadioSourceEstimator2D.this.isReady();
+            }
+
+            @Override
+            public void onEstimateStart(final RobustEstimator<Solution<Point2D>> estimator) {
+                // no action needed
+            }
+
+            @Override
+            public void onEstimateEnd(final RobustEstimator<Solution<Point2D>> estimator) {
+                // no action needed
+            }
+
+            @Override
+            public void onEstimateNextIteration(
+                    final RobustEstimator<Solution<Point2D>> estimator, final int iteration) {
+                if (listener != null) {
+                    listener.onEstimateNextIteration(
+                            LMedSRobustRangingRadioSourceEstimator2D.this, iteration);
+                }
+            }
+
+            @Override
+            public void onEstimateProgressChange(
+                    final RobustEstimator<Solution<Point2D>> estimator, final float progress) {
+                if (listener != null) {
+                    listener.onEstimateProgressChange(
+                            LMedSRobustRangingRadioSourceEstimator2D.this, progress);
+                }
+            }
+        });
+
+        try {
+            locked = true;
+
+            if (listener != null) {
+                listener.onEstimateStart(this);
+            }
+
+            inliersData = null;
+            innerEstimator.setConfidence(confidence);
+            innerEstimator.setMaxIterations(maxIterations);
+            innerEstimator.setProgressDelta(progressDelta);
+            final var result = innerEstimator.estimate();
+            inliersData = innerEstimator.getInliersData();
             attemptRefine(result);
 
-            if (mListener != null) {
-                mListener.onEstimateEnd(this);
+            if (listener != null) {
+                listener.onEstimateEnd(this);
             }
 
         } catch (final com.irurueta.numerical.LockedException e) {
@@ -343,7 +328,7 @@ public class LMedSRobustRangingRadioSourceEstimator2D<S extends RadioSource> ext
         } catch (final com.irurueta.numerical.NotReadyException e) {
             throw new NotReadyException(e);
         } finally {
-            mLocked = false;
+            locked = false;
         }
     }
 

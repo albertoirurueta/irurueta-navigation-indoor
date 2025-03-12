@@ -63,8 +63,7 @@ import java.util.List;
  * @param <S> a {@link RadioSource} type.*
  */
 @SuppressWarnings("Duplicates")
-public class MSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> extends
-        RobustRssiRadioSourceEstimator3D<S> {
+public class MSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> extends RobustRssiRadioSourceEstimator3D<S> {
 
     /**
      * Constant defining default threshold to determine whether samples are
@@ -82,7 +81,7 @@ public class MSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> extends
      * Threshold to determine whether samples are inliers or not when
      * testing possible estimation solutions.
      */
-    private double mThreshold = DEFAULT_THRESHOLD;
+    private double threshold = DEFAULT_THRESHOLD;
 
     /**
      * Constructor.
@@ -98,8 +97,7 @@ public class MSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> extends
      * @param readings signal readings belonging to the same radio source.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public MSACRobustRssiRadioSourceEstimator3D(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings) {
+    public MSACRobustRssiRadioSourceEstimator3D(final List<? extends RssiReadingLocated<S, Point3D>> readings) {
         super(readings);
     }
 
@@ -108,8 +106,7 @@ public class MSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> extends
      *
      * @param listener listener in charge of attending events raised by this instance.
      */
-    public MSACRobustRssiRadioSourceEstimator3D(
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
+    public MSACRobustRssiRadioSourceEstimator3D(final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
         super(listener);
     }
 
@@ -137,8 +134,7 @@ public class MSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> extends
      * @throws IllegalArgumentException if readings are not valid.
      */
     public MSACRobustRssiRadioSourceEstimator3D(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition) {
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition) {
         super(readings, initialPosition);
     }
 
@@ -160,8 +156,7 @@ public class MSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> extends
      * @param listener        listener in charge of attending events raised by this instance.
      */
     public MSACRobustRssiRadioSourceEstimator3D(
-            final Point3D initialPosition,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
+            final Point3D initialPosition, final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
         super(initialPosition, listener);
     }
 
@@ -176,8 +171,7 @@ public class MSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> extends
      * @throws IllegalArgumentException if readings are not valid.
      */
     public MSACRobustRssiRadioSourceEstimator3D(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
             final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
         super(readings, initialPosition, listener);
     }
@@ -189,8 +183,7 @@ public class MSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> extends
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's)
      */
-    public MSACRobustRssiRadioSourceEstimator3D(
-            final Double initialTransmittedPowerdBm) {
+    public MSACRobustRssiRadioSourceEstimator3D(final Double initialTransmittedPowerdBm) {
         super(initialTransmittedPowerdBm);
     }
 
@@ -205,8 +198,7 @@ public class MSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> extends
      * @throws IllegalArgumentException if readings are not valid.
      */
     public MSACRobustRssiRadioSourceEstimator3D(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Double initialTransmittedPowerdBm) {
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Double initialTransmittedPowerdBm) {
         super(readings, initialTransmittedPowerdBm);
     }
 
@@ -236,8 +228,7 @@ public class MSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> extends
      * @throws IllegalArgumentException if readings are not valid.
      */
     public MSACRobustRssiRadioSourceEstimator3D(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Double initialTransmittedPowerdBm,
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
         super(readings, initialTransmittedPowerdBm, listener);
     }
@@ -255,8 +246,8 @@ public class MSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> extends
      * @throws IllegalArgumentException if readings are not valid.
      */
     public MSACRobustRssiRadioSourceEstimator3D(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition, final Double initialTransmittedPowerdBm) {
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm) {
         super(readings, initialPosition, initialTransmittedPowerdBm);
     }
 
@@ -270,8 +261,7 @@ public class MSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> extends
      *                                   (expressed in dBm's).
      */
     public MSACRobustRssiRadioSourceEstimator3D(
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm) {
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm) {
         super(initialPosition, initialTransmittedPowerdBm);
     }
 
@@ -286,8 +276,7 @@ public class MSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> extends
      * @param listener                   in charge of attending events raised by this instance.
      */
     public MSACRobustRssiRadioSourceEstimator3D(
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
         super(initialPosition, initialTransmittedPowerdBm, listener);
     }
@@ -306,9 +295,8 @@ public class MSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> extends
      * @throws IllegalArgumentException if readings are not valid.
      */
     public MSACRobustRssiRadioSourceEstimator3D(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm, final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
         super(readings, initialPosition, initialTransmittedPowerdBm, listener);
     }
 
@@ -326,11 +314,9 @@ public class MSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> extends
      * @throws IllegalArgumentException if readings are not valid.
      */
     public MSACRobustRssiRadioSourceEstimator3D(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent) {
-        super(readings, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent);
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm, final double initialPathLossExponent) {
+        super(readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);
     }
 
     /**
@@ -344,11 +330,9 @@ public class MSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> extends
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      */
     public MSACRobustRssiRadioSourceEstimator3D(
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-        super(initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent);
+        super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);
     }
 
     /**
@@ -363,12 +347,9 @@ public class MSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> extends
      * @param listener                   listener in charge of attending events raised by this instance.
      */
     public MSACRobustRssiRadioSourceEstimator3D(
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
-        super(initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent, listener);
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent, final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
+        super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener);
     }
 
     /**
@@ -386,13 +367,10 @@ public class MSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> extends
      * @throws IllegalArgumentException if readings are not valid.
      */
     public MSACRobustRssiRadioSourceEstimator3D(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent,
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm, final double initialPathLossExponent,
             final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
-        super(readings, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent, listener);
+        super(readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener);
     }
 
     /**
@@ -401,7 +379,7 @@ public class MSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> extends
      * @return threshold to determine whether samples are inliers or not.
      */
     public double getThreshold() {
-        return mThreshold;
+        return threshold;
     }
 
     /**
@@ -420,7 +398,7 @@ public class MSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> extends
         if (threshold <= MIN_THRESHOLD) {
             throw new IllegalArgumentException();
         }
-        mThreshold = threshold;
+        this.threshold = threshold;
     }
 
     /**
@@ -441,95 +419,82 @@ public class MSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> extends
             throw new NotReadyException();
         }
 
-        final MSACRobustEstimator<Solution<Point3D>> innerEstimator =
-                new MSACRobustEstimator<>(
-                        new MSACRobustEstimatorListener<Solution<Point3D>>() {
-                            @Override
-                            public double getThreshold() {
-                                return mThreshold;
-                            }
-
-                            @Override
-                            public int getTotalSamples() {
-                                return mReadings.size();
-                            }
-
-                            @Override
-                            public int getSubsetSize() {
-                                return Math.max(mPreliminarySubsetSize, getMinReadings());
-                            }
-
-                            @Override
-                            public void estimatePreliminarSolutions(
-                                    final int[] samplesIndices,
-                                    final List<Solution<Point3D>> solutions) {
-                                solvePreliminarySolutions(samplesIndices, solutions);
-                            }
-
-                            @Override
-                            public double computeResidual(
-                                    final Solution<Point3D> currentEstimation,
-                                    final int i) {
-                                return residual(currentEstimation, i);
-                            }
-
-                            @Override
-                            public boolean isReady() {
-                                return MSACRobustRssiRadioSourceEstimator3D.this.isReady();
-                            }
-
-                            @Override
-                            public void onEstimateStart(
-                                    final RobustEstimator<Solution<Point3D>> estimator) {
-                                // no action needed
-                            }
-
-                            @Override
-                            public void onEstimateEnd(
-                                    final RobustEstimator<Solution<Point3D>> estimator) {
-                                // no action needed
-                            }
-
-                            @Override
-                            public void onEstimateNextIteration(
-                                    final RobustEstimator<Solution<Point3D>> estimator,
-                                    final int iteration) {
-                                if (mListener != null) {
-                                    mListener.onEstimateNextIteration(
-                                            MSACRobustRssiRadioSourceEstimator3D.this,
-                                            iteration);
-                                }
-                            }
-
-                            @Override
-                            public void onEstimateProgressChange(
-                                    final RobustEstimator<Solution<Point3D>> estimator,
-                                    final float progress) {
-                                if (mListener != null) {
-                                    mListener.onEstimateProgressChange(
-                                            MSACRobustRssiRadioSourceEstimator3D.this,
-                                            progress);
-                                }
-                            }
-                        });
-
-        try {
-            mLocked = true;
-
-            if (mListener != null) {
-                mListener.onEstimateStart(this);
+        final var innerEstimator = new MSACRobustEstimator<>(new MSACRobustEstimatorListener<Solution<Point3D>>() {
+            @Override
+            public double getThreshold() {
+                return threshold;
             }
 
-            mInliersData = null;
-            innerEstimator.setConfidence(mConfidence);
-            innerEstimator.setMaxIterations(mMaxIterations);
-            innerEstimator.setProgressDelta(mProgressDelta);
-            final Solution<Point3D> result = innerEstimator.estimate();
-            mInliersData = innerEstimator.getInliersData();
+            @Override
+            public int getTotalSamples() {
+                return readings.size();
+            }
+
+            @Override
+            public int getSubsetSize() {
+                return Math.max(preliminarySubsetSize, getMinReadings());
+            }
+
+            @Override
+            public void estimatePreliminarSolutions(
+                    final int[] samplesIndices, final List<Solution<Point3D>> solutions) {
+                solvePreliminarySolutions(samplesIndices, solutions);
+            }
+
+            @Override
+            public double computeResidual(final Solution<Point3D> currentEstimation, final int i) {
+                return residual(currentEstimation, i);
+            }
+
+            @Override
+            public boolean isReady() {
+                return MSACRobustRssiRadioSourceEstimator3D.this.isReady();
+            }
+
+            @Override
+            public void onEstimateStart(final RobustEstimator<Solution<Point3D>> estimator) {
+                // no action needed
+            }
+
+            @Override
+            public void onEstimateEnd(final RobustEstimator<Solution<Point3D>> estimator) {
+                // no action needed
+            }
+
+            @Override
+            public void onEstimateNextIteration(
+                    final RobustEstimator<Solution<Point3D>> estimator, final int iteration) {
+                if (listener != null) {
+                    listener.onEstimateNextIteration(MSACRobustRssiRadioSourceEstimator3D.this, iteration);
+                }
+            }
+
+            @Override
+            public void onEstimateProgressChange(
+                    final RobustEstimator<Solution<Point3D>> estimator, final float progress) {
+                if (listener != null) {
+                    listener.onEstimateProgressChange(MSACRobustRssiRadioSourceEstimator3D.this, progress);
+                }
+            }
+        });
+
+        try {
+            locked = true;
+
+            if (listener != null) {
+                listener.onEstimateStart(this);
+            }
+
+            inliersData = null;
+            innerEstimator.setConfidence(confidence);
+            innerEstimator.setMaxIterations(maxIterations);
+            innerEstimator.setProgressDelta(progressDelta);
+            final var result = innerEstimator.estimate();
+            inliersData = innerEstimator.getInliersData();
             attemptRefine(result);
 
-            if (mListener != null) {
-                mListener.onEstimateEnd(this);
+            if (listener != null) {
+                listener.onEstimateEnd(this);
             }
 
         } catch (final com.irurueta.numerical.LockedException e) {
@@ -537,7 +502,7 @@ public class MSACRobustRssiRadioSourceEstimator3D<S extends RadioSource> extends
         } catch (final com.irurueta.numerical.NotReadyException e) {
             throw new NotReadyException(e);
         } finally {
-            mLocked = false;
+            locked = false;
         }
     }
 

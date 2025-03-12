@@ -22,20 +22,17 @@ import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.indoor.*;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class LinearFingerprintPositionEstimator2DTest implements FingerprintPositionEstimatorListener<Point2D> {
+class LinearFingerprintPositionEstimator2DTest implements FingerprintPositionEstimatorListener<Point2D> {
 
-    private static final Logger LOGGER = Logger.getLogger(
-            LinearFingerprintPositionEstimator2DTest.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(LinearFingerprintPositionEstimator2DTest.class.getName());
 
     private static final double FREQUENCY = 2.4e9; //(Hz)
 
@@ -66,9 +63,9 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
     private int estimateEnd;
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         // test empty constructor
-        LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D();
+        var estimator = new LinearFingerprintPositionEstimator2D();
 
         // check default values
         assertNull(estimator.getLocatedFingerprints());
@@ -109,31 +106,28 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
         assertTrue(estimator.getUseNoMeanNearestFingerprintFinder());
         assertFalse(estimator.isMeansFromFingerprintReadingsRemoved());
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final var randomizer = new UniformRandomizer();
 
-        final List<RssiReading<RadioSource>> readings = new ArrayList<>();
-        for (int i = 0; i < Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH; i++) {
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid" + i, FREQUENCY);
-            final double rssi = randomizer.nextDouble();
+        final var readings = new ArrayList<RssiReading<RadioSource>>();
+        for (var i = 0; i < Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH; i++) {
+            final var accessPoint = new WifiAccessPoint("bssid" + i, FREQUENCY);
+            final var rssi = randomizer.nextDouble();
 
-            final RssiReading<RadioSource> reading = new RssiReading<>((RadioSource) accessPoint, rssi);
+            final var reading = new RssiReading<>((RadioSource) accessPoint, rssi);
             readings.add(reading);
         }
 
-        final RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>> locatedFingerprint =
-                new RssiFingerprintLocated2D<>(readings, Point2D.create());
+        final var locatedFingerprint = new RssiFingerprintLocated2D<>(readings, Point2D.create());
 
-        final List<RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>>> locatedFingerprints =
-                new ArrayList<>();
+        final var locatedFingerprints =
+                new ArrayList<RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>>>();
         locatedFingerprints.add(locatedFingerprint);
 
-        final RssiFingerprint<RadioSource, RssiReading<RadioSource>> fingerprint =
-                new RssiFingerprint<>(readings);
+        final var fingerprint = new RssiFingerprint<>(readings);
 
-        final List<RadioSourceLocated<Point2D>> sources = new ArrayList<>();
-        for (int i = 0; i < Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH; i++) {
-            final WifiAccessPointLocated2D source = new WifiAccessPointLocated2D("bssid" + 1,
-                    FREQUENCY, Point2D.create());
+        final var sources = new ArrayList<RadioSourceLocated<Point2D>>();
+        for (var i = 0; i < Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH; i++) {
+            final var source = new WifiAccessPointLocated2D("bssid" + 1, FREQUENCY, Point2D.create());
             sources.add(source);
         }
 
@@ -159,36 +153,19 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
         assertFalse(estimator.isMeansFromFingerprintReadingsRemoved());
 
         // force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new LinearFingerprintPositionEstimator2D(new ArrayList<RssiFingerprintLocated2D<RadioSource,
-                    RssiReading<RadioSource>>>(), fingerprint, sources);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new LinearFingerprintPositionEstimator2D(null,
-                    fingerprint, sources);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints,
-                    null, sources);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints,
-                    fingerprint, null);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        final var wrongLocatedFingerprints =
+                new ArrayList<RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>>>();
+        assertThrows(IllegalArgumentException.class, () -> new LinearFingerprintPositionEstimator2D(
+                wrongLocatedFingerprints, fingerprint, sources));
+        assertThrows(IllegalArgumentException.class, () -> new LinearFingerprintPositionEstimator2D(
+                null, fingerprint, sources));
+        assertThrows(IllegalArgumentException.class, () -> new LinearFingerprintPositionEstimator2D(locatedFingerprints,
+                null, sources));
+        assertThrows(IllegalArgumentException.class, () -> new LinearFingerprintPositionEstimator2D(locatedFingerprints,
+                fingerprint, null));
 
         // test constructor with located fingerprints, fingerprint, sources and listener
-        estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints,
-                fingerprint, sources, this);
+        estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints, fingerprint, sources, this);
 
         // check default values
         assertSame(estimator.getLocatedFingerprints(), locatedFingerprints);
@@ -209,59 +186,39 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
         assertFalse(estimator.isMeansFromFingerprintReadingsRemoved());
 
         // force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new LinearFingerprintPositionEstimator2D(
-                    new ArrayList<RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>>>(),
-                    fingerprint, sources, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new LinearFingerprintPositionEstimator2D(null,
-                    fingerprint, sources, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints,
-                    null, sources, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints,
-                    fingerprint, null, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new LinearFingerprintPositionEstimator2D(
+                wrongLocatedFingerprints, fingerprint, sources, this));
+        assertThrows(IllegalArgumentException.class, () -> new LinearFingerprintPositionEstimator2D(
+                null, fingerprint, sources, this));
+        assertThrows(IllegalArgumentException.class, () -> new LinearFingerprintPositionEstimator2D(locatedFingerprints,
+                null, sources, this));
+        assertThrows(IllegalArgumentException.class, () -> new LinearFingerprintPositionEstimator2D(locatedFingerprints,
+                fingerprint, null, this));
     }
 
     @Test
-    public void testGetSetLocatedFingerprints() throws LockedException {
-        final LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D();
+    void testGetSetLocatedFingerprints() throws LockedException {
+        final var estimator = new LinearFingerprintPositionEstimator2D();
 
         // check default value
         assertNull(estimator.getLocatedFingerprints());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final var randomizer = new UniformRandomizer();
 
-        final List<RssiReading<RadioSource>> readings = new ArrayList<>();
-        for (int i = 0; i < Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH; i++) {
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid" + i, FREQUENCY);
-            final double rssi = randomizer.nextDouble();
+        final var readings = new ArrayList<RssiReading<RadioSource>>();
+        for (var i = 0; i < Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH; i++) {
+            final var accessPoint = new WifiAccessPoint("bssid" + i, FREQUENCY);
+            final var rssi = randomizer.nextDouble();
 
-            final RssiReading<RadioSource> reading = new RssiReading<>((RadioSource) accessPoint, rssi);
+            final var reading = new RssiReading<>((RadioSource) accessPoint, rssi);
             readings.add(reading);
         }
 
-        final RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>> locatedFingerprint =
-                new RssiFingerprintLocated2D<>(readings, Point2D.create());
+        final var locatedFingerprint = new RssiFingerprintLocated2D<>(readings, Point2D.create());
 
-        final List<RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>>> locatedFingerprints =
-                new ArrayList<>();
+        final var locatedFingerprints =
+                new ArrayList<RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>>>();
         locatedFingerprints.add(locatedFingerprint);
 
         estimator.setLocatedFingerprints(locatedFingerprints);
@@ -270,56 +227,44 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
         assertSame(locatedFingerprints, estimator.getLocatedFingerprints());
 
         // force IllegalArgumentException
-        try {
-            estimator.setLocatedFingerprints(null);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator.setLocatedFingerprints(
-                    new ArrayList<RssiFingerprintLocated<RadioSource, RssiReading<RadioSource>, Point2D>>());
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> estimator.setLocatedFingerprints(null));
+        final var wrongLocatedFingerprints =
+                new ArrayList<RssiFingerprintLocated<RadioSource, RssiReading<RadioSource>, Point2D>>();
+        assertThrows(IllegalArgumentException.class, () -> estimator.setLocatedFingerprints(wrongLocatedFingerprints));
     }
 
     @Test
-    public void testGetSetFingerprint() throws LockedException {
-        final LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D();
+    void testGetSetFingerprint() throws LockedException {
+        final var estimator = new LinearFingerprintPositionEstimator2D();
 
         // check default value
         assertNull(estimator.getFingerprint());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final var randomizer = new UniformRandomizer();
 
-        final List<RssiReading<RadioSource>> readings = new ArrayList<>();
-        for (int i = 0; i < Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH; i++) {
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid" + i, FREQUENCY);
-            final double rssi = randomizer.nextDouble();
+        final var readings = new ArrayList<RssiReading<RadioSource>>();
+        for (var i = 0; i < Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH; i++) {
+            final var accessPoint = new WifiAccessPoint("bssid" + i, FREQUENCY);
+            final var rssi = randomizer.nextDouble();
 
-            final RssiReading<RadioSource> reading = new RssiReading<>((RadioSource) accessPoint, rssi);
+            final var reading = new RssiReading<>((RadioSource) accessPoint, rssi);
             readings.add(reading);
         }
 
-        final RssiFingerprint<RadioSource, RssiReading<RadioSource>> fingerprint =
-                new RssiFingerprint<>(readings);
+        final var fingerprint = new RssiFingerprint<>(readings);
         estimator.setFingerprint(fingerprint);
 
         // check correctness
         assertSame(fingerprint, estimator.getFingerprint());
 
         // force IllegalArgumentException
-        try {
-            estimator.setFingerprint(null);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> estimator.setFingerprint(null));
     }
 
     @Test
-    public void testGetSetMinMaxNearestFingerprints() throws LockedException {
-        final LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D();
+    void testGetSetMinMaxNearestFingerprints() throws LockedException {
+        final var estimator = new LinearFingerprintPositionEstimator2D();
 
         // check default values
         assertEquals(1, estimator.getMinNearestFingerprints());
@@ -333,28 +278,20 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
         assertEquals(3, estimator.getMaxNearestFingerprints());
 
         // force IllegalArgumentException
-        try {
-            estimator.setMinMaxNearestFingerprints(0, 3);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator.setMinMaxNearestFingerprints(2, 1);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> estimator.setMinMaxNearestFingerprints(0, 3));
+        assertThrows(IllegalArgumentException.class, () -> estimator.setMinMaxNearestFingerprints(2, 1));
     }
 
     @Test
-    public void testGetSetPathLossExponent() throws LockedException {
-        final LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D();
+    void testGetSetPathLossExponent() throws LockedException {
+        final var estimator = new LinearFingerprintPositionEstimator2D();
 
         // check default value
         assertEquals(2.0, estimator.getPathLossExponent(), 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double pathLossExponent = randomizer.nextDouble();
+        final var randomizer = new UniformRandomizer();
+        final var pathLossExponent = randomizer.nextDouble();
 
         estimator.setPathLossExponent(pathLossExponent);
 
@@ -363,8 +300,8 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
     }
 
     @Test
-    public void testGetSetListener() throws LockedException {
-        final LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D();
+    void testGetSetListener() throws LockedException {
+        final var estimator = new LinearFingerprintPositionEstimator2D();
 
         // check default value
         assertNull(estimator.getListener());
@@ -377,30 +314,26 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
     }
 
     @Test
-    public void testGetSetSources() throws LockedException {
-        final LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D();
+    void testGetSetSources() throws LockedException {
+        final var estimator = new LinearFingerprintPositionEstimator2D();
 
         // check default values
         assertNull(estimator.getSources());
 
         // set new value
-        final List<RadioSourceLocated<Point2D>> sources = new ArrayList<>();
+        final var sources = new ArrayList<RadioSourceLocated<Point2D>>();
         estimator.setSources(sources);
 
         // check
         assertSame(estimator.getSources(), sources);
 
         // force IllegalArgumentException
-        try {
-            estimator.setSources(null);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> estimator.setSources(null));
     }
 
     @Test
-    public void testGetSetUseSourcesPathLossExponentWhenAvailable() throws LockedException {
-        final LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D();
+    void testGetSetUseSourcesPathLossExponentWhenAvailable() throws LockedException {
+        final var estimator = new LinearFingerprintPositionEstimator2D();
 
         // check default value
         assertTrue(estimator.getUseSourcesPathLossExponentWhenAvailable());
@@ -413,8 +346,8 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
     }
 
     @Test
-    public void testGetSetUseNoMeanNearestFingerprintFinder() throws LockedException {
-        final LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D();
+    void testGetSetUseNoMeanNearestFingerprintFinder() throws LockedException {
+        final var estimator = new LinearFingerprintPositionEstimator2D();
 
         // check default value
         assertTrue(estimator.getUseNoMeanNearestFingerprintFinder());
@@ -427,8 +360,8 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
     }
 
     @Test
-    public void testIsSetMeansFromFingerprintReadingsRemoved() throws LockedException {
-        final LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D();
+    void testIsSetMeansFromFingerprintReadingsRemoved() throws LockedException {
+        final var estimator = new LinearFingerprintPositionEstimator2D();
 
         // check default value
         assertFalse(estimator.isMeansFromFingerprintReadingsRemoved());
@@ -441,97 +374,90 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
     }
 
     @Test
-    public void testEstimateWithoutErrorAndWithoutBias() throws LockedException, NotReadyException,
+    void testEstimateWithoutErrorAndWithoutBias() throws LockedException, NotReadyException,
             FingerprintEstimationException {
-        int numBestIsNoMeanRssiPosition = 0;
-        int numBestIsRssiPosition = 0;
-        int numBestIsNoMeansEstimatedPosition = 0;
-        int numBestIsNoMeanFinderEstimatedPosition = 0;
-        int numBestIsNoMeanReadingsEstimatedPosition = 0;
-        int numBestIsEstimatedPosition = 0;
+        var numBestIsNoMeanRssiPosition = 0;
+        var numBestIsRssiPosition = 0;
+        var numBestIsNoMeansEstimatedPosition = 0;
+        var numBestIsNoMeanFinderEstimatedPosition = 0;
+        var numBestIsNoMeanReadingsEstimatedPosition = 0;
+        var numBestIsEstimatedPosition = 0;
 
-        double avgClosestDistance = 0.0;
-        double avgNoMeanRssiDistance = 0.0;
-        double avgRssiDistance = 0.0;
-        double avgNoMeansEstimatedError = 0.0;
-        double avgNoMeanFinderEstimatedError = 0.0;
-        double avgNoMeanReadingsEstimatedError = 0.0;
-        double avgEstimatedError = 0.0;
+        var avgClosestDistance = 0.0;
+        var avgNoMeanRssiDistance = 0.0;
+        var avgRssiDistance = 0.0;
+        var avgNoMeansEstimatedError = 0.0;
+        var avgNoMeanFinderEstimatedError = 0.0;
+        var avgNoMeanReadingsEstimatedError = 0.0;
+        var avgEstimatedError = 0.0;
 
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
             // build sources
-            final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-            final List<RadioSourceLocated<Point2D>> sources = new ArrayList<>();
-            for (int i = 0; i < numSources; i++) {
-                final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
-                final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
-                final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-                final InhomogeneousPoint2D position = new InhomogeneousPoint2D(x, y);
+            final var numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+            final var sources = new ArrayList<RadioSourceLocated<Point2D>>();
+            for (var i = 0; i < numSources; i++) {
+                final var x = randomizer.nextDouble(MIN_POS, MAX_POS);
+                final var y = randomizer.nextDouble(MIN_POS, MAX_POS);
+                final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+                final var position = new InhomogeneousPoint2D(x, y);
 
-                final WifiAccessPointWithPowerAndLocated2D accessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(
-                                "bssid" + i, FREQUENCY, transmittedPowerdBm, position);
+                final var accessPoint = new WifiAccessPointWithPowerAndLocated2D("bssid" + i, FREQUENCY,
+                        transmittedPowerdBm, position);
                 sources.add(accessPoint);
             }
 
             // build located fingerprints
-            final int numFingerprints = randomizer.nextInt(MIN_FINGERPRINTS, MAX_FINGERPRINTS);
-            final List<RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>>> locatedFingerprints =
-                    new ArrayList<>();
-            for (int j = 0; j < numFingerprints; j++) {
-                final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
-                final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
-                final InhomogeneousPoint2D position = new InhomogeneousPoint2D(x, y);
+            final var numFingerprints = randomizer.nextInt(MIN_FINGERPRINTS, MAX_FINGERPRINTS);
+            final var locatedFingerprints =
+                    new ArrayList<RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>>>();
+            for (var j = 0; j < numFingerprints; j++) {
+                final var x = randomizer.nextDouble(MIN_POS, MAX_POS);
+                final var y = randomizer.nextDouble(MIN_POS, MAX_POS);
+                final var position = new InhomogeneousPoint2D(x, y);
 
-                final List<RssiReading<RadioSource>> readings = new ArrayList<>();
-                for (final RadioSourceLocated<Point2D> source : sources) {
-                    final double distance = source.getPosition().distanceTo(position);
-                    final double transmittedPowerdBm = ((WifiAccessPointWithPowerAndLocated2D) source).
-                            getTransmittedPower();
+                final var readings = new ArrayList<RssiReading<RadioSource>>();
+                for (final var source : sources) {
+                    final var distance = source.getPosition().distanceTo(position);
+                    final var transmittedPowerdBm = ((WifiAccessPointWithPowerAndLocated2D) source)
+                            .getTransmittedPower();
 
-                    final double receivedRssi = Utils.powerTodBm(receivedPower(Utils.dBmToPower(transmittedPowerdBm),
+                    final var receivedRssi = Utils.powerTodBm(receivedPower(Utils.dBmToPower(transmittedPowerdBm),
                             distance, LinearFingerprintPositionEstimator2D.DEFAULT_PATH_LOSS_EXPONENT));
-                    final RssiReading<RadioSource> reading = new RssiReading<>((RadioSource) source,
-                            receivedRssi);
+                    final var reading = new RssiReading<>((RadioSource) source, receivedRssi);
                     readings.add(reading);
                 }
 
-                final RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>> locatedFingerprint =
-                        new RssiFingerprintLocated2D<>(readings, position);
+                final var locatedFingerprint = new RssiFingerprintLocated2D<>(readings, position);
                 locatedFingerprints.add(locatedFingerprint);
             }
 
             // build non-located fingerprint
-            final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
-            final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
-            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(x, y);
+            final var x = randomizer.nextDouble(MIN_POS, MAX_POS);
+            final var y = randomizer.nextDouble(MIN_POS, MAX_POS);
+            final var position = new InhomogeneousPoint2D(x, y);
 
-            final List<RssiReading<RadioSource>> readings = new ArrayList<>();
-            for (final RadioSourceLocated<Point2D> source : sources) {
-                final double distance = source.getPosition().distanceTo(position);
-                final double transmittedPowerdBm = ((WifiAccessPointWithPowerAndLocated2D) source).
-                        getTransmittedPower();
+            final var readings = new ArrayList<RssiReading<RadioSource>>();
+            for (final var source : sources) {
+                final var distance = source.getPosition().distanceTo(position);
+                final var transmittedPowerdBm = ((WifiAccessPointWithPowerAndLocated2D) source).getTransmittedPower();
 
-                final double receivedRssi = Utils.powerTodBm(receivedPower(Utils.dBmToPower(transmittedPowerdBm),
-                        distance, LinearFingerprintPositionEstimator2D.DEFAULT_PATH_LOSS_EXPONENT));
-                final RssiReading<RadioSource> reading = new RssiReading<>((RadioSource) source,
-                        receivedRssi);
+                final var receivedRssi = Utils.powerTodBm(receivedPower(Utils.dBmToPower(transmittedPowerdBm), distance,
+                        LinearFingerprintPositionEstimator2D.DEFAULT_PATH_LOSS_EXPONENT));
+                final var reading = new RssiReading<>((RadioSource) source, receivedRssi);
                 readings.add(reading);
             }
 
-            final RssiFingerprint<RadioSource, RssiReading<RadioSource>> fingerprint =
-                    new RssiFingerprint<>(readings);
+            final var fingerprint = new RssiFingerprint<>(readings);
 
             // find real closest fingerprint based on location
             RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>> closestFingerprint = null;
             Point2D closestPosition = null;
-            double distance = Double.MAX_VALUE;
-            for (final RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>> locatedFingerprint :
-                    locatedFingerprints) {
-                final Point2D fingerprintPosition = locatedFingerprint.getPosition();
-                final double dist = fingerprintPosition.distanceTo(position);
+            var distance = Double.MAX_VALUE;
+            for (final var locatedFingerprint : locatedFingerprints) {
+                final var fingerprintPosition = locatedFingerprint.getPosition();
+                final var dist = fingerprintPosition.distanceTo(position);
                 if (dist < distance) {
                     distance = dist;
                     closestFingerprint = locatedFingerprint;
@@ -542,12 +468,11 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertNotNull(closestFingerprint);
             assertNotNull(closestPosition);
 
-            final double closestDistance = closestPosition.distanceTo(position);
+            final var closestDistance = closestPosition.distanceTo(position);
             avgClosestDistance += closestDistance / TIMES;
 
             // find the closest fingerprint based on RSSI without mean
-            final RadioSourceNoMeanKNearestFinder<Point2D, RadioSource> noMeanFinder =
-                    new RadioSourceNoMeanKNearestFinder<>(locatedFingerprints);
+            final var noMeanFinder = new RadioSourceNoMeanKNearestFinder<>(locatedFingerprints);
 
             final RssiFingerprintLocated<RadioSource, RssiReading<RadioSource>, Point2D> nearestFingerprintNoMean =
                     noMeanFinder.findNearestTo(fingerprint);
@@ -557,19 +482,17 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             avgNoMeanRssiDistance += noMeanRssiClosestDistance / TIMES;
 
             // find the closest fingerprint based on RSSI
-            final RadioSourceKNearestFinder<Point2D, RadioSource> finder =
-                    new RadioSourceKNearestFinder<>(locatedFingerprints);
+            final var finder = new RadioSourceKNearestFinder<>(locatedFingerprints);
 
-            final RssiFingerprintLocated<RadioSource, RssiReading<RadioSource>, Point2D> nearestFingerprint =
-                    finder.findNearestTo(fingerprint);
-            final Point2D rssiClosestPosition = nearestFingerprint.getPosition();
+            final var nearestFingerprint = finder.findNearestTo(fingerprint);
+            final var rssiClosestPosition = nearestFingerprint.getPosition();
 
-            final double rssiClosestDistance = rssiClosestPosition.distanceTo(position);
+            final var rssiClosestDistance = rssiClosestPosition.distanceTo(position);
             avgRssiDistance += rssiClosestDistance / TIMES;
 
             // create estimator with means removed on finder and fingerprints
-            LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D(
-                    locatedFingerprints, fingerprint, sources, this);
+            var estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints, fingerprint, sources,
+                    this);
             estimator.setUseNoMeanNearestFingerprintFinder(true);
             estimator.setMeansFromFingerprintReadingsRemoved(true);
 
@@ -596,15 +519,15 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             assertNotNull(estimatedPosition);
 
-            final double noMeansEstimatedError = estimatedPosition.distanceTo(position);
+            final var noMeansEstimatedError = estimatedPosition.distanceTo(position);
             avgNoMeansEstimatedError += noMeansEstimatedError / TIMES;
 
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(1, estimator.getNearestFingerprints().size());
 
             // create estimator with means removed only on finder
-            estimator = new LinearFingerprintPositionEstimator2D(
-                    locatedFingerprints, fingerprint, sources, this);
+            estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints, fingerprint, sources,
+                    this);
             estimator.setUseNoMeanNearestFingerprintFinder(true);
             estimator.setMeansFromFingerprintReadingsRemoved(false);
 
@@ -630,15 +553,15 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             assertNotNull(estimatedPosition);
 
-            final double noMeanFinderEstimatedError = estimatedPosition.distanceTo(position);
+            final var noMeanFinderEstimatedError = estimatedPosition.distanceTo(position);
             avgNoMeanFinderEstimatedError += noMeanFinderEstimatedError / TIMES;
 
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(1, estimator.getNearestFingerprints().size());
 
             // create estimator with means removed only on readings
-            estimator = new LinearFingerprintPositionEstimator2D(
-                    locatedFingerprints, fingerprint, sources, this);
+            estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints, fingerprint, sources,
+                    this);
             estimator.setUseNoMeanNearestFingerprintFinder(false);
             estimator.setMeansFromFingerprintReadingsRemoved(true);
 
@@ -664,15 +587,15 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             assertNotNull(estimatedPosition);
 
-            final double noMeanReadingsEstimatedError = estimatedPosition.distanceTo(position);
+            final var noMeanReadingsEstimatedError = estimatedPosition.distanceTo(position);
             avgNoMeanReadingsEstimatedError += noMeanReadingsEstimatedError / TIMES;
 
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(1, estimator.getNearestFingerprints().size());
 
             // create estimator with means not removed
-            estimator = new LinearFingerprintPositionEstimator2D(
-                    locatedFingerprints, fingerprint, sources, this);
+            estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints, fingerprint, sources,
+                    this);
             estimator.setUseNoMeanNearestFingerprintFinder(false);
             estimator.setMeansFromFingerprintReadingsRemoved(false);
 
@@ -698,13 +621,13 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             assertNotNull(estimatedPosition);
 
-            final double estimatedError = estimatedPosition.distanceTo(position);
+            final var estimatedError = estimatedPosition.distanceTo(position);
             avgEstimatedError += estimatedError / TIMES;
 
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(1, estimator.getNearestFingerprints().size());
 
-            final double[] errors = new double[]{
+            final var errors = new double[]{
                     closestDistance,
                     noMeanRssiClosestDistance,
                     rssiClosestDistance,
@@ -715,9 +638,9 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             };
 
             // find minimum error
-            double minError = Double.MAX_VALUE;
-            int bestErrorPos = -1;
-            for (int i = 0; i < errors.length; i++) {
+            var minError = Double.MAX_VALUE;
+            var bestErrorPos = -1;
+            for (var i = 0; i < errors.length; i++) {
                 if (errors[i] < minError) {
                     minError = errors[i];
                     bestErrorPos = i;
@@ -743,8 +666,9 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                 case 5:
                     numBestIsEstimatedPosition++;
                     break;
+                default:
+                    break;
             }
-
         }
 
         LOGGER.log(Level.INFO, "Results without error and without bias");
@@ -763,23 +687,17 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                 (double) numBestIsEstimatedPosition / (double) TIMES * 100.0);
 
         LOGGER.log(Level.INFO, "Avg. closest fingerprint distance: {0} m", avgClosestDistance);
-        LOGGER.log(Level.INFO,
-                "Avg. no mean RSSI closest fingerprint distance: {0} m", avgNoMeanRssiDistance);
-        LOGGER.log(Level.INFO,
-                "Avg. RSSI closest fingerprint distance: {0} m", avgRssiDistance);
-        LOGGER.log(Level.INFO,
-                "Avg. Estimated position error with means removed: {0} m", avgNoMeansEstimatedError);
-        LOGGER.log(Level.INFO,
-                "Avg. Estimated position with means removed only on finder error: {0} m",
+        LOGGER.log(Level.INFO, "Avg. no mean RSSI closest fingerprint distance: {0} m", avgNoMeanRssiDistance);
+        LOGGER.log(Level.INFO, "Avg. RSSI closest fingerprint distance: {0} m", avgRssiDistance);
+        LOGGER.log(Level.INFO, "Avg. Estimated position error with means removed: {0} m",
+                avgNoMeansEstimatedError);
+        LOGGER.log(Level.INFO, "Avg. Estimated position with means removed only on finder error: {0} m",
                 avgNoMeanFinderEstimatedError);
-        LOGGER.log(Level.INFO,
-                "Avg. Estimated position with means removed only on readings error: {0} m",
+        LOGGER.log(Level.INFO, "Avg. Estimated position with means removed only on readings error: {0} m",
                 avgNoMeanReadingsEstimatedError);
-        LOGGER.log(Level.INFO,
-                "Avg. Estimated position with means not removed error: {0} m",
-                avgEstimatedError);
+        LOGGER.log(Level.INFO, "Avg. Estimated position with means not removed error: {0} m", avgEstimatedError);
 
-        final int[] numBest = new int[]{
+        final var numBest = new int[]{
                 numBestIsNoMeanRssiPosition,
                 numBestIsRssiPosition,
                 numBestIsNoMeansEstimatedPosition,
@@ -790,9 +708,9 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
         // check that best result is obtained when means are removed to find
         // the closest fingerprints, but not removed for readings
-        int bestNum = -Integer.MAX_VALUE;
-        int bestPos = -1;
-        for (int i = 0; i < numBest.length; i++) {
+        var bestNum = -Integer.MAX_VALUE;
+        var bestPos = -1;
+        for (var i = 0; i < numBest.length; i++) {
             if (numBest[i] > bestNum) {
                 bestNum = numBest[i];
                 bestPos = i;
@@ -804,98 +722,89 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
     }
 
     @Test
-    public void testEstimateWithBias() throws LockedException,
-            NotReadyException, FingerprintEstimationException {
-        int numBestIsNoMeanRssiPosition = 0;
-        int numBestIsRssiPosition = 0;
-        int numBestIsNoMeansEstimatedPosition = 0;
-        int numBestIsNoMeanFinderEstimatedPosition = 0;
-        int numBestIsNoMeanReadingsEstimatedPosition = 0;
-        int numBestIsEstimatedPosition = 0;
+    void testEstimateWithBias() throws LockedException, NotReadyException, FingerprintEstimationException {
+        var numBestIsNoMeanRssiPosition = 0;
+        var numBestIsRssiPosition = 0;
+        var numBestIsNoMeansEstimatedPosition = 0;
+        var numBestIsNoMeanFinderEstimatedPosition = 0;
+        var numBestIsNoMeanReadingsEstimatedPosition = 0;
+        var numBestIsEstimatedPosition = 0;
 
-        double avgClosestDistance = 0.0;
-        double avgNoMeanRssiDistance = 0.0;
-        double avgRssiDistance = 0.0;
-        double avgNoMeansEstimatedError = 0.0;
-        double avgNoMeanFinderEstimatedError = 0.0;
-        double avgNoMeanReadingsEstimatedError = 0.0;
-        double avgEstimatedError = 0.0;
+        var avgClosestDistance = 0.0;
+        var avgNoMeanRssiDistance = 0.0;
+        var avgRssiDistance = 0.0;
+        var avgNoMeansEstimatedError = 0.0;
+        var avgNoMeanFinderEstimatedError = 0.0;
+        var avgNoMeanReadingsEstimatedError = 0.0;
+        var avgEstimatedError = 0.0;
 
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
             // build sources
-            final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-            final List<RadioSourceLocated<Point2D>> sources = new ArrayList<>();
-            for (int i = 0; i < numSources; i++) {
-                final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
-                final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
-                final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-                final InhomogeneousPoint2D position = new InhomogeneousPoint2D(x, y);
+            final var numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+            final var sources = new ArrayList<RadioSourceLocated<Point2D>>();
+            for (var i = 0; i < numSources; i++) {
+                final var x = randomizer.nextDouble(MIN_POS, MAX_POS);
+                final var y = randomizer.nextDouble(MIN_POS, MAX_POS);
+                final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+                final var position = new InhomogeneousPoint2D(x, y);
 
-                final WifiAccessPointWithPowerAndLocated2D accessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(
-                                "bssid" + i, FREQUENCY, transmittedPowerdBm, position);
+                final var accessPoint = new WifiAccessPointWithPowerAndLocated2D("bssid" + i, FREQUENCY,
+                        transmittedPowerdBm, position);
                 sources.add(accessPoint);
             }
 
             // build located fingerprints
-            final int numFingerprints = randomizer.nextInt(MIN_FINGERPRINTS, MAX_FINGERPRINTS);
-            final List<RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>>> locatedFingerprints =
-                    new ArrayList<>();
-            for (int j = 0; j < numFingerprints; j++) {
-                final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
-                final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
-                final InhomogeneousPoint2D position = new InhomogeneousPoint2D(x, y);
+            final var numFingerprints = randomizer.nextInt(MIN_FINGERPRINTS, MAX_FINGERPRINTS);
+            final var locatedFingerprints =
+                    new ArrayList<RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>>>();
+            for (var j = 0; j < numFingerprints; j++) {
+                final var x = randomizer.nextDouble(MIN_POS, MAX_POS);
+                final var y = randomizer.nextDouble(MIN_POS, MAX_POS);
+                final var position = new InhomogeneousPoint2D(x, y);
 
-                final List<RssiReading<RadioSource>> readings = new ArrayList<>();
-                for (final RadioSourceLocated<Point2D> source : sources) {
-                    final double distance = source.getPosition().distanceTo(position);
-                    final double transmittedPowerdBm = ((WifiAccessPointWithPowerAndLocated2D) source).
-                            getTransmittedPower();
+                final var readings = new ArrayList<RssiReading<RadioSource>>();
+                for (final var source : sources) {
+                    final var distance = source.getPosition().distanceTo(position);
+                    final var transmittedPowerdBm = ((WifiAccessPointWithPowerAndLocated2D) source)
+                            .getTransmittedPower();
 
-                    final double receivedRssi = Utils.powerTodBm(receivedPower(Utils.dBmToPower(transmittedPowerdBm),
+                    final var receivedRssi = Utils.powerTodBm(receivedPower(Utils.dBmToPower(transmittedPowerdBm),
                             distance, LinearFingerprintPositionEstimator2D.DEFAULT_PATH_LOSS_EXPONENT));
-                    final RssiReading<RadioSource> reading = new RssiReading<>((RadioSource) source,
-                            receivedRssi);
+                    final var reading = new RssiReading<>((RadioSource) source, receivedRssi);
                     readings.add(reading);
                 }
 
-                final RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>> locatedFingerprint =
-                        new RssiFingerprintLocated2D<>(readings, position);
+                final var locatedFingerprint = new RssiFingerprintLocated2D<>(readings, position);
                 locatedFingerprints.add(locatedFingerprint);
             }
 
             // build non-located fingerprint
-            final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
-            final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
-            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(x, y);
+            final var x = randomizer.nextDouble(MIN_POS, MAX_POS);
+            final var y = randomizer.nextDouble(MIN_POS, MAX_POS);
+            final var position = new InhomogeneousPoint2D(x, y);
 
-            final List<RssiReading<RadioSource>> readings = new ArrayList<>();
-            for (final RadioSourceLocated<Point2D> source : sources) {
-                final double distance = source.getPosition().distanceTo(position);
-                final double transmittedPowerdBm = ((WifiAccessPointWithPowerAndLocated2D) source).
-                        getTransmittedPower();
+            final var readings = new ArrayList<RssiReading<RadioSource>>();
+            for (final var source : sources) {
+                final var distance = source.getPosition().distanceTo(position);
+                final var transmittedPowerdBm = ((WifiAccessPointWithPowerAndLocated2D) source).getTransmittedPower();
 
-                final double receivedRssi = Utils.powerTodBm(receivedPower(Utils.dBmToPower(transmittedPowerdBm),
-                        distance, LinearFingerprintPositionEstimator2D.DEFAULT_PATH_LOSS_EXPONENT)) +
-                        RSSI_BIAS;
-                final RssiReading<RadioSource> reading = new RssiReading<>((RadioSource) source,
-                        receivedRssi);
+                final var receivedRssi = Utils.powerTodBm(receivedPower(Utils.dBmToPower(transmittedPowerdBm), distance,
+                        LinearFingerprintPositionEstimator2D.DEFAULT_PATH_LOSS_EXPONENT)) + RSSI_BIAS;
+                final var reading = new RssiReading<>((RadioSource) source, receivedRssi);
                 readings.add(reading);
             }
 
-            final RssiFingerprint<RadioSource, RssiReading<RadioSource>> fingerprint =
-                    new RssiFingerprint<>(readings);
+            final var fingerprint = new RssiFingerprint<>(readings);
 
             // find real closest fingerprint based on location
             RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>> closestFingerprint = null;
             Point2D closestPosition = null;
-            double distance = Double.MAX_VALUE;
-            for (final RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>> locatedFingerprint :
-                    locatedFingerprints) {
-                final Point2D fingerprintPosition = locatedFingerprint.getPosition();
-                final double dist = fingerprintPosition.distanceTo(position);
+            var distance = Double.MAX_VALUE;
+            for (final var locatedFingerprint : locatedFingerprints) {
+                final var fingerprintPosition = locatedFingerprint.getPosition();
+                final var dist = fingerprintPosition.distanceTo(position);
                 if (dist < distance) {
                     distance = dist;
                     closestFingerprint = locatedFingerprint;
@@ -906,34 +815,30 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertNotNull(closestFingerprint);
             assertNotNull(closestPosition);
 
-            final double closestDistance = closestPosition.distanceTo(position);
+            final var closestDistance = closestPosition.distanceTo(position);
             avgClosestDistance += closestDistance / TIMES;
 
             // find the closest fingerprint based on RSSI without mean
-            final RadioSourceNoMeanKNearestFinder<Point2D, RadioSource> noMeanFinder =
-                    new RadioSourceNoMeanKNearestFinder<>(locatedFingerprints);
+            final var noMeanFinder = new RadioSourceNoMeanKNearestFinder<>(locatedFingerprints);
 
-            final RssiFingerprintLocated<RadioSource, RssiReading<RadioSource>, Point2D> nearestFingerprintNoMean =
-                    noMeanFinder.findNearestTo(fingerprint);
-            final Point2D noMeanRssiClosestPosition = nearestFingerprintNoMean.getPosition();
+            final var nearestFingerprintNoMean = noMeanFinder.findNearestTo(fingerprint);
+            final var noMeanRssiClosestPosition = nearestFingerprintNoMean.getPosition();
 
-            final double noMeanRssiClosestDistance = noMeanRssiClosestPosition.distanceTo(position);
+            final var noMeanRssiClosestDistance = noMeanRssiClosestPosition.distanceTo(position);
             avgNoMeanRssiDistance += noMeanRssiClosestDistance / TIMES;
 
             // find the closest fingerprint based on RSSI
-            final RadioSourceKNearestFinder<Point2D, RadioSource> finder =
-                    new RadioSourceKNearestFinder<>(locatedFingerprints);
+            final var finder = new RadioSourceKNearestFinder<>(locatedFingerprints);
 
-            final RssiFingerprintLocated<RadioSource, RssiReading<RadioSource>, Point2D> nearestFingerprint =
-                    finder.findNearestTo(fingerprint);
-            final Point2D rssiClosestPosition = nearestFingerprint.getPosition();
+            final var nearestFingerprint = finder.findNearestTo(fingerprint);
+            final var rssiClosestPosition = nearestFingerprint.getPosition();
 
-            final double rssiClosestDistance = rssiClosestPosition.distanceTo(position);
+            final var rssiClosestDistance = rssiClosestPosition.distanceTo(position);
             avgRssiDistance += rssiClosestDistance / TIMES;
 
             // create estimator with means removed on finder and fingerprints
-            LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D(
-                    locatedFingerprints, fingerprint, sources, this);
+            var estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints, fingerprint, sources,
+                    this);
             estimator.setUseNoMeanNearestFingerprintFinder(true);
             estimator.setMeansFromFingerprintReadingsRemoved(true);
 
@@ -956,19 +861,19 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
-            Point2D estimatedPosition = estimator.getEstimatedPosition();
+            var estimatedPosition = estimator.getEstimatedPosition();
 
             assertNotNull(estimatedPosition);
 
-            final double noMeansEstimatedError = estimatedPosition.distanceTo(position);
+            final var noMeansEstimatedError = estimatedPosition.distanceTo(position);
             avgNoMeansEstimatedError += noMeansEstimatedError / TIMES;
 
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(1, estimator.getNearestFingerprints().size());
 
             // create estimator with means removed only on finder
-            estimator = new LinearFingerprintPositionEstimator2D(
-                    locatedFingerprints, fingerprint, sources, this);
+            estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints, fingerprint, sources,
+                    this);
             estimator.setUseNoMeanNearestFingerprintFinder(true);
             estimator.setMeansFromFingerprintReadingsRemoved(false);
 
@@ -994,15 +899,15 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             assertNotNull(estimatedPosition);
 
-            final double noMeanFinderEstimatedError = estimatedPosition.distanceTo(position);
+            final var noMeanFinderEstimatedError = estimatedPosition.distanceTo(position);
             avgNoMeanFinderEstimatedError += noMeanFinderEstimatedError / TIMES;
 
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(1, estimator.getNearestFingerprints().size());
 
             // create estimator with means removed only on readings
-            estimator = new LinearFingerprintPositionEstimator2D(
-                    locatedFingerprints, fingerprint, sources, this);
+            estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints, fingerprint, sources,
+                    this);
             estimator.setUseNoMeanNearestFingerprintFinder(false);
             estimator.setMeansFromFingerprintReadingsRemoved(true);
 
@@ -1028,15 +933,15 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             assertNotNull(estimatedPosition);
 
-            final double noMeanReadingsEstimatedError = estimatedPosition.distanceTo(position);
+            final var noMeanReadingsEstimatedError = estimatedPosition.distanceTo(position);
             avgNoMeanReadingsEstimatedError += noMeanReadingsEstimatedError / TIMES;
 
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(1, estimator.getNearestFingerprints().size());
 
             // create estimator with means not removed
-            estimator = new LinearFingerprintPositionEstimator2D(
-                    locatedFingerprints, fingerprint, sources, this);
+            estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints, fingerprint, sources,
+                    this);
             estimator.setUseNoMeanNearestFingerprintFinder(false);
             estimator.setMeansFromFingerprintReadingsRemoved(false);
 
@@ -1062,13 +967,13 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             assertNotNull(estimatedPosition);
 
-            final double estimatedError = estimatedPosition.distanceTo(position);
+            final var estimatedError = estimatedPosition.distanceTo(position);
             avgEstimatedError += estimatedError / TIMES;
 
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(1, estimator.getNearestFingerprints().size());
 
-            final double[] errors = new double[]{
+            final var errors = new double[]{
                     noMeanRssiClosestDistance,
                     rssiClosestDistance,
                     noMeansEstimatedError,
@@ -1078,9 +983,9 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             };
 
             // find minimum error
-            double minError = Double.MAX_VALUE;
-            int bestErrorPos = -1;
-            for (int i = 0; i < errors.length; i++) {
+            var minError = Double.MAX_VALUE;
+            var bestErrorPos = -1;
+            for (var i = 0; i < errors.length; i++) {
                 if (errors[i] < minError) {
                     minError = errors[i];
                     bestErrorPos = i;
@@ -1105,6 +1010,8 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                     break;
                 case 5:
                     numBestIsEstimatedPosition++;
+                    break;
+                default:
                     break;
             }
         }
@@ -1125,23 +1032,17 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                 (double) numBestIsEstimatedPosition / (double) TIMES * 100.0);
 
         LOGGER.log(Level.INFO, "Avg. closest fingerprint distance: {0} m", avgClosestDistance);
-        LOGGER.log(Level.INFO,
-                "Avg. no mean RSSI closest fingerprint distance: {0} m", avgNoMeanRssiDistance);
-        LOGGER.log(Level.INFO,
-                "Avg. RSSI closest fingerprint distance: {0} m", avgRssiDistance);
-        LOGGER.log(Level.INFO,
-                "Avg. Estimated position error with means removed: {0} m", avgNoMeansEstimatedError);
-        LOGGER.log(Level.INFO,
-                "Avg. Estimated position with means removed only on finder error: {0} m",
+        LOGGER.log(Level.INFO, "Avg. no mean RSSI closest fingerprint distance: {0} m", avgNoMeanRssiDistance);
+        LOGGER.log(Level.INFO, "Avg. RSSI closest fingerprint distance: {0} m", avgRssiDistance);
+        LOGGER.log(Level.INFO, "Avg. Estimated position error with means removed: {0} m",
+                avgNoMeansEstimatedError);
+        LOGGER.log(Level.INFO, "Avg. Estimated position with means removed only on finder error: {0} m",
                 avgNoMeanFinderEstimatedError);
-        LOGGER.log(Level.INFO,
-                "Avg. Estimated position with means removed only on readings error: {0} m",
+        LOGGER.log(Level.INFO, "Avg. Estimated position with means removed only on readings error: {0} m",
                 avgNoMeanReadingsEstimatedError);
-        LOGGER.log(Level.INFO,
-                "Avg. Estimated position with means not removed error: {0} m",
-                avgEstimatedError);
+        LOGGER.log(Level.INFO, "Avg. Estimated position with means not removed error: {0} m", avgEstimatedError);
 
-        final int[] numBest = new int[]{
+        final var numBest = new int[]{
                 numBestIsNoMeanRssiPosition,
                 numBestIsRssiPosition,
                 numBestIsNoMeansEstimatedPosition,
@@ -1152,9 +1053,9 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
         // check that best result is obtained when means are removed from both
         // fingerprint finder and readings to account for possible biases between devices
-        int bestNum = -Integer.MAX_VALUE;
-        int bestPos = -1;
-        for (int i = 0; i < numBest.length; i++) {
+        var bestNum = -Integer.MAX_VALUE;
+        var bestPos = -1;
+        for (var i = 0; i < numBest.length; i++) {
             if (numBest[i] > bestNum) {
                 bestNum = numBest[i];
                 bestPos = i;
@@ -1166,101 +1067,92 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
     }
 
     @Test
-    public void testEstimateWithError() throws LockedException,
-            NotReadyException, FingerprintEstimationException {
-        int numBestIsNoMeanRssiPosition = 0;
-        int numBestIsRssiPosition = 0;
-        int numBestIsNoMeansEstimatedPosition = 0;
-        int numBestIsNoMeanFinderEstimatedPosition = 0;
-        int numBestIsNoMeanReadingsEstimatedPosition = 0;
-        int numBestIsEstimatedPosition = 0;
+    void testEstimateWithError() throws LockedException, NotReadyException, FingerprintEstimationException {
+        var numBestIsNoMeanRssiPosition = 0;
+        var numBestIsRssiPosition = 0;
+        var numBestIsNoMeansEstimatedPosition = 0;
+        var numBestIsNoMeanFinderEstimatedPosition = 0;
+        var numBestIsNoMeanReadingsEstimatedPosition = 0;
+        var numBestIsEstimatedPosition = 0;
 
-        double avgClosestDistance = 0.0;
-        double avgNoMeanRssiDistance = 0.0;
-        double avgRssiDistance = 0.0;
-        double avgNoMeansEstimatedError = 0.0;
-        double avgNoMeanFinderEstimatedError = 0.0;
-        double avgNoMeanReadingsEstimatedError = 0.0;
-        double avgEstimatedError = 0.0;
+        var avgClosestDistance = 0.0;
+        var avgNoMeanRssiDistance = 0.0;
+        var avgRssiDistance = 0.0;
+        var avgNoMeansEstimatedError = 0.0;
+        var avgNoMeanFinderEstimatedError = 0.0;
+        var avgNoMeanReadingsEstimatedError = 0.0;
+        var avgEstimatedError = 0.0;
 
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(),
-                    0.0, ERROR_STD);
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var errorRandomizer = new GaussianRandomizer(0.0, ERROR_STD);
 
             // build sources
-            final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-            final List<RadioSourceLocated<Point2D>> sources = new ArrayList<>();
-            for (int i = 0; i < numSources; i++) {
-                final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
-                final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
-                final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-                final InhomogeneousPoint2D position = new InhomogeneousPoint2D(x, y);
+            final var numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+            final var sources = new ArrayList<RadioSourceLocated<Point2D>>();
+            for (var i = 0; i < numSources; i++) {
+                final var x = randomizer.nextDouble(MIN_POS, MAX_POS);
+                final var y = randomizer.nextDouble(MIN_POS, MAX_POS);
+                final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+                final var position = new InhomogeneousPoint2D(x, y);
 
-                final WifiAccessPointWithPowerAndLocated2D accessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(
-                                "bssid" + i, FREQUENCY, transmittedPowerdBm, position);
+                final var accessPoint = new WifiAccessPointWithPowerAndLocated2D("bssid" + i, FREQUENCY,
+                        transmittedPowerdBm, position);
                 sources.add(accessPoint);
             }
 
             // build located fingerprints
-            final int numFingerprints = randomizer.nextInt(MIN_FINGERPRINTS, MAX_FINGERPRINTS);
-            final List<RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>>> locatedFingerprints =
-                    new ArrayList<>();
-            for (int j = 0; j < numFingerprints; j++) {
-                final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
-                final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
-                final InhomogeneousPoint2D position = new InhomogeneousPoint2D(x, y);
+            final var numFingerprints = randomizer.nextInt(MIN_FINGERPRINTS, MAX_FINGERPRINTS);
+            final var locatedFingerprints =
+                    new ArrayList<RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>>>();
+            for (var j = 0; j < numFingerprints; j++) {
+                final var x = randomizer.nextDouble(MIN_POS, MAX_POS);
+                final var y = randomizer.nextDouble(MIN_POS, MAX_POS);
+                final var position = new InhomogeneousPoint2D(x, y);
 
-                final List<RssiReading<RadioSource>> readings = new ArrayList<>();
-                for (final RadioSourceLocated<Point2D> source : sources) {
-                    final double distance = source.getPosition().distanceTo(position);
-                    final double transmittedPowerdBm = ((WifiAccessPointWithPowerAndLocated2D) source).
-                            getTransmittedPower();
+                final var readings = new ArrayList<RssiReading<RadioSource>>();
+                for (final var source : sources) {
+                    final var distance = source.getPosition().distanceTo(position);
+                    final var transmittedPowerdBm = ((WifiAccessPointWithPowerAndLocated2D) source)
+                            .getTransmittedPower();
 
-                    final double receivedRssi = Utils.powerTodBm(receivedPower(Utils.dBmToPower(transmittedPowerdBm),
+                    final var receivedRssi = Utils.powerTodBm(receivedPower(Utils.dBmToPower(transmittedPowerdBm),
                             distance, LinearFingerprintPositionEstimator2D.DEFAULT_PATH_LOSS_EXPONENT));
-                    final double rssiError = errorRandomizer.nextDouble();
-                    final RssiReading<RadioSource> reading = new RssiReading<>((RadioSource) source,
-                            receivedRssi + rssiError);
+                    final var rssiError = errorRandomizer.nextDouble();
+                    final var reading = new RssiReading<>((RadioSource) source, receivedRssi + rssiError);
                     readings.add(reading);
                 }
 
-                final RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>> locatedFingerprint =
-                        new RssiFingerprintLocated2D<>(readings, position);
+                final var locatedFingerprint = new RssiFingerprintLocated2D<>(readings, position);
                 locatedFingerprints.add(locatedFingerprint);
             }
 
             // build non-located fingerprint
-            final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
-            final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
-            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(x, y);
+            final var x = randomizer.nextDouble(MIN_POS, MAX_POS);
+            final var y = randomizer.nextDouble(MIN_POS, MAX_POS);
+            final var position = new InhomogeneousPoint2D(x, y);
 
-            final List<RssiReading<RadioSource>> readings = new ArrayList<>();
-            for (final RadioSourceLocated<Point2D> source : sources) {
-                final double distance = source.getPosition().distanceTo(position);
-                final double transmittedPowerdBm = ((WifiAccessPointWithPowerAndLocated2D) source).
-                        getTransmittedPower();
+            final var readings = new ArrayList<RssiReading<RadioSource>>();
+            for (final var source : sources) {
+                final var distance = source.getPosition().distanceTo(position);
+                final var transmittedPowerdBm = ((WifiAccessPointWithPowerAndLocated2D) source).getTransmittedPower();
 
-                final double receivedRssi = Utils.powerTodBm(receivedPower(Utils.dBmToPower(transmittedPowerdBm),
-                        distance, LinearFingerprintPositionEstimator2D.DEFAULT_PATH_LOSS_EXPONENT));
-                final double rssiError = errorRandomizer.nextDouble();
-                final RssiReading<RadioSource> reading = new RssiReading<>((RadioSource) source,
-                        receivedRssi + rssiError);
+                final var receivedRssi = Utils.powerTodBm(receivedPower(Utils.dBmToPower(transmittedPowerdBm), distance,
+                        LinearFingerprintPositionEstimator2D.DEFAULT_PATH_LOSS_EXPONENT));
+                final var rssiError = errorRandomizer.nextDouble();
+                final var reading = new RssiReading<>((RadioSource) source, receivedRssi + rssiError);
                 readings.add(reading);
             }
 
-            final RssiFingerprint<RadioSource, RssiReading<RadioSource>> fingerprint =
-                    new RssiFingerprint<>(readings);
+            final var fingerprint = new RssiFingerprint<>(readings);
 
             // find real closest fingerprint based on location
             RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>> closestFingerprint = null;
             Point2D closestPosition = null;
-            double distance = Double.MAX_VALUE;
-            for (final RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>> locatedFingerprint :
-                    locatedFingerprints) {
-                final Point2D fingerprintPosition = locatedFingerprint.getPosition();
-                final double dist = fingerprintPosition.distanceTo(position);
+            var distance = Double.MAX_VALUE;
+            for (final var locatedFingerprint : locatedFingerprints) {
+                final var fingerprintPosition = locatedFingerprint.getPosition();
+                final var dist = fingerprintPosition.distanceTo(position);
                 if (dist < distance) {
                     distance = dist;
                     closestFingerprint = locatedFingerprint;
@@ -1271,34 +1163,30 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertNotNull(closestFingerprint);
             assertNotNull(closestPosition);
 
-            final double closestDistance = closestPosition.distanceTo(position);
+            final var closestDistance = closestPosition.distanceTo(position);
             avgClosestDistance += closestDistance / TIMES;
 
             // find the closest fingerprint based on RSSI without mean
-            final RadioSourceNoMeanKNearestFinder<Point2D, RadioSource> noMeanFinder =
-                    new RadioSourceNoMeanKNearestFinder<>(locatedFingerprints);
+            final var noMeanFinder = new RadioSourceNoMeanKNearestFinder<>(locatedFingerprints);
 
-            final RssiFingerprintLocated<RadioSource, RssiReading<RadioSource>, Point2D> nearestFingerprintNoMean =
-                    noMeanFinder.findNearestTo(fingerprint);
-            final Point2D noMeanRssiClosestPosition = nearestFingerprintNoMean.getPosition();
+            final var nearestFingerprintNoMean = noMeanFinder.findNearestTo(fingerprint);
+            final var noMeanRssiClosestPosition = nearestFingerprintNoMean.getPosition();
 
-            final double noMeanRssiClosestDistance = noMeanRssiClosestPosition.distanceTo(position);
+            final var noMeanRssiClosestDistance = noMeanRssiClosestPosition.distanceTo(position);
             avgNoMeanRssiDistance += noMeanRssiClosestDistance / TIMES;
 
             // find the closest fingerprint based on RSSI
-            final RadioSourceKNearestFinder<Point2D, RadioSource> finder =
-                    new RadioSourceKNearestFinder<>(locatedFingerprints);
+            final var finder = new RadioSourceKNearestFinder<>(locatedFingerprints);
 
-            final RssiFingerprintLocated<RadioSource, RssiReading<RadioSource>, Point2D> nearestFingerprint =
-                    finder.findNearestTo(fingerprint);
-            final Point2D rssiClosestPosition = nearestFingerprint.getPosition();
+            final var nearestFingerprint = finder.findNearestTo(fingerprint);
+            final var rssiClosestPosition = nearestFingerprint.getPosition();
 
-            final double rssiClosestDistance = rssiClosestPosition.distanceTo(position);
+            final var rssiClosestDistance = rssiClosestPosition.distanceTo(position);
             avgRssiDistance += rssiClosestDistance / TIMES;
 
             // create estimator with means removed on finder and fingerprints
-            LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D(
-                    locatedFingerprints, fingerprint, sources, this);
+            var estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints, fingerprint, sources,
+                    this);
             estimator.setUseNoMeanNearestFingerprintFinder(true);
             estimator.setMeansFromFingerprintReadingsRemoved(true);
 
@@ -1321,19 +1209,19 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
-            Point2D estimatedPosition = estimator.getEstimatedPosition();
+            var estimatedPosition = estimator.getEstimatedPosition();
 
             assertNotNull(estimatedPosition);
 
-            final double noMeansEstimatedError = estimatedPosition.distanceTo(position);
+            final var noMeansEstimatedError = estimatedPosition.distanceTo(position);
             avgNoMeansEstimatedError += noMeansEstimatedError / TIMES;
 
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(1, estimator.getNearestFingerprints().size());
 
             // create estimator with means removed only on finder
-            estimator = new LinearFingerprintPositionEstimator2D(
-                    locatedFingerprints, fingerprint, sources, this);
+            estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints, fingerprint, sources,
+                    this);
             estimator.setUseNoMeanNearestFingerprintFinder(true);
             estimator.setMeansFromFingerprintReadingsRemoved(false);
 
@@ -1359,15 +1247,15 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             assertNotNull(estimatedPosition);
 
-            final double noMeanFinderEstimatedError = estimatedPosition.distanceTo(position);
+            final var noMeanFinderEstimatedError = estimatedPosition.distanceTo(position);
             avgNoMeanFinderEstimatedError += noMeanFinderEstimatedError / TIMES;
 
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(1, estimator.getNearestFingerprints().size());
 
             // create estimator with means removed only on readings
-            estimator = new LinearFingerprintPositionEstimator2D(
-                    locatedFingerprints, fingerprint, sources, this);
+            estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints, fingerprint, sources,
+                    this);
             estimator.setUseNoMeanNearestFingerprintFinder(false);
             estimator.setMeansFromFingerprintReadingsRemoved(true);
 
@@ -1393,15 +1281,15 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             assertNotNull(estimatedPosition);
 
-            final double noMeanReadingsEstimatedError = estimatedPosition.distanceTo(position);
+            final var noMeanReadingsEstimatedError = estimatedPosition.distanceTo(position);
             avgNoMeanReadingsEstimatedError += noMeanReadingsEstimatedError / TIMES;
 
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(1, estimator.getNearestFingerprints().size());
 
             // create estimator with means not removed
-            estimator = new LinearFingerprintPositionEstimator2D(
-                    locatedFingerprints, fingerprint, sources, this);
+            estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints, fingerprint, sources,
+                    this);
             estimator.setUseNoMeanNearestFingerprintFinder(false);
             estimator.setMeansFromFingerprintReadingsRemoved(false);
 
@@ -1427,13 +1315,13 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             assertNotNull(estimatedPosition);
 
-            final double estimatedError = estimatedPosition.distanceTo(position);
+            final var estimatedError = estimatedPosition.distanceTo(position);
             avgEstimatedError += estimatedError / TIMES;
 
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(1, estimator.getNearestFingerprints().size());
 
-            final double[] errors = new double[]{
+            final var errors = new double[]{
                     closestDistance,
                     noMeanRssiClosestDistance,
                     rssiClosestDistance,
@@ -1444,9 +1332,9 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             };
 
             // find minimum error
-            double minError = Double.MAX_VALUE;
-            int bestErrorPos = -1;
-            for (int i = 0; i < errors.length; i++) {
+            var minError = Double.MAX_VALUE;
+            var bestErrorPos = -1;
+            for (var i = 0; i < errors.length; i++) {
                 if (errors[i] < minError) {
                     minError = errors[i];
                     bestErrorPos = i;
@@ -1471,6 +1359,8 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                     break;
                 case 5:
                     numBestIsEstimatedPosition++;
+                    break;
+                default:
                     break;
             }
         }
@@ -1491,23 +1381,17 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                 (double) numBestIsEstimatedPosition / (double) TIMES * 100.0);
 
         LOGGER.log(Level.INFO, "Avg. closest fingerprint distance: {0} m", avgClosestDistance);
-        LOGGER.log(Level.INFO,
-                "Avg. no mean RSSI closest fingerprint distance: {0} m", avgNoMeanRssiDistance);
-        LOGGER.log(Level.INFO,
-                "Avg. RSSI closest fingerprint distance: {0} m", avgRssiDistance);
-        LOGGER.log(Level.INFO,
-                "Avg. Estimated position error with means removed: {0} m", avgNoMeansEstimatedError);
-        LOGGER.log(Level.INFO,
-                "Avg. Estimated position with means removed only on finder error: {0} m",
+        LOGGER.log(Level.INFO, "Avg. no mean RSSI closest fingerprint distance: {0} m", avgNoMeanRssiDistance);
+        LOGGER.log(Level.INFO, "Avg. RSSI closest fingerprint distance: {0} m", avgRssiDistance);
+        LOGGER.log(Level.INFO, "Avg. Estimated position error with means removed: {0} m",
+                avgNoMeansEstimatedError);
+        LOGGER.log(Level.INFO, "Avg. Estimated position with means removed only on finder error: {0} m",
                 avgNoMeanFinderEstimatedError);
-        LOGGER.log(Level.INFO,
-                "Avg. Estimated position with means removed only on readings error: {0} m",
+        LOGGER.log(Level.INFO, "Avg. Estimated position with means removed only on readings error: {0} m",
                 avgNoMeanReadingsEstimatedError);
-        LOGGER.log(Level.INFO,
-                "Avg. Estimated position with means not removed error: {0} m",
-                avgEstimatedError);
+        LOGGER.log(Level.INFO, "Avg. Estimated position with means not removed error: {0} m", avgEstimatedError);
 
-        final int[] numBest = new int[]{
+        final var numBest = new int[]{
                 numBestIsNoMeanRssiPosition,
                 numBestIsRssiPosition,
                 numBestIsNoMeansEstimatedPosition,
@@ -1518,9 +1402,9 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
         // check that best result is obtained when means are removed from both
         // fingerprint finder and readings to account for possible biases between devices
-        int bestNum = -Integer.MAX_VALUE;
-        int bestPos = -1;
-        for (int i = 0; i < numBest.length; i++) {
+        var bestNum = -Integer.MAX_VALUE;
+        var bestPos = -1;
+        for (var i = 0; i < numBest.length; i++) {
             if (numBest[i] > bestNum) {
                 bestNum = numBest[i];
                 bestPos = i;
@@ -1532,101 +1416,92 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
     }
 
     @Test
-    public void testEstimateWithErrorAndWithBias() throws LockedException,
-            NotReadyException, FingerprintEstimationException {
-        int numBestIsNoMeanRssiPosition = 0;
-        int numBestIsRssiPosition = 0;
-        int numBestIsNoMeansEstimatedPosition = 0;
-        int numBestIsNoMeanFinderEstimatedPosition = 0;
-        int numBestIsNoMeanReadingsEstimatedPosition = 0;
-        int numBestIsEstimatedPosition = 0;
+    void testEstimateWithErrorAndWithBias() throws LockedException, NotReadyException, FingerprintEstimationException {
+        var numBestIsNoMeanRssiPosition = 0;
+        var numBestIsRssiPosition = 0;
+        var numBestIsNoMeansEstimatedPosition = 0;
+        var numBestIsNoMeanFinderEstimatedPosition = 0;
+        var numBestIsNoMeanReadingsEstimatedPosition = 0;
+        var numBestIsEstimatedPosition = 0;
 
-        double avgClosestDistance = 0.0;
-        double avgNoMeanRssiDistance = 0.0;
-        double avgRssiDistance = 0.0;
-        double avgNoMeansEstimatedError = 0.0;
-        double avgNoMeanFinderEstimatedError = 0.0;
-        double avgNoMeanReadingsEstimatedError = 0.0;
-        double avgEstimatedError = 0.0;
+        var avgClosestDistance = 0.0;
+        var avgNoMeanRssiDistance = 0.0;
+        var avgRssiDistance = 0.0;
+        var avgNoMeansEstimatedError = 0.0;
+        var avgNoMeanFinderEstimatedError = 0.0;
+        var avgNoMeanReadingsEstimatedError = 0.0;
+        var avgEstimatedError = 0.0;
 
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(),
-                    0.0, ERROR_STD);
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var errorRandomizer = new GaussianRandomizer(0.0, ERROR_STD);
 
             // build sources
-            final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-            final List<RadioSourceLocated<Point2D>> sources = new ArrayList<>();
-            for (int i = 0; i < numSources; i++) {
-                final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
-                final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
-                final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-                final InhomogeneousPoint2D position = new InhomogeneousPoint2D(x, y);
+            final var numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+            final var sources = new ArrayList<RadioSourceLocated<Point2D>>();
+            for (var i = 0; i < numSources; i++) {
+                final var x = randomizer.nextDouble(MIN_POS, MAX_POS);
+                final var y = randomizer.nextDouble(MIN_POS, MAX_POS);
+                final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+                final var position = new InhomogeneousPoint2D(x, y);
 
-                final WifiAccessPointWithPowerAndLocated2D accessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(
-                                "bssid" + i, FREQUENCY, transmittedPowerdBm, position);
+                final var accessPoint = new WifiAccessPointWithPowerAndLocated2D("bssid" + i, FREQUENCY,
+                        transmittedPowerdBm, position);
                 sources.add(accessPoint);
             }
 
             // build located fingerprints
-            final int numFingerprints = randomizer.nextInt(MIN_FINGERPRINTS, MAX_FINGERPRINTS);
-            final List<RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>>> locatedFingerprints =
-                    new ArrayList<>();
-            for (int j = 0; j < numFingerprints; j++) {
-                final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
-                final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
-                final InhomogeneousPoint2D position = new InhomogeneousPoint2D(x, y);
+            final var numFingerprints = randomizer.nextInt(MIN_FINGERPRINTS, MAX_FINGERPRINTS);
+            final var locatedFingerprints =
+                    new ArrayList<RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>>>();
+            for (var j = 0; j < numFingerprints; j++) {
+                final var x = randomizer.nextDouble(MIN_POS, MAX_POS);
+                final var y = randomizer.nextDouble(MIN_POS, MAX_POS);
+                final var position = new InhomogeneousPoint2D(x, y);
 
-                final List<RssiReading<RadioSource>> readings = new ArrayList<>();
-                for (final RadioSourceLocated<Point2D> source : sources) {
-                    final double distance = source.getPosition().distanceTo(position);
-                    final double transmittedPowerdBm = ((WifiAccessPointWithPowerAndLocated2D) source).
-                            getTransmittedPower();
+                final var readings = new ArrayList<RssiReading<RadioSource>>();
+                for (final var source : sources) {
+                    final var distance = source.getPosition().distanceTo(position);
+                    final var transmittedPowerdBm = ((WifiAccessPointWithPowerAndLocated2D) source)
+                            .getTransmittedPower();
 
-                    final double receivedRssi = Utils.powerTodBm(receivedPower(Utils.dBmToPower(transmittedPowerdBm),
+                    final var receivedRssi = Utils.powerTodBm(receivedPower(Utils.dBmToPower(transmittedPowerdBm),
                             distance, LinearFingerprintPositionEstimator2D.DEFAULT_PATH_LOSS_EXPONENT));
-                    final double rssiError = errorRandomizer.nextDouble();
-                    final RssiReading<RadioSource> reading = new RssiReading<>((RadioSource) source,
-                            receivedRssi + rssiError);
+                    final var rssiError = errorRandomizer.nextDouble();
+                    final var reading = new RssiReading<>((RadioSource) source, receivedRssi + rssiError);
                     readings.add(reading);
                 }
 
-                final RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>> locatedFingerprint =
-                        new RssiFingerprintLocated2D<>(readings, position);
+                final var locatedFingerprint = new RssiFingerprintLocated2D<>(readings, position);
                 locatedFingerprints.add(locatedFingerprint);
             }
 
             // build non-located fingerprint
-            final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
-            final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
-            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(x, y);
+            final var x = randomizer.nextDouble(MIN_POS, MAX_POS);
+            final var y = randomizer.nextDouble(MIN_POS, MAX_POS);
+            final var position = new InhomogeneousPoint2D(x, y);
 
-            final List<RssiReading<RadioSource>> readings = new ArrayList<>();
-            for (final RadioSourceLocated<Point2D> source : sources) {
-                final double distance = source.getPosition().distanceTo(position);
-                final double transmittedPowerdBm = ((WifiAccessPointWithPowerAndLocated2D) source).
-                        getTransmittedPower();
+            final var readings = new ArrayList<RssiReading<RadioSource>>();
+            for (final var source : sources) {
+                final var distance = source.getPosition().distanceTo(position);
+                final var transmittedPowerdBm = ((WifiAccessPointWithPowerAndLocated2D) source).getTransmittedPower();
 
-                final double receivedRssi = Utils.powerTodBm(receivedPower(Utils.dBmToPower(transmittedPowerdBm),
-                        distance, LinearFingerprintPositionEstimator2D.DEFAULT_PATH_LOSS_EXPONENT));
-                final double rssiError = errorRandomizer.nextDouble();
-                final RssiReading<RadioSource> reading = new RssiReading<>((RadioSource) source,
-                        receivedRssi + rssiError + RSSI_BIAS);
+                final var receivedRssi = Utils.powerTodBm(receivedPower(Utils.dBmToPower(transmittedPowerdBm), distance,
+                        LinearFingerprintPositionEstimator2D.DEFAULT_PATH_LOSS_EXPONENT));
+                final var rssiError = errorRandomizer.nextDouble();
+                final var reading = new RssiReading<>((RadioSource) source, receivedRssi + rssiError + RSSI_BIAS);
                 readings.add(reading);
             }
 
-            final RssiFingerprint<RadioSource, RssiReading<RadioSource>> fingerprint =
-                    new RssiFingerprint<>(readings);
+            final var fingerprint = new RssiFingerprint<>(readings);
 
             // find real closest fingerprint based on location
             RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>> closestFingerprint = null;
             Point2D closestPosition = null;
-            double distance = Double.MAX_VALUE;
-            for (final RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>> locatedFingerprint :
-                    locatedFingerprints) {
-                final Point2D fingerprintPosition = locatedFingerprint.getPosition();
-                final double dist = fingerprintPosition.distanceTo(position);
+            var distance = Double.MAX_VALUE;
+            for (final var locatedFingerprint : locatedFingerprints) {
+                final var fingerprintPosition = locatedFingerprint.getPosition();
+                final var dist = fingerprintPosition.distanceTo(position);
                 if (dist < distance) {
                     distance = dist;
                     closestFingerprint = locatedFingerprint;
@@ -1637,34 +1512,30 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertNotNull(closestFingerprint);
             assertNotNull(closestPosition);
 
-            final double closestDistance = closestPosition.distanceTo(position);
+            final var closestDistance = closestPosition.distanceTo(position);
             avgClosestDistance += closestDistance / TIMES;
 
             // find the closest fingerprint based on RSSI without mean
-            final RadioSourceNoMeanKNearestFinder<Point2D, RadioSource> noMeanFinder =
-                    new RadioSourceNoMeanKNearestFinder<>(locatedFingerprints);
+            final var noMeanFinder = new RadioSourceNoMeanKNearestFinder<>(locatedFingerprints);
 
-            final RssiFingerprintLocated<RadioSource, RssiReading<RadioSource>, Point2D> nearestFingerprintNoMean =
-                    noMeanFinder.findNearestTo(fingerprint);
-            final Point2D noMeanRssiClosestPosition = nearestFingerprintNoMean.getPosition();
+            final var nearestFingerprintNoMean = noMeanFinder.findNearestTo(fingerprint);
+            final var noMeanRssiClosestPosition = nearestFingerprintNoMean.getPosition();
 
-            final double noMeanRssiClosestDistance = noMeanRssiClosestPosition.distanceTo(position);
+            final var noMeanRssiClosestDistance = noMeanRssiClosestPosition.distanceTo(position);
             avgNoMeanRssiDistance += noMeanRssiClosestDistance / TIMES;
 
             // find the closest fingerprint based on RSSI
-            final RadioSourceKNearestFinder<Point2D, RadioSource> finder =
-                    new RadioSourceKNearestFinder<>(locatedFingerprints);
+            final var finder = new RadioSourceKNearestFinder<>(locatedFingerprints);
 
-            final RssiFingerprintLocated<RadioSource, RssiReading<RadioSource>, Point2D> nearestFingerprint =
-                    finder.findNearestTo(fingerprint);
-            final Point2D rssiClosestPosition = nearestFingerprint.getPosition();
+            final var nearestFingerprint = finder.findNearestTo(fingerprint);
+            final var rssiClosestPosition = nearestFingerprint.getPosition();
 
-            final double rssiClosestDistance = rssiClosestPosition.distanceTo(position);
+            final var rssiClosestDistance = rssiClosestPosition.distanceTo(position);
             avgRssiDistance += rssiClosestDistance / TIMES;
 
             // create estimator with means removed on finder and fingerprints
-            LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D(
-                    locatedFingerprints, fingerprint, sources, this);
+            var estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints, fingerprint, sources,
+                    this);
             estimator.setUseNoMeanNearestFingerprintFinder(true);
             estimator.setMeansFromFingerprintReadingsRemoved(true);
 
@@ -1687,19 +1558,19 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
-            Point2D estimatedPosition = estimator.getEstimatedPosition();
+            var estimatedPosition = estimator.getEstimatedPosition();
 
             assertNotNull(estimatedPosition);
 
-            final double noMeansEstimatedError = estimatedPosition.distanceTo(position);
+            final var noMeansEstimatedError = estimatedPosition.distanceTo(position);
             avgNoMeansEstimatedError += noMeansEstimatedError / TIMES;
 
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(1, estimator.getNearestFingerprints().size());
 
             // create estimator with means removed only on finder
-            estimator = new LinearFingerprintPositionEstimator2D(
-                    locatedFingerprints, fingerprint, sources, this);
+            estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints, fingerprint, sources,
+                    this);
             estimator.setUseNoMeanNearestFingerprintFinder(true);
             estimator.setMeansFromFingerprintReadingsRemoved(false);
 
@@ -1725,15 +1596,15 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             assertNotNull(estimatedPosition);
 
-            final double noMeanFinderEstimatedError = estimatedPosition.distanceTo(position);
+            final var noMeanFinderEstimatedError = estimatedPosition.distanceTo(position);
             avgNoMeanFinderEstimatedError += noMeanFinderEstimatedError / TIMES;
 
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(1, estimator.getNearestFingerprints().size());
 
             // create estimator with means removed only on readings
-            estimator = new LinearFingerprintPositionEstimator2D(
-                    locatedFingerprints, fingerprint, sources, this);
+            estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints, fingerprint, sources,
+                    this);
             estimator.setUseNoMeanNearestFingerprintFinder(false);
             estimator.setMeansFromFingerprintReadingsRemoved(true);
 
@@ -1759,15 +1630,15 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             assertNotNull(estimatedPosition);
 
-            final double noMeanReadingsEstimatedError = estimatedPosition.distanceTo(position);
+            final var noMeanReadingsEstimatedError = estimatedPosition.distanceTo(position);
             avgNoMeanReadingsEstimatedError += noMeanReadingsEstimatedError / TIMES;
 
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(1, estimator.getNearestFingerprints().size());
 
             // create estimator with means not removed
-            estimator = new LinearFingerprintPositionEstimator2D(
-                    locatedFingerprints, fingerprint, sources, this);
+            estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints, fingerprint, sources,
+                    this);
             estimator.setUseNoMeanNearestFingerprintFinder(false);
             estimator.setMeansFromFingerprintReadingsRemoved(false);
 
@@ -1793,13 +1664,13 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             assertNotNull(estimatedPosition);
 
-            final double estimatedError = estimatedPosition.distanceTo(position);
+            final var estimatedError = estimatedPosition.distanceTo(position);
             avgEstimatedError += estimatedError / TIMES;
 
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(1, estimator.getNearestFingerprints().size());
 
-            final double[] errors = new double[]{
+            final var errors = new double[]{
                     closestDistance,
                     noMeanRssiClosestDistance,
                     rssiClosestDistance,
@@ -1810,9 +1681,9 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             };
 
             // find minimum error
-            double minError = Double.MAX_VALUE;
-            int bestErrorPos = -1;
-            for (int i = 0; i < errors.length; i++) {
+            var minError = Double.MAX_VALUE;
+            var bestErrorPos = -1;
+            for (var i = 0; i < errors.length; i++) {
                 if (errors[i] < minError) {
                     minError = errors[i];
                     bestErrorPos = i;
@@ -1837,6 +1708,8 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                     break;
                 case 5:
                     numBestIsEstimatedPosition++;
+                    break;
+                default:
                     break;
             }
         }
@@ -1857,23 +1730,17 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                 (double) numBestIsEstimatedPosition / (double) TIMES * 100.0);
 
         LOGGER.log(Level.INFO, "Avg. closest fingerprint distance: {0} m", avgClosestDistance);
-        LOGGER.log(Level.INFO,
-                "Avg. no mean RSSI closest fingerprint distance: {0} m", avgNoMeanRssiDistance);
-        LOGGER.log(Level.INFO,
-                "Avg. RSSI closest fingerprint distance: {0} m", avgRssiDistance);
-        LOGGER.log(Level.INFO,
-                "Avg. Estimated position error with means removed: {0} m", avgNoMeansEstimatedError);
-        LOGGER.log(Level.INFO,
-                "Avg. Estimated position with means removed only on finder error: {0} m",
+        LOGGER.log(Level.INFO, "Avg. no mean RSSI closest fingerprint distance: {0} m", avgNoMeanRssiDistance);
+        LOGGER.log(Level.INFO, "Avg. RSSI closest fingerprint distance: {0} m", avgRssiDistance);
+        LOGGER.log(Level.INFO, "Avg. Estimated position error with means removed: {0} m",
+                avgNoMeansEstimatedError);
+        LOGGER.log(Level.INFO, "Avg. Estimated position with means removed only on finder error: {0} m",
                 avgNoMeanFinderEstimatedError);
-        LOGGER.log(Level.INFO,
-                "Avg. Estimated position with means removed only on readings error: {0} m",
+        LOGGER.log(Level.INFO, "Avg. Estimated position with means removed only on readings error: {0} m",
                 avgNoMeanReadingsEstimatedError);
-        LOGGER.log(Level.INFO,
-                "Avg. Estimated position with means not removed error: {0} m",
-                avgEstimatedError);
+        LOGGER.log(Level.INFO, "Avg. Estimated position with means not removed error: {0} m", avgEstimatedError);
 
-        final int[] numBest = new int[]{
+        final var numBest = new int[]{
                 numBestIsNoMeanRssiPosition,
                 numBestIsRssiPosition,
                 numBestIsNoMeansEstimatedPosition,
@@ -1884,118 +1751,108 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
         // check that best result is obtained when means are removed from both
         // fingerprint finder and readings to account for possible biases between devices
-        int bestNum = -Integer.MAX_VALUE;
-        int bestPos = -1;
-        for (int i = 0; i < numBest.length; i++) {
+        var bestNum = -Integer.MAX_VALUE;
+        var bestPos = -1;
+        for (var i = 0; i < numBest.length; i++) {
             if (numBest[i] > bestNum) {
                 bestNum = numBest[i];
                 bestPos = i;
             }
         }
 
-        assertTrue(bestNum == numBestIsNoMeanRssiPosition ||
-                bestNum == numBestIsNoMeanFinderEstimatedPosition);
+        assertTrue(bestNum == numBestIsNoMeanRssiPosition
+                || bestNum == numBestIsNoMeanFinderEstimatedPosition);
         assertTrue(bestPos == 0 || bestPos == 3);
 
     }
 
     @Test
-    public void testEstimateWithOtherPathloss() throws LockedException,
-            NotReadyException, FingerprintEstimationException {
-        int numBestIsNoMeanRssiPosition = 0;
-        int numBestIsRssiPosition = 0;
-        int numBestIsNoMeansEstimatedPosition = 0;
-        int numBestIsNoMeanFinderEstimatedPosition = 0;
-        int numBestIsNoMeanReadingsEstimatedPosition = 0;
-        int numBestIsEstimatedPosition = 0;
+    void testEstimateWithOtherPathloss() throws LockedException, NotReadyException, FingerprintEstimationException {
+        var numBestIsNoMeanRssiPosition = 0;
+        var numBestIsRssiPosition = 0;
+        var numBestIsNoMeansEstimatedPosition = 0;
+        var numBestIsNoMeanFinderEstimatedPosition = 0;
+        var numBestIsNoMeanReadingsEstimatedPosition = 0;
+        var numBestIsEstimatedPosition = 0;
 
-        double avgClosestDistance = 0.0;
-        double avgNoMeanRssiDistance = 0.0;
-        double avgRssiDistance = 0.0;
-        double avgNoMeansEstimatedError = 0.0;
-        double avgNoMeanFinderEstimatedError = 0.0;
-        double avgNoMeanReadingsEstimatedError = 0.0;
-        double avgEstimatedError = 0.0;
+        var avgClosestDistance = 0.0;
+        var avgNoMeanRssiDistance = 0.0;
+        var avgRssiDistance = 0.0;
+        var avgNoMeansEstimatedError = 0.0;
+        var avgNoMeanFinderEstimatedError = 0.0;
+        var avgNoMeanReadingsEstimatedError = 0.0;
+        var avgEstimatedError = 0.0;
 
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double pathLossExponent = randomizer.nextDouble(
-                    MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
+            final var pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
             // build sources
-            final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-            final List<RadioSourceLocated<Point2D>> sources = new ArrayList<>();
-            for (int i = 0; i < numSources; i++) {
-                final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
-                final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
-                final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            final var numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+            final var sources = new ArrayList<RadioSourceLocated<Point2D>>();
+            for (var i = 0; i < numSources; i++) {
+                final var x = randomizer.nextDouble(MIN_POS, MAX_POS);
+                final var y = randomizer.nextDouble(MIN_POS, MAX_POS);
+                final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
 
-                final InhomogeneousPoint2D position = new InhomogeneousPoint2D(x, y);
+                final var position = new InhomogeneousPoint2D(x, y);
 
-                final WifiAccessPointWithPowerAndLocated2D accessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(
-                                "bssid" + i, FREQUENCY, transmittedPowerdBm,
-                                position);
+                final var accessPoint = new WifiAccessPointWithPowerAndLocated2D("bssid" + i, FREQUENCY,
+                        transmittedPowerdBm, position);
                 sources.add(accessPoint);
             }
 
             // build located fingerprints
-            final int numFingerprints = randomizer.nextInt(MIN_FINGERPRINTS, MAX_FINGERPRINTS);
-            final List<RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>>> locatedFingerprints =
-                    new ArrayList<>();
-            for (int j = 0; j < numFingerprints; j++) {
-                final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
-                final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
-                final InhomogeneousPoint2D position = new InhomogeneousPoint2D(x, y);
+            final var numFingerprints = randomizer.nextInt(MIN_FINGERPRINTS, MAX_FINGERPRINTS);
+            final var locatedFingerprints =
+                    new ArrayList<RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>>>();
+            for (var j = 0; j < numFingerprints; j++) {
+                final var x = randomizer.nextDouble(MIN_POS, MAX_POS);
+                final var y = randomizer.nextDouble(MIN_POS, MAX_POS);
+                final var position = new InhomogeneousPoint2D(x, y);
 
-                final List<RssiReading<RadioSource>> readings = new ArrayList<>();
-                for (final RadioSourceLocated<Point2D> source : sources) {
-                    final double distance = source.getPosition().distanceTo(position);
-                    final double transmittedPowerdBm = ((WifiAccessPointWithPowerAndLocated2D) source).
-                            getTransmittedPower();
+                final var readings = new ArrayList<RssiReading<RadioSource>>();
+                for (final var source : sources) {
+                    final var distance = source.getPosition().distanceTo(position);
+                    final var transmittedPowerdBm = ((WifiAccessPointWithPowerAndLocated2D) source)
+                            .getTransmittedPower();
 
-                    final double receivedRssi = Utils.powerTodBm(receivedPower(Utils.dBmToPower(transmittedPowerdBm),
+                    final var receivedRssi = Utils.powerTodBm(receivedPower(Utils.dBmToPower(transmittedPowerdBm),
                             distance, pathLossExponent));
-                    final RssiReading<RadioSource> reading = new RssiReading<>((RadioSource) source,
-                            receivedRssi);
+                    final var reading = new RssiReading<>((RadioSource) source, receivedRssi);
                     readings.add(reading);
                 }
 
-                final RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>> locatedFingerprint =
-                        new RssiFingerprintLocated2D<>(readings, position);
+                final var locatedFingerprint = new RssiFingerprintLocated2D<>(readings, position);
                 locatedFingerprints.add(locatedFingerprint);
             }
 
             // build non-located fingerprint
-            final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
-            final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
-            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(x, y);
+            final var x = randomizer.nextDouble(MIN_POS, MAX_POS);
+            final var y = randomizer.nextDouble(MIN_POS, MAX_POS);
+            final var position = new InhomogeneousPoint2D(x, y);
 
-            final List<RssiReading<RadioSource>> readings = new ArrayList<>();
-            for (final RadioSourceLocated<Point2D> source : sources) {
-                final double distance = source.getPosition().distanceTo(position);
-                final double transmittedPowerdBm = ((WifiAccessPointWithPowerAndLocated2D) source).
-                        getTransmittedPower();
+            final var readings = new ArrayList<RssiReading<RadioSource>>();
+            for (final var source : sources) {
+                final var distance = source.getPosition().distanceTo(position);
+                final var transmittedPowerdBm = ((WifiAccessPointWithPowerAndLocated2D) source).getTransmittedPower();
 
-                final double receivedRssi = Utils.powerTodBm(receivedPower(Utils.dBmToPower(transmittedPowerdBm),
-                        distance, pathLossExponent));
-                final RssiReading<RadioSource> reading = new RssiReading<>((RadioSource) source,
-                        receivedRssi);
+                final var receivedRssi = Utils.powerTodBm(receivedPower(Utils.dBmToPower(transmittedPowerdBm), distance,
+                        pathLossExponent));
+                final var reading = new RssiReading<>((RadioSource) source, receivedRssi);
                 readings.add(reading);
             }
 
-            final RssiFingerprint<RadioSource, RssiReading<RadioSource>> fingerprint =
-                    new RssiFingerprint<>(readings);
+            final var fingerprint = new RssiFingerprint<>(readings);
 
             // find real closest fingerprint based on location
             RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>> closestFingerprint = null;
             Point2D closestPosition = null;
-            double distance = Double.MAX_VALUE;
-            for (final RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>> locatedFingerprint :
-                    locatedFingerprints) {
-                final Point2D fingerprintPosition = locatedFingerprint.getPosition();
-                final double dist = fingerprintPosition.distanceTo(position);
+            var distance = Double.MAX_VALUE;
+            for (final var locatedFingerprint : locatedFingerprints) {
+                final var fingerprintPosition = locatedFingerprint.getPosition();
+                final var dist = fingerprintPosition.distanceTo(position);
                 if (dist < distance) {
                     distance = dist;
                     closestFingerprint = locatedFingerprint;
@@ -2006,29 +1863,25 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertNotNull(closestFingerprint);
             assertNotNull(closestPosition);
 
-            final double closestDistance = closestPosition.distanceTo(position);
+            final var closestDistance = closestPosition.distanceTo(position);
             avgClosestDistance += closestDistance / TIMES;
 
             // find the closest fingerprint based on RSSI without mean
-            final RadioSourceNoMeanKNearestFinder<Point2D, RadioSource> noMeanFinder =
-                    new RadioSourceNoMeanKNearestFinder<>(locatedFingerprints);
+            final var noMeanFinder = new RadioSourceNoMeanKNearestFinder<>(locatedFingerprints);
 
-            final RssiFingerprintLocated<RadioSource, RssiReading<RadioSource>, Point2D> nearestFingerprintNoMean =
-                    noMeanFinder.findNearestTo(fingerprint);
-            final Point2D noMeanRssiClosestPosition = nearestFingerprintNoMean.getPosition();
+            final var nearestFingerprintNoMean = noMeanFinder.findNearestTo(fingerprint);
+            final var noMeanRssiClosestPosition = nearestFingerprintNoMean.getPosition();
 
-            final double noMeanRssiClosestDistance = noMeanRssiClosestPosition.distanceTo(position);
+            final var noMeanRssiClosestDistance = noMeanRssiClosestPosition.distanceTo(position);
             avgNoMeanRssiDistance += noMeanRssiClosestDistance / TIMES;
 
             // find the closest fingerprint based on RSSI
-            final RadioSourceKNearestFinder<Point2D, RadioSource> finder =
-                    new RadioSourceKNearestFinder<>(locatedFingerprints);
+            final var finder = new RadioSourceKNearestFinder<>(locatedFingerprints);
 
-            final RssiFingerprintLocated<RadioSource, RssiReading<RadioSource>, Point2D> nearestFingerprint =
-                    finder.findNearestTo(fingerprint);
-            final Point2D rssiClosestPosition = nearestFingerprint.getPosition();
+            final var nearestFingerprint = finder.findNearestTo(fingerprint);
+            final var rssiClosestPosition = nearestFingerprint.getPosition();
 
-            final double rssiClosestDistance = rssiClosestPosition.distanceTo(position);
+            final var rssiClosestDistance = rssiClosestPosition.distanceTo(position);
             avgRssiDistance += rssiClosestDistance / TIMES;
 
             // create estimator with means removed on finder and fingerprints
@@ -2058,19 +1911,19 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
-            Point2D estimatedPosition = estimator.getEstimatedPosition();
+            var estimatedPosition = estimator.getEstimatedPosition();
 
             assertNotNull(estimatedPosition);
 
-            final double noMeansEstimatedError = estimatedPosition.distanceTo(position);
+            final var noMeansEstimatedError = estimatedPosition.distanceTo(position);
             avgNoMeansEstimatedError += noMeansEstimatedError / TIMES;
 
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(1, estimator.getNearestFingerprints().size());
 
             // create estimator with means removed only on finder
-            estimator = new LinearFingerprintPositionEstimator2D(
-                    locatedFingerprints, fingerprint, sources, this);
+            estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints, fingerprint, sources,
+                    this);
             estimator.setUseNoMeanNearestFingerprintFinder(true);
             estimator.setMeansFromFingerprintReadingsRemoved(false);
             estimator.setPathLossExponent(pathLossExponent);
@@ -2098,15 +1951,15 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             assertNotNull(estimatedPosition);
 
-            final double noMeanFinderEstimatedError = estimatedPosition.distanceTo(position);
+            final var noMeanFinderEstimatedError = estimatedPosition.distanceTo(position);
             avgNoMeanFinderEstimatedError += noMeanFinderEstimatedError / TIMES;
 
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(1, estimator.getNearestFingerprints().size());
 
             // create estimator with means removed only on readings
-            estimator = new LinearFingerprintPositionEstimator2D(
-                    locatedFingerprints, fingerprint, sources, this);
+            estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints, fingerprint, sources,
+                    this);
             estimator.setUseNoMeanNearestFingerprintFinder(false);
             estimator.setMeansFromFingerprintReadingsRemoved(true);
             estimator.setPathLossExponent(pathLossExponent);
@@ -2134,15 +1987,15 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             assertNotNull(estimatedPosition);
 
-            final double noMeanReadingsEstimatedError = estimatedPosition.distanceTo(position);
+            final var noMeanReadingsEstimatedError = estimatedPosition.distanceTo(position);
             avgNoMeanReadingsEstimatedError += noMeanReadingsEstimatedError / TIMES;
 
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(1, estimator.getNearestFingerprints().size());
 
             // create estimator with means not removed
-            estimator = new LinearFingerprintPositionEstimator2D(
-                    locatedFingerprints, fingerprint, sources, this);
+            estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints, fingerprint, sources,
+                    this);
             estimator.setUseNoMeanNearestFingerprintFinder(false);
             estimator.setMeansFromFingerprintReadingsRemoved(false);
             estimator.setPathLossExponent(pathLossExponent);
@@ -2170,13 +2023,13 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             assertNotNull(estimatedPosition);
 
-            final double estimatedError = estimatedPosition.distanceTo(position);
+            final var estimatedError = estimatedPosition.distanceTo(position);
             avgEstimatedError += estimatedError / TIMES;
 
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(1, estimator.getNearestFingerprints().size());
 
-            final double[] errors = new double[]{
+            final var errors = new double[]{
                     closestDistance,
                     noMeanRssiClosestDistance,
                     rssiClosestDistance,
@@ -2187,9 +2040,9 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             };
 
             // find minimum error
-            double minError = Double.MAX_VALUE;
-            int bestErrorPos = -1;
-            for (int i = 0; i < errors.length; i++) {
+            var minError = Double.MAX_VALUE;
+            var bestErrorPos = -1;
+            for (var i = 0; i < errors.length; i++) {
                 if (errors[i] < minError) {
                     minError = errors[i];
                     bestErrorPos = i;
@@ -2215,8 +2068,9 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                 case 5:
                     numBestIsEstimatedPosition++;
                     break;
+                default:
+                    break;
             }
-
         }
 
         LOGGER.log(Level.INFO, "Results for different path loss exponents");
@@ -2235,23 +2089,17 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                 (double) numBestIsEstimatedPosition / (double) TIMES * 100.0);
 
         LOGGER.log(Level.INFO, "Avg. closest fingerprint distance: {0} m", avgClosestDistance);
-        LOGGER.log(Level.INFO,
-                "Avg. no mean RSSI closest fingerprint distance: {0} m", avgNoMeanRssiDistance);
-        LOGGER.log(Level.INFO,
-                "Avg. RSSI closest fingerprint distance: {0} m", avgRssiDistance);
-        LOGGER.log(Level.INFO,
-                "Avg. Estimated position error with means removed: {0} m", avgNoMeansEstimatedError);
-        LOGGER.log(Level.INFO,
-                "Avg. Estimated position with means removed only on finder error: {0} m",
+        LOGGER.log(Level.INFO, "Avg. no mean RSSI closest fingerprint distance: {0} m", avgNoMeanRssiDistance);
+        LOGGER.log(Level.INFO, "Avg. RSSI closest fingerprint distance: {0} m", avgRssiDistance);
+        LOGGER.log(Level.INFO, "Avg. Estimated position error with means removed: {0} m",
+                avgNoMeansEstimatedError);
+        LOGGER.log(Level.INFO, "Avg. Estimated position with means removed only on finder error: {0} m",
                 avgNoMeanFinderEstimatedError);
-        LOGGER.log(Level.INFO,
-                "Avg. Estimated position with means removed only on readings error: {0} m",
+        LOGGER.log(Level.INFO, "Avg. Estimated position with means removed only on readings error: {0} m",
                 avgNoMeanReadingsEstimatedError);
-        LOGGER.log(Level.INFO,
-                "Avg. Estimated position with means not removed error: {0} m",
-                avgEstimatedError);
+        LOGGER.log(Level.INFO, "Avg. Estimated position with means not removed error: {0} m", avgEstimatedError);
 
-        final int[] numBest = new int[]{
+        final var numBest = new int[]{
                 numBestIsNoMeanRssiPosition,
                 numBestIsRssiPosition,
                 numBestIsNoMeansEstimatedPosition,
@@ -2262,9 +2110,9 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
         // check that best result is obtained when means are removed to find
         // the closest fingerprints, but not removed for readings
-        int bestNum = -Integer.MAX_VALUE;
-        int bestPos = -1;
-        for (int i = 0; i < numBest.length; i++) {
+        var bestNum = -Integer.MAX_VALUE;
+        var bestPos = -1;
+        for (var i = 0; i < numBest.length; i++) {
             if (numBest[i] > bestNum) {
                 bestNum = numBest[i];
                 bestPos = i;
@@ -2276,97 +2124,90 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
     }
 
     @Test
-    public void testEstimateWithoutErrorAndWithoutBiasOneRadioSource() throws LockedException,
-            NotReadyException, FingerprintEstimationException {
-        int numBestIsNoMeanRssiPosition = 0;
-        int numBestIsRssiPosition = 0;
-        int numBestIsNoMeansEstimatedPosition = 0;
-        int numBestIsNoMeanFinderEstimatedPosition = 0;
-        int numBestIsNoMeanReadingsEstimatedPosition = 0;
-        int numBestIsEstimatedPosition = 0;
+    void testEstimateWithoutErrorAndWithoutBiasOneRadioSource() throws LockedException, NotReadyException,
+            FingerprintEstimationException {
+        var numBestIsNoMeanRssiPosition = 0;
+        var numBestIsRssiPosition = 0;
+        var numBestIsNoMeansEstimatedPosition = 0;
+        var numBestIsNoMeanFinderEstimatedPosition = 0;
+        var numBestIsNoMeanReadingsEstimatedPosition = 0;
+        var numBestIsEstimatedPosition = 0;
 
-        double avgClosestDistance = 0.0;
-        double avgNoMeanRssiDistance = 0.0;
-        double avgRssiDistance = 0.0;
-        double avgNoMeansEstimatedError = 0.0;
-        double avgNoMeanFinderEstimatedError = 0.0;
-        double avgNoMeanReadingsEstimatedError = 0.0;
-        double avgEstimatedError = 0.0;
+        var avgClosestDistance = 0.0;
+        var avgNoMeanRssiDistance = 0.0;
+        var avgRssiDistance = 0.0;
+        var avgNoMeansEstimatedError = 0.0;
+        var avgNoMeanFinderEstimatedError = 0.0;
+        var avgNoMeanReadingsEstimatedError = 0.0;
+        var avgEstimatedError = 0.0;
 
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
             // build sources
-            final int numSources = 1;
-            final List<RadioSourceLocated<Point2D>> sources = new ArrayList<>();
-            for (int i = 0; i < numSources; i++) {
-                final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
-                final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
-                final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-                final InhomogeneousPoint2D position = new InhomogeneousPoint2D(x, y);
+            final var numSources = 1;
+            final var sources = new ArrayList<RadioSourceLocated<Point2D>>();
+            for (var i = 0; i < numSources; i++) {
+                final var x = randomizer.nextDouble(MIN_POS, MAX_POS);
+                final var y = randomizer.nextDouble(MIN_POS, MAX_POS);
+                final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+                final var position = new InhomogeneousPoint2D(x, y);
 
-                final WifiAccessPointWithPowerAndLocated2D accessPoint =
-                        new WifiAccessPointWithPowerAndLocated2D(
-                                "bssid" + i, FREQUENCY, transmittedPowerdBm, position);
+                final var accessPoint = new WifiAccessPointWithPowerAndLocated2D("bssid" + i, FREQUENCY,
+                        transmittedPowerdBm, position);
                 sources.add(accessPoint);
             }
 
             // build located fingerprints
-            final int numFingerprints = randomizer.nextInt(MIN_FINGERPRINTS, MAX_FINGERPRINTS);
-            final List<RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>>> locatedFingerprints =
-                    new ArrayList<>();
-            for (int j = 0; j < numFingerprints; j++) {
-                final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
-                final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
-                final InhomogeneousPoint2D position = new InhomogeneousPoint2D(x, y);
+            final var numFingerprints = randomizer.nextInt(MIN_FINGERPRINTS, MAX_FINGERPRINTS);
+            final var locatedFingerprints =
+                    new ArrayList<RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>>>();
+            for (var j = 0; j < numFingerprints; j++) {
+                final var x = randomizer.nextDouble(MIN_POS, MAX_POS);
+                final var y = randomizer.nextDouble(MIN_POS, MAX_POS);
+                final var position = new InhomogeneousPoint2D(x, y);
 
-                final List<RssiReading<RadioSource>> readings = new ArrayList<>();
-                for (final RadioSourceLocated<Point2D> source : sources) {
-                    final double distance = source.getPosition().distanceTo(position);
-                    final double transmittedPowerdBm = ((WifiAccessPointWithPowerAndLocated2D) source).
-                            getTransmittedPower();
+                final var readings = new ArrayList<RssiReading<RadioSource>>();
+                for (final var source : sources) {
+                    final var distance = source.getPosition().distanceTo(position);
+                    final var transmittedPowerdBm = ((WifiAccessPointWithPowerAndLocated2D) source)
+                            .getTransmittedPower();
 
-                    final double receivedRssi = Utils.powerTodBm(receivedPower(Utils.dBmToPower(transmittedPowerdBm),
+                    final var receivedRssi = Utils.powerTodBm(receivedPower(Utils.dBmToPower(transmittedPowerdBm),
                             distance, LinearFingerprintPositionEstimator2D.DEFAULT_PATH_LOSS_EXPONENT));
-                    final RssiReading<RadioSource> reading = new RssiReading<>((RadioSource) source,
-                            receivedRssi);
+                    final var reading = new RssiReading<>((RadioSource) source, receivedRssi);
                     readings.add(reading);
                 }
 
-                final RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>> locatedFingerprint =
-                        new RssiFingerprintLocated2D<>(readings, position);
+                final var locatedFingerprint = new RssiFingerprintLocated2D<>(readings, position);
                 locatedFingerprints.add(locatedFingerprint);
             }
 
             // build non-located fingerprint
-            final double x = randomizer.nextDouble(MIN_POS, MAX_POS);
-            final double y = randomizer.nextDouble(MIN_POS, MAX_POS);
-            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(x, y);
+            final var x = randomizer.nextDouble(MIN_POS, MAX_POS);
+            final var y = randomizer.nextDouble(MIN_POS, MAX_POS);
+            final var position = new InhomogeneousPoint2D(x, y);
 
-            final List<RssiReading<RadioSource>> readings = new ArrayList<>();
-            for (final RadioSourceLocated<Point2D> source : sources) {
-                final double distance = source.getPosition().distanceTo(position);
-                final double transmittedPowerdBm = ((WifiAccessPointWithPowerAndLocated2D) source).
-                        getTransmittedPower();
+            final var readings = new ArrayList<RssiReading<RadioSource>>();
+            for (final var source : sources) {
+                final var distance = source.getPosition().distanceTo(position);
+                final var transmittedPowerdBm = ((WifiAccessPointWithPowerAndLocated2D) source).getTransmittedPower();
 
-                final double receivedRssi = Utils.powerTodBm(receivedPower(Utils.dBmToPower(transmittedPowerdBm),
-                        distance, LinearFingerprintPositionEstimator2D.DEFAULT_PATH_LOSS_EXPONENT));
-                final RssiReading<RadioSource> reading = new RssiReading<>((RadioSource) source,
-                        receivedRssi);
+                final var receivedRssi = Utils.powerTodBm(receivedPower(Utils.dBmToPower(transmittedPowerdBm), distance,
+                        LinearFingerprintPositionEstimator2D.DEFAULT_PATH_LOSS_EXPONENT));
+                final var reading = new RssiReading<>((RadioSource) source, receivedRssi);
                 readings.add(reading);
             }
 
-            final RssiFingerprint<RadioSource, RssiReading<RadioSource>> fingerprint =
-                    new RssiFingerprint<>(readings);
+            final var fingerprint = new RssiFingerprint<>(readings);
 
             // find real closest fingerprint based on location
             RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>> closestFingerprint = null;
             Point2D closestPosition = null;
-            double distance = Double.MAX_VALUE;
-            for (final RssiFingerprintLocated2D<RadioSource, RssiReading<RadioSource>> locatedFingerprint :
-                    locatedFingerprints) {
-                final Point2D fingerprintPosition = locatedFingerprint.getPosition();
-                final double dist = fingerprintPosition.distanceTo(position);
+            var distance = Double.MAX_VALUE;
+            for (final var locatedFingerprint : locatedFingerprints) {
+                final var fingerprintPosition = locatedFingerprint.getPosition();
+                final var dist = fingerprintPosition.distanceTo(position);
                 if (dist < distance) {
                     distance = dist;
                     closestFingerprint = locatedFingerprint;
@@ -2377,34 +2218,30 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertNotNull(closestFingerprint);
             assertNotNull(closestPosition);
 
-            final double closestDistance = closestPosition.distanceTo(position);
+            final var closestDistance = closestPosition.distanceTo(position);
             avgClosestDistance += closestDistance / TIMES;
 
             // find the closest fingerprint based on RSSI without mean
-            final RadioSourceNoMeanKNearestFinder<Point2D, RadioSource> noMeanFinder =
-                    new RadioSourceNoMeanKNearestFinder<>(locatedFingerprints);
+            final var noMeanFinder = new RadioSourceNoMeanKNearestFinder<>(locatedFingerprints);
 
-            final RssiFingerprintLocated<RadioSource, RssiReading<RadioSource>, Point2D> nearestFingerprintNoMean =
-                    noMeanFinder.findNearestTo(fingerprint);
-            final Point2D noMeanRssiClosestPosition = nearestFingerprintNoMean.getPosition();
+            final var nearestFingerprintNoMean = noMeanFinder.findNearestTo(fingerprint);
+            final var noMeanRssiClosestPosition = nearestFingerprintNoMean.getPosition();
 
-            final double noMeanRssiClosestDistance = noMeanRssiClosestPosition.distanceTo(position);
+            final var noMeanRssiClosestDistance = noMeanRssiClosestPosition.distanceTo(position);
             avgNoMeanRssiDistance += noMeanRssiClosestDistance / TIMES;
 
             // find the closest fingerprint based on RSSI
-            final RadioSourceKNearestFinder<Point2D, RadioSource> finder =
-                    new RadioSourceKNearestFinder<>(locatedFingerprints);
+            final var finder = new RadioSourceKNearestFinder<>(locatedFingerprints);
 
-            final RssiFingerprintLocated<RadioSource, RssiReading<RadioSource>, Point2D> nearestFingerprint =
-                    finder.findNearestTo(fingerprint);
-            final Point2D rssiClosestPosition = nearestFingerprint.getPosition();
+            final var nearestFingerprint = finder.findNearestTo(fingerprint);
+            final var rssiClosestPosition = nearestFingerprint.getPosition();
 
-            final double rssiClosestDistance = rssiClosestPosition.distanceTo(position);
+            final var rssiClosestDistance = rssiClosestPosition.distanceTo(position);
             avgRssiDistance += rssiClosestDistance / TIMES;
 
             // create estimator with means removed on finder and fingerprints
-            LinearFingerprintPositionEstimator2D estimator = new LinearFingerprintPositionEstimator2D(
-                    locatedFingerprints, fingerprint, sources, this);
+            var estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints, fingerprint, sources,
+                    this);
             estimator.setUseNoMeanNearestFingerprintFinder(true);
             estimator.setMeansFromFingerprintReadingsRemoved(true);
 
@@ -2427,19 +2264,19 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
-            Point2D estimatedPosition = estimator.getEstimatedPosition();
+            var estimatedPosition = estimator.getEstimatedPosition();
 
             assertNotNull(estimatedPosition);
 
-            final double noMeansEstimatedError = estimatedPosition.distanceTo(position);
+            final var noMeansEstimatedError = estimatedPosition.distanceTo(position);
             avgNoMeansEstimatedError += noMeansEstimatedError / TIMES;
 
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(2, estimator.getNearestFingerprints().size());
 
             // create estimator with means removed only on finder
-            estimator = new LinearFingerprintPositionEstimator2D(
-                    locatedFingerprints, fingerprint, sources, this);
+            estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints, fingerprint, sources,
+                    this);
             estimator.setUseNoMeanNearestFingerprintFinder(true);
             estimator.setMeansFromFingerprintReadingsRemoved(false);
 
@@ -2465,15 +2302,15 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             assertNotNull(estimatedPosition);
 
-            final double noMeanFinderEstimatedError = estimatedPosition.distanceTo(position);
+            final var noMeanFinderEstimatedError = estimatedPosition.distanceTo(position);
             avgNoMeanFinderEstimatedError += noMeanFinderEstimatedError / TIMES;
 
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(2, estimator.getNearestFingerprints().size());
 
             // create estimator with means removed only on readings
-            estimator = new LinearFingerprintPositionEstimator2D(
-                    locatedFingerprints, fingerprint, sources, this);
+            estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints, fingerprint, sources,
+                    this);
             estimator.setUseNoMeanNearestFingerprintFinder(false);
             estimator.setMeansFromFingerprintReadingsRemoved(true);
 
@@ -2499,15 +2336,15 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             assertNotNull(estimatedPosition);
 
-            final double noMeanReadingsEstimatedError = estimatedPosition.distanceTo(position);
+            final var noMeanReadingsEstimatedError = estimatedPosition.distanceTo(position);
             avgNoMeanReadingsEstimatedError += noMeanReadingsEstimatedError / TIMES;
 
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(2, estimator.getNearestFingerprints().size());
 
             // create estimator with means not removed
-            estimator = new LinearFingerprintPositionEstimator2D(
-                    locatedFingerprints, fingerprint, sources, this);
+            estimator = new LinearFingerprintPositionEstimator2D(locatedFingerprints, fingerprint, sources,
+                    this);
             estimator.setUseNoMeanNearestFingerprintFinder(false);
             estimator.setMeansFromFingerprintReadingsRemoved(false);
 
@@ -2533,13 +2370,13 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
 
             assertNotNull(estimatedPosition);
 
-            final double estimatedError = estimatedPosition.distanceTo(position);
+            final var estimatedError = estimatedPosition.distanceTo(position);
             avgEstimatedError += estimatedError / TIMES;
 
             assertNotNull(estimator.getNearestFingerprints());
             assertEquals(2, estimator.getNearestFingerprints().size());
 
-            final double[] errors = new double[]{
+            final var errors = new double[]{
                     closestDistance,
                     noMeanRssiClosestDistance,
                     rssiClosestDistance,
@@ -2550,9 +2387,9 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
             };
 
             // find minimum error
-            double minError = Double.MAX_VALUE;
-            int bestErrorPos = -1;
-            for (int i = 0; i < errors.length; i++) {
+            var minError = Double.MAX_VALUE;
+            var bestErrorPos = -1;
+            for (var i = 0; i < errors.length; i++) {
                 if (errors[i] < minError) {
                     minError = errors[i];
                     bestErrorPos = i;
@@ -2577,6 +2414,8 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                     break;
                 case 5:
                     numBestIsEstimatedPosition++;
+                    break;
+                default:
                     break;
             }
         }
@@ -2597,21 +2436,15 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
                 (double) numBestIsEstimatedPosition / (double) TIMES * 100.0);
 
         LOGGER.log(Level.INFO, "Avg. closest fingerprint distance: {0} m", avgClosestDistance);
-        LOGGER.log(Level.INFO,
-                "Avg. no mean RSSI closest fingerprint distance: {0} m", avgNoMeanRssiDistance);
-        LOGGER.log(Level.INFO,
-                "Avg. RSSI closest fingerprint distance: {0} m", avgRssiDistance);
-        LOGGER.log(Level.INFO,
-                "Avg. Estimated position error with means removed: {0} m", avgNoMeansEstimatedError);
-        LOGGER.log(Level.INFO,
-                "Avg. Estimated position with means removed only on finder error: {0} m",
+        LOGGER.log(Level.INFO, "Avg. no mean RSSI closest fingerprint distance: {0} m", avgNoMeanRssiDistance);
+        LOGGER.log(Level.INFO, "Avg. RSSI closest fingerprint distance: {0} m", avgRssiDistance);
+        LOGGER.log(Level.INFO, "Avg. Estimated position error with means removed: {0} m",
+                avgNoMeansEstimatedError);
+        LOGGER.log(Level.INFO, "Avg. Estimated position with means removed only on finder error: {0} m",
                 avgNoMeanFinderEstimatedError);
-        LOGGER.log(Level.INFO,
-                "Avg. Estimated position with means removed only on readings error: {0} m",
+        LOGGER.log(Level.INFO, "Avg. Estimated position with means removed only on readings error: {0} m",
                 avgNoMeanReadingsEstimatedError);
-        LOGGER.log(Level.INFO,
-                "Avg. Estimated position with means not removed error: {0} m",
-                avgEstimatedError);
+        LOGGER.log(Level.INFO, "Avg. Estimated position with means not removed error: {0} m", avgEstimatedError);
     }
 
     @Override
@@ -2630,69 +2463,26 @@ public class LinearFingerprintPositionEstimator2DTest implements FingerprintPosi
         estimateStart = estimateEnd = 0;
     }
 
-    private double receivedPower(final double equivalentTransmittedPower,
-                                 final double distance, final double pathLossExponent) {
+    private static double receivedPower(final double equivalentTransmittedPower, final double distance,
+                                        final double pathLossExponent) {
         // Pr = Pt*Gt*Gr*lambda^2/(4*pi*d)^2,    where Pr is the received power
         // lambda = c/f, where lambda is wavelength,
         // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the received Gain
         // Pr = Pte*c^2/((4*pi*f)^2 * d^2)
-        final double k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI * FREQUENCY), pathLossExponent);
-        return equivalentTransmittedPower * k /
-                Math.pow(distance, pathLossExponent);
+        final var k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI * FREQUENCY), pathLossExponent);
+        return equivalentTransmittedPower * k / Math.pow(distance, pathLossExponent);
     }
 
     private void checkLocked(final LinearFingerprintPositionEstimator2D estimator) {
-        try {
-            estimator.setLocatedFingerprints(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setFingerprint(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setMinMaxNearestFingerprints(1, 1);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setPathLossExponent(2.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setListener(this);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setSources(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setUseSourcesPathLossExponentWhenAvailable(false);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setUseNoMeanNearestFingerprintFinder(false);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setMeansFromFingerprintReadingsRemoved(false);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.estimate();
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        } catch (Exception e) {
-            fail("LockedException expected but not thrown");
-        }
+        assertThrows(LockedException.class, () -> estimator.setLocatedFingerprints(null));
+        assertThrows(LockedException.class, () -> estimator.setFingerprint(null));
+        assertThrows(LockedException.class, () -> estimator.setMinMaxNearestFingerprints(1, 1));
+        assertThrows(LockedException.class, () -> estimator.setPathLossExponent(2.0));
+        assertThrows(LockedException.class, () -> estimator.setListener(this));
+        assertThrows(LockedException.class, () -> estimator.setSources(null));
+        assertThrows(LockedException.class, () -> estimator.setUseSourcesPathLossExponentWhenAvailable(false));
+        assertThrows(LockedException.class, () -> estimator.setUseNoMeanNearestFingerprintFinder(false));
+        assertThrows(LockedException.class, () -> estimator.setMeansFromFingerprintReadingsRemoved(false));
+        assertThrows(LockedException.class, estimator::estimate);
     }
 }

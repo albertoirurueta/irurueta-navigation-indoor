@@ -40,8 +40,7 @@ import java.util.List;
  *
  * @param <P> a {@link Point} type.
  */
-public abstract class NonLinearRangingPositionEstimator<P extends Point<?>> extends
-        RangingPositionEstimator<P> {
+public abstract class NonLinearRangingPositionEstimator<P extends Point<?>> extends RangingPositionEstimator<P> {
 
     /**
      * Distance standard deviation assumed for provided distances as a fallback when
@@ -53,31 +52,30 @@ public abstract class NonLinearRangingPositionEstimator<P extends Point<?>> exte
     /**
      * A non-linear lateration solver to solve position.
      */
-    protected NonLinearLeastSquaresLaterationSolver<P> mTrilaterationSolver;
+    protected NonLinearLeastSquaresLaterationSolver<P> trilaterationSolver;
 
     /**
      * Listener for the lateration solver.
      */
-    protected LaterationSolverListener<P> mLaterationSolverListener;
+    protected LaterationSolverListener<P> laterationSolverListener;
 
     /**
      * Initial position to start position estimation.
      * If not defined, centroid of provided located sources will be used.
      */
-    private P mInitialPosition;
+    private P initialPosition;
 
     /**
      * Indicates whether located radio source position covariance must be taken
      * into account (if available) to determine distance standard deviation.
      */
-    private boolean mUseRadioSourcePositionCovariance;
+    private boolean useRadioSourcePositionCovariance;
 
     /**
      * Distance standard deviation fallback value to use when none can be
      * determined from provided radio sources and fingerprint readings.
      */
-    private double mFallbackDistanceStandardDeviation =
-            FALLBACK_DISTANCE_STANDARD_DEVIATION;
+    private double fallbackDistanceStandardDeviation = FALLBACK_DISTANCE_STANDARD_DEVIATION;
 
     /**
      * Constructor.
@@ -92,8 +90,7 @@ public abstract class NonLinearRangingPositionEstimator<P extends Point<?>> exte
      *
      * @param listener listener in charge of handling events.
      */
-    protected NonLinearRangingPositionEstimator(
-            final RangingPositionEstimatorListener<P> listener) {
+    protected NonLinearRangingPositionEstimator(final RangingPositionEstimatorListener<P> listener) {
         super(listener);
         init();
     }
@@ -105,7 +102,7 @@ public abstract class NonLinearRangingPositionEstimator<P extends Point<?>> exte
      */
     protected NonLinearRangingPositionEstimator(final P initialPosition) {
         this();
-        mInitialPosition = initialPosition;
+        this.initialPosition = initialPosition;
     }
 
     /**
@@ -117,7 +114,7 @@ public abstract class NonLinearRangingPositionEstimator<P extends Point<?>> exte
     protected NonLinearRangingPositionEstimator(
             final P initialPosition, final RangingPositionEstimatorListener<P> listener) {
         this(listener);
-        mInitialPosition = initialPosition;
+        this.initialPosition = initialPosition;
     }
 
     /**
@@ -128,7 +125,7 @@ public abstract class NonLinearRangingPositionEstimator<P extends Point<?>> exte
      * @return initial position to start position estimation.
      */
     public P getInitialPosition() {
-        return mInitialPosition;
+        return initialPosition;
     }
 
     /**
@@ -143,7 +140,7 @@ public abstract class NonLinearRangingPositionEstimator<P extends Point<?>> exte
         if (isLocked()) {
             throw new LockedException();
         }
-        mInitialPosition = initialPosition;
+        this.initialPosition = initialPosition;
     }
 
     /**
@@ -154,7 +151,7 @@ public abstract class NonLinearRangingPositionEstimator<P extends Point<?>> exte
      * otherwise.
      */
     public boolean isRadioSourcePositionCovarianceUsed() {
-        return mUseRadioSourcePositionCovariance;
+        return useRadioSourcePositionCovariance;
     }
 
     /**
@@ -165,12 +162,12 @@ public abstract class NonLinearRangingPositionEstimator<P extends Point<?>> exte
      *                                         covariance into account, false otherwise.
      * @throws LockedException if estimator is locked.
      */
-    public void setRadioSourcePositionCovarianceUsed(
-            final boolean useRadioSourcePositionCovariance) throws LockedException {
+    public void setRadioSourcePositionCovarianceUsed(final boolean useRadioSourcePositionCovariance)
+            throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
-        mUseRadioSourcePositionCovariance = useRadioSourcePositionCovariance;
+        this.useRadioSourcePositionCovariance = useRadioSourcePositionCovariance;
     }
 
     /**
@@ -180,7 +177,7 @@ public abstract class NonLinearRangingPositionEstimator<P extends Point<?>> exte
      * @return distance standard deviation to use as fallback.
      */
     public double getFallbackDistanceStandardDeviation() {
-        return mFallbackDistanceStandardDeviation;
+        return fallbackDistanceStandardDeviation;
     }
 
     /**
@@ -191,12 +188,12 @@ public abstract class NonLinearRangingPositionEstimator<P extends Point<?>> exte
      *                                          as fallback.
      * @throws LockedException if estimator is locked.
      */
-    public void setFallbackDistanceStandardDeviation(
-            final double fallbackDistanceStandardDeviation) throws LockedException {
+    public void setFallbackDistanceStandardDeviation(final double fallbackDistanceStandardDeviation)
+            throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
-        mFallbackDistanceStandardDeviation = fallbackDistanceStandardDeviation;
+        this.fallbackDistanceStandardDeviation = fallbackDistanceStandardDeviation;
     }
 
     /**
@@ -206,7 +203,7 @@ public abstract class NonLinearRangingPositionEstimator<P extends Point<?>> exte
      */
     @Override
     public int getMinRequiredSources() {
-        return mTrilaterationSolver.getMinRequiredPositionsAndDistances();
+        return trilaterationSolver.getMinRequiredPositionsAndDistances();
     }
 
     /**
@@ -216,7 +213,7 @@ public abstract class NonLinearRangingPositionEstimator<P extends Point<?>> exte
      */
     @Override
     public boolean isReady() {
-        return mTrilaterationSolver.isReady();
+        return trilaterationSolver.isReady();
     }
 
     /**
@@ -227,7 +224,7 @@ public abstract class NonLinearRangingPositionEstimator<P extends Point<?>> exte
      */
     @Override
     public boolean isLocked() {
-        return mTrilaterationSolver.isLocked();
+        return trilaterationSolver.isLocked();
     }
 
     /**
@@ -238,7 +235,7 @@ public abstract class NonLinearRangingPositionEstimator<P extends Point<?>> exte
      * @return standard deviations used internally.
      */
     public double[] getDistanceStandardDeviations() {
-        return mTrilaterationSolver.getDistanceStandardDeviations();
+        return trilaterationSolver.getDistanceStandardDeviations();
     }
 
     /**
@@ -250,14 +247,12 @@ public abstract class NonLinearRangingPositionEstimator<P extends Point<?>> exte
      * @throws PositionEstimationException if estimation fails for some other reason.
      */
     @Override
-    public void estimate() throws LockedException, NotReadyException,
-            PositionEstimationException {
+    public void estimate() throws LockedException, NotReadyException, PositionEstimationException {
         try {
-            mTrilaterationSolver.setInitialPosition(mInitialPosition);
+            trilaterationSolver.setInitialPosition(initialPosition);
 
-            mTrilaterationSolver.solve();
-            mEstimatedPositionCoordinates =
-                    mTrilaterationSolver.getEstimatedPositionCoordinates();
+            trilaterationSolver.solve();
+            estimatedPositionCoordinates = trilaterationSolver.getEstimatedPositionCoordinates();
         } catch (final LaterationException e) {
             throw new PositionEstimationException(e);
         }
@@ -270,7 +265,7 @@ public abstract class NonLinearRangingPositionEstimator<P extends Point<?>> exte
      */
     @Override
     public P[] getPositions() {
-        return mTrilaterationSolver.getPositions();
+        return trilaterationSolver.getPositions();
     }
 
     /**
@@ -282,7 +277,7 @@ public abstract class NonLinearRangingPositionEstimator<P extends Point<?>> exte
      */
     @Override
     public double[] getDistances() {
-        return mTrilaterationSolver.getDistances();
+        return trilaterationSolver.getDistances();
     }
 
     /**
@@ -291,7 +286,7 @@ public abstract class NonLinearRangingPositionEstimator<P extends Point<?>> exte
      * @return estimated covariance matrix for estimated position.
      */
     public Matrix getCovariance() {
-        return mTrilaterationSolver.getCovariance();
+        return trilaterationSolver.getCovariance();
     }
 
     /**
@@ -331,28 +326,25 @@ public abstract class NonLinearRangingPositionEstimator<P extends Point<?>> exte
      * @param distanceStandardDeviations standard deviations of distances to be set.
      */
     protected abstract void setPositionsDistancesAndDistanceStandardDeviations(
-            final List<P> positions, final List<Double> distances,
-            final List<Double> distanceStandardDeviations);
+            final List<P> positions, final List<Double> distances, final List<Double> distanceStandardDeviations);
 
     /**
      * Initializes lateration solver listener.
      */
     @SuppressWarnings("Duplicates")
     private void init() {
-        mLaterationSolverListener = new LaterationSolverListener<P>() {
+        laterationSolverListener = new LaterationSolverListener<>() {
             @Override
             public void onSolveStart(final LaterationSolver<P> solver) {
-                if (mListener != null) {
-                    mListener.onEstimateStart(
-                            NonLinearRangingPositionEstimator.this);
+                if (listener != null) {
+                    listener.onEstimateStart(NonLinearRangingPositionEstimator.this);
                 }
             }
 
             @Override
             public void onSolveEnd(final LaterationSolver<P> solver) {
-                if (mListener != null) {
-                    mListener.onEstimateEnd(
-                            NonLinearRangingPositionEstimator.this);
+                if (listener != null) {
+                    listener.onEstimateEnd(NonLinearRangingPositionEstimator.this);
                 }
             }
         };
@@ -364,27 +356,23 @@ public abstract class NonLinearRangingPositionEstimator<P extends Point<?>> exte
      */
     @SuppressWarnings("Duplicates")
     private void buildPositionsDistancesAndDistanceStandardDeviations() {
-        if (mTrilaterationSolver == null) {
+        if (trilaterationSolver == null) {
             return;
         }
 
-        final int min = getMinRequiredSources();
-        if (mSources == null || mFingerprint == null ||
-                mSources.size() < min ||
-                mFingerprint.getReadings() == null ||
-                mFingerprint.getReadings().size() < min) {
+        final var min = getMinRequiredSources();
+        if (sources == null || fingerprint == null || sources.size() < min || fingerprint.getReadings() == null
+                || fingerprint.getReadings().size() < min) {
             return;
         }
 
-        final List<P> positions = new ArrayList<>();
-        final List<Double> distances = new ArrayList<>();
-        final List<Double> distanceStandardDeviations = new ArrayList<>();
-        PositionEstimatorHelper.buildPositionsDistancesAndDistanceStandardDeviations(
-                mSources, mFingerprint, mUseRadioSourcePositionCovariance,
-                mFallbackDistanceStandardDeviation, positions, distances,
+        final var positions = new ArrayList<P>();
+        final var distances = new ArrayList<Double>();
+        final var distanceStandardDeviations = new ArrayList<Double>();
+        PositionEstimatorHelper.buildPositionsDistancesAndDistanceStandardDeviations(sources, fingerprint,
+                useRadioSourcePositionCovariance, fallbackDistanceStandardDeviation, positions, distances,
                 distanceStandardDeviations);
 
-        setPositionsDistancesAndDistanceStandardDeviations(positions, distances,
-                distanceStandardDeviations);
+        setPositionsDistancesAndDistanceStandardDeviations(positions, distances, distanceStandardDeviations);
     }
 }

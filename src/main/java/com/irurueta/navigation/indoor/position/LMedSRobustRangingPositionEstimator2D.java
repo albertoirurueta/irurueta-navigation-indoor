@@ -50,8 +50,7 @@ public class LMedSRobustRangingPositionEstimator2D extends RobustRangingPosition
      * @throws IllegalArgumentException if provided sources is null or the number of
      *                                  provided sources is less than the required minimum.
      */
-    public LMedSRobustRangingPositionEstimator2D(
-            final List<? extends RadioSourceLocated<Point2D>> sources) {
+    public LMedSRobustRangingPositionEstimator2D(final List<? extends RadioSourceLocated<Point2D>> sources) {
         super();
         init();
         internalSetSources(sources);
@@ -96,8 +95,7 @@ public class LMedSRobustRangingPositionEstimator2D extends RobustRangingPosition
      *
      * @param listener listener in charge of handling events.
      */
-    public LMedSRobustRangingPositionEstimator2D(
-            final RobustRangingPositionEstimatorListener<Point2D> listener) {
+    public LMedSRobustRangingPositionEstimator2D(final RobustRangingPositionEstimatorListener<Point2D> listener) {
         super(listener);
         init();
     }
@@ -176,8 +174,7 @@ public class LMedSRobustRangingPositionEstimator2D extends RobustRangingPosition
      * accuracy has been reached.
      */
     public double getStopThreshold() {
-        return ((LMedSRobustLateration2DSolver) mLaterationSolver).
-                getStopThreshold();
+        return ((LMedSRobustLateration2DSolver) laterationSolver).getStopThreshold();
     }
 
     /**
@@ -202,8 +199,7 @@ public class LMedSRobustRangingPositionEstimator2D extends RobustRangingPosition
      * @throws LockedException          if this solver is locked.
      */
     public void setStopThreshold(final double stopThreshold) throws LockedException {
-        ((LMedSRobustLateration2DSolver) mLaterationSolver).
-                setStopThreshold(stopThreshold);
+        ((LMedSRobustLateration2DSolver) laterationSolver).setStopThreshold(stopThreshold);
     }
 
     /**
@@ -220,7 +216,6 @@ public class LMedSRobustRangingPositionEstimator2D extends RobustRangingPosition
      * Initializes robust lateration solver.
      */
     private void init() {
-        mLaterationSolver = new LMedSRobustLateration2DSolver(
-                mTrilaterationSolverListener);
+        laterationSolver = new LMedSRobustLateration2DSolver(trilaterationSolverListener);
     }
 }

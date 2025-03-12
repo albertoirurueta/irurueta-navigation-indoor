@@ -26,31 +26,27 @@ import com.irurueta.navigation.indoor.Beacon;
 import com.irurueta.navigation.indoor.BeaconIdentifier;
 import com.irurueta.navigation.indoor.BeaconLocated2D;
 import com.irurueta.navigation.indoor.IndoorException;
-import com.irurueta.navigation.indoor.RangingReadingLocated;
 import com.irurueta.navigation.indoor.RangingReadingLocated2D;
 import com.irurueta.navigation.indoor.WifiAccessPoint;
 import com.irurueta.navigation.indoor.WifiAccessPointLocated2D;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class RangingRadioSourceEstimator2DTest implements
-        RangingRadioSourceEstimatorListener<WifiAccessPoint, Point2D> {
+class RangingRadioSourceEstimator2DTest implements RangingRadioSourceEstimatorListener<WifiAccessPoint, Point2D> {
 
-    private static final Logger LOGGER = Logger.getLogger(
-            RangingRadioSourceEstimator3DTest.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(RangingRadioSourceEstimator3DTest.class.getName());
 
     private static final double FREQUENCY = 2.4e9; // (Hz)
     private static final double TRANSMITTED_POWER_DBM = -50.0;
@@ -72,11 +68,11 @@ public class RangingRadioSourceEstimator2DTest implements
     private int estimateEnd;
 
     @Test
-    public void testConstructor() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testConstructor() {
+        final var randomizer = new UniformRandomizer();
 
         // test empty constructor
-        RangingRadioSourceEstimator2D<WifiAccessPoint> estimator = new RangingRadioSourceEstimator2D<>();
+        var estimator = new RangingRadioSourceEstimator2D<WifiAccessPoint>();
 
         // check default values
         assertEquals(3, estimator.getMinReadings());
@@ -98,12 +94,11 @@ public class RangingRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedPositionCovariance());
 
         // test constructor with readings
-        final List<RangingReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-        final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
-        for (int i = 0; i < 5; i++) {
-            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+        final var readings = new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>();
+        final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+        for (var i = 0; i < 5; i++) {
+            final var position = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
             readings.add(new RangingReadingLocated2D<>(accessPoint, 0.0, position));
         }
 
@@ -129,20 +124,10 @@ public class RangingRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedPositionCovariance());
 
         // force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new RangingRadioSourceEstimator2D<>(
-                    (List<RangingReadingLocated2D<WifiAccessPoint>>) null);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new RangingRadioSourceEstimator2D<>(
-                    new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>());
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new RangingRadioSourceEstimator2D<>(
+                (List<RangingReadingLocated2D<WifiAccessPoint>>) null));
+        final var wrongReadings = new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>();
+        assertThrows(IllegalArgumentException.class, () -> new RangingRadioSourceEstimator2D<>(wrongReadings));
 
         // test constructor with listener
         estimator = new RangingRadioSourceEstimator2D<>(this);
@@ -189,25 +174,14 @@ public class RangingRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedPositionCovariance());
 
         // force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new RangingRadioSourceEstimator2D<>(
-                    (List<RangingReadingLocated2D<WifiAccessPoint>>) null, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new RangingRadioSourceEstimator2D<>(
-                    new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>(), this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new RangingRadioSourceEstimator2D<>(
+                (List<RangingReadingLocated2D<WifiAccessPoint>>) null, this));
+        assertThrows(IllegalArgumentException.class, () -> new RangingRadioSourceEstimator2D<>(wrongReadings,
+                this));
 
         // test constructor with initial position
-        final InhomogeneousPoint2D initialPosition = new InhomogeneousPoint2D(
-                randomizer.nextDouble(MIN_POS, MAX_POS),
-                randomizer.nextDouble(MIN_POS, MAX_POS));
+        final var initialPosition = new InhomogeneousPoint2D(
+                randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
         estimator = new RangingRadioSourceEstimator2D<>(initialPosition);
 
         // check default values
@@ -252,19 +226,10 @@ public class RangingRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedPositionCovariance());
 
         // force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new RangingRadioSourceEstimator2D<>(null, initialPosition);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new RangingRadioSourceEstimator2D<>(
-                    new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>(), initialPosition);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new RangingRadioSourceEstimator2D<>(null,
+                initialPosition));
+        assertThrows(IllegalArgumentException.class, () -> new RangingRadioSourceEstimator2D<>(wrongReadings,
+                initialPosition));
 
         // test constructor with initial position and listener
         estimator = new RangingRadioSourceEstimator2D<>(initialPosition, this);
@@ -311,33 +276,23 @@ public class RangingRadioSourceEstimator2DTest implements
         assertNull(estimator.getEstimatedPositionCovariance());
 
         // force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new RangingRadioSourceEstimator2D<>(null, initialPosition, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new RangingRadioSourceEstimator2D<>(
-                    new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>(), initialPosition, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new RangingRadioSourceEstimator2D<>(null,
+                initialPosition, this));
+        assertThrows(IllegalArgumentException.class, () -> new RangingRadioSourceEstimator2D<>(wrongReadings,
+                initialPosition, this));
     }
 
     @Test
-    public void testGetSetInitialPosition() throws LockedException {
-        final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator = new RangingRadioSourceEstimator2D<>();
+    void testGetSetInitialPosition() throws LockedException {
+        final var estimator = new RangingRadioSourceEstimator2D<WifiAccessPoint>();
 
         // check default value
         assertNull(estimator.getInitialPosition());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final InhomogeneousPoint2D initialPosition = new InhomogeneousPoint2D(
-                randomizer.nextDouble(MIN_POS, MAX_POS),
-                randomizer.nextDouble(MIN_POS, MAX_POS));
+        final var randomizer = new UniformRandomizer();
+        final var initialPosition = new InhomogeneousPoint2D(
+                randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
         estimator.setInitialPosition(initialPosition);
 
         // check
@@ -345,8 +300,8 @@ public class RangingRadioSourceEstimator2DTest implements
     }
 
     @Test
-    public void testIsSetNonLinearSolverEnabled() throws LockedException {
-        final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator = new RangingRadioSourceEstimator2D<>();
+    void testIsSetNonLinearSolverEnabled() throws LockedException {
+        final var estimator = new RangingRadioSourceEstimator2D<WifiAccessPoint>();
 
         // check default value
         assertTrue(estimator.isNonLinearSolverEnabled());
@@ -365,8 +320,8 @@ public class RangingRadioSourceEstimator2DTest implements
     }
 
     @Test
-    public void testIsSetHomogeneousLinearSolverUsed() throws LockedException {
-        final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator = new RangingRadioSourceEstimator2D<>();
+    void testIsSetHomogeneousLinearSolverUsed() throws LockedException {
+        final var estimator = new RangingRadioSourceEstimator2D<WifiAccessPoint>();
 
         // check default value
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
@@ -385,8 +340,8 @@ public class RangingRadioSourceEstimator2DTest implements
     }
 
     @Test
-    public void testGetSetUseReadingPositionCovariance() throws LockedException {
-        final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator = new RangingRadioSourceEstimator2D<>();
+    void testGetSetUseReadingPositionCovariance() throws LockedException {
+        final var estimator = new RangingRadioSourceEstimator2D<WifiAccessPoint>();
 
         // check default value
         assertEquals(RangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES,
@@ -402,41 +357,38 @@ public class RangingRadioSourceEstimator2DTest implements
     }
 
     @Test
-    public void testAreValidReadings() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testAreValidReadings() {
+        final var randomizer = new UniformRandomizer();
 
-        final List<RangingReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-        final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
-        for (int i = 0; i < 5; i++) {
-            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+        final var readings = new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>();
+        final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+        for (var i = 0; i < 5; i++) {
+            final var position = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
             readings.add(new RangingReadingLocated2D<>(accessPoint, 0.0, position));
         }
 
-        final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                new RangingRadioSourceEstimator2D<>();
+        final var estimator = new RangingRadioSourceEstimator2D<WifiAccessPoint>();
 
         assertTrue(estimator.areValidReadings(readings));
 
         assertFalse(estimator.areValidReadings(null));
-        assertFalse(estimator.areValidReadings(new ArrayList<RangingReadingLocated<WifiAccessPoint, Point2D>>()));
+        assertFalse(estimator.areValidReadings(new ArrayList<>()));
     }
 
     @Test
-    public void testGetSetReadings() throws LockedException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testGetSetReadings() throws LockedException {
+        final var randomizer = new UniformRandomizer();
 
-        final List<RangingReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-        final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
-        for (int i = 0; i < 5; i++) {
-            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+        final var readings = new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>();
+        final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+        for (var i = 0; i < 5; i++) {
+            final var position = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
             readings.add(new RangingReadingLocated2D<>(accessPoint, 0.0, position));
         }
 
-        final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator = new RangingRadioSourceEstimator2D<>();
+        final var estimator = new RangingRadioSourceEstimator2D<WifiAccessPoint>();
 
         // initial value
         assertNull(estimator.getReadings());
@@ -450,16 +402,12 @@ public class RangingRadioSourceEstimator2DTest implements
         assertTrue(estimator.isReady());
 
         // force IllegalArgumentException
-        try {
-            estimator.setReadings(null);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> estimator.setReadings(null));
     }
 
     @Test
-    public void testGetSetListener() throws LockedException {
-        final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator = new RangingRadioSourceEstimator2D<>();
+    void testGetSetListener() throws LockedException {
+        final var estimator = new RangingRadioSourceEstimator2D<WifiAccessPoint>();
 
         // check default value
         assertNull(estimator.getListener());
@@ -472,36 +420,35 @@ public class RangingRadioSourceEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateWithoutInitialPositionAndWithoutError()
-            throws LockedException, NotReadyException, AlgebraException, RadioSourceEstimationException {
+    void testEstimateWithoutInitialPositionAndWithoutError() throws LockedException, NotReadyException,
+            AlgebraException, RadioSourceEstimationException {
 
-        int numValidPosition = 0;
-        double positionError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValidPosition = 0;
+        var positionError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 readings.add(new RangingReadingLocated2D<>(accessPoint, distance, readingsPositions[i]));
             }
 
-            final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new RangingRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new RangingRadioSourceEstimator2D<>(readings, this);
 
             reset();
             assertTrue(estimator.isReady());
@@ -524,8 +471,7 @@ public class RangingRadioSourceEstimator2DTest implements
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointLocated2D estimatedAccessPoint =
-                    (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -533,10 +479,10 @@ public class RangingRadioSourceEstimator2DTest implements
             assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -552,8 +498,8 @@ public class RangingRadioSourceEstimator2DTest implements
             assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -563,61 +509,52 @@ public class RangingRadioSourceEstimator2DTest implements
         assertTrue(numValidPosition > 0);
 
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
 
         // force NotReadyException
-        final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                new RangingRadioSourceEstimator2D<>();
-
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new RangingRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateWithInitialPositionAndWithoutError() throws LockedException, NotReadyException,
-            AlgebraException, RadioSourceEstimationException {
+    void testEstimateWithInitialPositionAndWithoutError() throws LockedException, NotReadyException, AlgebraException,
+            RadioSourceEstimationException {
 
-        int numValidPosition = 0;
+        var numValidPosition = 0;
         double positionError;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 readings.add(new RangingReadingLocated2D<>(accessPoint, distance, readingsPositions[i]));
             }
 
-            final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new RangingRadioSourceEstimator2D<>(readings, accessPointPosition, this);
+            final var estimator = new RangingRadioSourceEstimator2D<>(readings, accessPointPosition, this);
 
             reset();
             assertTrue(estimator.isReady());
@@ -640,8 +577,7 @@ public class RangingRadioSourceEstimator2DTest implements
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointLocated2D estimatedAccessPoint =
-                    (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -649,10 +585,10 @@ public class RangingRadioSourceEstimator2DTest implements
             assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -668,8 +604,8 @@ public class RangingRadioSourceEstimator2DTest implements
             assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -678,169 +614,53 @@ public class RangingRadioSourceEstimator2DTest implements
 
         assertTrue(numValidPosition > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         // force NotReadyException
-        final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                new RangingRadioSourceEstimator2D<>(new InhomogeneousPoint2D());
-
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new RangingRadioSourceEstimator2D<WifiAccessPoint>(new InhomogeneousPoint2D());
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateWithoutInitialPositionAndDistanceErrors()
-            throws LockedException, NotReadyException, AlgebraException {
-
-        int numValidPosition = 0;
-        double positionError;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
-
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
-
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
-                readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
-
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
-                final double error = Math.abs(errorRandomizer.nextDouble());
-
-                readings.add(new RangingReadingLocated2D<>(accessPoint,
-                        distance + error, readingsPositions[i]));
-            }
-
-            final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new RangingRadioSourceEstimator2D<>(readings, this);
-
-            reset();
-            assertTrue(estimator.isReady());
-            assertFalse(estimator.isLocked());
-            assertNull(estimator.getEstimatedPosition());
-            assertNull(estimator.getEstimatedPositionCoordinates());
-            assertEquals(0, estimateStart);
-            assertEquals(0, estimateEnd);
-
-            try {
-                estimator.estimate();
-            } catch (final IndoorException e) {
-                continue;
-            }
-
-            // check
-            assertTrue(estimator.isReady());
-            assertFalse(estimator.isLocked());
-
-            assertNotNull(estimator.getEstimatedCovariance());
-            assertNotNull(estimator.getEstimatedPositionCovariance());
-
-            final WifiAccessPointLocated2D estimatedAccessPoint =
-                    (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
-
-            assertEquals("bssid", estimatedAccessPoint.getBssid());
-            assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
-            assertNull(estimatedAccessPoint.getSsid());
-            assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
-            assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
-
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
-            accuracyStd.setStandardDeviationFactor(1.0);
-
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
-            accuracy.setConfidence(0.99);
-
-            positionStd = accuracyStd.getAverageAccuracy();
-            positionStdConfidence = accuracyStd.getConfidence();
-            positionAccuracy = accuracy.getAverageAccuracy();
-            positionAccuracyConfidence = accuracy.getConfidence();
-
-            positionError = estimator.getEstimatedPosition().distanceTo(accessPointPosition);
-            if (positionError > LARGE_POSITION_ERROR) {
-                continue;
-            }
-
-            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, LARGE_POSITION_ERROR));
-            numValidPosition++;
-
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
-            assertEquals(1, estimateStart);
-            assertEquals(1, estimateEnd);
-
-            break;
-        }
-
-        assertTrue(numValidPosition > 0);
-
-
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
-                positionStd, formattedConfidence));
-
-        formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
-                positionAccuracy, formattedConfidence));
-    }
-
-    @Test
-    public void testEstimateWithInitialPositionAndDistanceErrors() throws LockedException, NotReadyException,
+    void testEstimateWithoutInitialPositionAndDistanceErrors() throws LockedException, NotReadyException,
             AlgebraException {
 
-        int numValidPosition = 0;
+        var numValidPosition = 0;
         double positionError;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var errorRandomizer = new GaussianRandomizer(0.0, ERROR_STD);
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
-                final double error = Math.abs(errorRandomizer.nextDouble());
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var error = Math.abs(errorRandomizer.nextDouble());
 
                 readings.add(new RangingReadingLocated2D<>(accessPoint, distance + error,
                         readingsPositions[i]));
             }
 
-            final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new RangingRadioSourceEstimator2D<>(readings, accessPointPosition, this);
+            final var estimator = new RangingRadioSourceEstimator2D<>(readings, this);
 
             reset();
             assertTrue(estimator.isReady());
@@ -863,8 +683,7 @@ public class RangingRadioSourceEstimator2DTest implements
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointLocated2D estimatedAccessPoint =
-                    (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -872,10 +691,10 @@ public class RangingRadioSourceEstimator2DTest implements
             assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -891,8 +710,8 @@ public class RangingRadioSourceEstimator2DTest implements
             assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, LARGE_POSITION_ERROR));
             numValidPosition++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -902,52 +721,49 @@ public class RangingRadioSourceEstimator2DTest implements
         assertTrue(numValidPosition > 0);
 
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
     }
 
     @Test
-    public void testEstimateWithInitialPositionWithError() throws LockedException, NotReadyException,
+    void testEstimateWithInitialPositionAndDistanceErrors() throws LockedException, NotReadyException,
             AlgebraException {
 
-        int numValidPosition = 0;
-        double positionError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValidPosition = 0;
+        double positionError;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var errorRandomizer = new GaussianRandomizer(0.0, ERROR_STD);
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var error = Math.abs(errorRandomizer.nextDouble());
 
-                readings.add(new RangingReadingLocated2D<>(accessPoint, distance, readingsPositions[i]));
+                readings.add(new RangingReadingLocated2D<>(accessPoint, distance + error,
+                        readingsPositions[i]));
             }
 
-            final InhomogeneousPoint2D initialPosition = new InhomogeneousPoint2D(
-                    accessPointPosition.getInhomX() + randomizer.nextDouble(MIN_POS, MAX_POS),
-                    accessPointPosition.getInhomY() + randomizer.nextDouble(MIN_POS, MAX_POS));
-            final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new RangingRadioSourceEstimator2D<>(readings, initialPosition, this);
+            final var estimator = new RangingRadioSourceEstimator2D<>(readings, accessPointPosition, this);
 
             reset();
             assertTrue(estimator.isReady());
@@ -970,8 +786,7 @@ public class RangingRadioSourceEstimator2DTest implements
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointLocated2D estimatedAccessPoint =
-                    (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -979,10 +794,113 @@ public class RangingRadioSourceEstimator2DTest implements
             assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            accuracy.setConfidence(0.99);
+
+            positionStd = accuracyStd.getAverageAccuracy();
+            positionStdConfidence = accuracyStd.getConfidence();
+            positionAccuracy = accuracy.getAverageAccuracy();
+            positionAccuracyConfidence = accuracy.getConfidence();
+
+            positionError = estimator.getEstimatedPosition().distanceTo(accessPointPosition);
+            if (positionError > LARGE_POSITION_ERROR) {
+                continue;
+            }
+
+            assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, LARGE_POSITION_ERROR));
+            numValidPosition++;
+
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
+            assertEquals(1, estimateStart);
+            assertEquals(1, estimateEnd);
+
+            break;
+        }
+
+        assertTrue(numValidPosition > 0);
+
+
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
+                positionStd, formattedConfidence));
+
+        formattedConfidence = format.format(positionAccuracyConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
+                positionAccuracy, formattedConfidence));
+    }
+
+    @Test
+    void testEstimateWithInitialPositionWithError() throws LockedException, NotReadyException, AlgebraException {
+
+        var numValidPosition = 0;
+        var positionError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS),
+                    randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
+                readingsPositions[i] = new InhomogeneousPoint2D(
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
+
+                readings.add(new RangingReadingLocated2D<>(accessPoint, distance, readingsPositions[i]));
+            }
+
+            final var initialPosition = new InhomogeneousPoint2D(
+                    accessPointPosition.getInhomX() + randomizer.nextDouble(MIN_POS, MAX_POS),
+                    accessPointPosition.getInhomY() + randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var estimator = new RangingRadioSourceEstimator2D<>(readings, initialPosition, this);
+
+            reset();
+            assertTrue(estimator.isReady());
+            assertFalse(estimator.isLocked());
+            assertNull(estimator.getEstimatedPosition());
+            assertNull(estimator.getEstimatedPositionCoordinates());
+            assertEquals(0, estimateStart);
+            assertEquals(0, estimateEnd);
+
+            try {
+                estimator.estimate();
+            } catch (final IndoorException e) {
+                continue;
+            }
+
+            // check
+            assertTrue(estimator.isReady());
+            assertFalse(estimator.isLocked());
+
+            assertNotNull(estimator.getEstimatedCovariance());
+            assertNotNull(estimator.getEstimatedPositionCovariance());
+
+            final var estimatedAccessPoint = (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
+
+            assertEquals("bssid", estimatedAccessPoint.getBssid());
+            assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
+            assertNull(estimatedAccessPoint.getSsid());
+            assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
+            assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
+
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            accuracyStd.setStandardDeviationFactor(1.0);
+
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -998,8 +916,8 @@ public class RangingRadioSourceEstimator2DTest implements
             assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -1009,57 +927,54 @@ public class RangingRadioSourceEstimator2DTest implements
         assertTrue(numValidPosition > 0);
 
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
     }
 
     @Test
-    public void testEstimateWithInitialPositionWithPositionAndDistanceErrors() throws LockedException,
-            NotReadyException, AlgebraException {
+    void testEstimateWithInitialPositionWithPositionAndDistanceErrors() throws LockedException, NotReadyException,
+            AlgebraException {
 
-        int numValidPosition = 0;
-        double positionError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
+        var numValidPosition = 0;
+        var positionError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var errorRandomizer = new GaussianRandomizer(0.0, ERROR_STD);
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
-                final double error = Math.abs(errorRandomizer.nextDouble());
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var error = Math.abs(errorRandomizer.nextDouble());
 
-                readings.add(new RangingReadingLocated2D<>(accessPoint,
-                        distance + error, readingsPositions[i]));
+                readings.add(new RangingReadingLocated2D<>(accessPoint, distance + error,
+                        readingsPositions[i]));
             }
 
-            final InhomogeneousPoint2D initialPosition = new InhomogeneousPoint2D(
+            final var initialPosition = new InhomogeneousPoint2D(
                     accessPointPosition.getInhomX() + randomizer.nextDouble(MIN_POS, MAX_POS),
                     accessPointPosition.getInhomY() + randomizer.nextDouble(MIN_POS, MAX_POS));
-            final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new RangingRadioSourceEstimator2D<>(readings, initialPosition, this);
+            final var estimator = new RangingRadioSourceEstimator2D<>(readings, initialPosition, this);
 
             reset();
             assertTrue(estimator.isReady());
@@ -1082,8 +997,7 @@ public class RangingRadioSourceEstimator2DTest implements
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointLocated2D estimatedAccessPoint =
-                    (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -1091,10 +1005,10 @@ public class RangingRadioSourceEstimator2DTest implements
             assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -1110,8 +1024,8 @@ public class RangingRadioSourceEstimator2DTest implements
             assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, LARGE_POSITION_ERROR));
             numValidPosition++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
         }
@@ -1122,52 +1036,50 @@ public class RangingRadioSourceEstimator2DTest implements
                 (double) numValidPosition / (double) TIMES * 100.0);
 
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
     }
 
     @Test
-    public void testEstimateBeacon() throws LockedException, NotReadyException,
-            AlgebraException, RadioSourceEstimationException {
+    void testEstimateBeacon() throws LockedException, NotReadyException, AlgebraException,
+            RadioSourceEstimationException {
 
-        int numValidPosition = 0;
+        var numValidPosition = 0;
         double positionError;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-            final BeaconIdentifier identifier = BeaconIdentifier.fromUuid(UUID.randomUUID());
-            final Beacon beacon = new Beacon(Collections.singletonList(identifier), TRANSMITTED_POWER_DBM, FREQUENCY);
+            final var identifier = BeaconIdentifier.fromUuid(UUID.randomUUID());
+            final var beacon = new Beacon(Collections.singletonList(identifier), TRANSMITTED_POWER_DBM, FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingReadingLocated2D<Beacon>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingReadingLocated2D<Beacon>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 readings.add(new RangingReadingLocated2D<>(beacon, distance, readingsPositions[i]));
             }
 
-            final RangingRadioSourceEstimator2D<Beacon> estimator = new RangingRadioSourceEstimator2D<>(readings);
+            final var estimator = new RangingRadioSourceEstimator2D<>(readings);
 
             reset();
             assertTrue(estimator.isReady());
@@ -1188,17 +1100,17 @@ public class RangingRadioSourceEstimator2DTest implements
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final BeaconLocated2D estimatedBeacon = (BeaconLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedBeacon = (BeaconLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals(beacon.getIdentifiers(), estimatedBeacon.getIdentifiers());
             assertEquals(beacon.getFrequency(), estimatedBeacon.getFrequency(), 0.0);
             assertEquals(estimator.getEstimatedPosition(), estimatedBeacon.getPosition());
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedBeacon.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -1214,8 +1126,8 @@ public class RangingRadioSourceEstimator2DTest implements
             assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
 
             break;
         }
@@ -1223,56 +1135,45 @@ public class RangingRadioSourceEstimator2DTest implements
         assertTrue(numValidPosition > 0);
 
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         // force NotReadyException
-        final RangingRadioSourceEstimator3D<Beacon> estimator = new RangingRadioSourceEstimator3D<>();
-
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new RangingRadioSourceEstimator3D<Beacon>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateWithNonLinearSolverDisabledAndWithoutInitialPosition() throws LockedException,
-            NotReadyException {
+    void testEstimateWithNonLinearSolverDisabledAndWithoutInitialPosition() throws LockedException, NotReadyException {
 
-        int numValidPosition = 0;
-        double positionError = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValidPosition = 0;
+        var positionError = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 readings.add(new RangingReadingLocated2D<>(accessPoint, distance, readingsPositions[i]));
             }
 
-            final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new RangingRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new RangingRadioSourceEstimator2D<>(readings, this);
             estimator.setNonLinearSolverEnabled(false);
 
             reset();
@@ -1296,8 +1197,7 @@ public class RangingRadioSourceEstimator2DTest implements
             assertNull(estimator.getEstimatedCovariance());
             assertNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointLocated2D estimatedAccessPoint =
-                    (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -1313,8 +1213,8 @@ public class RangingRadioSourceEstimator2DTest implements
             assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -1327,34 +1227,30 @@ public class RangingRadioSourceEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateWithNonLinearSolverDisabledAndWithInitialPosition() throws LockedException,
-            NotReadyException {
+    void testEstimateWithNonLinearSolverDisabledAndWithInitialPosition() throws LockedException, NotReadyException {
 
-        int numValidPosition = 0;
-        double positionError = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValidPosition = 0;
+        var positionError = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 readings.add(new RangingReadingLocated2D<>(accessPoint, distance, readingsPositions[i]));
             }
 
-            final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new RangingRadioSourceEstimator2D<>(readings, accessPointPosition, this);
+            final var estimator = new RangingRadioSourceEstimator2D<>(readings, accessPointPosition, this);
             estimator.setNonLinearSolverEnabled(false);
 
             reset();
@@ -1378,8 +1274,7 @@ public class RangingRadioSourceEstimator2DTest implements
             assertNull(estimator.getEstimatedCovariance());
             assertNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointLocated2D estimatedAccessPoint =
-                    (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -1395,8 +1290,8 @@ public class RangingRadioSourceEstimator2DTest implements
             assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -1409,39 +1304,37 @@ public class RangingRadioSourceEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateWithRangingStandardDeviations() throws LockedException, NotReadyException,
-            AlgebraException {
+    void testEstimateWithRangingStandardDeviations() throws LockedException, NotReadyException, AlgebraException {
 
-        int numValidPosition = 0;
-        double positionError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
+        var numValidPosition = 0;
+        var positionError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var errorRandomizer = new GaussianRandomizer(0.0, ERROR_STD);
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
-                final double error = Math.abs(errorRandomizer.nextDouble());
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var error = Math.abs(errorRandomizer.nextDouble());
 
-                readings.add(new RangingReadingLocated2D<>(accessPoint, distance + error,
-                        readingsPositions[i], ERROR_STD));
+                readings.add(new RangingReadingLocated2D<>(accessPoint, distance + error, readingsPositions[i],
+                        ERROR_STD));
             }
 
-            final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new RangingRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new RangingRadioSourceEstimator2D<>(readings, this);
 
             reset();
             assertTrue(estimator.isReady());
@@ -1464,8 +1357,7 @@ public class RangingRadioSourceEstimator2DTest implements
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointLocated2D estimatedAccessPoint =
-                    (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -1473,10 +1365,10 @@ public class RangingRadioSourceEstimator2DTest implements
             assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -1492,8 +1384,8 @@ public class RangingRadioSourceEstimator2DTest implements
             assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, LARGE_POSITION_ERROR));
             numValidPosition++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -1503,60 +1395,56 @@ public class RangingRadioSourceEstimator2DTest implements
         assertTrue(numValidPosition > 0);
 
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
     }
 
     @Test
-    public void testEstimateWithReadingPositionCovariances() throws LockedException, NotReadyException,
-            AlgebraException {
+    void testEstimateWithReadingPositionCovariances() throws LockedException, NotReadyException, AlgebraException {
 
-        int numValidPosition = 0;
-        double positionError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
+        var numValidPosition = 0;
+        var positionError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var errorRandomizer = new GaussianRandomizer(0.0, ERROR_STD);
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 readingsPositions[i].setInhomogeneousCoordinates(
                         readingsPositions[i].getInhomX() + errorRandomizer.nextDouble(),
                         readingsPositions[i].getInhomY() + errorRandomizer.nextDouble());
 
-                final Matrix positionCovariance = Matrix.diagonal(
+                final var positionCovariance = Matrix.diagonal(
                         new double[]{ERROR_STD * ERROR_STD, ERROR_STD * ERROR_STD});
 
-                readings.add(new RangingReadingLocated2D<>(accessPoint,
-                        distance, readingsPositions[i], positionCovariance));
+                readings.add(new RangingReadingLocated2D<>(accessPoint, distance, readingsPositions[i],
+                        positionCovariance));
             }
 
-            final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new RangingRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new RangingRadioSourceEstimator2D<>(readings, this);
             estimator.setUseReadingPositionCovariances(true);
 
             reset();
@@ -1580,8 +1468,7 @@ public class RangingRadioSourceEstimator2DTest implements
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointLocated2D estimatedAccessPoint =
-                    (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -1589,10 +1476,10 @@ public class RangingRadioSourceEstimator2DTest implements
             assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -1608,8 +1495,8 @@ public class RangingRadioSourceEstimator2DTest implements
             assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, LARGE_POSITION_ERROR));
             numValidPosition++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -1618,61 +1505,58 @@ public class RangingRadioSourceEstimator2DTest implements
 
         assertTrue(numValidPosition > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
     }
 
     @Test
-    public void testEstimateWithRangingStandardDeviationsAndReadingPositionCovariances() throws LockedException,
+    void testEstimateWithRangingStandardDeviationsAndReadingPositionCovariances() throws LockedException,
             NotReadyException, AlgebraException {
 
-        int numValidPosition = 0;
-        double positionError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
+        var numValidPosition = 0;
+        var positionError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var errorRandomizer = new GaussianRandomizer(0.0, ERROR_STD);
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
-                final double error = Math.abs(errorRandomizer.nextDouble());
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var error = Math.abs(errorRandomizer.nextDouble());
 
                 readingsPositions[i].setInhomogeneousCoordinates(
                         readingsPositions[i].getInhomX() + errorRandomizer.nextDouble(),
                         readingsPositions[i].getInhomY() + errorRandomizer.nextDouble());
 
-                final Matrix positionCovariance = Matrix.diagonal(
+                final var positionCovariance = Matrix.diagonal(
                         new double[]{ERROR_STD * ERROR_STD, ERROR_STD * ERROR_STD});
 
                 readings.add(new RangingReadingLocated2D<>(accessPoint, distance + error,
                         readingsPositions[i], ERROR_STD, positionCovariance));
             }
 
-            final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new RangingRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new RangingRadioSourceEstimator2D<>(readings, this);
             estimator.setUseReadingPositionCovariances(true);
 
             reset();
@@ -1696,8 +1580,7 @@ public class RangingRadioSourceEstimator2DTest implements
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointLocated2D estimatedAccessPoint =
-                    (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -1705,10 +1588,10 @@ public class RangingRadioSourceEstimator2DTest implements
             assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -1724,8 +1607,8 @@ public class RangingRadioSourceEstimator2DTest implements
             assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, LARGE_POSITION_ERROR));
             numValidPosition++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -1734,61 +1617,57 @@ public class RangingRadioSourceEstimator2DTest implements
 
         assertTrue(numValidPosition > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
     }
 
     @Test
-    public void testEstimateWithPositionCovariancesDisabled() throws LockedException, NotReadyException,
-            AlgebraException {
+    void testEstimateWithPositionCovariancesDisabled() throws LockedException, NotReadyException, AlgebraException {
 
-        int numValidPosition = 0;
-        double positionError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
+        var numValidPosition = 0;
+        var positionError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var errorRandomizer = new GaussianRandomizer(0.0, ERROR_STD);
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
-                final double error = Math.abs(errorRandomizer.nextDouble());
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var error = Math.abs(errorRandomizer.nextDouble());
 
                 readingsPositions[i].setInhomogeneousCoordinates(
                         readingsPositions[i].getInhomX() + errorRandomizer.nextDouble(),
                         readingsPositions[i].getInhomY() + errorRandomizer.nextDouble());
 
-                final Matrix positionCovariance = Matrix.diagonal(
+                final var positionCovariance = Matrix.diagonal(
                         new double[]{ERROR_STD * ERROR_STD, ERROR_STD * ERROR_STD});
 
-                readings.add(new RangingReadingLocated2D<>(accessPoint,
-                        distance + error, readingsPositions[i], ERROR_STD, positionCovariance));
+                readings.add(new RangingReadingLocated2D<>(accessPoint, distance + error, readingsPositions[i],
+                        ERROR_STD, positionCovariance));
             }
 
-            final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new RangingRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new RangingRadioSourceEstimator2D<>(readings, this);
             estimator.setUseReadingPositionCovariances(false);
 
             reset();
@@ -1812,8 +1691,7 @@ public class RangingRadioSourceEstimator2DTest implements
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointLocated2D estimatedAccessPoint =
-                    (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -1821,10 +1699,10 @@ public class RangingRadioSourceEstimator2DTest implements
             assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -1840,8 +1718,8 @@ public class RangingRadioSourceEstimator2DTest implements
             assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, LARGE_POSITION_ERROR));
             numValidPosition++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -1850,51 +1728,47 @@ public class RangingRadioSourceEstimator2DTest implements
 
         assertTrue(numValidPosition > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
     }
 
     @Test
-    public void testEstimateInitialPositionHomogeneousSolver() throws LockedException, NotReadyException,
-            AlgebraException {
+    void testEstimateInitialPositionHomogeneousSolver() throws LockedException, NotReadyException, AlgebraException {
 
-        int numValidPosition = 0;
-        double positionError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValidPosition = 0;
+        var positionError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 readings.add(new RangingReadingLocated2D<>(accessPoint, distance, readingsPositions[i]));
             }
 
-            final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new RangingRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new RangingRadioSourceEstimator2D<>(readings, this);
             estimator.setNonLinearSolverEnabled(true);
             estimator.setHomogeneousLinearSolverUsed(true);
 
@@ -1919,8 +1793,7 @@ public class RangingRadioSourceEstimator2DTest implements
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointLocated2D estimatedAccessPoint =
-                    (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -1928,10 +1801,10 @@ public class RangingRadioSourceEstimator2DTest implements
             assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -1947,8 +1820,8 @@ public class RangingRadioSourceEstimator2DTest implements
             assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -1957,51 +1830,47 @@ public class RangingRadioSourceEstimator2DTest implements
 
         assertTrue(numValidPosition > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
     }
 
     @Test
-    public void testEstimateInitialPositionInhomogeneousSolver() throws LockedException, NotReadyException,
-            AlgebraException {
+    void testEstimateInitialPositionInhomogeneousSolver() throws LockedException, NotReadyException, AlgebraException {
 
-        int numValidPosition = 0;
-        double positionError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValidPosition = 0;
+        var positionError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 readings.add(new RangingReadingLocated2D<>(accessPoint, distance, readingsPositions[i]));
             }
 
-            final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new RangingRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new RangingRadioSourceEstimator2D<>(readings, this);
             estimator.setNonLinearSolverEnabled(true);
             estimator.setHomogeneousLinearSolverUsed(false);
 
@@ -2026,8 +1895,7 @@ public class RangingRadioSourceEstimator2DTest implements
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointLocated2D estimatedAccessPoint =
-                    (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -2035,10 +1903,10 @@ public class RangingRadioSourceEstimator2DTest implements
             assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -2054,8 +1922,8 @@ public class RangingRadioSourceEstimator2DTest implements
             assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -2064,48 +1932,43 @@ public class RangingRadioSourceEstimator2DTest implements
 
         assertTrue(numValidPosition > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
     }
 
     @Test
-    public void testEstimateNonLinearDisabledAndHomogeneousSolver() throws LockedException, NotReadyException {
+    void testEstimateNonLinearDisabledAndHomogeneousSolver() throws LockedException, NotReadyException {
 
-        int numValidPosition = 0;
-        double positionError = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValidPosition = 0;
+        var positionError = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 readings.add(new RangingReadingLocated2D<>(accessPoint, distance, readingsPositions[i]));
             }
 
-            final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new RangingRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new RangingRadioSourceEstimator2D<>(readings, this);
             estimator.setNonLinearSolverEnabled(false);
             estimator.setHomogeneousLinearSolverUsed(true);
 
@@ -2130,8 +1993,7 @@ public class RangingRadioSourceEstimator2DTest implements
             assertNull(estimator.getEstimatedCovariance());
             assertNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointLocated2D estimatedAccessPoint =
-                    (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -2147,8 +2009,8 @@ public class RangingRadioSourceEstimator2DTest implements
             assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -2161,33 +2023,30 @@ public class RangingRadioSourceEstimator2DTest implements
     }
 
     @Test
-    public void testEstimateNonLinearDisableAndInhomogeneousSolver() throws LockedException, NotReadyException {
+    void testEstimateNonLinearDisableAndInhomogeneousSolver() throws LockedException, NotReadyException {
 
-        int numValidPosition = 0;
-        double positionError = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValidPosition = 0;
+        var positionError = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 readings.add(new RangingReadingLocated2D<>(accessPoint, distance, readingsPositions[i]));
             }
 
-            final RangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new RangingRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new RangingRadioSourceEstimator2D<>(readings, this);
             estimator.setNonLinearSolverEnabled(false);
             estimator.setHomogeneousLinearSolverUsed(false);
 
@@ -2212,8 +2071,7 @@ public class RangingRadioSourceEstimator2DTest implements
             assertNull(estimator.getEstimatedCovariance());
             assertNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointLocated2D estimatedAccessPoint =
-                    (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -2229,8 +2087,8 @@ public class RangingRadioSourceEstimator2DTest implements
             assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -2258,44 +2116,14 @@ public class RangingRadioSourceEstimator2DTest implements
         estimateStart = estimateEnd = 0;
     }
 
-    private void checkLocked(final RangingRadioSourceEstimator<WifiAccessPoint, Point2D> estimator) {
-        try {
-            estimator.setNonLinearSolverEnabled(false);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setHomogeneousLinearSolverUsed(false);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setUseReadingPositionCovariances(false);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setInitialPosition(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setReadings(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setListener(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.estimate();
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        } catch (final Exception e) {
-            fail("LockedException expected but not thrown");
-        }
+    private static void checkLocked(final RangingRadioSourceEstimator<WifiAccessPoint, Point2D> estimator) {
+        assertThrows(LockedException.class, () -> estimator.setNonLinearSolverEnabled(false));
+        assertThrows(LockedException.class, () -> estimator.setHomogeneousLinearSolverUsed(false));
+        assertThrows(LockedException.class, () -> estimator.setUseReadingPositionCovariances(false));
+        assertThrows(LockedException.class, () -> estimator.setInitialPosition(null));
+        assertThrows(LockedException.class, () -> estimator.setReadings(null));
+        assertThrows(LockedException.class, () -> estimator.setListener(null));
+        assertThrows(LockedException.class, estimator::estimate);
     }
 }
 

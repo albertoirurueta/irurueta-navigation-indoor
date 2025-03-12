@@ -31,15 +31,14 @@ import java.util.List;
  * This implementation is like SequentialRobustRangingAndRssiPositionEstimator but
  * allows mixing different kinds of readings (ranging, RSSI or ranging+RSSI).
  */
-public class SequentialRobustMixedPositionEstimator3D extends
-        SequentialRobustMixedPositionEstimator<Point3D> {
+public class SequentialRobustMixedPositionEstimator3D extends SequentialRobustMixedPositionEstimator<Point3D> {
 
     /**
      * Constructor.
      */
     public SequentialRobustMixedPositionEstimator3D() {
         super();
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinRequiredSources();
     }
 
     /**
@@ -49,10 +48,9 @@ public class SequentialRobustMixedPositionEstimator3D extends
      * @throws IllegalArgumentException if provided sources is null or the number of
      *                                  provided sources is less than the required minimum.
      */
-    public SequentialRobustMixedPositionEstimator3D(
-            final List<? extends RadioSourceLocated<Point3D>> sources) {
+    public SequentialRobustMixedPositionEstimator3D(final List<? extends RadioSourceLocated<Point3D>> sources) {
         super(sources);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinRequiredSources();
     }
 
     /**
@@ -65,7 +63,7 @@ public class SequentialRobustMixedPositionEstimator3D extends
     public SequentialRobustMixedPositionEstimator3D(
             final Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> fingerprint) {
         super(fingerprint);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinRequiredSources();
     }
 
     /**
@@ -82,7 +80,7 @@ public class SequentialRobustMixedPositionEstimator3D extends
             final List<? extends RadioSourceLocated<Point3D>> sources,
             final Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> fingerprint) {
         super(sources, fingerprint);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinRequiredSources();
     }
 
     /**
@@ -93,7 +91,7 @@ public class SequentialRobustMixedPositionEstimator3D extends
     public SequentialRobustMixedPositionEstimator3D(
             final SequentialRobustMixedPositionEstimatorListener<Point3D> listener) {
         super(listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinRequiredSources();
     }
 
     /**
@@ -109,7 +107,7 @@ public class SequentialRobustMixedPositionEstimator3D extends
             final List<? extends RadioSourceLocated<Point3D>> sources,
             final SequentialRobustMixedPositionEstimatorListener<Point3D> listener) {
         super(sources, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinRequiredSources();
     }
 
     /**
@@ -124,7 +122,7 @@ public class SequentialRobustMixedPositionEstimator3D extends
             final Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> fingerprint,
             final SequentialRobustMixedPositionEstimatorListener<Point3D> listener) {
         super(fingerprint, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinRequiredSources();
     }
 
     /**
@@ -143,7 +141,7 @@ public class SequentialRobustMixedPositionEstimator3D extends
             final Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> fingerprint,
             final SequentialRobustMixedPositionEstimatorListener<Point3D> listener) {
         super(sources, fingerprint, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinRequiredSources();
     }
 
     /**
@@ -159,10 +157,9 @@ public class SequentialRobustMixedPositionEstimator3D extends
      *                                        quality of the reading.
      */
     public SequentialRobustMixedPositionEstimator3D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores) {
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores) {
         super(sourceQualityScores, fingerprintReadingQualityScores);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinRequiredSources();
     }
 
     /**
@@ -182,11 +179,10 @@ public class SequentialRobustMixedPositionEstimator3D extends
      *                                  provided sources is less than the required minimum.
      */
     public SequentialRobustMixedPositionEstimator3D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<Point3D>> sources) {
         super(sourceQualityScores, fingerprintReadingQualityScores, sources);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinRequiredSources();
     }
 
     /**
@@ -206,11 +202,10 @@ public class SequentialRobustMixedPositionEstimator3D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public SequentialRobustMixedPositionEstimator3D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> fingerprint) {
         super(sourceQualityScores, fingerprintReadingQualityScores, fingerprint);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinRequiredSources();
     }
 
     /**
@@ -233,13 +228,11 @@ public class SequentialRobustMixedPositionEstimator3D extends
      *                                  or the number of provided sources is less than the required minimum.
      */
     public SequentialRobustMixedPositionEstimator3D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<Point3D>> sources,
             final Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> fingerprint) {
-        super(sourceQualityScores, fingerprintReadingQualityScores, sources,
-                fingerprint);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();
+        super(sourceQualityScores, fingerprintReadingQualityScores, sources, fingerprint);
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinRequiredSources();
     }
 
     /**
@@ -256,11 +249,10 @@ public class SequentialRobustMixedPositionEstimator3D extends
      * @param listener                        listener in charge of handling events.
      */
     public SequentialRobustMixedPositionEstimator3D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final SequentialRobustMixedPositionEstimatorListener<Point3D> listener) {
         super(sourceQualityScores, fingerprintReadingQualityScores, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinRequiredSources();
     }
 
     /**
@@ -281,13 +273,11 @@ public class SequentialRobustMixedPositionEstimator3D extends
      *                                  provided sources is less than the required minimum.
      */
     public SequentialRobustMixedPositionEstimator3D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<Point3D>> sources,
             final SequentialRobustMixedPositionEstimatorListener<Point3D> listener) {
-        super(sourceQualityScores, fingerprintReadingQualityScores, sources,
-                listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();
+        super(sourceQualityScores, fingerprintReadingQualityScores, sources, listener);
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinRequiredSources();
     }
 
     /**
@@ -308,13 +298,11 @@ public class SequentialRobustMixedPositionEstimator3D extends
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public SequentialRobustMixedPositionEstimator3D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> fingerprint,
             final SequentialRobustMixedPositionEstimatorListener<Point3D> listener) {
-        super(sourceQualityScores, fingerprintReadingQualityScores, fingerprint,
-                listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();
+        super(sourceQualityScores, fingerprintReadingQualityScores, fingerprint, listener);
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinRequiredSources();
     }
 
     /**
@@ -338,14 +326,12 @@ public class SequentialRobustMixedPositionEstimator3D extends
      *                                  or the number of provided sources is less than the required minimum.
      */
     public SequentialRobustMixedPositionEstimator3D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<Point3D>> sources,
             final Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> fingerprint,
             final SequentialRobustMixedPositionEstimatorListener<Point3D> listener) {
-        super(sourceQualityScores, fingerprintReadingQualityScores, sources,
-                fingerprint, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinRequiredSources();
+        super(sourceQualityScores, fingerprintReadingQualityScores, sources, fingerprint, listener);
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinRequiredSources();
     }
 
     /**
@@ -374,8 +360,7 @@ public class SequentialRobustMixedPositionEstimator3D extends
      */
     @Override
     protected void buildRangingEstimator() {
-        mRangingEstimator = RobustRangingPositionEstimator3D.create(
-                mRangingRobustMethod);
+        rangingEstimator = RobustRangingPositionEstimator3D.create(rangingRobustMethod);
     }
 
     /**
@@ -383,7 +368,7 @@ public class SequentialRobustMixedPositionEstimator3D extends
      */
     @Override
     protected void buildRssiEstimator() {
-        mRssiEstimator = RobustRssiPositionEstimator3D.create(mRssiRobustMethod);
+        rssiEstimator = RobustRssiPositionEstimator3D.create(rssiRobustMethod);
     }
 
     /**
@@ -394,23 +379,23 @@ public class SequentialRobustMixedPositionEstimator3D extends
     @Override
     protected void setupRangingEstimator() throws LockedException {
         super.setupRangingEstimator();
-        if (mRangingThreshold != null) {
-            switch (mRangingRobustMethod) {
+        if (rangingThreshold != null) {
+            switch (rangingRobustMethod) {
                 case RANSAC:
-                    ((RANSACRobustRangingPositionEstimator3D) mRangingEstimator).setThreshold(mRangingThreshold);
+                    ((RANSACRobustRangingPositionEstimator3D) rangingEstimator).setThreshold(rangingThreshold);
                     break;
                 case LMEDS:
-                    ((LMedSRobustRangingPositionEstimator3D) mRangingEstimator).setStopThreshold(mRangingThreshold);
+                    ((LMedSRobustRangingPositionEstimator3D) rangingEstimator).setStopThreshold(rangingThreshold);
                     break;
                 case MSAC:
-                    ((MSACRobustRangingPositionEstimator3D) mRangingEstimator).setThreshold(mRangingThreshold);
+                    ((MSACRobustRangingPositionEstimator3D) rangingEstimator).setThreshold(rangingThreshold);
                     break;
                 case PROSAC:
-                    ((PROSACRobustRangingPositionEstimator3D) mRangingEstimator).setThreshold(mRangingThreshold);
+                    ((PROSACRobustRangingPositionEstimator3D) rangingEstimator).setThreshold(rangingThreshold);
                     break;
                 case PROMEDS:
                 default:
-                    ((PROMedSRobustRangingPositionEstimator3D) mRangingEstimator).setStopThreshold(mRangingThreshold);
+                    ((PROMedSRobustRangingPositionEstimator3D) rangingEstimator).setStopThreshold(rangingThreshold);
                     break;
             }
         }
@@ -424,23 +409,23 @@ public class SequentialRobustMixedPositionEstimator3D extends
     @Override
     protected void setupRssiEstimator() throws LockedException {
         super.setupRssiEstimator();
-        if (mRssiThreshold != null) {
-            switch (mRssiRobustMethod) {
+        if (rssiThreshold != null) {
+            switch (rssiRobustMethod) {
                 case RANSAC:
-                    ((RANSACRobustRssiPositionEstimator3D) mRssiEstimator).setThreshold(mRssiThreshold);
+                    ((RANSACRobustRssiPositionEstimator3D) rssiEstimator).setThreshold(rssiThreshold);
                     break;
                 case LMEDS:
-                    ((LMedSRobustRssiPositionEstimator3D) mRssiEstimator).setStopThreshold(mRssiThreshold);
+                    ((LMedSRobustRssiPositionEstimator3D) rssiEstimator).setStopThreshold(rssiThreshold);
                     break;
                 case MSAC:
-                    ((MSACRobustRssiPositionEstimator3D) mRssiEstimator).setThreshold(mRssiThreshold);
+                    ((MSACRobustRssiPositionEstimator3D) rssiEstimator).setThreshold(rssiThreshold);
                     break;
                 case PROSAC:
-                    ((PROSACRobustRssiPositionEstimator3D) mRssiEstimator).setThreshold(mRssiThreshold);
+                    ((PROSACRobustRssiPositionEstimator3D) rssiEstimator).setThreshold(rssiThreshold);
                     break;
                 case PROMEDS:
                 default:
-                    ((PROMedSRobustRssiPositionEstimator3D) mRssiEstimator).setStopThreshold(mRssiThreshold);
+                    ((PROMedSRobustRssiPositionEstimator3D) rssiEstimator).setStopThreshold(rssiThreshold);
                     break;
             }
         }

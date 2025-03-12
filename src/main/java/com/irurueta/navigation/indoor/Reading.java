@@ -27,7 +27,7 @@ public abstract class Reading<S extends RadioSource> implements Serializable {
     /**
      * Radio source associated to this reading.
      */
-    private S mSource;
+    private S source;
 
     /**
      * Constructor.
@@ -39,7 +39,7 @@ public abstract class Reading<S extends RadioSource> implements Serializable {
         if (source == null) {
             throw new IllegalArgumentException();
         }
-        mSource = source;
+        this.source = source;
     }
 
     /**
@@ -54,7 +54,7 @@ public abstract class Reading<S extends RadioSource> implements Serializable {
      * @return radio source associated to this reading.
      */
     public S getSource() {
-        return mSource;
+        return source;
     }
 
     /**
@@ -66,7 +66,7 @@ public abstract class Reading<S extends RadioSource> implements Serializable {
      * false otherwise.
      */
     public boolean hasSameSource(final Reading<S> otherReading) {
-        return otherReading != null && otherReading.mSource.equals(mSource);
+        return otherReading != null && otherReading.source.equals(source);
     }
 
     /**

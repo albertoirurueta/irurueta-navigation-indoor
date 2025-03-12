@@ -25,18 +25,17 @@ import java.util.List;
  *
  * @param <P> a {@link Point} type.
  */
-public class BeaconLocated<P extends Point<?>> extends Beacon
-        implements RadioSourceLocated<P> {
+public class BeaconLocated<P extends Point<?>> extends Beacon implements RadioSourceLocated<P> {
 
     /**
      * Position where beacon is located.
      */
-    private P mPosition;
+    private P position;
 
     /**
      * Covariance of inhomogeneous coordinates of current position (if available).
      */
-    private Matrix mPositionCovariance;
+    private Matrix positionCovariance;
 
     /**
      * Constructor.
@@ -47,16 +46,14 @@ public class BeaconLocated<P extends Point<?>> extends Beacon
      * @param position         position where beacon is located.
      * @throws IllegalArgumentException if either identifiers or position are null.
      */
-    public BeaconLocated(final List<BeaconIdentifier> identifiers,
-                         final double transmittedPower,
-                         final P position) {
+    public BeaconLocated(final List<BeaconIdentifier> identifiers, final double transmittedPower, final P position) {
         super(identifiers, transmittedPower);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -72,22 +69,17 @@ public class BeaconLocated<P extends Point<?>> extends Beacon
      * @param position         position where beacon is located.
      * @throws IllegalArgumentException if either identifiers or position are null.
      */
-    public BeaconLocated(final List<BeaconIdentifier> identifiers,
-                         final double transmittedPower,
-                         final String bluetoothAddress,
-                         final int beaconTypeCode,
-                         final int manufacturer,
-                         final int serviceUuid,
-                         final String bluetoothName,
-                         final P position) {
-        super(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode,
-                manufacturer, serviceUuid, bluetoothName);
+    public BeaconLocated(final List<BeaconIdentifier> identifiers, final double transmittedPower,
+                         final String bluetoothAddress, final int beaconTypeCode, final int manufacturer,
+                         final int serviceUuid, final String bluetoothName, final P position) {
+        super(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
+                bluetoothName);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -101,20 +93,17 @@ public class BeaconLocated<P extends Point<?>> extends Beacon
      *                           position (if available).
      * @throws IllegalArgumentException if either identifiers or position are null.
      */
-    public BeaconLocated(final List<BeaconIdentifier> identifiers,
-                         final double transmittedPower,
-                         final P position,
+    public BeaconLocated(final List<BeaconIdentifier> identifiers, final double transmittedPower, final P position,
                          final Matrix positionCovariance) {
         this(identifiers, transmittedPower, position);
 
         if (positionCovariance != null) {
-            int dims = position.getDimensions();
-            if (positionCovariance.getRows() != dims ||
-                    positionCovariance.getColumns() != dims) {
+            var dims = position.getDimensions();
+            if (positionCovariance.getRows() != dims || positionCovariance.getColumns() != dims) {
                 throw new IllegalArgumentException();
             }
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -132,26 +121,20 @@ public class BeaconLocated<P extends Point<?>> extends Beacon
      *                           position (if available).
      * @throws IllegalArgumentException if either identifiers or position are null.
      */
-    public BeaconLocated(final List<BeaconIdentifier> identifiers,
-                         final double transmittedPower,
-                         final String bluetoothAddress,
-                         final int beaconTypeCode,
-                         final int manufacturer,
-                         final int serviceUuid,
-                         final String bluetoothName,
-                         final P position,
+    public BeaconLocated(final List<BeaconIdentifier> identifiers, final double transmittedPower,
+                         final String bluetoothAddress, final int beaconTypeCode, final int manufacturer,
+                         final int serviceUuid, final String bluetoothName, final P position,
                          final Matrix positionCovariance) {
-        this(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode,
-                manufacturer, serviceUuid, bluetoothName, position);
+        this(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid, bluetoothName,
+                position);
 
         if (positionCovariance != null) {
-            final int dims = position.getDimensions();
-            if (positionCovariance.getRows() != dims ||
-                    positionCovariance.getColumns() != dims) {
+            final var dims = position.getDimensions();
+            if (positionCovariance.getRows() != dims || positionCovariance.getColumns() != dims) {
                 throw new IllegalArgumentException();
             }
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -165,17 +148,15 @@ public class BeaconLocated<P extends Point<?>> extends Beacon
      * @throws IllegalArgumentException if either identifiers or position are null or
      *                                  frequency is negative.
      */
-    public BeaconLocated(final List<BeaconIdentifier> identifiers,
-                         final double transmittedPower,
-                         final double frequency,
-                         final P position) {
+    public BeaconLocated(final List<BeaconIdentifier> identifiers, final double transmittedPower,
+                         final double frequency, final P position) {
         super(identifiers, transmittedPower, frequency);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -193,23 +174,17 @@ public class BeaconLocated<P extends Point<?>> extends Beacon
      * @throws IllegalArgumentException if either identifiers or position are null or
      *                                  frequency is negative.
      */
-    public BeaconLocated(final List<BeaconIdentifier> identifiers,
-                         final double transmittedPower,
-                         final double frequency,
-                         final String bluetoothAddress,
-                         final int beaconTypeCode,
-                         final int manufacturer,
-                         final int serviceUuid,
-                         final String bluetoothName,
-                         final P position) {
-        super(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode,
-                manufacturer, serviceUuid, bluetoothName);
+    public BeaconLocated(final List<BeaconIdentifier> identifiers, final double transmittedPower,
+                         final double frequency, final String bluetoothAddress, final int beaconTypeCode,
+                         final int manufacturer, final int serviceUuid, final String bluetoothName, final P position) {
+        super(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
+                bluetoothName);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -225,21 +200,17 @@ public class BeaconLocated<P extends Point<?>> extends Beacon
      * @throws IllegalArgumentException if either identifiers or position are null or
      *                                  frequency is negative.
      */
-    public BeaconLocated(final List<BeaconIdentifier> identifiers,
-                         final double transmittedPower,
-                         final double frequency,
-                         final P position,
-                         final Matrix positionCovariance) {
+    public BeaconLocated(final List<BeaconIdentifier> identifiers, final double transmittedPower,
+                         final double frequency, final P position, final Matrix positionCovariance) {
         this(identifiers, transmittedPower, frequency, position);
 
         if (positionCovariance != null) {
-            final int dims = position.getDimensions();
-            if (positionCovariance.getRows() != dims ||
-                    positionCovariance.getColumns() != dims) {
+            final var dims = position.getDimensions();
+            if (positionCovariance.getRows() != dims || positionCovariance.getColumns() != dims) {
                 throw new IllegalArgumentException();
             }
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -259,27 +230,20 @@ public class BeaconLocated<P extends Point<?>> extends Beacon
      * @throws IllegalArgumentException if either identifiers or position are null or
      *                                  frequency is negative.
      */
-    public BeaconLocated(final List<BeaconIdentifier> identifiers,
-                         final double transmittedPower,
-                         final double frequency,
-                         final String bluetoothAddress,
-                         final int beaconTypeCode,
-                         final int manufacturer,
-                         final int serviceUuid,
-                         final String bluetoothName,
-                         final P position,
+    public BeaconLocated(final List<BeaconIdentifier> identifiers, final double transmittedPower,
+                         final double frequency, final String bluetoothAddress, final int beaconTypeCode,
+                         final int manufacturer, final int serviceUuid, final String bluetoothName, final P position,
                          final Matrix positionCovariance) {
-        this(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode,
-                manufacturer, serviceUuid, bluetoothName, position);
+        this(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
+                bluetoothName, position);
 
         if (positionCovariance != null) {
-            int dims = position.getDimensions();
-            if (positionCovariance.getRows() != dims ||
-                    positionCovariance.getColumns() != dims) {
+            var dims = position.getDimensions();
+            if (positionCovariance.getRows() != dims || positionCovariance.getColumns() != dims) {
                 throw new IllegalArgumentException();
             }
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -295,7 +259,7 @@ public class BeaconLocated<P extends Point<?>> extends Beacon
      * @return position where beacon is located.
      */
     public P getPosition() {
-        return mPosition;
+        return position;
     }
 
     /**
@@ -304,6 +268,6 @@ public class BeaconLocated<P extends Point<?>> extends Beacon
      * @return covariance of position or null.
      */
     public Matrix getPositionCovariance() {
-        return mPositionCovariance;
+        return positionCovariance;
     }
 }

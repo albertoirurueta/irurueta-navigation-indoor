@@ -15,15 +15,15 @@
  */
 package com.irurueta.navigation.indoor.position;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class PositionEstimationExceptionTest {
+class PositionEstimationExceptionTest {
 
     @Test
-    public void testConstructor() {
-        PositionEstimationException ex = new PositionEstimationException();
+    void testConstructor() {
+        var ex = new PositionEstimationException();
         assertNotNull(ex);
 
         ex = new PositionEstimationException("message");

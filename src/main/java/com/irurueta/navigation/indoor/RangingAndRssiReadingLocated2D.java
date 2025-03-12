@@ -24,8 +24,7 @@ import com.irurueta.geometry.Point2D;
  *
  * @param <S> a {@link RadioSource} type.
  */
-public class RangingAndRssiReadingLocated2D<S extends RadioSource> extends
-        RangingAndRssiReadingLocated<S, Point2D> {
+public class RangingAndRssiReadingLocated2D<S extends RadioSource> extends RangingAndRssiReadingLocated<S, Point2D> {
 
     /**
      * Constructor.
@@ -38,8 +37,7 @@ public class RangingAndRssiReadingLocated2D<S extends RadioSource> extends
      *                                  or position is null.
      */
     public RangingAndRssiReadingLocated2D(
-            final S source, final double distance, final double rssi,
-            final Point2D position) {
+            final S source, final double distance, final double rssi, final Point2D position) {
         super(source, distance, rssi, position);
     }
 
@@ -58,11 +56,9 @@ public class RangingAndRssiReadingLocated2D<S extends RadioSource> extends
      *                                  successful measures is negative.
      */
     public RangingAndRssiReadingLocated2D(
-            final S source, final double distance, final double rssi,
-            final Point2D position, final int numAttemptedMeasurements,
-            final int numSuccessfulMeasurements) {
-        super(source, distance, rssi, position, numAttemptedMeasurements,
-                numSuccessfulMeasurements);
+            final S source, final double distance, final double rssi, final Point2D position,
+            final int numAttemptedMeasurements, final int numSuccessfulMeasurements) {
+        super(source, distance, rssi, position, numAttemptedMeasurements, numSuccessfulMeasurements);
     }
 
     /**
@@ -78,11 +74,9 @@ public class RangingAndRssiReadingLocated2D<S extends RadioSource> extends
      *                                  position is null or any of the standard deviations is zero or negative.
      */
     public RangingAndRssiReadingLocated2D(
-            final S source, final double distance, final double rssi,
-            final Point2D position, final Double distanceStandardDeviation,
-            final Double rssiStandardDeviation) {
-        super(source, distance, rssi, position, distanceStandardDeviation,
-                rssiStandardDeviation);
+            final S source, final double distance, final double rssi, final Point2D position,
+            final Double distanceStandardDeviation, final Double rssiStandardDeviation) {
+        super(source, distance, rssi, position, distanceStandardDeviation, rssiStandardDeviation);
     }
 
     /**
@@ -102,13 +96,11 @@ public class RangingAndRssiReadingLocated2D<S extends RadioSource> extends
      *                                  attempted measures is less than 1 or number of successful measures is negative.
      */
     public RangingAndRssiReadingLocated2D(
-            final S source, final double distance, final double rssi,
-            final Point2D position, final Double distanceStandardDeviation,
-            final Double rssiStandardDeviation, final int numAttemptedMeasurements,
-            final int numSuccessfulMeasurements) {
-        super(source, distance, rssi, position, distanceStandardDeviation,
-                rssiStandardDeviation, numAttemptedMeasurements,
-                numSuccessfulMeasurements);
+            final S source, final double distance, final double rssi, final Point2D position,
+            final Double distanceStandardDeviation, final Double rssiStandardDeviation,
+            final int numAttemptedMeasurements, final int numSuccessfulMeasurements) {
+        super(source, distance, rssi, position, distanceStandardDeviation, rssiStandardDeviation,
+                numAttemptedMeasurements, numSuccessfulMeasurements);
     }
 
     /**
@@ -124,8 +116,8 @@ public class RangingAndRssiReadingLocated2D<S extends RadioSource> extends
      *                                  or position is null.
      */
     public RangingAndRssiReadingLocated2D(
-            final S source, final double distance, final double rssi,
-            final Point2D position, final Matrix positionCovariance) {
+            final S source, final double distance, final double rssi, final Point2D position,
+            final Matrix positionCovariance) {
         super(source, distance, rssi, position, positionCovariance);
     }
 
@@ -146,12 +138,10 @@ public class RangingAndRssiReadingLocated2D<S extends RadioSource> extends
      *                                  measures is less than 1 or number of successful measures is negative.
      */
     public RangingAndRssiReadingLocated2D(
-            final S source, final double distance, final double rssi,
-            final Point2D position, final Matrix positionCovariance,
-            final int numAttemptedMeasurements,
-            final int numSuccessfulMeasurements) {
-        super(source, distance, rssi, position, positionCovariance,
-                numAttemptedMeasurements, numSuccessfulMeasurements);
+            final S source, final double distance, final double rssi, final Point2D position,
+            final Matrix positionCovariance, final int numAttemptedMeasurements, final int numSuccessfulMeasurements) {
+        super(source, distance, rssi, position, positionCovariance, numAttemptedMeasurements,
+                numSuccessfulMeasurements);
     }
 
     /**
@@ -169,12 +159,10 @@ public class RangingAndRssiReadingLocated2D<S extends RadioSource> extends
      *                                  position is null or standard deviation is zero or negative.
      */
     public RangingAndRssiReadingLocated2D(
-            final S source, final double distance, final double rssi,
-            final Point2D position, final Double distanceStandardDeviation,
-            final Double rssiStandardDeviation,
+            final S source, final double distance, final double rssi, final Point2D position,
+            final Double distanceStandardDeviation, final Double rssiStandardDeviation,
             final Matrix positionCovariance) {
-        super(source, distance, rssi, position, distanceStandardDeviation,
-                rssiStandardDeviation, positionCovariance);
+        super(source, distance, rssi, position, distanceStandardDeviation, rssiStandardDeviation, positionCovariance);
     }
 
     /**
@@ -197,15 +185,11 @@ public class RangingAndRssiReadingLocated2D<S extends RadioSource> extends
      *                                  measures is less than 1 or number of successful measures is negative.
      */
     public RangingAndRssiReadingLocated2D(
-            final S source, final double distance, final double rssi,
-            final Point2D position, final Double distanceStandardDeviation,
-            final Double rssiStandardDeviation,
-            final Matrix positionCovariance,
-            final int numAttemptedMeasurements,
-            final int numSuccessfulMeasurements) {
-        super(source, distance, rssi, position, distanceStandardDeviation,
-                rssiStandardDeviation, positionCovariance, numAttemptedMeasurements,
-                numSuccessfulMeasurements);
+            final S source, final double distance, final double rssi, final Point2D position,
+            final Double distanceStandardDeviation, final Double rssiStandardDeviation, final Matrix positionCovariance,
+            final int numAttemptedMeasurements, final int numSuccessfulMeasurements) {
+        super(source, distance, rssi, position, distanceStandardDeviation, rssiStandardDeviation, positionCovariance,
+                numAttemptedMeasurements, numSuccessfulMeasurements);
     }
 
     /**

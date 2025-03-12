@@ -50,8 +50,7 @@ public class MSACRobustRangingPositionEstimator2D extends RobustRangingPositionE
      * @throws IllegalArgumentException if provided sources is null or the number of
      *                                  provided sources is less than the required minimum.
      */
-    public MSACRobustRangingPositionEstimator2D(
-            final List<? extends RadioSourceLocated<Point2D>> sources) {
+    public MSACRobustRangingPositionEstimator2D(final List<? extends RadioSourceLocated<Point2D>> sources) {
         super();
         init();
         internalSetSources(sources);
@@ -96,8 +95,7 @@ public class MSACRobustRangingPositionEstimator2D extends RobustRangingPositionE
      *
      * @param listener listener in charge of handling events.
      */
-    public MSACRobustRangingPositionEstimator2D(
-            final RobustRangingPositionEstimatorListener<Point2D> listener) {
+    public MSACRobustRangingPositionEstimator2D(final RobustRangingPositionEstimatorListener<Point2D> listener) {
         super(listener);
         init();
     }
@@ -160,8 +158,7 @@ public class MSACRobustRangingPositionEstimator2D extends RobustRangingPositionE
      * @return threshold to determine whether samples are inliers or not.
      */
     public double getThreshold() {
-        return ((MSACRobustLateration2DSolver) mLaterationSolver).
-                getThreshold();
+        return ((MSACRobustLateration2DSolver) laterationSolver).getThreshold();
     }
 
     /**
@@ -174,8 +171,7 @@ public class MSACRobustRangingPositionEstimator2D extends RobustRangingPositionE
      * @throws LockedException          if this solver is locked.
      */
     public void setThreshold(final double threshold) throws LockedException {
-        ((MSACRobustLateration2DSolver) mLaterationSolver).
-                setThreshold(threshold);
+        ((MSACRobustLateration2DSolver) laterationSolver).setThreshold(threshold);
     }
 
     /**
@@ -192,7 +188,6 @@ public class MSACRobustRangingPositionEstimator2D extends RobustRangingPositionE
      * Initializes robust lateration solver.
      */
     private void init() {
-        mLaterationSolver = new MSACRobustLateration2DSolver(
-                mTrilaterationSolverListener);
+        laterationSolver = new MSACRobustLateration2DSolver(trilaterationSolverListener);
     }
 }

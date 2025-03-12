@@ -15,28 +15,26 @@
  */
 package com.irurueta.navigation.indoor;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class RangingAndRssiFingerprintTest {
+class RangingAndRssiFingerprintTest {
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         // empty constructor
-        RangingAndRssiFingerprint<RadioSource, RangingAndRssiReading<RadioSource>> fingerprint =
-                new RangingAndRssiFingerprint<>();
+        var fingerprint = new RangingAndRssiFingerprint<>();
 
         // check
         assertNotNull(fingerprint.getReadings());
         assertTrue(fingerprint.getReadings().isEmpty());
 
         // constructor with readings
-        final List<RangingAndRssiReading<RadioSource>> readings = new ArrayList<>();
+        final var readings = new ArrayList<RangingAndRssiReading<RadioSource>>();
         fingerprint = new RangingAndRssiFingerprint<>(readings);
 
         // check
@@ -44,27 +42,19 @@ public class RangingAndRssiFingerprintTest {
         assertNotSame(readings, fingerprint.getReadings());
 
         // force IllegalArgumentException
-        fingerprint = null;
-        try {
-            fingerprint = new RangingAndRssiFingerprint<>(null);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        //noinspection ConstantConditions
-        assertNull(fingerprint);
+        assertThrows(IllegalArgumentException.class, () -> new RangingAndRssiFingerprint<>(null));
     }
 
     @Test
-    public void testGetSetReadings() {
-        final RangingAndRssiFingerprint<RadioSource, RangingAndRssiReading<RadioSource>> fingerprint =
-                new RangingAndRssiFingerprint<>();
+    void testGetSetReadings() {
+        final var fingerprint = new RangingAndRssiFingerprint<>();
 
         // check
         assertNotNull(fingerprint.getReadings());
         assertTrue(fingerprint.getReadings().isEmpty());
 
         // set new value
-        final List<RangingAndRssiReading<RadioSource>> readings = new ArrayList<>();
+        final var readings = new ArrayList<RangingAndRssiReading<RadioSource>>();
         fingerprint.setReadings(readings);
 
         // check
@@ -72,27 +62,22 @@ public class RangingAndRssiFingerprintTest {
         assertNotSame(readings, fingerprint.getReadings());
 
         // force IllegalArgumentException
-        try {
-            fingerprint.setReadings(null);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> fingerprint.setReadings(null));
     }
 
     @Test
-    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
-        final List<RangingAndRssiReading<RadioSource>> readings = new ArrayList<>();
-        final RangingAndRssiFingerprint<RadioSource, RangingAndRssiReading<RadioSource>> fingerprint1 =
-                new RangingAndRssiFingerprint<>(readings);
+    void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final var readings = new ArrayList<RangingAndRssiReading<RadioSource>>();
+        final var fingerprint1 = new RangingAndRssiFingerprint<>(readings);
 
         // check
         assertEquals(readings, fingerprint1.getReadings());
         assertNotSame(readings, fingerprint1.getReadings());
 
         // serialize and deserialize
-        final byte[] bytes = SerializationHelper.serialize(fingerprint1);
-        final RangingAndRssiFingerprint<RadioSource, RangingAndRssiReading<RadioSource>> fingerprint2 =
-                SerializationHelper.deserialize(bytes);
+        final var bytes = SerializationHelper.serialize(fingerprint1);
+        final var fingerprint2 = SerializationHelper
+                .<RangingAndRssiFingerprint<RadioSource, RangingAndRssiReading<RadioSource>>>deserialize(bytes);
 
         // check
         assertNotSame(fingerprint1, fingerprint2);

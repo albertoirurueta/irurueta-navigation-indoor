@@ -25,19 +25,19 @@ import com.irurueta.geometry.Point;
  * @param <S> a {@link RadioSource} type.
  * @param <P> a {@link Point} type.
  */
-public class RangingAndRssiReadingLocated<S extends RadioSource, P extends Point<?>> extends
-        RangingAndRssiReading<S> implements ReadingLocated<P> {
+public class RangingAndRssiReadingLocated<S extends RadioSource, P extends Point<?>> extends RangingAndRssiReading<S>
+        implements ReadingLocated<P> {
 
     /**
      * Position where Wi-Fi reading was made.
      */
-    private P mPosition;
+    private P position;
 
     /**
      * Covariance of inhomogeneous coordinates of current position
      * (if available).
      */
-    private Matrix mPositionCovariance;
+    private Matrix positionCovariance;
 
     /**
      * Constructor.
@@ -49,16 +49,14 @@ public class RangingAndRssiReadingLocated<S extends RadioSource, P extends Point
      * @throws IllegalArgumentException if radio source data is null, distance is negative
      *                                  or position is null.
      */
-    public RangingAndRssiReadingLocated(
-            final S source, final double distance,
-            final double rssi, final P position) {
+    public RangingAndRssiReadingLocated(final S source, final double distance, final double rssi, final P position) {
         super(source, distance, rssi);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -76,18 +74,15 @@ public class RangingAndRssiReadingLocated<S extends RadioSource, P extends Point
      *                                  successful measures is negative.
      */
     public RangingAndRssiReadingLocated(
-            final S source, final double distance,
-            final double rssi, final P position,
-            final int numAttemptedMeasurements,
-            final int numSuccessfulMeasurements) {
-        super(source, distance, rssi, numAttemptedMeasurements,
-                numSuccessfulMeasurements);
+            final S source, final double distance, final double rssi, final P position,
+            final int numAttemptedMeasurements, final int numSuccessfulMeasurements) {
+        super(source, distance, rssi, numAttemptedMeasurements, numSuccessfulMeasurements);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -103,18 +98,15 @@ public class RangingAndRssiReadingLocated<S extends RadioSource, P extends Point
      *                                  position is null or any of the standard deviations is zero or negative.
      */
     public RangingAndRssiReadingLocated(
-            final S source, final double distance,
-            final double rssi, final P position,
-            final Double distanceStandardDeviation,
-            final Double rssiStandardDeviation) {
-        super(source, distance, rssi, distanceStandardDeviation,
-                rssiStandardDeviation);
+            final S source, final double distance, final double rssi, final P position,
+            final Double distanceStandardDeviation, final Double rssiStandardDeviation) {
+        super(source, distance, rssi, distanceStandardDeviation, rssiStandardDeviation);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -134,21 +126,17 @@ public class RangingAndRssiReadingLocated<S extends RadioSource, P extends Point
      *                                  attempted measures is less than 1 or number of successful measures is negative.
      */
     public RangingAndRssiReadingLocated(
-            final S source, final double distance,
-            final double rssi, final P position,
-            final Double distanceStandardDeviation,
-            final Double rssiStandardDeviation,
-            final int numAttemptedMeasurements,
-            final int numSuccessfulMeasurements) {
-        super(source, distance, rssi, distanceStandardDeviation,
-                rssiStandardDeviation, numAttemptedMeasurements,
+            final S source, final double distance, final double rssi, final P position,
+            final Double distanceStandardDeviation, final Double rssiStandardDeviation,
+            final int numAttemptedMeasurements, final int numSuccessfulMeasurements) {
+        super(source, distance, rssi, distanceStandardDeviation, rssiStandardDeviation, numAttemptedMeasurements,
                 numSuccessfulMeasurements);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -164,19 +152,17 @@ public class RangingAndRssiReadingLocated<S extends RadioSource, P extends Point
      *                                  position is null or position covariance has wrong size.
      */
     public RangingAndRssiReadingLocated(
-            final S source, final double distance,
-            final double rssi, final P position,
+            final S source, final double distance, final double rssi, final P position,
             final Matrix positionCovariance) {
         this(source, distance, rssi, position);
 
         if (positionCovariance != null) {
-            final int dims = position.getDimensions();
-            if (positionCovariance.getRows() != dims ||
-                    positionCovariance.getColumns() != dims) {
+            final var dims = position.getDimensions();
+            if (positionCovariance.getRows() != dims || positionCovariance.getColumns() != dims) {
                 throw new IllegalArgumentException();
             }
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -196,22 +182,17 @@ public class RangingAndRssiReadingLocated<S extends RadioSource, P extends Point
      *                                  measures is less than 1 or number of successful measures is negative.
      */
     public RangingAndRssiReadingLocated(
-            final S source, final double distance,
-            final double rssi, final P position,
-            final Matrix positionCovariance,
-            final int numAttemptedMeasurements,
-            final int numSuccessfulMeasurements) {
-        this(source, distance, rssi, position, numAttemptedMeasurements,
-                numSuccessfulMeasurements);
+            final S source, final double distance, final double rssi, final P position, final Matrix positionCovariance,
+            final int numAttemptedMeasurements, final int numSuccessfulMeasurements) {
+        this(source, distance, rssi, position, numAttemptedMeasurements, numSuccessfulMeasurements);
 
         if (positionCovariance != null) {
-            final int dims = position.getDimensions();
-            if (positionCovariance.getRows() != dims ||
-                    positionCovariance.getColumns() != dims) {
+            final var dims = position.getDimensions();
+            if (positionCovariance.getRows() != dims || positionCovariance.getColumns() != dims) {
                 throw new IllegalArgumentException();
             }
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -229,22 +210,18 @@ public class RangingAndRssiReadingLocated<S extends RadioSource, P extends Point
      *                                  position is null or standard deviation is zero or negative.
      */
     public RangingAndRssiReadingLocated(
-            final S source, final double distance,
-            final double rssi, final P position,
-            final Double distanceStandardDeviation,
-            final Double rssiStandardDeviation,
+            final S source, final double distance, final double rssi, final P position,
+            final Double distanceStandardDeviation, final Double rssiStandardDeviation,
             final Matrix positionCovariance) {
-        this(source, distance, rssi, position, distanceStandardDeviation,
-                rssiStandardDeviation);
+        this(source, distance, rssi, position, distanceStandardDeviation, rssiStandardDeviation);
 
         if (positionCovariance != null) {
-            final int dims = position.getDimensions();
-            if (positionCovariance.getRows() != dims ||
-                    positionCovariance.getColumns() != dims) {
+            final var dims = position.getDimensions();
+            if (positionCovariance.getRows() != dims || positionCovariance.getColumns() != dims) {
                 throw new IllegalArgumentException();
             }
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -267,25 +244,19 @@ public class RangingAndRssiReadingLocated<S extends RadioSource, P extends Point
      *                                  measures is less than 1 or number of successful measures is negative.
      */
     public RangingAndRssiReadingLocated(
-            final S source, final double distance,
-            final double rssi, final P position,
-            final Double distanceStandardDeviation,
-            final Double rssiStandardDeviation,
-            final Matrix positionCovariance,
-            final int numAttemptedMeasurements,
-            final int numSuccessfulMeasurements) {
-        this(source, distance, rssi, position, distanceStandardDeviation,
-                rssiStandardDeviation, numAttemptedMeasurements,
-                numSuccessfulMeasurements);
+            final S source, final double distance, final double rssi, final P position,
+            final Double distanceStandardDeviation, final Double rssiStandardDeviation, final Matrix positionCovariance,
+            final int numAttemptedMeasurements, final int numSuccessfulMeasurements) {
+        this(source, distance, rssi, position, distanceStandardDeviation, rssiStandardDeviation,
+                numAttemptedMeasurements, numSuccessfulMeasurements);
 
         if (positionCovariance != null) {
-            final int dims = position.getDimensions();
-            if (positionCovariance.getRows() != dims ||
-                    positionCovariance.getColumns() != dims) {
+            final var dims = position.getDimensions();
+            if (positionCovariance.getRows() != dims || positionCovariance.getColumns() != dims) {
                 throw new IllegalArgumentException();
             }
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -301,7 +272,7 @@ public class RangingAndRssiReadingLocated<S extends RadioSource, P extends Point
      * @return position where reading was made.
      */
     public P getPosition() {
-        return mPosition;
+        return position;
     }
 
     /**
@@ -310,6 +281,6 @@ public class RangingAndRssiReadingLocated<S extends RadioSource, P extends Point
      * @return covariance of position or null.
      */
     public Matrix getPositionCovariance() {
-        return mPositionCovariance;
+        return positionCovariance;
     }
 }

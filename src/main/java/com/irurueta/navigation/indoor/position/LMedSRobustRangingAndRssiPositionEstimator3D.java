@@ -50,8 +50,7 @@ public class LMedSRobustRangingAndRssiPositionEstimator3D extends RobustRangingA
      * @throws IllegalArgumentException if provided sources is null or the number of
      *                                  provided sources is less than the required minimum.
      */
-    public LMedSRobustRangingAndRssiPositionEstimator3D(
-            final List<? extends RadioSourceLocated<Point3D>> sources) {
+    public LMedSRobustRangingAndRssiPositionEstimator3D(final List<? extends RadioSourceLocated<Point3D>> sources) {
         super();
         init();
         internalSetSources(sources);
@@ -174,8 +173,7 @@ public class LMedSRobustRangingAndRssiPositionEstimator3D extends RobustRangingA
      * accuracy has been reached.
      */
     public double getStopThreshold() {
-        return ((LMedSRobustLateration3DSolver) mLaterationSolver).
-                getStopThreshold();
+        return ((LMedSRobustLateration3DSolver) laterationSolver).getStopThreshold();
     }
 
     /**
@@ -200,8 +198,7 @@ public class LMedSRobustRangingAndRssiPositionEstimator3D extends RobustRangingA
      * @throws LockedException          if this solver is locked.
      */
     public void setStopThreshold(final double stopThreshold) throws LockedException {
-        ((LMedSRobustLateration3DSolver) mLaterationSolver).
-                setStopThreshold(stopThreshold);
+        ((LMedSRobustLateration3DSolver) laterationSolver).setStopThreshold(stopThreshold);
     }
 
     /**
@@ -218,8 +215,7 @@ public class LMedSRobustRangingAndRssiPositionEstimator3D extends RobustRangingA
      * Initializes robust lateration solver.
      */
     private void init() {
-        mLaterationSolver = new LMedSRobustLateration3DSolver(
-                mTrilaterationSolverListener);
+        laterationSolver = new LMedSRobustLateration3DSolver(trilaterationSolverListener);
     }
 }
 

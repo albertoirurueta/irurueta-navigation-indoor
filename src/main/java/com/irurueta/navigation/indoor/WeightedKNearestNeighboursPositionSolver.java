@@ -45,33 +45,33 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
     /**
      * Known located Wi-Fi fingerprints.
      */
-    protected RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, P>[] mFingerprints;
+    protected RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, P>[] fingerprints;
 
     /**
      * Euclidean distances between WiFi signal fingerprints (expressed in dB's).
      */
-    protected double[] mDistances;
+    protected double[] distances;
 
     /**
      * Listener to be notified of events raised by this instance.
      */
-    protected WeightedKNearestNeighboursPositionSolverListener<P> mListener;
+    protected WeightedKNearestNeighboursPositionSolverListener<P> listener;
 
     /**
      * Estimated inhomogeneous position coordinates.
      */
-    protected double[] mEstimatedPositionCoordinates;
+    protected double[] estimatedPositionCoordinates;
 
     /**
      * Indicates if this instance is locked because indoor is being
      * estimated.
      */
-    protected boolean mLocked;
+    protected boolean locked;
 
     /**
      * Minimum allowed distance between received Wi-Fi signal strengths.
      */
-    private double mEpsilon = DEFAULT_EPSILON;
+    private double epsilon = DEFAULT_EPSILON;
 
     /**
      * Constructor.
@@ -103,7 +103,7 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
      */
     protected WeightedKNearestNeighboursPositionSolver(
             final WeightedKNearestNeighboursPositionSolverListener<P> listener) {
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -120,10 +120,9 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
      */
     protected WeightedKNearestNeighboursPositionSolver(
             final RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, P>[] fingerprints,
-            final double[] distances,
-            final WeightedKNearestNeighboursPositionSolverListener<P> listener) {
+            final double[] distances, final WeightedKNearestNeighboursPositionSolverListener<P> listener) {
         this(fingerprints, distances);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -132,7 +131,7 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
      * @return listener to be notified of events raised by this instance.
      */
     public WeightedKNearestNeighboursPositionSolverListener<P> getListener() {
-        return mListener;
+        return listener;
     }
 
     /**
@@ -141,13 +140,11 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
      * @param listener listener to be notified of events raised by this instance.
      * @throws LockedException if instance is busy solving the position.
      */
-    public void setListener(
-            final WeightedKNearestNeighboursPositionSolverListener<P> listener)
-            throws LockedException {
+    public void setListener(final WeightedKNearestNeighboursPositionSolverListener<P> listener) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -156,7 +153,7 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
      * @return known located Wi-Fi fingerprints.
      */
     public RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, P>[] getFingerprints() {
-        return mFingerprints;
+        return fingerprints;
     }
 
     /**
@@ -166,7 +163,7 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
      * @return euclidean distances between WiFi signal fingerprints.
      */
     public double[] getDistances() {
-        return mDistances;
+        return distances;
     }
 
     /**
@@ -175,8 +172,7 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
      * @return true if solver is ready, false otherwise.
      */
     public boolean isReady() {
-        return mFingerprints != null && mDistances != null &&
-                mFingerprints.length >= MIN_FINGERPRINTS;
+        return fingerprints != null && distances != null && fingerprints.length >= MIN_FINGERPRINTS;
     }
 
     /**
@@ -186,7 +182,7 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
      * @return true if solver is locked, false otherwise.
      */
     public boolean isLocked() {
-        return mLocked;
+        return locked;
     }
 
     /**
@@ -215,7 +211,7 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
      * @return minimum allowed distance between Wi-Fi signal fingerprints.
      */
     public double getEpsilon() {
-        return mEpsilon;
+        return epsilon;
     }
 
     /**
@@ -235,7 +231,7 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
             throw new IllegalArgumentException();
         }
 
-        mEpsilon = epsilon;
+        this.epsilon = epsilon;
     }
 
     /**
@@ -253,52 +249,52 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
         }
 
         try {
-            mLocked = true;
+            locked = true;
 
-            if (mListener != null) {
-                mListener.onSolveStart(this);
+            if (listener != null) {
+                listener.onSolveStart(this);
             }
 
-            final int num = mFingerprints.length;
-            final int dims = getNumberOfDimensions();
+            final var num = fingerprints.length;
+            final var dims = getNumberOfDimensions();
             if (num == 1) {
                 // only one fingerprint available
-                mEstimatedPositionCoordinates = new double[dims];
-                for (int i = 0; i < dims; i++) {
-                    final P p = mFingerprints[0].getPosition();
-                    mEstimatedPositionCoordinates[i] = p.getInhomogeneousCoordinate(i);
+                estimatedPositionCoordinates = new double[dims];
+                for (var i = 0; i < dims; i++) {
+                    final var p = fingerprints[0].getPosition();
+                    estimatedPositionCoordinates[i] = p.getInhomogeneousCoordinate(i);
                 }
             } else {
                 // multiple fingerprints available
-                final double[] coords = new double[dims];
-                double sum = 0.0;
+                final var coords = new double[dims];
+                var sum = 0.0;
                 double w;
-                for (int i = 0; i < num; i++) {
+                for (var i = 0; i < num; i++) {
                     // weighted average and weight summation
-                    w = 1.0 / mDistances[i];
+                    w = 1.0 / distances[i];
                     sum += w;
 
-                    final P p = mFingerprints[i].getPosition();
-                    for (int j = 0; j < dims; j++) {
+                    final var p = fingerprints[i].getPosition();
+                    for (var j = 0; j < dims; j++) {
                         coords[j] += w * p.getInhomogeneousCoordinate(j);
                     }
                 }
 
                 // normalize by weight summation
                 if (sum != 0.0) {
-                    for (int j = 0; j < dims; j++) {
+                    for (var j = 0; j < dims; j++) {
                         coords[j] /= sum;
                     }
                 }
 
-                mEstimatedPositionCoordinates = coords;
+                estimatedPositionCoordinates = coords;
             }
 
-            if (mListener != null) {
-                mListener.onSolveEnd(this);
+            if (listener != null) {
+                listener.onSolveEnd(this);
             }
         } finally {
-            mLocked = false;
+            locked = false;
         }
     }
 
@@ -308,7 +304,7 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
      * @return estimated inhomogeneous position coordinates.
      */
     public double[] getEstimatedPositionCoordinates() {
-        return mEstimatedPositionCoordinates;
+        return estimatedPositionCoordinates;
     }
 
     /**
@@ -317,10 +313,9 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
      * @param estimatedPosition instance where estimated position will be stored.
      */
     public void getEstimatedPosition(final P estimatedPosition) {
-        if (mEstimatedPositionCoordinates != null) {
-            for (int i = 0; i < mEstimatedPositionCoordinates.length; i++) {
-                estimatedPosition.setInhomogeneousCoordinate(i,
-                        mEstimatedPositionCoordinates[i]);
+        if (estimatedPositionCoordinates != null) {
+            for (var i = 0; i < estimatedPositionCoordinates.length; i++) {
+                estimatedPosition.setInhomogeneousCoordinate(i, estimatedPositionCoordinates[i]);
             }
         }
     }
@@ -364,13 +359,13 @@ public abstract class WeightedKNearestNeighboursPositionSolver<P extends Point<?
             throw new IllegalArgumentException();
         }
 
-        mFingerprints = fingerprints;
-        mDistances = distances;
+        this.fingerprints = fingerprints;
+        this.distances = distances;
 
         // fix distances if needed
-        for (int i = 0; i < mDistances.length; i++) {
-            if (mDistances[i] < mEpsilon) {
-                mDistances[i] = mEpsilon;
+        for (var i = 0; i < this.distances.length; i++) {
+            if (this.distances[i] < epsilon) {
+                this.distances[i] = epsilon;
             }
         }
     }

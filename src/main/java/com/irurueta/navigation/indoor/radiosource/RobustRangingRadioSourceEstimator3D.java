@@ -15,7 +15,6 @@
  */
 package com.irurueta.navigation.indoor.radiosource;
 
-import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.Point3D;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NavigationException;
@@ -29,7 +28,6 @@ import com.irurueta.navigation.indoor.WifiAccessPointLocated3D;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.List;
 
 /**
@@ -45,20 +43,19 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
     /**
      * Radio source estimator used internally.
      */
-    protected final RangingRadioSourceEstimator3D<S> mInnerEstimator =
-            new RangingRadioSourceEstimator3D<>();
+    protected final RangingRadioSourceEstimator3D<S> innerEstimator = new RangingRadioSourceEstimator3D<>();
 
     /**
      * Subset of readings used by inner estimator.
      */
-    private final List<RangingReadingLocated<S, Point3D>> mInnerReadings = new ArrayList<>();
+    private final List<RangingReadingLocated<S, Point3D>> innerReadings = new ArrayList<>();
 
     /**
      * Constructor.
      */
     protected RobustRangingRadioSourceEstimator3D() {
         super();
-        mPreliminarySubsetSize = getMinReadings();
+        preliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -69,10 +66,9 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
      *                 radio source.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    protected RobustRangingRadioSourceEstimator3D(
-            final List<? extends RangingReadingLocated<S, Point3D>> readings) {
+    protected RobustRangingRadioSourceEstimator3D(final List<? extends RangingReadingLocated<S, Point3D>> readings) {
         super(readings);
-        mPreliminarySubsetSize = getMinReadings();
+        preliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -83,7 +79,7 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
     protected RobustRangingRadioSourceEstimator3D(
             final RobustRangingRadioSourceEstimatorListener<S, Point3D> listener) {
         super(listener);
-        mPreliminarySubsetSize = getMinReadings();
+        preliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -98,7 +94,7 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
             final List<? extends RangingReadingLocated<S, Point3D>> readings,
             final RobustRangingRadioSourceEstimatorListener<S, Point3D> listener) {
         super(readings, listener);
-        mPreliminarySubsetSize = getMinReadings();
+        preliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -109,7 +105,7 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
      */
     protected RobustRangingRadioSourceEstimator3D(final Point3D initialPosition) {
         super(initialPosition);
-        mPreliminarySubsetSize = getMinReadings();
+        preliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -122,10 +118,9 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
      * @throws IllegalArgumentException if readings are not valid.
      */
     protected RobustRangingRadioSourceEstimator3D(
-            final List<? extends RangingReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition) {
+            final List<? extends RangingReadingLocated<S, Point3D>> readings, final Point3D initialPosition) {
         super(readings, initialPosition);
-        mPreliminarySubsetSize = getMinReadings();
+        preliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -136,10 +131,9 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
      * @param listener        listener in charge of attending events raised by this instance.
      */
     protected RobustRangingRadioSourceEstimator3D(
-            final Point3D initialPosition,
-            final RobustRangingRadioSourceEstimatorListener<S, Point3D> listener) {
+            final Point3D initialPosition, final RobustRangingRadioSourceEstimatorListener<S, Point3D> listener) {
         super(initialPosition, listener);
-        mPreliminarySubsetSize = getMinReadings();
+        preliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -153,11 +147,10 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
      * @throws IllegalArgumentException if readings are not valid.
      */
     protected RobustRangingRadioSourceEstimator3D(
-            final List<? extends RangingReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
+            final List<? extends RangingReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
             final RobustRangingRadioSourceEstimatorListener<S, Point3D> listener) {
         super(readings, initialPosition, listener);
-        mPreliminarySubsetSize = getMinReadings();
+        preliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -169,19 +162,13 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
      */
     public static <S extends RadioSource> RobustRangingRadioSourceEstimator3D<S> create(
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRangingRadioSourceEstimator3D<>();
-            case LMEDS:
-                return new LMedSRobustRangingRadioSourceEstimator3D<>();
-            case MSAC:
-                return new MSACRobustRangingRadioSourceEstimator3D<>();
-            case PROSAC:
-                return new PROSACRobustRangingRadioSourceEstimator3D<>();
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRangingRadioSourceEstimator3D<>();
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRangingRadioSourceEstimator3D<>();
+            case LMEDS -> new LMedSRobustRangingRadioSourceEstimator3D<>();
+            case MSAC -> new MSACRobustRangingRadioSourceEstimator3D<>();
+            case PROSAC -> new PROSACRobustRangingRadioSourceEstimator3D<>();
+            default -> new PROMedSRobustRangingRadioSourceEstimator3D<>();
+        };
     }
 
     /**
@@ -193,21 +180,14 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRangingRadioSourceEstimator3D<S> create(
-            final List<? extends RangingReadingLocated<S, Point3D>> readings,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRangingRadioSourceEstimator3D<>(readings);
-            case LMEDS:
-                return new LMedSRobustRangingRadioSourceEstimator3D<>(readings);
-            case MSAC:
-                return new MSACRobustRangingRadioSourceEstimator3D<>(readings);
-            case PROSAC:
-                return new PROSACRobustRangingRadioSourceEstimator3D<>(readings);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRangingRadioSourceEstimator3D<>(readings);
-        }
+            final List<? extends RangingReadingLocated<S, Point3D>> readings, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRangingRadioSourceEstimator3D<>(readings);
+            case LMEDS -> new LMedSRobustRangingRadioSourceEstimator3D<>(readings);
+            case MSAC -> new MSACRobustRangingRadioSourceEstimator3D<>(readings);
+            case PROSAC -> new PROSACRobustRangingRadioSourceEstimator3D<>(readings);
+            default -> new PROMedSRobustRangingRadioSourceEstimator3D<>(readings);
+        };
     }
 
     /**
@@ -219,21 +199,14 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRangingRadioSourceEstimator3D<S> create(
-            final RobustRangingRadioSourceEstimatorListener<S, Point3D> listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRangingRadioSourceEstimator3D<>(listener);
-            case LMEDS:
-                return new LMedSRobustRangingRadioSourceEstimator3D<>(listener);
-            case MSAC:
-                return new MSACRobustRangingRadioSourceEstimator3D<>(listener);
-            case PROSAC:
-                return new PROSACRobustRangingRadioSourceEstimator3D<>(listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRangingRadioSourceEstimator3D<>(listener);
-        }
+            final RobustRangingRadioSourceEstimatorListener<S, Point3D> listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRangingRadioSourceEstimator3D<>(listener);
+            case LMEDS -> new LMedSRobustRangingRadioSourceEstimator3D<>(listener);
+            case MSAC -> new MSACRobustRangingRadioSourceEstimator3D<>(listener);
+            case PROSAC -> new PROSACRobustRangingRadioSourceEstimator3D<>(listener);
+            default -> new PROMedSRobustRangingRadioSourceEstimator3D<>(listener);
+        };
     }
 
     /**
@@ -247,26 +220,14 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
      */
     public static <S extends RadioSource> RobustRangingRadioSourceEstimator3D<S> create(
             final List<? extends RangingReadingLocated<S, Point3D>> readings,
-            final RobustRangingRadioSourceEstimatorListener<S, Point3D> listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRangingRadioSourceEstimator3D<>(readings,
-                        listener);
-            case LMEDS:
-                return new LMedSRobustRangingRadioSourceEstimator3D<>(readings,
-                        listener);
-            case MSAC:
-                return new MSACRobustRangingRadioSourceEstimator3D<>(readings,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustRangingRadioSourceEstimator3D<>(readings,
-                        listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRangingRadioSourceEstimator3D<>(readings,
-                        listener);
-        }
+            final RobustRangingRadioSourceEstimatorListener<S, Point3D> listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRangingRadioSourceEstimator3D<>(readings, listener);
+            case LMEDS -> new LMedSRobustRangingRadioSourceEstimator3D<>(readings, listener);
+            case MSAC -> new MSACRobustRangingRadioSourceEstimator3D<>(readings, listener);
+            case PROSAC -> new PROSACRobustRangingRadioSourceEstimator3D<>(readings, listener);
+            default -> new PROMedSRobustRangingRadioSourceEstimator3D<>(readings, listener);
+        };
     }
 
     /**
@@ -279,21 +240,14 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRangingRadioSourceEstimator3D<S> create(
-            final Point3D initialPosition,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRangingRadioSourceEstimator3D<>(initialPosition);
-            case LMEDS:
-                return new LMedSRobustRangingRadioSourceEstimator3D<>(initialPosition);
-            case MSAC:
-                return new MSACRobustRangingRadioSourceEstimator3D<>(initialPosition);
-            case PROSAC:
-                return new PROSACRobustRangingRadioSourceEstimator3D<>(initialPosition);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRangingRadioSourceEstimator3D<>(initialPosition);
-        }
+            final Point3D initialPosition, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRangingRadioSourceEstimator3D<>(initialPosition);
+            case LMEDS -> new LMedSRobustRangingRadioSourceEstimator3D<>(initialPosition);
+            case MSAC -> new MSACRobustRangingRadioSourceEstimator3D<>(initialPosition);
+            case PROSAC -> new PROSACRobustRangingRadioSourceEstimator3D<>(initialPosition);
+            default -> new PROMedSRobustRangingRadioSourceEstimator3D<>(initialPosition);
+        };
     }
 
     /**
@@ -307,27 +261,15 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRangingRadioSourceEstimator3D<S> create(
-            final List<? extends RangingReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
+            final List<? extends RangingReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRangingRadioSourceEstimator3D<>(readings,
-                        initialPosition);
-            case LMEDS:
-                return new LMedSRobustRangingRadioSourceEstimator3D<>(readings,
-                        initialPosition);
-            case MSAC:
-                return new MSACRobustRangingRadioSourceEstimator3D<>(readings,
-                        initialPosition);
-            case PROSAC:
-                return new PROSACRobustRangingRadioSourceEstimator3D<>(readings,
-                        initialPosition);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRangingRadioSourceEstimator3D<>(readings,
-                        initialPosition);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRangingRadioSourceEstimator3D<>(readings, initialPosition);
+            case LMEDS -> new LMedSRobustRangingRadioSourceEstimator3D<>(readings, initialPosition);
+            case MSAC -> new MSACRobustRangingRadioSourceEstimator3D<>(readings, initialPosition);
+            case PROSAC -> new PROSACRobustRangingRadioSourceEstimator3D<>(readings, initialPosition);
+            default -> new PROMedSRobustRangingRadioSourceEstimator3D<>(readings, initialPosition);
+        };
     }
 
     /**
@@ -341,27 +283,15 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRangingRadioSourceEstimator3D<S> create(
-            final Point3D initialPosition,
-            final RobustRangingRadioSourceEstimatorListener<S, Point3D> listener,
+            final Point3D initialPosition, final RobustRangingRadioSourceEstimatorListener<S, Point3D> listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRangingRadioSourceEstimator3D<>(initialPosition,
-                        listener);
-            case LMEDS:
-                return new LMedSRobustRangingRadioSourceEstimator3D<>(initialPosition,
-                        listener);
-            case MSAC:
-                return new MSACRobustRangingRadioSourceEstimator3D<>(initialPosition,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustRangingRadioSourceEstimator3D<>(initialPosition,
-                        listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRangingRadioSourceEstimator3D<>(initialPosition,
-                        listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRangingRadioSourceEstimator3D<>(initialPosition, listener);
+            case LMEDS -> new LMedSRobustRangingRadioSourceEstimator3D<>(initialPosition, listener);
+            case MSAC -> new MSACRobustRangingRadioSourceEstimator3D<>(initialPosition, listener);
+            case PROSAC -> new PROSACRobustRangingRadioSourceEstimator3D<>(initialPosition, listener);
+            default -> new PROMedSRobustRangingRadioSourceEstimator3D<>(initialPosition, listener);
+        };
     }
 
     /**
@@ -376,28 +306,15 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRangingRadioSourceEstimator3D<S> create(
-            final List<? extends RangingReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
-            final RobustRangingRadioSourceEstimatorListener<S, Point3D> listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRangingRadioSourceEstimator3D<>(readings,
-                        initialPosition, listener);
-            case LMEDS:
-                return new LMedSRobustRangingRadioSourceEstimator3D<>(readings,
-                        initialPosition, listener);
-            case MSAC:
-                return new MSACRobustRangingRadioSourceEstimator3D<>(readings,
-                        initialPosition, listener);
-            case PROSAC:
-                return new PROSACRobustRangingRadioSourceEstimator3D<>(readings,
-                        initialPosition, listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRangingRadioSourceEstimator3D<>(readings,
-                        initialPosition, listener);
-        }
+            final List<? extends RangingReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
+            final RobustRangingRadioSourceEstimatorListener<S, Point3D> listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRangingRadioSourceEstimator3D<>(readings, initialPosition, listener);
+            case LMEDS -> new LMedSRobustRangingRadioSourceEstimator3D<>(readings, initialPosition, listener);
+            case MSAC -> new MSACRobustRangingRadioSourceEstimator3D<>(readings, initialPosition, listener);
+            case PROSAC -> new PROSACRobustRangingRadioSourceEstimator3D<>(readings, initialPosition, listener);
+            default -> new PROMedSRobustRangingRadioSourceEstimator3D<>(readings, initialPosition, listener);
+        };
     }
 
     /**
@@ -412,19 +329,13 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
      */
     public static <S extends RadioSource> RobustRangingRadioSourceEstimator3D<S> create(
             final double[] qualityScores, final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRangingRadioSourceEstimator3D<>();
-            case LMEDS:
-                return new LMedSRobustRangingRadioSourceEstimator3D<>();
-            case MSAC:
-                return new MSACRobustRangingRadioSourceEstimator3D<>();
-            case PROSAC:
-                return new PROSACRobustRangingRadioSourceEstimator3D<>(qualityScores);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRangingRadioSourceEstimator3D<>(qualityScores);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRangingRadioSourceEstimator3D<>();
+            case LMEDS -> new LMedSRobustRangingRadioSourceEstimator3D<>();
+            case MSAC -> new MSACRobustRangingRadioSourceEstimator3D<>();
+            case PROSAC -> new PROSACRobustRangingRadioSourceEstimator3D<>(qualityScores);
+            default -> new PROMedSRobustRangingRadioSourceEstimator3D<>(qualityScores);
+        };
     }
 
     /**
@@ -439,24 +350,15 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRangingRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final List<? extends RangingReadingLocated<S, Point3D>> readings,
+            final double[] qualityScores, final List<? extends RangingReadingLocated<S, Point3D>> readings,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRangingRadioSourceEstimator3D<>(readings);
-            case LMEDS:
-                return new LMedSRobustRangingRadioSourceEstimator3D<>(readings);
-            case MSAC:
-                return new MSACRobustRangingRadioSourceEstimator3D<>(readings);
-            case PROSAC:
-                return new PROSACRobustRangingRadioSourceEstimator3D<>(qualityScores,
-                        readings);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRangingRadioSourceEstimator3D<>(qualityScores,
-                        readings);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRangingRadioSourceEstimator3D<>(readings);
+            case LMEDS -> new LMedSRobustRangingRadioSourceEstimator3D<>(readings);
+            case MSAC -> new MSACRobustRangingRadioSourceEstimator3D<>(readings);
+            case PROSAC -> new PROSACRobustRangingRadioSourceEstimator3D<>(qualityScores, readings);
+            default -> new PROMedSRobustRangingRadioSourceEstimator3D<>(qualityScores, readings);
+        };
     }
 
     /**
@@ -471,24 +373,15 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRangingRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final RobustRangingRadioSourceEstimatorListener<S, Point3D> listener,
+            final double[] qualityScores, final RobustRangingRadioSourceEstimatorListener<S, Point3D> listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRangingRadioSourceEstimator3D<>(listener);
-            case LMEDS:
-                return new LMedSRobustRangingRadioSourceEstimator3D<>(listener);
-            case MSAC:
-                return new MSACRobustRangingRadioSourceEstimator3D<>(listener);
-            case PROSAC:
-                return new PROSACRobustRangingRadioSourceEstimator3D<>(qualityScores,
-                        listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRangingRadioSourceEstimator3D<>(qualityScores,
-                        listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRangingRadioSourceEstimator3D<>(listener);
+            case LMEDS -> new LMedSRobustRangingRadioSourceEstimator3D<>(listener);
+            case MSAC -> new MSACRobustRangingRadioSourceEstimator3D<>(listener);
+            case PROSAC -> new PROSACRobustRangingRadioSourceEstimator3D<>(qualityScores, listener);
+            default -> new PROMedSRobustRangingRadioSourceEstimator3D<>(qualityScores, listener);
+        };
     }
 
     /**
@@ -504,28 +397,15 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRangingRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final List<? extends RangingReadingLocated<S, Point3D>> readings,
-            final RobustRangingRadioSourceEstimatorListener<S, Point3D> listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRangingRadioSourceEstimator3D<>(readings,
-                        listener);
-            case LMEDS:
-                return new LMedSRobustRangingRadioSourceEstimator3D<>(readings,
-                        listener);
-            case MSAC:
-                return new MSACRobustRangingRadioSourceEstimator3D<>(readings,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustRangingRadioSourceEstimator3D<>(qualityScores,
-                        readings, listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRangingRadioSourceEstimator3D<>(qualityScores,
-                        readings, listener);
-        }
+            final double[] qualityScores, final List<? extends RangingReadingLocated<S, Point3D>> readings,
+            final RobustRangingRadioSourceEstimatorListener<S, Point3D> listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRangingRadioSourceEstimator3D<>(readings, listener);
+            case LMEDS -> new LMedSRobustRangingRadioSourceEstimator3D<>(readings, listener);
+            case MSAC -> new MSACRobustRangingRadioSourceEstimator3D<>(readings, listener);
+            case PROSAC -> new PROSACRobustRangingRadioSourceEstimator3D<>(qualityScores, readings, listener);
+            default -> new PROMedSRobustRangingRadioSourceEstimator3D<>(qualityScores, readings, listener);
+        };
     }
 
     /**
@@ -541,24 +421,14 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRangingRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final Point3D initialPosition,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRangingRadioSourceEstimator3D<>(initialPosition);
-            case LMEDS:
-                return new LMedSRobustRangingRadioSourceEstimator3D<>(initialPosition);
-            case MSAC:
-                return new MSACRobustRangingRadioSourceEstimator3D<>(initialPosition);
-            case PROSAC:
-                return new PROSACRobustRangingRadioSourceEstimator3D<>(qualityScores,
-                        initialPosition);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRangingRadioSourceEstimator3D<>(qualityScores,
-                        initialPosition);
-        }
+            final double[] qualityScores, final Point3D initialPosition, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRangingRadioSourceEstimator3D<>(initialPosition);
+            case LMEDS -> new LMedSRobustRangingRadioSourceEstimator3D<>(initialPosition);
+            case MSAC -> new MSACRobustRangingRadioSourceEstimator3D<>(initialPosition);
+            case PROSAC -> new PROSACRobustRangingRadioSourceEstimator3D<>(qualityScores, initialPosition);
+            default -> new PROMedSRobustRangingRadioSourceEstimator3D<>(qualityScores, initialPosition);
+        };
     }
 
     /**
@@ -575,28 +445,15 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRangingRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final List<? extends RangingReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRangingRadioSourceEstimator3D<>(readings,
-                        initialPosition);
-            case LMEDS:
-                return new LMedSRobustRangingRadioSourceEstimator3D<>(readings,
-                        initialPosition);
-            case MSAC:
-                return new MSACRobustRangingRadioSourceEstimator3D<>(readings,
-                        initialPosition);
-            case PROSAC:
-                return new PROSACRobustRangingRadioSourceEstimator3D<>(qualityScores,
-                        readings, initialPosition);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRangingRadioSourceEstimator3D<>(qualityScores,
-                        readings, initialPosition);
-        }
+            final double[] qualityScores, final List<? extends RangingReadingLocated<S, Point3D>> readings,
+            final Point3D initialPosition, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRangingRadioSourceEstimator3D<>(readings, initialPosition);
+            case LMEDS -> new LMedSRobustRangingRadioSourceEstimator3D<>(readings, initialPosition);
+            case MSAC -> new MSACRobustRangingRadioSourceEstimator3D<>(readings, initialPosition);
+            case PROSAC -> new PROSACRobustRangingRadioSourceEstimator3D<>(qualityScores, readings, initialPosition);
+            default -> new PROMedSRobustRangingRadioSourceEstimator3D<>(qualityScores, readings, initialPosition);
+        };
     }
 
     /**
@@ -613,28 +470,15 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRangingRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final Point3D initialPosition,
-            final RobustRangingRadioSourceEstimatorListener<S, Point3D> listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRangingRadioSourceEstimator3D<>(initialPosition,
-                        listener);
-            case LMEDS:
-                return new LMedSRobustRangingRadioSourceEstimator3D<>(initialPosition,
-                        listener);
-            case MSAC:
-                return new MSACRobustRangingRadioSourceEstimator3D<>(initialPosition,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustRangingRadioSourceEstimator3D<>(qualityScores,
-                        initialPosition, listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRangingRadioSourceEstimator3D<>(qualityScores,
-                        initialPosition, listener);
-        }
+            final double[] qualityScores, final Point3D initialPosition,
+            final RobustRangingRadioSourceEstimatorListener<S, Point3D> listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRangingRadioSourceEstimator3D<>(initialPosition, listener);
+            case LMEDS -> new LMedSRobustRangingRadioSourceEstimator3D<>(initialPosition, listener);
+            case MSAC -> new MSACRobustRangingRadioSourceEstimator3D<>(initialPosition, listener);
+            case PROSAC -> new PROSACRobustRangingRadioSourceEstimator3D<>(qualityScores, initialPosition, listener);
+            default -> new PROMedSRobustRangingRadioSourceEstimator3D<>(qualityScores, initialPosition, listener);
+        };
     }
 
     /**
@@ -652,29 +496,18 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRangingRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final List<? extends RangingReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
-            final RobustRangingRadioSourceEstimatorListener<S, Point3D> listener,
+            final double[] qualityScores, final List<? extends RangingReadingLocated<S, Point3D>> readings,
+            final Point3D initialPosition, final RobustRangingRadioSourceEstimatorListener<S, Point3D> listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRangingRadioSourceEstimator3D<>(readings,
-                        initialPosition, listener);
-            case LMEDS:
-                return new LMedSRobustRangingRadioSourceEstimator3D<>(readings,
-                        initialPosition, listener);
-            case MSAC:
-                return new MSACRobustRangingRadioSourceEstimator3D<>(readings,
-                        initialPosition, listener);
-            case PROSAC:
-                return new PROSACRobustRangingRadioSourceEstimator3D<>(qualityScores,
-                        readings, initialPosition, listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRangingRadioSourceEstimator3D<>(qualityScores,
-                        readings, initialPosition, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRangingRadioSourceEstimator3D<>(readings, initialPosition, listener);
+            case LMEDS -> new LMedSRobustRangingRadioSourceEstimator3D<>(readings, initialPosition, listener);
+            case MSAC -> new MSACRobustRangingRadioSourceEstimator3D<>(readings, initialPosition, listener);
+            case PROSAC -> new PROSACRobustRangingRadioSourceEstimator3D<>(qualityScores, readings, initialPosition,
+                    listener);
+            default -> new PROMedSRobustRangingRadioSourceEstimator3D<>(qualityScores, readings, initialPosition,
+                    listener);
+        };
     }
 
     /**
@@ -707,32 +540,26 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
     @SuppressWarnings("unchecked")
     @Override
     public RadioSourceLocated<Point3D> getEstimatedRadioSource() {
-        final List<? extends RangingReadingLocated<S, Point3D>> readings = getReadings();
+        final var readings = getReadings();
         if (readings == null || readings.isEmpty()) {
             return null;
         }
-        final S source = readings.get(0).getSource();
+        final var source = readings.get(0).getSource();
 
-        final Point3D estimatedPosition = getEstimatedPosition();
+        final var estimatedPosition = getEstimatedPosition();
         if (estimatedPosition == null) {
             return null;
         }
 
-        final Matrix estimatedPositionCovariance = getEstimatedPositionCovariance();
+        final var estimatedPositionCovariance = getEstimatedPositionCovariance();
 
-        if (source instanceof WifiAccessPoint) {
-            final WifiAccessPoint accessPoint = (WifiAccessPoint) source;
-            return new WifiAccessPointLocated3D(accessPoint.getBssid(),
-                    accessPoint.getFrequency(), accessPoint.getSsid(),
-                    estimatedPosition, estimatedPositionCovariance);
-        } else if (source instanceof Beacon) {
-            final Beacon beacon = (Beacon) source;
-            return new BeaconLocated3D(beacon.getIdentifiers(),
-                    beacon.getTransmittedPower(), beacon.getFrequency(),
-                    beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(),
-                    beacon.getManufacturer(), beacon.getServiceUuid(),
-                    beacon.getBluetoothName(), estimatedPosition,
-                    estimatedPositionCovariance);
+        if (source instanceof WifiAccessPoint accessPoint) {
+            return new WifiAccessPointLocated3D(accessPoint.getBssid(), accessPoint.getFrequency(),
+                    accessPoint.getSsid(), estimatedPosition, estimatedPositionCovariance);
+        } else if (source instanceof Beacon beacon) {
+            return new BeaconLocated3D(beacon.getIdentifiers(), beacon.getTransmittedPower(), beacon.getFrequency(),
+                    beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(), beacon.getManufacturer(),
+                    beacon.getServiceUuid(), beacon.getBluetoothName(), estimatedPosition, estimatedPositionCovariance);
         } else {
             return null;
         }
@@ -747,7 +574,7 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
      */
     @Override
     public boolean isHomogeneousLinearSolverUsed() {
-        return mInnerEstimator.isHomogeneousLinearSolverUsed();
+        return innerEstimator.isHomogeneousLinearSolverUsed();
     }
 
     /**
@@ -759,12 +586,11 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
      * @throws LockedException if estimator is locked.
      */
     @Override
-    public void setHomogeneousLinearSolverUsed(
-            final boolean useHomogeneousLinearSolver) throws LockedException {
+    public void setHomogeneousLinearSolverUsed(final boolean useHomogeneousLinearSolver) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
-        mInnerEstimator.setHomogeneousLinearSolverUsed(useHomogeneousLinearSolver);
+        innerEstimator.setHomogeneousLinearSolverUsed(useHomogeneousLinearSolver);
     }
 
     /**
@@ -774,35 +600,30 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
      * @param solutions      instance where solution will be stored.
      */
     @Override
-    protected void solvePreliminarySolutions(
-            final int[] samplesIndices,
-            final List<Solution<Point3D>> solutions) {
+    protected void solvePreliminarySolutions(final int[] samplesIndices, final List<Solution<Point3D>> solutions) {
         try {
-            int index;
-
-            mInnerReadings.clear();
-            for (final int samplesIndex : samplesIndices) {
-                index = samplesIndex;
-                mInnerReadings.add(mReadings.get(index));
+            innerReadings.clear();
+            for (final var samplesIndex : samplesIndices) {
+                innerReadings.add(readings.get(samplesIndex));
             }
 
             // initial position might or might not be available
-            mInnerEstimator.setInitialPosition(mInitialPosition);
+            innerEstimator.setInitialPosition(initialPosition);
 
-            mInnerEstimator.setReadings(mInnerReadings);
+            innerEstimator.setReadings(innerReadings);
 
             // for preliminary solutions, non-linear solver is not needed, and if no
             // initial position is used, we can obtain faster solutions disabling
             // non-linear solver and using a linear one only (because covariance is not
             // required)
-            mInnerEstimator.setNonLinearSolverEnabled(mInitialPosition != null);
+            innerEstimator.setNonLinearSolverEnabled(initialPosition != null);
 
             // indicates whether readings position covariances must be taken into account
-            mInnerEstimator.setUseReadingPositionCovariances(mUseReadingPositionCovariances);
+            innerEstimator.setUseReadingPositionCovariances(useReadingPositionCovariances);
 
-            mInnerEstimator.estimate();
+            innerEstimator.estimate();
 
-            final Point3D estimatedPosition = mInnerEstimator.getEstimatedPosition();
+            final var estimatedPosition = innerEstimator.getEstimatedPosition();
             solutions.add(new Solution<>(estimatedPosition));
         } catch (final NavigationException ignore) {
             // if anything fails, no solution is added
@@ -821,54 +642,53 @@ public abstract class RobustRangingRadioSourceEstimator3D<S extends RadioSource>
      * @param result result to be refined.
      */
     protected void attemptRefine(final Solution<Point3D> result) {
-        final Point3D initialPosition = result.getEstimatedPosition();
+        final var initialPosition = result.getEstimatedPosition();
 
-        if (mRefineResult && mInliersData != null) {
-            final BitSet inliers = mInliersData.getInliers();
-            final int nSamples = mReadings.size();
+        if (refineResult && inliersData != null) {
+            final var inliers = inliersData.getInliers();
+            final var nSamples = readings.size();
 
-            mInnerReadings.clear();
+            innerReadings.clear();
 
-            for (int i = 0; i < nSamples; i++) {
+            for (var i = 0; i < nSamples; i++) {
                 if (inliers.get(i)) {
                     // sample is inlier
-                    mInnerReadings.add(mReadings.get(i));
+                    innerReadings.add(readings.get(i));
                 }
             }
 
             try {
-                mInnerEstimator.setInitialPosition(initialPosition);
-                mInnerEstimator.setReadings(mInnerReadings);
+                innerEstimator.setInitialPosition(initialPosition);
+                innerEstimator.setReadings(innerReadings);
 
-                mInnerEstimator.setNonLinearSolverEnabled(true);
-                mInnerEstimator.setUseReadingPositionCovariances(
-                        mUseReadingPositionCovariances);
-                mInnerEstimator.estimate();
+                innerEstimator.setNonLinearSolverEnabled(true);
+                innerEstimator.setUseReadingPositionCovariances(useReadingPositionCovariances);
+                innerEstimator.estimate();
 
-                final Matrix cov = mInnerEstimator.getEstimatedCovariance();
-                if (mKeepCovariance && cov != null) {
+                final var cov = innerEstimator.getEstimatedCovariance();
+                if (keepCovariance && cov != null) {
                     // keep covariance
-                    mEstimatedPositionCovariance = mCovariance = cov;
+                    estimatedPositionCovariance = covariance = cov;
 
                 } else {
-                    mCovariance = null;
-                    mEstimatedPositionCovariance = null;
+                    covariance = null;
+                    estimatedPositionCovariance = null;
                 }
 
-                mEstimatedPosition = mInnerEstimator.getEstimatedPosition();
+                estimatedPosition = innerEstimator.getEstimatedPosition();
             } catch (final Exception e) {
                 // refinement failed, so we return input value, and covariance
                 // becomes unavailable
-                mCovariance = null;
-                mEstimatedPositionCovariance = null;
+                covariance = null;
+                estimatedPositionCovariance = null;
 
-                mEstimatedPosition = initialPosition;
+                estimatedPosition = initialPosition;
             }
         } else {
-            mCovariance = null;
-            mEstimatedPositionCovariance = null;
+            covariance = null;
+            estimatedPositionCovariance = null;
 
-            mEstimatedPosition = initialPosition;
+            estimatedPosition = initialPosition;
         }
     }
 }

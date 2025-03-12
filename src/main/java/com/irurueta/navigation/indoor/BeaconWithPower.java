@@ -32,7 +32,7 @@ public class BeaconWithPower extends Beacon implements RadioSourceWithPower {
     /**
      * Standard deviation of transmitted power value or null if unknown.
      */
-    private Double mTransmittedPowerStandardDeviation;
+    private Double transmittedPowerStandardDeviation;
 
     /**
      * Exponent typically used on free space for path loss propagation in
@@ -45,12 +45,12 @@ public class BeaconWithPower extends Beacon implements RadioSourceWithPower {
      * If path loss exponent estimation is not enabled, this value will always be equal to
      * {@link #DEFAULT_PATH_LOSS_EXPONENT}
      */
-    private double mPathLossExponent = DEFAULT_PATH_LOSS_EXPONENT;
+    private double pathLossExponent = DEFAULT_PATH_LOSS_EXPONENT;
 
     /**
      * Standard deviation of path loss exponent or null if unknown.
      */
-    private Double mPathLossExponentStandardDeviation;
+    private Double pathLossExponentStandardDeviation;
 
     /**
      * Constructor.
@@ -59,8 +59,7 @@ public class BeaconWithPower extends Beacon implements RadioSourceWithPower {
      * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @throws IllegalArgumentException if identifiers is null.
      */
-    public BeaconWithPower(final List<BeaconIdentifier> identifiers,
-                           final double transmittedPower) {
+    public BeaconWithPower(final List<BeaconIdentifier> identifiers, final double transmittedPower) {
         super(identifiers, transmittedPower);
     }
 
@@ -76,15 +75,10 @@ public class BeaconWithPower extends Beacon implements RadioSourceWithPower {
      * @param bluetoothName    the bluetooth device name.
      * @throws IllegalArgumentException if identifiers is null.
      */
-    public BeaconWithPower(final List<BeaconIdentifier> identifiers,
-                           final double transmittedPower,
-                           final String bluetoothAddress,
-                           final int beaconTypeCode,
-                           final int manufacturer,
-                           final int serviceUuid,
-                           final String bluetoothName) {
-        super(identifiers, transmittedPower, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
+    public BeaconWithPower(final List<BeaconIdentifier> identifiers, final double transmittedPower,
+                           final String bluetoothAddress, final int beaconTypeCode, final int manufacturer,
+                           final int serviceUuid, final String bluetoothName) {
+        super(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName);
     }
 
@@ -97,15 +91,14 @@ public class BeaconWithPower extends Beacon implements RadioSourceWithPower {
      *                                          if unknown.
      * @throws IllegalArgumentException if identifiers is null or standard deviation is negative.
      */
-    public BeaconWithPower(final List<BeaconIdentifier> identifiers,
-                           final double transmittedPower,
+    public BeaconWithPower(final List<BeaconIdentifier> identifiers, final double transmittedPower,
                            final Double transmittedPowerStandardDeviation) {
         super(identifiers, transmittedPower);
 
         if (transmittedPowerStandardDeviation != null && transmittedPowerStandardDeviation < 0.0) {
             throw new IllegalArgumentException();
         }
-        mTransmittedPowerStandardDeviation = transmittedPowerStandardDeviation;
+        this.transmittedPowerStandardDeviation = transmittedPowerStandardDeviation;
     }
 
     /**
@@ -122,22 +115,17 @@ public class BeaconWithPower extends Beacon implements RadioSourceWithPower {
      *                                          if unknown.
      * @throws IllegalArgumentException if identifiers is null.
      */
-    public BeaconWithPower(final List<BeaconIdentifier> identifiers,
-                           final double transmittedPower,
-                           final String bluetoothAddress,
-                           final int beaconTypeCode,
-                           final int manufacturer,
-                           final int serviceUuid,
-                           final String bluetoothName,
+    public BeaconWithPower(final List<BeaconIdentifier> identifiers, final double transmittedPower,
+                           final String bluetoothAddress, final int beaconTypeCode, final int manufacturer,
+                           final int serviceUuid, final String bluetoothName,
                            final Double transmittedPowerStandardDeviation) {
-        super(identifiers, transmittedPower, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
+        super(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName);
 
         if (transmittedPowerStandardDeviation != null && transmittedPowerStandardDeviation < 0.0) {
             throw new IllegalArgumentException();
         }
-        mTransmittedPowerStandardDeviation = transmittedPowerStandardDeviation;
+        this.transmittedPowerStandardDeviation = transmittedPowerStandardDeviation;
     }
 
     /**
@@ -153,16 +141,10 @@ public class BeaconWithPower extends Beacon implements RadioSourceWithPower {
      * @param bluetoothName    the bluetooth device name.
      * @throws IllegalArgumentException if identifiers is null.
      */
-    public BeaconWithPower(final List<BeaconIdentifier> identifiers,
-                           final double transmittedPower,
-                           final double frequency,
-                           final String bluetoothAddress,
-                           final int beaconTypeCode,
-                           final int manufacturer,
-                           final int serviceUuid,
-                           final String bluetoothName) {
-        super(identifiers, transmittedPower, frequency, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
+    public BeaconWithPower(final List<BeaconIdentifier> identifiers, final double transmittedPower,
+                           final double frequency, final String bluetoothAddress, final int beaconTypeCode,
+                           final int manufacturer, final int serviceUuid, final String bluetoothName) {
+        super(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName);
     }
 
@@ -176,16 +158,14 @@ public class BeaconWithPower extends Beacon implements RadioSourceWithPower {
      *                                          if unknown.
      * @throws IllegalArgumentException if identifiers is null.
      */
-    public BeaconWithPower(final List<BeaconIdentifier> identifiers,
-                           final double transmittedPower,
-                           final double frequency,
-                           final Double transmittedPowerStandardDeviation) {
+    public BeaconWithPower(final List<BeaconIdentifier> identifiers, final double transmittedPower,
+                           final double frequency, final Double transmittedPowerStandardDeviation) {
         super(identifiers, transmittedPower, frequency);
 
         if (transmittedPowerStandardDeviation != null && transmittedPowerStandardDeviation < 0.0) {
             throw new IllegalArgumentException();
         }
-        mTransmittedPowerStandardDeviation = transmittedPowerStandardDeviation;
+        this.transmittedPowerStandardDeviation = transmittedPowerStandardDeviation;
     }
 
     /**
@@ -203,23 +183,17 @@ public class BeaconWithPower extends Beacon implements RadioSourceWithPower {
      *                                          if unknown.
      * @throws IllegalArgumentException if identifiers is null.
      */
-    public BeaconWithPower(final List<BeaconIdentifier> identifiers,
-                           final double transmittedPower,
-                           final double frequency,
-                           final String bluetoothAddress,
-                           final int beaconTypeCode,
-                           final int manufacturer,
-                           final int serviceUuid,
-                           final String bluetoothName,
+    public BeaconWithPower(final List<BeaconIdentifier> identifiers, final double transmittedPower,
+                           final double frequency, final String bluetoothAddress, final int beaconTypeCode,
+                           final int manufacturer, final int serviceUuid, final String bluetoothName,
                            final Double transmittedPowerStandardDeviation) {
-        super(identifiers, transmittedPower, frequency, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
+        super(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName);
 
         if (transmittedPowerStandardDeviation != null && transmittedPowerStandardDeviation < 0.0) {
             throw new IllegalArgumentException();
         }
-        mTransmittedPowerStandardDeviation = transmittedPowerStandardDeviation;
+        this.transmittedPowerStandardDeviation = transmittedPowerStandardDeviation;
     }
 
     /**
@@ -230,11 +204,10 @@ public class BeaconWithPower extends Beacon implements RadioSourceWithPower {
      * @param pathLossExponent path loss exponent. By default, this is 2.0.
      * @throws IllegalArgumentException if identifiers is null.
      */
-    public BeaconWithPower(final List<BeaconIdentifier> identifiers,
-                           final double transmittedPower,
+    public BeaconWithPower(final List<BeaconIdentifier> identifiers, final double transmittedPower,
                            final double pathLossExponent) {
         this(identifiers, transmittedPower);
-        mPathLossExponent = pathLossExponent;
+        this.pathLossExponent = pathLossExponent;
     }
 
     /**
@@ -250,18 +223,11 @@ public class BeaconWithPower extends Beacon implements RadioSourceWithPower {
      * @param pathLossExponent path loss exponent. By default, this is 2.0.
      * @throws IllegalArgumentException if identifiers is null.
      */
-    public BeaconWithPower(final List<BeaconIdentifier> identifiers,
-                           final double transmittedPower,
-                           final String bluetoothAddress,
-                           final int beaconTypeCode,
-                           final int manufacturer,
-                           final int serviceUuid,
-                           final String bluetoothName,
-                           final double pathLossExponent) {
-        this(identifiers, transmittedPower, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName);
-        mPathLossExponent = pathLossExponent;
+    public BeaconWithPower(final List<BeaconIdentifier> identifiers, final double transmittedPower,
+                           final String bluetoothAddress, final int beaconTypeCode, final int manufacturer,
+                           final int serviceUuid, final String bluetoothName, final double pathLossExponent) {
+        this(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid, bluetoothName);
+        this.pathLossExponent = pathLossExponent;
     }
 
     /**
@@ -274,16 +240,14 @@ public class BeaconWithPower extends Beacon implements RadioSourceWithPower {
      * @param pathLossExponent                  path loss exponent. By default, this is 2.0.
      * @throws IllegalArgumentException if identifiers is null or standard deviation is negative.
      */
-    public BeaconWithPower(final List<BeaconIdentifier> identifiers,
-                           final double transmittedPower,
-                           final Double transmittedPowerStandardDeviation,
-                           final double pathLossExponent) {
+    public BeaconWithPower(final List<BeaconIdentifier> identifiers, final double transmittedPower,
+                           final Double transmittedPowerStandardDeviation, final double pathLossExponent) {
         this(identifiers, transmittedPower, pathLossExponent);
 
         if (transmittedPowerStandardDeviation != null && transmittedPowerStandardDeviation < 0.0) {
             throw new IllegalArgumentException();
         }
-        mTransmittedPowerStandardDeviation = transmittedPowerStandardDeviation;
+        this.transmittedPowerStandardDeviation = transmittedPowerStandardDeviation;
     }
 
     /**
@@ -301,23 +265,17 @@ public class BeaconWithPower extends Beacon implements RadioSourceWithPower {
      *                                          if unknown.
      * @throws IllegalArgumentException if identifiers is null or standard deviation is negative.
      */
-    public BeaconWithPower(final List<BeaconIdentifier> identifiers,
-                           final double transmittedPower,
-                           final String bluetoothAddress,
-                           final int beaconTypeCode,
-                           final int manufacturer,
-                           final int serviceUuid,
-                           final String bluetoothName,
-                           final double pathLossExponent,
+    public BeaconWithPower(final List<BeaconIdentifier> identifiers, final double transmittedPower,
+                           final String bluetoothAddress, final int beaconTypeCode, final int manufacturer,
+                           final int serviceUuid, final String bluetoothName, final double pathLossExponent,
                            final Double transmittedPowerStandardDeviation) {
-        this(identifiers, transmittedPower, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName, pathLossExponent);
+        this(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid, bluetoothName,
+                pathLossExponent);
 
         if (transmittedPowerStandardDeviation != null && transmittedPowerStandardDeviation < 0.0) {
             throw new IllegalArgumentException();
         }
-        mTransmittedPowerStandardDeviation = transmittedPowerStandardDeviation;
+        this.transmittedPowerStandardDeviation = transmittedPowerStandardDeviation;
     }
 
     /**
@@ -334,19 +292,13 @@ public class BeaconWithPower extends Beacon implements RadioSourceWithPower {
      * @param pathLossExponent path loss exponent. By default, this is 2.0.
      * @throws IllegalArgumentException if identifiers is null.
      */
-    public BeaconWithPower(final List<BeaconIdentifier> identifiers,
-                           final double transmittedPower,
-                           final double frequency,
-                           final String bluetoothAddress,
-                           final int beaconTypeCode,
-                           final int manufacturer,
-                           final int serviceUuid,
-                           final String bluetoothName,
+    public BeaconWithPower(final List<BeaconIdentifier> identifiers, final double transmittedPower,
+                           final double frequency, final String bluetoothAddress, final int beaconTypeCode,
+                           final int manufacturer, final int serviceUuid, final String bluetoothName,
                            final double pathLossExponent) {
-        super(identifiers, transmittedPower, frequency, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
+        super(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName);
-        mPathLossExponent = pathLossExponent;
+        this.pathLossExponent = pathLossExponent;
     }
 
     /**
@@ -360,13 +312,11 @@ public class BeaconWithPower extends Beacon implements RadioSourceWithPower {
      *                                          if unknown.
      * @throws IllegalArgumentException if identifiers is null or standard deviation is negative.
      */
-    public BeaconWithPower(final List<BeaconIdentifier> identifiers,
-                           final double transmittedPower,
-                           final double frequency,
-                           final double pathLossExponent,
+    public BeaconWithPower(final List<BeaconIdentifier> identifiers, final double transmittedPower,
+                           final double frequency, final double pathLossExponent,
                            final Double transmittedPowerStandardDeviation) {
         this(identifiers, transmittedPower, frequency, transmittedPowerStandardDeviation);
-        mPathLossExponent = pathLossExponent;
+        this.pathLossExponent = pathLossExponent;
     }
 
     /**
@@ -385,25 +335,18 @@ public class BeaconWithPower extends Beacon implements RadioSourceWithPower {
      *                                          if unknown.
      * @throws IllegalArgumentException if identifiers is null or standard deviation is negative.
      */
-    public BeaconWithPower(final List<BeaconIdentifier> identifiers,
-                           final double transmittedPower,
-                           final double frequency,
-                           final String bluetoothAddress,
-                           final int beaconTypeCode,
-                           final int manufacturer,
-                           final int serviceUuid,
-                           final String bluetoothName,
-                           final double pathLossExponent,
-                           final Double transmittedPowerStandardDeviation) {
-        super(identifiers, transmittedPower, frequency, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
+    public BeaconWithPower(final List<BeaconIdentifier> identifiers, final double transmittedPower,
+                           final double frequency, final String bluetoothAddress, final int beaconTypeCode,
+                           final int manufacturer, final int serviceUuid, final String bluetoothName,
+                           final double pathLossExponent, final Double transmittedPowerStandardDeviation) {
+        super(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName);
-        mPathLossExponent = pathLossExponent;
+        this.pathLossExponent = pathLossExponent;
 
         if (transmittedPowerStandardDeviation != null && transmittedPowerStandardDeviation < 0.0) {
             throw new IllegalArgumentException();
         }
-        mTransmittedPowerStandardDeviation = transmittedPowerStandardDeviation;
+        this.transmittedPowerStandardDeviation = transmittedPowerStandardDeviation;
     }
 
     /**
@@ -418,10 +361,8 @@ public class BeaconWithPower extends Beacon implements RadioSourceWithPower {
      *                                          unknown.
      * @throws IllegalArgumentException if identifiers is null or any standard deviation is negative.
      */
-    public BeaconWithPower(final List<BeaconIdentifier> identifiers,
-                           final double transmittedPower,
-                           final Double transmittedPowerStandardDeviation,
-                           final double pathLossExponent,
+    public BeaconWithPower(final List<BeaconIdentifier> identifiers, final double transmittedPower,
+                           final Double transmittedPowerStandardDeviation, final double pathLossExponent,
                            final Double pathLossExponentStandardDeviation) {
         this(identifiers, transmittedPower, pathLossExponent);
 
@@ -432,8 +373,8 @@ public class BeaconWithPower extends Beacon implements RadioSourceWithPower {
             throw new IllegalArgumentException();
         }
 
-        mTransmittedPowerStandardDeviation = transmittedPowerStandardDeviation;
-        mPathLossExponentStandardDeviation = pathLossExponentStandardDeviation;
+        this.transmittedPowerStandardDeviation = transmittedPowerStandardDeviation;
+        this.pathLossExponentStandardDeviation = pathLossExponentStandardDeviation;
     }
 
     /**
@@ -453,19 +394,13 @@ public class BeaconWithPower extends Beacon implements RadioSourceWithPower {
      *                                          unknown.
      * @throws IllegalArgumentException if identifiers is null or any standard deviation is negative.
      */
-    public BeaconWithPower(final List<BeaconIdentifier> identifiers,
-                           final double transmittedPower,
-                           final String bluetoothAddress,
-                           final int beaconTypeCode,
-                           final int manufacturer,
-                           final int serviceUuid,
-                           final String bluetoothName,
-                           final double pathLossExponent,
+    public BeaconWithPower(final List<BeaconIdentifier> identifiers, final double transmittedPower,
+                           final String bluetoothAddress, final int beaconTypeCode, final int manufacturer,
+                           final int serviceUuid, final String bluetoothName, final double pathLossExponent,
                            final Double transmittedPowerStandardDeviation,
                            final Double pathLossExponentStandardDeviation) {
-        this(identifiers, transmittedPower, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
-                bluetoothName, pathLossExponent);
+        this(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid, bluetoothName,
+                pathLossExponent);
 
         if (transmittedPowerStandardDeviation != null && transmittedPowerStandardDeviation < 0.0) {
             throw new IllegalArgumentException();
@@ -474,8 +409,8 @@ public class BeaconWithPower extends Beacon implements RadioSourceWithPower {
             throw new IllegalArgumentException();
         }
 
-        mTransmittedPowerStandardDeviation = transmittedPowerStandardDeviation;
-        mPathLossExponentStandardDeviation = pathLossExponentStandardDeviation;
+        this.transmittedPowerStandardDeviation = transmittedPowerStandardDeviation;
+        this.pathLossExponentStandardDeviation = pathLossExponentStandardDeviation;
     }
 
     /**
@@ -491,20 +426,18 @@ public class BeaconWithPower extends Beacon implements RadioSourceWithPower {
      *                                          unknown.
      * @throws IllegalArgumentException if identifiers is null or any standard deviation is negative.
      */
-    public BeaconWithPower(final List<BeaconIdentifier> identifiers,
-                           final double transmittedPower,
-                           final double frequency,
-                           final double pathLossExponent,
+    public BeaconWithPower(final List<BeaconIdentifier> identifiers, final double transmittedPower,
+                           final double frequency, final double pathLossExponent,
                            final Double transmittedPowerStandardDeviation,
                            final Double pathLossExponentStandardDeviation) {
         this(identifiers, transmittedPower, frequency, transmittedPowerStandardDeviation);
-        mPathLossExponent = pathLossExponent;
+        this.pathLossExponent = pathLossExponent;
 
         if (pathLossExponentStandardDeviation != null && pathLossExponentStandardDeviation < 0.0) {
             throw new IllegalArgumentException();
         }
 
-        mPathLossExponentStandardDeviation = pathLossExponentStandardDeviation;
+        this.pathLossExponentStandardDeviation = pathLossExponentStandardDeviation;
     }
 
     /**
@@ -525,21 +458,14 @@ public class BeaconWithPower extends Beacon implements RadioSourceWithPower {
      *                                          unknown.
      * @throws IllegalArgumentException if identifiers is null.
      */
-    public BeaconWithPower(final List<BeaconIdentifier> identifiers,
-                           final double transmittedPower,
-                           final double frequency,
-                           final String bluetoothAddress,
-                           final int beaconTypeCode,
-                           final int manufacturer,
-                           final int serviceUuid,
-                           final String bluetoothName,
-                           final double pathLossExponent,
-                           final Double transmittedPowerStandardDeviation,
+    public BeaconWithPower(final List<BeaconIdentifier> identifiers, final double transmittedPower,
+                           final double frequency, final String bluetoothAddress, final int beaconTypeCode,
+                           final int manufacturer, final int serviceUuid, final String bluetoothName,
+                           final double pathLossExponent, final Double transmittedPowerStandardDeviation,
                            final Double pathLossExponentStandardDeviation) {
-        super(identifiers, transmittedPower, frequency, bluetoothAddress,
-                beaconTypeCode, manufacturer, serviceUuid,
+        super(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,
                 bluetoothName);
-        mPathLossExponent = pathLossExponent;
+        this.pathLossExponent = pathLossExponent;
 
         if (transmittedPowerStandardDeviation != null && transmittedPowerStandardDeviation < 0.0) {
             throw new IllegalArgumentException();
@@ -548,8 +474,8 @@ public class BeaconWithPower extends Beacon implements RadioSourceWithPower {
             throw new IllegalArgumentException();
         }
 
-        mTransmittedPowerStandardDeviation = transmittedPowerStandardDeviation;
-        mPathLossExponentStandardDeviation = pathLossExponentStandardDeviation;
+        this.transmittedPowerStandardDeviation = transmittedPowerStandardDeviation;
+        this.pathLossExponentStandardDeviation = pathLossExponentStandardDeviation;
     }
 
     /**
@@ -566,7 +492,7 @@ public class BeaconWithPower extends Beacon implements RadioSourceWithPower {
      */
     @Override
     public Double getTransmittedPowerStandardDeviation() {
-        return mTransmittedPowerStandardDeviation;
+        return transmittedPowerStandardDeviation;
     }
 
     /**
@@ -584,7 +510,7 @@ public class BeaconWithPower extends Beacon implements RadioSourceWithPower {
      */
     @Override
     public double getPathLossExponent() {
-        return mPathLossExponent;
+        return pathLossExponent;
     }
 
     /**
@@ -594,6 +520,6 @@ public class BeaconWithPower extends Beacon implements RadioSourceWithPower {
      */
     @Override
     public Double getPathLossExponentStandardDeviation() {
-        return mPathLossExponentStandardDeviation;
+        return pathLossExponentStandardDeviation;
     }
 }

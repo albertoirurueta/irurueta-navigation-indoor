@@ -21,14 +21,13 @@ import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.geometry.InhomogeneousPoint3D;
 import com.irurueta.geometry.Point3D;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class WifiAccessPointLocated3DTest {
+class WifiAccessPointLocated3DTest {
 
     private static final String BSSID = "bssid";
     private static final String SSID = "ssid";
@@ -37,9 +36,9 @@ public class WifiAccessPointLocated3DTest {
     private static final double MAX_POS = 50.0;
 
     @Test
-    public void testConstructor() throws AlgebraException {
+    void testConstructor() throws AlgebraException {
         // test empty constructor
-        WifiAccessPointLocated3D ap = new WifiAccessPointLocated3D();
+        var ap = new WifiAccessPointLocated3D();
 
         // check default values
         assertNull(ap.getBssid());
@@ -50,8 +49,8 @@ public class WifiAccessPointLocated3DTest {
         assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // test constructor with bssid, frequency and position
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final InhomogeneousPoint3D position = new InhomogeneousPoint3D(
+        final var randomizer = new UniformRandomizer();
+        final var position = new InhomogeneousPoint3D(
                 randomizer.nextDouble(MIN_POS, MAX_POS),
                 randomizer.nextDouble(MIN_POS, MAX_POS),
                 randomizer.nextDouble(MIN_POS, MAX_POS));
@@ -66,23 +65,11 @@ public class WifiAccessPointLocated3DTest {
         assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // force IllegalArgumentException
-        ap = null;
-        try {
-            ap = new WifiAccessPointLocated3D(null, FREQUENCY, position);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            ap = new WifiAccessPointLocated3D(BSSID, -FREQUENCY, position);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            ap = new WifiAccessPointLocated3D(BSSID, FREQUENCY, null);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(ap);
+        assertThrows(IllegalArgumentException.class, () -> new WifiAccessPointLocated3D(null, FREQUENCY,
+                position));
+        assertThrows(IllegalArgumentException.class, () -> new WifiAccessPointLocated3D(BSSID, -FREQUENCY, position));
+        assertThrows(IllegalArgumentException.class, () -> new WifiAccessPointLocated3D(BSSID, FREQUENCY,
+                null));
 
         // test constructor with bssid, frequency, ssid and position
         ap = new WifiAccessPointLocated3D(BSSID, FREQUENCY, SSID, position);
@@ -96,26 +83,15 @@ public class WifiAccessPointLocated3DTest {
         assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // force IllegalArgumentException
-        ap = null;
-        try {
-            ap = new WifiAccessPointLocated3D(null, FREQUENCY, SSID, position);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            ap = new WifiAccessPointLocated3D(BSSID, -FREQUENCY, SSID, position);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            ap = new WifiAccessPointLocated3D(BSSID, FREQUENCY, SSID, null);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(ap);
+        assertThrows(IllegalArgumentException.class, () -> new WifiAccessPointLocated3D(null, FREQUENCY, SSID,
+                position));
+        assertThrows(IllegalArgumentException.class, () -> new WifiAccessPointLocated3D(BSSID, -FREQUENCY, SSID,
+                position));
+        assertThrows(IllegalArgumentException.class, () -> new WifiAccessPointLocated3D(BSSID, FREQUENCY, SSID,
+                null));
 
         // test constructor with bssid, frequency, position and position covariance
-        final Matrix cov = new Matrix(Point3D.POINT3D_INHOMOGENEOUS_COORDINATES_LENGTH,
+        final var cov = new Matrix(Point3D.POINT3D_INHOMOGENEOUS_COORDINATES_LENGTH,
                 Point3D.POINT3D_INHOMOGENEOUS_COORDINATES_LENGTH);
         ap = new WifiAccessPointLocated3D(BSSID, FREQUENCY, position, cov);
 
@@ -138,28 +114,14 @@ public class WifiAccessPointLocated3DTest {
         assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // force IllegalArgumentException
-        ap = null;
-        try {
-            ap = new WifiAccessPointLocated3D(null, FREQUENCY, position, cov);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            ap = new WifiAccessPointLocated3D(BSSID, -FREQUENCY, position, cov);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            ap = new WifiAccessPointLocated3D(BSSID, FREQUENCY, null, cov);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            ap = new WifiAccessPointLocated3D(BSSID, FREQUENCY, position, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(ap);
+        assertThrows(IllegalArgumentException.class, () -> new WifiAccessPointLocated3D(null, FREQUENCY, position,
+                cov));
+        assertThrows(IllegalArgumentException.class, () -> new WifiAccessPointLocated3D(BSSID, -FREQUENCY, position,
+                cov));
+        assertThrows(IllegalArgumentException.class, () -> new WifiAccessPointLocated3D(BSSID, FREQUENCY, null,
+                cov));
+        final var m = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> new WifiAccessPointLocated3D(BSSID, FREQUENCY, position, m));
 
         // test constructor with bssid, frequency, ssid, position and
         // position covariance
@@ -184,40 +146,26 @@ public class WifiAccessPointLocated3DTest {
         assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // force IllegalArgumentException
-        ap = null;
-        try {
-            ap = new WifiAccessPointLocated3D(null, FREQUENCY, SSID, position, cov);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            ap = new WifiAccessPointLocated3D(BSSID, -FREQUENCY, SSID, position, cov);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            ap = new WifiAccessPointLocated3D(BSSID, FREQUENCY, SSID, null, cov);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            ap = new WifiAccessPointLocated3D(BSSID, FREQUENCY, SSID, position, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(ap);
+        assertThrows(IllegalArgumentException.class, () -> new WifiAccessPointLocated3D(null, FREQUENCY, SSID,
+                position, cov));
+        assertThrows(IllegalArgumentException.class, () -> new WifiAccessPointLocated3D(BSSID, -FREQUENCY, SSID,
+                position, cov));
+        assertThrows(IllegalArgumentException.class, () -> new WifiAccessPointLocated3D(BSSID, FREQUENCY, SSID,
+                null, cov));
+        assertThrows(IllegalArgumentException.class, () -> new WifiAccessPointLocated3D(BSSID, FREQUENCY, SSID,
+                position, m));
     }
 
     @Test
-    public void testEquals() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final InhomogeneousPoint3D position = new InhomogeneousPoint3D(
+    void testEquals() {
+        final var randomizer = new UniformRandomizer();
+        final var position = new InhomogeneousPoint3D(
                 randomizer.nextDouble(MIN_POS, MAX_POS),
                 randomizer.nextDouble(MIN_POS, MAX_POS),
                 randomizer.nextDouble(MIN_POS, MAX_POS));
-        final WifiAccessPointLocated3D ap1 = new WifiAccessPointLocated3D("bssid1", FREQUENCY, position);
-        final WifiAccessPointLocated3D ap2 = new WifiAccessPointLocated3D("bssid1", FREQUENCY, position);
-        final WifiAccessPointLocated3D ap3 = new WifiAccessPointLocated3D("bssid2", FREQUENCY, position);
+        final var ap1 = new WifiAccessPointLocated3D("bssid1", FREQUENCY, position);
+        final var ap2 = new WifiAccessPointLocated3D("bssid1", FREQUENCY, position);
+        final var ap3 = new WifiAccessPointLocated3D("bssid2", FREQUENCY, position);
 
         // check
         //noinspection EqualsWithItself
@@ -227,15 +175,15 @@ public class WifiAccessPointLocated3DTest {
     }
 
     @Test
-    public void testHashCode() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final InhomogeneousPoint3D position = new InhomogeneousPoint3D(
+    void testHashCode() {
+        final var randomizer = new UniformRandomizer();
+        final var position = new InhomogeneousPoint3D(
                 randomizer.nextDouble(MIN_POS, MAX_POS),
                 randomizer.nextDouble(MIN_POS, MAX_POS),
                 randomizer.nextDouble(MIN_POS, MAX_POS));
-        final WifiAccessPointLocated3D ap1 = new WifiAccessPointLocated3D("bssid1", FREQUENCY, position);
-        final WifiAccessPointLocated3D ap2 = new WifiAccessPointLocated3D("bssid1", FREQUENCY, position);
-        final WifiAccessPointLocated3D ap3 = new WifiAccessPointLocated3D("bssid2", FREQUENCY, position);
+        final var ap1 = new WifiAccessPointLocated3D("bssid1", FREQUENCY, position);
+        final var ap2 = new WifiAccessPointLocated3D("bssid1", FREQUENCY, position);
+        final var ap3 = new WifiAccessPointLocated3D("bssid2", FREQUENCY, position);
 
         // check
         assertEquals(ap1.hashCode(), ap2.hashCode());
@@ -243,15 +191,15 @@ public class WifiAccessPointLocated3DTest {
     }
 
     @Test
-    public void testSerializeDeserialize() throws WrongSizeException, IOException, ClassNotFoundException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final InhomogeneousPoint3D position = new InhomogeneousPoint3D(
+    void testSerializeDeserialize() throws WrongSizeException, IOException, ClassNotFoundException {
+        final var randomizer = new UniformRandomizer();
+        final var position = new InhomogeneousPoint3D(
                 randomizer.nextDouble(MIN_POS, MAX_POS),
                 randomizer.nextDouble(MIN_POS, MAX_POS),
                 randomizer.nextDouble(MIN_POS, MAX_POS));
-        final Matrix cov = new Matrix(Point3D.POINT3D_INHOMOGENEOUS_COORDINATES_LENGTH,
+        final var cov = new Matrix(Point3D.POINT3D_INHOMOGENEOUS_COORDINATES_LENGTH,
                 Point3D.POINT3D_INHOMOGENEOUS_COORDINATES_LENGTH);
-        final WifiAccessPointLocated3D ap1 = new WifiAccessPointLocated3D(BSSID, FREQUENCY, SSID, position, cov);
+        final var ap1 = new WifiAccessPointLocated3D(BSSID, FREQUENCY, SSID, position, cov);
 
         // check
         assertEquals(BSSID, ap1.getBssid());
@@ -262,8 +210,8 @@ public class WifiAccessPointLocated3DTest {
         assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap1.getType());
 
         // serialize and deserialize
-        final byte[] bytes = SerializationHelper.serialize(ap1);
-        final WifiAccessPointLocated3D ap2 = SerializationHelper.deserialize(bytes);
+        final var bytes = SerializationHelper.serialize(ap1);
+        final var ap2 = SerializationHelper.<WifiAccessPointLocated3D>deserialize(bytes);
 
         // check
         assertEquals(ap1, ap2);

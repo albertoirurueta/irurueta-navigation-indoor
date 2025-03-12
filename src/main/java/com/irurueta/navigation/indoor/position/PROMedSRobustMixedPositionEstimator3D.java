@@ -40,13 +40,13 @@ public class PROMedSRobustMixedPositionEstimator3D extends RobustMixedPositionEs
      * Quality scores corresponding to each provided located radio source.
      * The larger the score value the better the quality of the radio source.
      */
-    private double[] mSourceQualityScores;
+    private double[] sourceQualityScores;
 
     /**
      * Quality scores corresponding to each reading within provided fingerprint.
      * The larger the score value the better the quality of the reading.
      */
-    private double[] mFingerprintReadingsQualityScores;
+    private double[] fingerprintReadingsQualityScores;
 
     /**
      * Constructor.
@@ -63,8 +63,7 @@ public class PROMedSRobustMixedPositionEstimator3D extends RobustMixedPositionEs
      * @throws IllegalArgumentException if provided sources is null or the number of
      *                                  provided sources is less than the required minimum.
      */
-    public PROMedSRobustMixedPositionEstimator3D(
-            final List<? extends RadioSourceLocated<Point3D>> sources) {
+    public PROMedSRobustMixedPositionEstimator3D(final List<? extends RadioSourceLocated<Point3D>> sources) {
         super();
         init();
         internalSetSources(sources);
@@ -107,8 +106,7 @@ public class PROMedSRobustMixedPositionEstimator3D extends RobustMixedPositionEs
      *
      * @param listener listener in charge of handling events.
      */
-    public PROMedSRobustMixedPositionEstimator3D(
-            final RobustMixedPositionEstimatorListener<Point3D> listener) {
+    public PROMedSRobustMixedPositionEstimator3D(final RobustMixedPositionEstimatorListener<Point3D> listener) {
         super(listener);
         init();
     }
@@ -178,8 +176,7 @@ public class PROMedSRobustMixedPositionEstimator3D extends RobustMixedPositionEs
      *                                         reading.
      */
     public PROMedSRobustMixedPositionEstimator3D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingsQualityScores) {
+            final double[] sourceQualityScores, final double[] fingerprintReadingsQualityScores) {
         this();
         internalSetSourceQualityScores(sourceQualityScores);
         internalSetFingerprintReadingsQualityScores(fingerprintReadingsQualityScores);
@@ -202,8 +199,7 @@ public class PROMedSRobustMixedPositionEstimator3D extends RobustMixedPositionEs
      *                                  provided sources is less than the required minimum.
      */
     public PROMedSRobustMixedPositionEstimator3D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingsQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingsQualityScores,
             final List<? extends RadioSourceLocated<Point3D>> sources) {
         this(sources);
         internalSetSourceQualityScores(sourceQualityScores);
@@ -227,8 +223,7 @@ public class PROMedSRobustMixedPositionEstimator3D extends RobustMixedPositionEs
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public PROMedSRobustMixedPositionEstimator3D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingsQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingsQualityScores,
             final Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> fingerprint) {
         this(fingerprint);
         internalSetSourceQualityScores(sourceQualityScores);
@@ -255,8 +250,7 @@ public class PROMedSRobustMixedPositionEstimator3D extends RobustMixedPositionEs
      *                                  or the number of provided sources is less than the required minimum.
      */
     public PROMedSRobustMixedPositionEstimator3D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingsQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingsQualityScores,
             final List<? extends RadioSourceLocated<Point3D>> sources,
             final Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> fingerprint) {
         this(sources, fingerprint);
@@ -278,8 +272,7 @@ public class PROMedSRobustMixedPositionEstimator3D extends RobustMixedPositionEs
      * @param listener                         listener in charge of handling events.
      */
     public PROMedSRobustMixedPositionEstimator3D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingsQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingsQualityScores,
             final RobustMixedPositionEstimatorListener<Point3D> listener) {
         this(listener);
         internalSetSourceQualityScores(sourceQualityScores);
@@ -304,8 +297,7 @@ public class PROMedSRobustMixedPositionEstimator3D extends RobustMixedPositionEs
      *                                  provided sources is less than the required minimum.
      */
     public PROMedSRobustMixedPositionEstimator3D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingsQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingsQualityScores,
             final List<? extends RadioSourceLocated<Point3D>> sources,
             final RobustMixedPositionEstimatorListener<Point3D> listener) {
         this(sources, listener);
@@ -331,8 +323,7 @@ public class PROMedSRobustMixedPositionEstimator3D extends RobustMixedPositionEs
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public PROMedSRobustMixedPositionEstimator3D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingsQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingsQualityScores,
             final Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> fingerprint,
             final RobustMixedPositionEstimatorListener<Point3D> listener) {
         this(fingerprint, listener);
@@ -361,8 +352,7 @@ public class PROMedSRobustMixedPositionEstimator3D extends RobustMixedPositionEs
      *                                  null or the number of provided sources is less than the required minimum.
      */
     public PROMedSRobustMixedPositionEstimator3D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingsQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingsQualityScores,
             final List<? extends RadioSourceLocated<Point3D>> sources,
             final Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> fingerprint,
             final RobustMixedPositionEstimatorListener<Point3D> listener) {
@@ -379,7 +369,7 @@ public class PROMedSRobustMixedPositionEstimator3D extends RobustMixedPositionEs
      */
     @Override
     public double[] getSourceQualityScores() {
-        return mSourceQualityScores;
+        return sourceQualityScores;
     }
 
     /**
@@ -392,8 +382,7 @@ public class PROMedSRobustMixedPositionEstimator3D extends RobustMixedPositionEs
      *                                  than minimum required samples.
      */
     @Override
-    public void setSourceQualityScores(final double[] sourceQualityScores)
-            throws LockedException {
+    public void setSourceQualityScores(final double[] sourceQualityScores) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
@@ -411,7 +400,7 @@ public class PROMedSRobustMixedPositionEstimator3D extends RobustMixedPositionEs
      */
     @Override
     public double[] getFingerprintReadingsQualityScores() {
-        return mFingerprintReadingsQualityScores;
+        return fingerprintReadingsQualityScores;
     }
 
     /**
@@ -427,8 +416,8 @@ public class PROMedSRobustMixedPositionEstimator3D extends RobustMixedPositionEs
      *                                  than minimum required samples.
      */
     @Override
-    public void setFingerprintReadingsQualityScores(
-            final double[] fingerprintReadingsQualityScores) throws LockedException {
+    public void setFingerprintReadingsQualityScores(final double[] fingerprintReadingsQualityScores)
+            throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
@@ -455,8 +444,7 @@ public class PROMedSRobustMixedPositionEstimator3D extends RobustMixedPositionEs
      * accuracy has been reached.
      */
     public double getStopThreshold() {
-        return ((PROMedSRobustLateration3DSolver) mLaterationSolver).
-                getStopThreshold();
+        return ((PROMedSRobustLateration3DSolver) laterationSolver).getStopThreshold();
     }
 
     /**
@@ -481,8 +469,7 @@ public class PROMedSRobustMixedPositionEstimator3D extends RobustMixedPositionEs
      * @throws LockedException          if this solver is locked.
      */
     public void setStopThreshold(final double stopThreshold) throws LockedException {
-        ((PROMedSRobustLateration3DSolver) mLaterationSolver).
-                setStopThreshold(stopThreshold);
+        ((PROMedSRobustLateration3DSolver) laterationSolver).setStopThreshold(stopThreshold);
     }
 
     /**
@@ -499,8 +486,7 @@ public class PROMedSRobustMixedPositionEstimator3D extends RobustMixedPositionEs
      * Initializes robust lateration solver.
      */
     private void init() {
-        mLaterationSolver = new PROMedSRobustLateration3DSolver(
-                mTrilaterationSolverListener);
+        laterationSolver = new PROMedSRobustLateration3DSolver(trilaterationSolverListener);
     }
 
     /**
@@ -513,12 +499,11 @@ public class PROMedSRobustMixedPositionEstimator3D extends RobustMixedPositionEs
      *                                  is smaller than 3 samples.
      */
     private void internalSetSourceQualityScores(final double[] sourceQualityScores) {
-        if (sourceQualityScores == null ||
-                sourceQualityScores.length < getMinRequiredSources()) {
+        if (sourceQualityScores == null || sourceQualityScores.length < getMinRequiredSources()) {
             throw new IllegalArgumentException();
         }
 
-        mSourceQualityScores = sourceQualityScores;
+        this.sourceQualityScores = sourceQualityScores;
 
         buildPositionsDistancesDistanceStandardDeviationsAndQualityScores();
     }
@@ -533,14 +518,13 @@ public class PROMedSRobustMixedPositionEstimator3D extends RobustMixedPositionEs
      * @throws IllegalArgumentException if provided quality scores length is
      *                                  smaller than 3 samples.
      */
-    private void internalSetFingerprintReadingsQualityScores(
-            final double[] fingerprintReadingsQualityScores) {
-        if (fingerprintReadingsQualityScores == null ||
-                fingerprintReadingsQualityScores.length < getMinRequiredSources()) {
+    private void internalSetFingerprintReadingsQualityScores(final double[] fingerprintReadingsQualityScores) {
+        if (fingerprintReadingsQualityScores == null
+                || fingerprintReadingsQualityScores.length < getMinRequiredSources()) {
             throw new IllegalArgumentException();
         }
 
-        mFingerprintReadingsQualityScores = fingerprintReadingsQualityScores;
+        this.fingerprintReadingsQualityScores = fingerprintReadingsQualityScores;
 
         buildPositionsDistancesDistanceStandardDeviationsAndQualityScores();
     }

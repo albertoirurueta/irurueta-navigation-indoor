@@ -95,13 +95,13 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      * lower than the one typically used in RANSAC, and yet the algorithm could
      * still produce even smaller thresholds in estimated results.
      */
-    private double mStopThreshold = DEFAULT_STOP_THRESHOLD;
+    private double stopThreshold = DEFAULT_STOP_THRESHOLD;
 
     /**
      * Quality scores corresponding to each provided sample.
      * The larger the score value the better the quality of the sample.
      */
-    private double[] mQualityScores;
+    private double[] qualityScores;
 
     /**
      * Constructor.
@@ -129,7 +129,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      */
     public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -156,8 +156,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      * @throws IllegalArgumentException if readings are not valid.
      */
     public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
-            final Point2D initialPosition) {
+            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings, final Point2D initialPosition) {
         super(readings, initialPosition);
     }
 
@@ -167,8 +166,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      * @param initialPosition initial position to start the estimation of access
      *                        point position.
      */
-    public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
-            final Point2D initialPosition) {
+    public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(final Point2D initialPosition) {
         super(initialPosition);
     }
 
@@ -196,8 +194,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      * @throws IllegalArgumentException if readings are not valid.
      */
     public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
-            final Point2D initialPosition,
+            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings, final Point2D initialPosition,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(readings, initialPosition, listener);
     }
@@ -209,8 +206,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's)
      */
-    public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
-            final Double initialTransmittedPowerdBm) {
+    public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(final Double initialTransmittedPowerdBm) {
         super(initialTransmittedPowerdBm);
     }
 
@@ -275,8 +271,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      * @throws IllegalArgumentException if readings are not valid.
      */
     public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
-            final Point2D initialPosition,
+            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings, final Point2D initialPosition,
             final Double initialTransmittedPowerdBm) {
         super(readings, initialPosition, initialTransmittedPowerdBm);
     }
@@ -291,8 +286,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      *                                   (expressed in dBm's).
      */
     public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
-            final Point2D initialPosition,
-            final Double initialTransmittedPowerdBm) {
+            final Point2D initialPosition, final Double initialTransmittedPowerdBm) {
         super(initialPosition, initialTransmittedPowerdBm);
     }
 
@@ -307,8 +301,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      * @param listener                   in charge of attending events raised by this instance.
      */
     public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
-            final Point2D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(initialPosition, initialTransmittedPowerdBm, listener);
     }
@@ -327,8 +320,8 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      * @throws IllegalArgumentException if readings are not valid.
      */
     public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
-            final Point2D initialPosition, final Double initialTransmittedPowerdBm,
+            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings, final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(readings, initialPosition, initialTransmittedPowerdBm, listener);
     }
@@ -347,11 +340,9 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      * @throws IllegalArgumentException if readings are not valid.
      */
     public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
-            final Point2D initialPosition, final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent) {
-        super(readings, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent);
+            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings, final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm, final double initialPathLossExponent) {
+        super(readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);
     }
 
     /**
@@ -367,8 +358,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
     public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
             final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-        super(initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent);
+        super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);
     }
 
     /**
@@ -386,8 +376,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
             final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
-        super(initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent, listener);
+        super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener);
     }
 
     /**
@@ -405,12 +394,10 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      * @throws IllegalArgumentException if readings are not valid.
      */
     public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
-            final Point2D initialPosition, final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent,
+            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings, final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm, final double initialPathLossExponent,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
-        super(readings, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent, listener);
+        super(readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener);
     }
 
     /**
@@ -422,8 +409,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      * @throws IllegalArgumentException if quality scores is null, or length
      *                                  of quality scores is less than required minimum.
      */
-    public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores) {
+    public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(final double[] qualityScores) {
         super();
         internalSetQualityScores(qualityScores);
     }
@@ -440,8 +426,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      *                                  is null, or length of quality scores is less than required minimum.
      */
     public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings) {
+            final double[] qualityScores, final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings) {
         super(readings);
         internalSetQualityScores(qualityScores);
     }
@@ -457,8 +442,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      *                                  of quality scores is less than required minimum.
      */
     public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final RobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
+            final double[] qualityScores, final RobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(listener);
         internalSetQualityScores(qualityScores);
     }
@@ -476,8 +460,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      *                                  is null, or length of quality scores is less than required minimum.
      */
     public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
+            final double[] qualityScores, final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(readings, listener);
         internalSetQualityScores(qualityScores);
@@ -497,8 +480,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      *                                  is null, or length of quality scores is less than required minimum.
      */
     public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
+            final double[] qualityScores, final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
             final Point2D initialPosition) {
         super(readings, initialPosition);
         internalSetQualityScores(qualityScores);
@@ -553,8 +535,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      *                                  is null, or length of quality scores is less than required minimum.
      */
     public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
+            final double[] qualityScores, final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
             final Point2D initialPosition,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(readings, initialPosition, listener);
@@ -574,8 +555,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      *                                  of quality scores is less than required minimum.
      */
     public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final Double initialTransmittedPowerdBm) {
+            final double[] qualityScores, final Double initialTransmittedPowerdBm) {
         super(initialTransmittedPowerdBm);
         internalSetQualityScores(qualityScores);
     }
@@ -595,8 +575,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      *                                  is null, or length of quality scores is less than required minimum.
      */
     public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
+            final double[] qualityScores, final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
             final Double initialTransmittedPowerdBm) {
         super(readings, initialTransmittedPowerdBm);
         internalSetQualityScores(qualityScores);
@@ -616,8 +595,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      *                                  of quality scores is less than required minimum.
      */
     public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final Double initialTransmittedPowerdBm,
+            final double[] qualityScores, final Double initialTransmittedPowerdBm,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(initialTransmittedPowerdBm, listener);
         internalSetQualityScores(qualityScores);
@@ -639,8 +617,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      *                                  is null, or length of quality scores is less than required minimum.
      */
     public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
+            final double[] qualityScores, final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
             final Double initialTransmittedPowerdBm,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(readings, initialTransmittedPowerdBm, listener);
@@ -664,8 +641,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      *                                  is null, or length of quality scores is less than required minimum.
      */
     public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
+            final double[] qualityScores, final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
             final Point2D initialPosition, final Double initialTransmittedPowerdBm) {
         super(readings, initialPosition, initialTransmittedPowerdBm);
         internalSetQualityScores(qualityScores);
@@ -686,9 +662,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      *                                  of quality scores is less than required minimum.
      */
     public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final Point2D initialPosition,
-            final Double initialTransmittedPowerdBm) {
+            final double[] qualityScores, final Point2D initialPosition, final Double initialTransmittedPowerdBm) {
         super(initialPosition, initialTransmittedPowerdBm);
         internalSetQualityScores(qualityScores);
     }
@@ -709,9 +683,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      *                                  of quality scores is less than required minimum.
      */
     public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final Point2D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final double[] qualityScores, final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(initialPosition, initialTransmittedPowerdBm, listener);
         internalSetQualityScores(qualityScores);
@@ -735,8 +707,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      *                                  is null, or length of quality scores is less than required minimum.
      */
     public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
+            final double[] qualityScores, final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
             final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(readings, initialPosition, initialTransmittedPowerdBm, listener);
@@ -761,12 +732,10 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      *                                  is null, or length of quality scores is less than required minimum.
      */
     public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
+            final double[] qualityScores, final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
             final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-        super(readings, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent);
+        super(readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);
         internalSetQualityScores(qualityScores);
     }
 
@@ -784,11 +753,9 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      */
     public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores, final Point2D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final double[] qualityScores, final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-        super(initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent);
+        super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);
         internalSetQualityScores(qualityScores);
     }
 
@@ -807,12 +774,10 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      * @param listener                   listener in charge of attending events raised by this instance.
      */
     public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores, final Point2D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final double[] qualityScores, final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
-        super(initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent, listener);
+        super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener);
         internalSetQualityScores(qualityScores);
     }
 
@@ -835,13 +800,11 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      *                                  is null, or length of quality scores is less than required minimum.
      */
     public PROMedSRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
+            final double[] qualityScores, final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
             final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
-        super(readings, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent, listener);
+        super(readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener);
         internalSetQualityScores(qualityScores);
     }
 
@@ -865,7 +828,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      * accuracy has been reached.
      */
     public double getStopThreshold() {
-        return mStopThreshold;
+        return stopThreshold;
     }
 
     /**
@@ -897,7 +860,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
             throw new IllegalArgumentException();
         }
 
-        mStopThreshold = stopThreshold;
+        this.stopThreshold = stopThreshold;
     }
 
     /**
@@ -911,7 +874,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      */
     @Override
     public double[] getQualityScores() {
-        return mQualityScores;
+        return qualityScores;
     }
 
     /**
@@ -943,8 +906,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      */
     @Override
     public boolean isReady() {
-        return super.isReady() && mQualityScores != null &&
-                mQualityScores.length == mReadings.size();
+        return super.isReady() && qualityScores != null && qualityScores.length == readings.size();
     }
 
     /**
@@ -965,105 +927,95 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
             throw new NotReadyException();
         }
 
-        final PROMedSRobustEstimator<Solution<Point2D>> innerEstimator =
-                new PROMedSRobustEstimator<>(
-                        new PROMedSRobustEstimatorListener<Solution<Point2D>>() {
+        final var innerEstimator = new PROMedSRobustEstimator<>(
+                new PROMedSRobustEstimatorListener<Solution<Point2D>>() {
 
-                            @Override
-                            public double[] getQualityScores() {
-                                return mQualityScores;
-                            }
+                    @Override
+                    public double[] getQualityScores() {
+                        return qualityScores;
+                    }
 
-                            @Override
-                            public double getThreshold() {
-                                return mStopThreshold;
-                            }
+                    @Override
+                    public double getThreshold() {
+                        return stopThreshold;
+                    }
 
-                            @Override
-                            public int getTotalSamples() {
-                                return mReadings.size();
-                            }
+                    @Override
+                    public int getTotalSamples() {
+                        return readings.size();
+                    }
 
-                            @Override
-                            public int getSubsetSize() {
-                                return Math.max(mPreliminarySubsetSize, getMinReadings());
-                            }
+                    @Override
+                    public int getSubsetSize() {
+                        return Math.max(preliminarySubsetSize, getMinReadings());
+                    }
 
-                            @Override
-                            public void estimatePreliminarSolutions(
-                                    final int[] samplesIndices,
-                                    final List<Solution<Point2D>> solutions) {
-                                solvePreliminarySolutions(samplesIndices, solutions);
-                            }
+                    @Override
+                    public void estimatePreliminarSolutions(
+                            final int[] samplesIndices, final List<Solution<Point2D>> solutions) {
+                        solvePreliminarySolutions(samplesIndices, solutions);
+                    }
 
-                            @Override
-                            public double computeResidual(
-                                    final Solution<Point2D> currentEstimation,
-                                    final int i) {
-                                return residual(currentEstimation, i);
-                            }
+                    @Override
+                    public double computeResidual(final Solution<Point2D> currentEstimation, final int i) {
+                        return residual(currentEstimation, i);
+                    }
 
-                            @Override
-                            public boolean isReady() {
-                                return PROMedSRobustRangingAndRssiRadioSourceEstimator2D.this.isReady();
-                            }
+                    @Override
+                    public boolean isReady() {
+                        return PROMedSRobustRangingAndRssiRadioSourceEstimator2D.this.isReady();
+                    }
 
-                            @Override
-                            public void onEstimateStart(
-                                    final RobustEstimator<Solution<Point2D>> estimator) {
-                                // no action needed
-                            }
+                    @Override
+                    public void onEstimateStart(final RobustEstimator<Solution<Point2D>> estimator) {
+                        // no action needed
+                    }
 
-                            @Override
-                            public void onEstimateEnd(
-                                    final RobustEstimator<Solution<Point2D>> estimator) {
-                                // no action needed
-                            }
+                    @Override
+                    public void onEstimateEnd(final RobustEstimator<Solution<Point2D>> estimator) {
+                        // no action needed
+                    }
 
-                            @Override
-                            public void onEstimateNextIteration(
-                                    final RobustEstimator<Solution<Point2D>> estimator,
-                                    final int iteration) {
-                                if (mListener != null) {
-                                    mListener.onEstimateNextIteration(
-                                            PROMedSRobustRangingAndRssiRadioSourceEstimator2D.this,
-                                            iteration);
-                                }
-                            }
+                    @Override
+                    public void onEstimateNextIteration(
+                            final RobustEstimator<Solution<Point2D>> estimator, final int iteration) {
+                        if (listener != null) {
+                            listener.onEstimateNextIteration(
+                                    PROMedSRobustRangingAndRssiRadioSourceEstimator2D.this, iteration);
+                        }
+                    }
 
-                            @Override
-                            public void onEstimateProgressChange(
-                                    final RobustEstimator<Solution<Point2D>> estimator,
-                                    final float progress) {
-                                if (mListener != null) {
-                                    mListener.onEstimateProgressChange(
-                                            PROMedSRobustRangingAndRssiRadioSourceEstimator2D.this,
-                                            progress);
-                                }
-                            }
-                        });
+                    @Override
+                    public void onEstimateProgressChange(
+                            final RobustEstimator<Solution<Point2D>> estimator, final float progress) {
+                        if (listener != null) {
+                            listener.onEstimateProgressChange(
+                                    PROMedSRobustRangingAndRssiRadioSourceEstimator2D.this, progress);
+                        }
+                    }
+                });
 
         try {
-            mLocked = true;
+            locked = true;
 
-            if (mListener != null) {
-                mListener.onEstimateStart(this);
+            if (listener != null) {
+                listener.onEstimateStart(this);
             }
 
-            mInliersData = null;
+            inliersData = null;
 
             // inlier thresholds are disabled to obtain a less restrictive amount of inliers
             innerEstimator.setUseInlierThresholds(false);
 
-            innerEstimator.setConfidence(mConfidence);
-            innerEstimator.setMaxIterations(mMaxIterations);
-            innerEstimator.setProgressDelta(mProgressDelta);
-            final Solution<Point2D> result = innerEstimator.estimate();
-            mInliersData = innerEstimator.getInliersData();
+            innerEstimator.setConfidence(confidence);
+            innerEstimator.setMaxIterations(maxIterations);
+            innerEstimator.setProgressDelta(progressDelta);
+            final var result = innerEstimator.estimate();
+            inliersData = innerEstimator.getInliersData();
             attemptRefine(result);
 
-            if (mListener != null) {
-                mListener.onEstimateEnd(this);
+            if (listener != null) {
+                listener.onEstimateEnd(this);
             }
 
         } catch (final com.irurueta.numerical.LockedException e) {
@@ -1071,7 +1023,7 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
         } catch (final com.irurueta.numerical.NotReadyException e) {
             throw new NotReadyException(e);
         } finally {
-            mLocked = false;
+            locked = false;
         }
     }
 
@@ -1095,11 +1047,10 @@ public class PROMedSRobustRangingAndRssiRadioSourceEstimator2D<S extends RadioSo
      *                                  is smaller than 3 samples.
      */
     private void internalSetQualityScores(final double[] qualityScores) {
-        if (qualityScores == null ||
-                qualityScores.length < getMinReadings()) {
+        if (qualityScores == null || qualityScores.length < getMinReadings()) {
             throw new IllegalArgumentException();
         }
 
-        mQualityScores = qualityScores;
+        this.qualityScores = qualityScores;
     }
 }

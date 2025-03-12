@@ -18,20 +18,19 @@ package com.irurueta.navigation.indoor;
 import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.geometry.InhomogeneousPoint3D;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class RssiFingerprintLocated3DTest {
+class RssiFingerprintLocated3DTest {
 
     @Test
-    public void testConstructor() throws WrongSizeException {
+    void testConstructor() throws WrongSizeException {
         // test empty constructor
-        RssiFingerprintLocated3D<WifiAccessPoint, RssiReading<WifiAccessPoint>> f = new RssiFingerprintLocated3D<>();
+        var f = new RssiFingerprintLocated3D<WifiAccessPoint, RssiReading<WifiAccessPoint>>();
 
         // check default values
         assertTrue(f.getReadings().isEmpty());
@@ -39,8 +38,8 @@ public class RssiFingerprintLocated3DTest {
         assertNull(f.getPositionCovariance());
 
         // test with readings and position
-        final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-        final InhomogeneousPoint3D position = new InhomogeneousPoint3D();
+        final var readings = new ArrayList<RssiReading<WifiAccessPoint>>();
+        final var position = new InhomogeneousPoint3D();
         f = new RssiFingerprintLocated3D<>(readings, position);
 
         // check
@@ -50,21 +49,11 @@ public class RssiFingerprintLocated3DTest {
         assertNull(f.getPositionCovariance());
 
         // force IllegalArgumentException
-        f = null;
-        try {
-            f = new RssiFingerprintLocated3D<>(null, position);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            f = new RssiFingerprintLocated3D<>(readings, null);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(f);
+        assertThrows(IllegalArgumentException.class, () -> new RssiFingerprintLocated3D<>(null, position));
+        assertThrows(IllegalArgumentException.class, () -> new RssiFingerprintLocated3D<>(readings, null));
 
         // test with readings, position and covariance
-        final Matrix cov = new Matrix(3, 3);
+        final var cov = new Matrix(3, 3);
         f = new RssiFingerprintLocated3D<>(readings, position, cov);
 
         // check
@@ -73,36 +62,22 @@ public class RssiFingerprintLocated3DTest {
         assertSame(position, f.getPosition());
         assertSame(cov, f.getPositionCovariance());
 
-        f = null;
-        try {
-            f = new RssiFingerprintLocated3D<>(null, position, cov);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            f = new RssiFingerprintLocated3D<>(readings, null, cov);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            f = new RssiFingerprintLocated3D<>(readings, position, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(f);
+        assertThrows(IllegalArgumentException.class, () -> new RssiFingerprintLocated3D<>(null, position, cov));
+        assertThrows(IllegalArgumentException.class, () -> new RssiFingerprintLocated3D<>(readings, null, cov));
+        final var m = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> new RssiFingerprintLocated3D<>(readings, position, m));
     }
 
     @Test
-    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
-        final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-        final InhomogeneousPoint3D position = new InhomogeneousPoint3D();
-        final RssiFingerprintLocated3D<WifiAccessPoint, RssiReading<WifiAccessPoint>> f1 =
-                new RssiFingerprintLocated3D<>(readings, position);
+    void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final var readings = new ArrayList<RssiReading<WifiAccessPoint>>();
+        final var position = new InhomogeneousPoint3D();
+        final var f1 = new RssiFingerprintLocated3D<>(readings, position);
 
         // serialize and deserialize
-        final byte[] bytes = SerializationHelper.serialize(f1);
-        final RssiFingerprintLocated3D<WifiAccessPoint, RssiReading<WifiAccessPoint>> f2 =
-                SerializationHelper.deserialize(bytes);
+        final var bytes = SerializationHelper.serialize(f1);
+        final var f2 = SerializationHelper
+                .<RssiFingerprintLocated3D<WifiAccessPoint, RssiReading<WifiAccessPoint>>>deserialize(bytes);
 
         // check
         assertNotSame(f1, f2);

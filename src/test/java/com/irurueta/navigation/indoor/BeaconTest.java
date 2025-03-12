@@ -16,21 +16,19 @@
 package com.irurueta.navigation.indoor;
 
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class BeaconTest {
+class BeaconTest {
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         // test empty constructor
-        Beacon b = new Beacon();
+        var b = new Beacon();
 
         // check default values
         assertNull(b.getId1());
@@ -47,7 +45,7 @@ public class BeaconTest {
         assertEquals(Beacon.DEFAULT_FREQUENCY, b.getFrequency(), 0.0);
 
         // test constructor with identifiers and transmitted power
-        final List<BeaconIdentifier> identifiers = new ArrayList<>();
+        final var identifiers = new ArrayList<BeaconIdentifier>();
         b = new Beacon(identifiers, -50.0);
 
         // check default values
@@ -65,14 +63,7 @@ public class BeaconTest {
         assertEquals(Beacon.DEFAULT_FREQUENCY, b.getFrequency(), 0.0);
 
         // force IllegalArgumentException
-        b = null;
-        try {
-            b = new Beacon(null, -50.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        //noinspection ConstantConditions
-        assertNull(b);
+        assertThrows(IllegalArgumentException.class, () -> new Beacon(null, -50.0));
 
         // test constructor with all data
         b = new Beacon(identifiers, -50.0, "address", 1, 2,
@@ -93,14 +84,8 @@ public class BeaconTest {
         assertEquals(Beacon.DEFAULT_FREQUENCY, b.getFrequency(), 0.0);
 
         // force IllegalArgumentException
-        b = null;
-        try {
-            b = new Beacon(null, -50.0, "address", 1,
-                    2, 3, "name");
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(b);
+        assertThrows(IllegalArgumentException.class, () -> new Beacon(null, -50.0,
+                "address", 1, 2, 3, "name"));
 
         // test constructor with identifiers, transmitted power and frequency
         b = new Beacon(identifiers, -50.0, 5.0e9);
@@ -120,18 +105,10 @@ public class BeaconTest {
         assertEquals(5.0e9, b.getFrequency(), 0.0);
 
         // force IllegalArgumentException
-        b = null;
-        try {
-            b = new Beacon(null, -50.0, 5.0e9);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            b = new Beacon(identifiers, -50.0, -5.0e9);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(b);
+        assertThrows(IllegalArgumentException.class, () -> new Beacon(null, -50.0,
+                5.0e9));
+        assertThrows(IllegalArgumentException.class, () -> new Beacon(identifiers, -50.0,
+                -5.0e9));
 
         // test constructor with all data and frequency
         b = new Beacon(identifiers, -50.0, 5.0e9, "address", 1,
@@ -152,41 +129,33 @@ public class BeaconTest {
         assertEquals(5.0e9, b.getFrequency(), 0.0);
 
         // force IllegalArgumentException
-        b = null;
-        try {
-            b = new Beacon(null, -50.0, 5.0e9, "address",
-                    1, 2, 3, "name");
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            b = new Beacon(identifiers, -50.0, -5.0e9, "address",
-                    1, 2, 3, "name");
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(b);
+        assertThrows(IllegalArgumentException.class, () -> new Beacon(null, -50.0,
+                5.0e9, "address", 1, 2, 3,
+                "name"));
+        assertThrows(IllegalArgumentException.class, () -> new Beacon(identifiers, -50.0,
+                -5.0e9, "address", 1, 2, 3,
+                "name"));
     }
 
     @Test
-    public void testGetIdentifier() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testGetIdentifier() {
+        final var randomizer = new UniformRandomizer();
 
-        final long value1 = randomizer.nextLong();
-        final BeaconIdentifier id1 = BeaconIdentifier.fromLong(value1, Long.SIZE / Byte.SIZE);
+        final var value1 = randomizer.nextLong();
+        final var id1 = BeaconIdentifier.fromLong(value1, Long.SIZE / Byte.SIZE);
 
-        final long value2 = randomizer.nextLong();
-        final BeaconIdentifier id2 = BeaconIdentifier.fromLong(value2, Long.SIZE / Byte.SIZE);
+        final var value2 = randomizer.nextLong();
+        final var id2 = BeaconIdentifier.fromLong(value2, Long.SIZE / Byte.SIZE);
 
-        final long value3 = randomizer.nextLong();
-        final BeaconIdentifier id3 = BeaconIdentifier.fromLong(value3, Long.SIZE / Byte.SIZE);
+        final var value3 = randomizer.nextLong();
+        final var id3 = BeaconIdentifier.fromLong(value3, Long.SIZE / Byte.SIZE);
 
-        final List<BeaconIdentifier> identifiers = new ArrayList<>();
+        final var identifiers = new ArrayList<BeaconIdentifier>();
         identifiers.add(id1);
         identifiers.add(id2);
         identifiers.add(id3);
 
-        final Beacon b = new Beacon(identifiers, -60.0);
+        final var b = new Beacon(identifiers, -60.0);
 
         // check
         assertEquals(b.getIdentifier(0), id1);
@@ -202,40 +171,40 @@ public class BeaconTest {
     }
 
     @Test
-    public void testEquals() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testEquals() {
+        final var randomizer = new UniformRandomizer();
 
-        final long value1 = randomizer.nextLong();
-        final BeaconIdentifier id1 = BeaconIdentifier.fromLong(value1, Long.SIZE / Byte.SIZE);
+        final var value1 = randomizer.nextLong();
+        final var id1 = BeaconIdentifier.fromLong(value1, Long.SIZE / Byte.SIZE);
 
-        final long value2 = randomizer.nextLong();
-        final BeaconIdentifier id2 = BeaconIdentifier.fromLong(value2, Long.SIZE / Byte.SIZE);
+        final var value2 = randomizer.nextLong();
+        final var id2 = BeaconIdentifier.fromLong(value2, Long.SIZE / Byte.SIZE);
 
-        final long value3 = randomizer.nextLong();
-        final BeaconIdentifier id3 = BeaconIdentifier.fromLong(value3, Long.SIZE / Byte.SIZE);
+        final var value3 = randomizer.nextLong();
+        final var id3 = BeaconIdentifier.fromLong(value3, Long.SIZE / Byte.SIZE);
 
-        final List<BeaconIdentifier> identifiers1 = new ArrayList<>();
+        final var identifiers1 = new ArrayList<BeaconIdentifier>();
         identifiers1.add(id1);
         identifiers1.add(id2);
         identifiers1.add(id3);
 
-        final long value4 = value1 + 1;
-        final BeaconIdentifier id4 = BeaconIdentifier.fromLong(value4, Long.SIZE / Byte.SIZE);
+        final var value4 = value1 + 1;
+        final var id4 = BeaconIdentifier.fromLong(value4, Long.SIZE / Byte.SIZE);
 
-        final long value5 = value2 + 1;
-        final BeaconIdentifier id5 = BeaconIdentifier.fromLong(value5, Long.SIZE / Byte.SIZE);
+        final var value5 = value2 + 1;
+        final var id5 = BeaconIdentifier.fromLong(value5, Long.SIZE / Byte.SIZE);
 
-        final long value6 = value3 + 1;
-        final BeaconIdentifier id6 = BeaconIdentifier.fromLong(value6, Long.SIZE / Byte.SIZE);
+        final var value6 = value3 + 1;
+        final var id6 = BeaconIdentifier.fromLong(value6, Long.SIZE / Byte.SIZE);
 
-        final List<BeaconIdentifier> identifiers2 = new ArrayList<>();
+        final var identifiers2 = new ArrayList<BeaconIdentifier>();
         identifiers2.add(id4);
         identifiers2.add(id5);
         identifiers2.add(id6);
 
-        final Beacon b1 = new Beacon(identifiers1, -60.0);
-        final Beacon b2 = new Beacon(identifiers1, -50.0);
-        final Beacon b3 = new Beacon(identifiers2, -60.0);
+        final var b1 = new Beacon(identifiers1, -60.0);
+        final var b2 = new Beacon(identifiers1, -50.0);
+        final var b3 = new Beacon(identifiers2, -60.0);
 
         // check
         //noinspection EqualsWithItself
@@ -243,32 +212,31 @@ public class BeaconTest {
         assertEquals(b1, b2);
         assertNotEquals(b1, b3);
 
-        assertNotEquals(b1, new Object());
+        assertNotEquals(new Object(), b1);
 
         assertEquals(b1.hashCode(), b2.hashCode());
         assertNotEquals(b1.hashCode(), b3.hashCode());
     }
 
     @Test
-    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final long value1 = randomizer.nextLong();
-        final BeaconIdentifier id1 = BeaconIdentifier.fromLong(value1, Long.SIZE / Byte.SIZE);
+    void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final var randomizer = new UniformRandomizer();
+        final var value1 = randomizer.nextLong();
+        final var id1 = BeaconIdentifier.fromLong(value1, Long.SIZE / Byte.SIZE);
 
-        final long value2 = randomizer.nextLong();
-        final BeaconIdentifier id2 = BeaconIdentifier.fromLong(value2, Long.SIZE / Byte.SIZE);
+        final var value2 = randomizer.nextLong();
+        final var id2 = BeaconIdentifier.fromLong(value2, Long.SIZE / Byte.SIZE);
 
-        final long value3 = randomizer.nextLong();
-        final BeaconIdentifier id3 = BeaconIdentifier.fromLong(value3, Long.SIZE / Byte.SIZE);
+        final var value3 = randomizer.nextLong();
+        final var id3 = BeaconIdentifier.fromLong(value3, Long.SIZE / Byte.SIZE);
 
-        final List<BeaconIdentifier> identifiers = new ArrayList<>();
+        final var identifiers = new ArrayList<BeaconIdentifier>();
         identifiers.add(id1);
         identifiers.add(id2);
         identifiers.add(id3);
 
-        final Beacon b1 = new Beacon(identifiers, -50.0,
-                5.0e9, "address", 1,
-                2, 3, "name");
+        final var b1 = new Beacon(identifiers, -50.0, 5.0e9, "address",
+                1, 2, 3, "name");
 
         // check default values
         assertEquals(id1, b1.getId1());
@@ -285,8 +253,8 @@ public class BeaconTest {
         assertEquals(5.0e9, b1.getFrequency(), 0.0);
 
         // serialize and deserialize
-        final byte[] bytes = SerializationHelper.serialize(b1);
-        final Beacon b2 = SerializationHelper.deserialize(bytes);
+        final var bytes = SerializationHelper.serialize(b1);
+        final var b2 = SerializationHelper.<Beacon>deserialize(bytes);
 
         // check
         assertEquals(b1.getId1(), b2.getId1());

@@ -15,15 +15,15 @@
  */
 package com.irurueta.navigation.indoor.fingerprint;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class FingerprintEstimationExceptionTest {
+class FingerprintEstimationExceptionTest {
 
     @Test
-    public void testConstructor() {
-        FingerprintEstimationException ex = new FingerprintEstimationException();
+    void testConstructor() {
+        var ex = new FingerprintEstimationException();
         assertNotNull(ex);
 
         ex = new FingerprintEstimationException("message");

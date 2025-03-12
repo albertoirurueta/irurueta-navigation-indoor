@@ -25,6 +25,7 @@ import com.irurueta.numerical.robust.LMedSRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -62,8 +63,7 @@ import java.util.List;
  * @param <S> a {@link RadioSource} type.
  */
 @SuppressWarnings("Duplicates")
-public class LMedSRobustRssiRadioSourceEstimator2D<S extends RadioSource> extends
-        RobustRssiRadioSourceEstimator2D<S> {
+public class LMedSRobustRssiRadioSourceEstimator2D<S extends RadioSource> extends RobustRssiRadioSourceEstimator2D<S> {
 
     /**
      * Default value to be used for stop threshold. Stop threshold can be used to
@@ -105,7 +105,7 @@ public class LMedSRobustRssiRadioSourceEstimator2D<S extends RadioSource> extend
      * lower than the one typically used in RANSAC, and yet the algorithm could
      * still produce even smaller thresholds in estimated results.
      */
-    private double mStopThreshold = DEFAULT_STOP_THRESHOLD;
+    private double stopThreshold = DEFAULT_STOP_THRESHOLD;
 
     /**
      * Constructor.
@@ -121,8 +121,7 @@ public class LMedSRobustRssiRadioSourceEstimator2D<S extends RadioSource> extend
      * @param readings signal readings belonging to the same radio source.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public LMedSRobustRssiRadioSourceEstimator2D(
-            final List<? extends RssiReadingLocated<S, Point2D>> readings) {
+    public LMedSRobustRssiRadioSourceEstimator2D(final List<? extends RssiReadingLocated<S, Point2D>> readings) {
         super(readings);
     }
 
@@ -131,8 +130,7 @@ public class LMedSRobustRssiRadioSourceEstimator2D<S extends RadioSource> extend
      *
      * @param listener listener in charge of attending events raised by this instance.
      */
-    public LMedSRobustRssiRadioSourceEstimator2D(
-            final RobustRssiRadioSourceEstimatorListener<S, Point2D> listener) {
+    public LMedSRobustRssiRadioSourceEstimator2D(final RobustRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(listener);
     }
 
@@ -160,8 +158,7 @@ public class LMedSRobustRssiRadioSourceEstimator2D<S extends RadioSource> extend
      * @throws IllegalArgumentException if readings are not valid.
      */
     public LMedSRobustRssiRadioSourceEstimator2D(
-            final List<? extends RssiReadingLocated<S, Point2D>> readings,
-            final Point2D initialPosition) {
+            final List<? extends RssiReadingLocated<S, Point2D>> readings, final Point2D initialPosition) {
         super(readings, initialPosition);
     }
 
@@ -183,8 +180,7 @@ public class LMedSRobustRssiRadioSourceEstimator2D<S extends RadioSource> extend
      * @param listener        listener in charge of attending events raised by this instance.
      */
     public LMedSRobustRssiRadioSourceEstimator2D(
-            final Point2D initialPosition,
-            final RobustRssiRadioSourceEstimatorListener<S, Point2D> listener) {
+            final Point2D initialPosition, final RobustRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(initialPosition, listener);
     }
 
@@ -199,8 +195,7 @@ public class LMedSRobustRssiRadioSourceEstimator2D<S extends RadioSource> extend
      * @throws IllegalArgumentException if readings are not valid.
      */
     public LMedSRobustRssiRadioSourceEstimator2D(
-            final List<? extends RssiReadingLocated<S, Point2D>> readings,
-            final Point2D initialPosition,
+            final List<? extends RssiReadingLocated<S, Point2D>> readings, final Point2D initialPosition,
             final RobustRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(readings, initialPosition, listener);
     }
@@ -212,8 +207,7 @@ public class LMedSRobustRssiRadioSourceEstimator2D<S extends RadioSource> extend
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's)
      */
-    public LMedSRobustRssiRadioSourceEstimator2D(
-            final Double initialTransmittedPowerdBm) {
+    public LMedSRobustRssiRadioSourceEstimator2D(final Double initialTransmittedPowerdBm) {
         super(initialTransmittedPowerdBm);
     }
 
@@ -228,8 +222,7 @@ public class LMedSRobustRssiRadioSourceEstimator2D<S extends RadioSource> extend
      * @throws IllegalArgumentException if readings are not valid.
      */
     public LMedSRobustRssiRadioSourceEstimator2D(
-            final List<? extends RssiReadingLocated<S, Point2D>> readings,
-            final Double initialTransmittedPowerdBm) {
+            final List<? extends RssiReadingLocated<S, Point2D>> readings, final Double initialTransmittedPowerdBm) {
         super(readings, initialTransmittedPowerdBm);
     }
 
@@ -259,8 +252,7 @@ public class LMedSRobustRssiRadioSourceEstimator2D<S extends RadioSource> extend
      * @throws IllegalArgumentException if readings are not valid.
      */
     public LMedSRobustRssiRadioSourceEstimator2D(
-            final List<? extends RssiReadingLocated<S, Point2D>> readings,
-            final Double initialTransmittedPowerdBm,
+            final List<? extends RssiReadingLocated<S, Point2D>> readings, final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(readings, initialTransmittedPowerdBm, listener);
     }
@@ -293,8 +285,7 @@ public class LMedSRobustRssiRadioSourceEstimator2D<S extends RadioSource> extend
      *                                   (expressed in dBm's).
      */
     public LMedSRobustRssiRadioSourceEstimator2D(
-            final Point2D initialPosition,
-            final Double initialTransmittedPowerdBm) {
+            final Point2D initialPosition, final Double initialTransmittedPowerdBm) {
         super(initialPosition, initialTransmittedPowerdBm);
     }
 
@@ -309,8 +300,7 @@ public class LMedSRobustRssiRadioSourceEstimator2D<S extends RadioSource> extend
      * @param listener                   in charge of attending events raised by this instance.
      */
     public LMedSRobustRssiRadioSourceEstimator2D(
-            final Point2D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(initialPosition, initialTransmittedPowerdBm, listener);
     }
@@ -352,8 +342,7 @@ public class LMedSRobustRssiRadioSourceEstimator2D<S extends RadioSource> extend
             final List<? extends RssiReadingLocated<S, Point2D>> readings,
             final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-        super(readings, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent);
+        super(readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);
     }
 
     /**
@@ -369,8 +358,7 @@ public class LMedSRobustRssiRadioSourceEstimator2D<S extends RadioSource> extend
     public LMedSRobustRssiRadioSourceEstimator2D(
             final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-        super(initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent);
+        super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);
     }
 
     /**
@@ -388,8 +376,7 @@ public class LMedSRobustRssiRadioSourceEstimator2D<S extends RadioSource> extend
             final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final RobustRssiRadioSourceEstimatorListener<S, Point2D> listener) {
-        super(initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent, listener);
+        super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener);
     }
 
     /**
@@ -407,12 +394,10 @@ public class LMedSRobustRssiRadioSourceEstimator2D<S extends RadioSource> extend
      * @throws IllegalArgumentException if readings are not valid.
      */
     public LMedSRobustRssiRadioSourceEstimator2D(
-            final List<? extends RssiReadingLocated<S, Point2D>> readings,
-            final Point2D initialPosition, final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent,
+            final List<? extends RssiReadingLocated<S, Point2D>> readings, final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm, final double initialPathLossExponent,
             final RobustRssiRadioSourceEstimatorListener<S, Point2D> listener) {
-        super(readings, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent, listener);
+        super(readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener);
     }
 
     /**
@@ -435,7 +420,7 @@ public class LMedSRobustRssiRadioSourceEstimator2D<S extends RadioSource> extend
      * accuracy has been reached.
      */
     public double getStopThreshold() {
-        return mStopThreshold;
+        return stopThreshold;
     }
 
     /**
@@ -467,7 +452,7 @@ public class LMedSRobustRssiRadioSourceEstimator2D<S extends RadioSource> extend
             throw new IllegalArgumentException();
         }
 
-        mStopThreshold = stopThreshold;
+        this.stopThreshold = stopThreshold;
     }
 
     /**
@@ -488,89 +473,77 @@ public class LMedSRobustRssiRadioSourceEstimator2D<S extends RadioSource> extend
             throw new NotReadyException();
         }
 
-        final LMedSRobustEstimator<Solution<Point2D>> innerEstimator =
-                new LMedSRobustEstimator<>(
-                        new LMedSRobustEstimatorListener<Solution<Point2D>>() {
-                            @Override
-                            public int getTotalSamples() {
-                                return mReadings.size();
-                            }
-
-                            @Override
-                            public int getSubsetSize() {
-                                return Math.max(mPreliminarySubsetSize, getMinReadings());
-                            }
-
-                            @Override
-                            public void estimatePreliminarSolutions(
-                                    final int[] samplesIndices,
-                                    final List<Solution<Point2D>> solutions) {
-                                solvePreliminarySolutions(samplesIndices, solutions);
-                            }
-
-                            @Override
-                            public double computeResidual(
-                                    final Solution<Point2D> currentEstimation, final int i) {
-                                return residual(currentEstimation, i);
-                            }
-
-                            @Override
-                            public boolean isReady() {
-                                return LMedSRobustRssiRadioSourceEstimator2D.this.isReady();
-                            }
-
-                            @Override
-                            public void onEstimateStart(
-                                    final RobustEstimator<Solution<Point2D>> estimator) {
-                                // no action needed
-                            }
-
-                            @Override
-                            public void onEstimateEnd(
-                                    final RobustEstimator<Solution<Point2D>> estimator) {
-                                // no action needed
-                            }
-
-                            @Override
-                            public void onEstimateNextIteration(
-                                    final RobustEstimator<Solution<Point2D>> estimator,
-                                    final int iteration) {
-                                if (mListener != null) {
-                                    mListener.onEstimateNextIteration(
-                                            LMedSRobustRssiRadioSourceEstimator2D.this,
-                                            iteration);
-                                }
-                            }
-
-                            @Override
-                            public void onEstimateProgressChange(
-                                    final RobustEstimator<Solution<Point2D>> estimator,
-                                    final float progress) {
-                                if (mListener != null) {
-                                    mListener.onEstimateProgressChange(
-                                            LMedSRobustRssiRadioSourceEstimator2D.this,
-                                            progress);
-                                }
-                            }
-                        });
-
-        try {
-            mLocked = true;
-
-            if (mListener != null) {
-                mListener.onEstimateStart(this);
+        final var innerEstimator = new LMedSRobustEstimator<>(new LMedSRobustEstimatorListener<Solution<Point2D>>() {
+            @Override
+            public int getTotalSamples() {
+                return readings.size();
             }
 
-            mInliersData = null;
-            innerEstimator.setConfidence(mConfidence);
-            innerEstimator.setMaxIterations(mMaxIterations);
-            innerEstimator.setProgressDelta(mProgressDelta);
-            Solution<Point2D> result = innerEstimator.estimate();
-            mInliersData = innerEstimator.getInliersData();
+            @Override
+            public int getSubsetSize() {
+                return Math.max(preliminarySubsetSize, getMinReadings());
+            }
+
+            @Override
+            public void estimatePreliminarSolutions(
+                    final int[] samplesIndices, final List<Solution<Point2D>> solutions) {
+                solvePreliminarySolutions(samplesIndices, solutions);
+            }
+
+            @Override
+            public double computeResidual(final Solution<Point2D> currentEstimation, final int i) {
+                return residual(currentEstimation, i);
+            }
+
+            @Override
+            public boolean isReady() {
+                return LMedSRobustRssiRadioSourceEstimator2D.this.isReady();
+            }
+
+            @Override
+            public void onEstimateStart(final RobustEstimator<Solution<Point2D>> estimator) {
+                // no action needed
+            }
+
+            @Override
+            public void onEstimateEnd(final RobustEstimator<Solution<Point2D>> estimator) {
+                // no action needed
+            }
+
+            @Override
+            public void onEstimateNextIteration(
+                    final RobustEstimator<Solution<Point2D>> estimator, final int iteration) {
+                if (listener != null) {
+                    listener.onEstimateNextIteration(LMedSRobustRssiRadioSourceEstimator2D.this, iteration);
+                }
+            }
+
+            @Override
+            public void onEstimateProgressChange(
+                    final RobustEstimator<Solution<Point2D>> estimator, final float progress) {
+                if (listener != null) {
+                    listener.onEstimateProgressChange(LMedSRobustRssiRadioSourceEstimator2D.this, progress);
+                }
+            }
+        });
+
+        try {
+            locked = true;
+
+            if (listener != null) {
+                listener.onEstimateStart(this);
+            }
+
+            inliersData = null;
+            innerEstimator.setConfidence(confidence);
+            innerEstimator.setMaxIterations(maxIterations);
+            innerEstimator.setProgressDelta(progressDelta);
+            final var result = innerEstimator.estimate();
+            inliersData = innerEstimator.getInliersData();
             attemptRefine(result);
 
-            if (mListener != null) {
-                mListener.onEstimateEnd(this);
+            if (listener != null) {
+                listener.onEstimateEnd(this);
             }
 
         } catch (final com.irurueta.numerical.LockedException e) {
@@ -578,7 +551,7 @@ public class LMedSRobustRssiRadioSourceEstimator2D<S extends RadioSource> extend
         } catch (final com.irurueta.numerical.NotReadyException e) {
             throw new NotReadyException(e);
         } finally {
-            mLocked = false;
+            locked = false;
         }
     }
 

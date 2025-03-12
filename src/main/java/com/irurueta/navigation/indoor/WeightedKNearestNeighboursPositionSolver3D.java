@@ -23,8 +23,7 @@ import com.irurueta.geometry.Point3D;
  * Neighbours (WkNN) algorithm.
  * WkNN algorithm is based on <a href="https://github.com/ajnas/WiFiPS">https://github.com/ajnas/WiFiPS</a>.
  */
-public class WeightedKNearestNeighboursPositionSolver3D extends
-        WeightedKNearestNeighboursPositionSolver<Point3D> {
+public class WeightedKNearestNeighboursPositionSolver3D extends WeightedKNearestNeighboursPositionSolver<Point3D> {
 
     /**
      * Constructor.
@@ -74,8 +73,7 @@ public class WeightedKNearestNeighboursPositionSolver3D extends
      */
     public WeightedKNearestNeighboursPositionSolver3D(
             final RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point3D>[] fingerprints,
-            final double[] distances,
-            final WeightedKNearestNeighboursPositionSolverListener<Point3D> listener) {
+            final double[] distances, final WeightedKNearestNeighboursPositionSolverListener<Point3D> listener) {
         super(fingerprints, distances, listener);
     }
 
@@ -86,11 +84,11 @@ public class WeightedKNearestNeighboursPositionSolver3D extends
      */
     @Override
     public Point3D getEstimatedPosition() {
-        if (mEstimatedPositionCoordinates == null) {
+        if (estimatedPositionCoordinates == null) {
             return null;
         }
 
-        final Point3D result = new InhomogeneousPoint3D();
+        final var result = new InhomogeneousPoint3D();
         getEstimatedPosition(result);
         return result;
     }

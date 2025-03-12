@@ -23,8 +23,7 @@ import com.irurueta.geometry.Point2D;
  * Neighbours (WkNN) algorithm.
  * WkNN algorithm is based on <a href="https://github.com/ajnas/WiFiPS">https://github.com/ajnas/WiFiPS</a>.
  */
-public class WeightedKNearestNeighboursPositionSolver2D extends
-        WeightedKNearestNeighboursPositionSolver<Point2D> {
+public class WeightedKNearestNeighboursPositionSolver2D extends WeightedKNearestNeighboursPositionSolver<Point2D> {
 
     /**
      * Constructor.
@@ -74,8 +73,7 @@ public class WeightedKNearestNeighboursPositionSolver2D extends
      */
     public WeightedKNearestNeighboursPositionSolver2D(
             final RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>[] fingerprints,
-            final double[] distances,
-            final WeightedKNearestNeighboursPositionSolverListener<Point2D> listener) {
+            final double[] distances, final WeightedKNearestNeighboursPositionSolverListener<Point2D> listener) {
         super(fingerprints, distances, listener);
     }
 
@@ -86,11 +84,11 @@ public class WeightedKNearestNeighboursPositionSolver2D extends
      */
     @Override
     public Point2D getEstimatedPosition() {
-        if (mEstimatedPositionCoordinates == null) {
+        if (estimatedPositionCoordinates == null) {
             return null;
         }
 
-        final Point2D result = new InhomogeneousPoint2D();
+        final var result = new InhomogeneousPoint2D();
         getEstimatedPosition(result);
         return result;
     }

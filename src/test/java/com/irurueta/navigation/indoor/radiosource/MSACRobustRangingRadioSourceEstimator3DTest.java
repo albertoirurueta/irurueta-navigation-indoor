@@ -26,7 +26,6 @@ import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.indoor.Beacon;
 import com.irurueta.navigation.indoor.BeaconIdentifier;
 import com.irurueta.navigation.indoor.BeaconLocated3D;
-import com.irurueta.navigation.indoor.RangingReadingLocated;
 import com.irurueta.navigation.indoor.RangingReadingLocated3D;
 import com.irurueta.navigation.indoor.WifiAccessPoint;
 import com.irurueta.navigation.indoor.WifiAccessPointLocated3D;
@@ -34,25 +33,23 @@ import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class MSACRobustRangingRadioSourceEstimator3DTest implements
+class MSACRobustRangingRadioSourceEstimator3DTest implements
         RobustRangingRadioSourceEstimatorListener<WifiAccessPoint, Point3D> {
 
-    private static final Logger LOGGER = Logger.getLogger(
-            MSACRobustRangingRadioSourceEstimator3DTest.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(MSACRobustRangingRadioSourceEstimator3DTest.class.getName());
 
     private static final double FREQUENCY = 2.4e9; // (Hz)
     private static final double TRANSMITTED_POWER_DBM = -50.0;
@@ -80,12 +77,11 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
     private int estimateProgressChange;
 
     @Test
-    public void testConstructor() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testConstructor() {
+        final var randomizer = new UniformRandomizer();
 
         // test empty constructor
-        MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint> estimator =
-                new MSACRobustRangingRadioSourceEstimator3D<>();
+        var estimator = new MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint>();
 
         // check default values
         assertEquals(MSACRobustRangingRadioSourceEstimator3D.DEFAULT_THRESHOLD, estimator.getThreshold(), 0.0);
@@ -97,8 +93,7 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
         assertNull(estimator.getEstimatedRadioSource());
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isLocked());
-        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA,
-                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA, estimator.getProgressDelta(), 0.0);
         assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
         assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
         assertNull(estimator.getInliersData());
@@ -117,10 +112,10 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
 
         // test constructor with readings
-        final List<RangingReadingLocated3D<WifiAccessPoint>> readings = new ArrayList<>();
-        final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
-        for (int i = 0; i < 5; i++) {
-            final InhomogeneousPoint3D position = new InhomogeneousPoint3D(
+        final var readings = new ArrayList<RangingReadingLocated3D<WifiAccessPoint>>();
+        final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+        for (var i = 0; i < 5; i++) {
+            final var position = new InhomogeneousPoint3D(
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
@@ -130,8 +125,7 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
         estimator = new MSACRobustRangingRadioSourceEstimator3D<>(readings);
 
         // check default values
-        assertEquals(MSACRobustRangingRadioSourceEstimator3D.DEFAULT_THRESHOLD, estimator.getThreshold(),
-                0.0);
+        assertEquals(MSACRobustRangingRadioSourceEstimator3D.DEFAULT_THRESHOLD, estimator.getThreshold(), 0.0);
         assertEquals(RobustEstimatorMethod.MSAC, estimator.getMethod());
         assertEquals(4, estimator.getMinReadings());
         assertEquals(4, estimator.getPreliminarySubsetSize());
@@ -140,8 +134,7 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
         assertNull(estimator.getEstimatedRadioSource());
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isLocked());
-        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA,
-                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA, estimator.getProgressDelta(), 0.0);
         assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
         assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
         assertNull(estimator.getInliersData());
@@ -160,20 +153,11 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
 
         // force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new MSACRobustRangingRadioSourceEstimator3D<>(
-                    (List<RangingReadingLocated3D<WifiAccessPoint>>) null);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new MSACRobustRangingRadioSourceEstimator3D<>(
-                    new ArrayList<RangingReadingLocated3D<WifiAccessPoint>>());
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new MSACRobustRangingRadioSourceEstimator3D<>(
+                (List<RangingReadingLocated3D<WifiAccessPoint>>) null));
+        final var wrongReadings = new ArrayList<RangingReadingLocated3D<WifiAccessPoint>>();
+        assertThrows(IllegalArgumentException.class, () -> new MSACRobustRangingRadioSourceEstimator3D<>(
+                wrongReadings));
 
         // test constructor with listener
         estimator = new MSACRobustRangingRadioSourceEstimator3D<>(this);
@@ -188,8 +172,7 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
         assertNull(estimator.getEstimatedRadioSource());
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isLocked());
-        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA,
-                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA, estimator.getProgressDelta(), 0.0);
         assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
         assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
         assertNull(estimator.getInliersData());
@@ -220,8 +203,7 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
         assertNull(estimator.getEstimatedRadioSource());
         assertNull(estimator.getInitialPosition());
         assertFalse(estimator.isLocked());
-        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA,
-                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA, estimator.getProgressDelta(), 0.0);
         assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
         assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
         assertNull(estimator.getInliersData());
@@ -240,31 +222,20 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
 
         // force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new MSACRobustRangingRadioSourceEstimator3D<>(
-                    (List<RangingReadingLocated3D<WifiAccessPoint>>) null, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new MSACRobustRangingRadioSourceEstimator3D<>(
-                    new ArrayList<RangingReadingLocated3D<WifiAccessPoint>>(), this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new MSACRobustRangingRadioSourceEstimator3D<>(
+                (List<RangingReadingLocated3D<WifiAccessPoint>>) null, this));
+        assertThrows(IllegalArgumentException.class, () -> new MSACRobustRangingRadioSourceEstimator3D<>(wrongReadings,
+                this));
 
         // test constructor with initial position
-        final InhomogeneousPoint3D initialPosition = new InhomogeneousPoint3D(
+        final var initialPosition = new InhomogeneousPoint3D(
                 randomizer.nextDouble(MIN_POS, MAX_POS),
                 randomizer.nextDouble(MIN_POS, MAX_POS),
                 randomizer.nextDouble(MIN_POS, MAX_POS));
         estimator = new MSACRobustRangingRadioSourceEstimator3D<>(initialPosition);
 
         // check default values
-        assertEquals(MSACRobustRangingRadioSourceEstimator3D.DEFAULT_THRESHOLD, estimator.getThreshold(),
-                0.0);
+        assertEquals(MSACRobustRangingRadioSourceEstimator3D.DEFAULT_THRESHOLD, estimator.getThreshold(), 0.0);
         assertEquals(RobustEstimatorMethod.MSAC, estimator.getMethod());
         assertEquals(4, estimator.getMinReadings());
         assertEquals(4, estimator.getPreliminarySubsetSize());
@@ -273,8 +244,7 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
         assertNull(estimator.getEstimatedRadioSource());
         assertSame(initialPosition, estimator.getInitialPosition());
         assertFalse(estimator.isLocked());
-        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA,
-                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA, estimator.getProgressDelta(), 0.0);
         assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
         assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
         assertNull(estimator.getInliersData());
@@ -305,10 +275,8 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
         assertNull(estimator.getEstimatedRadioSource());
         assertSame(initialPosition, estimator.getInitialPosition());
         assertFalse(estimator.isLocked());
-        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA,
-                estimator.getProgressDelta(), 0.0);
-        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_CONFIDENCE,
-                estimator.getConfidence(), 0.0);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA, estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
         assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
         assertNull(estimator.getInliersData());
         assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
@@ -326,19 +294,10 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
 
         // force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new MSACRobustRangingRadioSourceEstimator3D<>(null, initialPosition);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new MSACRobustRangingRadioSourceEstimator3D<>(
-                    new ArrayList<RangingReadingLocated3D<WifiAccessPoint>>(), initialPosition);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new MSACRobustRangingRadioSourceEstimator3D<>(null,
+                initialPosition));
+        assertThrows(IllegalArgumentException.class, () -> new MSACRobustRangingRadioSourceEstimator3D<>(
+                wrongReadings, initialPosition));
 
         // test constructor with initial position and listener
         estimator = new MSACRobustRangingRadioSourceEstimator3D<>(initialPosition, this);
@@ -353,8 +312,7 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
         assertNull(estimator.getEstimatedRadioSource());
         assertSame(initialPosition, estimator.getInitialPosition());
         assertFalse(estimator.isLocked());
-        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA,
-                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA, estimator.getProgressDelta(), 0.0);
         assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
         assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
         assertNull(estimator.getInliersData());
@@ -385,8 +343,7 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
         assertNull(estimator.getEstimatedRadioSource());
         assertSame(initialPosition, estimator.getInitialPosition());
         assertFalse(estimator.isLocked());
-        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA,
-                estimator.getProgressDelta(), 0.0);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA, estimator.getProgressDelta(), 0.0);
         assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
         assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
         assertNull(estimator.getInliersData());
@@ -405,25 +362,15 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
         assertTrue(estimator.isHomogeneousLinearSolverUsed());
 
         // force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new MSACRobustRangingRadioSourceEstimator3D<>(null, initialPosition, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new MSACRobustRangingRadioSourceEstimator3D<>(
-                    new ArrayList<RangingReadingLocated3D<WifiAccessPoint>>(), initialPosition, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new MSACRobustRangingRadioSourceEstimator3D<>(null,
+                initialPosition, this));
+        assertThrows(IllegalArgumentException.class, () -> new MSACRobustRangingRadioSourceEstimator3D<>(wrongReadings,
+                initialPosition, this));
     }
 
     @Test
-    public void testGetSetThreshold() throws LockedException {
-        final MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint> estimator =
-                new MSACRobustRangingRadioSourceEstimator3D<>();
+    void testGetSetThreshold() throws LockedException {
+        final var estimator = new MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint>();
 
         // check default value
         assertEquals(MSACRobustRangingRadioSourceEstimator3D.DEFAULT_THRESHOLD, estimator.getThreshold(), 0.0);
@@ -435,25 +382,20 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
         assertEquals(0.5, estimator.getThreshold(), 0.0);
 
         // force IllegalArgumentException
-        try {
-            estimator.setThreshold(0.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> estimator.setThreshold(0.0));
     }
 
     @Test
-    public void testGetSetInitialPosition() throws LockedException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testGetSetInitialPosition() throws LockedException {
+        final var randomizer = new UniformRandomizer();
 
-        final MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint> estimator =
-                new MSACRobustRangingRadioSourceEstimator3D<>();
+        final var estimator = new MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint>();
 
         // check default value
         assertNull(estimator.getInitialPosition());
 
         // set new value
-        final InhomogeneousPoint3D initialPosition = new InhomogeneousPoint3D(
+        final var initialPosition = new InhomogeneousPoint3D(
                 randomizer.nextDouble(MIN_POS, MAX_POS),
                 randomizer.nextDouble(MIN_POS, MAX_POS),
                 randomizer.nextDouble(MIN_POS, MAX_POS));
@@ -464,9 +406,8 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
     }
 
     @Test
-    public void testGetSetUseReadingPositionCovariance() throws LockedException {
-        final MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint> estimator =
-                new MSACRobustRangingRadioSourceEstimator3D<>();
+    void testGetSetUseReadingPositionCovariance() throws LockedException {
+        final var estimator = new MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint>();
 
         // check default value
         assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_USE_READING_POSITION_COVARIANCES,
@@ -482,13 +423,11 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
     }
 
     @Test
-    public void testGetSetProgressDelta() throws LockedException {
-        final MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint> estimator =
-                new MSACRobustRangingRadioSourceEstimator3D<>();
+    void testGetSetProgressDelta() throws LockedException {
+        final var estimator = new MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint>();
 
         // check default value
-        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA, estimator.getProgressDelta(),
-                0.0);
+        assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_PROGRESS_DELTA, estimator.getProgressDelta(), 0.0);
 
         // set new value
         estimator.setProgressDelta(0.5f);
@@ -497,22 +436,13 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
         assertEquals(0.5f, estimator.getProgressDelta(), 0.0);
 
         // force IllegalArgumentException
-        try {
-            estimator.setProgressDelta(-1.0f);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator.setProgressDelta(2.0f);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> estimator.setProgressDelta(-1.0f));
+        assertThrows(IllegalArgumentException.class, () -> estimator.setProgressDelta(2.0f));
     }
 
     @Test
-    public void testGetSetConfidence() throws LockedException {
-        final MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint> estimator =
-                new MSACRobustRangingRadioSourceEstimator3D<>();
+    void testGetSetConfidence() throws LockedException {
+        final var estimator = new MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint>();
 
         // check default value
         assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_CONFIDENCE, estimator.getConfidence(), 0.0);
@@ -524,22 +454,13 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
         assertEquals(0.5, estimator.getConfidence(), 0.0);
 
         // force IllegalArgumentException
-        try {
-            estimator.setConfidence(-1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator.setConfidence(2.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> estimator.setConfidence(-1.0));
+        assertThrows(IllegalArgumentException.class, () -> estimator.setConfidence(2.0));
     }
 
     @Test
-    public void testGetSetMaxIterations() throws LockedException {
-        final MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint> estimator =
-                new MSACRobustRangingRadioSourceEstimator3D<>();
+    void testGetSetMaxIterations() throws LockedException {
+        final var estimator = new MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint>();
 
         // check default value
         assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_MAX_ITERATIONS, estimator.getMaxIterations());
@@ -551,17 +472,12 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
         assertEquals(10, estimator.getMaxIterations());
 
         // force IllegalArgumentException
-        try {
-            estimator.setMaxIterations(0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> estimator.setMaxIterations(0));
     }
 
     @Test
-    public void testIsSetResultRefined() throws LockedException {
-        final MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint> estimator =
-                new MSACRobustRangingRadioSourceEstimator3D<>();
+    void testIsSetResultRefined() throws LockedException {
+        final var estimator = new MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint>();
 
         // check default value
         assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_REFINE_RESULT, estimator.isResultRefined());
@@ -574,9 +490,8 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
     }
 
     @Test
-    public void testIsSetCovarianceKept() throws LockedException {
-        final MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint> estimator =
-                new MSACRobustRangingRadioSourceEstimator3D<>();
+    void testIsSetCovarianceKept() throws LockedException {
+        final var estimator = new MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint>();
 
         // check default value
         assertEquals(RobustRangingRadioSourceEstimator.DEFAULT_KEEP_COVARIANCE, estimator.isCovarianceKept());
@@ -589,44 +504,42 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
     }
 
     @Test
-    public void testAreValidReadings() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testAreValidReadings() {
+        final var randomizer = new UniformRandomizer();
 
-        final List<RangingReadingLocated3D<WifiAccessPoint>> readings = new ArrayList<>();
-        final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
-        for (int i = 0; i < 5; i++) {
-            final InhomogeneousPoint3D position = new InhomogeneousPoint3D(
+        final var readings = new ArrayList<RangingReadingLocated3D<WifiAccessPoint>>();
+        final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+        for (var i = 0; i < 5; i++) {
+            final var position = new InhomogeneousPoint3D(
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
             readings.add(new RangingReadingLocated3D<>(accessPoint, 0.0, position));
         }
 
-        final MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint> estimator =
-                new MSACRobustRangingRadioSourceEstimator3D<>();
+        final var estimator = new MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint>();
 
         assertTrue(estimator.areValidReadings(readings));
 
         assertFalse(estimator.areValidReadings(null));
-        assertFalse(estimator.areValidReadings(new ArrayList<RangingReadingLocated<WifiAccessPoint, Point3D>>()));
+        assertFalse(estimator.areValidReadings(new ArrayList<>()));
     }
 
     @Test
-    public void testGetSetReadings() throws LockedException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testGetSetReadings() throws LockedException {
+        final var randomizer = new UniformRandomizer();
 
-        final List<RangingReadingLocated3D<WifiAccessPoint>> readings = new ArrayList<>();
-        final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
-        for (int i = 0; i < 5; i++) {
-            final InhomogeneousPoint3D position = new InhomogeneousPoint3D(
+        final var readings = new ArrayList<RangingReadingLocated3D<WifiAccessPoint>>();
+        final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+        for (var i = 0; i < 5; i++) {
+            final var position = new InhomogeneousPoint3D(
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
             readings.add(new RangingReadingLocated3D<>(accessPoint, 0.0, position));
         }
 
-        final MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint> estimator =
-                new MSACRobustRangingRadioSourceEstimator3D<>();
+        final var estimator = new MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint>();
 
         // initial value
         assertNull(estimator.getReadings());
@@ -640,22 +553,14 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
         assertTrue(estimator.isReady());
 
         // force IllegalArgumentException
-        try {
-            estimator.setReadings(null);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator.setReadings(new ArrayList<RangingReadingLocated3D<WifiAccessPoint>>());
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> estimator.setReadings(null));
+        final var wrongReadings = new ArrayList<RangingReadingLocated3D<WifiAccessPoint>>();
+        assertThrows(IllegalArgumentException.class, () -> estimator.setReadings(wrongReadings));
     }
 
     @Test
-    public void testGetSetListener() throws LockedException {
-        final MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint> estimator =
-                new MSACRobustRangingRadioSourceEstimator3D<>();
+    void testGetSetListener() throws LockedException {
+        final var estimator = new MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint>();
 
         // check default value
         assertNull(estimator.getListener());
@@ -668,9 +573,8 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
     }
 
     @Test
-    public void testGetSetQualityScores() throws LockedException {
-        final MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint> estimator =
-                new MSACRobustRangingRadioSourceEstimator3D<>();
+    void testGetSetQualityScores() throws LockedException {
+        final var estimator = new MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint>();
 
         // check default value
         assertNull(estimator.getQualityScores());
@@ -683,9 +587,8 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
     }
 
     @Test
-    public void testGetSetPreliminarySubsetSize() throws LockedException {
-        final MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint> estimator =
-                new MSACRobustRangingRadioSourceEstimator3D<>();
+    void testGetSetPreliminarySubsetSize() throws LockedException {
+        final var estimator = new MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint>();
 
         // check default value
         assertEquals(4, estimator.getPreliminarySubsetSize());
@@ -697,38 +600,33 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
         assertEquals(5, estimator.getPreliminarySubsetSize());
 
         // force IllegalArgumentException
-        try {
-            estimator.setPreliminarySubsetSize(3);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> estimator.setPreliminarySubsetSize(3));
     }
 
     @Test
-    public void testEstimateNoInlierErrorNoRefinement() throws LockedException, NotReadyException,
-            RobustEstimatorException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, STD_OUTLIER_ERROR);
+    void testEstimateNoInlierErrorNoRefinement() throws LockedException, NotReadyException, RobustEstimatorException {
+        final var randomizer = new UniformRandomizer();
+        final var errorRandomizer = new GaussianRandomizer(0.0, STD_OUTLIER_ERROR);
 
-        int numValidPosition = 0;
-        double positionError = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final InhomogeneousPoint3D accessPointPosition = new InhomogeneousPoint3D(
+        var numValidPosition = 0;
+        var positionError = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var accessPointPosition = new InhomogeneousPoint3D(
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point3D[] readingsPositions = new Point3D[numReadings];
-            final List<RangingReadingLocated3D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point3D[numReadings];
+            final var readings = new ArrayList<RangingReadingLocated3D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint3D(
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
@@ -743,8 +641,7 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
                         readingsPositions[i]));
             }
 
-            final MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint> estimator =
-                    new MSACRobustRangingRadioSourceEstimator3D<>(readings, this);
+            final var estimator = new MSACRobustRangingRadioSourceEstimator3D<>(readings, this);
 
             estimator.setResultRefined(false);
 
@@ -771,8 +668,7 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointLocated3D estimatedAccessPoint =
-                    (WifiAccessPointLocated3D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointLocated3D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -800,42 +696,39 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
 
         // force NotReadyException
-        final MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint> estimator =
-                new MSACRobustRangingRadioSourceEstimator3D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateNoInlierErrorWithRefinement() throws LockedException, NotReadyException,
-            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, STD_OUTLIER_ERROR);
+    void testEstimateNoInlierErrorWithRefinement() throws LockedException, NotReadyException, RobustEstimatorException,
+            NonSymmetricPositiveDefiniteMatrixException {
+        final var randomizer = new UniformRandomizer();
+        final var errorRandomizer = new GaussianRandomizer(0.0, STD_OUTLIER_ERROR);
 
-        int numValidPosition = 0;
-        double positionError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final InhomogeneousPoint3D accessPointPosition = new InhomogeneousPoint3D(
+        var numValidPosition = 0;
+        var positionError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var accessPointPosition = new InhomogeneousPoint3D(
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point3D[] readingsPositions = new Point3D[numReadings];
-            final List<RangingReadingLocated3D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point3D[numReadings];
+            final var readings = new ArrayList<RangingReadingLocated3D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint3D(
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
@@ -850,8 +743,7 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
                         readingsPositions[i]));
             }
 
-            final MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint> estimator =
-                    new MSACRobustRangingRadioSourceEstimator3D<>(readings, this);
+            final var estimator = new MSACRobustRangingRadioSourceEstimator3D<>(readings, this);
 
             estimator.setResultRefined(true);
 
@@ -878,8 +770,7 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
             assertNotNull(estimator.getCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointLocated3D estimatedAccessPoint =
-                    (WifiAccessPointLocated3D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointLocated3D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -887,10 +778,10 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
             assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy3D accuracyStd = new Accuracy3D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy3D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy3D accuracy = new Accuracy3D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy3D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -914,56 +805,47 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
 
         assertTrue(numValidPosition > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
 
         // force NotReadyException
-        final MSACRobustRangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                new MSACRobustRangingRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MSACRobustRangingRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateWithInlierErrorNoRefinement() throws LockedException, NotReadyException,
-            RobustEstimatorException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, STD_OUTLIER_ERROR);
-        final GaussianRandomizer inlierErrorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, INLIER_ERROR_STD);
+    void testEstimateWithInlierErrorNoRefinement() throws LockedException, NotReadyException, RobustEstimatorException {
+        final var randomizer = new UniformRandomizer();
+        final var errorRandomizer = new GaussianRandomizer(0.0, STD_OUTLIER_ERROR);
+        final var inlierErrorRandomizer = new GaussianRandomizer(0.0, INLIER_ERROR_STD);
 
-        int numValidPosition = 0;
-        double positionError = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final InhomogeneousPoint3D accessPointPosition = new InhomogeneousPoint3D(
+        var numValidPosition = 0;
+        var positionError = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var accessPointPosition = new InhomogeneousPoint3D(
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point3D[] readingsPositions = new Point3D[numReadings];
-            final List<RangingReadingLocated3D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point3D[numReadings];
+            final var readings = new ArrayList<RangingReadingLocated3D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint3D(
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
@@ -976,12 +858,11 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
 
                 error += inlierErrorRandomizer.nextDouble();
 
-                readings.add(new RangingReadingLocated3D<>(accessPoint,
-                        Math.abs(distance + error), readingsPositions[i]));
+                readings.add(new RangingReadingLocated3D<>(accessPoint, Math.abs(distance + error),
+                        readingsPositions[i]));
             }
 
-            final MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint> estimator =
-                    new MSACRobustRangingRadioSourceEstimator3D<>(readings, this);
+            final var estimator = new MSACRobustRangingRadioSourceEstimator3D<>(readings, this);
 
             estimator.setResultRefined(false);
 
@@ -1007,8 +888,7 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointLocated3D estimatedAccessPoint =
-                    (WifiAccessPointLocated3D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointLocated3D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -1035,42 +915,39 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
 
         // force NotReadyException
-        final MSACRobustRangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                new MSACRobustRangingRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MSACRobustRangingRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateNoInlierErrorWithInitialPositionAndRefinement() throws LockedException,
-            NotReadyException, RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, STD_OUTLIER_ERROR);
+    void testEstimateNoInlierErrorWithInitialPositionAndRefinement() throws LockedException, NotReadyException,
+            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
+        final var randomizer = new UniformRandomizer();
+        final var errorRandomizer = new GaussianRandomizer(0.0, STD_OUTLIER_ERROR);
 
-        int numValidPosition = 0;
-        double positionError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final InhomogeneousPoint3D accessPointPosition = new InhomogeneousPoint3D(
+        var numValidPosition = 0;
+        var positionError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var accessPointPosition = new InhomogeneousPoint3D(
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point3D[] readingsPositions = new Point3D[numReadings];
-            final List<RangingReadingLocated3D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point3D[numReadings];
+            final var readings = new ArrayList<RangingReadingLocated3D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint3D(
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
@@ -1085,8 +962,8 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
                         readingsPositions[i]));
             }
 
-            final MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint> estimator =
-                    new MSACRobustRangingRadioSourceEstimator3D<>(readings, accessPointPosition, this);
+            final var estimator = new MSACRobustRangingRadioSourceEstimator3D<>(readings, accessPointPosition,
+                    this);
 
             estimator.setResultRefined(true);
 
@@ -1113,8 +990,7 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
             assertNotNull(estimator.getCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointLocated3D estimatedAccessPoint =
-                    (WifiAccessPointLocated3D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointLocated3D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -1122,11 +998,10 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
             assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy3D accuracyStd = new Accuracy3D(
-                    estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy3D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy3D accuracy = new Accuracy3D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy3D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -1150,57 +1025,52 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
 
         assertTrue(numValidPosition > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
 
         // force NotReadyException
-        final MSACRobustRangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                new MSACRobustRangingRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MSACRobustRangingRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateBeacon() throws LockedException, NotReadyException, RobustEstimatorException,
+    void testEstimateBeacon() throws LockedException, NotReadyException, RobustEstimatorException,
             NonSymmetricPositiveDefiniteMatrixException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, STD_OUTLIER_ERROR);
+        final var randomizer = new UniformRandomizer();
+        final var errorRandomizer = new GaussianRandomizer(0.0, STD_OUTLIER_ERROR);
 
-        int numValidPosition = 0;
-        double positionError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final InhomogeneousPoint3D accessPointPosition = new InhomogeneousPoint3D(
+        var numValidPosition = 0;
+        var positionError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var accessPointPosition = new InhomogeneousPoint3D(
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            final BeaconIdentifier identifier = BeaconIdentifier.fromUuid(UUID.randomUUID());
-            final Beacon beacon = new Beacon(Collections.singletonList(identifier), TRANSMITTED_POWER_DBM, FREQUENCY);
+            final var identifier = BeaconIdentifier.fromUuid(UUID.randomUUID());
+            final var beacon = new Beacon(Collections.singletonList(identifier), TRANSMITTED_POWER_DBM, FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point3D[] readingsPositions = new Point3D[numReadings];
-            final List<RangingReadingLocated3D<Beacon>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point3D[numReadings];
+            final var readings = new ArrayList<RangingReadingLocated3D<Beacon>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint3D(
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
@@ -1214,8 +1084,7 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
                 readings.add(new RangingReadingLocated3D<>(beacon, distance + error, readingsPositions[i]));
             }
 
-            final MSACRobustRangingRadioSourceEstimator3D<Beacon> estimator =
-                    new MSACRobustRangingRadioSourceEstimator3D<>(readings);
+            final var estimator = new MSACRobustRangingRadioSourceEstimator3D<>(readings);
 
             estimator.setResultRefined(true);
 
@@ -1234,7 +1103,7 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
             assertNotNull(estimator.getCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final BeaconLocated3D estimatedBeacon = (BeaconLocated3D) estimator.getEstimatedRadioSource();
+            final var estimatedBeacon = (BeaconLocated3D) estimator.getEstimatedRadioSource();
 
             assertEquals(beacon.getIdentifiers(), estimatedBeacon.getIdentifiers());
             assertEquals(TRANSMITTED_POWER_DBM, estimatedBeacon.getTransmittedPower(), 0.0);
@@ -1242,10 +1111,10 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
             assertEquals(estimator.getEstimatedPosition(), estimatedBeacon.getPosition());
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedBeacon.getPositionCovariance());
 
-            final Accuracy3D accuracyStd = new Accuracy3D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy3D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy3D accuracy = new Accuracy3D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy3D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -1267,56 +1136,51 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
         assertTrue(numValidPosition > 0);
 
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
 
         // force NotReadyException
-        final MSACRobustRangingRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                new MSACRobustRangingRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MSACRobustRangingRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateWithStandardDeviationsAndPositionCovariance() throws LockedException, NotReadyException,
+    void testEstimateWithStandardDeviationsAndPositionCovariance() throws LockedException, NotReadyException,
             RobustEstimatorException, AlgebraException {
-        UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, STD_OUTLIER_ERROR);
+        final var randomizer = new UniformRandomizer();
+        final var errorRandomizer = new GaussianRandomizer(0.0, STD_OUTLIER_ERROR);
 
-        int numValidPosition = 0;
-        double positionError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final InhomogeneousPoint3D accessPointPosition = new InhomogeneousPoint3D(
+        var numValidPosition = 0;
+        var positionError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var accessPointPosition = new InhomogeneousPoint3D(
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point3D[] readingsPositions = new Point3D[numReadings];
-            final List<RangingReadingLocated3D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point3D[numReadings];
+            final var readings = new ArrayList<RangingReadingLocated3D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint3D(
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
@@ -1327,17 +1191,16 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
                     error = 0.0;
                 }
 
-                final Matrix positionCovariance = Matrix.diagonal(new double[]{
+                final var positionCovariance = Matrix.diagonal(new double[]{
                         INLIER_ERROR_STD * INLIER_ERROR_STD,
                         INLIER_ERROR_STD * INLIER_ERROR_STD,
                         INLIER_ERROR_STD * INLIER_ERROR_STD});
 
-                readings.add(new RangingReadingLocated3D<>(accessPoint, distance + error,
-                        readingsPositions[i], INLIER_ERROR_STD, positionCovariance));
+                readings.add(new RangingReadingLocated3D<>(accessPoint, distance + error, readingsPositions[i],
+                        INLIER_ERROR_STD, positionCovariance));
             }
 
-            final MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint> estimator =
-                    new MSACRobustRangingRadioSourceEstimator3D<>(readings, this);
+            final var estimator = new MSACRobustRangingRadioSourceEstimator3D<>(readings, this);
             estimator.setUseReadingPositionCovariances(true);
 
             estimator.setResultRefined(true);
@@ -1365,8 +1228,7 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
             assertNotNull(estimator.getCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointLocated3D estimatedAccessPoint =
-                    (WifiAccessPointLocated3D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointLocated3D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -1374,10 +1236,10 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
             assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy3D accuracyStd = new Accuracy3D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy3D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy3D accuracy = new Accuracy3D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy3D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -1401,57 +1263,51 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
 
         assertTrue(numValidPosition > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
 
         // force NotReadyException
-        final LMedSRobustRangingRadioSourceEstimator3D<WifiAccessPoint> estimator =
-                new LMedSRobustRangingRadioSourceEstimator3D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new LMedSRobustRangingRadioSourceEstimator3D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateHomogeneousLinearSolver() throws LockedException, NotReadyException,
-            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, STD_OUTLIER_ERROR);
+    void testEstimateHomogeneousLinearSolver() throws LockedException, NotReadyException, RobustEstimatorException,
+            NonSymmetricPositiveDefiniteMatrixException {
+        final var randomizer = new UniformRandomizer();
+        final var errorRandomizer = new GaussianRandomizer(0.0, STD_OUTLIER_ERROR);
 
-        int numValidPosition = 0;
-        double positionError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
+        var numValidPosition = 0;
+        var positionError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
         for (int t = 0; t < TIMES; t++) {
-            final InhomogeneousPoint3D accessPointPosition = new InhomogeneousPoint3D(
+            final var accessPointPosition = new InhomogeneousPoint3D(
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point3D[] readingsPositions = new Point3D[numReadings];
-            final List<RangingReadingLocated3D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point3D[numReadings];
+            final var readings = new ArrayList<RangingReadingLocated3D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint3D(
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
@@ -1466,8 +1322,7 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
                         readingsPositions[i]));
             }
 
-            final MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint> estimator =
-                    new MSACRobustRangingRadioSourceEstimator3D<>(readings, this);
+            final var estimator = new MSACRobustRangingRadioSourceEstimator3D<>(readings, this);
 
             estimator.setResultRefined(true);
             estimator.setHomogeneousLinearSolverUsed(true);
@@ -1495,8 +1350,7 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
             assertNotNull(estimator.getCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointLocated3D estimatedAccessPoint =
-                    (WifiAccessPointLocated3D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointLocated3D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -1504,10 +1358,10 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
             assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy3D accuracyStd = new Accuracy3D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy3D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy3D accuracy = new Accuracy3D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy3D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -1531,47 +1385,47 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
 
         assertTrue(numValidPosition > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
     }
 
     @Test
-    public void testEstimateInhomogeneousLinearSolver() throws LockedException, NotReadyException,
-            RobustEstimatorException, NonSymmetricPositiveDefiniteMatrixException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, STD_OUTLIER_ERROR);
+    void testEstimateInhomogeneousLinearSolver() throws LockedException, NotReadyException, RobustEstimatorException,
+            NonSymmetricPositiveDefiniteMatrixException {
+        final var randomizer = new UniformRandomizer();
+        final var errorRandomizer = new GaussianRandomizer(0.0, STD_OUTLIER_ERROR);
 
-        int numValidPosition = 0;
-        double positionError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final InhomogeneousPoint3D accessPointPosition = new InhomogeneousPoint3D(
+        var numValidPosition = 0;
+        var positionError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var accessPointPosition = new InhomogeneousPoint3D(
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point3D[] readingsPositions = new Point3D[numReadings];
-            final List<RangingReadingLocated3D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point3D[numReadings];
+            final var readings = new ArrayList<RangingReadingLocated3D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint3D(
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
@@ -1582,12 +1436,11 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
                     error = 0.0;
                 }
 
-                readings.add(new RangingReadingLocated3D<>(accessPoint,
-                        distance + error, readingsPositions[i]));
+                readings.add(new RangingReadingLocated3D<>(accessPoint, distance + error,
+                        readingsPositions[i]));
             }
 
-            final MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint> estimator =
-                    new MSACRobustRangingRadioSourceEstimator3D<>(readings, this);
+            final var estimator = new MSACRobustRangingRadioSourceEstimator3D<>(readings, this);
 
             estimator.setResultRefined(true);
             estimator.setHomogeneousLinearSolverUsed(false);
@@ -1615,8 +1468,7 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
             assertNotNull(estimator.getCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointLocated3D estimatedAccessPoint =
-                    (WifiAccessPointLocated3D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointLocated3D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -1624,10 +1476,10 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
             assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy3D accuracyStd = new Accuracy3D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy3D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy3D accuracy = new Accuracy3D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy3D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -1651,45 +1503,42 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
 
         assertTrue(numValidPosition > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
     }
 
     @Test
-    public void testEstimateLargerPreliminarySubsetSize() throws LockedException, NotReadyException,
-            RobustEstimatorException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, STD_OUTLIER_ERROR);
+    void testEstimateLargerPreliminarySubsetSize() throws LockedException, NotReadyException, RobustEstimatorException {
+        final var randomizer = new UniformRandomizer();
+        final var errorRandomizer = new GaussianRandomizer(0.0, STD_OUTLIER_ERROR);
 
-        int numValidPosition = 0;
-        double positionError = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final InhomogeneousPoint3D accessPointPosition = new InhomogeneousPoint3D(
+        var numValidPosition = 0;
+        var positionError = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var accessPointPosition = new InhomogeneousPoint3D(
                             randomizer.nextDouble(MIN_POS, MAX_POS),
                             randomizer.nextDouble(MIN_POS, MAX_POS),
                             randomizer.nextDouble(MIN_POS, MAX_POS));
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point3D[] readingsPositions = new Point3D[numReadings];
-            final List<RangingReadingLocated3D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point3D[numReadings];
+            final var readings = new ArrayList<RangingReadingLocated3D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint3D(
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 double error;
                 if (randomizer.nextInt(0, 100) < PERCENTAGE_OUTLIERS) {
@@ -1704,8 +1553,7 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
                         readingsPositions[i]));
             }
 
-            final MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint> estimator =
-                    new MSACRobustRangingRadioSourceEstimator3D<>(readings, this);
+            final var estimator = new MSACRobustRangingRadioSourceEstimator3D<>(readings, this);
 
             estimator.setResultRefined(false);
 
@@ -1734,8 +1582,7 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
             assertNull(estimator.getCovariance());
             assertNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointLocated3D estimatedAccessPoint =
-                    (WifiAccessPointLocated3D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointLocated3D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -1763,13 +1610,8 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
 
         // force NotReadyException
-        final MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint> estimator =
-                new MSACRobustRangingRadioSourceEstimator3D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Override
@@ -1802,68 +1644,18 @@ public class MSACRobustRangingRadioSourceEstimator3DTest implements
         estimateStart = estimateEnd = estimateNextIteration = estimateProgressChange = 0;
     }
 
-    private void checkLocked(final MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint> estimator) {
-        try {
-            estimator.setPreliminarySubsetSize(3);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setThreshold(0.5);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setInitialPosition(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setProgressDelta(0.5f);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setConfidence(0.8);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setMaxIterations(10);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setResultRefined(false);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setCovarianceKept(false);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setReadings(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setListener(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setHomogeneousLinearSolverUsed(false);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.estimate();
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        } catch (final Exception e) {
-            fail("LockedException expected but not thrown");
-        }
+    private static void checkLocked(final MSACRobustRangingRadioSourceEstimator3D<WifiAccessPoint> estimator) {
+        assertThrows(LockedException.class, () -> estimator.setPreliminarySubsetSize(3));
+        assertThrows(LockedException.class, () -> estimator.setThreshold(0.5));
+        assertThrows(LockedException.class, () -> estimator.setInitialPosition(null));
+        assertThrows(LockedException.class, () -> estimator.setProgressDelta(0.5f));
+        assertThrows(LockedException.class, () -> estimator.setConfidence(0.8));
+        assertThrows(LockedException.class, () -> estimator.setMaxIterations(10));
+        assertThrows(LockedException.class, () -> estimator.setResultRefined(false));
+        assertThrows(LockedException.class, () -> estimator.setCovarianceKept(false));
+        assertThrows(LockedException.class, () -> estimator.setReadings(null));
+        assertThrows(LockedException.class, () -> estimator.setListener(null));
+        assertThrows(LockedException.class, () -> estimator.setHomogeneousLinearSolverUsed(false));
+        assertThrows(LockedException.class, estimator::estimate);
     }
 }

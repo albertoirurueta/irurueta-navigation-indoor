@@ -52,8 +52,7 @@ public class LinearRssiPositionEstimator3D extends LinearRssiPositionEstimator<P
      *                                  provided sources is less than the required
      *                                  minimum.
      */
-    public LinearRssiPositionEstimator3D(
-            final List<? extends RadioSourceLocated<Point3D>> sources) {
+    public LinearRssiPositionEstimator3D(final List<? extends RadioSourceLocated<Point3D>> sources) {
         super();
         initialize();
         internalSetSources(sources);
@@ -97,8 +96,7 @@ public class LinearRssiPositionEstimator3D extends LinearRssiPositionEstimator<P
      *
      * @param listener listener in charge of handling events.
      */
-    public LinearRssiPositionEstimator3D(
-            final RssiPositionEstimatorListener<Point3D> listener) {
+    public LinearRssiPositionEstimator3D(final RssiPositionEstimatorListener<Point3D> listener) {
         super(listener);
         initialize();
     }
@@ -164,11 +162,11 @@ public class LinearRssiPositionEstimator3D extends LinearRssiPositionEstimator<P
      */
     @Override
     public Point3D getEstimatedPosition() {
-        if (mEstimatedPositionCoordinates == null) {
+        if (estimatedPositionCoordinates == null) {
             return null;
         }
 
-        final InhomogeneousPoint3D result = new InhomogeneousPoint3D();
+        final var result = new InhomogeneousPoint3D();
         getEstimatedPosition(result);
         return result;
     }
@@ -182,22 +180,19 @@ public class LinearRssiPositionEstimator3D extends LinearRssiPositionEstimator<P
      */
     @Override
     @SuppressWarnings("Duplicates")
-    protected void setPositionsAndDistances(
-            final List<Point3D> positions, final List<Double> distances) {
-        final int size = positions.size();
+    protected void setPositionsAndDistances(final List<Point3D> positions, final List<Double> distances) {
+        final var size = positions.size();
         Point3D[] positionsArray = new InhomogeneousPoint3D[size];
         positionsArray = positions.toArray(positionsArray);
 
-        final double[] distancesArray = new double[size];
-        for (int i = 0; i < size; i++) {
+        final var distancesArray = new double[size];
+        for (var i = 0; i < size; i++) {
             distancesArray[i] = distances.get(i);
         }
 
         try {
-            mHomogeneousTrilaterationSolver.setPositionsAndDistances(positionsArray,
-                    distancesArray);
-            mInhomogeneousTrilaterationSolver.setPositionsAndDistances(positionsArray,
-                    distancesArray);
+            homogeneousTrilaterationSolver.setPositionsAndDistances(positionsArray, distancesArray);
+            inhomogeneousTrilaterationSolver.setPositionsAndDistances(positionsArray, distancesArray);
         } catch (final LockedException e) {
             throw new IllegalArgumentException(e);
         }
@@ -207,9 +202,8 @@ public class LinearRssiPositionEstimator3D extends LinearRssiPositionEstimator<P
      * Initializes lateration solver.
      */
     private void initialize() {
-        mHomogeneousTrilaterationSolver = new HomogeneousLinearLeastSquaresLateration3DSolver(
-                mLaterationSolverListener);
-        mInhomogeneousTrilaterationSolver = new InhomogeneousLinearLeastSquaresLateration3DSolver(
-                mLaterationSolverListener);
+        homogeneousTrilaterationSolver = new HomogeneousLinearLeastSquaresLateration3DSolver(laterationSolverListener);
+        inhomogeneousTrilaterationSolver = new InhomogeneousLinearLeastSquaresLateration3DSolver(
+                laterationSolverListener);
     }
 }

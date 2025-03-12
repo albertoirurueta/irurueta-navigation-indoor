@@ -25,24 +25,21 @@ import com.irurueta.navigation.indoor.RadioSource;
  * @param <S> a {@link RadioSource} type.
  * @param <P> a {@link Point} type.
  */
-public interface SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S extends RadioSource,
-        P extends Point<P>> {
+public interface SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S extends RadioSource, P extends Point<P>> {
 
     /**
      * Called when estimation starts.
      *
      * @param estimator estimator raising the event.
      */
-    void onEstimateStart(
-            final SequentialRobustRangingAndRssiRadioSourceEstimator<S, P> estimator);
+    void onEstimateStart(final SequentialRobustRangingAndRssiRadioSourceEstimator<S, P> estimator);
 
     /**
      * Called when estimation ends.
      *
      * @param estimator estimator raising the event.
      */
-    void onEstimateEnd(
-            final SequentialRobustRangingAndRssiRadioSourceEstimator<S, P> estimator);
+    void onEstimateEnd(final SequentialRobustRangingAndRssiRadioSourceEstimator<S, P> estimator);
 
     /**
      * Called when estimation progress significantly changes.
@@ -51,6 +48,5 @@ public interface SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S ex
      * @param progress  progress of estimation expressed as a value between 0.0 and 1.0.
      */
     void onEstimateProgressChange(
-            final SequentialRobustRangingAndRssiRadioSourceEstimator<S, P> estimator,
-            final float progress);
+            final SequentialRobustRangingAndRssiRadioSourceEstimator<S, P> estimator, final float progress);
 }

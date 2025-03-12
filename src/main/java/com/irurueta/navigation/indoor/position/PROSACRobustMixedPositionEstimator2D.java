@@ -39,13 +39,13 @@ public class PROSACRobustMixedPositionEstimator2D extends RobustMixedPositionEst
      * Quality scores corresponding to each provided located radio source.
      * The larger the score value the better the quality of the radio source.
      */
-    private double[] mSourceQualityScores;
+    private double[] sourceQualityScores;
 
     /**
      * Quality scores corresponding to each reading within provided fingerprint.
      * The larger the score value the better the quality of the reading.
      */
-    private double[] mFingerprintReadingsQualityScores;
+    private double[] fingerprintReadingsQualityScores;
 
     /**
      * Constructor.
@@ -62,8 +62,7 @@ public class PROSACRobustMixedPositionEstimator2D extends RobustMixedPositionEst
      * @throws IllegalArgumentException if provided sources is null or the number of
      *                                  provided sources is less than the required minimum.
      */
-    public PROSACRobustMixedPositionEstimator2D(
-            final List<? extends RadioSourceLocated<Point2D>> sources) {
+    public PROSACRobustMixedPositionEstimator2D(final List<? extends RadioSourceLocated<Point2D>> sources) {
         super();
         init();
         internalSetSources(sources);
@@ -106,8 +105,7 @@ public class PROSACRobustMixedPositionEstimator2D extends RobustMixedPositionEst
      *
      * @param listener listener in charge of handling events.
      */
-    public PROSACRobustMixedPositionEstimator2D(
-            final RobustMixedPositionEstimatorListener<Point2D> listener) {
+    public PROSACRobustMixedPositionEstimator2D(final RobustMixedPositionEstimatorListener<Point2D> listener) {
         super(listener);
         init();
     }
@@ -176,8 +174,8 @@ public class PROSACRobustMixedPositionEstimator2D extends RobustMixedPositionEst
      *                                        the score the better the quality of the
      *                                        reading.
      */
-    public PROSACRobustMixedPositionEstimator2D(double[] sourceQualityScores,
-                                                final double[] fingerprintReadingQualityScores) {
+    public PROSACRobustMixedPositionEstimator2D(
+            double[] sourceQualityScores, final double[] fingerprintReadingQualityScores) {
         this();
         internalSetSourceQualityScores(sourceQualityScores);
         internalSetFingerprintReadingsQualityScores(fingerprintReadingQualityScores);
@@ -200,8 +198,7 @@ public class PROSACRobustMixedPositionEstimator2D extends RobustMixedPositionEst
      *                                  provided sources is less than the required minimum.
      */
     public PROSACRobustMixedPositionEstimator2D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<Point2D>> sources) {
         this(sources);
         internalSetSourceQualityScores(sourceQualityScores);
@@ -225,8 +222,7 @@ public class PROSACRobustMixedPositionEstimator2D extends RobustMixedPositionEst
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public PROSACRobustMixedPositionEstimator2D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> fingerprint) {
         this(fingerprint);
         internalSetSourceQualityScores(sourceQualityScores);
@@ -253,8 +249,7 @@ public class PROSACRobustMixedPositionEstimator2D extends RobustMixedPositionEst
      *                                  or the number of provided sources is less than the required minimum.
      */
     public PROSACRobustMixedPositionEstimator2D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<Point2D>> sources,
             final Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> fingerprint) {
         this(sources, fingerprint);
@@ -276,8 +271,7 @@ public class PROSACRobustMixedPositionEstimator2D extends RobustMixedPositionEst
      * @param listener                        listener in charge of handling events.
      */
     public PROSACRobustMixedPositionEstimator2D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final RobustMixedPositionEstimatorListener<Point2D> listener) {
         this(listener);
         internalSetSourceQualityScores(sourceQualityScores);
@@ -302,8 +296,7 @@ public class PROSACRobustMixedPositionEstimator2D extends RobustMixedPositionEst
      *                                  provided sources is less than the required minimum.
      */
     public PROSACRobustMixedPositionEstimator2D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<Point2D>> sources,
             final RobustMixedPositionEstimatorListener<Point2D> listener) {
         this(sources, listener);
@@ -329,8 +322,7 @@ public class PROSACRobustMixedPositionEstimator2D extends RobustMixedPositionEst
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public PROSACRobustMixedPositionEstimator2D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> fingerprint,
             final RobustMixedPositionEstimatorListener<Point2D> listener) {
         this(fingerprint, listener);
@@ -359,8 +351,7 @@ public class PROSACRobustMixedPositionEstimator2D extends RobustMixedPositionEst
      *                                  null or the number of provided sources is less than the required minimum.
      */
     public PROSACRobustMixedPositionEstimator2D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<Point2D>> sources,
             final Fingerprint<? extends RadioSource, ? extends Reading<? extends RadioSource>> fingerprint,
             final RobustMixedPositionEstimatorListener<Point2D> listener) {
@@ -377,7 +368,7 @@ public class PROSACRobustMixedPositionEstimator2D extends RobustMixedPositionEst
      */
     @Override
     public double[] getSourceQualityScores() {
-        return mSourceQualityScores;
+        return sourceQualityScores;
     }
 
     /**
@@ -390,8 +381,7 @@ public class PROSACRobustMixedPositionEstimator2D extends RobustMixedPositionEst
      *                                  than minimum required samples.
      */
     @Override
-    public void setSourceQualityScores(final double[] sourceQualityScores)
-            throws LockedException {
+    public void setSourceQualityScores(final double[] sourceQualityScores) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
@@ -409,7 +399,7 @@ public class PROSACRobustMixedPositionEstimator2D extends RobustMixedPositionEst
      */
     @Override
     public double[] getFingerprintReadingsQualityScores() {
-        return mFingerprintReadingsQualityScores;
+        return fingerprintReadingsQualityScores;
     }
 
     /**
@@ -425,8 +415,8 @@ public class PROSACRobustMixedPositionEstimator2D extends RobustMixedPositionEst
      *                                  than minimum required samples.
      */
     @Override
-    public void setFingerprintReadingsQualityScores(
-            final double[] fingerprintReadingsQualityScores) throws LockedException {
+    public void setFingerprintReadingsQualityScores(final double[] fingerprintReadingsQualityScores)
+            throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
@@ -441,7 +431,7 @@ public class PROSACRobustMixedPositionEstimator2D extends RobustMixedPositionEst
      * @return threshold to determine whether samples are inliers or not.
      */
     public double getThreshold() {
-        return ((PROSACRobustLateration2DSolver) mLaterationSolver).getThreshold();
+        return ((PROSACRobustLateration2DSolver) laterationSolver).getThreshold();
     }
 
     /**
@@ -454,7 +444,7 @@ public class PROSACRobustMixedPositionEstimator2D extends RobustMixedPositionEst
      * @throws LockedException          if this solver is locked.
      */
     public void setThreshold(final double threshold) throws LockedException {
-        ((PROSACRobustLateration2DSolver) mLaterationSolver).setThreshold(threshold);
+        ((PROSACRobustLateration2DSolver) laterationSolver).setThreshold(threshold);
     }
 
     /**
@@ -464,8 +454,7 @@ public class PROSACRobustMixedPositionEstimator2D extends RobustMixedPositionEst
      * only need to be computed but not kept.
      */
     public boolean isComputeAndKeepInliersEnabled() {
-        return ((PROSACRobustLateration2DSolver) mLaterationSolver).
-                isComputeAndKeepInliersEnabled();
+        return ((PROSACRobustLateration2DSolver) laterationSolver).isComputeAndKeepInliersEnabled();
     }
 
     /**
@@ -475,10 +464,8 @@ public class PROSACRobustMixedPositionEstimator2D extends RobustMixedPositionEst
      *                              false if inliers only need to be computed but not kept.
      * @throws LockedException if this solver is locked.
      */
-    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers)
-            throws LockedException {
-        ((PROSACRobustLateration2DSolver) mLaterationSolver).
-                setComputeAndKeepInliersEnabled(computeAndKeepInliers);
+    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers) throws LockedException {
+        ((PROSACRobustLateration2DSolver) laterationSolver).setComputeAndKeepInliersEnabled(computeAndKeepInliers);
     }
 
     /**
@@ -488,8 +475,7 @@ public class PROSACRobustMixedPositionEstimator2D extends RobustMixedPositionEst
      * only need to be computed but not kept.
      */
     public boolean isComputeAndKeepResiduals() {
-        return ((PROSACRobustLateration2DSolver) mLaterationSolver).
-                isComputeAndKeepResiduals();
+        return ((PROSACRobustLateration2DSolver) laterationSolver).isComputeAndKeepResiduals();
     }
 
     /**
@@ -499,10 +485,8 @@ public class PROSACRobustMixedPositionEstimator2D extends RobustMixedPositionEst
      *                                false if residuals only need to be computed but not kept.
      * @throws LockedException if this solver is locked.
      */
-    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals)
-            throws LockedException {
-        ((PROSACRobustLateration2DSolver) mLaterationSolver).
-                setComputeAndKeepResidualsEnabled(computeAndKeepResiduals);
+    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals) throws LockedException {
+        ((PROSACRobustLateration2DSolver) laterationSolver).setComputeAndKeepResidualsEnabled(computeAndKeepResiduals);
     }
 
     /**
@@ -519,8 +503,7 @@ public class PROSACRobustMixedPositionEstimator2D extends RobustMixedPositionEst
      * Initializes robust lateration solver.
      */
     private void init() {
-        mLaterationSolver = new PROSACRobustLateration2DSolver(
-                mTrilaterationSolverListener);
+        laterationSolver = new PROSACRobustLateration2DSolver(trilaterationSolverListener);
     }
 
     /**
@@ -533,12 +516,11 @@ public class PROSACRobustMixedPositionEstimator2D extends RobustMixedPositionEst
      *                                  is smaller than 3 samples.
      */
     private void internalSetSourceQualityScores(final double[] sourceQualityScores) {
-        if (sourceQualityScores == null ||
-                sourceQualityScores.length < getMinRequiredSources()) {
+        if (sourceQualityScores == null || sourceQualityScores.length < getMinRequiredSources()) {
             throw new IllegalArgumentException();
         }
 
-        mSourceQualityScores = sourceQualityScores;
+        this.sourceQualityScores = sourceQualityScores;
 
         buildPositionsDistancesDistanceStandardDeviationsAndQualityScores();
     }
@@ -553,14 +535,12 @@ public class PROSACRobustMixedPositionEstimator2D extends RobustMixedPositionEst
      * @throws IllegalArgumentException if provided quality scores length is
      *                                  smaller than 3 samples.
      */
-    private void internalSetFingerprintReadingsQualityScores(
-            final double[] fingerprintReadingsQualityScores) {
-        if (fingerprintReadingsQualityScores == null ||
-                fingerprintReadingsQualityScores.length < getMinRequiredSources()) {
+    private void internalSetFingerprintReadingsQualityScores(final double[] fingerprintReadingsQualityScores) {
+        if (fingerprintReadingsQualityScores == null || fingerprintReadingsQualityScores.length < getMinRequiredSources()) {
             throw new IllegalArgumentException();
         }
 
-        mFingerprintReadingsQualityScores = fingerprintReadingsQualityScores;
+        this.fingerprintReadingsQualityScores = fingerprintReadingsQualityScores;
 
         buildPositionsDistancesDistanceStandardDeviationsAndQualityScores();
     }

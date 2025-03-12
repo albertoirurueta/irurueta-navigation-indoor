@@ -47,31 +47,27 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * Default robust estimator method for robust position estimation using ranging
      * data when no robust method is provided.
      */
-    public static final RobustEstimatorMethod DEFAULT_RANGING_ROBUST_METHOD =
-            RobustEstimatorMethod.PROMEDS;
+    public static final RobustEstimatorMethod DEFAULT_RANGING_ROBUST_METHOD = RobustEstimatorMethod.PROMEDS;
 
     /**
      * Default robust method for coarse robust position estimation using RSSI
      * data when no robust method is provided.
      */
-    public static final RobustEstimatorMethod DEFAULT_RSSI_ROBUST_METHOD =
-            RobustEstimatorMethod.PROMEDS;
+    public static final RobustEstimatorMethod DEFAULT_RSSI_ROBUST_METHOD = RobustEstimatorMethod.PROMEDS;
 
     /**
      * Indicates that by default located radio source position covariance is taken
      * into account (if available) to determine distance standard deviation for ranging
      * measurements.
      */
-    public static final boolean DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE =
-            true;
+    public static final boolean DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE = true;
 
     /**
      * Indicates that by default located radio source position covariance is taken
      * into account (if available) to determine distance standard deviation for RSSI
      * measurements.
      */
-    public static final boolean DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE =
-            true;
+    public static final boolean DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE = true;
 
     /**
      * Indicates that by default readings are distributed evenly among radio sources
@@ -186,82 +182,74 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
     /**
      * Internal robust estimator for position estimation using ranging readings.
      */
-    protected RobustRangingPositionEstimator<P> mRangingEstimator;
+    protected RobustRangingPositionEstimator<P> rangingEstimator;
 
     /**
      * Internal robust estimator for coarse position estimation using RSSI readings.
      */
-    protected RobustRssiPositionEstimator<P> mRssiEstimator;
+    protected RobustRssiPositionEstimator<P> rssiEstimator;
 
     /**
      * Robust method used for robust position estimation using ranging data.
      */
-    protected RobustEstimatorMethod mRangingRobustMethod =
-            DEFAULT_RANGING_ROBUST_METHOD;
+    protected RobustEstimatorMethod rangingRobustMethod = DEFAULT_RANGING_ROBUST_METHOD;
 
     /**
      * Robust method used for coarse robust position estimation using RSSI data.
      */
-    protected RobustEstimatorMethod mRssiRobustMethod =
-            DEFAULT_RSSI_ROBUST_METHOD;
+    protected RobustEstimatorMethod rssiRobustMethod = DEFAULT_RSSI_ROBUST_METHOD;
 
     /**
      * Size of subsets to be checked during robust estimation.
      */
-    protected int mRangingPreliminarySubsetSize;
+    protected int rangingPreliminarySubsetSize;
 
     /**
      * Size of subsets to be checked during RSSI robust estimation.
      */
-    protected int mRssiPreliminarySubsetSize;
+    protected int rssiPreliminarySubsetSize;
 
     /**
      * Indicates whether located radio source position covariance is taken into account
      * (if available) to determine distance standard deviation for ranging measurements.
      */
-    private boolean mUseRangingRadioSourcePositionCovariance =
-            DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE;
+    private boolean useRangingRadioSourcePositionCovariance = DEFAULT_USE_RANGING_RADIO_SOURCE_POSITION_COVARIANCE;
 
     /**
      * Indicates whether located radio source position covariance is taken into account
      * (if available) to determine distance standard deviation for RSSI measurements.
      */
-    private boolean mUseRssiRadioSourcePositionCovariance =
-            DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE;
+    private boolean useRssiRadioSourcePositionCovariance = DEFAULT_USE_RSSI_RADIO_SOURCE_POSITION_COVARIANCE;
 
     /**
      * Indicates whether ranging readings are evenly distributed among radio sources
      * taking into account quality scores of both radio sources and ranging readings.
      */
-    private boolean mEvenlyDistributeRangingReadings =
-            DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS;
+    private boolean evenlyDistributeRangingReadings = DEFAULT_EVENLY_DISTRIBUTE_RANGING_READINGS;
 
     /**
      * Indicates whether RSSI readings are evenly distributed among radio sources
      * taking into account quality scores of both radio sources and RSSI readings.
      */
-    private boolean mEvenlyDistributeRssiReadings =
-            DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS;
+    private boolean evenlyDistributeRssiReadings = DEFAULT_EVENLY_DISTRIBUTE_RSSI_READINGS;
 
     /**
      * Distance standard deviation fallback value to use when none can be determined
      * from provided RSSI measurements.
      */
-    private double mRssiFallbackDistanceStandardDeviation =
-            FALLBACK_DISTANCE_STANDARD_DEVIATION;
+    private double rssiFallbackDistanceStandardDeviation = FALLBACK_DISTANCE_STANDARD_DEVIATION;
 
     /**
      * Distance standard deviation fallback value to use when none can be determined
      * from provided ranging measurements.
      */
-    private double mRangingFallbackDistanceStandardDeviation =
-            FALLBACK_DISTANCE_STANDARD_DEVIATION;
+    private double rangingFallbackDistanceStandardDeviation = FALLBACK_DISTANCE_STANDARD_DEVIATION;
 
     /**
      * Amount of progress variation before notifying a progress change during
      * estimation.
      */
-    private float mProgressDelta = DEFAULT_PROGRESS_DELTA;
+    private float progressDelta = DEFAULT_PROGRESS_DELTA;
 
     /**
      * Amount of confidence expressed as a value between 0.0 and 1.0 (which is
@@ -269,7 +257,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * of confidence indicates the probability that the estimated result is correct.
      * Usually this value will be close to 1.0, but not exactly 1.0.
      */
-    private double mRangingConfidence = DEFAULT_CONFIDENCE;
+    private double rangingConfidence = DEFAULT_CONFIDENCE;
 
     /**
      * Amount of confidence expressed as a value between 0.0 and 1.0 (which is
@@ -277,127 +265,123 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * of confidence indicates the probability that the estimated result is correct.
      * Usually this value will be close to 1.0, but not exactly 1.0.
      */
-    private double mRssiConfidence = DEFAULT_CONFIDENCE;
+    private double rssiConfidence = DEFAULT_CONFIDENCE;
 
     /**
      * Maximum allowed number of iterations for robust ranging position estimation.
      * When the maximum number of iterations is exceeded, an approximate result
      * might be available for retrieval.
      */
-    private int mRangingMaxIterations = DEFAULT_MAX_ITERATIONS;
+    private int rangingMaxIterations = DEFAULT_MAX_ITERATIONS;
 
     /**
      * Maximum allowed number of iterations for robust RSSI position estimation.
      * When the maximum number of iterations is exceeded, an approximate result
      * might be available for retrieval.
      */
-    private int mRssiMaxIterations = DEFAULT_MAX_ITERATIONS;
+    private int rssiMaxIterations = DEFAULT_MAX_ITERATIONS;
 
     /**
      * Indicates whether result is refined using all found inliers.
      */
-    private boolean mRefineResult = DEFAULT_REFINE_RESULT;
+    private boolean refineResult = DEFAULT_REFINE_RESULT;
 
     /**
      * Indicates that covariance is kept after refining result.
      */
-    private boolean mKeepCovariance = DEFAULT_KEEP_COVARIANCE;
+    private boolean keepCovariance = DEFAULT_KEEP_COVARIANCE;
 
     /**
      * Indicates that a linear solver is used for preliminary solution estimation
      * using ranging measurements.
      * The result obtained on each preliminary solution might be later refined.
      */
-    private boolean mUseRangingLinearSolver = DEFAULT_USE_RANGING_LINEAR_SOLVER;
+    private boolean useRangingLinearSolver = DEFAULT_USE_RANGING_LINEAR_SOLVER;
 
     /**
      * Indicates that a linear solver is used for preliminary solution estimation
      * using RSSI measurements.
      * The result obtained on each preliminary solution might be later refined.
      */
-    private boolean mUseRssiLinearSolver = DEFAULT_USE_RSSI_LINEAR_SOLVER;
+    private boolean useRssiLinearSolver = DEFAULT_USE_RSSI_LINEAR_SOLVER;
 
     /**
      * Indicates whether an homogeneous linear solver is used either to estimate
      * preliminary solutions or an initial solution for preliminary solutions that
      * will be later refined on the ranging fine estimation.
      */
-    private boolean mUseRangingHomogeneousLinearSolver =
-            DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER;
+    private boolean useRangingHomogeneousLinearSolver = DEFAULT_USE_RANGING_HOMOGENEOUS_LINEAR_SOLVER;
 
     /**
      * Indicates whether an homogeneous linear solver is used either to estimate
      * preliminary solutions or an initial solution for preliminary solutions that
      * will be later refined on the RSSI coarse estimation.
      */
-    private boolean mUseRssiHomogeneousLinearSolver =
-            DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER;
+    private boolean useRssiHomogeneousLinearSolver = DEFAULT_USE_RSSI_HOMOGENEOUS_LINEAR_SOLVER;
 
     /**
      * Indicates whether preliminary ranging solutions are refined.
      */
-    private boolean mRefineRangingPreliminarySolutions =
-            DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS;
+    private boolean refineRangingPreliminarySolutions = DEFAULT_REFINE_RANGING_PRELIMINARY_SOLUTIONS;
 
     /**
      * Indicates whether preliminary RSSI solutions are refined.
      */
-    private boolean mRefineRssiPreliminarySolutions =
-            DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS;
+    private boolean refineRssiPreliminarySolutions = DEFAULT_REFINE_RSSI_PRELIMINARY_SOLUTIONS;
 
     /**
      * Threshold to determine when samples are inliers or not used during ranging
      * position estimation.
      * If not defined, default threshold will be used.
      */
-    private Double mRangingThreshold;
+    private Double rangingThreshold;
 
     /**
      * Threshold to determine when samples are inliers or not used during RSSI
      * position estimation.
      * If not defined, default threshold will be used.
      */
-    private Double mRssiThreshold;
+    private Double rssiThreshold;
 
     /**
      * Listener in charge of handling events.
      */
-    private SequentialRobustRangingAndRssiPositionEstimatorListener<P> mListener;
+    private SequentialRobustRangingAndRssiPositionEstimatorListener<P> listener;
 
     /**
      * Located radio sources used for lateration.
      */
-    private List<? extends RadioSourceLocated<P>> mSources;
+    private List<? extends RadioSourceLocated<P>> sources;
 
     /**
      * Fingerprint containing readings at an unknown location for provided located
      * radio sources.
      */
     private RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
-            extends RadioSource>> mFingerprint;
+            extends RadioSource>> fingerprint;
 
     /**
      * Quality scores corresponding to each provided located radio source.
      * The larger the score value the better the quality of the radio source.
      */
-    private double[] mSourceQualityScores;
+    private double[] sourceQualityScores;
 
     /**
      * Quality scores corresponding to each reading within provided fingerprint.
      * The larger the score value the better the quality of the reading.
      */
-    private double[] mFingerprintReadingsQualityScores;
+    private double[] fingerprintReadingsQualityScores;
 
     /**
      * An initial position to start the estimation from. This can be useful if we only
      * intend to refine a previously known estimation.
      */
-    private P mInitialPosition;
+    private P initialPosition;
 
     /**
      * Indicates if this instance is locked because estimation is being executed.
      */
-    private boolean mLocked;
+    private boolean locked;
 
     /**
      * Constructor.
@@ -412,8 +396,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @throws IllegalArgumentException if provided sources is null or the number of
      *                                  provided sources is less than the required minimum.
      */
-    protected SequentialRobustRangingAndRssiPositionEstimator(
-            final List<? extends RadioSourceLocated<P>> sources) {
+    protected SequentialRobustRangingAndRssiPositionEstimator(final List<? extends RadioSourceLocated<P>> sources) {
         internalSetSources(sources);
     }
 
@@ -454,7 +437,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      */
     protected SequentialRobustRangingAndRssiPositionEstimator(
             final SequentialRobustRangingAndRssiPositionEstimatorListener<P> listener) {
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -470,7 +453,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
             final List<? extends RadioSourceLocated<P>> sources,
             final SequentialRobustRangingAndRssiPositionEstimatorListener<P> listener) {
         this(sources);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -486,7 +469,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
                     extends RadioSource>> fingerprint,
             final SequentialRobustRangingAndRssiPositionEstimatorListener<P> listener) {
         this(fingerprint);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -505,7 +488,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
                     extends RadioSource>> fingerprint,
             final SequentialRobustRangingAndRssiPositionEstimatorListener<P> listener) {
         this(sources, fingerprint);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -521,8 +504,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      *                                        reading.
      */
     protected SequentialRobustRangingAndRssiPositionEstimator(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores) {
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores) {
         internalSetSourceQualityScores(sourceQualityScores);
         internalSetFingerprintReadingsQualityScores(fingerprintReadingQualityScores);
     }
@@ -545,8 +527,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      *                                  minimum.
      */
     protected SequentialRobustRangingAndRssiPositionEstimator(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<P>> sources) {
         this(sources);
         internalSetSourceQualityScores(sourceQualityScores);
@@ -570,8 +551,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     protected SequentialRobustRangingAndRssiPositionEstimator(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
                     extends RadioSource>> fingerprint) {
         this(fingerprint);
@@ -599,8 +579,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      *                                  or the number of provided sources is less than the required minimum.
      */
     protected SequentialRobustRangingAndRssiPositionEstimator(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<P>> sources,
             final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
                     extends RadioSource>> fingerprint) {
@@ -623,11 +602,10 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @param listener                        listener in charge of handling events.
      */
     protected SequentialRobustRangingAndRssiPositionEstimator(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final SequentialRobustRangingAndRssiPositionEstimatorListener<P> listener) {
         this(sourceQualityScores, fingerprintReadingQualityScores);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -648,12 +626,11 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      *                                  provided sources is less than the required minimum.
      */
     protected SequentialRobustRangingAndRssiPositionEstimator(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<P>> sources,
             final SequentialRobustRangingAndRssiPositionEstimatorListener<P> listener) {
         this(sourceQualityScores, fingerprintReadingQualityScores, sources);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -674,13 +651,12 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     protected SequentialRobustRangingAndRssiPositionEstimator(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
                     extends RadioSource>> fingerprint,
             final SequentialRobustRangingAndRssiPositionEstimatorListener<P> listener) {
         this(sourceQualityScores, fingerprintReadingQualityScores, fingerprint);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -704,15 +680,13 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      *                                  or the number of provided sources is less than the required minimum.
      */
     protected SequentialRobustRangingAndRssiPositionEstimator(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<P>> sources,
             final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
                     extends RadioSource>> fingerprint,
             final SequentialRobustRangingAndRssiPositionEstimatorListener<P> listener) {
-        this(sourceQualityScores, fingerprintReadingQualityScores, sources,
-                fingerprint);
-        mListener = listener;
+        this(sourceQualityScores, fingerprintReadingQualityScores, sources, fingerprint);
+        this.listener = listener;
     }
 
     /**
@@ -721,7 +695,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @return robust method used for robust position estimation using ranging data.
      */
     public RobustEstimatorMethod getRangingRobustMethod() {
-        return mRangingRobustMethod;
+        return rangingRobustMethod;
     }
 
     /**
@@ -731,13 +705,12 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      *                            using ranging data.
      * @throws LockedException if this instance is locked.
      */
-    public void setRangingRobustMethod(final RobustEstimatorMethod rangingRobustMethod)
-            throws LockedException {
+    public void setRangingRobustMethod(final RobustEstimatorMethod rangingRobustMethod) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
 
-        mRangingRobustMethod = rangingRobustMethod;
+        this.rangingRobustMethod = rangingRobustMethod;
     }
 
     /**
@@ -746,7 +719,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @return robust method used for coarse robust position estimation using RSSI data.
      */
     public RobustEstimatorMethod getRssiRobustMethod() {
-        return mRssiRobustMethod;
+        return rssiRobustMethod;
     }
 
     /**
@@ -756,13 +729,12 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      *                         using RSSI data.
      * @throws LockedException if this instance is locked.
      */
-    public void setRssiRobustMethod(final RobustEstimatorMethod rssiRobustMethod)
-            throws LockedException {
+    public void setRssiRobustMethod(final RobustEstimatorMethod rssiRobustMethod) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
 
-        mRssiRobustMethod = rssiRobustMethod;
+        this.rssiRobustMethod = rssiRobustMethod;
     }
 
     /**
@@ -773,7 +745,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * ranging position estimation, false otherwise.
      */
     public boolean isRangingRadioSourcePositionCovarianceUsed() {
-        return mUseRangingRadioSourcePositionCovariance;
+        return useRangingRadioSourcePositionCovariance;
     }
 
     /**
@@ -786,14 +758,13 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      *                                                otherwise.
      * @throws LockedException if this instance is locked.
      */
-    public void setRangingRadioSourcePositionCovarianceUsed(
-            final boolean useRangingRadioSourcePositionCovariance) throws LockedException {
+    public void setRangingRadioSourcePositionCovarianceUsed(final boolean useRangingRadioSourcePositionCovariance)
+            throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
 
-        mUseRangingRadioSourcePositionCovariance =
-                useRangingRadioSourcePositionCovariance;
+        this.useRangingRadioSourcePositionCovariance = useRangingRadioSourcePositionCovariance;
     }
 
     /**
@@ -805,7 +776,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * RSSI position estimation, false otherwise.
      */
     public boolean isRssiRadioSourcePositionCovarianceUsed() {
-        return mUseRssiRadioSourcePositionCovariance;
+        return useRssiRadioSourcePositionCovariance;
     }
 
     /**
@@ -819,13 +790,13 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      *                                             otherwise.
      * @throws LockedException if this instance is locked.
      */
-    public void setRssiRadioSourcePositionCovarianceUsed(
-            final boolean useRssiRadioSourcePositionCovariance) throws LockedException {
+    public void setRssiRadioSourcePositionCovarianceUsed(final boolean useRssiRadioSourcePositionCovariance)
+            throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
 
-        mUseRssiRadioSourcePositionCovariance = useRssiRadioSourcePositionCovariance;
+        this.useRssiRadioSourcePositionCovariance = useRssiRadioSourcePositionCovariance;
     }
 
     /**
@@ -836,7 +807,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * false otherwise.
      */
     public boolean isRangingReadingsEvenlyDistributed() {
-        return mEvenlyDistributeRangingReadings;
+        return evenlyDistributeRangingReadings;
     }
 
     /**
@@ -848,13 +819,13 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      *                                        otherwise.
      * @throws LockedException if this instance is locked.
      */
-    public void setRangingReadingsEvenlyDistributed(
-            final boolean evenlyDistributeRangingReadings) throws LockedException {
+    public void setRangingReadingsEvenlyDistributed(final boolean evenlyDistributeRangingReadings)
+            throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
 
-        mEvenlyDistributeRangingReadings = evenlyDistributeRangingReadings;
+        this.evenlyDistributeRangingReadings = evenlyDistributeRangingReadings;
     }
 
     /**
@@ -865,7 +836,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * determined from provided RSSI measurements.
      */
     public double getRssiFallbackDistanceStandardDeviation() {
-        return mRssiFallbackDistanceStandardDeviation;
+        return rssiFallbackDistanceStandardDeviation;
     }
 
     /**
@@ -878,12 +849,12 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      *                                              measurements.
      * @throws LockedException if this instance is locked.
      */
-    public void setRssiFallbackDistanceStandardDeviation(
-            final double rssiFallbackDistanceStandardDeviation) throws LockedException {
+    public void setRssiFallbackDistanceStandardDeviation(final double rssiFallbackDistanceStandardDeviation)
+            throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
-        mRssiFallbackDistanceStandardDeviation = rssiFallbackDistanceStandardDeviation;
+        this.rssiFallbackDistanceStandardDeviation = rssiFallbackDistanceStandardDeviation;
     }
 
     /**
@@ -894,7 +865,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * determined from provided ranging measurements.
      */
     public double getRangingFallbackDistanceStandardDeviation() {
-        return mRangingFallbackDistanceStandardDeviation;
+        return rangingFallbackDistanceStandardDeviation;
     }
 
     /**
@@ -907,13 +878,12 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      *                                                 measurements.
      * @throws LockedException if this instance is locked.
      */
-    public void setRangingFallbackDistanceStandardDeviation(
-            final double rangingFallbackDistanceStandardDeviation) throws LockedException {
+    public void setRangingFallbackDistanceStandardDeviation(final double rangingFallbackDistanceStandardDeviation)
+            throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
-        mRangingFallbackDistanceStandardDeviation =
-                rangingFallbackDistanceStandardDeviation;
+        this.rangingFallbackDistanceStandardDeviation = rangingFallbackDistanceStandardDeviation;
     }
 
     /**
@@ -924,7 +894,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * false otherwise.
      */
     public boolean isRssiReadingsEvenlyDistributed() {
-        return mEvenlyDistributeRssiReadings;
+        return evenlyDistributeRssiReadings;
     }
 
     /**
@@ -935,13 +905,12 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      *                                     among radio sources, false otherwise.
      * @throws LockedException if this instance is locked.
      */
-    public void setRssiReadingsEvenlyDistributed(
-            final boolean evenlyDistributeRssiReadings) throws LockedException {
+    public void setRssiReadingsEvenlyDistributed(final boolean evenlyDistributeRssiReadings) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
 
-        mEvenlyDistributeRssiReadings = evenlyDistributeRssiReadings;
+        this.evenlyDistributeRssiReadings = evenlyDistributeRssiReadings;
     }
 
     /**
@@ -952,7 +921,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * estimation.
      */
     public float getProgressDelta() {
-        return mProgressDelta;
+        return progressDelta;
     }
 
     /**
@@ -971,7 +940,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
         if (progressDelta < MIN_PROGRESS_DELTA || progressDelta > MAX_PROGRESS_DELTA) {
             throw new IllegalArgumentException();
         }
-        mProgressDelta = progressDelta;
+        this.progressDelta = progressDelta;
     }
 
     /**
@@ -984,7 +953,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * 0.0 and 1.0.
      */
     public double getRangingConfidence() {
-        return mRangingConfidence;
+        return rangingConfidence;
     }
 
     /**
@@ -1005,7 +974,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
         if (rangingConfidence < MIN_CONFIDENCE || rangingConfidence > MAX_CONFIDENCE) {
             throw new IllegalArgumentException();
         }
-        mRangingConfidence = rangingConfidence;
+        this.rangingConfidence = rangingConfidence;
     }
 
     /**
@@ -1018,7 +987,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * 0.0 and 1.0.
      */
     public double getRssiConfidence() {
-        return mRssiConfidence;
+        return rssiConfidence;
     }
 
     /**
@@ -1039,7 +1008,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
         if (rssiConfidence < MIN_CONFIDENCE || rssiConfidence > MAX_CONFIDENCE) {
             throw new IllegalArgumentException();
         }
-        mRssiConfidence = rssiConfidence;
+        this.rssiConfidence = rssiConfidence;
     }
 
     /**
@@ -1050,7 +1019,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @return maximum allowed number of iterations for position estimation.
      */
     public int getRangingMaxIterations() {
-        return mRangingMaxIterations;
+        return rangingMaxIterations;
     }
 
     /**
@@ -1064,15 +1033,14 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @throws IllegalArgumentException if provided value is less than 1.
      * @throws LockedException          if estimator is locked.
      */
-    public void setRangingMaxIterations(final int rangingMaxIterations)
-            throws LockedException {
+    public void setRangingMaxIterations(final int rangingMaxIterations) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
         if (rangingMaxIterations < MIN_ITERATIONS) {
             throw new IllegalArgumentException();
         }
-        mRangingMaxIterations = rangingMaxIterations;
+        this.rangingMaxIterations = rangingMaxIterations;
     }
 
     /**
@@ -1083,7 +1051,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @return maximum allowed number of iterations for position estimation.
      */
     public int getRssiMaxIterations() {
-        return mRssiMaxIterations;
+        return rssiMaxIterations;
     }
 
     /**
@@ -1103,7 +1071,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
         if (rssiMaxIterations < MIN_ITERATIONS) {
             throw new IllegalArgumentException();
         }
-        mRssiMaxIterations = rssiMaxIterations;
+        this.rssiMaxIterations = rssiMaxIterations;
     }
 
     /**
@@ -1112,7 +1080,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @return true if result is refined, false otherwise.
      */
     public boolean isResultRefined() {
-        return mRefineResult;
+        return refineResult;
     }
 
     /**
@@ -1121,13 +1089,12 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @param refineResult true if result is refined, false otherwise.
      * @throws LockedException if this instance is locked.
      */
-    public void setResultRefined(final boolean refineResult)
-            throws LockedException {
+    public void setResultRefined(final boolean refineResult) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
 
-        mRefineResult = refineResult;
+        this.refineResult = refineResult;
     }
 
     /**
@@ -1137,7 +1104,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @return true if covariance must be kept after refining result, false otherwise.
      */
     public boolean isCovarianceKept() {
-        return mKeepCovariance;
+        return keepCovariance;
     }
 
     /**
@@ -1152,7 +1119,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
         if (isLocked()) {
             throw new LockedException();
         }
-        mKeepCovariance = keepCovariance;
+        this.keepCovariance = keepCovariance;
     }
 
     /**
@@ -1164,7 +1131,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * ranging readings.
      */
     public boolean isRangingLinearSolverUsed() {
-        return mUseRangingLinearSolver;
+        return useRangingLinearSolver;
     }
 
     /**
@@ -1176,12 +1143,11 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      *                               solution estimation on ranging readings.
      * @throws LockedException if estimator is locked.
      */
-    public void setRangingLinearSolverUsed(final boolean useRangingLinearSolver)
-            throws LockedException {
+    public void setRangingLinearSolverUsed(final boolean useRangingLinearSolver) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
-        mUseRangingLinearSolver = useRangingLinearSolver;
+        this.useRangingLinearSolver = useRangingLinearSolver;
     }
 
     /**
@@ -1193,7 +1159,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * RSSI readings.
      */
     public boolean isRssiLinearSolverUsed() {
-        return mUseRssiLinearSolver;
+        return useRssiLinearSolver;
     }
 
     /**
@@ -1205,12 +1171,11 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      *                            solution estimation on RSSI readings.
      * @throws LockedException if estimator is locked.
      */
-    public void setRssiLinearSolverUsed(final boolean useRssiLinearSolver)
-            throws LockedException {
+    public void setRssiLinearSolverUsed(final boolean useRssiLinearSolver) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
-        mUseRssiLinearSolver = useRssiLinearSolver;
+        this.useRssiLinearSolver = useRssiLinearSolver;
     }
 
     /**
@@ -1222,7 +1187,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * during ranging fine position estimation.
      */
     public boolean isRangingHomogeneousLinearSolverUsed() {
-        return mUseRangingHomogeneousLinearSolver;
+        return useRangingHomogeneousLinearSolver;
     }
 
     /**
@@ -1235,12 +1200,12 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      *                                          ranging fine position estimation.
      * @throws LockedException if estimator is locked.
      */
-    public void setRangingHomogeneousLinearSolverUsed(
-            final boolean useRangingHomogeneousLinearSolver) throws LockedException {
+    public void setRangingHomogeneousLinearSolverUsed(final boolean useRangingHomogeneousLinearSolver)
+            throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
-        mUseRangingHomogeneousLinearSolver = useRangingHomogeneousLinearSolver;
+        this.useRangingHomogeneousLinearSolver = useRangingHomogeneousLinearSolver;
     }
 
     /**
@@ -1252,7 +1217,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * during RSSI coarse position estimation.
      */
     public boolean isRssiHomogeneousLinearSolverUsed() {
-        return mUseRssiHomogeneousLinearSolver;
+        return useRssiHomogeneousLinearSolver;
     }
 
     /**
@@ -1265,12 +1230,12 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      *                                       position estimation.
      * @throws LockedException if estimator is locked.
      */
-    public void setRssiHomogeneousLinearSolverUsed(
-            final boolean useRssiHomogeneousLinearSolver) throws LockedException {
+    public void setRssiHomogeneousLinearSolverUsed(final boolean useRssiHomogeneousLinearSolver)
+            throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
-        mUseRssiHomogeneousLinearSolver = useRssiHomogeneousLinearSolver;
+        this.useRssiHomogeneousLinearSolver = useRssiHomogeneousLinearSolver;
     }
 
     /**
@@ -1284,7 +1249,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * linear solution, false otherwise.
      */
     public boolean isRangingPreliminarySolutionRefined() {
-        return mRefineRangingPreliminarySolutions;
+        return refineRangingPreliminarySolutions;
     }
 
     /**
@@ -1299,12 +1264,12 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      *                                          solution, false otherwise.
      * @throws LockedException if estimator is locked.
      */
-    public void setRangingPreliminarySolutionRefined(
-            final boolean refineRangingPreliminarySolutions) throws LockedException {
+    public void setRangingPreliminarySolutionRefined(final boolean refineRangingPreliminarySolutions)
+            throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
-        mRefineRangingPreliminarySolutions = refineRangingPreliminarySolutions;
+        this.refineRangingPreliminarySolutions = refineRangingPreliminarySolutions;
     }
 
     /**
@@ -1318,7 +1283,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * linear solution, false otherwise.
      */
     public boolean isRssiPreliminarySolutionRefined() {
-        return mRefineRssiPreliminarySolutions;
+        return refineRssiPreliminarySolutions;
     }
 
     /**
@@ -1333,12 +1298,11 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      *                                       solution, false otherwise.
      * @throws LockedException if estimator is locked.
      */
-    public void setRssiPreliminarySolutionRefined(
-            final boolean refineRssiPreliminarySolutions) throws LockedException {
+    public void setRssiPreliminarySolutionRefined(final boolean refineRssiPreliminarySolutions) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
-        mRefineRssiPreliminarySolutions = refineRssiPreliminarySolutions;
+        this.refineRssiPreliminarySolutions = refineRssiPreliminarySolutions;
     }
 
     /**
@@ -1347,7 +1311,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @return size of subsets to be checked during ranging robust estimation.
      */
     public int getRangingPreliminarySubsetSize() {
-        return mRangingPreliminarySubsetSize;
+        return rangingPreliminarySubsetSize;
     }
 
     /**
@@ -1358,8 +1322,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @throws LockedException          if estimator is locked.
      * @throws IllegalArgumentException if provided value is less than {@link #getMinRequiredSources()}.
      */
-    public void setRangingPreliminarySubsetSize(final int rangingPreliminarySubsetSize)
-            throws LockedException {
+    public void setRangingPreliminarySubsetSize(final int rangingPreliminarySubsetSize) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
@@ -1367,7 +1330,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
             throw new IllegalArgumentException();
         }
 
-        mRangingPreliminarySubsetSize = rangingPreliminarySubsetSize;
+        this.rangingPreliminarySubsetSize = rangingPreliminarySubsetSize;
     }
 
     /**
@@ -1376,7 +1339,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @return size of subsets to be checked during RSSI robust estimation.
      */
     public int getRssiPreliminarySubsetSize() {
-        return mRssiPreliminarySubsetSize;
+        return rssiPreliminarySubsetSize;
     }
 
     /**
@@ -1387,8 +1350,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @throws LockedException          if estimator is locked.
      * @throws IllegalArgumentException if provided value is less than {@link #getMinRequiredSources()}.
      */
-    public void setRssiPreliminarySubsetSize(final int rssiPreliminarySubsetSize)
-            throws LockedException {
+    public void setRssiPreliminarySubsetSize(final int rssiPreliminarySubsetSize) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
@@ -1396,7 +1358,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
             throw new IllegalArgumentException();
         }
 
-        mRssiPreliminarySubsetSize = rssiPreliminarySubsetSize;
+        this.rssiPreliminarySubsetSize = rssiPreliminarySubsetSize;
     }
 
     /**
@@ -1407,7 +1369,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @return threshold for ranging estimation or null.
      */
     public Double getRangingThreshold() {
-        return mRangingThreshold;
+        return rangingThreshold;
     }
 
     /**
@@ -1422,7 +1384,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
         if (isLocked()) {
             throw new LockedException();
         }
-        mRangingThreshold = rangingThreshold;
+        this.rangingThreshold = rangingThreshold;
     }
 
     /**
@@ -1433,7 +1395,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @return threshold for RSSI estimation or null.
      */
     public Double getRssiThreshold() {
-        return mRssiThreshold;
+        return rssiThreshold;
     }
 
     /**
@@ -1448,7 +1410,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
         if (isLocked()) {
             throw new LockedException();
         }
-        mRssiThreshold = rssiThreshold;
+        this.rssiThreshold = rssiThreshold;
     }
 
     /**
@@ -1458,7 +1420,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      */
     public List<RadioSourceLocated<P>> getSources() {
         //noinspection unchecked
-        return (List<RadioSourceLocated<P>>) mSources;
+        return (List<RadioSourceLocated<P>>) sources;
     }
 
     /**
@@ -1470,8 +1432,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      *                                  provided sources is less than the required
      *                                  minimum.
      */
-    public void setSources(final List<? extends RadioSourceLocated<P>> sources)
-            throws LockedException {
+    public void setSources(final List<? extends RadioSourceLocated<P>> sources) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
@@ -1488,7 +1449,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      */
     public RangingAndRssiFingerprint<RadioSource, RangingAndRssiReading<RadioSource>> getFingerprint() {
         //noinspection unchecked
-        return (RangingAndRssiFingerprint<RadioSource, RangingAndRssiReading<RadioSource>>) mFingerprint;
+        return (RangingAndRssiFingerprint<RadioSource, RangingAndRssiReading<RadioSource>>) fingerprint;
     }
 
     /**
@@ -1501,8 +1462,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      */
     public void setFingerprint(
             final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
-                    extends RadioSource>> fingerprint)
-            throws LockedException {
+                    extends RadioSource>> fingerprint) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
@@ -1517,7 +1477,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @return quality scores corresponding to each radio source.
      */
     public double[] getSourceQualityScores() {
-        return mSourceQualityScores;
+        return sourceQualityScores;
     }
 
     /**
@@ -1529,8 +1489,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @throws IllegalArgumentException if provided quality scores length is smaller
      *                                  than minimum required samples.
      */
-    public void setSourceQualityScores(final double[] sourceQualityScores)
-            throws LockedException {
+    public void setSourceQualityScores(final double[] sourceQualityScores) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
@@ -1545,7 +1504,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * fingerprint.
      */
     public double[] getFingerprintReadingsQualityScores() {
-        return mFingerprintReadingsQualityScores;
+        return fingerprintReadingsQualityScores;
     }
 
     /**
@@ -1558,8 +1517,8 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @throws IllegalArgumentException if provided quality scores length is smaller
      *                                  than minimum required samples.
      */
-    public void setFingerprintReadingsQualityScores(
-            final double[] fingerprintReadingsQualityScores) throws LockedException {
+    public void setFingerprintReadingsQualityScores(final double[] fingerprintReadingsQualityScores)
+            throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
@@ -1572,7 +1531,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @return listener to be notified of events raised by this instance.
      */
     public SequentialRobustRangingAndRssiPositionEstimatorListener<P> getListener() {
-        return mListener;
+        return listener;
     }
 
     /**
@@ -1581,13 +1540,12 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @param listener listener to be notified of events raised by this instance.
      * @throws LockedException if estimator is locked.
      */
-    public void setListener(
-            final SequentialRobustRangingAndRssiPositionEstimatorListener<P> listener)
+    public void setListener(final SequentialRobustRangingAndRssiPositionEstimatorListener<P> listener)
             throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -1598,7 +1556,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @return an initial position.
      */
     public P getInitialPosition() {
-        return mInitialPosition;
+        return initialPosition;
     }
 
     /**
@@ -1613,7 +1571,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
         if (isLocked()) {
             throw new LockedException();
         }
-        mInitialPosition = initialPosition;
+        this.initialPosition = initialPosition;
     }
 
     /**
@@ -1623,7 +1581,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @return true if estimator is locked, false otherwise.
      */
     public boolean isLocked() {
-        return mLocked;
+        return locked;
     }
 
     /**
@@ -1632,9 +1590,9 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @return true if this instance is ready, false otherwise.
      */
     public boolean isReady() {
-        final int numSources = mSources != null ? mSources.size() : 0;
-        final int numReadings = mFingerprint != null && mFingerprint.getReadings() != null ?
-                mFingerprint.getReadings().size() : 0;
+        final var numSources = sources != null ? sources.size() : 0;
+        final var numReadings = fingerprint != null && fingerprint.getReadings() != null
+                ? fingerprint.getReadings().size() : 0;
 
         return numSources > getMinRequiredSources() && numReadings >= numSources;
     }
@@ -1648,8 +1606,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @throws NotReadyException        if estimator is not ready.
      * @throws RobustEstimatorException if estimation fails for some other reason.
      */
-    public P estimate() throws LockedException, NotReadyException,
-            RobustEstimatorException {
+    public P estimate() throws LockedException, NotReadyException, RobustEstimatorException {
         if (isLocked()) {
             throw new LockedException();
         }
@@ -1658,38 +1615,38 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
         buildEstimators();
         setupEstimators();
 
-        if (!isReady() || !mRssiEstimator.isReady() || !mRangingEstimator.isReady()) {
+        if (!isReady() || !rssiEstimator.isReady() || !rangingEstimator.isReady()) {
             throw new NotReadyException();
         }
 
-        mLocked = true;
-        if (mListener != null) {
-            mListener.onEstimateStart(this);
+        locked = true;
+        if (listener != null) {
+            listener.onEstimateStart(this);
         }
 
         P coarsePosition;
         try {
             // estimate coarse position using RSSI data
-            coarsePosition = mRssiEstimator.estimate();
+            coarsePosition = rssiEstimator.estimate();
         } catch (final RobustEstimatorException e) {
             coarsePosition = null;
         }
 
         // use coarse position as initial position for ranging estimation
         if (coarsePosition != null) {
-            mRangingEstimator.setInitialPosition(coarsePosition);
+            rangingEstimator.setInitialPosition(coarsePosition);
         }
 
         try {
-            final P result = mRangingEstimator.estimate();
+            final var result = rangingEstimator.estimate();
 
-            if (mListener != null) {
-                mListener.onEstimateEnd(this);
+            if (listener != null) {
+                listener.onEstimateEnd(this);
             }
 
             return result;
         } finally {
-            mLocked = false;
+            locked = false;
         }
     }
 
@@ -1699,7 +1656,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @return data related to inliers found after estimation.
      */
     public InliersData getInliersData() {
-        return mRangingEstimator != null ? mRangingEstimator.getInliersData() : null;
+        return rangingEstimator != null ? rangingEstimator.getInliersData() : null;
     }
 
     /**
@@ -1708,8 +1665,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @return known positions used internally.
      */
     public P[] getPositions() {
-        return mRangingEstimator != null ?
-                mRangingEstimator.getPositions() : null;
+        return rangingEstimator != null ? rangingEstimator.getPositions() : null;
     }
 
     /**
@@ -1720,8 +1676,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @return Euclidean distances used internally.
      */
     public double[] getDistances() {
-        return mRangingEstimator != null ?
-                mRangingEstimator.getDistances() : null;
+        return rangingEstimator != null ? rangingEstimator.getDistances() : null;
     }
 
     /**
@@ -1732,8 +1687,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @return standard deviations used internally.
      */
     public double[] getDistanceStandardDeviations() {
-        return mRangingEstimator != null ?
-                mRangingEstimator.getDistanceStandardDeviations() : null;
+        return rangingEstimator != null ? rangingEstimator.getDistanceStandardDeviations() : null;
     }
 
     /**
@@ -1743,7 +1697,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @return estimated covariance or null.
      */
     public Matrix getCovariance() {
-        return mRangingEstimator != null ? mRangingEstimator.getCovariance() : null;
+        return rangingEstimator != null ? rangingEstimator.getCovariance() : null;
     }
 
     /**
@@ -1752,8 +1706,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @return estimated position.
      */
     public P getEstimatedPosition() {
-        return mRangingEstimator != null ?
-                mRangingEstimator.getEstimatedPosition() : null;
+        return rangingEstimator != null ? rangingEstimator.getEstimatedPosition() : null;
     }
 
     /**
@@ -1783,137 +1736,114 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      */
     @SuppressWarnings("DuplicatedCode")
     private void setupEstimators() throws LockedException {
-        if (mFingerprint != null) {
+        if (fingerprint != null) {
             // builds separated RSSI and ranging readings
-            final List<? extends RangingAndRssiReading<? extends RadioSource>> readings =
-                    mFingerprint.getReadings();
+            final var readings = fingerprint.getReadings();
 
-            final List<RangingReading<RadioSource>> rangingReadings =
-                    new ArrayList<>();
-            final List<RssiReading<RadioSource>> rssiReadings =
-                    new ArrayList<>();
+            final var rangingReadings = new ArrayList<RangingReading<RadioSource>>();
+            final var rssiReadings = new ArrayList<RssiReading<RadioSource>>();
 
-            for (final RangingAndRssiReading<? extends RadioSource> reading : readings) {
+            for (final var reading : readings) {
                 rangingReadings.add(createRangingReading(reading));
                 rssiReadings.add(createRssiReading(reading));
             }
 
-            final RssiFingerprint<RadioSource, RssiReading<RadioSource>> rssiFingerprint =
-                    new RssiFingerprint<>(rssiReadings);
-            final RangingFingerprint<RadioSource, RangingReading<RadioSource>> rangingFingerprint =
-                    new RangingFingerprint<>(rangingReadings);
+            final var rssiFingerprint = new RssiFingerprint<>(rssiReadings);
+            final var rangingFingerprint = new RangingFingerprint<>(rangingReadings);
 
             // set data and configuration on both internal estimators
-            mRssiEstimator.setSources(mSources);
-            mRssiEstimator.setFingerprint(rssiFingerprint);
-            mRssiEstimator.setRadioSourcePositionCovarianceUsed(
-                    mUseRssiRadioSourcePositionCovariance);
-            mRssiEstimator.setEvenlyDistributeReadings(mEvenlyDistributeRssiReadings);
-            mRssiEstimator.setFallbackDistanceStandardDeviation(
-                    mRssiFallbackDistanceStandardDeviation);
-            mRssiEstimator.setProgressDelta(2.0f * mProgressDelta);
-            mRssiEstimator.setConfidence(mRssiConfidence);
-            mRssiEstimator.setMaxIterations(mRssiMaxIterations);
-            mRssiEstimator.setResultRefined(mRefineResult);
-            mRssiEstimator.setCovarianceKept(mKeepCovariance);
-            mRssiEstimator.setInitialPosition(mInitialPosition);
-            mRssiEstimator.setLinearSolverUsed(mUseRssiLinearSolver);
-            mRssiEstimator.setHomogeneousLinearSolverUsed(
-                    mUseRssiHomogeneousLinearSolver);
-            mRssiEstimator.setPreliminarySolutionRefined(
-                    mRefineRssiPreliminarySolutions);
-            mRssiEstimator.setSourceQualityScores(mSourceQualityScores);
-            mRssiEstimator.setFingerprintReadingsQualityScores(
-                    mFingerprintReadingsQualityScores);
-            mRssiEstimator.setListener(new RobustRssiPositionEstimatorListener<P>() {
+            rssiEstimator.setSources(sources);
+            rssiEstimator.setFingerprint(rssiFingerprint);
+            rssiEstimator.setRadioSourcePositionCovarianceUsed(useRssiRadioSourcePositionCovariance);
+            rssiEstimator.setEvenlyDistributeReadings(evenlyDistributeRssiReadings);
+            rssiEstimator.setFallbackDistanceStandardDeviation(rssiFallbackDistanceStandardDeviation);
+            rssiEstimator.setProgressDelta(2.0f * progressDelta);
+            rssiEstimator.setConfidence(rssiConfidence);
+            rssiEstimator.setMaxIterations(rssiMaxIterations);
+            rssiEstimator.setResultRefined(refineResult);
+            rssiEstimator.setCovarianceKept(keepCovariance);
+            rssiEstimator.setInitialPosition(initialPosition);
+            rssiEstimator.setLinearSolverUsed(useRssiLinearSolver);
+            rssiEstimator.setHomogeneousLinearSolverUsed(useRssiHomogeneousLinearSolver);
+            rssiEstimator.setPreliminarySolutionRefined(refineRssiPreliminarySolutions);
+            rssiEstimator.setSourceQualityScores(sourceQualityScores);
+            rssiEstimator.setFingerprintReadingsQualityScores(fingerprintReadingsQualityScores);
+            rssiEstimator.setListener(new RobustRssiPositionEstimatorListener<>() {
                 @Override
-                public void onEstimateStart(
-                        final RobustRssiPositionEstimator<P> estimator) {
+                public void onEstimateStart(final RobustRssiPositionEstimator<P> estimator) {
                     // not used
                 }
 
                 @Override
-                public void onEstimateEnd(
-                        final RobustRssiPositionEstimator<P> estimator) {
+                public void onEstimateEnd(final RobustRssiPositionEstimator<P> estimator) {
                     // not used
                 }
 
                 @Override
                 public void onEstimateNextIteration(
-                        final RobustRssiPositionEstimator<P> estimator,
-                        final int iteration) {
+                        final RobustRssiPositionEstimator<P> estimator, final int iteration) {
                     // not used
                 }
 
                 @Override
                 public void onEstimateProgressChange(
-                        final RobustRssiPositionEstimator<P> estimator,
-                        final float progress) {
-                    if (mListener != null) {
-                        mListener.onEstimateProgressChange(
+                        final RobustRssiPositionEstimator<P> estimator, final float progress) {
+                    if (listener != null) {
+                        listener.onEstimateProgressChange(
                                 SequentialRobustRangingAndRssiPositionEstimator.this,
                                 0.5f * progress);
                     }
                 }
             });
 
-            mRssiEstimator.setPreliminarySubsetSize(
-                    Math.max(mRssiPreliminarySubsetSize, mRssiEstimator.getMinRequiredSources()));
+            rssiEstimator.setPreliminarySubsetSize(
+                    Math.max(rssiPreliminarySubsetSize, rssiEstimator.getMinRequiredSources()));
 
-            mRangingEstimator.setSources(mSources);
-            mRangingEstimator.setFingerprint(rangingFingerprint);
-            mRangingEstimator.setRadioSourcePositionCovarianceUsed(
-                    mUseRangingRadioSourcePositionCovariance);
-            mRangingEstimator.setEvenlyDistributeReadings(mEvenlyDistributeRangingReadings);
-            mRangingEstimator.setFallbackDistanceStandardDeviation(
-                    mRangingFallbackDistanceStandardDeviation);
-            mRangingEstimator.setProgressDelta(2.0f * mProgressDelta);
-            mRangingEstimator.setConfidence(mRangingConfidence);
-            mRangingEstimator.setMaxIterations(mRangingMaxIterations);
-            mRangingEstimator.setCovarianceKept(mKeepCovariance);
-            mRangingEstimator.setInitialPosition(mInitialPosition);
-            mRangingEstimator.setLinearSolverUsed(mUseRangingLinearSolver);
-            mRangingEstimator.setHomogeneousLinearSolverUsed(
-                    mUseRangingHomogeneousLinearSolver);
-            mRangingEstimator.setPreliminarySolutionRefined(
-                    mRefineRangingPreliminarySolutions);
-            mRangingEstimator.setSourceQualityScores(mSourceQualityScores);
-            mRangingEstimator.setFingerprintReadingsQualityScores(
-                    mFingerprintReadingsQualityScores);
-            mRangingEstimator.setListener(new RobustRangingPositionEstimatorListener<P>() {
+            rangingEstimator.setSources(sources);
+            rangingEstimator.setFingerprint(rangingFingerprint);
+            rangingEstimator.setRadioSourcePositionCovarianceUsed(useRangingRadioSourcePositionCovariance);
+            rangingEstimator.setEvenlyDistributeReadings(evenlyDistributeRangingReadings);
+            rangingEstimator.setFallbackDistanceStandardDeviation(rangingFallbackDistanceStandardDeviation);
+            rangingEstimator.setProgressDelta(2.0f * progressDelta);
+            rangingEstimator.setConfidence(rangingConfidence);
+            rangingEstimator.setMaxIterations(rangingMaxIterations);
+            rangingEstimator.setCovarianceKept(keepCovariance);
+            rangingEstimator.setInitialPosition(initialPosition);
+            rangingEstimator.setLinearSolverUsed(useRangingLinearSolver);
+            rangingEstimator.setHomogeneousLinearSolverUsed(useRangingHomogeneousLinearSolver);
+            rangingEstimator.setPreliminarySolutionRefined(refineRangingPreliminarySolutions);
+            rangingEstimator.setSourceQualityScores(sourceQualityScores);
+            rangingEstimator.setFingerprintReadingsQualityScores(fingerprintReadingsQualityScores);
+            rangingEstimator.setListener(new RobustRangingPositionEstimatorListener<P>() {
                 @Override
-                public void onEstimateStart(
-                        final RobustRangingPositionEstimator<P> estimator) {
+                public void onEstimateStart(final RobustRangingPositionEstimator<P> estimator) {
                     // not used
                 }
 
                 @Override
-                public void onEstimateEnd(
-                        final RobustRangingPositionEstimator<P> estimator) {
+                public void onEstimateEnd(final RobustRangingPositionEstimator<P> estimator) {
                     // not used
                 }
 
                 @Override
                 public void onEstimateNextIteration(
-                        final RobustRangingPositionEstimator<P> estimator,
-                        final int iteration) {
+                        final RobustRangingPositionEstimator<P> estimator, final int iteration) {
                     // not used
                 }
 
                 @Override
                 public void onEstimateProgressChange(
-                        final RobustRangingPositionEstimator<P> estimator,
-                        final float progress) {
-                    if (mListener != null) {
-                        mListener.onEstimateProgressChange(
+                        final RobustRangingPositionEstimator<P> estimator, final float progress) {
+                    if (listener != null) {
+                        listener.onEstimateProgressChange(
                                 SequentialRobustRangingAndRssiPositionEstimator.this,
                                 0.5f + 0.5f * progress);
                     }
                 }
             });
 
-            mRangingEstimator.setPreliminarySubsetSize(
-                    Math.max(mRangingPreliminarySubsetSize, mRangingEstimator.getMinRequiredSources()));
+            rangingEstimator.setPreliminarySubsetSize(
+                    Math.max(rangingPreliminarySubsetSize, rangingEstimator.getMinRequiredSources()));
         }
     }
 
@@ -1933,7 +1863,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
             throw new IllegalArgumentException();
         }
 
-        mSources = sources;
+        this.sources = sources;
     }
 
     /**
@@ -1951,7 +1881,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
             throw new IllegalArgumentException();
         }
 
-        mFingerprint = fingerprint;
+        this.fingerprint = fingerprint;
     }
 
     /**
@@ -1964,12 +1894,11 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      *                                  is smaller than 3 samples for 2D or 4 samples for 3D.
      */
     private void internalSetSourceQualityScores(final double[] sourceQualityScores) {
-        if (sourceQualityScores == null ||
-                sourceQualityScores.length < getMinRequiredSources()) {
+        if (sourceQualityScores == null || sourceQualityScores.length < getMinRequiredSources()) {
             throw new IllegalArgumentException();
         }
 
-        mSourceQualityScores = sourceQualityScores;
+        this.sourceQualityScores = sourceQualityScores;
     }
 
     /**
@@ -1982,14 +1911,13 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @throws IllegalArgumentException if provided quality scores length is
      *                                  smaller than 3 samples for 2D or 4 samples for 3D.
      */
-    private void internalSetFingerprintReadingsQualityScores(
-            final double[] fingerprintReadingsQualityScores) {
-        if (fingerprintReadingsQualityScores == null ||
-                fingerprintReadingsQualityScores.length < getMinRequiredSources()) {
+    private void internalSetFingerprintReadingsQualityScores(final double[] fingerprintReadingsQualityScores) {
+        if (fingerprintReadingsQualityScores == null
+                || fingerprintReadingsQualityScores.length < getMinRequiredSources()) {
             throw new IllegalArgumentException();
         }
 
-        mFingerprintReadingsQualityScores = fingerprintReadingsQualityScores;
+        this.fingerprintReadingsQualityScores = fingerprintReadingsQualityScores;
     }
 
     /**
@@ -2013,8 +1941,7 @@ public abstract class SequentialRobustRangingAndRssiPositionEstimator<P extends 
      * @param reading input reading to convert from.
      * @return an RSSI reading containing only the RSSI data of input reading.
      */
-    private RssiReading<RadioSource> createRssiReading(
-            final RangingAndRssiReading<? extends RadioSource> reading) {
+    private RssiReading<RadioSource> createRssiReading(final RangingAndRssiReading<? extends RadioSource> reading) {
         return new RssiReading<>(reading.getSource(), reading.getRssi(),
                 reading.getRssiStandardDeviation());
     }

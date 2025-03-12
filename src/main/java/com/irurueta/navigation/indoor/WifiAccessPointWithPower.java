@@ -18,8 +18,7 @@ package com.irurueta.navigation.indoor;
 /**
  * Data related to a Wi-Fi access point with estimated transmitted power.
  */
-public class WifiAccessPointWithPower extends WifiAccessPoint implements
-        RadioSourceWithPower {
+public class WifiAccessPointWithPower extends WifiAccessPoint implements RadioSourceWithPower {
 
     /**
      * Default exponent typically used on free space for path loss propagation in
@@ -30,12 +29,12 @@ public class WifiAccessPointWithPower extends WifiAccessPoint implements
     /**
      * Transmitted power expressed in dBm's.
      */
-    private double mTransmittedPower;
+    private double transmittedPower;
 
     /**
      * Standard deviation of transmitted power value or null if unknown.
      */
-    private Double mTransmittedPowerStandardDeviation;
+    private Double transmittedPowerStandardDeviation;
 
     /**
      * Exponent typically used on free space for path loss propagation in
@@ -48,12 +47,12 @@ public class WifiAccessPointWithPower extends WifiAccessPoint implements
      * If path loss exponent estimation is not enabled, this value will always be equal to
      * {@link #DEFAULT_PATH_LOSS_EXPONENT}
      */
-    private double mPathLossExponent = DEFAULT_PATH_LOSS_EXPONENT;
+    private double pathLossExponent = DEFAULT_PATH_LOSS_EXPONENT;
 
     /**
      * Standard deviation of path loss exponent or null if unknown.
      */
-    private Double mPathLossExponentStandardDeviation;
+    private Double pathLossExponentStandardDeviation;
 
     /**
      * Constructor.
@@ -64,11 +63,9 @@ public class WifiAccessPointWithPower extends WifiAccessPoint implements
      * @param transmittedPower transmitted power by this access point (expressed in dBm's).
      * @throws IllegalArgumentException if BSSID is null or frequency is negative.
      */
-    public WifiAccessPointWithPower(
-            final String bssid, final double frequency,
-            final double transmittedPower) {
+    public WifiAccessPointWithPower(final String bssid, final double frequency, final double transmittedPower) {
         super(bssid, frequency);
-        mTransmittedPower = transmittedPower;
+        this.transmittedPower = transmittedPower;
     }
 
     /**
@@ -82,10 +79,9 @@ public class WifiAccessPointWithPower extends WifiAccessPoint implements
      * @throws IllegalArgumentException if BSSID is null or frequency is negative.
      */
     public WifiAccessPointWithPower(
-            final String bssid, final double frequency, final String ssid,
-            final double transmittedPower) {
+            final String bssid, final double frequency, final String ssid, final double transmittedPower) {
         super(bssid, frequency, ssid);
-        mTransmittedPower = transmittedPower;
+        this.transmittedPower = transmittedPower;
     }
 
     /**
@@ -101,15 +97,14 @@ public class WifiAccessPointWithPower extends WifiAccessPoint implements
      *                                  or transmitted power standard deviation is negative.
      */
     public WifiAccessPointWithPower(
-            final String bssid, final double frequency,
-            final double transmittedPower,
+            final String bssid, final double frequency, final double transmittedPower,
             final Double transmittedPowerStandardDeviation) {
         this(bssid, frequency, transmittedPower);
 
         if (transmittedPowerStandardDeviation != null && transmittedPowerStandardDeviation < 0.0) {
             throw new IllegalArgumentException();
         }
-        mTransmittedPowerStandardDeviation = transmittedPowerStandardDeviation;
+        this.transmittedPowerStandardDeviation = transmittedPowerStandardDeviation;
     }
 
     /**
@@ -125,15 +120,14 @@ public class WifiAccessPointWithPower extends WifiAccessPoint implements
      *                                  or transmitted power standard deviation is negative.
      */
     public WifiAccessPointWithPower(
-            final String bssid, final double frequency, final String ssid,
-            final double transmittedPower,
+            final String bssid, final double frequency, final String ssid, final double transmittedPower,
             final Double transmittedPowerStandardDeviation) {
         this(bssid, frequency, ssid, transmittedPower);
 
         if (transmittedPowerStandardDeviation != null && transmittedPowerStandardDeviation < 0.0) {
             throw new IllegalArgumentException();
         }
-        mTransmittedPowerStandardDeviation = transmittedPowerStandardDeviation;
+        this.transmittedPowerStandardDeviation = transmittedPowerStandardDeviation;
     }
 
     /**
@@ -147,10 +141,9 @@ public class WifiAccessPointWithPower extends WifiAccessPoint implements
      * @throws IllegalArgumentException if BSSID is null or frequency is negative.
      */
     public WifiAccessPointWithPower(
-            final String bssid, final double frequency,
-            final double transmittedPower, final double pathLossExponent) {
+            final String bssid, final double frequency, final double transmittedPower, final double pathLossExponent) {
         this(bssid, frequency, transmittedPower);
-        mPathLossExponent = pathLossExponent;
+        this.pathLossExponent = pathLossExponent;
     }
 
     /**
@@ -167,12 +160,10 @@ public class WifiAccessPointWithPower extends WifiAccessPoint implements
      *                                  or transmitted power standard deviation is negative.
      */
     public WifiAccessPointWithPower(
-            final String bssid, final double frequency,
-            final double transmittedPower, final Double transmittedPowerStandardDeviation,
-            final double pathLossExponent) {
-        this(bssid, frequency, transmittedPower,
-                transmittedPowerStandardDeviation);
-        mPathLossExponent = pathLossExponent;
+            final String bssid, final double frequency, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final double pathLossExponent) {
+        this(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation);
+        this.pathLossExponent = pathLossExponent;
     }
 
     /**
@@ -190,13 +181,10 @@ public class WifiAccessPointWithPower extends WifiAccessPoint implements
      *                                  or transmitted power standard deviation is negative.
      */
     public WifiAccessPointWithPower(
-            final String bssid, final double frequency, final String ssid,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final double pathLossExponent) {
-        this(bssid, frequency, ssid, transmittedPower,
-                transmittedPowerStandardDeviation);
-        mPathLossExponent = pathLossExponent;
+            final String bssid, final double frequency, final String ssid, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final double pathLossExponent) {
+        this(bssid, frequency, ssid, transmittedPower, transmittedPowerStandardDeviation);
+        this.pathLossExponent = pathLossExponent;
     }
 
     /**
@@ -215,18 +203,15 @@ public class WifiAccessPointWithPower extends WifiAccessPoint implements
      *                                  or any standard deviation is negative.
      */
     public WifiAccessPointWithPower(
-            final String bssid, final double frequency,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final double pathLossExponent,
+            final String bssid, final double frequency, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final double pathLossExponent,
             final Double pathLossExponentStandardDeviation) {
-        this(bssid, frequency, transmittedPower,
-                transmittedPowerStandardDeviation, pathLossExponent);
+        this(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent);
 
         if (pathLossExponentStandardDeviation != null && pathLossExponentStandardDeviation < 0.0) {
             throw new IllegalArgumentException();
         }
-        mPathLossExponentStandardDeviation = pathLossExponentStandardDeviation;
+        this.pathLossExponentStandardDeviation = pathLossExponentStandardDeviation;
     }
 
     /**
@@ -246,16 +231,15 @@ public class WifiAccessPointWithPower extends WifiAccessPoint implements
      *                                  or transmitted power standard deviation is negative.
      */
     public WifiAccessPointWithPower(
-            final String bssid, final double frequency, final String ssid,
-            final double transmittedPower, final Double transmittedPowerStandardDeviation,
-            final double pathLossExponent, final Double pathLossExponentStandardDeviation) {
-        this(bssid, frequency, ssid, transmittedPower,
-                transmittedPowerStandardDeviation, pathLossExponent);
+            final String bssid, final double frequency, final String ssid, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final double pathLossExponent,
+            final Double pathLossExponentStandardDeviation) {
+        this(bssid, frequency, ssid, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent);
 
         if (pathLossExponentStandardDeviation != null && pathLossExponentStandardDeviation < 0.0) {
             throw new IllegalArgumentException();
         }
-        mPathLossExponentStandardDeviation = pathLossExponentStandardDeviation;
+        this.pathLossExponentStandardDeviation = pathLossExponentStandardDeviation;
     }
 
     /**
@@ -272,7 +256,7 @@ public class WifiAccessPointWithPower extends WifiAccessPoint implements
      */
     @Override
     public double getTransmittedPower() {
-        return mTransmittedPower;
+        return transmittedPower;
     }
 
     /**
@@ -282,7 +266,7 @@ public class WifiAccessPointWithPower extends WifiAccessPoint implements
      */
     @Override
     public Double getTransmittedPowerStandardDeviation() {
-        return mTransmittedPowerStandardDeviation;
+        return transmittedPowerStandardDeviation;
     }
 
     /**
@@ -300,7 +284,7 @@ public class WifiAccessPointWithPower extends WifiAccessPoint implements
      */
     @Override
     public double getPathLossExponent() {
-        return mPathLossExponent;
+        return pathLossExponent;
     }
 
     /**
@@ -310,6 +294,6 @@ public class WifiAccessPointWithPower extends WifiAccessPoint implements
      */
     @Override
     public Double getPathLossExponentStandardDeviation() {
-        return mPathLossExponentStandardDeviation;
+        return pathLossExponentStandardDeviation;
     }
 }

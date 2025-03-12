@@ -15,7 +15,6 @@
  */
 package com.irurueta.navigation.indoor.radiosource;
 
-import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.Point2D;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.indoor.Beacon;
@@ -67,7 +66,7 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      * Constructor.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D() {
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -80,7 +79,7 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
             final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings) {
         super(readings);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -91,7 +90,7 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -106,7 +105,7 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
             final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(readings, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -119,10 +118,9 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      * @throws IllegalArgumentException if readings are not valid.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
-            final Point2D initialPosition) {
+            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings, final Point2D initialPosition) {
         super(readings, initialPosition);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -131,10 +129,9 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      * @param initialPosition initial position to start the estimation of radio
      *                        source position.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final Point2D initialPosition) {
+    public SequentialRobustRangingAndRssiRadioSourceEstimator2D(final Point2D initialPosition) {
         super(initialPosition);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -148,7 +145,7 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
             final Point2D initialPosition,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(initialPosition, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -162,11 +159,10 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      * @throws IllegalArgumentException if readings are not valid.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
-            final Point2D initialPosition,
+            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings, final Point2D initialPosition,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(readings, initialPosition, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -176,10 +172,9 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's).
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final Double initialTransmittedPowerdBm) {
+    public SequentialRobustRangingAndRssiRadioSourceEstimator2D(final Double initialTransmittedPowerdBm) {
         super(initialTransmittedPowerdBm);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -196,7 +191,7 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
             final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
             final Double initialTransmittedPowerdBm) {
         super(readings, initialTransmittedPowerdBm);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -211,7 +206,7 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
             final Double initialTransmittedPowerdBm,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(initialTransmittedPowerdBm, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -230,7 +225,7 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
             final Double initialTransmittedPowerdBm,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(readings, initialTransmittedPowerdBm, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -246,11 +241,10 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      * @throws IllegalArgumentException if readings are not valid.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
-            final Point2D initialPosition,
+            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings, final Point2D initialPosition,
             final Double initialTransmittedPowerdBm) {
         super(readings, initialPosition, initialTransmittedPowerdBm);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -263,10 +257,9 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      *                                   (expressed in dBm's).
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final Point2D initialPosition,
-            final Double initialTransmittedPowerdBm) {
+            final Point2D initialPosition, final Double initialTransmittedPowerdBm) {
         super(initialPosition, initialTransmittedPowerdBm);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -280,11 +273,10 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      * @param listener                   in charge of attending events raised by this instance.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final Point2D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(initialPosition, initialTransmittedPowerdBm, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -301,12 +293,11 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      * @throws IllegalArgumentException if readings are not valid.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
-            final Point2D initialPosition,
+            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings, final Point2D initialPosition,
             final Double initialTransmittedPowerdBm,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(readings, initialPosition, initialTransmittedPowerdBm, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -323,13 +314,10 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      * @throws IllegalArgumentException if readings are not valid.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
-            final Point2D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent) {
-        super(readings, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings, final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm, final double initialPathLossExponent) {
+        super(readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -343,11 +331,10 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final Point2D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
         super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -362,13 +349,11 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      * @param listener                   listener in charge of attending events raised by this instance.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final Point2D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
-        super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent,
-                listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener);
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -386,14 +371,11 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      * @throws IllegalArgumentException if readings are not valid.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
-            final Point2D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent,
+            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings, final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm, final double initialPathLossExponent,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
-        super(readings, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        super(readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener);
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -405,10 +387,9 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      * @throws IllegalArgumentException if quality scores is null, or length of
      *                                  quality scores is less than required minimum.
      */
-    public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores) {
+    public SequentialRobustRangingAndRssiRadioSourceEstimator2D(final double[] qualityScores) {
         super(qualityScores);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -423,10 +404,9 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      *                                  null, or length of quality scores is less than required minimum.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings) {
+            final double[] qualityScores, final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings) {
         super(qualityScores, readings);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -443,7 +423,7 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
             final double[] qualityScores,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(qualityScores, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -459,11 +439,10 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      *                                  null, or length of quality scores is less than required minimum.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
+            final double[] qualityScores, final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(qualityScores, readings, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -480,11 +459,10 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      *                                  null, or length of quality scores is less than required minimum.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
+            final double[] qualityScores, final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
             final Point2D initialPosition) {
         super(qualityScores, readings, initialPosition);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -499,10 +477,9 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      *                                  of quality scores is less than required minimum.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final Point2D initialPosition) {
+            final double[] qualityScores, final Point2D initialPosition) {
         super(qualityScores, initialPosition);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -518,11 +495,10 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      *                                  of quality scores is less than required minimum.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final Point2D initialPosition,
+            final double[] qualityScores, final Point2D initialPosition,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(qualityScores, initialPosition, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -540,12 +516,11 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      *                                  is null, or length of quality scores is less than required minimum.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
+            final double[] qualityScores, final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
             final Point2D initialPosition,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(qualityScores, readings, initialPosition, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -561,10 +536,9 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      *                                  of quality scores is less than required minimum.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final Double initialTransmittedPowerdBm) {
+            final double[] qualityScores, final Double initialTransmittedPowerdBm) {
         super(qualityScores, initialTransmittedPowerdBm);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -582,11 +556,10 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      *                                  is null, or length of quality scores is less than required minimum.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
+            final double[] qualityScores, final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
             final Double initialTransmittedPowerdBm) {
         super(qualityScores, readings, initialTransmittedPowerdBm);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -603,11 +576,10 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      *                                  of quality scores is less than required minimum.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final Double initialTransmittedPowerdBm,
+            final double[] qualityScores, final Double initialTransmittedPowerdBm,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(qualityScores, initialTransmittedPowerdBm, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -626,12 +598,11 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      *                                  is null, or length of quality scores is less than required minimum.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
+            final double[] qualityScores, final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
             final Double initialTransmittedPowerdBm,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(qualityScores, readings, initialTransmittedPowerdBm, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -651,12 +622,10 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      *                                  is null, or length of quality scores is less than required minimum.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
-            final Point2D initialPosition,
-            final Double initialTransmittedPowerdBm) {
+            final double[] qualityScores, final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
+            final Point2D initialPosition, final Double initialTransmittedPowerdBm) {
         super(qualityScores, readings, initialPosition, initialTransmittedPowerdBm);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -674,11 +643,9 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      *                                  of quality scores is less than required minimum.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final Point2D initialPosition,
-            final Double initialTransmittedPowerdBm) {
+            final double[] qualityScores, final Point2D initialPosition, final Double initialTransmittedPowerdBm) {
         super(qualityScores, initialPosition, initialTransmittedPowerdBm);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -697,12 +664,10 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      *                                  of quality scores is less than required minimum.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final Point2D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final double[] qualityScores, final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
         super(qualityScores, initialPosition, initialTransmittedPowerdBm, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -723,14 +688,11 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      *                                  is null, or length of quality scores is less than required minimum.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
-            final Point2D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final double[] qualityScores, final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
+            final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
-        super(qualityScores, readings, initialPosition, initialTransmittedPowerdBm,
-                listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        super(qualityScores, readings, initialPosition, initialTransmittedPowerdBm, listener);
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -751,14 +713,11 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      *                                  is null, or length of quality scores is less than required minimum.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
-            final Point2D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final double[] qualityScores, final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
+            final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-        super(qualityScores, readings, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        super(qualityScores, readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -777,13 +736,10 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      *                                  of quality scores is less than required minimum.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final Point2D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final double[] qualityScores, final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-        super(qualityScores, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        super(qualityScores, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -803,14 +759,11 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      *                                  of quality scores is less than required minimum.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final Point2D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final double[] qualityScores, final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
-        super(qualityScores, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        super(qualityScores, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener);
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -832,15 +785,12 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      *                                  is null, or length of quality scores is less than required minimum.
      */
     public SequentialRobustRangingAndRssiRadioSourceEstimator2D(
-            final double[] qualityScores,
-            final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
-            final Point2D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final double[] qualityScores, final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings,
+            final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final SequentialRobustRangingAndRssiRadioSourceEstimatorListener<S, Point2D> listener) {
-        super(qualityScores, readings, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        super(qualityScores, readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener);
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
 
@@ -855,7 +805,7 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      */
     @Override
     public int getMinReadings() {
-        int minReadings = Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH;
+        var minReadings = Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH;
         if (isTransmittedPowerEstimationEnabled()) {
             minReadings++;
         }
@@ -883,50 +833,38 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
     @Override
     @SuppressWarnings({"unchecked", "DuplicatedCode"})
     public RadioSourceWithPowerAndLocated<Point2D> getEstimatedRadioSource() {
-        final List<? extends RangingAndRssiReadingLocated<S, Point2D>> readings = getReadings();
+        final var readings = getReadings();
         if (readings == null || readings.isEmpty()) {
             return null;
         }
-        final S source = readings.get(0).getSource();
+        final var source = readings.get(0).getSource();
 
-        final Point2D estimatedPosition = getEstimatedPosition();
+        final var estimatedPosition = getEstimatedPosition();
         if (estimatedPosition == null) {
             return null;
         }
 
-        final Matrix estimatedPositionCovariance = getEstimatedPositionCovariance();
+        final var estimatedPositionCovariance = getEstimatedPositionCovariance();
 
-        final Double transmittedPowerVariance =
-                getEstimatedTransmittedPowerVariance();
-        final Double transmittedPowerStandardDeviation = transmittedPowerVariance != null ?
-                Math.sqrt(transmittedPowerVariance) : null;
+        final var transmittedPowerVariance = getEstimatedTransmittedPowerVariance();
+        final var transmittedPowerStandardDeviation = transmittedPowerVariance != null
+                ? Math.sqrt(transmittedPowerVariance) : null;
 
-        final Double pathlossExponentVariance =
-                getEstimatedPathLossExponentVariance();
-        final Double pathlossExponentStandardDeviation = pathlossExponentVariance != null ?
-                Math.sqrt(pathlossExponentVariance) : null;
+        final var pathlossExponentVariance = getEstimatedPathLossExponentVariance();
+        final var pathlossExponentStandardDeviation = pathlossExponentVariance != null
+                ? Math.sqrt(pathlossExponentVariance) : null;
 
-        if (source instanceof WifiAccessPoint) {
-            final WifiAccessPoint accessPoint = (WifiAccessPoint) source;
-            return new WifiAccessPointWithPowerAndLocated2D(accessPoint.getBssid(),
-                    source.getFrequency(), accessPoint.getSsid(),
-                    getEstimatedTransmittedPowerdBm(),
-                    transmittedPowerStandardDeviation,
-                    getEstimatedPathLossExponent(),
-                    pathlossExponentStandardDeviation,
-                    estimatedPosition,
+        if (source instanceof WifiAccessPoint accessPoint) {
+            return new WifiAccessPointWithPowerAndLocated2D(accessPoint.getBssid(), source.getFrequency(),
+                    accessPoint.getSsid(), getEstimatedTransmittedPowerdBm(), transmittedPowerStandardDeviation,
+                    getEstimatedPathLossExponent(), pathlossExponentStandardDeviation, estimatedPosition,
                     estimatedPositionCovariance);
-        } else if (source instanceof Beacon) {
-            final Beacon beacon = (Beacon) source;
-            return new BeaconWithPowerAndLocated2D(beacon.getIdentifiers(),
-                    getEstimatedTransmittedPowerdBm(), beacon.getFrequency(),
-                    beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(),
-                    beacon.getManufacturer(), beacon.getServiceUuid(),
-                    beacon.getBluetoothName(),
-                    getEstimatedPathLossExponent(),
-                    transmittedPowerStandardDeviation,
-                    pathlossExponentStandardDeviation,
-                    estimatedPosition, estimatedPositionCovariance);
+        } else if (source instanceof Beacon beacon) {
+            return new BeaconWithPowerAndLocated2D(beacon.getIdentifiers(), getEstimatedTransmittedPowerdBm(),
+                    beacon.getFrequency(), beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(),
+                    beacon.getManufacturer(), beacon.getServiceUuid(), beacon.getBluetoothName(),
+                    getEstimatedPathLossExponent(), transmittedPowerStandardDeviation,
+                    pathlossExponentStandardDeviation, estimatedPosition, estimatedPositionCovariance);
         } else {
             return null;
         }
@@ -937,8 +875,8 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      */
     @Override
     protected void buildRangingEstimatorIfNeeded() {
-        if (mRangingEstimator == null || mRangingEstimator.getMethod() != mRangingRobustMethod) {
-            mRangingEstimator = RobustRangingRadioSourceEstimator2D.create(mRangingRobustMethod);
+        if (rangingEstimator == null || rangingEstimator.getMethod() != rangingRobustMethod) {
+            rangingEstimator = RobustRangingRadioSourceEstimator2D.create(rangingRobustMethod);
         }
     }
 
@@ -949,13 +887,13 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
      */
     @Override
     protected void buildRssiEstimatorIfNeeded() throws LockedException {
-        if (mRssiEstimator == null || mRssiEstimator.getMethod() != mRssiRobustMethod) {
-            mRssiEstimator = RobustRssiRadioSourceEstimator2D.create(mRssiRobustMethod);
+        if (rssiEstimator == null || rssiEstimator.getMethod() != rssiRobustMethod) {
+            rssiEstimator = RobustRssiRadioSourceEstimator2D.create(rssiRobustMethod);
 
             //rssi estimator will never need position estimator, but to
             //ensure it is ready we need to provide an initial position
-            mRssiEstimator.setPositionEstimationEnabled(false);
-            mRssiEstimator.setInitialPosition(Point2D.create());
+            rssiEstimator.setPositionEstimationEnabled(false);
+            rssiEstimator.setInitialPosition(Point2D.create());
         }
     }
 
@@ -968,31 +906,31 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
     protected void setupRangingEstimator() throws LockedException {
         super.setupRangingEstimator();
 
-        switch (mRangingRobustMethod) {
+        switch (rangingRobustMethod) {
             case RANSAC:
-                ((RANSACRobustRangingRadioSourceEstimator2D<S>) mRangingEstimator).
-                        setThreshold(mRangingThreshold != null ? mRangingThreshold :
-                                RANSACRobustRangingRadioSourceEstimator2D.DEFAULT_THRESHOLD);
+                ((RANSACRobustRangingRadioSourceEstimator2D<S>) rangingEstimator).setThreshold(
+                        rangingThreshold != null ? rangingThreshold
+                                : RANSACRobustRangingRadioSourceEstimator2D.DEFAULT_THRESHOLD);
                 break;
             case LMEDS:
-                ((LMedSRobustRangingRadioSourceEstimator2D<S>) mRangingEstimator).
-                        setStopThreshold(mRangingThreshold != null ? mRangingThreshold :
-                                LMedSRobustRangingRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD);
+                ((LMedSRobustRangingRadioSourceEstimator2D<S>) rangingEstimator).setStopThreshold(
+                        rangingThreshold != null ? rangingThreshold
+                                : LMedSRobustRangingRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD);
                 break;
             case MSAC:
-                ((MSACRobustRangingRadioSourceEstimator2D<S>) mRangingEstimator).
-                        setThreshold(mRangingThreshold != null ? mRangingThreshold :
-                                MSACRobustRangingRadioSourceEstimator2D.DEFAULT_THRESHOLD);
+                ((MSACRobustRangingRadioSourceEstimator2D<S>) rangingEstimator).setThreshold(
+                        rangingThreshold != null ? rangingThreshold
+                                : MSACRobustRangingRadioSourceEstimator2D.DEFAULT_THRESHOLD);
                 break;
             case PROSAC:
-                ((PROSACRobustRangingRadioSourceEstimator2D<S>) mRangingEstimator).
-                        setThreshold(mRangingThreshold != null ? mRangingThreshold :
-                                PROSACRobustRangingRadioSourceEstimator2D.DEFAULT_THRESHOLD);
+                ((PROSACRobustRangingRadioSourceEstimator2D<S>) rangingEstimator).setThreshold(
+                        rangingThreshold != null ? rangingThreshold
+                                : PROSACRobustRangingRadioSourceEstimator2D.DEFAULT_THRESHOLD);
                 break;
             case PROMEDS:
-                ((PROMedSRobustRangingRadioSourceEstimator2D<S>) mRangingEstimator).
-                        setStopThreshold(mRangingThreshold != null ? mRangingThreshold :
-                                PROMedSRobustRangingRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD);
+                ((PROMedSRobustRangingRadioSourceEstimator2D<S>) rangingEstimator).setStopThreshold(
+                        rangingThreshold != null ? rangingThreshold
+                                : PROMedSRobustRangingRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD);
                 break;
             default:
                 break;
@@ -1008,31 +946,30 @@ public class SequentialRobustRangingAndRssiRadioSourceEstimator2D<S extends Radi
     protected void setupRssiEstimator() throws LockedException {
         super.setupRssiEstimator();
 
-        switch (mRssiRobustMethod) {
+        switch (rssiRobustMethod) {
             case RANSAC:
-                ((RANSACRobustRssiRadioSourceEstimator2D<S>) mRssiEstimator).
-                        setThreshold(mRssiThreshold != null ? mRssiThreshold :
-                                RANSACRobustRssiRadioSourceEstimator2D.DEFAULT_THRESHOLD);
+                ((RANSACRobustRssiRadioSourceEstimator2D<S>) rssiEstimator).setThreshold(
+                        rssiThreshold != null ? rssiThreshold
+                                : RANSACRobustRssiRadioSourceEstimator2D.DEFAULT_THRESHOLD);
                 break;
             case LMEDS:
-                ((LMedSRobustRssiRadioSourceEstimator2D<S>) mRssiEstimator).
-                        setStopThreshold(mRssiThreshold != null ? mRssiThreshold :
-                                LMedSRobustRssiRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD);
+                ((LMedSRobustRssiRadioSourceEstimator2D<S>) rssiEstimator).setStopThreshold(
+                        rssiThreshold != null ? rssiThreshold
+                                : LMedSRobustRssiRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD);
                 break;
             case MSAC:
-                ((MSACRobustRssiRadioSourceEstimator2D<S>) mRssiEstimator).
-                        setThreshold(mRssiThreshold != null ? mRssiThreshold :
-                                MSACRobustRssiRadioSourceEstimator2D.DEFAULT_THRESHOLD);
+                ((MSACRobustRssiRadioSourceEstimator2D<S>) rssiEstimator).setThreshold(
+                        rssiThreshold != null ? rssiThreshold : MSACRobustRssiRadioSourceEstimator2D.DEFAULT_THRESHOLD);
                 break;
             case PROSAC:
-                ((PROSACRobustRssiRadioSourceEstimator2D<S>) mRssiEstimator).
-                        setThreshold(mRssiThreshold != null ? mRssiThreshold :
-                                PROSACRobustRssiRadioSourceEstimator2D.DEFAULT_THRESHOLD);
+                ((PROSACRobustRssiRadioSourceEstimator2D<S>) rssiEstimator).setThreshold(
+                        rssiThreshold != null ? rssiThreshold
+                                : PROSACRobustRssiRadioSourceEstimator2D.DEFAULT_THRESHOLD);
                 break;
             case PROMEDS:
-                ((PROMedSRobustRssiRadioSourceEstimator2D<S>) mRssiEstimator).
-                        setStopThreshold(mRssiThreshold != null ? mRssiThreshold :
-                                PROMedSRobustRssiRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD);
+                ((PROMedSRobustRssiRadioSourceEstimator2D<S>) rssiEstimator).setStopThreshold(
+                        rssiThreshold != null ? rssiThreshold
+                                : PROMedSRobustRssiRadioSourceEstimator2D.DEFAULT_STOP_THRESHOLD);
                 break;
             default:
                 break;

@@ -50,8 +50,7 @@ public class RANSACRobustRangingPositionEstimator2D extends RobustRangingPositio
      * @throws IllegalArgumentException if provided sources is null or the number of
      *                                  provided sources is less than the required minimum.
      */
-    public RANSACRobustRangingPositionEstimator2D(
-            final List<? extends RadioSourceLocated<Point2D>> sources) {
+    public RANSACRobustRangingPositionEstimator2D(final List<? extends RadioSourceLocated<Point2D>> sources) {
         super();
         init();
         internalSetSources(sources);
@@ -96,8 +95,7 @@ public class RANSACRobustRangingPositionEstimator2D extends RobustRangingPositio
      *
      * @param listener listener in charge of handling events.
      */
-    public RANSACRobustRangingPositionEstimator2D(
-            final RobustRangingPositionEstimatorListener<Point2D> listener) {
+    public RANSACRobustRangingPositionEstimator2D(final RobustRangingPositionEstimatorListener<Point2D> listener) {
         super(listener);
         init();
     }
@@ -165,8 +163,7 @@ public class RANSACRobustRangingPositionEstimator2D extends RobustRangingPositio
      * @return threshold to determine whether samples are inliers or not.
      */
     public double getThreshold() {
-        return ((RANSACRobustLateration2DSolver) mLaterationSolver).
-                getThreshold();
+        return ((RANSACRobustLateration2DSolver) laterationSolver).getThreshold();
     }
 
     /**
@@ -180,8 +177,7 @@ public class RANSACRobustRangingPositionEstimator2D extends RobustRangingPositio
      * @throws LockedException          if this estimator is locked.
      */
     public void setThreshold(final double threshold) throws LockedException {
-        ((RANSACRobustLateration2DSolver) mLaterationSolver).
-                setThreshold(threshold);
+        ((RANSACRobustLateration2DSolver) laterationSolver).setThreshold(threshold);
     }
 
     /**
@@ -191,8 +187,7 @@ public class RANSACRobustRangingPositionEstimator2D extends RobustRangingPositio
      * only need to be computed but not kept.
      */
     public boolean isComputeAndKeepInliersEnabled() {
-        return ((RANSACRobustLateration2DSolver) mLaterationSolver).
-                isComputeAndKeepInliersEnabled();
+        return ((RANSACRobustLateration2DSolver) laterationSolver).isComputeAndKeepInliersEnabled();
     }
 
     /**
@@ -203,10 +198,8 @@ public class RANSACRobustRangingPositionEstimator2D extends RobustRangingPositio
      *                              kept.
      * @throws LockedException if this estimator is locked.
      */
-    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers)
-            throws LockedException {
-        ((RANSACRobustLateration2DSolver) mLaterationSolver).
-                setComputeAndKeepInliersEnabled(computeAndKeepInliers);
+    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers) throws LockedException {
+        ((RANSACRobustLateration2DSolver) laterationSolver).setComputeAndKeepInliersEnabled(computeAndKeepInliers);
     }
 
     /**
@@ -216,8 +209,7 @@ public class RANSACRobustRangingPositionEstimator2D extends RobustRangingPositio
      * only need to be computed but not kept.
      */
     public boolean isComputeAndKeepResiduals() {
-        return ((RANSACRobustLateration2DSolver) mLaterationSolver).
-                isComputeAndKeepResiduals();
+        return ((RANSACRobustLateration2DSolver) laterationSolver).isComputeAndKeepResiduals();
     }
 
     /**
@@ -227,10 +219,8 @@ public class RANSACRobustRangingPositionEstimator2D extends RobustRangingPositio
      *                                false if residuals only need to be computed but not kept.
      * @throws LockedException if this estimator is locked.
      */
-    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals)
-            throws LockedException {
-        ((RANSACRobustLateration2DSolver) mLaterationSolver).
-                setComputeAndKeepResidualsEnabled(computeAndKeepResiduals);
+    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals) throws LockedException {
+        ((RANSACRobustLateration2DSolver) laterationSolver).setComputeAndKeepResidualsEnabled(computeAndKeepResiduals);
     }
 
     /**
@@ -247,7 +237,6 @@ public class RANSACRobustRangingPositionEstimator2D extends RobustRangingPositio
      * Initializes robust lateration solver.
      */
     private void init() {
-        mLaterationSolver = new RANSACRobustLateration2DSolver(
-                mTrilaterationSolverListener);
+        laterationSolver = new RANSACRobustLateration2DSolver(trilaterationSolverListener);
     }
 }

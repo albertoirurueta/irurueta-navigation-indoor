@@ -65,12 +65,12 @@ public class RssiFingerprint<S extends RadioSource, R extends RssiReading<S>> ex
             return Double.MAX_VALUE;
         }
 
-        final List<R> otherReadings = otherFingerprint.getReadings();
-        int numAccessPoints = 0;
-        double result = 0.0;
+        final var otherReadings = otherFingerprint.getReadings();
+        var numAccessPoints = 0;
+        var result = 0.0;
         double diff;
-        for (final R reading : mReadings) {
-            for (final R otherReading : otherReadings) {
+        for (final var reading : readings) {
+            for (final var otherReading : otherReadings) {
                 if (reading.hasSameSource(otherReading)) {
                     diff = reading.getRssi() - otherReading.getRssi();
                     result += diff * diff;
@@ -93,13 +93,13 @@ public class RssiFingerprint<S extends RadioSource, R extends RssiReading<S>> ex
      * @return average RSSI of all readings.
      */
     public double getMeanRssi() {
-        if (mReadings == null || mReadings.isEmpty()) {
+        if (readings == null || readings.isEmpty()) {
             return Double.MAX_VALUE;
         }
 
-        double result = 0.0;
-        for (final R reading : mReadings) {
-            result += reading.getRssi() / mReadings.size();
+        var result = 0.0;
+        for (final var reading : readings) {
+            result += reading.getRssi() / readings.size();
         }
 
         return result;
@@ -130,12 +130,12 @@ public class RssiFingerprint<S extends RadioSource, R extends RssiReading<S>> ex
             return Double.MAX_VALUE;
         }
 
-        final List<R> otherReadings = otherFingerprint.getReadings();
-        int numAccessPoints = 0;
-        double avgRssiThis = 0.0;
-        double avgRssiOther = 0.0;
-        for (final R reading : mReadings) {
-            for (final R otherReading : otherReadings) {
+        final var otherReadings = otherFingerprint.getReadings();
+        var numAccessPoints = 0;
+        var avgRssiThis = 0.0;
+        var avgRssiOther = 0.0;
+        for (final var reading : readings) {
+            for (final var otherReading : otherReadings) {
                 if (reading.hasSameSource(otherReading)) {
                     avgRssiThis += reading.getRssi();
                     avgRssiOther += otherReading.getRssi();
@@ -143,7 +143,6 @@ public class RssiFingerprint<S extends RadioSource, R extends RssiReading<S>> ex
                     numAccessPoints++;
                 }
             }
-
         }
 
         if (numAccessPoints == 0) {
@@ -153,14 +152,11 @@ public class RssiFingerprint<S extends RadioSource, R extends RssiReading<S>> ex
         avgRssiThis /= numAccessPoints;
         avgRssiOther /= numAccessPoints;
 
-
-        double result = 0.0;
-        double diff;
-        for (final R reading : mReadings) {
-            for (final R otherReading : otherReadings) {
+        var result = 0.0;
+        for (final var reading : readings) {
+            for (final var otherReading : otherReadings) {
                 if (reading.hasSameSource(otherReading)) {
-                    diff = (reading.getRssi() - avgRssiThis) -
-                            (otherReading.getRssi() - avgRssiOther);
+                    final var diff = (reading.getRssi() - avgRssiThis) - (otherReading.getRssi() - avgRssiOther);
                     result += diff * diff;
                 }
             }

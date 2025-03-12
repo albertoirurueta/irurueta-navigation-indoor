@@ -15,10 +15,6 @@
  */
 package com.irurueta.navigation.indoor.position;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
 import com.irurueta.geometry.InhomogeneousPoint2D;
 import com.irurueta.geometry.Point2D;
 import com.irurueta.navigation.indoor.RangingFingerprint;
@@ -27,52 +23,51 @@ import com.irurueta.navigation.indoor.WifiAccessPoint;
 import com.irurueta.navigation.indoor.WifiAccessPointLocated2D;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import java.util.ArrayList;
-import java.util.List;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class RobustRangingPositionEstimator2DTest implements
-        RobustRangingPositionEstimatorListener<Point2D> {
+import static org.junit.jupiter.api.Assertions.*;
+
+class RobustRangingPositionEstimator2DTest implements RobustRangingPositionEstimatorListener<Point2D> {
 
     private static final double FREQUENCY = 2.4e9; // (Hz)
 
     @Test
-    public void testCreate() {
+    void testCreate() {
         // create with method
 
         // RANSAC
-        RobustRangingPositionEstimator2D estimator = RobustRangingPositionEstimator2D.create(
-                RobustEstimatorMethod.RANSAC);
+        var estimator = RobustRangingPositionEstimator2D.create(RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(estimator instanceof RANSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(RANSACRobustRangingPositionEstimator2D.class, estimator);
 
         // LMedS
         estimator = RobustRangingPositionEstimator2D.create(RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(estimator instanceof LMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(LMedSRobustRangingPositionEstimator2D.class, estimator);
 
         // MSAC
         estimator = RobustRangingPositionEstimator2D.create(RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(estimator instanceof MSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(MSACRobustRangingPositionEstimator2D.class, estimator);
 
         // PROSAC
         estimator = RobustRangingPositionEstimator2D.create(RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(estimator instanceof PROSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROSACRobustRangingPositionEstimator2D.class, estimator);
 
         // PROMedS
         estimator = RobustRangingPositionEstimator2D.create(RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
 
         // create with sources and method
-        final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
+        final var sources = new ArrayList<WifiAccessPointLocated2D>();
+        for (var i = 0; i < 3; i++) {
             sources.add(new WifiAccessPointLocated2D("id1", FREQUENCY, new InhomogeneousPoint2D()));
         }
 
@@ -80,120 +75,114 @@ public class RobustRangingPositionEstimator2DTest implements
         estimator = RobustRangingPositionEstimator2D.create(sources, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(estimator instanceof RANSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(RANSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sources, estimator.getSources());
 
         // LMedS
         estimator = RobustRangingPositionEstimator2D.create(sources, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(estimator instanceof LMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(LMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sources, estimator.getSources());
 
         // MSAC
         estimator = RobustRangingPositionEstimator2D.create(sources, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(estimator instanceof MSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(MSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sources, estimator.getSources());
 
         // PROSAC
         estimator = RobustRangingPositionEstimator2D.create(sources, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(estimator instanceof PROSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sources, estimator.getSources());
 
         // PROMedS
         estimator = RobustRangingPositionEstimator2D.create(sources, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sources, estimator.getSources());
 
         // create with fingerprint and method
-        final RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
-                new RangingFingerprint<>();
+        final var fingerprint = new RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>>();
 
         // RANSAC
         estimator = RobustRangingPositionEstimator2D.create(fingerprint, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(estimator instanceof RANSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(RANSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(fingerprint, estimator.getFingerprint());
 
         // LMedS
         estimator = RobustRangingPositionEstimator2D.create(fingerprint, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(estimator instanceof LMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(LMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(fingerprint, estimator.getFingerprint());
 
         // MSAC
         estimator = RobustRangingPositionEstimator2D.create(fingerprint, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(estimator instanceof MSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(MSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(fingerprint, estimator.getFingerprint());
 
         // PROSAC
         estimator = RobustRangingPositionEstimator2D.create(fingerprint, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(estimator instanceof PROSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(fingerprint, estimator.getFingerprint());
 
         // PROMedS
         estimator = RobustRangingPositionEstimator2D.create(fingerprint, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(fingerprint, estimator.getFingerprint());
 
         // create with sources, fingerprint and method
 
         // RANSAC
-        estimator = RobustRangingPositionEstimator2D.create(sources, fingerprint,
-                RobustEstimatorMethod.RANSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sources, fingerprint, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(estimator instanceof RANSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(RANSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sources, estimator.getSources());
         assertSame(fingerprint, estimator.getFingerprint());
 
         // LMedS
-        estimator = RobustRangingPositionEstimator2D.create(sources, fingerprint,
-                RobustEstimatorMethod.LMEDS);
+        estimator = RobustRangingPositionEstimator2D.create(sources, fingerprint, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(estimator instanceof LMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(LMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sources, estimator.getSources());
         assertSame(fingerprint, estimator.getFingerprint());
 
         // MSAC
-        estimator = RobustRangingPositionEstimator2D.create(sources, fingerprint,
-                RobustEstimatorMethod.MSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sources, fingerprint, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(estimator instanceof MSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(MSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sources, estimator.getSources());
         assertSame(fingerprint, estimator.getFingerprint());
 
         // PROSAC
-        estimator = RobustRangingPositionEstimator2D.create(sources, fingerprint,
-                RobustEstimatorMethod.PROSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sources, fingerprint, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(estimator instanceof PROSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sources, estimator.getSources());
         assertSame(fingerprint, estimator.getFingerprint());
 
         // PROMedS
-        estimator = RobustRangingPositionEstimator2D.create(sources, fingerprint,
-                RobustEstimatorMethod.PROMEDS);
+        estimator = RobustRangingPositionEstimator2D.create(sources, fingerprint, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sources, estimator.getSources());
         assertSame(fingerprint, estimator.getFingerprint());
 
@@ -203,128 +192,118 @@ public class RobustRangingPositionEstimator2DTest implements
         estimator = RobustRangingPositionEstimator2D.create(this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(estimator instanceof RANSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(RANSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(this, estimator.getListener());
 
         // LMedS
         estimator = RobustRangingPositionEstimator2D.create(this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(estimator instanceof LMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(LMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(this, estimator.getListener());
 
         // MSAC
         estimator = RobustRangingPositionEstimator2D.create(this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(estimator instanceof MSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(MSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(this, estimator.getListener());
 
         // PROSAC
         estimator = RobustRangingPositionEstimator2D.create(this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(estimator instanceof PROSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(this, estimator.getListener());
 
         // PROMedS
         estimator = RobustRangingPositionEstimator2D.create(this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(this, estimator.getListener());
 
         // create with sources, listener and method
 
         // RANSAC
-        estimator = RobustRangingPositionEstimator2D.create(sources, this,
-                RobustEstimatorMethod.RANSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sources, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(estimator instanceof RANSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(RANSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sources, estimator.getSources());
         assertSame(this, estimator.getListener());
 
         // LMedS
-        estimator = RobustRangingPositionEstimator2D.create(sources, this,
-                RobustEstimatorMethod.LMEDS);
+        estimator = RobustRangingPositionEstimator2D.create(sources, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(estimator instanceof LMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(LMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sources, estimator.getSources());
         assertSame(this, estimator.getListener());
 
         // MSAC
-        estimator = RobustRangingPositionEstimator2D.create(sources, this,
-                RobustEstimatorMethod.MSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sources, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(estimator instanceof MSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(MSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sources, estimator.getSources());
         assertSame(this, estimator.getListener());
 
         // PROSAC
-        estimator = RobustRangingPositionEstimator2D.create(sources, this,
-                RobustEstimatorMethod.PROSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sources, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(estimator instanceof PROSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sources, estimator.getSources());
         assertSame(this, estimator.getListener());
 
         // PROMedS
-        estimator = RobustRangingPositionEstimator2D.create(sources, this,
-                RobustEstimatorMethod.PROMEDS);
+        estimator = RobustRangingPositionEstimator2D.create(sources, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sources, estimator.getSources());
         assertSame(this, estimator.getListener());
 
         // create with fingerprint, listener and method
 
         // RANSAC
-        estimator = RobustRangingPositionEstimator2D.create(fingerprint, this,
-                RobustEstimatorMethod.RANSAC);
+        estimator = RobustRangingPositionEstimator2D.create(fingerprint, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(estimator instanceof RANSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(RANSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(fingerprint, estimator.getFingerprint());
         assertSame(this, estimator.getListener());
 
         // LMedS
-        estimator = RobustRangingPositionEstimator2D.create(fingerprint, this,
-                RobustEstimatorMethod.LMEDS);
+        estimator = RobustRangingPositionEstimator2D.create(fingerprint, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(estimator instanceof LMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(LMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(fingerprint, estimator.getFingerprint());
         assertSame(this, estimator.getListener());
 
         // MSAC
-        estimator = RobustRangingPositionEstimator2D.create(fingerprint, this,
-                RobustEstimatorMethod.MSAC);
+        estimator = RobustRangingPositionEstimator2D.create(fingerprint, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(estimator instanceof MSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(MSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(fingerprint, estimator.getFingerprint());
         assertSame(this, estimator.getListener());
 
         // PROSAC
-        estimator = RobustRangingPositionEstimator2D.create(fingerprint, this,
-                RobustEstimatorMethod.PROSAC);
+        estimator = RobustRangingPositionEstimator2D.create(fingerprint, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(estimator instanceof PROSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(fingerprint, estimator.getFingerprint());
         assertSame(this, estimator.getListener());
 
         // PROMedS
-        estimator = RobustRangingPositionEstimator2D.create(fingerprint, this,
-                RobustEstimatorMethod.PROMEDS);
+        estimator = RobustRangingPositionEstimator2D.create(fingerprint, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(fingerprint, estimator.getFingerprint());
         assertSame(this, estimator.getListener());
 
@@ -335,7 +314,7 @@ public class RobustRangingPositionEstimator2DTest implements
                 RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(estimator instanceof RANSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(RANSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sources, estimator.getSources());
         assertSame(fingerprint, estimator.getFingerprint());
         assertSame(this, estimator.getListener());
@@ -345,7 +324,7 @@ public class RobustRangingPositionEstimator2DTest implements
                 RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(estimator instanceof LMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(LMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sources, estimator.getSources());
         assertSame(fingerprint, estimator.getFingerprint());
         assertSame(this, estimator.getListener());
@@ -355,7 +334,7 @@ public class RobustRangingPositionEstimator2DTest implements
                 RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(estimator instanceof MSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(MSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sources, estimator.getSources());
         assertSame(fingerprint, estimator.getFingerprint());
         assertSame(this, estimator.getListener());
@@ -365,7 +344,7 @@ public class RobustRangingPositionEstimator2DTest implements
                 RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(estimator instanceof PROSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sources, estimator.getSources());
         assertSame(fingerprint, estimator.getFingerprint());
         assertSame(this, estimator.getListener());
@@ -375,108 +354,108 @@ public class RobustRangingPositionEstimator2DTest implements
                 RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sources, estimator.getSources());
         assertSame(fingerprint, estimator.getFingerprint());
         assertSame(this, estimator.getListener());
 
         // create with quality scores and method
-        final double[] sourceQualityScores = new double[3];
-        final double[] fingerprintReadingQualityScores = new double[3];
+        final var sourceQualityScores = new double[3];
+        final var fingerprintReadingQualityScores = new double[3];
 
         // RANSAC
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, RobustEstimatorMethod.RANSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(estimator instanceof RANSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(RANSACRobustRangingPositionEstimator2D.class, estimator);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
 
         // LMedS
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, RobustEstimatorMethod.LMEDS);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(estimator instanceof LMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(LMedSRobustRangingPositionEstimator2D.class, estimator);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
 
         // MSAC
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, RobustEstimatorMethod.MSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(estimator instanceof MSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(MSACRobustRangingPositionEstimator2D.class, estimator);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
 
         // PROSAC
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, RobustEstimatorMethod.PROSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(estimator instanceof PROSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sourceQualityScores, estimator.getSourceQualityScores());
         assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
 
         // PROMedS
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, RobustEstimatorMethod.PROMEDS);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sourceQualityScores, estimator.getSourceQualityScores());
         assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
 
         // create with quality scores, sources and method
 
         // RANSAC
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, RobustEstimatorMethod.RANSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                sources, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(estimator instanceof RANSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(RANSACRobustRangingPositionEstimator2D.class, estimator);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertSame(sources, estimator.getSources());
 
         // LMedS
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, RobustEstimatorMethod.LMEDS);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                sources, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(estimator instanceof LMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(LMedSRobustRangingPositionEstimator2D.class, estimator);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertSame(sources, estimator.getSources());
 
         // MSAC
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, RobustEstimatorMethod.MSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                sources, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(estimator instanceof MSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(MSACRobustRangingPositionEstimator2D.class, estimator);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertSame(sources, estimator.getSources());
 
         // PROSAC
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, RobustEstimatorMethod.PROSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                sources, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(estimator instanceof PROSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sourceQualityScores, estimator.getSourceQualityScores());
         assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertSame(sources, estimator.getSources());
 
         // PROMedS
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, RobustEstimatorMethod.PROMEDS);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                sources, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sourceQualityScores, estimator.getSourceQualityScores());
         assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertSame(sources, estimator.getSources());
@@ -484,51 +463,51 @@ public class RobustRangingPositionEstimator2DTest implements
         // create with quality scores, fingerprint and method
 
         // RANSAC
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, fingerprint, RobustEstimatorMethod.RANSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                fingerprint, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(estimator instanceof RANSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(RANSACRobustRangingPositionEstimator2D.class, estimator);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertSame(fingerprint, estimator.getFingerprint());
 
         // LMedS
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, fingerprint, RobustEstimatorMethod.LMEDS);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                fingerprint, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(estimator instanceof LMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(LMedSRobustRangingPositionEstimator2D.class, estimator);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertSame(fingerprint, estimator.getFingerprint());
 
         // MSAC
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, fingerprint, RobustEstimatorMethod.MSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                fingerprint, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(estimator instanceof MSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(MSACRobustRangingPositionEstimator2D.class, estimator);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertSame(fingerprint, estimator.getFingerprint());
 
         // PROSAC
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, fingerprint, RobustEstimatorMethod.PROSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                fingerprint, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(estimator instanceof PROSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sourceQualityScores, estimator.getSourceQualityScores());
         assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertSame(fingerprint, estimator.getFingerprint());
 
         // PROMedS
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, fingerprint, RobustEstimatorMethod.PROMEDS);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                fingerprint, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sourceQualityScores, estimator.getSourceQualityScores());
         assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertSame(fingerprint, estimator.getFingerprint());
@@ -536,55 +515,55 @@ public class RobustRangingPositionEstimator2DTest implements
         // create with quality scores, sources, fingerprint and method
 
         // RANSAC
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, fingerprint, RobustEstimatorMethod.RANSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                sources, fingerprint, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(estimator instanceof RANSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(RANSACRobustRangingPositionEstimator2D.class, estimator);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertSame(sources, estimator.getSources());
         assertSame(fingerprint, estimator.getFingerprint());
 
         // LMedS
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, fingerprint, RobustEstimatorMethod.LMEDS);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                sources, fingerprint, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(estimator instanceof LMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(LMedSRobustRangingPositionEstimator2D.class, estimator);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertSame(sources, estimator.getSources());
         assertSame(fingerprint, estimator.getFingerprint());
 
         // MSAC
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, fingerprint, RobustEstimatorMethod.MSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                sources, fingerprint, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(estimator instanceof MSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(MSACRobustRangingPositionEstimator2D.class, estimator);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertSame(sources, estimator.getSources());
         assertSame(fingerprint, estimator.getFingerprint());
 
         // PROSAC
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, fingerprint, RobustEstimatorMethod.PROSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                sources, fingerprint, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(estimator instanceof PROSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sourceQualityScores, estimator.getSourceQualityScores());
         assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertSame(sources, estimator.getSources());
         assertSame(fingerprint, estimator.getFingerprint());
 
         // PROMedS
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, fingerprint, RobustEstimatorMethod.PROMEDS);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                sources, fingerprint, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sourceQualityScores, estimator.getSourceQualityScores());
         assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertSame(sources, estimator.getSources());
@@ -593,51 +572,51 @@ public class RobustRangingPositionEstimator2DTest implements
         // create with quality scores, listener and method
 
         // RANSAC
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, this, RobustEstimatorMethod.RANSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(estimator instanceof RANSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(RANSACRobustRangingPositionEstimator2D.class, estimator);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertSame(this, estimator.getListener());
 
         // LMedS
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, this, RobustEstimatorMethod.LMEDS);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(estimator instanceof LMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(LMedSRobustRangingPositionEstimator2D.class, estimator);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertSame(this, estimator.getListener());
 
         // MSAC
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, this, RobustEstimatorMethod.MSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(estimator instanceof MSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(MSACRobustRangingPositionEstimator2D.class, estimator);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertSame(this, estimator.getListener());
 
         // PROSAC
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, this, RobustEstimatorMethod.PROSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(estimator instanceof PROSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sourceQualityScores, estimator.getSourceQualityScores());
         assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertSame(this, estimator.getListener());
 
         // PROMedS
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, this, RobustEstimatorMethod.PROMEDS);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sourceQualityScores, estimator.getSourceQualityScores());
         assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertSame(this, estimator.getListener());
@@ -645,113 +624,112 @@ public class RobustRangingPositionEstimator2DTest implements
         // create with quality scores, sources, listener and method
 
         // RANSAC
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, this, RobustEstimatorMethod.RANSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                sources, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(estimator instanceof RANSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(RANSACRobustRangingPositionEstimator2D.class, estimator);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertSame(sources, estimator.getSources());
         assertSame(this, estimator.getListener());
 
         // LMedS
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, this, RobustEstimatorMethod.LMEDS);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                sources, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(estimator instanceof LMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(LMedSRobustRangingPositionEstimator2D.class, estimator);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertSame(sources, estimator.getSources());
         assertSame(this, estimator.getListener());
 
         // MSAC
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, this, RobustEstimatorMethod.MSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                sources, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(estimator instanceof MSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(MSACRobustRangingPositionEstimator2D.class, estimator);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertSame(sources, estimator.getSources());
         assertSame(this, estimator.getListener());
 
         // PROSAC
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, this, RobustEstimatorMethod.PROSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                sources, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(estimator instanceof PROSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sourceQualityScores, estimator.getSourceQualityScores());
         assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertSame(sources, estimator.getSources());
         assertSame(this, estimator.getListener());
 
         // PROMedS
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, this, RobustEstimatorMethod.PROMEDS);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                sources, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sourceQualityScores, estimator.getSourceQualityScores());
         assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertSame(sources, estimator.getSources());
         assertSame(this, estimator.getListener());
-
 
         // create with quality scores, fingerprint, listener and method
 
         // RANSAC
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, fingerprint, this, RobustEstimatorMethod.RANSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                fingerprint, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(estimator instanceof RANSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(RANSACRobustRangingPositionEstimator2D.class, estimator);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertSame(fingerprint, estimator.getFingerprint());
         assertSame(this, estimator.getListener());
 
         // LMedS
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, fingerprint, this, RobustEstimatorMethod.LMEDS);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                fingerprint, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(estimator instanceof LMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(LMedSRobustRangingPositionEstimator2D.class, estimator);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertSame(fingerprint, estimator.getFingerprint());
         assertSame(this, estimator.getListener());
 
         // MSAC
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, fingerprint, this, RobustEstimatorMethod.MSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                fingerprint, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(estimator instanceof MSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(MSACRobustRangingPositionEstimator2D.class, estimator);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertSame(fingerprint, estimator.getFingerprint());
         assertSame(this, estimator.getListener());
 
         // PROSAC
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, fingerprint, this, RobustEstimatorMethod.PROSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                fingerprint, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(estimator instanceof PROSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sourceQualityScores, estimator.getSourceQualityScores());
         assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertSame(fingerprint, estimator.getFingerprint());
         assertSame(this, estimator.getListener());
 
         // PROMedS
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, fingerprint, this, RobustEstimatorMethod.PROMEDS);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                fingerprint, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sourceQualityScores, estimator.getSourceQualityScores());
         assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertSame(fingerprint, estimator.getFingerprint());
@@ -760,12 +738,11 @@ public class RobustRangingPositionEstimator2DTest implements
         // create with quality scores, sources, fingerprint, listener and method
 
         // RANSAC
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, fingerprint, this,
-                RobustEstimatorMethod.RANSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                sources, fingerprint, this, RobustEstimatorMethod.RANSAC);
 
         // check
-        assertTrue(estimator instanceof RANSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(RANSACRobustRangingPositionEstimator2D.class, estimator);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertSame(sources, estimator.getSources());
@@ -773,12 +750,11 @@ public class RobustRangingPositionEstimator2DTest implements
         assertSame(this, estimator.getListener());
 
         // LMedS
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, fingerprint, this,
-                RobustEstimatorMethod.LMEDS);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                sources, fingerprint, this, RobustEstimatorMethod.LMEDS);
 
         // check
-        assertTrue(estimator instanceof LMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(LMedSRobustRangingPositionEstimator2D.class, estimator);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertSame(sources, estimator.getSources());
@@ -786,12 +762,11 @@ public class RobustRangingPositionEstimator2DTest implements
         assertSame(this, estimator.getListener());
 
         // MSAC
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, fingerprint, this,
-                RobustEstimatorMethod.MSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                sources, fingerprint, this, RobustEstimatorMethod.MSAC);
 
         // check
-        assertTrue(estimator instanceof MSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(MSACRobustRangingPositionEstimator2D.class, estimator);
         assertNull(estimator.getSourceQualityScores());
         assertNull(estimator.getFingerprintReadingsQualityScores());
         assertSame(sources, estimator.getSources());
@@ -799,12 +774,11 @@ public class RobustRangingPositionEstimator2DTest implements
         assertSame(this, estimator.getListener());
 
         // PROSAC
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, fingerprint, this,
-                RobustEstimatorMethod.PROSAC);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                sources, fingerprint, this, RobustEstimatorMethod.PROSAC);
 
         // check
-        assertTrue(estimator instanceof PROSACRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROSACRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sourceQualityScores, estimator.getSourceQualityScores());
         assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertSame(sources, estimator.getSources());
@@ -812,12 +786,11 @@ public class RobustRangingPositionEstimator2DTest implements
         assertSame(this, estimator.getListener());
 
         // PROMedS
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, fingerprint, this,
-                RobustEstimatorMethod.PROMEDS);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                sources, fingerprint, this, RobustEstimatorMethod.PROMEDS);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sourceQualityScores, estimator.getSourceQualityScores());
         assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertSame(sources, estimator.getSources());
@@ -828,28 +801,27 @@ public class RobustRangingPositionEstimator2DTest implements
         estimator = RobustRangingPositionEstimator2D.create();
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
 
         // create with sources and default method
         estimator = RobustRangingPositionEstimator2D.create(sources);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sources, estimator.getSources());
-
 
         // create with fingerprint and default method
         estimator = RobustRangingPositionEstimator2D.create(fingerprint);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(fingerprint, estimator.getFingerprint());
 
         // create with sources, fingerprint and default method
         estimator = RobustRangingPositionEstimator2D.create(sources, fingerprint);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sources, estimator.getSources());
         assertSame(fingerprint, estimator.getFingerprint());
 
@@ -857,14 +829,14 @@ public class RobustRangingPositionEstimator2DTest implements
         estimator = RobustRangingPositionEstimator2D.create(this);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(this, estimator.getListener());
 
         // create with sources, listener and default method
         estimator = RobustRangingPositionEstimator2D.create(sources, this);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sources, estimator.getSources());
         assertSame(this, estimator.getListener());
 
@@ -872,7 +844,7 @@ public class RobustRangingPositionEstimator2DTest implements
         estimator = RobustRangingPositionEstimator2D.create(fingerprint, this);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(fingerprint, estimator.getFingerprint());
         assertSame(this, estimator.getListener());
 
@@ -880,78 +852,77 @@ public class RobustRangingPositionEstimator2DTest implements
         estimator = RobustRangingPositionEstimator2D.create(sources, fingerprint, this);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sources, estimator.getSources());
         assertSame(fingerprint, estimator.getFingerprint());
         assertSame(this, estimator.getListener());
 
         // create with quality scores and default method
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sourceQualityScores, estimator.getSourceQualityScores());
         assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
 
         // create with quality scores, sources and default method
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                sources);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sourceQualityScores, estimator.getSourceQualityScores());
         assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertSame(sources, estimator.getSources());
 
         // create with quality scores, fingerprint and default method
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, fingerprint);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                fingerprint);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sourceQualityScores, estimator.getSourceQualityScores());
         assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertSame(fingerprint, estimator.getFingerprint());
 
         // create with quality scores, sources, fingerprint and default method
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, fingerprint);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                sources, fingerprint);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sourceQualityScores, estimator.getSourceQualityScores());
         assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertSame(sources, estimator.getSources());
         assertSame(fingerprint, estimator.getFingerprint());
 
         // create with quality scores, listener and default method
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, this);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                this);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sourceQualityScores, estimator.getSourceQualityScores());
         assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertSame(this, estimator.getListener());
 
         // create with quality scores, sources, listener and default method
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, this);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                sources, this);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sourceQualityScores, estimator.getSourceQualityScores());
         assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertSame(sources, estimator.getSources());
         assertSame(this, estimator.getListener());
 
         // create with quality scores, fingerprint, listener and default method
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, fingerprint, this);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                fingerprint, this);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sourceQualityScores, estimator.getSourceQualityScores());
         assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertSame(fingerprint, estimator.getFingerprint());
@@ -959,11 +930,11 @@ public class RobustRangingPositionEstimator2DTest implements
 
         // create with quality scores, sources, fingerprint, listener and default
         // method
-        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores,
-                fingerprintReadingQualityScores, sources, fingerprint, this);
+        estimator = RobustRangingPositionEstimator2D.create(sourceQualityScores, fingerprintReadingQualityScores,
+                sources, fingerprint, this);
 
         // check
-        assertTrue(estimator instanceof PROMedSRobustRangingPositionEstimator2D);
+        assertInstanceOf(PROMedSRobustRangingPositionEstimator2D.class, estimator);
         assertSame(sourceQualityScores, estimator.getSourceQualityScores());
         assertSame(fingerprintReadingQualityScores, estimator.getFingerprintReadingsQualityScores());
         assertSame(sources, estimator.getSources());
@@ -972,16 +943,23 @@ public class RobustRangingPositionEstimator2DTest implements
     }
 
     @Override
-    public void onEstimateStart(final RobustRangingPositionEstimator<Point2D> estimator) { }
+    public void onEstimateStart(final RobustRangingPositionEstimator<Point2D> estimator) {
+        // no action needed
+    }
 
     @Override
-    public void onEstimateEnd(final RobustRangingPositionEstimator<Point2D> estimator) { }
+    public void onEstimateEnd(final RobustRangingPositionEstimator<Point2D> estimator) {
+        // no action needed
+    }
 
     @Override
-    public void onEstimateNextIteration(final RobustRangingPositionEstimator<Point2D> estimator,
-                                        final int iteration) { }
+    public void onEstimateNextIteration(final RobustRangingPositionEstimator<Point2D> estimator, final int iteration) {
+        // no action needed
+    }
 
     @Override
     public void onEstimateProgressChange(final RobustRangingPositionEstimator<Point2D> estimator,
-                                         final float progress) { }
+                                         final float progress) {
+        // no action needed
+    }
 }

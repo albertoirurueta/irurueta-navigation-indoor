@@ -33,8 +33,7 @@ public class WifiAccessPointLocated2D extends WifiAccessPointLocated<Point2D> {
      * @throws IllegalArgumentException if either BSSID or position are null or
      *                                  frequency is negative.
      */
-    public WifiAccessPointLocated2D(
-            final String bssid, final double frequency, final Point2D position) {
+    public WifiAccessPointLocated2D(final String bssid, final double frequency, final Point2D position) {
         super(bssid, frequency, position);
     }
 
@@ -50,8 +49,7 @@ public class WifiAccessPointLocated2D extends WifiAccessPointLocated<Point2D> {
      *                                  frequency is negative.
      */
     public WifiAccessPointLocated2D(
-            final String bssid, final double frequency, final String ssid,
-            final Point2D position) {
+            final String bssid, final double frequency, final String ssid, final Point2D position) {
         super(bssid, frequency, ssid, position);
     }
 
@@ -68,8 +66,7 @@ public class WifiAccessPointLocated2D extends WifiAccessPointLocated<Point2D> {
      *                                  frequency is negative.
      */
     public WifiAccessPointLocated2D(
-            final String bssid, final double frequency, final Point2D position,
-            final Matrix positionCovariance) {
+            final String bssid, final double frequency, final Point2D position, final Matrix positionCovariance) {
         super(bssid, frequency, position, positionCovariance);
     }
 
@@ -87,8 +84,8 @@ public class WifiAccessPointLocated2D extends WifiAccessPointLocated<Point2D> {
      *                                  frequency is negative.
      */
     public WifiAccessPointLocated2D(
-            final String bssid, final double frequency, final String ssid,
-            final Point2D position, final Matrix positionCovariance) {
+            final String bssid, final double frequency, final String ssid, final Point2D position,
+            final Matrix positionCovariance) {
         super(bssid, frequency, ssid, position, positionCovariance);
     }
 

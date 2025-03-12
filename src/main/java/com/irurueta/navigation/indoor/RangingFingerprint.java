@@ -24,8 +24,7 @@ import java.util.List;
  * @param <R> a {@link RssiReading} type.
  * @param <S> a {@link RadioSource} type.
  */
-public class RangingFingerprint<S extends RadioSource, R extends RangingReading<S>>
-        extends Fingerprint<S, R> {
+public class RangingFingerprint<S extends RadioSource, R extends RangingReading<S>> extends Fingerprint<S, R> {
 
     /**
      * Constructor.

@@ -25,19 +25,19 @@ import com.irurueta.geometry.Point;
  * @param <S> a {@link RadioSource} type.
  * @param <P> a {@link Point} type.
  */
-public class RssiReadingLocated<S extends RadioSource, P extends Point<?>> extends RssiReading<S>
-        implements ReadingLocated<P> {
+public class RssiReadingLocated<S extends RadioSource, P extends Point<?>> extends RssiReading<S> implements
+        ReadingLocated<P> {
 
     /**
      * Position where radio source reading was made.
      */
-    private P mPosition;
+    private P position;
 
     /**
      * Covariance of inhomogeneous coordinates of current position
      * (if available).
      */
-    private Matrix mPositionCovariance;
+    private Matrix positionCovariance;
 
     /**
      * Constructor.
@@ -55,7 +55,7 @@ public class RssiReadingLocated<S extends RadioSource, P extends Point<?>> exten
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -68,15 +68,14 @@ public class RssiReadingLocated<S extends RadioSource, P extends Point<?>> exten
      * @throws IllegalArgumentException if either radio source data or position
      *                                  are null.
      */
-    public RssiReadingLocated(final S source, final double rssi,
-                              final P position, final Double rssiStandardDeviation) {
+    public RssiReadingLocated(final S source, final double rssi, final P position, final Double rssiStandardDeviation) {
         super(source, rssi, rssiStandardDeviation);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -90,18 +89,16 @@ public class RssiReadingLocated<S extends RadioSource, P extends Point<?>> exten
      * @throws IllegalArgumentException if either radio source or position are
      *                                  null, or covariance has invalid size.
      */
-    public RssiReadingLocated(final S source, final double rssi,
-                              final P position, final Matrix positionCovariance) {
+    public RssiReadingLocated(final S source, final double rssi, final P position, final Matrix positionCovariance) {
         this(source, rssi, position);
 
         if (positionCovariance != null) {
-            final int dims = position.getDimensions();
-            if (positionCovariance.getRows() != dims ||
-                    positionCovariance.getColumns() != dims) {
+            final var dims = position.getDimensions();
+            if (positionCovariance.getRows() != dims || positionCovariance.getColumns() != dims) {
                 throw new IllegalArgumentException();
             }
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -117,19 +114,17 @@ public class RssiReadingLocated<S extends RadioSource, P extends Point<?>> exten
      *                                  null, or covariance has invalid size.
      */
     public RssiReadingLocated(
-            final S source, final double rssi,
-            final P position, final Double rssiStandardDeviation,
+            final S source, final double rssi, final P position, final Double rssiStandardDeviation,
             final Matrix positionCovariance) {
         this(source, rssi, position, rssiStandardDeviation);
 
         if (positionCovariance != null) {
-            int dims = position.getDimensions();
-            if (positionCovariance.getRows() != dims ||
-                    positionCovariance.getColumns() != dims) {
+            var dims = position.getDimensions();
+            if (positionCovariance.getRows() != dims || positionCovariance.getColumns() != dims) {
                 throw new IllegalArgumentException();
             }
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -146,7 +141,7 @@ public class RssiReadingLocated<S extends RadioSource, P extends Point<?>> exten
      */
     @Override
     public P getPosition() {
-        return mPosition;
+        return position;
     }
 
     /**
@@ -156,6 +151,6 @@ public class RssiReadingLocated<S extends RadioSource, P extends Point<?>> exten
      */
     @Override
     public Matrix getPositionCovariance() {
-        return mPositionCovariance;
+        return positionCovariance;
     }
 }

@@ -43,7 +43,7 @@ public abstract class RobustRssiPositionEstimator3D extends RobustRssiPositionEs
      */
     protected RobustRssiPositionEstimator3D() {
         super();
-        mPreliminarySubsetSize = getMinRequiredSources();
+        preliminarySubsetSize = getMinRequiredSources();
     }
 
     /**
@@ -51,10 +51,9 @@ public abstract class RobustRssiPositionEstimator3D extends RobustRssiPositionEs
      *
      * @param listener listener in charge of handling events.
      */
-    protected RobustRssiPositionEstimator3D(
-            final RobustRssiPositionEstimatorListener<Point3D> listener) {
+    protected RobustRssiPositionEstimator3D(final RobustRssiPositionEstimatorListener<Point3D> listener) {
         super(listener);
-        mPreliminarySubsetSize = getMinRequiredSources();
+        preliminarySubsetSize = getMinRequiredSources();
     }
 
     /**
@@ -74,21 +73,14 @@ public abstract class RobustRssiPositionEstimator3D extends RobustRssiPositionEs
      * @param method robust estimator method.
      * @return a robust 3D position estimator.
      */
-    public static RobustRssiPositionEstimator3D create(
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiPositionEstimator3D();
-            case LMEDS:
-                return new LMedSRobustRssiPositionEstimator3D();
-            case MSAC:
-                return new MSACRobustRssiPositionEstimator3D();
-            case PROSAC:
-                return new PROSACRobustRssiPositionEstimator3D();
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiPositionEstimator3D();
-        }
+    public static RobustRssiPositionEstimator3D create(final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiPositionEstimator3D();
+            case LMEDS -> new LMedSRobustRssiPositionEstimator3D();
+            case MSAC -> new MSACRobustRssiPositionEstimator3D();
+            case PROSAC -> new PROSACRobustRssiPositionEstimator3D();
+            default -> new PROMedSRobustRssiPositionEstimator3D();
+        };
     }
 
     /**
@@ -101,21 +93,14 @@ public abstract class RobustRssiPositionEstimator3D extends RobustRssiPositionEs
      *                                  provided sources is less than the required minimum.
      */
     public static RobustRssiPositionEstimator3D create(
-            final List<? extends RadioSourceLocated<Point3D>> sources,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiPositionEstimator3D(sources);
-            case LMEDS:
-                return new LMedSRobustRssiPositionEstimator3D(sources);
-            case MSAC:
-                return new MSACRobustRssiPositionEstimator3D(sources);
-            case PROSAC:
-                return new PROSACRobustRssiPositionEstimator3D(sources);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiPositionEstimator3D(sources);
-        }
+            final List<? extends RadioSourceLocated<Point3D>> sources, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiPositionEstimator3D(sources);
+            case LMEDS -> new LMedSRobustRssiPositionEstimator3D(sources);
+            case MSAC -> new MSACRobustRssiPositionEstimator3D(sources);
+            case PROSAC -> new PROSACRobustRssiPositionEstimator3D(sources);
+            default -> new PROMedSRobustRssiPositionEstimator3D(sources);
+        };
     }
 
     /**
@@ -130,19 +115,13 @@ public abstract class RobustRssiPositionEstimator3D extends RobustRssiPositionEs
     public static RobustRssiPositionEstimator3D create(
             final RssiFingerprint<? extends RadioSource, ? extends RssiReading<? extends RadioSource>> fingerprint,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiPositionEstimator3D(fingerprint);
-            case LMEDS:
-                return new LMedSRobustRssiPositionEstimator3D(fingerprint);
-            case MSAC:
-                return new MSACRobustRssiPositionEstimator3D(fingerprint);
-            case PROSAC:
-                return new PROSACRobustRssiPositionEstimator3D(fingerprint);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiPositionEstimator3D(fingerprint);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiPositionEstimator3D(fingerprint);
+            case LMEDS -> new LMedSRobustRssiPositionEstimator3D(fingerprint);
+            case MSAC -> new MSACRobustRssiPositionEstimator3D(fingerprint);
+            case PROSAC -> new PROSACRobustRssiPositionEstimator3D(fingerprint);
+            default -> new PROMedSRobustRssiPositionEstimator3D(fingerprint);
+        };
     }
 
     /**
@@ -160,19 +139,13 @@ public abstract class RobustRssiPositionEstimator3D extends RobustRssiPositionEs
             final List<? extends RadioSourceLocated<Point3D>> sources,
             final RssiFingerprint<? extends RadioSource, ? extends RssiReading<? extends RadioSource>> fingerprint,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiPositionEstimator3D(sources, fingerprint);
-            case LMEDS:
-                return new LMedSRobustRssiPositionEstimator3D(sources, fingerprint);
-            case MSAC:
-                return new MSACRobustRssiPositionEstimator3D(sources, fingerprint);
-            case PROSAC:
-                return new PROSACRobustRssiPositionEstimator3D(sources, fingerprint);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiPositionEstimator3D(sources, fingerprint);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiPositionEstimator3D(sources, fingerprint);
+            case LMEDS -> new LMedSRobustRssiPositionEstimator3D(sources, fingerprint);
+            case MSAC -> new MSACRobustRssiPositionEstimator3D(sources, fingerprint);
+            case PROSAC -> new PROSACRobustRssiPositionEstimator3D(sources, fingerprint);
+            default -> new PROMedSRobustRssiPositionEstimator3D(sources, fingerprint);
+        };
     }
 
     /**
@@ -183,21 +156,14 @@ public abstract class RobustRssiPositionEstimator3D extends RobustRssiPositionEs
      * @return a robust 3D position estimator.
      */
     public static RobustRssiPositionEstimator3D create(
-            final RobustRssiPositionEstimatorListener<Point3D> listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiPositionEstimator3D(listener);
-            case LMEDS:
-                return new LMedSRobustRssiPositionEstimator3D(listener);
-            case MSAC:
-                return new MSACRobustRssiPositionEstimator3D(listener);
-            case PROSAC:
-                return new PROSACRobustRssiPositionEstimator3D(listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiPositionEstimator3D(listener);
-        }
+            final RobustRssiPositionEstimatorListener<Point3D> listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiPositionEstimator3D(listener);
+            case LMEDS -> new LMedSRobustRssiPositionEstimator3D(listener);
+            case MSAC -> new MSACRobustRssiPositionEstimator3D(listener);
+            case PROSAC -> new PROSACRobustRssiPositionEstimator3D(listener);
+            default -> new PROMedSRobustRssiPositionEstimator3D(listener);
+        };
     }
 
     /**
@@ -212,26 +178,14 @@ public abstract class RobustRssiPositionEstimator3D extends RobustRssiPositionEs
      */
     public static RobustRssiPositionEstimator3D create(
             final List<? extends RadioSourceLocated<Point3D>> sources,
-            final RobustRssiPositionEstimatorListener<Point3D> listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiPositionEstimator3D(sources,
-                        listener);
-            case LMEDS:
-                return new LMedSRobustRssiPositionEstimator3D(sources,
-                        listener);
-            case MSAC:
-                return new MSACRobustRssiPositionEstimator3D(sources,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustRssiPositionEstimator3D(sources,
-                        listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiPositionEstimator3D(sources,
-                        listener);
-        }
+            final RobustRssiPositionEstimatorListener<Point3D> listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiPositionEstimator3D(sources, listener);
+            case LMEDS -> new LMedSRobustRssiPositionEstimator3D(sources, listener);
+            case MSAC -> new MSACRobustRssiPositionEstimator3D(sources, listener);
+            case PROSAC -> new PROSACRobustRssiPositionEstimator3D(sources, listener);
+            default -> new PROMedSRobustRssiPositionEstimator3D(sources, listener);
+        };
     }
 
     /**
@@ -246,26 +200,14 @@ public abstract class RobustRssiPositionEstimator3D extends RobustRssiPositionEs
      */
     public static RobustRssiPositionEstimator3D create(
             final RssiFingerprint<? extends RadioSource, ? extends RssiReading<? extends RadioSource>> fingerprint,
-            final RobustRssiPositionEstimatorListener<Point3D> listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiPositionEstimator3D(fingerprint,
-                        listener);
-            case LMEDS:
-                return new LMedSRobustRssiPositionEstimator3D(fingerprint,
-                        listener);
-            case MSAC:
-                return new MSACRobustRssiPositionEstimator3D(fingerprint,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustRssiPositionEstimator3D(fingerprint,
-                        listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiPositionEstimator3D(fingerprint,
-                        listener);
-        }
+            final RobustRssiPositionEstimatorListener<Point3D> listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiPositionEstimator3D(fingerprint, listener);
+            case LMEDS -> new LMedSRobustRssiPositionEstimator3D(fingerprint, listener);
+            case MSAC -> new MSACRobustRssiPositionEstimator3D(fingerprint, listener);
+            case PROSAC -> new PROSACRobustRssiPositionEstimator3D(fingerprint, listener);
+            default -> new PROMedSRobustRssiPositionEstimator3D(fingerprint, listener);
+        };
     }
 
     /**
@@ -283,26 +225,14 @@ public abstract class RobustRssiPositionEstimator3D extends RobustRssiPositionEs
     public static RobustRssiPositionEstimator3D create(
             final List<? extends RadioSourceLocated<Point3D>> sources,
             final RssiFingerprint<? extends RadioSource, ? extends RssiReading<? extends RadioSource>> fingerprint,
-            final RobustRssiPositionEstimatorListener<Point3D> listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiPositionEstimator3D(sources,
-                        fingerprint, listener);
-            case LMEDS:
-                return new LMedSRobustRssiPositionEstimator3D(sources,
-                        fingerprint, listener);
-            case MSAC:
-                return new MSACRobustRssiPositionEstimator3D(sources,
-                        fingerprint, listener);
-            case PROSAC:
-                return new PROSACRobustRssiPositionEstimator3D(sources,
-                        fingerprint, listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiPositionEstimator3D(sources,
-                        fingerprint, listener);
-        }
+            final RobustRssiPositionEstimatorListener<Point3D> listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiPositionEstimator3D(sources, fingerprint, listener);
+            case LMEDS -> new LMedSRobustRssiPositionEstimator3D(sources, fingerprint, listener);
+            case MSAC -> new MSACRobustRssiPositionEstimator3D(sources, fingerprint, listener);
+            case PROSAC -> new PROSACRobustRssiPositionEstimator3D(sources, fingerprint, listener);
+            default -> new PROMedSRobustRssiPositionEstimator3D(sources, fingerprint, listener);
+        };
     }
 
     /**
@@ -320,24 +250,16 @@ public abstract class RobustRssiPositionEstimator3D extends RobustRssiPositionEs
      * @return a robust 3D position estimator.
      */
     public static RobustRssiPositionEstimator3D create(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiPositionEstimator3D();
-            case LMEDS:
-                return new LMedSRobustRssiPositionEstimator3D();
-            case MSAC:
-                return new MSACRobustRssiPositionEstimator3D();
-            case PROSAC:
-                return new PROSACRobustRssiPositionEstimator3D(
-                        sourceQualityScores, fingerprintReadingQualityScores);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiPositionEstimator3D(
-                        sourceQualityScores, fingerprintReadingQualityScores);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiPositionEstimator3D();
+            case LMEDS -> new LMedSRobustRssiPositionEstimator3D();
+            case MSAC -> new MSACRobustRssiPositionEstimator3D();
+            case PROSAC -> new PROSACRobustRssiPositionEstimator3D(sourceQualityScores,
+                    fingerprintReadingQualityScores);
+            default -> new PROMedSRobustRssiPositionEstimator3D(sourceQualityScores, fingerprintReadingQualityScores);
+        };
     }
 
     /**
@@ -359,27 +281,17 @@ public abstract class RobustRssiPositionEstimator3D extends RobustRssiPositionEs
      *                                  provided sources is less than the required minimum.
      */
     public static RobustRssiPositionEstimator3D create(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
-            final List<? extends RadioSourceLocated<Point3D>> sources,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiPositionEstimator3D(sources);
-            case LMEDS:
-                return new LMedSRobustRssiPositionEstimator3D(sources);
-            case MSAC:
-                return new MSACRobustRssiPositionEstimator3D(sources);
-            case PROSAC:
-                return new PROSACRobustRssiPositionEstimator3D(
-                        sourceQualityScores, fingerprintReadingQualityScores,
-                        sources);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiPositionEstimator3D(
-                        sourceQualityScores, fingerprintReadingQualityScores,
-                        sources);
-        }
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
+            final List<? extends RadioSourceLocated<Point3D>> sources, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiPositionEstimator3D(sources);
+            case LMEDS -> new LMedSRobustRssiPositionEstimator3D(sources);
+            case MSAC -> new MSACRobustRssiPositionEstimator3D(sources);
+            case PROSAC -> new PROSACRobustRssiPositionEstimator3D(sourceQualityScores, fingerprintReadingQualityScores,
+                    sources);
+            default -> new PROMedSRobustRssiPositionEstimator3D(sourceQualityScores, fingerprintReadingQualityScores,
+                    sources);
+        };
     }
 
     /**
@@ -401,27 +313,18 @@ public abstract class RobustRssiPositionEstimator3D extends RobustRssiPositionEs
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public static RobustRssiPositionEstimator3D create(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final RssiFingerprint<? extends RadioSource, ? extends RssiReading<? extends RadioSource>> fingerprint,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiPositionEstimator3D(fingerprint);
-            case LMEDS:
-                return new LMedSRobustRssiPositionEstimator3D(fingerprint);
-            case MSAC:
-                return new MSACRobustRssiPositionEstimator3D(fingerprint);
-            case PROSAC:
-                return new PROSACRobustRssiPositionEstimator3D(
-                        sourceQualityScores, fingerprintReadingQualityScores,
-                        fingerprint);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiPositionEstimator3D(
-                        sourceQualityScores, fingerprintReadingQualityScores,
-                        fingerprint);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiPositionEstimator3D(fingerprint);
+            case LMEDS -> new LMedSRobustRssiPositionEstimator3D(fingerprint);
+            case MSAC -> new MSACRobustRssiPositionEstimator3D(fingerprint);
+            case PROSAC -> new PROSACRobustRssiPositionEstimator3D(sourceQualityScores, fingerprintReadingQualityScores,
+                    fingerprint);
+            default -> new PROMedSRobustRssiPositionEstimator3D(sourceQualityScores, fingerprintReadingQualityScores,
+                    fingerprint);
+        };
     }
 
     /**
@@ -446,28 +349,19 @@ public abstract class RobustRssiPositionEstimator3D extends RobustRssiPositionEs
      *                                  or the number of provided sources is less than the required minimum.
      */
     public static RobustRssiPositionEstimator3D create(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<Point3D>> sources,
             final RssiFingerprint<? extends RadioSource, ? extends RssiReading<? extends RadioSource>> fingerprint,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiPositionEstimator3D(sources, fingerprint);
-            case LMEDS:
-                return new LMedSRobustRssiPositionEstimator3D(sources, fingerprint);
-            case MSAC:
-                return new MSACRobustRssiPositionEstimator3D(sources, fingerprint);
-            case PROSAC:
-                return new PROSACRobustRssiPositionEstimator3D(
-                        sourceQualityScores, fingerprintReadingQualityScores,
-                        sources, fingerprint);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiPositionEstimator3D(
-                        sourceQualityScores, fingerprintReadingQualityScores,
-                        sources, fingerprint);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiPositionEstimator3D(sources, fingerprint);
+            case LMEDS -> new LMedSRobustRssiPositionEstimator3D(sources, fingerprint);
+            case MSAC -> new MSACRobustRssiPositionEstimator3D(sources, fingerprint);
+            case PROSAC -> new PROSACRobustRssiPositionEstimator3D(sourceQualityScores, fingerprintReadingQualityScores,
+                    sources, fingerprint);
+            default -> new PROMedSRobustRssiPositionEstimator3D(sourceQualityScores, fingerprintReadingQualityScores,
+                    sources, fingerprint);
+        };
     }
 
     /**
@@ -486,27 +380,17 @@ public abstract class RobustRssiPositionEstimator3D extends RobustRssiPositionEs
      * @return a robust 3D position estimator.
      */
     public static RobustRssiPositionEstimator3D create(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
-            final RobustRssiPositionEstimatorListener<Point3D> listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiPositionEstimator3D(listener);
-            case LMEDS:
-                return new LMedSRobustRssiPositionEstimator3D(listener);
-            case MSAC:
-                return new MSACRobustRssiPositionEstimator3D(listener);
-            case PROSAC:
-                return new PROSACRobustRssiPositionEstimator3D(
-                        sourceQualityScores, fingerprintReadingQualityScores,
-                        listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiPositionEstimator3D(
-                        sourceQualityScores, fingerprintReadingQualityScores,
-                        listener);
-        }
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
+            final RobustRssiPositionEstimatorListener<Point3D> listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiPositionEstimator3D(listener);
+            case LMEDS -> new LMedSRobustRssiPositionEstimator3D(listener);
+            case MSAC -> new MSACRobustRssiPositionEstimator3D(listener);
+            case PROSAC -> new PROSACRobustRssiPositionEstimator3D(sourceQualityScores, fingerprintReadingQualityScores,
+                    listener);
+            default -> new PROMedSRobustRssiPositionEstimator3D(sourceQualityScores, fingerprintReadingQualityScores,
+                    listener);
+        };
     }
 
     /**
@@ -529,31 +413,18 @@ public abstract class RobustRssiPositionEstimator3D extends RobustRssiPositionEs
      *                                  provided sources is less than the required minimum.
      */
     public static RobustRssiPositionEstimator3D create(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<Point3D>> sources,
-            final RobustRssiPositionEstimatorListener<Point3D> listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiPositionEstimator3D(sources,
-                        listener);
-            case LMEDS:
-                return new LMedSRobustRssiPositionEstimator3D(sources,
-                        listener);
-            case MSAC:
-                return new MSACRobustRssiPositionEstimator3D(sources,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustRssiPositionEstimator3D(
-                        sourceQualityScores, fingerprintReadingQualityScores,
-                        sources, listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiPositionEstimator3D(
-                        sourceQualityScores, fingerprintReadingQualityScores,
-                        sources, listener);
-        }
+            final RobustRssiPositionEstimatorListener<Point3D> listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiPositionEstimator3D(sources, listener);
+            case LMEDS -> new LMedSRobustRssiPositionEstimator3D(sources, listener);
+            case MSAC -> new MSACRobustRssiPositionEstimator3D(sources, listener);
+            case PROSAC -> new PROSACRobustRssiPositionEstimator3D(sourceQualityScores, fingerprintReadingQualityScores,
+                    sources, listener);
+            default -> new PROMedSRobustRssiPositionEstimator3D(sourceQualityScores, fingerprintReadingQualityScores,
+                    sources, listener);
+        };
     }
 
     /**
@@ -576,31 +447,18 @@ public abstract class RobustRssiPositionEstimator3D extends RobustRssiPositionEs
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public static RobustRssiPositionEstimator3D create(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final RssiFingerprint<? extends RadioSource, ? extends RssiReading<? extends RadioSource>> fingerprint,
-            final RobustRssiPositionEstimatorListener<Point3D> listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiPositionEstimator3D(fingerprint,
-                        listener);
-            case LMEDS:
-                return new LMedSRobustRssiPositionEstimator3D(fingerprint,
-                        listener);
-            case MSAC:
-                return new MSACRobustRssiPositionEstimator3D(fingerprint,
-                        listener);
-            case PROSAC:
-                return new PROSACRobustRssiPositionEstimator3D(
-                        sourceQualityScores, fingerprintReadingQualityScores,
-                        fingerprint, listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiPositionEstimator3D(
-                        sourceQualityScores, fingerprintReadingQualityScores,
-                        fingerprint, listener);
-        }
+            final RobustRssiPositionEstimatorListener<Point3D> listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiPositionEstimator3D(fingerprint, listener);
+            case LMEDS -> new LMedSRobustRssiPositionEstimator3D(fingerprint, listener);
+            case MSAC -> new MSACRobustRssiPositionEstimator3D(fingerprint, listener);
+            case PROSAC -> new PROSACRobustRssiPositionEstimator3D(sourceQualityScores, fingerprintReadingQualityScores,
+                    fingerprint, listener);
+            default -> new PROMedSRobustRssiPositionEstimator3D(sourceQualityScores, fingerprintReadingQualityScores,
+                    fingerprint, listener);
+        };
     }
 
     /**
@@ -626,32 +484,19 @@ public abstract class RobustRssiPositionEstimator3D extends RobustRssiPositionEs
      *                                  or the number of provided sources is less than the required minimum.
      */
     public static RobustRssiPositionEstimator3D create(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<Point3D>> sources,
             final RssiFingerprint<? extends RadioSource, ? extends RssiReading<? extends RadioSource>> fingerprint,
-            final RobustRssiPositionEstimatorListener<Point3D> listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiPositionEstimator3D(sources,
-                        fingerprint, listener);
-            case LMEDS:
-                return new LMedSRobustRssiPositionEstimator3D(sources,
-                        fingerprint, listener);
-            case MSAC:
-                return new MSACRobustRssiPositionEstimator3D(sources,
-                        fingerprint, listener);
-            case PROSAC:
-                return new PROSACRobustRssiPositionEstimator3D(
-                        sourceQualityScores, fingerprintReadingQualityScores,
-                        sources, fingerprint, listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiPositionEstimator3D(
-                        sourceQualityScores, fingerprintReadingQualityScores,
-                        sources, fingerprint, listener);
-        }
+            final RobustRssiPositionEstimatorListener<Point3D> listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiPositionEstimator3D(sources, fingerprint, listener);
+            case LMEDS -> new LMedSRobustRssiPositionEstimator3D(sources, fingerprint, listener);
+            case MSAC -> new MSACRobustRssiPositionEstimator3D(sources, fingerprint, listener);
+            case PROSAC -> new PROSACRobustRssiPositionEstimator3D(sourceQualityScores, fingerprintReadingQualityScores,
+                    sources, fingerprint, listener);
+            default -> new PROMedSRobustRssiPositionEstimator3D(sourceQualityScores, fingerprintReadingQualityScores,
+                    sources, fingerprint, listener);
+        };
     }
 
     /**
@@ -671,8 +516,7 @@ public abstract class RobustRssiPositionEstimator3D extends RobustRssiPositionEs
      * @throws IllegalArgumentException if provided sources is null or the number of
      *                                  provided sources is less than the required minimum.
      */
-    public static RobustRssiPositionEstimator3D create(
-            final List<? extends RadioSourceLocated<Point3D>> sources) {
+    public static RobustRssiPositionEstimator3D create(final List<? extends RadioSourceLocated<Point3D>> sources) {
         return create(sources, DEFAULT_ROBUST_METHOD);
     }
 
@@ -711,8 +555,7 @@ public abstract class RobustRssiPositionEstimator3D extends RobustRssiPositionEs
      * @param listener listener in charge of handling events.
      * @return a robust 3D position estimator.
      */
-    public static RobustRssiPositionEstimator3D create(
-            final RobustRssiPositionEstimatorListener<Point3D> listener) {
+    public static RobustRssiPositionEstimator3D create(final RobustRssiPositionEstimatorListener<Point3D> listener) {
         return create(listener, DEFAULT_ROBUST_METHOD);
     }
 
@@ -778,9 +621,152 @@ public abstract class RobustRssiPositionEstimator3D extends RobustRssiPositionEs
      * @return a robust 3D position estimator.
      */
     public static RobustRssiPositionEstimator3D create(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores) {
-        return create(sourceQualityScores, fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores) {
+        return create(sourceQualityScores, fingerprintReadingQualityScores, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position estimator.
+     *
+     * @param sourceQualityScores             quality scores corresponding to
+     *                                        each provided located radio source.
+     *                                        The larger the score value the better
+     *                                        the quality of the radio source.
+     * @param fingerprintReadingQualityScores quality scores corresponding to readings
+     *                                        within provided fingerprint. The larger
+     *                                        the score the better the quality of the
+     *                                        reading.
+     * @param sources                         located radio sources used for
+     *                                        lateration.
+     * @return a robust 3D position estimator.
+     * @throws IllegalArgumentException if provided sources is null or the number of
+     *                                  provided sources is less than the required minimum.
+     */
+    public static RobustRssiPositionEstimator3D create(
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
+            final List<? extends RadioSourceLocated<Point3D>> sources) {
+        return create(sourceQualityScores, fingerprintReadingQualityScores, sources, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position estimator.
+     *
+     * @param sourceQualityScores             quality scores corresponding to
+     *                                        each provided located radio source.
+     *                                        The larger the score value the better
+     *                                        the quality of the radio source.
+     * @param fingerprintReadingQualityScores quality scores corresponding to readings
+     *                                        within provided fingerprint. The larger
+     *                                        the score the better the quality of the
+     *                                        reading.
+     * @param fingerprint                     fingerprint containing RSSI
+     *                                        readings at an unknown location for
+     *                                        provided located radio sources.
+     * @return a robust 3D position estimator.
+     * @throws IllegalArgumentException if provided fingerprint is null.
+     */
+    public static RobustRssiPositionEstimator3D create(
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
+            final RssiFingerprint<? extends RadioSource, ? extends RssiReading<? extends RadioSource>> fingerprint) {
+        return create(sourceQualityScores, fingerprintReadingQualityScores, fingerprint, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position estimator.
+     *
+     * @param sourceQualityScores             quality scores corresponding to
+     *                                        each provided located radio source.
+     *                                        The larger the score value the better
+     *                                        the quality of the radio source.
+     * @param fingerprintReadingQualityScores quality scores corresponding to readings
+     *                                        within provided fingerprint. The larger
+     *                                        the score the better the quality of the
+     *                                        reading.
+     * @param sources                         located radio sources used for
+     *                                        lateration.
+     * @param fingerprint                     fingerprint containing RSSI
+     *                                        readings at an unknown location for
+     *                                        provided located radio sources.
+     * @return a robust 3D position estimator.
+     * @throws IllegalArgumentException if either provided sources or fingerprint is null
+     *                                  or the number of provided sources is less than the required minimum.
+     */
+    public static RobustRssiPositionEstimator3D create(
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
+            final List<? extends RadioSourceLocated<Point3D>> sources,
+            final RssiFingerprint<? extends RadioSource, ? extends RssiReading<? extends RadioSource>> fingerprint) {
+        return create(sourceQualityScores, fingerprintReadingQualityScores, sources, fingerprint,
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position estimator.
+     *
+     * @param sourceQualityScores             quality scores corresponding to
+     *                                        each provided located radio source.
+     *                                        The larger the score value the better
+     *                                        the quality of the radio source.
+     * @param fingerprintReadingQualityScores quality scores corresponding to readings
+     *                                        within provided fingerprint. The larger
+     *                                        the score the better the quality of the
+     *                                        reading.
+     * @param listener                        listener in charge of handling events.
+     * @return a robust 3D position estimator.
+     */
+    public static RobustRssiPositionEstimator3D create(
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
+            final RobustRssiPositionEstimatorListener<Point3D> listener) {
+        return create(sourceQualityScores, fingerprintReadingQualityScores, listener, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position estimator.
+     *
+     * @param sourceQualityScores             quality scores corresponding to
+     *                                        each provided located radio source.
+     *                                        The larger the score value the better
+     *                                        the quality of the radio source.
+     * @param fingerprintReadingQualityScores quality scores corresponding to readings
+     *                                        within provided fingerprint. The larger
+     *                                        the score the better the quality of the
+     *                                        reading.
+     * @param sources                         located radio sources used for
+     *                                        lateration.
+     * @param listener                        listener in charge of handling events.
+     * @return a robust 3D position estimator.
+     * @throws IllegalArgumentException if provided sources is null or the number of
+     *                                  provided sources is less than the required minimum.
+     */
+    public static RobustRssiPositionEstimator3D create(
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
+            final List<? extends RadioSourceLocated<Point3D>> sources,
+            final RobustRssiPositionEstimatorListener<Point3D> listener) {
+        return create(sourceQualityScores, fingerprintReadingQualityScores, sources, listener, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position estimator.
+     *
+     * @param sourceQualityScores             quality scores corresponding to
+     *                                        each provided located radio source.
+     *                                        The larger the score value the better
+     *                                        the quality of the radio source.
+     * @param fingerprintReadingQualityScores quality scores corresponding to readings
+     *                                        within provided fingerprint. The larger
+     *                                        the score the better the quality of the
+     *                                        reading.
+     * @param fingerprint                     fingerprint containing RSSI
+     *                                        readings at an unknown location for
+     *                                        provided located radio sources.
+     * @param listener                        listener in charge of handling events.
+     * @return a robust 3D position estimator.
+     * @throws IllegalArgumentException if provided fingerprint is null.
+     */
+    public static RobustRssiPositionEstimator3D create(
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
+            final RssiFingerprint<? extends RadioSource, ? extends RssiReading<? extends RadioSource>> fingerprint,
+            final RobustRssiPositionEstimatorListener<Point3D> listener) {
+        return create(sourceQualityScores, fingerprintReadingQualityScores, fingerprint, listener,
                 DEFAULT_ROBUST_METHOD);
     }
 
@@ -797,161 +783,6 @@ public abstract class RobustRssiPositionEstimator3D extends RobustRssiPositionEs
      *                                        reading.
      * @param sources                         located radio sources used for
      *                                        lateration.
-     * @return a robust 3D position estimator.
-     * @throws IllegalArgumentException if provided sources is null or the number of
-     *                                  provided sources is less than the required minimum.
-     */
-    public static RobustRssiPositionEstimator3D create(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
-            final List<? extends RadioSourceLocated<Point3D>> sources) {
-        return create(sourceQualityScores, fingerprintReadingQualityScores,
-                sources, DEFAULT_ROBUST_METHOD);
-    }
-
-    /**
-     * Creates a robust 3D position estimator.
-     *
-     * @param sourceQualityScores             quality scores corresponding to
-     *                                        each provided located radio source.
-     *                                        The larger the score value the better
-     *                                        the quality of the radio source.
-     * @param fingerprintReadingQualityScores quality scores corresponding to readings
-     *                                        within provided fingerprint. The larger
-     *                                        the score the better the quality of the
-     *                                        reading.
-     * @param fingerprint                     fingerprint containing RSSI
-     *                                        readings at an unknown location for
-     *                                        provided located radio sources.
-     * @return a robust 3D position estimator.
-     * @throws IllegalArgumentException if provided fingerprint is null.
-     */
-    public static RobustRssiPositionEstimator3D create(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
-            final RssiFingerprint<? extends RadioSource, ? extends RssiReading<? extends RadioSource>> fingerprint) {
-        return create(sourceQualityScores, fingerprintReadingQualityScores,
-                fingerprint, DEFAULT_ROBUST_METHOD);
-    }
-
-    /**
-     * Creates a robust 3D position estimator.
-     *
-     * @param sourceQualityScores             quality scores corresponding to
-     *                                        each provided located radio source.
-     *                                        The larger the score value the better
-     *                                        the quality of the radio source.
-     * @param fingerprintReadingQualityScores quality scores corresponding to readings
-     *                                        within provided fingerprint. The larger
-     *                                        the score the better the quality of the
-     *                                        reading.
-     * @param sources                         located radio sources used for
-     *                                        lateration.
-     * @param fingerprint                     fingerprint containing RSSI
-     *                                        readings at an unknown location for
-     *                                        provided located radio sources.
-     * @return a robust 3D position estimator.
-     * @throws IllegalArgumentException if either provided sources or fingerprint is null
-     *                                  or the number of provided sources is less than the required minimum.
-     */
-    public static RobustRssiPositionEstimator3D create(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
-            final List<? extends RadioSourceLocated<Point3D>> sources,
-            final RssiFingerprint<? extends RadioSource, ? extends RssiReading<? extends RadioSource>> fingerprint) {
-        return create(sourceQualityScores, fingerprintReadingQualityScores,
-                sources, fingerprint, DEFAULT_ROBUST_METHOD);
-    }
-
-    /**
-     * Creates a robust 3D position estimator.
-     *
-     * @param sourceQualityScores             quality scores corresponding to
-     *                                        each provided located radio source.
-     *                                        The larger the score value the better
-     *                                        the quality of the radio source.
-     * @param fingerprintReadingQualityScores quality scores corresponding to readings
-     *                                        within provided fingerprint. The larger
-     *                                        the score the better the quality of the
-     *                                        reading.
-     * @param listener                        listener in charge of handling events.
-     * @return a robust 3D position estimator.
-     */
-    public static RobustRssiPositionEstimator3D create(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
-            final RobustRssiPositionEstimatorListener<Point3D> listener) {
-        return create(sourceQualityScores, fingerprintReadingQualityScores,
-                listener, DEFAULT_ROBUST_METHOD);
-    }
-
-    /**
-     * Creates a robust 3D position estimator.
-     *
-     * @param sourceQualityScores             quality scores corresponding to
-     *                                        each provided located radio source.
-     *                                        The larger the score value the better
-     *                                        the quality of the radio source.
-     * @param fingerprintReadingQualityScores quality scores corresponding to readings
-     *                                        within provided fingerprint. The larger
-     *                                        the score the better the quality of the
-     *                                        reading.
-     * @param sources                         located radio sources used for
-     *                                        lateration.
-     * @param listener                        listener in charge of handling events.
-     * @return a robust 3D position estimator.
-     * @throws IllegalArgumentException if provided sources is null or the number of
-     *                                  provided sources is less than the required minimum.
-     */
-    public static RobustRssiPositionEstimator3D create(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
-            final List<? extends RadioSourceLocated<Point3D>> sources,
-            final RobustRssiPositionEstimatorListener<Point3D> listener) {
-        return create(sourceQualityScores, fingerprintReadingQualityScores,
-                sources, listener, DEFAULT_ROBUST_METHOD);
-    }
-
-    /**
-     * Creates a robust 3D position estimator.
-     *
-     * @param sourceQualityScores             quality scores corresponding to
-     *                                        each provided located radio source.
-     *                                        The larger the score value the better
-     *                                        the quality of the radio source.
-     * @param fingerprintReadingQualityScores quality scores corresponding to readings
-     *                                        within provided fingerprint. The larger
-     *                                        the score the better the quality of the
-     *                                        reading.
-     * @param fingerprint                     fingerprint containing RSSI
-     *                                        readings at an unknown location for
-     *                                        provided located radio sources.
-     * @param listener                        listener in charge of handling events.
-     * @return a robust 3D position estimator.
-     * @throws IllegalArgumentException if provided fingerprint is null.
-     */
-    public static RobustRssiPositionEstimator3D create(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
-            final RssiFingerprint<? extends RadioSource, ? extends RssiReading<? extends RadioSource>> fingerprint,
-            final RobustRssiPositionEstimatorListener<Point3D> listener) {
-        return create(sourceQualityScores, fingerprintReadingQualityScores,
-                fingerprint, listener, DEFAULT_ROBUST_METHOD);
-    }
-
-    /**
-     * Creates a robust 3D position estimator.
-     *
-     * @param sourceQualityScores             quality scores corresponding to
-     *                                        each provided located radio source.
-     *                                        The larger the score value the better
-     *                                        the quality of the radio source.
-     * @param fingerprintReadingQualityScores quality scores corresponding to readings
-     *                                        within provided fingerprint. The larger
-     *                                        the score the better the quality of the
-     *                                        reading.
-     * @param sources                         located radio sources used for
-     *                                        lateration.
      * @param fingerprint                     fingerprint containing RSSI
      *                                        readings at an unknown location for
      *                                        provided located radio sources.
@@ -961,13 +792,12 @@ public abstract class RobustRssiPositionEstimator3D extends RobustRssiPositionEs
      *                                  or the number of provided sources is less than the required minimum.
      */
     public static RobustRssiPositionEstimator3D create(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<Point3D>> sources,
             final RssiFingerprint<? extends RadioSource, ? extends RssiReading<? extends RadioSource>> fingerprint,
             final RobustRssiPositionEstimatorListener<Point3D> listener) {
-        return create(sourceQualityScores, fingerprintReadingQualityScores,
-                sources, fingerprint, listener, DEFAULT_ROBUST_METHOD);
+        return create(sourceQualityScores, fingerprintReadingQualityScores, sources, fingerprint, listener,
+                DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -982,22 +812,21 @@ public abstract class RobustRssiPositionEstimator3D extends RobustRssiPositionEs
      */
     @Override
     protected void setPositionsDistancesDistanceStandardDeviationsAndQualityScores(
-            final List<Point3D> positions, List<Double> distances,
-            final List<Double> distanceStandardDeviations,
+            final List<Point3D> positions, List<Double> distances, final List<Double> distanceStandardDeviations,
             final List<Double> distanceQualityScores) {
-        final int size = positions.size();
+        final var size = positions.size();
         Point3D[] positionsArray = new InhomogeneousPoint3D[size];
         positionsArray = positions.toArray(positionsArray);
 
-        final double[] distancesArray = new double[size];
-        final double[] distanceStandardDeviationsArray = new double[size];
+        final var distancesArray = new double[size];
+        final var distanceStandardDeviationsArray = new double[size];
 
         double[] qualityScoresArray = null;
         if (distanceQualityScores != null) {
             qualityScoresArray = new double[size];
         }
 
-        for (int i = 0; i < size; i++) {
+        for (var i = 0; i < size; i++) {
             distancesArray[i] = distances.get(i);
             distanceStandardDeviationsArray[i] = distanceStandardDeviations.get(i);
 
@@ -1007,11 +836,11 @@ public abstract class RobustRssiPositionEstimator3D extends RobustRssiPositionEs
         }
 
         try {
-            mLaterationSolver.setPositionsDistancesAndStandardDeviations(
-                    positionsArray, distancesArray, distanceStandardDeviationsArray);
+            laterationSolver.setPositionsDistancesAndStandardDeviations(positionsArray, distancesArray,
+                    distanceStandardDeviationsArray);
 
             if (qualityScoresArray != null) {
-                mLaterationSolver.setQualityScores(qualityScoresArray);
+                laterationSolver.setQualityScores(qualityScoresArray);
             }
         } catch (final LockedException e) {
             throw new IllegalArgumentException(e);

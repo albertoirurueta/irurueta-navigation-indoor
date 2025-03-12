@@ -34,8 +34,7 @@ import com.irurueta.navigation.lateration.RobustLaterationSolverListener;
  * @param <P> a {@link Point} type.
  */
 public abstract class RobustMixedPositionEstimator<P extends Point<?>> extends
-        RobustPositionEstimator<P, Reading<? extends RadioSource>,
-                RobustMixedPositionEstimatorListener<P>> {
+        RobustPositionEstimator<P, Reading<? extends RadioSource>, RobustMixedPositionEstimatorListener<P>> {
 
     /**
      * Constructor.
@@ -49,8 +48,7 @@ public abstract class RobustMixedPositionEstimator<P extends Point<?>> extends
      *
      * @param listener listener in charge of handling events.
      */
-    protected RobustMixedPositionEstimator(
-            final RobustMixedPositionEstimatorListener<P> listener) {
+    protected RobustMixedPositionEstimator(final RobustMixedPositionEstimatorListener<P> listener) {
         super(listener);
         init();
     }
@@ -59,36 +57,32 @@ public abstract class RobustMixedPositionEstimator<P extends Point<?>> extends
      * Initializes robust lateration solver listener.
      */
     private void init() {
-        mTrilaterationSolverListener = new RobustLaterationSolverListener<P>() {
+        trilaterationSolverListener = new RobustLaterationSolverListener<>() {
             @Override
             public void onSolveStart(final RobustLaterationSolver<P> solver) {
-                if (mListener != null) {
-                    mListener.onEstimateStart(RobustMixedPositionEstimator.this);
+                if (listener != null) {
+                    listener.onEstimateStart(RobustMixedPositionEstimator.this);
                 }
             }
 
             @Override
             public void onSolveEnd(final RobustLaterationSolver<P> solver) {
-                if (mListener != null) {
-                    mListener.onEstimateEnd(RobustMixedPositionEstimator.this);
+                if (listener != null) {
+                    listener.onEstimateEnd(RobustMixedPositionEstimator.this);
                 }
             }
 
             @Override
-            public void onSolveNextIteration(final RobustLaterationSolver<P> solver,
-                                             final int iteration) {
-                if (mListener != null) {
-                    mListener.onEstimateNextIteration(
-                            RobustMixedPositionEstimator.this, iteration);
+            public void onSolveNextIteration(final RobustLaterationSolver<P> solver, final int iteration) {
+                if (listener != null) {
+                    listener.onEstimateNextIteration(RobustMixedPositionEstimator.this, iteration);
                 }
             }
 
             @Override
-            public void onSolveProgressChange(final RobustLaterationSolver<P> solver,
-                                              final float progress) {
-                if (mListener != null) {
-                    mListener.onEstimateProgressChange(
-                            RobustMixedPositionEstimator.this, progress);
+            public void onSolveProgressChange(final RobustLaterationSolver<P> solver, final float progress) {
+                if (listener != null) {
+                    listener.onEstimateProgressChange(RobustMixedPositionEstimator.this, progress);
                 }
             }
         };
