@@ -40,13 +40,13 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends RobustRanging
      * Quality scores corresponding to each provided located radio source.
      * The larger the score value the better the quality of the radio source.
      */
-    private double[] mSourceQualityScores;
+    private double[] sourceQualityScores;
 
     /**
      * Quality scores corresponding to each reading within provided fingerprint.
      * The larger the score value the better the quality of the reading.
      */
-    private double[] mFingerprintReadingsQualityScores;
+    private double[] fingerprintReadingsQualityScores;
 
     /**
      * Constructor.
@@ -63,8 +63,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends RobustRanging
      * @throws IllegalArgumentException if provided sources is null or the number of
      *                                  provided sources is less than the required minimum.
      */
-    public PROSACRobustRangingAndRssiPositionEstimator2D(
-            final List<? extends RadioSourceLocated<Point2D>> sources) {
+    public PROSACRobustRangingAndRssiPositionEstimator2D(final List<? extends RadioSourceLocated<Point2D>> sources) {
         super();
         init();
         internalSetSources(sources);
@@ -182,8 +181,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends RobustRanging
      *                                        reading.
      */
     public PROSACRobustRangingAndRssiPositionEstimator2D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores) {
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores) {
         this();
         internalSetSourceQualityScores(sourceQualityScores);
         internalSetFingerprintReadingsQualityScores(fingerprintReadingQualityScores);
@@ -206,8 +204,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends RobustRanging
      *                                  provided sources is less than the required minimum.
      */
     public PROSACRobustRangingAndRssiPositionEstimator2D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<Point2D>> sources) {
         this(sources);
         internalSetSourceQualityScores(sourceQualityScores);
@@ -231,8 +228,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends RobustRanging
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public PROSACRobustRangingAndRssiPositionEstimator2D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
                     extends RadioSource>> fingerprint) {
         this(fingerprint);
@@ -260,8 +256,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends RobustRanging
      *                                  or the number of provided sources is less than the required minimum.
      */
     public PROSACRobustRangingAndRssiPositionEstimator2D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<Point2D>> sources,
             final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
                     extends RadioSource>> fingerprint) {
@@ -284,8 +279,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends RobustRanging
      * @param listener                        listener in charge of handling events.
      */
     public PROSACRobustRangingAndRssiPositionEstimator2D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final RobustRangingAndRssiPositionEstimatorListener<Point2D> listener) {
         this(listener);
         internalSetSourceQualityScores(sourceQualityScores);
@@ -310,8 +304,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends RobustRanging
      *                                  provided sources is less than the required minimum.
      */
     public PROSACRobustRangingAndRssiPositionEstimator2D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<Point2D>> sources,
             final RobustRangingAndRssiPositionEstimatorListener<Point2D> listener) {
         this(sources, listener);
@@ -337,8 +330,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends RobustRanging
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public PROSACRobustRangingAndRssiPositionEstimator2D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
                     extends RadioSource>> fingerprint,
             final RobustRangingAndRssiPositionEstimatorListener<Point2D> listener) {
@@ -368,8 +360,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends RobustRanging
      *                                  null or the number of provided sources is less than the required minimum.
      */
     public PROSACRobustRangingAndRssiPositionEstimator2D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<Point2D>> sources,
             final RangingAndRssiFingerprint<? extends RadioSource, ? extends RangingAndRssiReading<?
                     extends RadioSource>> fingerprint,
@@ -387,7 +378,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends RobustRanging
      */
     @Override
     public double[] getSourceQualityScores() {
-        return mSourceQualityScores;
+        return sourceQualityScores;
     }
 
     /**
@@ -400,8 +391,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends RobustRanging
      *                                  than minimum required samples.
      */
     @Override
-    public void setSourceQualityScores(final double[] sourceQualityScores)
-            throws LockedException {
+    public void setSourceQualityScores(final double[] sourceQualityScores) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
@@ -419,7 +409,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends RobustRanging
      */
     @Override
     public double[] getFingerprintReadingsQualityScores() {
-        return mFingerprintReadingsQualityScores;
+        return fingerprintReadingsQualityScores;
     }
 
     /**
@@ -435,8 +425,8 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends RobustRanging
      *                                  than minimum required samples.
      */
     @Override
-    public void setFingerprintReadingsQualityScores(
-            final double[] fingerprintReadingsQualityScores) throws LockedException {
+    public void setFingerprintReadingsQualityScores(final double[] fingerprintReadingsQualityScores)
+            throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
@@ -451,8 +441,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends RobustRanging
      * @return threshold to determine whether samples are inliers or not.
      */
     public double getThreshold() {
-        return ((PROSACRobustLateration2DSolver) mLaterationSolver).
-                getThreshold();
+        return ((PROSACRobustLateration2DSolver) laterationSolver).getThreshold();
     }
 
     /**
@@ -465,8 +454,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends RobustRanging
      * @throws LockedException          if this solver is locked.
      */
     public void setThreshold(final double threshold) throws LockedException {
-        ((PROSACRobustLateration2DSolver) mLaterationSolver).
-                setThreshold(threshold);
+        ((PROSACRobustLateration2DSolver) laterationSolver).setThreshold(threshold);
     }
 
     /**
@@ -476,8 +464,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends RobustRanging
      * only need to be computed but not kept.
      */
     public boolean isComputeAndKeepInliersEnabled() {
-        return ((PROSACRobustLateration2DSolver) mLaterationSolver).
-                isComputeAndKeepInliersEnabled();
+        return ((PROSACRobustLateration2DSolver) laterationSolver).isComputeAndKeepInliersEnabled();
     }
 
     /**
@@ -487,10 +474,8 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends RobustRanging
      *                              false if inliers only need to be computed but not kept.
      * @throws LockedException if this solver is locked.
      */
-    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers)
-            throws LockedException {
-        ((PROSACRobustLateration2DSolver) mLaterationSolver).
-                setComputeAndKeepInliersEnabled(computeAndKeepInliers);
+    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers) throws LockedException {
+        ((PROSACRobustLateration2DSolver) laterationSolver).setComputeAndKeepInliersEnabled(computeAndKeepInliers);
     }
 
     /**
@@ -500,8 +485,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends RobustRanging
      * only need to be computed but not kept.
      */
     public boolean isComputeAndKeepResiduals() {
-        return ((PROSACRobustLateration2DSolver) mLaterationSolver).
-                isComputeAndKeepResiduals();
+        return ((PROSACRobustLateration2DSolver) laterationSolver).isComputeAndKeepResiduals();
     }
 
     /**
@@ -511,10 +495,8 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends RobustRanging
      *                                false if residuals only need to be computed but not kept.
      * @throws LockedException if this solver is locked.
      */
-    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals)
-            throws LockedException {
-        ((PROSACRobustLateration2DSolver) mLaterationSolver).
-                setComputeAndKeepResidualsEnabled(computeAndKeepResiduals);
+    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals) throws LockedException {
+        ((PROSACRobustLateration2DSolver) laterationSolver).setComputeAndKeepResidualsEnabled(computeAndKeepResiduals);
     }
 
     /**
@@ -531,8 +513,7 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends RobustRanging
      * Initializes robust lateration solver.
      */
     private void init() {
-        mLaterationSolver = new PROSACRobustLateration2DSolver(
-                mTrilaterationSolverListener);
+        laterationSolver = new PROSACRobustLateration2DSolver(trilaterationSolverListener);
     }
 
     /**
@@ -545,12 +526,11 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends RobustRanging
      *                                  is smaller than 3 samples.
      */
     private void internalSetSourceQualityScores(final double[] sourceQualityScores) {
-        if (sourceQualityScores == null ||
-                sourceQualityScores.length < getMinRequiredSources()) {
+        if (sourceQualityScores == null || sourceQualityScores.length < getMinRequiredSources()) {
             throw new IllegalArgumentException();
         }
 
-        mSourceQualityScores = sourceQualityScores;
+        this.sourceQualityScores = sourceQualityScores;
 
         buildPositionsDistancesDistanceStandardDeviationsAndQualityScores();
     }
@@ -565,14 +545,13 @@ public class PROSACRobustRangingAndRssiPositionEstimator2D extends RobustRanging
      * @throws IllegalArgumentException if provided quality scores length is
      *                                  smaller than 3 samples.
      */
-    private void internalSetFingerprintReadingsQualityScores(
-            final double[] fingerprintReadingsQualityScores) {
-        if (fingerprintReadingsQualityScores == null ||
-                fingerprintReadingsQualityScores.length < getMinRequiredSources()) {
+    private void internalSetFingerprintReadingsQualityScores(final double[] fingerprintReadingsQualityScores) {
+        if (fingerprintReadingsQualityScores == null
+                || fingerprintReadingsQualityScores.length < getMinRequiredSources()) {
             throw new IllegalArgumentException();
         }
 
-        mFingerprintReadingsQualityScores = fingerprintReadingsQualityScores;
+        this.fingerprintReadingsQualityScores = fingerprintReadingsQualityScores;
 
         buildPositionsDistancesDistanceStandardDeviationsAndQualityScores();
     }

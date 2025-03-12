@@ -15,14 +15,7 @@
  */
 package com.irurueta.navigation.indoor.position;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import com.irurueta.geometry.InhomogeneousPoint2D;
-import com.irurueta.geometry.Point2D;
 import com.irurueta.navigation.indoor.Fingerprint;
 import com.irurueta.navigation.indoor.RangingAndRssiFingerprint;
 import com.irurueta.navigation.indoor.RangingAndRssiReading;
@@ -37,12 +30,12 @@ import com.irurueta.navigation.indoor.WifiAccessPointLocated2D;
 import com.irurueta.statistics.UniformRandomizer;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class ReadingSorterTest {
+import static org.junit.jupiter.api.Assertions.*;
+
+class ReadingSorterTest {
 
     private static final double FREQUENCY = 2.4e9; // (Hz)
 
@@ -59,32 +52,29 @@ public class ReadingSorterTest {
     private static final double MAX_RSSI = -50;
 
     @Test
-    public void testConstructor() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-        final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+    void testConstructor() {
+        final var randomizer = new UniformRandomizer();
+        final var numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+        final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
 
-        final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-        final double[] sourceQualityScores = new double[numSources];
-        for (int i = 0; i < numSources; i++) {
-            final WifiAccessPointLocated2D accessPoint = new WifiAccessPointLocated2D(
-                    "id" + i, FREQUENCY, new InhomogeneousPoint2D());
+        final var sources = new ArrayList<WifiAccessPointLocated2D>();
+        final var sourceQualityScores = new double[numSources];
+        for (var i = 0; i < numSources; i++) {
+            final var accessPoint = new WifiAccessPointLocated2D("id" + i, FREQUENCY, new InhomogeneousPoint2D());
             sources.add(accessPoint);
         }
 
-        final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-        final double[] readingsQualityScores = new double[numReadings];
-        for (int i = 0; i < numReadings; i++) {
-            final double rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-            readings.add(new RssiReading<WifiAccessPoint>(sources.get(0), rssi));
+        final var readings = new ArrayList<RssiReading<WifiAccessPoint>>();
+        final var readingsQualityScores = new double[numReadings];
+        for (var i = 0; i < numReadings; i++) {
+            final var rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            readings.add(new RssiReading<>(sources.get(0), rssi));
         }
 
-        final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
-                new RssiFingerprint<>();
+        final var fingerprint = new RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>>();
         fingerprint.setReadings(readings);
 
-        ReadingSorter<Point2D, RssiReading<WifiAccessPoint>> sorter = new ReadingSorter<>(
-                sources, fingerprint, sourceQualityScores, readingsQualityScores);
+        var sorter = new ReadingSorter<>(sources, fingerprint, sourceQualityScores, readingsQualityScores);
 
         assertSame(sources, sorter.getSources());
         assertSame(fingerprint, sorter.getFingerprint());
@@ -93,198 +83,175 @@ public class ReadingSorterTest {
         assertNull(sorter.getSortedSourcesAndReadings());
 
         // force IllegalArgumentException
-        sorter = null;
-        try {
-            sorter = new ReadingSorter<>(sources, fingerprint, new double[1], readingsQualityScores);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException ignore) {
-        }
-        try {
-            sorter = new ReadingSorter<>(sources, fingerprint, sourceQualityScores, new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (IllegalArgumentException ignore) {
-        }
-        assertNull(sorter);
+        assertThrows(IllegalArgumentException.class, () -> new ReadingSorter<>(sources, fingerprint, new double[1],
+                readingsQualityScores));
+        assertThrows(IllegalArgumentException.class, () -> new ReadingSorter<>(sources, fingerprint,
+                sourceQualityScores, new double[1]));
     }
 
     @Test
-    public void testSortSameSourceRangingReadingsDifferentQualityScores() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final int numSources = 1;
-        final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+    void testSortSameSourceRangingReadingsDifferentQualityScores() {
+        final var randomizer = new UniformRandomizer();
+        final var numSources = 1;
+        final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
 
-        final double[] sourceQualityScores = new double[numSources];
-        final double[] readingsQualityScores = new double[numSources * numReadings];
+        final var sourceQualityScores = new double[numSources];
+        final var readingsQualityScores = new double[numSources * numReadings];
 
-        final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-        final List<RangingReading<WifiAccessPoint>> readings = new ArrayList<>();
-        int k = 0;
-        for (int i = 0; i < numSources; i++) {
-            final WifiAccessPointLocated2D accessPoint = new WifiAccessPointLocated2D(
-                    "id" + i, FREQUENCY, new InhomogeneousPoint2D());
+        final var sources = new ArrayList<WifiAccessPointLocated2D>();
+        final var readings = new ArrayList<RangingReading<WifiAccessPoint>>();
+        var k = 0;
+        for (var i = 0; i < numSources; i++) {
+            final var accessPoint = new WifiAccessPointLocated2D("id" + i, FREQUENCY, new InhomogeneousPoint2D());
             sources.add(accessPoint);
             sourceQualityScores[i] = randomizer.nextDouble();
 
-            for (int j = 0; j < numReadings; j++) {
-                final double distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
-                readings.add(new RangingReading<WifiAccessPoint>(accessPoint, distance));
+            for (var j = 0; j < numReadings; j++) {
+                final var distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
+                readings.add(new RangingReading<>(accessPoint, distance));
 
                 readingsQualityScores[k] = randomizer.nextDouble();
                 k++;
             }
         }
 
-        final RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
-                new RangingFingerprint<>();
+        final var fingerprint = new RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>>();
         fingerprint.setReadings(readings);
 
-        final ReadingSorter<Point2D, RangingReading<WifiAccessPoint>> sorter = new ReadingSorter<>(
-                sources, fingerprint, sourceQualityScores, readingsQualityScores);
+        final var sorter = new ReadingSorter<>(sources, fingerprint, sourceQualityScores, readingsQualityScores);
 
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingReading<WifiAccessPoint>>> result =
-                sorter.getSortedSourcesAndReadings();
+        final var result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(1, result.size());
 
-        double previousQuality = Double.MAX_VALUE;
-        for (int j = 0; j < numReadings; j++) {
-            final ReadingSorter.ReadingWithQualityScore<RangingReading<WifiAccessPoint>> readingWithQualityScore =
-                    result.get(0).readingsWithQualityScores.get(j);
+        var previousQuality = Double.MAX_VALUE;
+        for (var j = 0; j < numReadings; j++) {
+            final var readingWithQualityScore = result.get(0).readingsWithQualityScores.get(j);
             assertTrue(previousQuality >= readingWithQualityScore.qualityScore);
             previousQuality = readingWithQualityScore.qualityScore;
         }
     }
 
     @Test
-    public void testSortSameSourceRangingAndRssiReadingsDifferentQualityScores() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final int numSources = 1;
-        final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+    void testSortSameSourceRangingAndRssiReadingsDifferentQualityScores() {
+        final var randomizer = new UniformRandomizer();
+        final var numSources = 1;
+        final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
 
-        final double[] sourceQualityScores = new double[numSources];
-        final double[] readingsQualityScores = new double[numSources * numReadings];
+        final var sourceQualityScores = new double[numSources];
+        final var readingsQualityScores = new double[numSources * numReadings];
 
-        final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-        final List<RangingAndRssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-        int k = 0;
-        for (int i = 0; i < numSources; i++) {
-            final WifiAccessPointLocated2D accessPoint = new WifiAccessPointLocated2D(
-                    "id" + i, FREQUENCY, new InhomogeneousPoint2D());
+        final var sources = new ArrayList<WifiAccessPointLocated2D>();
+        final var readings = new ArrayList<RangingAndRssiReading<WifiAccessPoint>>();
+        var k = 0;
+        for (var i = 0; i < numSources; i++) {
+            final var accessPoint = new WifiAccessPointLocated2D("id" + i, FREQUENCY, new InhomogeneousPoint2D());
             sources.add(accessPoint);
             sourceQualityScores[i] = randomizer.nextDouble();
 
-            for (int j = 0; j < numReadings; j++) {
-                final double distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
-                final double rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-                readings.add(new RangingAndRssiReading<WifiAccessPoint>(accessPoint, distance, rssi));
+            for (var j = 0; j < numReadings; j++) {
+                final var distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
+                final var rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+                readings.add(new RangingAndRssiReading<>(accessPoint, distance, rssi));
 
                 readingsQualityScores[k] = randomizer.nextDouble();
                 k++;
             }
         }
 
-        final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
-                new RangingAndRssiFingerprint<>();
+        final var fingerprint =
+                new RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>>();
         fingerprint.setReadings(readings);
 
-        final ReadingSorter<Point2D, RangingAndRssiReading<WifiAccessPoint>> sorter = new ReadingSorter<>(
-                sources, fingerprint, sourceQualityScores, readingsQualityScores);
+        final var sorter = new ReadingSorter<>(sources, fingerprint, sourceQualityScores, readingsQualityScores);
 
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>>>
-                result = sorter.getSortedSourcesAndReadings();
+        final var result = sorter.getSortedSourcesAndReadings();
 
-        assertEquals(result.size(), 1);
+        assertEquals(1, result.size());
 
-        double previousQuality = Double.MAX_VALUE;
-        for (int j = 0; j < numReadings; j++) {
-            final ReadingSorter.ReadingWithQualityScore<RangingAndRssiReading<WifiAccessPoint>>
-                    readingWithQualityScore = result.get(0).readingsWithQualityScores.get(j);
+        var previousQuality = Double.MAX_VALUE;
+        for (var j = 0; j < numReadings; j++) {
+            final var readingWithQualityScore = result.get(0).readingsWithQualityScores.get(j);
             assertTrue(previousQuality >= readingWithQualityScore.qualityScore);
             previousQuality = readingWithQualityScore.qualityScore;
         }
     }
 
     @Test
-    public void testSortSameSourceRssiReadingsDifferentQualityScores() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final int numSources = 1;
-        final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+    void testSortSameSourceRssiReadingsDifferentQualityScores() {
+        final var randomizer = new UniformRandomizer();
+        final var numSources = 1;
+        final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
 
-        final double[] sourceQualityScores = new double[numSources];
-        final double[] readingsQualityScores = new double[numSources * numReadings];
+        final var sourceQualityScores = new double[numSources];
+        final var readingsQualityScores = new double[numSources * numReadings];
 
-        final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-        final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-        int k = 0;
-        for (int i = 0; i < numSources; i++) {
-            final WifiAccessPointLocated2D accessPoint = new WifiAccessPointLocated2D(
-                    "id" + i, FREQUENCY, new InhomogeneousPoint2D());
+        final var sources = new ArrayList<WifiAccessPointLocated2D>();
+        final var readings = new ArrayList<RssiReading<WifiAccessPoint>>();
+        var k = 0;
+        for (var i = 0; i < numSources; i++) {
+            final var accessPoint = new WifiAccessPointLocated2D("id" + i, FREQUENCY, new InhomogeneousPoint2D());
             sources.add(accessPoint);
             sourceQualityScores[i] = randomizer.nextDouble();
 
-            for (int j = 0; j < numReadings; j++) {
-                final double rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-                readings.add(new RssiReading<WifiAccessPoint>(accessPoint, rssi));
+            for (var j = 0; j < numReadings; j++) {
+                final var rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+                readings.add(new RssiReading<>(accessPoint, rssi));
 
                 readingsQualityScores[k] = randomizer.nextDouble();
                 k++;
             }
         }
 
-        final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
-                new RssiFingerprint<>();
+        final var fingerprint = new RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>>();
         fingerprint.setReadings(readings);
 
-        final ReadingSorter<Point2D, RssiReading<WifiAccessPoint>> sorter = new ReadingSorter<>(
-                sources, fingerprint, sourceQualityScores, readingsQualityScores);
+        final var sorter = new ReadingSorter<>(sources, fingerprint, sourceQualityScores, readingsQualityScores);
 
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RssiReading<WifiAccessPoint>>> result =
-                sorter.getSortedSourcesAndReadings();
+        final var result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(1, result.size());
 
-        double previousQuality = Double.MAX_VALUE;
-        for (int j = 0; j < numReadings; j++) {
-            ReadingSorter.ReadingWithQualityScore<RssiReading<WifiAccessPoint>> readingWithQualityScore =
-                    result.get(0).readingsWithQualityScores.get(j);
+        var previousQuality = Double.MAX_VALUE;
+        for (var j = 0; j < numReadings; j++) {
+            final var readingWithQualityScore = result.get(0).readingsWithQualityScores.get(j);
             assertTrue(previousQuality >= readingWithQualityScore.qualityScore);
             previousQuality = readingWithQualityScore.qualityScore;
         }
     }
 
     @Test
-    public void testSortSameSourceMixedReadingsDifferentQualityScores() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final int numSources = 1;
-        final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+    void testSortSameSourceMixedReadingsDifferentQualityScores() {
+        final var randomizer = new UniformRandomizer();
+        final var numSources = 1;
+        final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
 
-        final double[] sourceQualityScores = new double[numSources];
-        final double[] readingsQualityScores = new double[3 * numSources * numReadings];
+        final var sourceQualityScores = new double[numSources];
+        final var readingsQualityScores = new double[3 * numSources * numReadings];
 
-        final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-        final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
-        int k = 0;
-        for (int i = 0; i < numSources; i++) {
-            final WifiAccessPointLocated2D accessPoint = new WifiAccessPointLocated2D(
-                    "id" + i, FREQUENCY, new InhomogeneousPoint2D());
+        final var sources = new ArrayList<WifiAccessPointLocated2D>();
+        final var readings = new ArrayList<Reading<WifiAccessPoint>>();
+        var k = 0;
+        for (var i = 0; i < numSources; i++) {
+            final var accessPoint = new WifiAccessPointLocated2D("id" + i, FREQUENCY, new InhomogeneousPoint2D());
             sources.add(accessPoint);
             sourceQualityScores[i] = randomizer.nextDouble();
 
-            for (int j = 0; j < numReadings; j++) {
-                final double distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
-                final double rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-                readings.add(new RssiReading<WifiAccessPoint>(accessPoint, rssi));
-                readings.add(new RangingAndRssiReading<WifiAccessPoint>(accessPoint, distance, rssi));
-                readings.add(new RangingReading<WifiAccessPoint>(accessPoint, distance));
+            for (var j = 0; j < numReadings; j++) {
+                final var distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
+                final var rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+                readings.add(new RssiReading<>(accessPoint, rssi));
+                readings.add(new RangingAndRssiReading<>(accessPoint, distance, rssi));
+                readings.add(new RangingReading<>(accessPoint, distance));
 
                 readingsQualityScores[k] = randomizer.nextDouble();
                 k++;
@@ -295,27 +262,24 @@ public class ReadingSorterTest {
             }
         }
 
-        final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint = new Fingerprint<>();
+        final var fingerprint = new Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>>();
         fingerprint.setReadings(readings);
 
-        final ReadingSorter<Point2D, Reading<WifiAccessPoint>> sorter = new ReadingSorter<>(
-                sources, fingerprint, sourceQualityScores, readingsQualityScores);
+        final var sorter = new ReadingSorter<>(sources, fingerprint, sourceQualityScores, readingsQualityScores);
 
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, Reading<WifiAccessPoint>>> result =
-                sorter.getSortedSourcesAndReadings();
+        final var result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(1, result.size());
 
-        double previousQuality = Double.MAX_VALUE;
-        ReadingType previousType = ReadingType.RANGING_READING;
+        var previousQuality = Double.MAX_VALUE;
+        var previousType = ReadingType.RANGING_READING;
         for (k = 0; k < 3 * numReadings; k++) {
-            final ReadingSorter.ReadingWithQualityScore<Reading<WifiAccessPoint>> readingWithQualityScore =
-                    result.get(0).readingsWithQualityScores.get(k);
+            final var readingWithQualityScore = result.get(0).readingsWithQualityScores.get(k);
 
-            final ReadingType type = readingWithQualityScore.reading.getType();
+            final var type = readingWithQualityScore.reading.getType();
             if (type != previousType) {
                 // check correct order of type changes
                 if (type == ReadingType.RANGING_AND_RSSI_READING) {
@@ -336,79 +300,73 @@ public class ReadingSorterTest {
     }
 
     @Test
-    public void testSortSameSourceRangingReadingsSameQualityScores() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final int numSources = 1;
-        final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+    void testSortSameSourceRangingReadingsSameQualityScores() {
+        final var randomizer = new UniformRandomizer();
+        final var numSources = 1;
+        final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
 
-        final double[] sourceQualityScores = new double[numSources];
-        final double[] readingsQualityScores = new double[numSources * numReadings];
-        final double sourceQualityScoreValue = randomizer.nextDouble();
-        final double readingQualityScoreValue = randomizer.nextDouble();
+        final var sourceQualityScores = new double[numSources];
+        final var readingsQualityScores = new double[numSources * numReadings];
+        final var sourceQualityScoreValue = randomizer.nextDouble();
+        final var readingQualityScoreValue = randomizer.nextDouble();
 
-        final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-        final List<RangingReading<WifiAccessPoint>> readings = new ArrayList<>();
-        int k = 0;
-        for (int i = 0; i < numSources; i++) {
-            final WifiAccessPointLocated2D accessPoint = new WifiAccessPointLocated2D(
-                    "id" + i, FREQUENCY, new InhomogeneousPoint2D());
+        final var sources = new ArrayList<WifiAccessPointLocated2D>();
+        final var readings = new ArrayList<RangingReading<WifiAccessPoint>>();
+        var k = 0;
+        for (var i = 0; i < numSources; i++) {
+            final var accessPoint = new WifiAccessPointLocated2D("id" + i, FREQUENCY, new InhomogeneousPoint2D());
             sources.add(accessPoint);
             sourceQualityScores[i] = sourceQualityScoreValue;
 
-            for (int j = 0; j < numReadings; j++) {
-                final double distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
-                readings.add(new RangingReading<WifiAccessPoint>(accessPoint, distance));
+            for (var j = 0; j < numReadings; j++) {
+                final var distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
+                readings.add(new RangingReading<>(accessPoint, distance));
 
                 readingsQualityScores[k] = readingQualityScoreValue;
                 k++;
             }
         }
 
-        final RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
-                new RangingFingerprint<>();
+        final var fingerprint = new RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>>();
         fingerprint.setReadings(readings);
 
-        final ReadingSorter<Point2D, RangingReading<WifiAccessPoint>> sorter = new ReadingSorter<>(
-                sources, fingerprint, sourceQualityScores, readingsQualityScores);
+        final var sorter = new ReadingSorter<>(sources, fingerprint, sourceQualityScores, readingsQualityScores);
 
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingReading<WifiAccessPoint>>> result =
-                sorter.getSortedSourcesAndReadings();
+        final var result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(1, result.size());
 
-        for (int j = 0; j < numReadings; j++) {
-            final ReadingSorter.ReadingWithQualityScore<RangingReading<WifiAccessPoint>> readingWithQualityScore =
-                    result.get(0).readingsWithQualityScores.get(j);
+        for (var j = 0; j < numReadings; j++) {
+            final var readingWithQualityScore = result.get(0).readingsWithQualityScores.get(j);
             assertSame(readingWithQualityScore.reading, readings.get(j));
         }
     }
 
     @Test
-    public void testSortSameSourceRangingAndRssiReadingsSameQualityScores() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final int numSources = 1;
-        final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+    void testSortSameSourceRangingAndRssiReadingsSameQualityScores() {
+        final var randomizer = new UniformRandomizer();
+        final var numSources = 1;
+        final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
 
-        final double[] sourceQualityScores = new double[numSources];
-        final double[] readingsQualityScores = new double[numSources * numReadings];
-        final double sourceQualityScoreValue = randomizer.nextDouble();
-        final double readingQualityScoreValue = randomizer.nextDouble();
+        final var sourceQualityScores = new double[numSources];
+        final var readingsQualityScores = new double[numSources * numReadings];
+        final var sourceQualityScoreValue = randomizer.nextDouble();
+        final var readingQualityScoreValue = randomizer.nextDouble();
 
-        final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-        final List<RangingAndRssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-        int k = 0;
-        for (int i = 0; i < numSources; i++) {
-            final WifiAccessPointLocated2D accessPoint = new WifiAccessPointLocated2D(
-                    "id" + i, FREQUENCY, new InhomogeneousPoint2D());
+        final var sources = new ArrayList<WifiAccessPointLocated2D>();
+        final var readings = new ArrayList<RangingAndRssiReading<WifiAccessPoint>>();
+        var k = 0;
+        for (var i = 0; i < numSources; i++) {
+            final var accessPoint = new WifiAccessPointLocated2D("id" + i, FREQUENCY, new InhomogeneousPoint2D());
             sources.add(accessPoint);
             sourceQualityScores[i] = sourceQualityScoreValue;
 
-            for (int j = 0; j < numReadings; j++) {
-                final double distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
-                final double rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            for (var j = 0; j < numReadings; j++) {
+                final var distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
+                final var rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
                 readings.add(new RangingAndRssiReading<WifiAccessPoint>(accessPoint, distance, rssi));
 
                 readingsQualityScores[k] = readingQualityScoreValue;
@@ -416,105 +374,96 @@ public class ReadingSorterTest {
             }
         }
 
-        final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
-                new RangingAndRssiFingerprint<>();
+        final var fingerprint =
+                new RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>>();
         fingerprint.setReadings(readings);
 
-        final ReadingSorter<Point2D, RangingAndRssiReading<WifiAccessPoint>> sorter = new ReadingSorter<>(
-                sources, fingerprint, sourceQualityScores, readingsQualityScores);
+        final var sorter = new ReadingSorter<>(sources, fingerprint, sourceQualityScores, readingsQualityScores);
 
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>>>
-                result = sorter.getSortedSourcesAndReadings();
+        final var result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(1, result.size());
 
-        for (int j = 0; j < numReadings; j++) {
-            final ReadingSorter.ReadingWithQualityScore<RangingAndRssiReading<WifiAccessPoint>>
-                    readingWithQualityScore = result.get(0).readingsWithQualityScores.get(j);
+        for (var j = 0; j < numReadings; j++) {
+            final var readingWithQualityScore = result.get(0).readingsWithQualityScores.get(j);
             assertSame(readingWithQualityScore.reading, readings.get(j));
         }
     }
 
     @Test
-    public void testSortSameSourceRssiReadingsSameQualityScores() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final int numSources = 1;
-        final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+    void testSortSameSourceRssiReadingsSameQualityScores() {
+        final var randomizer = new UniformRandomizer();
+        final var numSources = 1;
+        final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
 
-        final double[] sourceQualityScores = new double[numSources];
-        final double[] readingsQualityScores = new double[numSources * numReadings];
-        final double sourceQualityScoreValue = randomizer.nextDouble();
-        final double readingQualityScoreValue = randomizer.nextDouble();
+        final var sourceQualityScores = new double[numSources];
+        final var readingsQualityScores = new double[numSources * numReadings];
+        final var sourceQualityScoreValue = randomizer.nextDouble();
+        final var readingQualityScoreValue = randomizer.nextDouble();
 
-        final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-        final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-        int k = 0;
-        for (int i = 0; i < numSources; i++) {
-            final WifiAccessPointLocated2D accessPoint = new WifiAccessPointLocated2D(
-                    "id" + i, FREQUENCY, new InhomogeneousPoint2D());
+        final var sources = new ArrayList<WifiAccessPointLocated2D>();
+        final var readings = new ArrayList<RssiReading<WifiAccessPoint>>();
+        var k = 0;
+        for (var i = 0; i < numSources; i++) {
+            final var accessPoint = new WifiAccessPointLocated2D("id" + i, FREQUENCY, new InhomogeneousPoint2D());
             sources.add(accessPoint);
             sourceQualityScores[i] = sourceQualityScoreValue;
 
-            for (int j = 0; j < numReadings; j++) {
-                final double rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-                readings.add(new RssiReading<WifiAccessPoint>(accessPoint, rssi));
+            for (var j = 0; j < numReadings; j++) {
+                final var rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+                readings.add(new RssiReading<>(accessPoint, rssi));
 
                 readingsQualityScores[k] = readingQualityScoreValue;
                 k++;
             }
         }
 
-        final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
-                new RssiFingerprint<>();
+        final var fingerprint = new RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>>();
         fingerprint.setReadings(readings);
 
-        final ReadingSorter<Point2D, RssiReading<WifiAccessPoint>> sorter = new ReadingSorter<>(
-                sources, fingerprint, sourceQualityScores, readingsQualityScores);
+        final var sorter = new ReadingSorter<>(sources, fingerprint, sourceQualityScores, readingsQualityScores);
 
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RssiReading<WifiAccessPoint>>> result =
-                sorter.getSortedSourcesAndReadings();
+        final var result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(1, result.size());
 
-        for (int j = 0; j < numReadings; j++) {
-            final ReadingSorter.ReadingWithQualityScore<RssiReading<WifiAccessPoint>> readingWithQualityScore =
-                    result.get(0).readingsWithQualityScores.get(j);
+        for (var j = 0; j < numReadings; j++) {
+            final var readingWithQualityScore = result.get(0).readingsWithQualityScores.get(j);
             assertSame(readingWithQualityScore.reading, readings.get(j));
         }
     }
 
     @Test
-    public void testSortSameSourceMixedReadingsSameQualityScores() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final int numSources = 1;
-        final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+    void testSortSameSourceMixedReadingsSameQualityScores() {
+        final var randomizer = new UniformRandomizer();
+        final var numSources = 1;
+        final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
 
-        final double[] sourceQualityScores = new double[numSources];
-        final double[] readingsQualityScores = new double[3 * numSources * numReadings];
-        final double sourceQualityScoreValue = randomizer.nextDouble();
-        final double readingQualityScoreValue = randomizer.nextDouble();
+        final var sourceQualityScores = new double[numSources];
+        final var readingsQualityScores = new double[3 * numSources * numReadings];
+        final var sourceQualityScoreValue = randomizer.nextDouble();
+        final var readingQualityScoreValue = randomizer.nextDouble();
 
-        final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-        final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
-        int k = 0;
-        for (int i = 0; i < numSources; i++) {
-            final WifiAccessPointLocated2D accessPoint = new WifiAccessPointLocated2D(
-                    "id" + i, FREQUENCY, new InhomogeneousPoint2D());
+        final var sources = new ArrayList<WifiAccessPointLocated2D>();
+        final var readings = new ArrayList<Reading<WifiAccessPoint>>();
+        var k = 0;
+        for (var i = 0; i < numSources; i++) {
+            final var accessPoint = new WifiAccessPointLocated2D("id" + i, FREQUENCY, new InhomogeneousPoint2D());
             sources.add(accessPoint);
             sourceQualityScores[i] = sourceQualityScoreValue;
 
-            for (int j = 0; j < numReadings; j++) {
-                final double distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
-                final double rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-                readings.add(new RssiReading<WifiAccessPoint>(accessPoint, rssi));
-                readings.add(new RangingAndRssiReading<WifiAccessPoint>(accessPoint, distance, rssi));
-                readings.add(new RangingReading<WifiAccessPoint>(accessPoint, distance));
+            for (var j = 0; j < numReadings; j++) {
+                final var distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
+                final var rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+                readings.add(new RssiReading<>(accessPoint, rssi));
+                readings.add(new RangingAndRssiReading<>(accessPoint, distance, rssi));
+                readings.add(new RangingReading<>(accessPoint, distance));
 
                 readingsQualityScores[k] = readingQualityScoreValue;
                 k++;
@@ -525,26 +474,23 @@ public class ReadingSorterTest {
             }
         }
 
-        final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint = new Fingerprint<>();
+        final var fingerprint = new Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>>();
         fingerprint.setReadings(readings);
 
-        final ReadingSorter<Point2D, Reading<WifiAccessPoint>> sorter = new ReadingSorter<>(
-                sources, fingerprint, sourceQualityScores, readingsQualityScores);
+        final var sorter = new ReadingSorter<>(sources, fingerprint, sourceQualityScores, readingsQualityScores);
 
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, Reading<WifiAccessPoint>>> result =
-                sorter.getSortedSourcesAndReadings();
+        final var result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(1, result.size());
 
-        ReadingType previousType = ReadingType.RANGING_READING;
+        var previousType = ReadingType.RANGING_READING;
         for (k = 0; k < 3 * numReadings; k++) {
-            final ReadingSorter.ReadingWithQualityScore<Reading<WifiAccessPoint>> readingWithQualityScore =
-                    result.get(0).readingsWithQualityScores.get(k);
+            final var readingWithQualityScore = result.get(0).readingsWithQualityScores.get(k);
 
-            final ReadingType type = readingWithQualityScore.reading.getType();
+            final var type = readingWithQualityScore.reading.getType();
             if (type != previousType) {
                 // check correct order of type changes
                 if (type == ReadingType.RANGING_AND_RSSI_READING) {
@@ -563,58 +509,52 @@ public class ReadingSorterTest {
     }
 
     @Test
-    public void testSortMultipleSourcesRangingReadingsDifferentSourceQualityScoresDifferentReadingQualityScores() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-        final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+    void testSortMultipleSourcesRangingReadingsDifferentSourceQualityScoresDifferentReadingQualityScores() {
+        final var randomizer = new UniformRandomizer();
+        final var numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+        final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
 
-        final double[] sourceQualityScores = new double[numSources];
-        final double[] readingsQualityScores = new double[numSources * numReadings];
+        final var sourceQualityScores = new double[numSources];
+        final var readingsQualityScores = new double[numSources * numReadings];
 
-        final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-        final List<RangingReading<WifiAccessPoint>> readings = new ArrayList<>();
-        int k = 0;
-        for (int i = 0; i < numSources; i++) {
-            final WifiAccessPointLocated2D accessPoint = new WifiAccessPointLocated2D(
-                    "id" + i, FREQUENCY, new InhomogeneousPoint2D());
+        final var sources = new ArrayList<WifiAccessPointLocated2D>();
+        final var readings = new ArrayList<RangingReading<WifiAccessPoint>>();
+        var k = 0;
+        for (var i = 0; i < numSources; i++) {
+            final var accessPoint = new WifiAccessPointLocated2D("id" + i, FREQUENCY, new InhomogeneousPoint2D());
             sources.add(accessPoint);
             sourceQualityScores[i] = randomizer.nextDouble();
 
-            for (int j = 0; j < numReadings; j++) {
-                final double distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
-                readings.add(new RangingReading<WifiAccessPoint>(accessPoint, distance));
+            for (var j = 0; j < numReadings; j++) {
+                final var distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
+                readings.add(new RangingReading<>(accessPoint, distance));
 
                 readingsQualityScores[k] = randomizer.nextDouble();
                 k++;
             }
         }
 
-        final RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
-                new RangingFingerprint<>();
+        final var fingerprint = new RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>>();
         fingerprint.setReadings(readings);
 
-        final ReadingSorter<Point2D, RangingReading<WifiAccessPoint>> sorter = new ReadingSorter<>(
-                sources, fingerprint, sourceQualityScores, readingsQualityScores);
+        final var sorter = new ReadingSorter<>(sources, fingerprint, sourceQualityScores, readingsQualityScores);
 
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingReading<WifiAccessPoint>>> result =
-                sorter.getSortedSourcesAndReadings();
+        final var result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(result.size(), numSources);
 
-        double previousSourceQuality = Double.MAX_VALUE;
-        for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingReading<WifiAccessPoint>>
-                    sourceWithQualityScore = result.get(i);
+        var previousSourceQuality = Double.MAX_VALUE;
+        for (var i = 0; i < numSources; i++) {
+            final var sourceWithQualityScore = result.get(i);
             assertTrue(previousSourceQuality >= sourceWithQualityScore.qualityScore);
             previousSourceQuality = sourceWithQualityScore.qualityScore;
 
-            double previousReadingQuality = Double.MAX_VALUE;
-            for (int j = 0; j < numReadings; j++) {
-                final ReadingSorter.ReadingWithQualityScore<RangingReading<WifiAccessPoint>> readingWithQualityScore =
-                        sourceWithQualityScore.readingsWithQualityScores.get(j);
+            var previousReadingQuality = Double.MAX_VALUE;
+            for (var j = 0; j < numReadings; j++) {
+                final var readingWithQualityScore = sourceWithQualityScore.readingsWithQualityScores.get(j);
                 assertTrue(previousReadingQuality >= readingWithQualityScore.qualityScore);
                 previousReadingQuality = readingWithQualityScore.qualityScore;
             }
@@ -622,59 +562,54 @@ public class ReadingSorterTest {
     }
 
     @Test
-    public void testSortMultipleSourcesRangingAndRssiReadingsDifferentSourceQualityScoresDifferentReadingQualityScores() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-        final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+    void testSortMultipleSourcesRangingAndRssiReadingsDifferentSourceQualityScoresDifferentReadingQualityScores() {
+        final var randomizer = new UniformRandomizer();
+        final var numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+        final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
 
-        final double[] sourceQualityScores = new double[numSources];
-        final double[] readingsQualityScores = new double[numSources * numReadings];
+        final var sourceQualityScores = new double[numSources];
+        final var readingsQualityScores = new double[numSources * numReadings];
 
-        final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-        final List<RangingAndRssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-        int k = 0;
-        for (int i = 0; i < numSources; i++) {
-            final WifiAccessPointLocated2D accessPoint = new WifiAccessPointLocated2D(
-                    "id" + i, FREQUENCY, new InhomogeneousPoint2D());
+        final var sources = new ArrayList<WifiAccessPointLocated2D>();
+        final var readings = new ArrayList<RangingAndRssiReading<WifiAccessPoint>>();
+        var k = 0;
+        for (var i = 0; i < numSources; i++) {
+            final var accessPoint = new WifiAccessPointLocated2D("id" + i, FREQUENCY, new InhomogeneousPoint2D());
             sources.add(accessPoint);
             sourceQualityScores[i] = randomizer.nextDouble();
 
-            for (int j = 0; j < numReadings; j++) {
-                final double distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
-                final double rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-                readings.add(new RangingAndRssiReading<WifiAccessPoint>(accessPoint, distance, rssi));
+            for (var j = 0; j < numReadings; j++) {
+                final var distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
+                final var rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+                readings.add(new RangingAndRssiReading<>(accessPoint, distance, rssi));
 
                 readingsQualityScores[k] = randomizer.nextDouble();
                 k++;
             }
         }
 
-        final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
-                new RangingAndRssiFingerprint<>();
+        final var fingerprint =
+                new RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>>();
         fingerprint.setReadings(readings);
 
-        final ReadingSorter<Point2D, RangingAndRssiReading<WifiAccessPoint>> sorter = new ReadingSorter<>(
-                sources, fingerprint, sourceQualityScores, readingsQualityScores);
+        final var sorter = new ReadingSorter<>(sources, fingerprint, sourceQualityScores, readingsQualityScores);
 
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>>>
-                result = sorter.getSortedSourcesAndReadings();
+        final var result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(result.size(), numSources);
 
-        double previousSourceQuality = Double.MAX_VALUE;
-        for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>>
-                    sourceWithQualityScore = result.get(i);
+        var previousSourceQuality = Double.MAX_VALUE;
+        for (var i = 0; i < numSources; i++) {
+            final var sourceWithQualityScore = result.get(i);
             assertTrue(previousSourceQuality >= sourceWithQualityScore.qualityScore);
             previousSourceQuality = sourceWithQualityScore.qualityScore;
 
-            double previousReadingQuality = Double.MAX_VALUE;
-            for (int j = 0; j < numReadings; j++) {
-                final ReadingSorter.ReadingWithQualityScore<RangingAndRssiReading<WifiAccessPoint>>
-                        readingWithQualityScore = sourceWithQualityScore.readingsWithQualityScores.get(j);
+            var previousReadingQuality = Double.MAX_VALUE;
+            for (var j = 0; j < numReadings; j++) {
+                final var readingWithQualityScore = sourceWithQualityScore.readingsWithQualityScores.get(j);
                 assertTrue(previousReadingQuality >= readingWithQualityScore.qualityScore);
                 previousReadingQuality = readingWithQualityScore.qualityScore;
             }
@@ -682,58 +617,52 @@ public class ReadingSorterTest {
     }
 
     @Test
-    public void testSortMultipleSourcesRssiReadingsDifferentSourceQualityScoresDifferentReadingQualityScores() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-        final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+    void testSortMultipleSourcesRssiReadingsDifferentSourceQualityScoresDifferentReadingQualityScores() {
+        final var randomizer = new UniformRandomizer();
+        final var numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+        final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
 
-        final double[] sourceQualityScores = new double[numSources];
-        final double[] readingsQualityScores = new double[numSources * numReadings];
+        final var sourceQualityScores = new double[numSources];
+        final var readingsQualityScores = new double[numSources * numReadings];
 
-        final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-        final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-        int k = 0;
-        for (int i = 0; i < numSources; i++) {
-            final WifiAccessPointLocated2D accessPoint = new WifiAccessPointLocated2D(
-                    "id" + i, FREQUENCY, new InhomogeneousPoint2D());
+        final var sources = new ArrayList<WifiAccessPointLocated2D>();
+        final var readings = new ArrayList<RssiReading<WifiAccessPoint>>();
+        var k = 0;
+        for (var i = 0; i < numSources; i++) {
+            final var accessPoint = new WifiAccessPointLocated2D("id" + i, FREQUENCY, new InhomogeneousPoint2D());
             sources.add(accessPoint);
             sourceQualityScores[i] = randomizer.nextDouble();
 
-            for (int j = 0; j < numReadings; j++) {
-                final double rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-                readings.add(new RssiReading<WifiAccessPoint>(accessPoint, rssi));
+            for (var j = 0; j < numReadings; j++) {
+                final var rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+                readings.add(new RssiReading<>(accessPoint, rssi));
 
                 readingsQualityScores[k] = randomizer.nextDouble();
                 k++;
             }
         }
 
-        final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
-                new RssiFingerprint<>();
+        final var fingerprint = new RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>>();
         fingerprint.setReadings(readings);
 
-        final ReadingSorter<Point2D, RssiReading<WifiAccessPoint>> sorter = new ReadingSorter<>(
-                sources, fingerprint, sourceQualityScores, readingsQualityScores);
+        final var sorter = new ReadingSorter<>(sources, fingerprint, sourceQualityScores, readingsQualityScores);
 
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RssiReading<WifiAccessPoint>>> result =
-                sorter.getSortedSourcesAndReadings();
+        final var result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(result.size(), numSources);
 
-        double previousSourceQuality = Double.MAX_VALUE;
-        for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RssiReading<WifiAccessPoint>>
-                    sourceWithQualityScore = result.get(i);
+        var previousSourceQuality = Double.MAX_VALUE;
+        for (var i = 0; i < numSources; i++) {
+            final var sourceWithQualityScore = result.get(i);
             assertTrue(previousSourceQuality >= sourceWithQualityScore.qualityScore);
             previousSourceQuality = sourceWithQualityScore.qualityScore;
 
-            double previousReadingQuality = Double.MAX_VALUE;
-            for (int j = 0; j < numReadings; j++) {
-                final ReadingSorter.ReadingWithQualityScore<RssiReading<WifiAccessPoint>> readingWithQualityScore =
-                        sourceWithQualityScore.readingsWithQualityScores.get(j);
+            var previousReadingQuality = Double.MAX_VALUE;
+            for (var j = 0; j < numReadings; j++) {
+                final var readingWithQualityScore = sourceWithQualityScore.readingsWithQualityScores.get(j);
                 assertTrue(previousReadingQuality >= readingWithQualityScore.qualityScore);
                 previousReadingQuality = readingWithQualityScore.qualityScore;
             }
@@ -741,29 +670,28 @@ public class ReadingSorterTest {
     }
 
     @Test
-    public void testSortMultipleSourcesMixedReadingsDifferentSourceQualityScoresDifferentReadingQualityScores() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-        final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+    void testSortMultipleSourcesMixedReadingsDifferentSourceQualityScoresDifferentReadingQualityScores() {
+        final var randomizer = new UniformRandomizer();
+        final var numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+        final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
 
-        final double[] sourceQualityScores = new double[numSources];
-        final double[] readingsQualityScores = new double[3 * numSources * numReadings];
+        final var sourceQualityScores = new double[numSources];
+        final var readingsQualityScores = new double[3 * numSources * numReadings];
 
-        final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-        final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
-        int k = 0;
-        for (int i = 0; i < numSources; i++) {
-            final WifiAccessPointLocated2D accessPoint = new WifiAccessPointLocated2D(
-                    "id" + i, FREQUENCY, new InhomogeneousPoint2D());
+        final var sources = new ArrayList<WifiAccessPointLocated2D>();
+        final var readings = new ArrayList<Reading<WifiAccessPoint>>();
+        var k = 0;
+        for (var i = 0; i < numSources; i++) {
+            final var accessPoint = new WifiAccessPointLocated2D("id" + i, FREQUENCY, new InhomogeneousPoint2D());
             sources.add(accessPoint);
             sourceQualityScores[i] = randomizer.nextDouble();
 
-            for (int j = 0; j < numReadings; j++) {
-                final double distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
-                final double rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-                readings.add(new RssiReading<WifiAccessPoint>(accessPoint, rssi));
-                readings.add(new RangingAndRssiReading<WifiAccessPoint>(accessPoint, distance, rssi));
-                readings.add(new RangingReading<WifiAccessPoint>(accessPoint, distance));
+            for (var j = 0; j < numReadings; j++) {
+                final var distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
+                final var rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+                readings.add(new RssiReading<>(accessPoint, rssi));
+                readings.add(new RangingAndRssiReading<>(accessPoint, distance, rssi));
+                readings.add(new RangingReading<>(accessPoint, distance));
 
                 readingsQualityScores[k] = randomizer.nextDouble();
                 k++;
@@ -774,34 +702,30 @@ public class ReadingSorterTest {
             }
         }
 
-        final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint = new Fingerprint<>();
+        final var fingerprint = new Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>>();
         fingerprint.setReadings(readings);
 
-        final ReadingSorter<Point2D, Reading<WifiAccessPoint>> sorter = new ReadingSorter<>(
-                sources, fingerprint, sourceQualityScores, readingsQualityScores);
+        final var sorter = new ReadingSorter<>(sources, fingerprint, sourceQualityScores, readingsQualityScores);
 
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, Reading<WifiAccessPoint>>> result =
-                sorter.getSortedSourcesAndReadings();
+        final var result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(result.size(), numSources);
 
-        double previousSourceQuality = Double.MAX_VALUE;
-        for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, Reading<WifiAccessPoint>>
-                    sourceWithQualityScore = result.get(i);
+        var previousSourceQuality = Double.MAX_VALUE;
+        for (var i = 0; i < numSources; i++) {
+            final var sourceWithQualityScore = result.get(i);
             assertTrue(previousSourceQuality >= sourceWithQualityScore.qualityScore);
             previousSourceQuality = sourceWithQualityScore.qualityScore;
 
-            double previousReadingQuality = Double.MAX_VALUE;
-            ReadingType previousType = ReadingType.RANGING_READING;
+            var previousReadingQuality = Double.MAX_VALUE;
+            var previousType = ReadingType.RANGING_READING;
             for (k = 0; k < 3 * numReadings; k++) {
-                final ReadingSorter.ReadingWithQualityScore<Reading<WifiAccessPoint>> readingWithQualityScore =
-                        sourceWithQualityScore.readingsWithQualityScores.get(k);
+                final var readingWithQualityScore = sourceWithQualityScore.readingsWithQualityScores.get(k);
 
-                final ReadingType type = readingWithQualityScore.reading.getType();
+                final var type = readingWithQualityScore.reading.getType();
                 if (type != previousType) {
                     // check correct order of type changes
                     if (type == ReadingType.RANGING_AND_RSSI_READING) {
@@ -823,205 +747,187 @@ public class ReadingSorterTest {
     }
 
     @Test
-    public void testSortMultipleSourcesRangingReadingsDifferentSourceQualityScoresSameReadingQualityScores() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-        final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+    void testSortMultipleSourcesRangingReadingsDifferentSourceQualityScoresSameReadingQualityScores() {
+        final var randomizer = new UniformRandomizer();
+        final var numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+        final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
 
-        final double[] sourceQualityScores = new double[numSources];
-        final double[] readingsQualityScores = new double[numSources * numReadings];
-        final double readingQualityScoreValue = randomizer.nextDouble();
+        final var sourceQualityScores = new double[numSources];
+        final var readingsQualityScores = new double[numSources * numReadings];
+        final var readingQualityScoreValue = randomizer.nextDouble();
 
-        final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-        final List<RangingReading<WifiAccessPoint>> readings = new ArrayList<>();
-        int k = 0;
-        for (int i = 0; i < numSources; i++) {
-            final WifiAccessPointLocated2D accessPoint = new WifiAccessPointLocated2D(
-                    "id" + i, FREQUENCY, new InhomogeneousPoint2D());
+        final var sources = new ArrayList<WifiAccessPointLocated2D>();
+        final var readings = new ArrayList<RangingReading<WifiAccessPoint>>();
+        var k = 0;
+        for (var i = 0; i < numSources; i++) {
+            final var accessPoint = new WifiAccessPointLocated2D("id" + i, FREQUENCY, new InhomogeneousPoint2D());
             sources.add(accessPoint);
             sourceQualityScores[i] = randomizer.nextDouble();
 
-            for (int j = 0; j < numReadings; j++) {
-                final double distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
-                readings.add(new RangingReading<WifiAccessPoint>(accessPoint, distance));
+            for (var j = 0; j < numReadings; j++) {
+                final var distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
+                readings.add(new RangingReading<>(accessPoint, distance));
 
                 readingsQualityScores[k] = readingQualityScoreValue;
                 k++;
             }
         }
 
-        final RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
-                new RangingFingerprint<>();
+        final var fingerprint = new RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>>();
         fingerprint.setReadings(readings);
 
-        final ReadingSorter<Point2D, RangingReading<WifiAccessPoint>> sorter = new ReadingSorter<>(
-                sources, fingerprint, sourceQualityScores, readingsQualityScores);
+        final var sorter = new ReadingSorter<>(sources, fingerprint, sourceQualityScores, readingsQualityScores);
 
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingReading<WifiAccessPoint>>> result =
-                sorter.getSortedSourcesAndReadings();
+        final var result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(result.size(), numSources);
 
-        double previousSourceQuality = Double.MAX_VALUE;
-        for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingReading<WifiAccessPoint>>
-                    sourceWithQualityScore = result.get(i);
+        var previousSourceQuality = Double.MAX_VALUE;
+        for (var i = 0; i < numSources; i++) {
+            final var sourceWithQualityScore = result.get(i);
             assertTrue(previousSourceQuality >= sourceWithQualityScore.qualityScore);
             previousSourceQuality = sourceWithQualityScore.qualityScore;
 
-            for (int j = 0; j < numReadings; j++) {
-                final ReadingSorter.ReadingWithQualityScore<RangingReading<WifiAccessPoint>> readingWithQualityScore =
-                        sourceWithQualityScore.readingsWithQualityScores.get(j);
+            for (var j = 0; j < numReadings; j++) {
+                final var readingWithQualityScore = sourceWithQualityScore.readingsWithQualityScores.get(j);
                 assertEquals(readingQualityScoreValue, readingWithQualityScore.qualityScore, 0.0);
             }
         }
     }
 
     @Test
-    public void testSortMultipleSourcesRangingAndRssiReadingsDifferentSourceQualityScoresSameReadingQualityScores() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-        final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+    void testSortMultipleSourcesRangingAndRssiReadingsDifferentSourceQualityScoresSameReadingQualityScores() {
+        final var randomizer = new UniformRandomizer();
+        final var numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+        final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
 
-        final double[] sourceQualityScores = new double[numSources];
-        final double[] readingsQualityScores = new double[numSources * numReadings];
-        final double readingQualityScoreValue = randomizer.nextDouble();
+        final var sourceQualityScores = new double[numSources];
+        final var readingsQualityScores = new double[numSources * numReadings];
+        final var readingQualityScoreValue = randomizer.nextDouble();
 
-        final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-        final List<RangingAndRssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-        int k = 0;
-        for (int i = 0; i < numSources; i++) {
-            final WifiAccessPointLocated2D accessPoint = new WifiAccessPointLocated2D(
-                    "id" + i, FREQUENCY, new InhomogeneousPoint2D());
+        final var sources = new ArrayList<WifiAccessPointLocated2D>();
+        final var readings = new ArrayList<RangingAndRssiReading<WifiAccessPoint>>();
+        var k = 0;
+        for (var i = 0; i < numSources; i++) {
+            final var accessPoint = new WifiAccessPointLocated2D("id" + i, FREQUENCY, new InhomogeneousPoint2D());
             sources.add(accessPoint);
             sourceQualityScores[i] = randomizer.nextDouble();
 
-            for (int j = 0; j < numReadings; j++) {
-                final double distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
-                final double rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-                readings.add(new RangingAndRssiReading<WifiAccessPoint>(accessPoint, distance, rssi));
+            for (var j = 0; j < numReadings; j++) {
+                final var distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
+                final var rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+                readings.add(new RangingAndRssiReading<>(accessPoint, distance, rssi));
 
                 readingsQualityScores[k] = readingQualityScoreValue;
                 k++;
             }
         }
 
-        final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
-                new RangingAndRssiFingerprint<>();
+        final var fingerprint =
+                new RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>>();
         fingerprint.setReadings(readings);
 
-        final ReadingSorter<Point2D, RangingAndRssiReading<WifiAccessPoint>> sorter = new ReadingSorter<>(
-                sources, fingerprint, sourceQualityScores, readingsQualityScores);
+        final var sorter = new ReadingSorter<>(sources, fingerprint, sourceQualityScores, readingsQualityScores);
 
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>>>
-                result = sorter.getSortedSourcesAndReadings();
+        final var result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(result.size(), numSources);
 
-        double previousSourceQuality = Double.MAX_VALUE;
-        for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>>
-                    sourceWithQualityScore = result.get(i);
+        var previousSourceQuality = Double.MAX_VALUE;
+        for (var i = 0; i < numSources; i++) {
+            final var sourceWithQualityScore = result.get(i);
             assertTrue(previousSourceQuality >= sourceWithQualityScore.qualityScore);
             previousSourceQuality = sourceWithQualityScore.qualityScore;
 
-            for (int j = 0; j < numReadings; j++) {
-                final ReadingSorter.ReadingWithQualityScore<RangingAndRssiReading<WifiAccessPoint>>
-                        readingWithQualityScore = sourceWithQualityScore.readingsWithQualityScores.get(j);
+            for (var j = 0; j < numReadings; j++) {
+                final var readingWithQualityScore = sourceWithQualityScore.readingsWithQualityScores.get(j);
                 assertEquals(readingQualityScoreValue, readingWithQualityScore.qualityScore, 0.0);
             }
         }
     }
 
     @Test
-    public void testSortMultipleSourcesRssiReadingsDifferentSourceQualityScoresSameReadingQualityScores() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-        final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+    void testSortMultipleSourcesRssiReadingsDifferentSourceQualityScoresSameReadingQualityScores() {
+        final var randomizer = new UniformRandomizer();
+        final var numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+        final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
 
-        final double[] sourceQualityScores = new double[numSources];
-        final double[] readingsQualityScores = new double[numSources * numReadings];
-        final double readingQualityScoreValue = randomizer.nextDouble();
+        final var sourceQualityScores = new double[numSources];
+        final var readingsQualityScores = new double[numSources * numReadings];
+        final var readingQualityScoreValue = randomizer.nextDouble();
 
-        final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-        final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-        int k = 0;
-        for (int i = 0; i < numSources; i++) {
-            final WifiAccessPointLocated2D accessPoint = new WifiAccessPointLocated2D(
-                    "id" + i, FREQUENCY, new InhomogeneousPoint2D());
+        final var sources = new ArrayList<WifiAccessPointLocated2D>();
+        final var readings = new ArrayList<RssiReading<WifiAccessPoint>>();
+        var k = 0;
+        for (var i = 0; i < numSources; i++) {
+            final var accessPoint = new WifiAccessPointLocated2D("id" + i, FREQUENCY, new InhomogeneousPoint2D());
             sources.add(accessPoint);
             sourceQualityScores[i] = randomizer.nextDouble();
 
-            for (int j = 0; j < numReadings; j++) {
-                final double rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-                readings.add(new RssiReading<WifiAccessPoint>(accessPoint, rssi));
+            for (var j = 0; j < numReadings; j++) {
+                final var rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+                readings.add(new RssiReading<>(accessPoint, rssi));
 
                 readingsQualityScores[k] = readingQualityScoreValue;
                 k++;
             }
         }
 
-        RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
-                new RssiFingerprint<>();
+        var fingerprint = new RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>>();
         fingerprint.setReadings(readings);
 
-        final ReadingSorter<Point2D, RssiReading<WifiAccessPoint>> sorter = new ReadingSorter<>(
-                sources, fingerprint, sourceQualityScores, readingsQualityScores);
+        final var sorter = new ReadingSorter<>(sources, fingerprint, sourceQualityScores, readingsQualityScores);
 
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RssiReading<WifiAccessPoint>>> result =
-                sorter.getSortedSourcesAndReadings();
+        final var result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(result.size(), numSources);
 
-        double previousSourceQuality = Double.MAX_VALUE;
-        for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RssiReading<WifiAccessPoint>>
-                    sourceWithQualityScore = result.get(i);
+        var previousSourceQuality = Double.MAX_VALUE;
+        for (var i = 0; i < numSources; i++) {
+            final var sourceWithQualityScore = result.get(i);
             assertTrue(previousSourceQuality >= sourceWithQualityScore.qualityScore);
             previousSourceQuality = sourceWithQualityScore.qualityScore;
 
-            for (int j = 0; j < numReadings; j++) {
-                final ReadingSorter.ReadingWithQualityScore<RssiReading<WifiAccessPoint>> readingWithQualityScore =
-                        sourceWithQualityScore.readingsWithQualityScores.get(j);
+            for (var j = 0; j < numReadings; j++) {
+                final var readingWithQualityScore = sourceWithQualityScore.readingsWithQualityScores.get(j);
                 assertEquals(readingQualityScoreValue, readingWithQualityScore.qualityScore, 0.0);
             }
         }
     }
 
     @Test
-    public void testSortMultipleSourcesMixedReadingsDifferentSourceQualityScoresSameReadingQualityScores() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-        final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+    void testSortMultipleSourcesMixedReadingsDifferentSourceQualityScoresSameReadingQualityScores() {
+        final var randomizer = new UniformRandomizer();
+        final var numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+        final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
 
-        final double[] sourceQualityScores = new double[numSources];
-        final double[] readingsQualityScores = new double[3 * numSources * numReadings];
-        final double readingQualityScoreValue = randomizer.nextDouble();
+        final var sourceQualityScores = new double[numSources];
+        final var readingsQualityScores = new double[3 * numSources * numReadings];
+        final var readingQualityScoreValue = randomizer.nextDouble();
 
-        final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-        final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
-        int k = 0;
-        for (int i = 0; i < numSources; i++) {
-            final WifiAccessPointLocated2D accessPoint = new WifiAccessPointLocated2D(
-                    "id" + i, FREQUENCY, new InhomogeneousPoint2D());
+        final var sources = new ArrayList<WifiAccessPointLocated2D>();
+        final var readings = new ArrayList<Reading<WifiAccessPoint>>();
+        var k = 0;
+        for (var i = 0; i < numSources; i++) {
+            final var accessPoint = new WifiAccessPointLocated2D("id" + i, FREQUENCY, new InhomogeneousPoint2D());
             sources.add(accessPoint);
             sourceQualityScores[i] = randomizer.nextDouble();
 
-            for (int j = 0; j < numReadings; j++) {
-                final double distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
-                final double rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-                readings.add(new RssiReading<WifiAccessPoint>(accessPoint, rssi));
-                readings.add(new RangingAndRssiReading<WifiAccessPoint>(accessPoint, distance, rssi));
-                readings.add(new RangingReading<WifiAccessPoint>(accessPoint, distance));
+            for (var j = 0; j < numReadings; j++) {
+                final var distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
+                final var rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+                readings.add(new RssiReading<>(accessPoint, rssi));
+                readings.add(new RangingAndRssiReading<>(accessPoint, distance, rssi));
+                readings.add(new RangingReading<>(accessPoint, distance));
 
                 readingsQualityScores[k] = readingQualityScoreValue;
                 k++;
@@ -1032,33 +938,29 @@ public class ReadingSorterTest {
             }
         }
 
-        final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint = new Fingerprint<>();
+        final var fingerprint = new Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>>();
         fingerprint.setReadings(readings);
 
-        final ReadingSorter<Point2D, Reading<WifiAccessPoint>> sorter = new ReadingSorter<>(
-                sources, fingerprint, sourceQualityScores, readingsQualityScores);
+        final var sorter = new ReadingSorter<>(sources, fingerprint, sourceQualityScores, readingsQualityScores);
 
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, Reading<WifiAccessPoint>>> result =
-                sorter.getSortedSourcesAndReadings();
+        final var result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(result.size(), numSources);
 
-        double previousSourceQuality = Double.MAX_VALUE;
-        for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, Reading<WifiAccessPoint>>
-                    sourceWithQualityScore = result.get(i);
+        var previousSourceQuality = Double.MAX_VALUE;
+        for (var i = 0; i < numSources; i++) {
+            final var sourceWithQualityScore = result.get(i);
             assertTrue(previousSourceQuality >= sourceWithQualityScore.qualityScore);
             previousSourceQuality = sourceWithQualityScore.qualityScore;
 
-            ReadingType previousType = ReadingType.RANGING_READING;
-            for (int j = 0; j < numReadings; j++) {
-                final ReadingSorter.ReadingWithQualityScore<Reading<WifiAccessPoint>> readingWithQualityScore =
-                        sourceWithQualityScore.readingsWithQualityScores.get(j);
+            var previousType = ReadingType.RANGING_READING;
+            for (var j = 0; j < numReadings; j++) {
+                final var readingWithQualityScore = sourceWithQualityScore.readingsWithQualityScores.get(j);
 
-                final ReadingType type = readingWithQualityScore.reading.getType();
+                final var type = readingWithQualityScore.reading.getType();
                 if (type != previousType) {
                     // check correct order of type changes
                     if (type == ReadingType.RANGING_AND_RSSI_READING) {
@@ -1078,58 +980,52 @@ public class ReadingSorterTest {
     }
 
     @Test
-    public void testSortMultipleSourcesRangingReadingsSameSourceQualityScoresDifferentReadingQualityScores() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-        final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+    void testSortMultipleSourcesRangingReadingsSameSourceQualityScoresDifferentReadingQualityScores() {
+        final var randomizer = new UniformRandomizer();
+        final var numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+        final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
 
-        final double[] sourceQualityScores = new double[numSources];
-        final double[] readingsQualityScores = new double[numSources * numReadings];
-        final double sourceQualityScoreValue = randomizer.nextDouble();
+        final var sourceQualityScores = new double[numSources];
+        final var readingsQualityScores = new double[numSources * numReadings];
+        final var sourceQualityScoreValue = randomizer.nextDouble();
 
-        final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-        final List<RangingReading<WifiAccessPoint>> readings = new ArrayList<>();
-        int k = 0;
-        for (int i = 0; i < numSources; i++) {
-            final WifiAccessPointLocated2D accessPoint = new WifiAccessPointLocated2D(
-                    "id" + i, FREQUENCY, new InhomogeneousPoint2D());
+        final var sources = new ArrayList<WifiAccessPointLocated2D>();
+        final var readings = new ArrayList<RangingReading<WifiAccessPoint>>();
+        var k = 0;
+        for (var i = 0; i < numSources; i++) {
+            final var accessPoint = new WifiAccessPointLocated2D("id" + i, FREQUENCY, new InhomogeneousPoint2D());
             sources.add(accessPoint);
             sourceQualityScores[i] = sourceQualityScoreValue;
 
-            for (int j = 0; j < numReadings; j++) {
-                final double distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
-                readings.add(new RangingReading<WifiAccessPoint>(accessPoint, distance));
+            for (var j = 0; j < numReadings; j++) {
+                final var distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
+                readings.add(new RangingReading<>(accessPoint, distance));
 
                 readingsQualityScores[k] = randomizer.nextDouble();
                 k++;
             }
         }
 
-        final RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
-                new RangingFingerprint<>();
+        final var fingerprint = new RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>>();
         fingerprint.setReadings(readings);
 
-        final ReadingSorter<Point2D, RangingReading<WifiAccessPoint>> sorter = new ReadingSorter<>(
-                sources, fingerprint, sourceQualityScores, readingsQualityScores);
+        final var sorter = new ReadingSorter<>(sources, fingerprint, sourceQualityScores, readingsQualityScores);
 
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingReading<WifiAccessPoint>>> result =
-                sorter.getSortedSourcesAndReadings();
+        final var result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(result.size(), numSources);
 
-        for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingReading<WifiAccessPoint>>
-                    sourceWithQualityScore = result.get(i);
+        for (var i = 0; i < numSources; i++) {
+            final var sourceWithQualityScore = result.get(i);
             assertSame(sourceWithQualityScore.source, sources.get(i));
             assertEquals(sourceWithQualityScore.qualityScore, sourceQualityScoreValue, 0.0);
 
-            double previousReadingQuality = Double.MAX_VALUE;
-            for (int j = 0; j < numReadings; j++) {
-                final ReadingSorter.ReadingWithQualityScore<RangingReading<WifiAccessPoint>> readingWithQualityScore =
-                        sourceWithQualityScore.readingsWithQualityScores.get(j);
+            var previousReadingQuality = Double.MAX_VALUE;
+            for (var j = 0; j < numReadings; j++) {
+                final var readingWithQualityScore = sourceWithQualityScore.readingsWithQualityScores.get(j);
                 assertTrue(previousReadingQuality >= readingWithQualityScore.qualityScore);
                 previousReadingQuality = readingWithQualityScore.qualityScore;
             }
@@ -1137,59 +1033,54 @@ public class ReadingSorterTest {
     }
 
     @Test
-    public void testSortMultipleSourcesRangingAndRssiReadingsSameSourceQualityScoresDifferentReadingQualityScores() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-        final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+    void testSortMultipleSourcesRangingAndRssiReadingsSameSourceQualityScoresDifferentReadingQualityScores() {
+        final var randomizer = new UniformRandomizer();
+        final var numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+        final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
 
-        final double[] sourceQualityScores = new double[numSources];
-        final double[] readingsQualityScores = new double[numSources * numReadings];
-        final double sourceQualityScoreValue = randomizer.nextDouble();
+        final var sourceQualityScores = new double[numSources];
+        final var readingsQualityScores = new double[numSources * numReadings];
+        final var sourceQualityScoreValue = randomizer.nextDouble();
 
-        final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-        final List<RangingAndRssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-        int k = 0;
-        for (int i = 0; i < numSources; i++) {
-            final WifiAccessPointLocated2D accessPoint = new WifiAccessPointLocated2D(
-                    "id" + i, FREQUENCY, new InhomogeneousPoint2D());
+        final var sources = new ArrayList<WifiAccessPointLocated2D>();
+        final var readings = new ArrayList<RangingAndRssiReading<WifiAccessPoint>>();
+        var k = 0;
+        for (var i = 0; i < numSources; i++) {
+            final var accessPoint = new WifiAccessPointLocated2D("id" + i, FREQUENCY, new InhomogeneousPoint2D());
             sources.add(accessPoint);
             sourceQualityScores[i] = sourceQualityScoreValue;
 
-            for (int j = 0; j < numReadings; j++) {
-                final double distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
-                final double rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-                readings.add(new RangingAndRssiReading<WifiAccessPoint>(accessPoint, distance, rssi));
+            for (var j = 0; j < numReadings; j++) {
+                final var distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
+                final var rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+                readings.add(new RangingAndRssiReading<>(accessPoint, distance, rssi));
 
                 readingsQualityScores[k] = randomizer.nextDouble();
                 k++;
             }
         }
 
-        final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
-                new RangingAndRssiFingerprint<>();
+        final var fingerprint =
+                new RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>>();
         fingerprint.setReadings(readings);
 
-        final ReadingSorter<Point2D, RangingAndRssiReading<WifiAccessPoint>> sorter = new ReadingSorter<>(
-                sources, fingerprint, sourceQualityScores, readingsQualityScores);
+        final var sorter = new ReadingSorter<>(sources, fingerprint, sourceQualityScores, readingsQualityScores);
 
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>>>
-                result = sorter.getSortedSourcesAndReadings();
+        final var result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(result.size(), numSources);
 
-        for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>>
-                    sourceWithQualityScore = result.get(i);
+        for (var i = 0; i < numSources; i++) {
+            final var sourceWithQualityScore = result.get(i);
             assertSame(sourceWithQualityScore.source, sources.get(i));
             assertEquals(sourceWithQualityScore.qualityScore, sourceQualityScoreValue, 0.0);
 
-            double previousReadingQuality = Double.MAX_VALUE;
-            for (int j = 0; j < numReadings; j++) {
-                final ReadingSorter.ReadingWithQualityScore<RangingAndRssiReading<WifiAccessPoint>>
-                        readingWithQualityScore = sourceWithQualityScore.readingsWithQualityScores.get(j);
+            var previousReadingQuality = Double.MAX_VALUE;
+            for (var j = 0; j < numReadings; j++) {
+                final var readingWithQualityScore = sourceWithQualityScore.readingsWithQualityScores.get(j);
                 assertTrue(previousReadingQuality >= readingWithQualityScore.qualityScore);
                 previousReadingQuality = readingWithQualityScore.qualityScore;
             }
@@ -1197,58 +1088,52 @@ public class ReadingSorterTest {
     }
 
     @Test
-    public void testSortMultipleSourcesRssiReadingsSameSourceQualityScoresDifferentReadingQualityScores() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-        final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+    void testSortMultipleSourcesRssiReadingsSameSourceQualityScoresDifferentReadingQualityScores() {
+        final var randomizer = new UniformRandomizer();
+        final var numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+        final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
 
-        final double[] sourceQualityScores = new double[numSources];
-        final double[] readingsQualityScores = new double[numSources * numReadings];
-        final double sourceQualityScoreValue = randomizer.nextDouble();
+        final var sourceQualityScores = new double[numSources];
+        final var readingsQualityScores = new double[numSources * numReadings];
+        final var sourceQualityScoreValue = randomizer.nextDouble();
 
-        final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-        final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-        int k = 0;
-        for (int i = 0; i < numSources; i++) {
-            final WifiAccessPointLocated2D accessPoint = new WifiAccessPointLocated2D(
-                    "id" + i, FREQUENCY, new InhomogeneousPoint2D());
+        final var sources = new ArrayList<WifiAccessPointLocated2D>();
+        final var readings = new ArrayList<RssiReading<WifiAccessPoint>>();
+        var k = 0;
+        for (var i = 0; i < numSources; i++) {
+            final var accessPoint = new WifiAccessPointLocated2D("id" + i, FREQUENCY, new InhomogeneousPoint2D());
             sources.add(accessPoint);
             sourceQualityScores[i] = sourceQualityScoreValue;
 
-            for (int j = 0; j < numReadings; j++) {
-                final double rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-                readings.add(new RssiReading<WifiAccessPoint>(accessPoint, rssi));
+            for (var j = 0; j < numReadings; j++) {
+                final var rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+                readings.add(new RssiReading<>(accessPoint, rssi));
 
                 readingsQualityScores[k] = randomizer.nextDouble();
                 k++;
             }
         }
 
-        final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
-                new RssiFingerprint<>();
+        final var fingerprint = new RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>>();
         fingerprint.setReadings(readings);
 
-        final ReadingSorter<Point2D, RssiReading<WifiAccessPoint>> sorter = new ReadingSorter<>(
-                sources, fingerprint, sourceQualityScores, readingsQualityScores);
+        final var sorter = new ReadingSorter<>(sources, fingerprint, sourceQualityScores, readingsQualityScores);
 
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RssiReading<WifiAccessPoint>>> result =
-                sorter.getSortedSourcesAndReadings();
+        final var result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(result.size(), numSources);
 
-        for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RssiReading<WifiAccessPoint>>
-                    sourceWithQualityScore = result.get(i);
+        for (var i = 0; i < numSources; i++) {
+            final var sourceWithQualityScore = result.get(i);
             assertSame(sourceWithQualityScore.source, sources.get(i));
             assertEquals(sourceWithQualityScore.qualityScore, sourceQualityScoreValue, 0.0);
 
-            double previousReadingQuality = Double.MAX_VALUE;
-            for (int j = 0; j < numReadings; j++) {
-                final ReadingSorter.ReadingWithQualityScore<RssiReading<WifiAccessPoint>> readingWithQualityScore =
-                        sourceWithQualityScore.readingsWithQualityScores.get(j);
+            var previousReadingQuality = Double.MAX_VALUE;
+            for (var j = 0; j < numReadings; j++) {
+                final var readingWithQualityScore = sourceWithQualityScore.readingsWithQualityScores.get(j);
                 assertTrue(previousReadingQuality >= readingWithQualityScore.qualityScore);
                 previousReadingQuality = readingWithQualityScore.qualityScore;
             }
@@ -1256,30 +1141,29 @@ public class ReadingSorterTest {
     }
 
     @Test
-    public void testSortMultipleSourcesMixedReadingsSameSourceQualityScoresDifferentReadingQualityScores() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-        final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+    void testSortMultipleSourcesMixedReadingsSameSourceQualityScoresDifferentReadingQualityScores() {
+        final var randomizer = new UniformRandomizer();
+        final var numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+        final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
 
-        final double[] sourceQualityScores = new double[numSources];
-        final double[] readingsQualityScores = new double[3 * numSources * numReadings];
-        final double sourceQualityScoreValue = randomizer.nextDouble();
+        final var sourceQualityScores = new double[numSources];
+        final var readingsQualityScores = new double[3 * numSources * numReadings];
+        final var sourceQualityScoreValue = randomizer.nextDouble();
 
-        final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-        final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
-        int k = 0;
-        for (int i = 0; i < numSources; i++) {
-            final WifiAccessPointLocated2D accessPoint = new WifiAccessPointLocated2D(
-                    "id" + i, FREQUENCY, new InhomogeneousPoint2D());
+        final var sources = new ArrayList<WifiAccessPointLocated2D>();
+        final var readings = new ArrayList<Reading<WifiAccessPoint>>();
+        var k = 0;
+        for (var i = 0; i < numSources; i++) {
+            final var accessPoint = new WifiAccessPointLocated2D("id" + i, FREQUENCY, new InhomogeneousPoint2D());
             sources.add(accessPoint);
             sourceQualityScores[i] = sourceQualityScoreValue;
 
-            for (int j = 0; j < numReadings; j++) {
-                final double distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
-                final double rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-                readings.add(new RssiReading<WifiAccessPoint>(accessPoint, rssi));
-                readings.add(new RangingAndRssiReading<WifiAccessPoint>(accessPoint, distance, rssi));
-                readings.add(new RangingReading<WifiAccessPoint>(accessPoint, distance));
+            for (var j = 0; j < numReadings; j++) {
+                final var distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
+                final var rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+                readings.add(new RssiReading<>(accessPoint, rssi));
+                readings.add(new RangingAndRssiReading<>(accessPoint, distance, rssi));
+                readings.add(new RangingReading<>(accessPoint, distance));
 
                 readingsQualityScores[k] = randomizer.nextDouble();
                 k++;
@@ -1290,33 +1174,29 @@ public class ReadingSorterTest {
             }
         }
 
-        final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint = new Fingerprint<>();
+        final var fingerprint = new Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>>();
         fingerprint.setReadings(readings);
 
-        final ReadingSorter<Point2D, Reading<WifiAccessPoint>> sorter = new ReadingSorter<>(
-                sources, fingerprint, sourceQualityScores, readingsQualityScores);
+        final var sorter = new ReadingSorter<>(sources, fingerprint, sourceQualityScores, readingsQualityScores);
 
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, Reading<WifiAccessPoint>>> result =
-                sorter.getSortedSourcesAndReadings();
+        final var result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(result.size(), numSources);
 
-        for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, Reading<WifiAccessPoint>>
-                    sourceWithQualityScore = result.get(i);
+        for (var i = 0; i < numSources; i++) {
+            final var sourceWithQualityScore = result.get(i);
             assertSame(sourceWithQualityScore.source, sources.get(i));
             assertEquals(sourceWithQualityScore.qualityScore, sourceQualityScoreValue, 0.0);
 
-            double previousReadingQuality = Double.MAX_VALUE;
-            ReadingType previousType = ReadingType.RANGING_READING;
+            var previousReadingQuality = Double.MAX_VALUE;
+            var previousType = ReadingType.RANGING_READING;
             for (k = 0; k < 3 * numReadings; k++) {
-                final ReadingSorter.ReadingWithQualityScore<Reading<WifiAccessPoint>> readingWithQualityScore =
-                        sourceWithQualityScore.readingsWithQualityScores.get(k);
+                final var readingWithQualityScore = sourceWithQualityScore.readingsWithQualityScores.get(k);
 
-                final ReadingType type = readingWithQualityScore.reading.getType();
+                final var type = readingWithQualityScore.reading.getType();
                 if (type != previousType) {
                     // check correct order of type changes
                     if (type == ReadingType.RANGING_AND_RSSI_READING) {
@@ -1338,207 +1218,188 @@ public class ReadingSorterTest {
     }
 
     @Test
-    public void testSortMultipleSourcesRangingReadingsSameSourceQualityScoresSameReadingQualityScores() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-        final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+    void testSortMultipleSourcesRangingReadingsSameSourceQualityScoresSameReadingQualityScores() {
+        final var randomizer = new UniformRandomizer();
+        final var numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+        final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
 
-        final double[] sourceQualityScores = new double[numSources];
-        final double[] readingsQualityScores = new double[numSources * numReadings];
-        final double sourceQualityScoreValue = randomizer.nextDouble();
-        final double readingQualityScoreValue = randomizer.nextDouble();
+        final var sourceQualityScores = new double[numSources];
+        final var readingsQualityScores = new double[numSources * numReadings];
+        final var sourceQualityScoreValue = randomizer.nextDouble();
+        final var readingQualityScoreValue = randomizer.nextDouble();
 
-        final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-        final List<RangingReading<WifiAccessPoint>> readings = new ArrayList<>();
-        int k = 0;
-        for (int i = 0; i < numSources; i++) {
-            final WifiAccessPointLocated2D accessPoint = new WifiAccessPointLocated2D(
-                    "id" + i, FREQUENCY, new InhomogeneousPoint2D());
+        final var sources = new ArrayList<WifiAccessPointLocated2D>();
+        final var readings = new ArrayList<RangingReading<WifiAccessPoint>>();
+        var k = 0;
+        for (var i = 0; i < numSources; i++) {
+            final var accessPoint = new WifiAccessPointLocated2D("id" + i, FREQUENCY, new InhomogeneousPoint2D());
             sources.add(accessPoint);
             sourceQualityScores[i] = sourceQualityScoreValue;
 
-            for (int j = 0; j < numReadings; j++) {
-                final double distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
-                readings.add(new RangingReading<WifiAccessPoint>(accessPoint, distance));
+            for (var j = 0; j < numReadings; j++) {
+                final var distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
+                readings.add(new RangingReading<>(accessPoint, distance));
 
                 readingsQualityScores[k] = readingQualityScoreValue;
                 k++;
             }
         }
 
-        final RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
-                new RangingFingerprint<>();
+        final var fingerprint = new RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>>();
         fingerprint.setReadings(readings);
 
-        final ReadingSorter<Point2D, RangingReading<WifiAccessPoint>> sorter = new ReadingSorter<>(
-                sources, fingerprint, sourceQualityScores, readingsQualityScores);
+        final var sorter = new ReadingSorter<>(sources, fingerprint, sourceQualityScores, readingsQualityScores);
 
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingReading<WifiAccessPoint>>> result =
-                sorter.getSortedSourcesAndReadings();
+        final var result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(result.size(), numSources);
 
-        for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingReading<WifiAccessPoint>>
-                    sourceWithQualityScore = result.get(i);
+        for (var i = 0; i < numSources; i++) {
+            final var sourceWithQualityScore = result.get(i);
             assertSame(sourceWithQualityScore.source, sources.get(i));
-            assertEquals(sourceWithQualityScore.qualityScore, sourceQualityScoreValue,
-                    0.0);
+            assertEquals(sourceWithQualityScore.qualityScore, sourceQualityScoreValue, 0.0);
 
-            for (int j = 0; j < numReadings; j++) {
-                final ReadingSorter.ReadingWithQualityScore<RangingReading<WifiAccessPoint>> readingWithQualityScore =
-                        sourceWithQualityScore.readingsWithQualityScores.get(j);
+            for (var j = 0; j < numReadings; j++) {
+                final var readingWithQualityScore = sourceWithQualityScore.readingsWithQualityScores.get(j);
                 assertEquals(readingQualityScoreValue, readingWithQualityScore.qualityScore, 0.0);
             }
         }
     }
 
     @Test
-    public void testSortMultipleSourcesRangingAndRssiReadingsSameSourceQualityScoresSameReadingQualityScores() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-        final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+    void testSortMultipleSourcesRangingAndRssiReadingsSameSourceQualityScoresSameReadingQualityScores() {
+        final var randomizer = new UniformRandomizer();
+        final var numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+        final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
 
-        final double[] sourceQualityScores = new double[numSources];
-        final double[] readingsQualityScores = new double[numSources * numReadings];
-        final double sourceQualityScoreValue = randomizer.nextDouble();
-        final double readingQualityScoreValue = randomizer.nextDouble();
+        final var sourceQualityScores = new double[numSources];
+        final var readingsQualityScores = new double[numSources * numReadings];
+        final var sourceQualityScoreValue = randomizer.nextDouble();
+        final var readingQualityScoreValue = randomizer.nextDouble();
 
-        final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-        final List<RangingAndRssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-        int k = 0;
-        for (int i = 0; i < numSources; i++) {
-            final WifiAccessPointLocated2D accessPoint = new WifiAccessPointLocated2D(
-                    "id" + i, FREQUENCY, new InhomogeneousPoint2D());
+        final var sources = new ArrayList<WifiAccessPointLocated2D>();
+        final var readings = new ArrayList<RangingAndRssiReading<WifiAccessPoint>>();
+        var k = 0;
+        for (var i = 0; i < numSources; i++) {
+            final var accessPoint = new WifiAccessPointLocated2D("id" + i, FREQUENCY, new InhomogeneousPoint2D());
             sources.add(accessPoint);
             sourceQualityScores[i] = sourceQualityScoreValue;
 
-            for (int j = 0; j < numReadings; j++) {
-                final double distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
-                final double rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-                readings.add(new RangingAndRssiReading<WifiAccessPoint>(accessPoint, distance, rssi));
+            for (var j = 0; j < numReadings; j++) {
+                final var distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
+                final var rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+                readings.add(new RangingAndRssiReading<>(accessPoint, distance, rssi));
 
                 readingsQualityScores[k] = readingQualityScoreValue;
                 k++;
             }
         }
 
-        final RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>> fingerprint =
-                new RangingAndRssiFingerprint<>();
+        final var fingerprint =
+                new RangingAndRssiFingerprint<WifiAccessPoint, RangingAndRssiReading<WifiAccessPoint>>();
         fingerprint.setReadings(readings);
 
-        final ReadingSorter<Point2D, RangingAndRssiReading<WifiAccessPoint>> sorter = new ReadingSorter<>(
-                sources, fingerprint, sourceQualityScores, readingsQualityScores);
+        final var sorter = new ReadingSorter<>(sources, fingerprint, sourceQualityScores, readingsQualityScores);
 
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>>>
-                result = sorter.getSortedSourcesAndReadings();
+        final var result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(result.size(), numSources);
 
-        for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RangingAndRssiReading<WifiAccessPoint>>
-                    sourceWithQualityScore = result.get(i);
+        for (var i = 0; i < numSources; i++) {
+            final var sourceWithQualityScore = result.get(i);
             assertSame(sourceWithQualityScore.source, sources.get(i));
             assertEquals(sourceWithQualityScore.qualityScore, sourceQualityScoreValue, 0.0);
 
-            for (int j = 0; j < numReadings; j++) {
-                final ReadingSorter.ReadingWithQualityScore<RangingAndRssiReading<WifiAccessPoint>>
-                        readingWithQualityScore = sourceWithQualityScore.readingsWithQualityScores.get(j);
+            for (var j = 0; j < numReadings; j++) {
+                final var readingWithQualityScore = sourceWithQualityScore.readingsWithQualityScores.get(j);
                 assertEquals(readingQualityScoreValue, readingWithQualityScore.qualityScore, 0.0);
             }
         }
     }
 
     @Test
-    public void testSortMultipleSourcesRssiReadingsSameSourceQualityScoresSameReadingQualityScores() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-        final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+    void testSortMultipleSourcesRssiReadingsSameSourceQualityScoresSameReadingQualityScores() {
+        final var randomizer = new UniformRandomizer();
+        final var numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+        final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
 
-        final double[] sourceQualityScores = new double[numSources];
-        final double[] readingsQualityScores = new double[numSources * numReadings];
-        final double sourceQualityScoreValue = randomizer.nextDouble();
-        final double readingQualityScoreValue = randomizer.nextDouble();
+        final var sourceQualityScores = new double[numSources];
+        final var readingsQualityScores = new double[numSources * numReadings];
+        final var sourceQualityScoreValue = randomizer.nextDouble();
+        final var readingQualityScoreValue = randomizer.nextDouble();
 
-        final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-        final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-        int k = 0;
-        for (int i = 0; i < numSources; i++) {
-            final WifiAccessPointLocated2D accessPoint = new WifiAccessPointLocated2D(
-                    "id" + i, FREQUENCY, new InhomogeneousPoint2D());
+        final var sources = new ArrayList<WifiAccessPointLocated2D>();
+        final var readings = new ArrayList<RssiReading<WifiAccessPoint>>();
+        var k = 0;
+        for (var i = 0; i < numSources; i++) {
+            final var accessPoint = new WifiAccessPointLocated2D("id" + i, FREQUENCY, new InhomogeneousPoint2D());
             sources.add(accessPoint);
             sourceQualityScores[i] = sourceQualityScoreValue;
 
-            for (int j = 0; j < numReadings; j++) {
-                final double rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-                readings.add(new RssiReading<WifiAccessPoint>(accessPoint, rssi));
+            for (var j = 0; j < numReadings; j++) {
+                final var rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+                readings.add(new RssiReading<>(accessPoint, rssi));
 
                 readingsQualityScores[k] = readingQualityScoreValue;
                 k++;
             }
         }
 
-        final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
-                new RssiFingerprint<>();
+        final var fingerprint = new RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>>();
         fingerprint.setReadings(readings);
 
-        final ReadingSorter<Point2D, RssiReading<WifiAccessPoint>> sorter = new ReadingSorter<>(
-                sources, fingerprint, sourceQualityScores, readingsQualityScores);
+        final var sorter = new ReadingSorter<>(sources, fingerprint, sourceQualityScores, readingsQualityScores);
 
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RssiReading<WifiAccessPoint>>> result =
-                sorter.getSortedSourcesAndReadings();
+        final var result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(result.size(), numSources);
 
-        for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, RssiReading<WifiAccessPoint>>
-                    sourceWithQualityScore = result.get(i);
+        for (var i = 0; i < numSources; i++) {
+            final var sourceWithQualityScore = result.get(i);
             assertSame(sourceWithQualityScore.source, sources.get(i));
             assertEquals(sourceWithQualityScore.qualityScore, sourceQualityScoreValue, 0.0);
 
-            for (int j = 0; j < numReadings; j++) {
-                final ReadingSorter.ReadingWithQualityScore<RssiReading<WifiAccessPoint>> readingWithQualityScore =
-                        sourceWithQualityScore.readingsWithQualityScores.get(j);
+            for (var j = 0; j < numReadings; j++) {
+                final var readingWithQualityScore = sourceWithQualityScore.readingsWithQualityScores.get(j);
                 assertEquals(readingQualityScoreValue, readingWithQualityScore.qualityScore, 0.0);
             }
         }
     }
 
     @Test
-    public void testSortMultipleSourcesMixedReadingsSameSourceQualityScoresSameReadingQualityScores() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
-        final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+    void testSortMultipleSourcesMixedReadingsSameSourceQualityScoresSameReadingQualityScores() {
+        final var randomizer = new UniformRandomizer();
+        final var numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+        final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
 
-        final double[] sourceQualityScores = new double[numSources];
-        final double[] readingsQualityScores = new double[3 * numSources * numReadings];
-        final double sourceQualityScoreValue = randomizer.nextDouble();
-        final double readingQualityScoreValue = randomizer.nextDouble();
+        final var sourceQualityScores = new double[numSources];
+        final var readingsQualityScores = new double[3 * numSources * numReadings];
+        final var sourceQualityScoreValue = randomizer.nextDouble();
+        final var readingQualityScoreValue = randomizer.nextDouble();
 
-        final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-        final List<Reading<WifiAccessPoint>> readings = new ArrayList<>();
-        int k = 0;
-        for (int i = 0; i < numSources; i++) {
-            final WifiAccessPointLocated2D accessPoint = new WifiAccessPointLocated2D(
-                    "id" + i, FREQUENCY, new InhomogeneousPoint2D());
+        final var sources = new ArrayList<WifiAccessPointLocated2D>();
+        final var readings = new ArrayList<Reading<WifiAccessPoint>>();
+        var k = 0;
+        for (var i = 0; i < numSources; i++) {
+            final var accessPoint = new WifiAccessPointLocated2D("id" + i, FREQUENCY, new InhomogeneousPoint2D());
             sources.add(accessPoint);
             sourceQualityScores[i] = sourceQualityScoreValue;
 
-            for (int j = 0; j < numReadings; j++) {
-                final double distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
-                final double rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-                readings.add(new RssiReading<WifiAccessPoint>(accessPoint, rssi));
-                readings.add(new RangingAndRssiReading<WifiAccessPoint>(accessPoint, distance, rssi));
-                readings.add(new RangingReading<WifiAccessPoint>(accessPoint, distance));
+            for (var j = 0; j < numReadings; j++) {
+                final var distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
+                final var rssi = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+                readings.add(new RssiReading<>(accessPoint, rssi));
+                readings.add(new RangingAndRssiReading<>(accessPoint, distance, rssi));
+                readings.add(new RangingReading<>(accessPoint, distance));
 
                 readingsQualityScores[k] = readingQualityScoreValue;
                 k++;
@@ -1549,32 +1410,28 @@ public class ReadingSorterTest {
             }
         }
 
-        final Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>> fingerprint = new Fingerprint<>();
+        final var fingerprint = new Fingerprint<WifiAccessPoint, Reading<WifiAccessPoint>>();
         fingerprint.setReadings(readings);
 
-        final ReadingSorter<Point2D, Reading<WifiAccessPoint>> sorter = new ReadingSorter<>(
-                sources, fingerprint, sourceQualityScores, readingsQualityScores);
+        final var sorter = new ReadingSorter<>(sources, fingerprint, sourceQualityScores, readingsQualityScores);
 
         sorter.sort();
 
         // check order
-        final List<ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, Reading<WifiAccessPoint>>> result =
-                sorter.getSortedSourcesAndReadings();
+        final var result = sorter.getSortedSourcesAndReadings();
 
         assertEquals(result.size(), numSources);
 
-        for (int i = 0; i < numSources; i++) {
-            final ReadingSorter.RadioSourceSourceWithQualityScore<Point2D, Reading<WifiAccessPoint>>
-                    sourceWithQualityScore = result.get(i);
+        for (var i = 0; i < numSources; i++) {
+            final var sourceWithQualityScore = result.get(i);
             assertSame(sourceWithQualityScore.source, sources.get(i));
             assertEquals(sourceWithQualityScore.qualityScore, sourceQualityScoreValue, 0.0);
 
-            ReadingType previousType = ReadingType.RANGING_READING;
+            var previousType = ReadingType.RANGING_READING;
             for (k = 0; k < 3 * numReadings; k++) {
-                final ReadingSorter.ReadingWithQualityScore<Reading<WifiAccessPoint>> readingWithQualityScore =
-                        sourceWithQualityScore.readingsWithQualityScores.get(k);
+                final var readingWithQualityScore = sourceWithQualityScore.readingsWithQualityScores.get(k);
 
-                final ReadingType type = readingWithQualityScore.reading.getType();
+                final var type = readingWithQualityScore.reading.getType();
                 if (type != previousType) {
                     // check correct order of type changes
                     if (type == ReadingType.RANGING_AND_RSSI_READING) {
@@ -1588,8 +1445,7 @@ public class ReadingSorterTest {
                     previousType = readingWithQualityScore.reading.getType();
                 }
 
-                assertEquals(readingQualityScoreValue,
-                        readingWithQualityScore.qualityScore, 0.0);
+                assertEquals(readingQualityScoreValue, readingWithQualityScore.qualityScore, 0.0);
             }
         }
     }

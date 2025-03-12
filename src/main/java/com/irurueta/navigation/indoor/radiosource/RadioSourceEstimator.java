@@ -39,13 +39,13 @@ public abstract class RadioSourceEstimator<P extends Point<?>, R extends Reading
     /**
      * Estimated position.
      */
-    protected double[] mEstimatedPositionCoordinates;
+    protected double[] estimatedPositionCoordinates;
 
     /**
      * Covariance of estimated parameters (position, transmitted power and path-loss exponent).
      * Size of this matrix will depend on which parameters estimation is enabled.
      */
-    protected Matrix mEstimatedCovariance;
+    protected Matrix estimatedCovariance;
 
     /**
      * Covariance of estimated position.
@@ -53,23 +53,23 @@ public abstract class RadioSourceEstimator<P extends Point<?>, R extends Reading
      * of estimated position (either 2 or 3).
      * This value will only be available when position estimation is enabled.
      */
-    protected Matrix mEstimatedPositionCovariance;
+    protected Matrix estimatedPositionCovariance;
 
 
     /**
      * Located signal readings belonging to the same radio source to be estimated.
      */
-    protected List<? extends R> mReadings;
+    protected List<? extends R> readings;
 
     /**
      * Indicates whether estimator is locked during estimation.
      */
-    protected boolean mLocked;
+    protected boolean locked;
 
     /**
      * Listener in charge of attending events raised by this instance.
      */
-    protected L mListener;
+    protected L listener;
 
     /**
      * Constructor.
@@ -95,7 +95,7 @@ public abstract class RadioSourceEstimator<P extends Point<?>, R extends Reading
      * @param listener listener in charge of attending events raised by this instance.
      */
     protected RadioSourceEstimator(final L listener) {
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -106,10 +106,9 @@ public abstract class RadioSourceEstimator<P extends Point<?>, R extends Reading
      * @param listener listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if fingerprints are not valid.
      */
-    protected RadioSourceEstimator(
-            final List<? extends R> readings, final L listener) {
+    protected RadioSourceEstimator(final List<? extends R> readings, final L listener) {
         this(readings);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -118,7 +117,7 @@ public abstract class RadioSourceEstimator<P extends Point<?>, R extends Reading
      * @return true if estimator is locked, false otherwise.
      */
     public boolean isLocked() {
-        return mLocked;
+        return locked;
     }
 
     /**
@@ -128,7 +127,7 @@ public abstract class RadioSourceEstimator<P extends Point<?>, R extends Reading
      */
     public List<R> getReadings() {
         //noinspection unchecked
-        return (List<R>) mReadings;
+        return (List<R>) readings;
     }
 
     /**
@@ -152,7 +151,7 @@ public abstract class RadioSourceEstimator<P extends Point<?>, R extends Reading
      * @return listener in charge of attending events raised by this instance.
      */
     public L getListener() {
-        return mListener;
+        return listener;
     }
 
     /**
@@ -167,7 +166,7 @@ public abstract class RadioSourceEstimator<P extends Point<?>, R extends Reading
             throw new LockedException();
         }
 
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -178,7 +177,6 @@ public abstract class RadioSourceEstimator<P extends Point<?>, R extends Reading
      * @return true if readings are valid, false otherwise.
      */
     public boolean areValidReadings(final List<? extends R> readings) {
-
         return readings != null && readings.size() >= getMinReadings();
     }
 
@@ -188,7 +186,7 @@ public abstract class RadioSourceEstimator<P extends Point<?>, R extends Reading
      * @return estimated inhomogeneous position coordinates.
      */
     public double[] getEstimatedPositionCoordinates() {
-        return mEstimatedPositionCoordinates;
+        return estimatedPositionCoordinates;
     }
 
     /**
@@ -197,10 +195,9 @@ public abstract class RadioSourceEstimator<P extends Point<?>, R extends Reading
      * @param estimatedPosition instance where estimated position will be stored.
      */
     public void getEstimatedPosition(final P estimatedPosition) {
-        if (mEstimatedPositionCoordinates != null) {
-            for (int i = 0; i < mEstimatedPositionCoordinates.length; i++) {
-                estimatedPosition.setInhomogeneousCoordinate(i,
-                        mEstimatedPositionCoordinates[i]);
+        if (estimatedPositionCoordinates != null) {
+            for (int i = 0; i < estimatedPositionCoordinates.length; i++) {
+                estimatedPosition.setInhomogeneousCoordinate(i, estimatedPositionCoordinates[i]);
             }
         }
     }
@@ -215,7 +212,7 @@ public abstract class RadioSourceEstimator<P extends Point<?>, R extends Reading
      * @return covariance for estimated parameters.
      */
     public Matrix getEstimatedCovariance() {
-        return mEstimatedCovariance;
+        return estimatedCovariance;
     }
 
     /**
@@ -227,7 +224,7 @@ public abstract class RadioSourceEstimator<P extends Point<?>, R extends Reading
      * @return estimated position covariance or null.
      */
     public Matrix getEstimatedPositionCovariance() {
-        return mEstimatedPositionCovariance;
+        return estimatedPositionCovariance;
     }
 
     /**
@@ -277,8 +274,7 @@ public abstract class RadioSourceEstimator<P extends Point<?>, R extends Reading
      * @throws NotReadyException              if estimator is not ready.
      * @throws LockedException                if estimator is locked.
      */
-    public abstract void estimate() throws RadioSourceEstimationException, NotReadyException,
-            LockedException;
+    public abstract void estimate() throws RadioSourceEstimationException, NotReadyException, LockedException;
 
     /**
      * Internally sets radio signal readings belonging to the same radio source.
@@ -292,6 +288,6 @@ public abstract class RadioSourceEstimator<P extends Point<?>, R extends Reading
             throw new IllegalArgumentException();
         }
 
-        mReadings = readings;
+        this.readings = readings;
     }
 }

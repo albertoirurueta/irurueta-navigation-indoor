@@ -36,8 +36,7 @@ import java.util.List;
  * @param <R> a {@link ReadingLocated} type.
  * @param <L> a {@link RobustRadioSourceEstimatorListener} type.
  */
-public abstract class RobustRadioSourceEstimator<P extends Point<?>,
-        R extends ReadingLocated<P>,
+public abstract class RobustRadioSourceEstimator<P extends Point<?>, R extends ReadingLocated<P>,
         L extends RobustRadioSourceEstimatorListener<? extends RobustRadioSourceEstimator<?, ?, ?>>> {
 
     /**
@@ -101,66 +100,66 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
     /**
      * Signal readings belonging to the same radio source to be estimated.
      */
-    protected List<? extends R> mReadings;
+    protected List<? extends R> readings;
 
     /**
      * Listener to be notified of events such as when estimation starts, ends or its
      * progress significantly changes.
      */
-    protected L mListener;
+    protected L listener;
 
     /**
      * Estimated position.
      */
-    protected P mEstimatedPosition;
+    protected P estimatedPosition;
 
     /**
      * Indicates if this instance is locked because estimation is being executed.
      */
-    protected boolean mLocked;
+    protected boolean locked;
 
     /**
      * Amount of progress variation before notifying a progress change during estimation.
      */
-    protected float mProgressDelta = DEFAULT_PROGRESS_DELTA;
+    protected float progressDelta = DEFAULT_PROGRESS_DELTA;
 
     /**
      * Amount of confidence expressed as a value between 0.0 and 1.0 (which is equivalent
      * to 100%). The amount of confidence indicates the probability that the estimated
      * result is correct. Usually this value will be close to 1.0, but not exactly 1.0.
      */
-    protected double mConfidence = DEFAULT_CONFIDENCE;
+    protected double confidence = DEFAULT_CONFIDENCE;
 
     /**
      * Maximum allowed number of iterations. When the maximum number of iterations is
      * exceeded, result will not be available, however an approximate result will be
      * available for retrieval.
      */
-    protected int mMaxIterations = DEFAULT_MAX_ITERATIONS;
+    protected int maxIterations = DEFAULT_MAX_ITERATIONS;
 
     /**
      * Data related to inliers found after estimation.
      */
-    protected InliersData mInliersData;
+    protected InliersData inliersData;
 
     /**
      * Indicates whether result must be refined using found inliers.
      * If true, inliers will be computed and kept in any implementation regardless of the
      * settings.
      */
-    protected boolean mRefineResult = DEFAULT_REFINE_RESULT;
+    protected boolean refineResult = DEFAULT_REFINE_RESULT;
 
     /**
      * Indicates whether covariance must be kept after refining result.
      * This setting is only taken into account if result is refined.
      */
-    protected boolean mKeepCovariance = DEFAULT_KEEP_COVARIANCE;
+    protected boolean keepCovariance = DEFAULT_KEEP_COVARIANCE;
 
     /**
      * Covariance of estimated position, power and/or path-loss exponent.
      * This is only available when result has been refined and covariance is kept.
      */
-    protected Matrix mCovariance;
+    protected Matrix covariance;
 
     /**
      * Covariance of estimated position.
@@ -168,12 +167,12 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
      * of estimated position (either 2 or 3).
      * This value will only be available when position estimation is enabled.
      */
-    protected Matrix mEstimatedPositionCovariance;
+    protected Matrix estimatedPositionCovariance;
 
     /**
      * Size of subsets to be checked during robust estimation.
      */
-    protected int mPreliminarySubsetSize;
+    protected int preliminarySubsetSize;
 
     /**
      * Constructor.
@@ -199,7 +198,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
      * @param listener listener in charge of attending events raised by this instance.
      */
     protected RobustRadioSourceEstimator(final L listener) {
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -211,10 +210,9 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
      * @param listener listener in charge of attending events raised by this instance.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    protected RobustRadioSourceEstimator(
-            final List<? extends R> readings, final L listener) {
+    protected RobustRadioSourceEstimator(final List<? extends R> readings, final L listener) {
         this(readings);
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -223,7 +221,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
      * @return true if estimator is locked, false otherwise.
      */
     public boolean isLocked() {
-        return mLocked;
+        return locked;
     }
 
     /**
@@ -234,7 +232,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
      * estimation.
      */
     public float getProgressDelta() {
-        return mProgressDelta;
+        return progressDelta;
     }
 
     /**
@@ -250,11 +248,10 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
         if (isLocked()) {
             throw new LockedException();
         }
-        if (progressDelta < MIN_PROGRESS_DELTA ||
-                progressDelta > MAX_PROGRESS_DELTA) {
+        if (progressDelta < MIN_PROGRESS_DELTA || progressDelta > MAX_PROGRESS_DELTA) {
             throw new IllegalArgumentException();
         }
-        mProgressDelta = progressDelta;
+        this.progressDelta = progressDelta;
     }
 
     /**
@@ -266,7 +263,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
      * @return amount of confidence as a value between 0.0 and 1.0.
      */
     public double getConfidence() {
-        return mConfidence;
+        return confidence;
     }
 
     /**
@@ -286,7 +283,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
         if (confidence < MIN_CONFIDENCE || confidence > MAX_CONFIDENCE) {
             throw new IllegalArgumentException();
         }
-        mConfidence = confidence;
+        this.confidence = confidence;
     }
 
     /**
@@ -297,7 +294,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
      * @return maximum allowed number of iterations.
      */
     public int getMaxIterations() {
-        return mMaxIterations;
+        return maxIterations;
     }
 
     /**
@@ -316,7 +313,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
         if (maxIterations < MIN_ITERATIONS) {
             throw new IllegalArgumentException();
         }
-        mMaxIterations = maxIterations;
+        this.maxIterations = maxIterations;
     }
 
     /**
@@ -325,7 +322,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
      * @return data related to inliers found after estimation.
      */
     public InliersData getInliersData() {
-        return mInliersData;
+        return inliersData;
     }
 
     /**
@@ -335,7 +332,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
      * without further refining.
      */
     public boolean isResultRefined() {
-        return mRefineResult;
+        return refineResult;
     }
 
     /**
@@ -349,7 +346,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
         if (isLocked()) {
             throw new LockedException();
         }
-        mRefineResult = refineResult;
+        this.refineResult = refineResult;
     }
 
     /**
@@ -359,7 +356,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
      * @return true if covariance must be kept after refining result, false otherwise.
      */
     public boolean isCovarianceKept() {
-        return mKeepCovariance;
+        return keepCovariance;
     }
 
     /**
@@ -374,7 +371,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
         if (isLocked()) {
             throw new LockedException();
         }
-        mKeepCovariance = keepCovariance;
+        this.keepCovariance = keepCovariance;
     }
 
     /**
@@ -384,7 +381,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
      */
     public List<R> getReadings() {
         //noinspection unchecked
-        return (List<R>) mReadings;
+        return (List<R>) readings;
     }
 
     /**
@@ -395,8 +392,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
      * @throws LockedException          if estimator is locked.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public void setReadings(final List<? extends R> readings)
-            throws LockedException {
+    public void setReadings(final List<? extends R> readings) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
@@ -410,7 +406,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
      * @return listener in charge of attending events raised by this instance.
      */
     public L getListener() {
-        return mListener;
+        return listener;
     }
 
     /**
@@ -425,7 +421,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
             throw new LockedException();
         }
 
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -455,8 +451,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
      * @throws LockedException          if robust solver is locked because an
      *                                  estimation is already in progress.
      */
-    public void setQualityScores(final double[] qualityScores)
-            throws LockedException {
+    public void setQualityScores(final double[] qualityScores) throws LockedException {
     }
 
     /**
@@ -466,7 +461,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
      * @return size of subsets to be checked during robust estimation.
      */
     public int getPreliminarySubsetSize() {
-        return mPreliminarySubsetSize;
+        return preliminarySubsetSize;
     }
 
     /**
@@ -477,8 +472,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
      * @throws LockedException          if instance is busy solving the lateration problem.
      * @throws IllegalArgumentException if provided value is less than {@link #getMinReadings()}.
      */
-    public void setPreliminarySubsetSize(final int preliminarySubsetSize)
-            throws LockedException {
+    public void setPreliminarySubsetSize(final int preliminarySubsetSize) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
@@ -486,7 +480,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
             throw new IllegalArgumentException();
         }
 
-        mPreliminarySubsetSize = preliminarySubsetSize;
+        this.preliminarySubsetSize = preliminarySubsetSize;
     }
 
     /**
@@ -500,7 +494,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
      * @return covariance for estimated position and power.
      */
     public Matrix getCovariance() {
-        return mCovariance;
+        return covariance;
     }
 
     /**
@@ -512,7 +506,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
      * @return estimated position covariance.
      */
     public Matrix getEstimatedPositionCovariance() {
-        return mEstimatedPositionCovariance;
+        return estimatedPositionCovariance;
     }
 
     /**
@@ -521,7 +515,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
      * @return estimated position.
      */
     public P getEstimatedPosition() {
-        return mEstimatedPosition;
+        return estimatedPosition;
     }
 
     /**
@@ -569,8 +563,7 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
      * @throws RobustEstimatorException if estimation fails for any reason
      *                                  (i.e. numerical instability, no solution available, etc).
      */
-    public abstract void estimate() throws LockedException, NotReadyException,
-            RobustEstimatorException;
+    public abstract void estimate() throws LockedException, NotReadyException, RobustEstimatorException;
 
     /**
      * Gets estimated located radio source.
@@ -592,6 +585,6 @@ public abstract class RobustRadioSourceEstimator<P extends Point<?>,
             throw new IllegalArgumentException();
         }
 
-        mReadings = readings;
+        this.readings = readings;
     }
 }

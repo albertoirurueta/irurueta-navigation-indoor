@@ -24,18 +24,18 @@ import com.irurueta.geometry.Point;
  *
  * @param <P> a {@link Point} type.
  */
-public class WifiAccessPointWithPowerAndLocated<P extends Point<?>>
-        extends WifiAccessPointWithPower implements RadioSourceWithPowerAndLocated<P> {
+public class WifiAccessPointWithPowerAndLocated<P extends Point<?>> extends WifiAccessPointWithPower implements
+        RadioSourceWithPowerAndLocated<P> {
 
     /**
      * Position where access point is located.
      */
-    private P mPosition;
+    private P position;
 
     /**
      * Covariance of inhomogeneous coordinates of current position (if available).
      */
-    private Matrix mPositionCovariance;
+    private Matrix positionCovariance;
 
     /**
      * Constructor.
@@ -48,15 +48,14 @@ public class WifiAccessPointWithPowerAndLocated<P extends Point<?>>
      * @throws IllegalArgumentException if BSSID is null or frequency is negative.
      */
     public WifiAccessPointWithPowerAndLocated(
-            final String bssid, final double frequency,
-            final double transmittedPower, final P position) {
+            final String bssid, final double frequency, final double transmittedPower, final P position) {
         super(bssid, frequency, transmittedPower);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -71,15 +70,15 @@ public class WifiAccessPointWithPowerAndLocated<P extends Point<?>>
      * @throws IllegalArgumentException if BSSID is null or frequency is negative.
      */
     public WifiAccessPointWithPowerAndLocated(
-            final String bssid, final double frequency, final String ssid,
-            final double transmittedPower, final P position) {
+            final String bssid, final double frequency, final String ssid, final double transmittedPower,
+            final P position) {
         super(bssid, frequency, ssid, transmittedPower);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -96,18 +95,15 @@ public class WifiAccessPointWithPowerAndLocated<P extends Point<?>>
      *                                  or transmitted power standard deviation is negative.
      */
     public WifiAccessPointWithPowerAndLocated(
-            final String bssid, final double frequency,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final P position) {
-        super(bssid, frequency, transmittedPower,
-                transmittedPowerStandardDeviation);
+            final String bssid, final double frequency, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final P position) {
+        super(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -125,18 +121,15 @@ public class WifiAccessPointWithPowerAndLocated<P extends Point<?>>
      *                                  or transmitted power standard deviation is negative.
      */
     public WifiAccessPointWithPowerAndLocated(
-            final String bssid, final double frequency, final String ssid,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final P position) {
-        super(bssid, frequency, ssid, transmittedPower,
-                transmittedPowerStandardDeviation);
+            final String bssid, final double frequency, final String ssid, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final P position) {
+        super(bssid, frequency, ssid, transmittedPower, transmittedPowerStandardDeviation);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -153,17 +146,15 @@ public class WifiAccessPointWithPowerAndLocated<P extends Point<?>>
      *                                  covariance has invalid size.
      */
     public WifiAccessPointWithPowerAndLocated(
-            final String bssid, final double frequency,
-            final double transmittedPower,
-            final P position, final Matrix positionCovariance) {
+            final String bssid, final double frequency, final double transmittedPower, final P position,
+            final Matrix positionCovariance) {
         this(bssid, frequency, transmittedPower, position);
 
-        if (positionCovariance != null &&
-                (positionCovariance.getRows() != position.getDimensions() ||
-                        positionCovariance.getColumns() != position.getDimensions())) {
+        if (positionCovariance != null && (positionCovariance.getRows() != position.getDimensions()
+                || positionCovariance.getColumns() != position.getDimensions())) {
             throw new IllegalArgumentException();
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -181,17 +172,15 @@ public class WifiAccessPointWithPowerAndLocated<P extends Point<?>>
      *                                  or covariance has invalid size.
      */
     public WifiAccessPointWithPowerAndLocated(
-            final String bssid, final double frequency, final String ssid,
-            final double transmittedPower, final P position,
-            final Matrix positionCovariance) {
+            final String bssid, final double frequency, final String ssid, final double transmittedPower,
+            final P position, final Matrix positionCovariance) {
         this(bssid, frequency, ssid, transmittedPower, position);
 
-        if (positionCovariance != null &&
-                (positionCovariance.getRows() != position.getDimensions() ||
-                        positionCovariance.getColumns() != position.getDimensions())) {
+        if (positionCovariance != null && (positionCovariance.getRows() != position.getDimensions()
+                || positionCovariance.getColumns() != position.getDimensions())) {
             throw new IllegalArgumentException();
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -210,20 +199,15 @@ public class WifiAccessPointWithPowerAndLocated<P extends Point<?>>
      *                                  transmitted power standard deviation is negative or covariance is invalid size.
      */
     public WifiAccessPointWithPowerAndLocated(
-            final String bssid, final double frequency,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final P position,
-            final Matrix positionCovariance) {
-        this(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation,
-                position);
+            final String bssid, final double frequency, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final P position, final Matrix positionCovariance) {
+        this(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation, position);
 
-        if (positionCovariance != null &&
-                (positionCovariance.getRows() != position.getDimensions() ||
-                        positionCovariance.getColumns() != position.getDimensions())) {
+        if (positionCovariance != null && (positionCovariance.getRows() != position.getDimensions()
+                || positionCovariance.getColumns() != position.getDimensions())) {
             throw new IllegalArgumentException();
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -243,20 +227,15 @@ public class WifiAccessPointWithPowerAndLocated<P extends Point<?>>
      *                                  transmitted power standard deviation is negative or covariance has invalid size.
      */
     public WifiAccessPointWithPowerAndLocated(
-            final String bssid, final double frequency, final String ssid,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final P position,
-            final Matrix positionCovariance) {
-        this(bssid, frequency, ssid, transmittedPower,
-                transmittedPowerStandardDeviation, position);
+            final String bssid, final double frequency, final String ssid, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final P position, final Matrix positionCovariance) {
+        this(bssid, frequency, ssid, transmittedPower, transmittedPowerStandardDeviation, position);
 
-        if (positionCovariance != null &&
-                (positionCovariance.getRows() != position.getDimensions() ||
-                        positionCovariance.getColumns() != position.getDimensions())) {
+        if (positionCovariance != null && (positionCovariance.getRows() != position.getDimensions()
+                || positionCovariance.getColumns() != position.getDimensions())) {
             throw new IllegalArgumentException();
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -271,9 +250,7 @@ public class WifiAccessPointWithPowerAndLocated<P extends Point<?>>
      * @throws IllegalArgumentException if either BSSID is null or frequency is negative
      */
     public WifiAccessPointWithPowerAndLocated(
-            final String bssid, final double frequency,
-            final double transmittedPower,
-            final double pathLossExponent,
+            final String bssid, final double frequency, final double transmittedPower, final double pathLossExponent,
             final P position) {
         super(bssid, frequency, transmittedPower, pathLossExponent);
 
@@ -281,7 +258,7 @@ public class WifiAccessPointWithPowerAndLocated<P extends Point<?>>
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -299,19 +276,16 @@ public class WifiAccessPointWithPowerAndLocated<P extends Point<?>>
      *                                  or transmitted power standard deviation is negative.
      */
     public WifiAccessPointWithPowerAndLocated(
-            final String bssid, final double frequency,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final double pathLossExponent,
+            final String bssid, final double frequency, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final double pathLossExponent,
             final P position) {
-        super(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation,
-                pathLossExponent);
+        super(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -330,18 +304,15 @@ public class WifiAccessPointWithPowerAndLocated<P extends Point<?>>
      *                                  or transmitted power standard deviation is negative.
      */
     public WifiAccessPointWithPowerAndLocated(
-            final String bssid, final double frequency, final String ssid,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final double pathLossExponent, final P position) {
-        super(bssid, frequency, ssid, transmittedPower,
-                transmittedPowerStandardDeviation, pathLossExponent);
+            final String bssid, final double frequency, final String ssid, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final double pathLossExponent, final P position) {
+        super(bssid, frequency, ssid, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -359,19 +330,15 @@ public class WifiAccessPointWithPowerAndLocated<P extends Point<?>>
      *                                  or covariance has invalid size.
      */
     public WifiAccessPointWithPowerAndLocated(
-            final String bssid, final double frequency,
-            final double transmittedPower,
-            final double pathLossExponent,
-            final P position,
-            final Matrix positionCovariance) {
+            final String bssid, final double frequency, final double transmittedPower, final double pathLossExponent,
+            final P position, final Matrix positionCovariance) {
         this(bssid, frequency, transmittedPower, pathLossExponent, position);
 
-        if (positionCovariance != null &&
-                (positionCovariance.getRows() != position.getDimensions() ||
-                        positionCovariance.getColumns() != position.getDimensions())) {
+        if (positionCovariance != null && (positionCovariance.getRows() != position.getDimensions()
+                || positionCovariance.getColumns() != position.getDimensions())) {
             throw new IllegalArgumentException();
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -391,21 +358,16 @@ public class WifiAccessPointWithPowerAndLocated<P extends Point<?>>
      *                                  transmitted power standard deviation is negative or covariance has invalid size.
      */
     public WifiAccessPointWithPowerAndLocated(
-            final String bssid, final double frequency,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final double pathLossExponent,
-            final P position,
+            final String bssid, final double frequency, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final double pathLossExponent, final P position,
             final Matrix positionCovariance) {
-        this(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation,
-                pathLossExponent, position);
+        this(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent, position);
 
-        if (positionCovariance != null &&
-                (positionCovariance.getRows() != position.getDimensions() ||
-                        positionCovariance.getColumns() != position.getDimensions())) {
+        if (positionCovariance != null && (positionCovariance.getRows() != position.getDimensions()
+                || positionCovariance.getColumns() != position.getDimensions())) {
             throw new IllegalArgumentException();
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -426,21 +388,16 @@ public class WifiAccessPointWithPowerAndLocated<P extends Point<?>>
      *                                  transmitted power standard deviation is negative or covariance has invalid size.
      */
     public WifiAccessPointWithPowerAndLocated(
-            final String bssid, final double frequency, final String ssid,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final double pathLossExponent,
-            final P position,
+            final String bssid, final double frequency, final String ssid, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final double pathLossExponent, final P position,
             final Matrix positionCovariance) {
-        this(bssid, frequency, ssid, transmittedPower,
-                transmittedPowerStandardDeviation, pathLossExponent, position);
+        this(bssid, frequency, ssid, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent, position);
 
-        if (positionCovariance != null &&
-                (positionCovariance.getRows() != position.getDimensions() ||
-                        positionCovariance.getColumns() != position.getDimensions())) {
+        if (positionCovariance != null && (positionCovariance.getRows() != position.getDimensions()
+                || positionCovariance.getColumns() != position.getDimensions())) {
             throw new IllegalArgumentException();
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -460,20 +417,17 @@ public class WifiAccessPointWithPowerAndLocated<P extends Point<?>>
      *                                  or any standard deviation is negative.
      */
     public WifiAccessPointWithPowerAndLocated(
-            final String bssid, final double frequency,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final double pathLossExponent,
-            final Double pathLossExponentStandardDeviation,
-            final P position) {
-        super(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation,
-                pathLossExponent, pathLossExponentStandardDeviation);
+            final String bssid, final double frequency, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final double pathLossExponent,
+            final Double pathLossExponentStandardDeviation, final P position) {
+        super(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent,
+                pathLossExponentStandardDeviation);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -494,21 +448,17 @@ public class WifiAccessPointWithPowerAndLocated<P extends Point<?>>
      *                                  or any standard deviation is negative.
      */
     public WifiAccessPointWithPowerAndLocated(
-            final String bssid, final double frequency, final String ssid,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final double pathLossExponent,
-            final Double pathLossExponentStandardDeviation,
-            final P position) {
-        super(bssid, frequency, ssid, transmittedPower,
-                transmittedPowerStandardDeviation, pathLossExponent,
+            final String bssid, final double frequency, final String ssid, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final double pathLossExponent,
+            final Double pathLossExponentStandardDeviation, final P position) {
+        super(bssid, frequency, ssid, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent,
                 pathLossExponentStandardDeviation);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -530,22 +480,18 @@ public class WifiAccessPointWithPowerAndLocated<P extends Point<?>>
      *                                  any standard deviation is negative or covariance has invalid size.
      */
     public WifiAccessPointWithPowerAndLocated(
-            final String bssid, final double frequency,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final double pathLossExponent,
-            final Double pathLossExponentStandardDeviation,
-            final P position,
+            final String bssid, final double frequency, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final double pathLossExponent,
+            final Double pathLossExponentStandardDeviation, final P position,
             final Matrix positionCovariance) {
-        this(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation,
-                pathLossExponent, pathLossExponentStandardDeviation, position);
+        this(bssid, frequency, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent,
+                pathLossExponentStandardDeviation, position);
 
-        if (positionCovariance != null &&
-                (positionCovariance.getRows() != position.getDimensions() ||
-                        positionCovariance.getColumns() != position.getDimensions())) {
+        if (positionCovariance != null && (positionCovariance.getRows() != position.getDimensions()
+                || positionCovariance.getColumns() != position.getDimensions())) {
             throw new IllegalArgumentException();
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -568,23 +514,17 @@ public class WifiAccessPointWithPowerAndLocated<P extends Point<?>>
      *                                  any standard deviation is negative or covariance has invalid size.
      */
     public WifiAccessPointWithPowerAndLocated(
-            final String bssid, final double frequency, final String ssid,
-            final double transmittedPower,
-            final Double transmittedPowerStandardDeviation,
-            final double pathLossExponent,
-            final Double pathLossExponentStandardDeviation,
-            final P position,
-            final Matrix positionCovariance) {
-        this(bssid, frequency, ssid, transmittedPower,
-                transmittedPowerStandardDeviation, pathLossExponent,
+            final String bssid, final double frequency, final String ssid, final double transmittedPower,
+            final Double transmittedPowerStandardDeviation, final double pathLossExponent,
+            final Double pathLossExponentStandardDeviation, final P position, final Matrix positionCovariance) {
+        this(bssid, frequency, ssid, transmittedPower, transmittedPowerStandardDeviation, pathLossExponent,
                 pathLossExponentStandardDeviation, position);
 
-        if (positionCovariance != null &&
-                (positionCovariance.getRows() != position.getDimensions() ||
-                        positionCovariance.getColumns() != position.getDimensions())) {
+        if (positionCovariance != null && (positionCovariance.getRows() != position.getDimensions()
+                || positionCovariance.getColumns() != position.getDimensions())) {
             throw new IllegalArgumentException();
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -600,7 +540,7 @@ public class WifiAccessPointWithPowerAndLocated<P extends Point<?>>
      * @return position where access point is located.
      */
     public P getPosition() {
-        return mPosition;
+        return position;
     }
 
     /**
@@ -609,6 +549,6 @@ public class WifiAccessPointWithPowerAndLocated<P extends Point<?>>
      * @return covariance of position or null.
      */
     public Matrix getPositionCovariance() {
-        return mPositionCovariance;
+        return positionCovariance;
     }
 }

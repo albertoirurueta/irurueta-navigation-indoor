@@ -19,20 +19,20 @@ import com.irurueta.algebra.AlgebraException;
 import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.geometry.InhomogeneousPoint3D;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class RssiReadingLocated3DTest {
+class RssiReadingLocated3DTest {
 
     private static final double FREQUENCY = 2.4e9;
 
     @Test
-    public void testConstructor() throws AlgebraException {
+    void testConstructor() throws AlgebraException {
         // test empty constructor
-        RssiReadingLocated3D<WifiAccessPoint> reading = new RssiReadingLocated3D<>();
+        var reading = new RssiReadingLocated3D<WifiAccessPoint>();
 
         // check
         assertNull(reading.getPosition());
@@ -43,8 +43,8 @@ public class RssiReadingLocated3DTest {
         assertEquals(ReadingType.RSSI_READING, reading.getType());
 
         // test constructor with access point, rssi and position
-        final WifiAccessPoint ap = new WifiAccessPoint("bssid", FREQUENCY);
-        final InhomogeneousPoint3D position = new InhomogeneousPoint3D();
+        final var ap = new WifiAccessPoint("bssid", FREQUENCY);
+        final var position = new InhomogeneousPoint3D();
         reading = new RssiReadingLocated3D<>(ap, -50.0, position);
 
         // check
@@ -56,21 +56,11 @@ public class RssiReadingLocated3DTest {
         assertEquals(ReadingType.RSSI_READING, reading.getType());
 
         // Force IllegalArgumentException
-        reading = null;
-        try {
-            reading = new RssiReadingLocated3D<>(null, -50.0, position);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            reading = new RssiReadingLocated3D<>(ap, -50.0, null);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(reading);
+        assertThrows(IllegalArgumentException.class, () -> new RssiReadingLocated3D<>(null, -50.0,
+                position));
+        assertThrows(IllegalArgumentException.class, () -> new RssiReadingLocated3D<>(ap, -50.0, null));
 
-        // test constructor with access point, rssi, position and rssi standard
-        // deviation
+        // test constructor with access point, rssi, position and rssi standard deviation
         reading = new RssiReadingLocated3D<>(ap, -50.0, position, 5.5);
 
         // check
@@ -82,26 +72,15 @@ public class RssiReadingLocated3DTest {
         assertEquals(ReadingType.RSSI_READING, reading.getType());
 
         // Force IllegalArgumentException
-        reading = null;
-        try {
-            reading = new RssiReadingLocated3D<>(null, -50.0, position, 5.5);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            reading = new RssiReadingLocated3D<>(ap, -50.0, null, 5.5);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            reading = new RssiReadingLocated3D<>(ap, -50.0, position, 0.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(reading);
+        assertThrows(IllegalArgumentException.class, () -> new RssiReadingLocated3D<>(null, -50.0, position,
+                5.5));
+        assertThrows(IllegalArgumentException.class, () -> new RssiReadingLocated3D<>(ap, -50.0, null,
+                5.5));
+        assertThrows(IllegalArgumentException.class, () -> new RssiReadingLocated3D<>(ap, -50.0, position,
+                0.0));
 
         // test constructor with access point, rssi, position and covariance
-        final Matrix cov = new Matrix(3, 3);
+        final var cov = new Matrix(3, 3);
         reading = new RssiReadingLocated3D<>(ap, -50.0, position, cov);
 
         // check
@@ -123,26 +102,14 @@ public class RssiReadingLocated3DTest {
         assertEquals(ReadingType.RSSI_READING, reading.getType());
 
         // Force IllegalArgumentException
-        reading = null;
-        try {
-            reading = new RssiReadingLocated3D<>(null, -50.0, position, cov);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            reading = new RssiReadingLocated3D<>(ap, -50.0, null, cov);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            reading = new RssiReadingLocated3D<>(ap, -50.0, position, new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(reading);
+        assertThrows(IllegalArgumentException.class, () -> new RssiReadingLocated3D<>(null, -50.0, position,
+                cov));
+        assertThrows(IllegalArgumentException.class, () -> new RssiReadingLocated3D<>(ap, -50.0, null,
+                cov));
+        final var m = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> new RssiReadingLocated3D<>(ap, -50.0, position, m));
 
-        // test constructor with access point, rssi, position, rssi standard
-        // deviation, and position covariance
+        // test constructor with access point, rssi, position, rssi standard deviation, and position covariance
         reading = new RssiReadingLocated3D<>(ap, -50.0, position, 5.5, cov);
 
         // check
@@ -154,40 +121,25 @@ public class RssiReadingLocated3DTest {
         assertEquals(ReadingType.RSSI_READING, reading.getType());
 
         // Force IllegalArgumentException
-        reading = null;
-        try {
-            reading = new RssiReadingLocated3D<>(null, -50.0, position, 5.5, cov);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            reading = new RssiReadingLocated3D<>(ap, -50.0, null, 5.5, cov);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            reading = new RssiReadingLocated3D<>(ap, -50.0, position, 0.0, cov);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            reading = new RssiReadingLocated3D<>(ap, -50.0, position, 5.5,
-                    new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(reading);
+        assertThrows(IllegalArgumentException.class, () -> new RssiReadingLocated3D<>(null, -50.0, position,
+                5.5, cov));
+        assertThrows(IllegalArgumentException.class, () -> new RssiReadingLocated3D<>(ap, -50.0, null,
+                5.5, cov));
+        assertThrows(IllegalArgumentException.class, () -> new RssiReadingLocated3D<>(ap, -50.0, position,
+                0.0, cov));
+        assertThrows(IllegalArgumentException.class, () -> new RssiReadingLocated3D<>(ap, -50.0, position,
+                5.5, m));
     }
 
     @Test
-    public void testHasSameAccessPoint() {
-        final WifiAccessPoint ap1 = new WifiAccessPoint("bssid1", FREQUENCY);
-        final WifiAccessPoint ap2 = new WifiAccessPoint("bssid2", FREQUENCY);
+    void testHasSameAccessPoint() {
+        final var ap1 = new WifiAccessPoint("bssid1", FREQUENCY);
+        final var ap2 = new WifiAccessPoint("bssid2", FREQUENCY);
 
-        final InhomogeneousPoint3D position = new InhomogeneousPoint3D();
-        final RssiReadingLocated3D<WifiAccessPoint> reading1 = new RssiReadingLocated3D<>(ap1, -50.0, position);
-        RssiReadingLocated3D<WifiAccessPoint> reading2 = new RssiReadingLocated3D<>(ap1, -50.0, position);
-        RssiReadingLocated3D<WifiAccessPoint> reading3 = new RssiReadingLocated3D<>(ap2, -50.0, position);
+        final var position = new InhomogeneousPoint3D();
+        final var reading1 = new RssiReadingLocated3D<>(ap1, -50.0, position);
+        final var reading2 = new RssiReadingLocated3D<>(ap1, -50.0, position);
+        final var reading3 = new RssiReadingLocated3D<>(ap2, -50.0, position);
 
         // check
         assertTrue(reading1.hasSameSource(reading1));
@@ -196,12 +148,11 @@ public class RssiReadingLocated3DTest {
     }
 
     @Test
-    public void testSerializeDeserialize() throws WrongSizeException, IOException, ClassNotFoundException {
-        final WifiAccessPoint ap = new WifiAccessPoint("bssid", FREQUENCY);
-        final InhomogeneousPoint3D position = new InhomogeneousPoint3D();
-        final Matrix cov = new Matrix(3, 3);
-        final RssiReadingLocated3D<WifiAccessPoint> reading1 = new RssiReadingLocated3D<>(ap, -50.0, position,
-                5.5, cov);
+    void testSerializeDeserialize() throws WrongSizeException, IOException, ClassNotFoundException {
+        final var ap = new WifiAccessPoint("bssid", FREQUENCY);
+        final var position = new InhomogeneousPoint3D();
+        final var cov = new Matrix(3, 3);
+        final var reading1 = new RssiReadingLocated3D<>(ap, -50.0, position, 5.5, cov);
 
         // check
         assertSame(position, reading1.getPosition());
@@ -212,8 +163,8 @@ public class RssiReadingLocated3DTest {
         assertEquals(ReadingType.RSSI_READING, reading1.getType());
 
         // serialize and deserialize
-        final byte[] bytes = SerializationHelper.serialize(reading1);
-        final RssiReadingLocated3D<WifiAccessPoint> reading2 = SerializationHelper.deserialize(bytes);
+        final var bytes = SerializationHelper.serialize(reading1);
+        final var reading2 = SerializationHelper.<RssiReadingLocated3D<WifiAccessPoint>>deserialize(bytes);
 
         // check
         assertNotSame(reading1, reading2);

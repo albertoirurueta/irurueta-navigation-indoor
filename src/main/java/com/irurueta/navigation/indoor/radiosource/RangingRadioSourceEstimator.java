@@ -38,8 +38,7 @@ import java.util.List;
  * account the speed of light as the propagation speed.
  */
 public abstract class RangingRadioSourceEstimator<S extends RadioSource, P extends Point<P>>
-        extends RadioSourceEstimator<P, RangingReadingLocated<S, P>,
-        RangingRadioSourceEstimatorListener<S, P>> {
+        extends RadioSourceEstimator<P, RangingReadingLocated<S, P>, RangingRadioSourceEstimatorListener<S, P>> {
 
     /**
      * Indicates that by default position covariances of readings must be taken into account to increase
@@ -58,51 +57,51 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
      * Internal homogeneous linear solver to find radio source position when no initial
      * position is provided.
      */
-    protected HomogeneousLinearLeastSquaresLaterationSolver<P> mHomogeneousLinearSolver;
+    protected HomogeneousLinearLeastSquaresLaterationSolver<P> homogeneousLinearSolver;
 
     /**
      * Internal inhomogeneous linear solver to find radio source position when no initial
      * position is provided.
      */
-    protected InhomogeneousLinearLeastSquaresLaterationSolver<P> mInhomogeneousLinearSolver;
+    protected InhomogeneousLinearLeastSquaresLaterationSolver<P> inhomogeneousLinearSolver;
 
     /**
      * Internal non-linear solver to estimate radio source position and covariance
      * for an initial provided or estimated position.
      */
-    protected NonLinearLeastSquaresLaterationSolver<P> mNonLinearSolver;
+    protected NonLinearLeastSquaresLaterationSolver<P> nonLinearSolver;
 
     /**
      * Contains accuracy of a reading position.
      * This is used internally to compute additional distance standard deviation due to position
      * accuracy.
      */
-    protected Accuracy mAccuracy;
+    protected Accuracy accuracy;
 
     /**
      * Initial position to start the estimation of radio source position.
      */
-    protected P mInitialPosition;
+    protected P initialPosition;
 
     /**
      * Indicates whether non-linear solver is enabled.
      * If disabled a linear solver is always used, initial position ignored and
      * covariance is not computed.
      */
-    protected boolean mNonLinearSolverEnabled = true;
+    protected boolean nonLinearSolverEnabled = true;
 
     /**
      * Indicates whether an homogeneous linear solver is used to estimate an initial
      * position.
      */
-    protected boolean mUseHomogeneousLinearSolver = DEFAULT_USE_HOMOGENEOUS_LINEAR_SOLVER;
+    protected boolean useHomogeneousLinearSolver = DEFAULT_USE_HOMOGENEOUS_LINEAR_SOLVER;
 
     /**
      * Indicates whether position covariances of readings must be taken into account to increase
      * the amount of standard deviation of each ranging measure by the amount of position standard deviation
      * assuming that both measures are statistically independent.
      */
-    protected boolean mUseReadingPositionCovariances = DEFAULT_USE_READING_POSITION_COVARIANCES;
+    protected boolean useReadingPositionCovariances = DEFAULT_USE_READING_POSITION_COVARIANCES;
 
     /**
      * Constructor.
@@ -119,8 +118,7 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
      *                 radio source.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    protected RangingRadioSourceEstimator(
-            final List<? extends RangingReadingLocated<S, P>> readings) {
+    protected RangingRadioSourceEstimator(final List<? extends RangingReadingLocated<S, P>> readings) {
         super(readings);
     }
 
@@ -129,8 +127,7 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
      *
      * @param listener listener in charge of attending events raised by this instance.
      */
-    protected RangingRadioSourceEstimator(
-            final RangingRadioSourceEstimatorListener<S, P> listener) {
+    protected RangingRadioSourceEstimator(final RangingRadioSourceEstimatorListener<S, P> listener) {
         super(listener);
     }
 
@@ -155,7 +152,7 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
      *                        source position.
      */
     protected RangingRadioSourceEstimator(final P initialPosition) {
-        mInitialPosition = initialPosition;
+        this.initialPosition = initialPosition;
     }
 
     /**
@@ -168,10 +165,9 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
      * @throws IllegalArgumentException if readings are not valid.
      */
     protected RangingRadioSourceEstimator(
-            final List<? extends RangingReadingLocated<S, P>> readings,
-            final P initialPosition) {
+            final List<? extends RangingReadingLocated<S, P>> readings, final P initialPosition) {
         super(readings);
-        mInitialPosition = initialPosition;
+        this.initialPosition = initialPosition;
     }
 
     /**
@@ -182,10 +178,9 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
      * @param listener        listener in charge of attending events raised by this instance.
      */
     protected RangingRadioSourceEstimator(
-            final P initialPosition,
-            final RangingRadioSourceEstimatorListener<S, P> listener) {
+            final P initialPosition, final RangingRadioSourceEstimatorListener<S, P> listener) {
         super(listener);
-        mInitialPosition = initialPosition;
+        this.initialPosition = initialPosition;
     }
 
     /**
@@ -199,11 +194,10 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
      * @throws IllegalArgumentException if readings are not valid.
      */
     protected RangingRadioSourceEstimator(
-            final List<? extends RangingReadingLocated<S, P>> readings,
-            final P initialPosition,
+            final List<? extends RangingReadingLocated<S, P>> readings, final P initialPosition,
             final RangingRadioSourceEstimatorListener<S, P> listener) {
         super(readings, listener);
-        mInitialPosition = initialPosition;
+        this.initialPosition = initialPosition;
     }
 
     /**
@@ -213,7 +207,7 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
      * @return initial position.
      */
     public P getInitialPosition() {
-        return mInitialPosition;
+        return initialPosition;
     }
 
     /**
@@ -228,7 +222,7 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
         if (isLocked()) {
             throw new LockedException();
         }
-        mInitialPosition = initialPosition;
+        this.initialPosition = initialPosition;
     }
 
     /**
@@ -239,7 +233,7 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
      * @return true if non-linear solver is enabled, false otherwise.
      */
     public boolean isNonLinearSolverEnabled() {
-        return mNonLinearSolverEnabled;
+        return nonLinearSolverEnabled;
     }
 
     /**
@@ -251,12 +245,11 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
      *                               false otherwise.
      * @throws LockedException if estimator is locked.
      */
-    public void setNonLinearSolverEnabled(final boolean nonLinearSolverEnabled)
-            throws LockedException {
+    public void setNonLinearSolverEnabled(final boolean nonLinearSolverEnabled) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
-        mNonLinearSolverEnabled = nonLinearSolverEnabled;
+        this.nonLinearSolverEnabled = nonLinearSolverEnabled;
     }
 
     /**
@@ -267,7 +260,7 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
      * one is used instead.
      */
     public boolean isHomogeneousLinearSolverUsed() {
-        return mUseHomogeneousLinearSolver;
+        return useHomogeneousLinearSolver;
     }
 
     /**
@@ -278,13 +271,12 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
      *                                   if an inhomogeneous linear one is used instead.
      * @throws LockedException if estimator is locked.
      */
-    public void setHomogeneousLinearSolverUsed(
-            final boolean useHomogeneousLinearSolver) throws LockedException {
+    public void setHomogeneousLinearSolverUsed(final boolean useHomogeneousLinearSolver) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
 
-        mUseHomogeneousLinearSolver = useHomogeneousLinearSolver;
+        this.useHomogeneousLinearSolver = useHomogeneousLinearSolver;
     }
 
 
@@ -296,7 +288,7 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
      * @return true to take into account reading position covariances, false otherwise.
      */
     public boolean getUseReadingPositionCovariance() {
-        return mUseReadingPositionCovariances;
+        return useReadingPositionCovariances;
     }
 
     /**
@@ -308,12 +300,11 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
      *                                      otherwise.
      * @throws LockedException if estimator is locked.
      */
-    public void setUseReadingPositionCovariances(
-            final boolean useReadingPositionCovariances) throws LockedException {
+    public void setUseReadingPositionCovariances(final boolean useReadingPositionCovariances) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
-        mUseReadingPositionCovariances = useReadingPositionCovariances;
+        this.useReadingPositionCovariances = useReadingPositionCovariances;
     }
 
     /**
@@ -324,7 +315,7 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
     @Override
     public boolean isReady() {
         // readings must be valid
-        return areValidReadings(mReadings);
+        return areValidReadings(readings);
     }
 
     /**
@@ -335,8 +326,7 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
      * @throws LockedException                if estimator is locked.
      */
     @Override
-    public void estimate() throws RadioSourceEstimationException, NotReadyException,
-            LockedException {
+    public void estimate() throws RadioSourceEstimationException, NotReadyException, LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
@@ -345,59 +335,55 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
         }
 
         try {
-            mLocked = true;
+            locked = true;
 
-            if (mListener != null) {
-                mListener.onEstimateStart(this);
+            if (listener != null) {
+                listener.onEstimateStart(this);
             }
 
             buildSolversIfNeeded();
             buildPositionsDistancesAndDistanceStandardDeviations();
 
-            if (((mUseHomogeneousLinearSolver && mHomogeneousLinearSolver != null) ||
-                    (!mUseHomogeneousLinearSolver && mInhomogeneousLinearSolver != null)) &&
-                    (mInitialPosition == null || !mNonLinearSolverEnabled)) {
+            if (((useHomogeneousLinearSolver && homogeneousLinearSolver != null)
+                    || (!useHomogeneousLinearSolver && inhomogeneousLinearSolver != null))
+                    && (initialPosition == null || !nonLinearSolverEnabled)) {
                 // if no initial position is provided, use linear solver to estimate one
-                if (mUseHomogeneousLinearSolver) {
-                    mHomogeneousLinearSolver.solve();
-                    mInitialPosition = mHomogeneousLinearSolver.getEstimatedPosition();
+                if (useHomogeneousLinearSolver) {
+                    homogeneousLinearSolver.solve();
+                    initialPosition = homogeneousLinearSolver.getEstimatedPosition();
                 } else {
-                    mInhomogeneousLinearSolver.solve();
-                    mInitialPosition = mInhomogeneousLinearSolver.getEstimatedPosition();
+                    inhomogeneousLinearSolver.solve();
+                    initialPosition = inhomogeneousLinearSolver.getEstimatedPosition();
                 }
             }
 
-            if (mNonLinearSolver != null && mNonLinearSolverEnabled) {
-                mNonLinearSolver.setInitialPosition(mInitialPosition);
-                mNonLinearSolver.solve();
+            if (nonLinearSolver != null && nonLinearSolverEnabled) {
+                nonLinearSolver.setInitialPosition(initialPosition);
+                nonLinearSolver.solve();
 
                 // get position and covariance
-                mEstimatedPositionCoordinates =
-                        mNonLinearSolver.getEstimatedPositionCoordinates();
-                mEstimatedPositionCovariance = mEstimatedCovariance =
-                        mNonLinearSolver.getCovariance();
+                estimatedPositionCoordinates = nonLinearSolver.getEstimatedPositionCoordinates();
+                estimatedPositionCovariance = estimatedCovariance = nonLinearSolver.getCovariance();
             } else {
                 // non-linear solver disabled
-                if (mUseHomogeneousLinearSolver) {
-                    mEstimatedPositionCoordinates =
-                            mHomogeneousLinearSolver != null ?
-                                    mHomogeneousLinearSolver.getEstimatedPositionCoordinates() : null;
+                if (useHomogeneousLinearSolver) {
+                    estimatedPositionCoordinates = homogeneousLinearSolver != null
+                            ? homogeneousLinearSolver.getEstimatedPositionCoordinates() : null;
                 } else {
-                    mEstimatedPositionCoordinates =
-                            mInhomogeneousLinearSolver != null ?
-                                    mInhomogeneousLinearSolver.getEstimatedPositionCoordinates() : null;
+                    estimatedPositionCoordinates = inhomogeneousLinearSolver != null
+                            ? inhomogeneousLinearSolver.getEstimatedPositionCoordinates() : null;
                 }
-                mEstimatedPositionCovariance = mEstimatedCovariance = null;
+                estimatedPositionCovariance = estimatedCovariance = null;
             }
 
-            if (mListener != null) {
-                mListener.onEstimateEnd(this);
+            if (listener != null) {
+                listener.onEstimateEnd(this);
             }
 
         } catch (final LaterationException e) {
             throw new RadioSourceEstimationException(e);
         } finally {
-            mLocked = false;
+            locked = false;
         }
     }
 
@@ -427,8 +413,8 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
      * @throws LockedException if solvers are locked.
      */
     protected abstract void setPositionsDistancesAndDistanceStandardDeviations(
-            final List<P> positions, List<Double> distances,
-            final List<Double> distanceStandardDeviations) throws LockedException;
+            final List<P> positions, List<Double> distances, final List<Double> distanceStandardDeviations)
+            throws LockedException;
 
     /**
      * Build instances of lateration solvers if needed.
@@ -445,47 +431,45 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
      *
      * @throws LockedException if solvers are locked.
      */
-    private void buildPositionsDistancesAndDistanceStandardDeviations()
-            throws LockedException {
-        final int min = getMinReadings();
-        if (mReadings == null || mReadings.size() < min) {
+    private void buildPositionsDistancesAndDistanceStandardDeviations() throws LockedException {
+        final var min = getMinReadings();
+        if (readings == null || readings.size() < min) {
             return;
         }
 
-        final List<P> positions = new ArrayList<>();
-        final List<Double> distances = new ArrayList<>();
-        final List<Double> distanceStandardDeviations = new ArrayList<>();
+        final var positions = new ArrayList<P>();
+        final var distances = new ArrayList<Double>();
+        final var distanceStandardDeviations = new ArrayList<Double>();
 
-        for (RangingReadingLocated<S, P> reading : mReadings) {
-            final P position = reading.getPosition();
+        for (final var reading : readings) {
+            final var position = reading.getPosition();
             if (position == null) {
                 return;
             }
 
-            double positionDistanceStandardDeviation = 0.0;
-            if (mUseReadingPositionCovariances && mAccuracy != null && reading.getPositionCovariance() != null) {
+            var positionDistanceStandardDeviation = 0.0;
+            if (useReadingPositionCovariances && accuracy != null && reading.getPositionCovariance() != null) {
                 try {
-                    mAccuracy.setCovarianceMatrix(reading.getPositionCovariance());
-                    positionDistanceStandardDeviation = mAccuracy.getAverageAccuracy();
-                } catch (NonSymmetricPositiveDefiniteMatrixException e) {
+                    accuracy.setCovarianceMatrix(reading.getPositionCovariance());
+                    positionDistanceStandardDeviation = accuracy.getAverageAccuracy();
+                } catch (final NonSymmetricPositiveDefiniteMatrixException e) {
                     positionDistanceStandardDeviation = 0.0;
                 }
             }
 
-            final double distance = reading.getDistance();
-            Double distanceStandardDeviation = reading.getDistanceStandardDeviation();
+            final var distance = reading.getDistance();
+            var distanceStandardDeviation = reading.getDistanceStandardDeviation();
             if (distanceStandardDeviation == null) {
-                distanceStandardDeviation =
-                        NonLinearLeastSquaresLaterationSolver.DEFAULT_DISTANCE_STANDARD_DEVIATION;
+                distanceStandardDeviation = NonLinearLeastSquaresLaterationSolver.DEFAULT_DISTANCE_STANDARD_DEVIATION;
             }
 
-            if (mUseReadingPositionCovariances) {
+            if (useReadingPositionCovariances) {
                 // assuming that ranging measure and position measure are statistically independent, the
                 // resulting variance would be the sum of their variances, when the resulting standard
                 // deviation is the square root of the resulting variance (which is the sum of the square of
                 // the standard deviations)
-                distanceStandardDeviation = Math.sqrt(Math.pow(distanceStandardDeviation, 2.0) +
-                        Math.pow(positionDistanceStandardDeviation, 2.0));
+                distanceStandardDeviation = Math.sqrt(Math.pow(distanceStandardDeviation, 2.0)
+                        + Math.pow(positionDistanceStandardDeviation, 2.0));
             }
 
             positions.add(position);
@@ -493,7 +477,6 @@ public abstract class RangingRadioSourceEstimator<S extends RadioSource, P exten
             distanceStandardDeviations.add(distanceStandardDeviation);
         }
 
-        setPositionsDistancesAndDistanceStandardDeviations(positions, distances,
-                distanceStandardDeviations);
+        setPositionsDistancesAndDistanceStandardDeviations(positions, distances, distanceStandardDeviations);
     }
 }

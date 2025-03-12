@@ -15,7 +15,6 @@
  */
 package com.irurueta.navigation.indoor.radiosource;
 
-import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.Point3D;
 import com.irurueta.navigation.NavigationException;
 import com.irurueta.navigation.indoor.Beacon;
@@ -28,7 +27,6 @@ import com.irurueta.navigation.indoor.WifiAccessPointWithPowerAndLocated3D;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.List;
 
 /**
@@ -72,20 +70,19 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
     /**
      * Power and 3D position estimator used internally.
      */
-    protected final RssiRadioSourceEstimator3D<S> mInnerEstimator =
-            new RssiRadioSourceEstimator3D<>();
+    protected final RssiRadioSourceEstimator3D<S> innerEstimator = new RssiRadioSourceEstimator3D<>();
 
     /**
      * Subset of readings used by inner estimator.
      */
-    private final List<RssiReadingLocated<S, Point3D>> mInnerReadings = new ArrayList<>();
+    private final List<RssiReadingLocated<S, Point3D>> innerReadings = new ArrayList<>();
 
     /**
      * Constructor.
      */
     protected RobustRssiRadioSourceEstimator3D() {
         super();
-        mPreliminarySubsetSize = getMinReadings();
+        preliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -95,10 +92,9 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @param readings signal readings belonging to the same radio source.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    protected RobustRssiRadioSourceEstimator3D(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings) {
+    protected RobustRssiRadioSourceEstimator3D(final List<? extends RssiReadingLocated<S, Point3D>> readings) {
         super(readings);
-        mPreliminarySubsetSize = getMinReadings();
+        preliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -106,10 +102,9 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      *
      * @param listener listener in charge of attending events raised by this instance.
      */
-    protected RobustRssiRadioSourceEstimator3D(
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
+    protected RobustRssiRadioSourceEstimator3D(final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
         super(listener);
-        mPreliminarySubsetSize = getMinReadings();
+        preliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -124,7 +119,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
             final List<? extends RssiReadingLocated<S, Point3D>> readings,
             final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
         super(readings, listener);
-        mPreliminarySubsetSize = getMinReadings();
+        preliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -137,10 +132,9 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if fingerprints are not valid.
      */
     protected RobustRssiRadioSourceEstimator3D(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition) {
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition) {
         super(readings, initialPosition);
-        mPreliminarySubsetSize = getMinReadings();
+        preliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -149,10 +143,9 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @param initialPosition initial position to start the estimation of radio
      *                        source position.
      */
-    protected RobustRssiRadioSourceEstimator3D(
-            final Point3D initialPosition) {
+    protected RobustRssiRadioSourceEstimator3D(final Point3D initialPosition) {
         super(initialPosition);
-        mPreliminarySubsetSize = getMinReadings();
+        preliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -163,10 +156,9 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @param listener        listener in charge of attending events raised by this instance.
      */
     protected RobustRssiRadioSourceEstimator3D(
-            final Point3D initialPosition,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
+            final Point3D initialPosition, final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
         super(initialPosition, listener);
-        mPreliminarySubsetSize = getMinReadings();
+        preliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -180,11 +172,10 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if fingerprints are not valid.
      */
     protected RobustRssiRadioSourceEstimator3D(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
             final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
         super(readings, initialPosition, listener);
-        mPreliminarySubsetSize = getMinReadings();
+        preliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -194,10 +185,9 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's)
      */
-    protected RobustRssiRadioSourceEstimator3D(
-            final Double initialTransmittedPowerdBm) {
+    protected RobustRssiRadioSourceEstimator3D(final Double initialTransmittedPowerdBm) {
         super(initialTransmittedPowerdBm);
-        mPreliminarySubsetSize = getMinReadings();
+        preliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -211,10 +201,9 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     protected RobustRssiRadioSourceEstimator3D(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Double initialTransmittedPowerdBm) {
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Double initialTransmittedPowerdBm) {
         super(readings, initialTransmittedPowerdBm);
-        mPreliminarySubsetSize = getMinReadings();
+        preliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -229,7 +218,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
         super(initialTransmittedPowerdBm, listener);
-        mPreliminarySubsetSize = getMinReadings();
+        preliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -244,11 +233,10 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     protected RobustRssiRadioSourceEstimator3D(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Double initialTransmittedPowerdBm,
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
         super(readings, initialTransmittedPowerdBm, listener);
-        mPreliminarySubsetSize = getMinReadings();
+        preliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -264,11 +252,10 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     protected RobustRssiRadioSourceEstimator3D(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
             final Double initialTransmittedPowerdBm) {
         super(readings, initialPosition, initialTransmittedPowerdBm);
-        mPreliminarySubsetSize = getMinReadings();
+        preliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -280,11 +267,9 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's).
      */
-    protected RobustRssiRadioSourceEstimator3D(
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm) {
+    protected RobustRssiRadioSourceEstimator3D(final Point3D initialPosition, final Double initialTransmittedPowerdBm) {
         super(initialPosition, initialTransmittedPowerdBm);
-        mPreliminarySubsetSize = getMinReadings();
+        preliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -298,11 +283,10 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @param listener                   in charge of attending events raised by this instance.
      */
     protected RobustRssiRadioSourceEstimator3D(
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
         super(initialPosition, initialTransmittedPowerdBm, listener);
-        mPreliminarySubsetSize = getMinReadings();
+        preliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -319,12 +303,11 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     protected RobustRssiRadioSourceEstimator3D(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
         super(readings, initialPosition, initialTransmittedPowerdBm, listener);
-        mPreliminarySubsetSize = getMinReadings();
+        preliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -341,13 +324,10 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     protected RobustRssiRadioSourceEstimator3D(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent) {
-        super(readings, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent);
-        mPreliminarySubsetSize = getMinReadings();
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm, final double initialPathLossExponent) {
+        super(readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);
+        preliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -361,12 +341,10 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      */
     protected RobustRssiRadioSourceEstimator3D(
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-        super(initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent);
-        mPreliminarySubsetSize = getMinReadings();
+        super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);
+        preliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -381,13 +359,10 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @param listener                   listener in charge of attending events raised by this instance.
      */
     protected RobustRssiRadioSourceEstimator3D(
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
-        super(initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent, listener);
-        mPreliminarySubsetSize = getMinReadings();
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent, final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
+        super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener);
+        preliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -405,14 +380,11 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     protected RobustRssiRadioSourceEstimator3D(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent,
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm, final double initialPathLossExponent,
             final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
-        super(readings, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent, listener);
-        mPreliminarySubsetSize = getMinReadings();
+        super(readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener);
+        preliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -424,19 +396,13 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>();
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>();
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>();
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>();
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>();
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>();
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>();
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>();
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>();
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>();
+        };
     }
 
     /**
@@ -449,26 +415,14 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        readings);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        readings);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        readings);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings);
-        }
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(readings);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(readings);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(readings);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(readings);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(readings);
+        };
     }
 
     /**
@@ -480,26 +434,14 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        listener);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        listener);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        listener);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        listener);
-        }
+            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(listener);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(listener);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(listener);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(listener);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(listener);
+        };
     }
 
     /**
@@ -514,26 +456,14 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
             final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, listener);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings, listener);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, listener);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings, listener);
-        }
+            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(readings, listener);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(readings, listener);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(readings, listener);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(readings, listener);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(readings, listener);
+        };
     }
 
     /**
@@ -548,27 +478,15 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(readings, initialPosition);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(readings, initialPosition);
+        };
     }
 
     /**
@@ -581,26 +499,14 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final Point3D initialPosition,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition);
-        }
+            final Point3D initialPosition, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(initialPosition);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(initialPosition);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(initialPosition);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(initialPosition);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(initialPosition);
+        };
     }
 
     /**
@@ -614,27 +520,15 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final Point3D initialPosition,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
+            final Point3D initialPosition, final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, listener);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, listener);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, listener);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(initialPosition, listener);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(initialPosition, listener);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(initialPosition, listener);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(initialPosition, listener);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(initialPosition, listener);
+        };
     }
 
     /**
@@ -650,28 +544,15 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, listener);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, listener);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, listener);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, listener);
-        }
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
+            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition, listener);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(readings, initialPosition, listener);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition, listener);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition, listener);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(readings, initialPosition, listener);
+        };
     }
 
     /**
@@ -685,26 +566,14 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final Double initialTransmittedPowerdBm,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        initialTransmittedPowerdBm);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        initialTransmittedPowerdBm);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        initialTransmittedPowerdBm);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        initialTransmittedPowerdBm);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        initialTransmittedPowerdBm);
-        }
+            final Double initialTransmittedPowerdBm, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(initialTransmittedPowerdBm);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(initialTransmittedPowerdBm);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(initialTransmittedPowerdBm);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(initialTransmittedPowerdBm);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(initialTransmittedPowerdBm);
+        };
     }
 
     /**
@@ -720,27 +589,15 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Double initialTransmittedPowerdBm,
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Double initialTransmittedPowerdBm,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialTransmittedPowerdBm);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialTransmittedPowerdBm);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialTransmittedPowerdBm);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialTransmittedPowerdBm);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialTransmittedPowerdBm);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(readings, initialTransmittedPowerdBm);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(readings, initialTransmittedPowerdBm);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(readings, initialTransmittedPowerdBm);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(readings, initialTransmittedPowerdBm);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(readings, initialTransmittedPowerdBm);
+        };
     }
 
     /**
@@ -755,27 +612,15 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final Double initialTransmittedPowerdBm,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
+            final Double initialTransmittedPowerdBm, final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        initialTransmittedPowerdBm, listener);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        initialTransmittedPowerdBm, listener);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        initialTransmittedPowerdBm, listener);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        initialTransmittedPowerdBm, listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        initialTransmittedPowerdBm, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(initialTransmittedPowerdBm, listener);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(initialTransmittedPowerdBm, listener);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(initialTransmittedPowerdBm, listener);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(initialTransmittedPowerdBm, listener);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(initialTransmittedPowerdBm, listener);
+        };
     }
 
     /**
@@ -792,28 +637,15 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Double initialTransmittedPowerdBm,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialTransmittedPowerdBm, listener);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialTransmittedPowerdBm, listener);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialTransmittedPowerdBm, listener);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialTransmittedPowerdBm, listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialTransmittedPowerdBm, listener);
-        }
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(readings, initialTransmittedPowerdBm, listener);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(readings, initialTransmittedPowerdBm, listener);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(readings, initialTransmittedPowerdBm, listener);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(readings, initialTransmittedPowerdBm, listener);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(readings, initialTransmittedPowerdBm, listener);
+        };
     }
 
     /**
@@ -831,28 +663,20 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm);
-        }
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm);
+        };
     }
 
     /**
@@ -868,27 +692,15 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm);
+        };
     }
 
     /**
@@ -905,28 +717,20 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm, listener);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm, listener);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm, listener);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm, listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm, listener);
-        }
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm,
+                    listener);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm,
+                    listener);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm,
+                    listener);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm,
+                    listener);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm,
+                    listener);
+        };
     }
 
     /**
@@ -945,29 +749,21 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm, final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm, listener);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm, listener);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm, listener);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm, listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm, listener);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm, listener);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm, listener);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm, listener);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm, listener);
+        };
     }
 
     /**
@@ -986,34 +782,21 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent,
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm, final double initialPathLossExponent,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm, initialPathLossExponent);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm, initialPathLossExponent);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm, initialPathLossExponent);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm, initialPathLossExponent);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm, initialPathLossExponent);
+        };
     }
 
     /**
@@ -1030,33 +813,20 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent);
-        }
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm,
+                    initialPathLossExponent);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm,
+                    initialPathLossExponent);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm,
+                    initialPathLossExponent);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm,
+                    initialPathLossExponent);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm,
+                    initialPathLossExponent);
+        };
     }
 
     /**
@@ -1074,34 +844,21 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent, final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent, listener);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent, listener);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent, listener);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent, listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm,
+                    initialPathLossExponent, listener);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm,
+                    initialPathLossExponent, listener);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm,
+                    initialPathLossExponent, listener);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm,
+                    initialPathLossExponent, listener);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm,
+                    initialPathLossExponent, listener);
+        };
     }
 
     /**
@@ -1121,35 +878,21 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent, listener);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent, listener);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent, listener);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent, listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent, listener);
-        }
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm, final double initialPathLossExponent,
+            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm, initialPathLossExponent, listener);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm, initialPathLossExponent, listener);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm, initialPathLossExponent, listener);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm, initialPathLossExponent, listener);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm, initialPathLossExponent, listener);
+        };
     }
 
     /**
@@ -1163,23 +906,14 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>();
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>();
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>();
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores);
-        }
+            final double[] qualityScores, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>();
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>();
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>();
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(qualityScores);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(qualityScores);
+        };
     }
 
     /**
@@ -1195,27 +929,15 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
+            final double[] qualityScores, final List<? extends RssiReadingLocated<S, Point3D>> readings,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        readings);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        readings);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, readings);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, readings);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(readings);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(readings);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(readings);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(qualityScores, readings);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(qualityScores, readings);
+        };
     }
 
     /**
@@ -1230,27 +952,15 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
+            final double[] qualityScores, final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        listener);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        listener);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        listener);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(listener);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(listener);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(listener);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(qualityScores, listener);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(qualityScores, listener);
+        };
     }
 
     /**
@@ -1267,28 +977,15 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, listener);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings, listener);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, listener);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, readings, listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, readings, listener);
-        }
+            final double[] qualityScores, final List<? extends RssiReadingLocated<S, Point3D>> readings,
+            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(readings, listener);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(readings, listener);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(readings, listener);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(qualityScores, readings, listener);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(qualityScores, readings, listener);
+        };
     }
 
     /**
@@ -1306,28 +1003,15 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, readings, initialPosition);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, readings, initialPosition);
-        }
+            final double[] qualityScores, final List<? extends RssiReadingLocated<S, Point3D>> readings,
+            final Point3D initialPosition, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(readings, initialPosition);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(qualityScores, readings, initialPosition);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(qualityScores, readings, initialPosition);
+        };
     }
 
     /**
@@ -1343,27 +1027,14 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final Point3D initialPosition,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, initialPosition);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, initialPosition);
-        }
+            final double[] qualityScores, final Point3D initialPosition, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(initialPosition);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(initialPosition);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(initialPosition);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(qualityScores, initialPosition);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(qualityScores, initialPosition);
+        };
     }
 
     /**
@@ -1380,28 +1051,15 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final Point3D initialPosition,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, listener);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, listener);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, listener);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, initialPosition, listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, initialPosition, listener);
-        }
+            final double[] qualityScores, final Point3D initialPosition,
+            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(initialPosition, listener);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(initialPosition, listener);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(initialPosition, listener);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(qualityScores, initialPosition, listener);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(qualityScores, initialPosition, listener);
+        };
     }
 
     /**
@@ -1420,29 +1078,18 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
+            final double[] qualityScores, final List<? extends RssiReadingLocated<S, Point3D>> readings,
+            final Point3D initialPosition, final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, listener);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, listener);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, listener);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, readings, initialPosition, listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, readings, initialPosition, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition, listener);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(readings, initialPosition, listener);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition, listener);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(qualityScores, readings, initialPosition,
+                    listener);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(qualityScores, readings, initialPosition,
+                    listener);
+        };
     }
 
     /**
@@ -1459,27 +1106,14 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final Double initialTransmittedPowerdBm,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        initialTransmittedPowerdBm);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        initialTransmittedPowerdBm);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        initialTransmittedPowerdBm);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, initialTransmittedPowerdBm);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, initialTransmittedPowerdBm);
-        }
+            final double[] qualityScores, final Double initialTransmittedPowerdBm, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(initialTransmittedPowerdBm);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(initialTransmittedPowerdBm);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(initialTransmittedPowerdBm);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(qualityScores, initialTransmittedPowerdBm);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(qualityScores, initialTransmittedPowerdBm);
+        };
     }
 
     /**
@@ -1498,28 +1132,17 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Double initialTransmittedPowerdBm,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialTransmittedPowerdBm);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialTransmittedPowerdBm);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialTransmittedPowerdBm);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, readings, initialTransmittedPowerdBm);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, readings, initialTransmittedPowerdBm);
-        }
+            final double[] qualityScores, final List<? extends RssiReadingLocated<S, Point3D>> readings,
+            final Double initialTransmittedPowerdBm, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(readings, initialTransmittedPowerdBm);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(readings, initialTransmittedPowerdBm);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(readings, initialTransmittedPowerdBm);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(qualityScores, readings,
+                    initialTransmittedPowerdBm);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(qualityScores, readings,
+                    initialTransmittedPowerdBm);
+        };
     }
 
     /**
@@ -1537,28 +1160,17 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final Double initialTransmittedPowerdBm,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        initialTransmittedPowerdBm, listener);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        initialTransmittedPowerdBm, listener);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        initialTransmittedPowerdBm, listener);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, initialTransmittedPowerdBm, listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, initialTransmittedPowerdBm, listener);
-        }
+            final double[] qualityScores, final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(initialTransmittedPowerdBm, listener);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(initialTransmittedPowerdBm, listener);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(initialTransmittedPowerdBm, listener);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(qualityScores, initialTransmittedPowerdBm,
+                    listener);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(qualityScores, initialTransmittedPowerdBm,
+                    listener);
+        };
     }
 
     /**
@@ -1578,29 +1190,18 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Double initialTransmittedPowerdBm,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
+            final double[] qualityScores, final List<? extends RssiReadingLocated<S, Point3D>> readings,
+            final Double initialTransmittedPowerdBm, final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialTransmittedPowerdBm, listener);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialTransmittedPowerdBm, listener);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialTransmittedPowerdBm, listener);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, readings, initialTransmittedPowerdBm, listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, readings, initialTransmittedPowerdBm, listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(readings, initialTransmittedPowerdBm, listener);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(readings, initialTransmittedPowerdBm, listener);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(readings, initialTransmittedPowerdBm, listener);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(qualityScores, readings,
+                    initialTransmittedPowerdBm, listener);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(qualityScores, readings,
+                    initialTransmittedPowerdBm, listener);
+        };
     }
 
     /**
@@ -1621,31 +1222,21 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final double[] qualityScores, final List<? extends RssiReadingLocated<S, Point3D>> readings,
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, readings, initialPosition,
-                        initialTransmittedPowerdBm);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, readings, initialPosition,
-                        initialTransmittedPowerdBm);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(qualityScores, readings, initialPosition,
+                    initialTransmittedPowerdBm);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(qualityScores, readings, initialPosition,
+                    initialTransmittedPowerdBm);
+        };
     }
 
     /**
@@ -1664,28 +1255,17 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final double[] qualityScores, final Point3D initialPosition, final Double initialTransmittedPowerdBm,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, initialPosition, initialTransmittedPowerdBm);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, initialPosition, initialTransmittedPowerdBm);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(qualityScores, initialPosition,
+                    initialTransmittedPowerdBm);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(qualityScores, initialPosition,
+                    initialTransmittedPowerdBm);
+        };
     }
 
     /**
@@ -1705,31 +1285,20 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm, listener);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm, listener);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm, listener);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, initialPosition, initialTransmittedPowerdBm,
-                        listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, initialPosition, initialTransmittedPowerdBm,
-                        listener);
-        }
+            final double[] qualityScores, final Point3D initialPosition, final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm,
+                    listener);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm,
+                    listener);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm,
+                    listener);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(qualityScores, initialPosition,
+                    initialTransmittedPowerdBm, listener);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(qualityScores, initialPosition,
+                    initialTransmittedPowerdBm, listener);
+        };
     }
 
     /**
@@ -1751,32 +1320,21 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm, listener);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm, listener);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm, listener);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, readings, initialPosition,
-                        initialTransmittedPowerdBm, listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, readings, initialPosition,
-                        initialTransmittedPowerdBm, listener);
-        }
+            final double[] qualityScores, final List<? extends RssiReadingLocated<S, Point3D>> readings,
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm, listener);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm, listener);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm, listener);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(qualityScores, readings, initialPosition,
+                    initialTransmittedPowerdBm, listener);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(qualityScores, readings, initialPosition,
+                    initialTransmittedPowerdBm, listener);
+        };
     }
 
     /**
@@ -1798,35 +1356,21 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, readings, initialPosition,
-                        initialTransmittedPowerdBm, initialPathLossExponent);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, readings, initialPosition,
-                        initialTransmittedPowerdBm, initialPathLossExponent);
-        }
+            final double[] qualityScores, final List<? extends RssiReadingLocated<S, Point3D>> readings,
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm, initialPathLossExponent);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm, initialPathLossExponent);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm, initialPathLossExponent);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(qualityScores, readings, initialPosition,
+                    initialTransmittedPowerdBm, initialPathLossExponent);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(qualityScores, readings, initialPosition,
+                    initialTransmittedPowerdBm, initialPathLossExponent);
+        };
     }
 
     /**
@@ -1846,34 +1390,20 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent,
-            final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, initialPosition,
-                        initialTransmittedPowerdBm, initialPathLossExponent);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, initialPosition,
-                        initialTransmittedPowerdBm, initialPathLossExponent);
-        }
+            final double[] qualityScores, final Point3D initialPosition, final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent, final RobustEstimatorMethod method) {
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm,
+                    initialPathLossExponent);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm,
+                    initialPathLossExponent);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm,
+                    initialPathLossExponent);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(qualityScores, initialPosition,
+                    initialTransmittedPowerdBm, initialPathLossExponent);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(qualityScores, initialPosition,
+                    initialTransmittedPowerdBm, initialPathLossExponent);
+        };
     }
 
     /**
@@ -1894,37 +1424,21 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
+            final double[] qualityScores, final Point3D initialPosition, final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent, final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent, listener);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent, listener);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent, listener);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, initialPosition,
-                        initialTransmittedPowerdBm, initialPathLossExponent,
-                        listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, initialPosition,
-                        initialTransmittedPowerdBm, initialPathLossExponent,
-                        listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm,
+                    initialPathLossExponent, listener);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm,
+                    initialPathLossExponent, listener);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(initialPosition, initialTransmittedPowerdBm,
+                    initialPathLossExponent, listener);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(qualityScores, initialPosition,
+                    initialTransmittedPowerdBm, initialPathLossExponent, listener);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(qualityScores, initialPosition,
+                    initialTransmittedPowerdBm, initialPathLossExponent, listener);
+        };
     }
 
     /**
@@ -1947,38 +1461,22 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
+            final double[] qualityScores, final List<? extends RssiReadingLocated<S, Point3D>> readings,
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent, final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener,
             final RobustEstimatorMethod method) {
-        switch (method) {
-            case RANSAC:
-                return new RANSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent, listener);
-            case LMEDS:
-                return new LMedSRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent, listener);
-            case MSAC:
-                return new MSACRobustRssiRadioSourceEstimator3D<>(
-                        readings, initialPosition, initialTransmittedPowerdBm,
-                        initialPathLossExponent, listener);
-            case PROSAC:
-                return new PROSACRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, readings, initialPosition,
-                        initialTransmittedPowerdBm, initialPathLossExponent,
-                        listener);
-            case PROMEDS:
-            default:
-                return new PROMedSRobustRssiRadioSourceEstimator3D<>(
-                        qualityScores, readings, initialPosition,
-                        initialTransmittedPowerdBm, initialPathLossExponent,
-                        listener);
-        }
+        return switch (method) {
+            case RANSAC -> new RANSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm, initialPathLossExponent, listener);
+            case LMEDS -> new LMedSRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm, initialPathLossExponent, listener);
+            case MSAC -> new MSACRobustRssiRadioSourceEstimator3D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm, initialPathLossExponent, listener);
+            case PROSAC -> new PROSACRobustRssiRadioSourceEstimator3D<>(qualityScores, readings, initialPosition,
+                    initialTransmittedPowerdBm, initialPathLossExponent, listener);
+            default -> new PROMedSRobustRssiRadioSourceEstimator3D<>(qualityScores, readings, initialPosition,
+                    initialTransmittedPowerdBm, initialPathLossExponent, listener);
+        };
     }
 
     /**
@@ -2047,8 +1545,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition) {
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition) {
         return create(readings, initialPosition, DEFAULT_ROBUST_METHOD);
     }
 
@@ -2061,8 +1558,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @param <S>             a {@link RadioSource} type.
      * @return a new robust 3D position radio source estimator.
      */
-    public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final Point3D initialPosition) {
+    public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(final Point3D initialPosition) {
         return create(initialPosition, DEFAULT_ROBUST_METHOD);
     }
 
@@ -2077,8 +1573,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final Point3D initialPosition,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
+            final Point3D initialPosition, final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
         return create(initialPosition, listener, DEFAULT_ROBUST_METHOD);
     }
 
@@ -2095,8 +1590,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
             final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
         return create(readings, initialPosition, listener, DEFAULT_ROBUST_METHOD);
     }
@@ -2129,8 +1623,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Double initialTransmittedPowerdBm) {
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Double initialTransmittedPowerdBm) {
         return create(readings, initialTransmittedPowerdBm, DEFAULT_ROBUST_METHOD);
     }
 
@@ -2165,11 +1658,9 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Double initialTransmittedPowerdBm,
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
-        return create(readings, initialTransmittedPowerdBm, listener,
-                DEFAULT_ROBUST_METHOD);
+        return create(readings, initialTransmittedPowerdBm, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -2187,11 +1678,9 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
             final Double initialTransmittedPowerdBm) {
-        return create(readings, initialPosition, initialTransmittedPowerdBm,
-                DEFAULT_ROBUST_METHOD);
+        return create(readings, initialPosition, initialTransmittedPowerdBm, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -2207,10 +1696,8 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm) {
-        return create(initialPosition, initialTransmittedPowerdBm,
-                DEFAULT_ROBUST_METHOD);
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm) {
+        return create(initialPosition, initialTransmittedPowerdBm, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -2227,11 +1714,9 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
-        return create(initialPosition, initialTransmittedPowerdBm, listener,
-                DEFAULT_ROBUST_METHOD);
+        return create(initialPosition, initialTransmittedPowerdBm, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -2250,12 +1735,10 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
-        return create(readings, initialPosition, initialTransmittedPowerdBm, listener,
-                DEFAULT_ROBUST_METHOD);
+        return create(readings, initialPosition, initialTransmittedPowerdBm, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -2274,33 +1757,29 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm, final double initialPathLossExponent) {
+        return create(readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent,
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param <S>                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-        return create(readings, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent, DEFAULT_ROBUST_METHOD);
-    }
-
-    /**
-     * Creates a robust 3D position radio source estimator using
-     * default method.
-     *
-     * @param initialPosition            initial position to start the estimation of radio
-     *                                   source position.
-     * @param initialTransmittedPowerdBm initial transmitted power to start the
-     *                                   estimation of radio source transmitted power
-     *                                   (expressed in dBm's).
-     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
-     * @param <S>                        a {@link RadioSource} type.
-     * @return a new robust 3D position radio source estimator.
-     */
-    public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent) {
-        return create(initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent, DEFAULT_ROBUST_METHOD);
+        return create(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -2318,12 +1797,10 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
-        return create(initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent, listener, DEFAULT_ROBUST_METHOD);
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent, final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
+        return create(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener,
+                DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -2343,13 +1820,11 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent,
+            final List<? extends RssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm, final double initialPathLossExponent,
             final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
-        return create(readings, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent, listener, DEFAULT_ROBUST_METHOD);
+        return create(readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener,
+                DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -2362,8 +1837,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @param <S>           a {@link RadioSource} type.
      * @return a new robust 3D position radio source estimator.
      */
-    public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores) {
+    public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(final double[] qualityScores) {
         return create(qualityScores, DEFAULT_ROBUST_METHOD);
     }
 
@@ -2380,8 +1854,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final List<? extends RssiReadingLocated<S, Point3D>> readings) {
+            final double[] qualityScores, final List<? extends RssiReadingLocated<S, Point3D>> readings) {
         return create(qualityScores, readings, DEFAULT_ROBUST_METHOD);
     }
 
@@ -2397,8 +1870,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
+            final double[] qualityScores, final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
         return create(qualityScores, listener, DEFAULT_ROBUST_METHOD);
     }
 
@@ -2416,8 +1888,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
+            final double[] qualityScores, final List<? extends RssiReadingLocated<S, Point3D>> readings,
             final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
         return create(qualityScores, readings, listener, DEFAULT_ROBUST_METHOD);
     }
@@ -2437,11 +1908,9 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
+            final double[] qualityScores, final List<? extends RssiReadingLocated<S, Point3D>> readings,
             final Point3D initialPosition) {
-        return create(qualityScores, readings, initialPosition,
-                DEFAULT_ROBUST_METHOD);
+        return create(qualityScores, readings, initialPosition, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -2457,8 +1926,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final Point3D initialPosition) {
+            final double[] qualityScores, final Point3D initialPosition) {
         return create(qualityScores, initialPosition, DEFAULT_ROBUST_METHOD);
     }
 
@@ -2476,8 +1944,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final Point3D initialPosition,
+            final double[] qualityScores, final Point3D initialPosition,
             final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
         return create(qualityScores, initialPosition, listener, DEFAULT_ROBUST_METHOD);
     }
@@ -2498,12 +1965,9 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
-        return create(qualityScores, readings, initialPosition, listener,
-                DEFAULT_ROBUST_METHOD);
+            final double[] qualityScores, final List<? extends RssiReadingLocated<S, Point3D>> readings,
+            final Point3D initialPosition, final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
+        return create(qualityScores, readings, initialPosition, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -2520,10 +1984,8 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final Double initialTransmittedPowerdBm) {
-        return create(qualityScores, initialTransmittedPowerdBm,
-                DEFAULT_ROBUST_METHOD);
+            final double[] qualityScores, final Double initialTransmittedPowerdBm) {
+        return create(qualityScores, initialTransmittedPowerdBm, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -2542,11 +2004,9 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
+            final double[] qualityScores, final List<? extends RssiReadingLocated<S, Point3D>> readings,
             final Double initialTransmittedPowerdBm) {
-        return create(qualityScores, readings, initialTransmittedPowerdBm,
-                DEFAULT_ROBUST_METHOD);
+        return create(qualityScores, readings, initialTransmittedPowerdBm, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -2564,11 +2024,9 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final Double initialTransmittedPowerdBm,
+            final double[] qualityScores, final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
-        return create(qualityScores, initialTransmittedPowerdBm, listener,
-                DEFAULT_ROBUST_METHOD);
+        return create(qualityScores, initialTransmittedPowerdBm, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -2588,12 +2046,10 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
+            final double[] qualityScores, final List<? extends RssiReadingLocated<S, Point3D>> readings,
             final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
-        return create(qualityScores, readings, initialTransmittedPowerdBm, listener,
-                DEFAULT_ROBUST_METHOD);
+        return create(qualityScores, readings, initialTransmittedPowerdBm, listener, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -2614,12 +2070,9 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @throws IllegalArgumentException if readings are not valid.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm) {
-        return create(qualityScores, readings, initialPosition,
-                initialTransmittedPowerdBm, DEFAULT_ROBUST_METHOD);
+            final double[] qualityScores, final List<? extends RssiReadingLocated<S, Point3D>> readings,
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm) {
+        return create(qualityScores, readings, initialPosition, initialTransmittedPowerdBm, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -2638,11 +2091,8 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm) {
-        return create(qualityScores, initialPosition, initialTransmittedPowerdBm,
-                DEFAULT_ROBUST_METHOD);
+            final double[] qualityScores, final Point3D initialPosition, final Double initialTransmittedPowerdBm) {
+        return create(qualityScores, initialPosition, initialTransmittedPowerdBm, DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -2662,153 +2112,135 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @return a new robust 3D position radio source estimator.
      */
     public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final double[] qualityScores, final Point3D initialPosition, final Double initialTransmittedPowerdBm,
             final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
-        return create(qualityScores, initialPosition, initialTransmittedPowerdBm,
+        return create(qualityScores, initialPosition, initialTransmittedPowerdBm, listener, DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param <S>                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
+            final double[] qualityScores, final List<? extends RssiReadingLocated<S, Point3D>> readings,
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
+        return create(qualityScores, readings, initialPosition, initialTransmittedPowerdBm, listener,
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param <S>                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
+            final double[] qualityScores, final List<? extends RssiReadingLocated<S, Point3D>> readings,
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent) {
+        return create(qualityScores, readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent,
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param <S>                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
+            final double[] qualityScores, final Point3D initialPosition, final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent) {
+        return create(qualityScores, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent,
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param <S>                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
+            final double[] qualityScores, final Point3D initialPosition, final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent, final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
+        return create(qualityScores, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener,
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator using
+     * default method.
+     *
+     * @param qualityScores              quality scores corresponding to each provided
+     *                                   sample. The larger the score value the better
+     *                                   the quality of the sample.
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @param <S>                        a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
+            final double[] qualityScores, final List<? extends RssiReadingLocated<S, Point3D>> readings,
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent, final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
+        return create(qualityScores, readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent,
                 listener, DEFAULT_ROBUST_METHOD);
-    }
-
-    /**
-     * Creates a robust 3D position radio source estimator using
-     * default method.
-     *
-     * @param qualityScores              quality scores corresponding to each provided
-     *                                   sample. The larger the score value the better
-     *                                   the quality of the sample.
-     * @param readings                   signal readings belonging to the same radio source.
-     * @param initialPosition            initial position to start the estimation of radio
-     *                                   source position.
-     * @param initialTransmittedPowerdBm initial transmitted power to start the
-     *                                   estimation of radio source transmitted power
-     *                                   (expressed in dBm's).
-     * @param listener                   listener in charge of attending events raised by this instance.
-     * @param <S>                        a {@link RadioSource} type.
-     * @return a new robust 3D position radio source estimator.
-     * @throws IllegalArgumentException if readings are not valid.
-     */
-    public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
-        return create(qualityScores, readings, initialPosition,
-                initialTransmittedPowerdBm, listener, DEFAULT_ROBUST_METHOD);
-    }
-
-    /**
-     * Creates a robust 3D position radio source estimator using
-     * default method.
-     *
-     * @param qualityScores              quality scores corresponding to each provided
-     *                                   sample. The larger the score value the better
-     *                                   the quality of the sample.
-     * @param readings                   signal readings belonging to the same radio source.
-     * @param initialPosition            initial position to start the estimation of radio
-     *                                   source position.
-     * @param initialTransmittedPowerdBm initial transmitted power to start the
-     *                                   estimation of radio source transmitted power
-     *                                   (expressed in dBm's).
-     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
-     * @param <S>                        a {@link RadioSource} type.
-     * @return a new robust 3D position radio source estimator.
-     * @throws IllegalArgumentException if readings are not valid.
-     */
-    public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent) {
-        return create(qualityScores, readings, initialPosition,
-                initialTransmittedPowerdBm, initialPathLossExponent,
-                DEFAULT_ROBUST_METHOD);
-    }
-
-    /**
-     * Creates a robust 3D position radio source estimator using
-     * default method.
-     *
-     * @param qualityScores              quality scores corresponding to each provided
-     *                                   sample. The larger the score value the better
-     *                                   the quality of the sample.
-     * @param initialPosition            initial position to start the estimation of radio
-     *                                   source position.
-     * @param initialTransmittedPowerdBm initial transmitted power to start the
-     *                                   estimation of radio source transmitted power
-     *                                   (expressed in dBm's).
-     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
-     * @param <S>                        a {@link RadioSource} type.
-     * @return a new robust 3D position radio source estimator.
-     */
-    public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent) {
-        return create(qualityScores, initialPosition,
-                initialTransmittedPowerdBm, initialPathLossExponent,
-                DEFAULT_ROBUST_METHOD);
-    }
-
-    /**
-     * Creates a robust 3D position radio source estimator using
-     * default method.
-     *
-     * @param qualityScores              quality scores corresponding to each provided
-     *                                   sample. The larger the score value the better
-     *                                   the quality of the sample.
-     * @param initialPosition            initial position to start the estimation of radio
-     *                                   source position.
-     * @param initialTransmittedPowerdBm initial transmitted power to start the
-     *                                   estimation of radio source transmitted power
-     *                                   (expressed in dBm's).
-     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
-     * @param listener                   listener in charge of attending events raised by this instance.
-     * @param <S>                        a {@link RadioSource} type.
-     * @return a new robust 3D position radio source estimator.
-     */
-    public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
-        return create(qualityScores, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent, listener, DEFAULT_ROBUST_METHOD);
-    }
-
-    /**
-     * Creates a robust 3D position radio source estimator using
-     * default method.
-     *
-     * @param qualityScores              quality scores corresponding to each provided
-     *                                   sample. The larger the score value the better
-     *                                   the quality of the sample.
-     * @param readings                   signal readings belonging to the same radio source.
-     * @param initialPosition            initial position to start the estimation of radio
-     *                                   source position.
-     * @param initialTransmittedPowerdBm initial transmitted power to start the
-     *                                   estimation of radio source transmitted power
-     *                                   (expressed in dBm's).
-     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
-     * @param listener                   listener in charge of attending events raised by this instance.
-     * @param <S>                        a {@link RadioSource} type.
-     * @return a new robust 3D position radio source estimator.
-     * @throws IllegalArgumentException if readings are not valid.
-     */
-    public static <S extends RadioSource> RobustRssiRadioSourceEstimator3D<S> create(
-            final double[] qualityScores,
-            final List<? extends RssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent,
-            final RobustRssiRadioSourceEstimatorListener<S, Point3D> listener) {
-        return create(qualityScores, readings, initialPosition,
-                initialTransmittedPowerdBm, initialPathLossExponent, listener,
-                DEFAULT_ROBUST_METHOD);
     }
 
     /**
@@ -2822,7 +2254,7 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      */
     @Override
     public int getMinReadings() {
-        int minReadings = 0;
+        var minReadings = 0;
         if (isPositionEstimationEnabled()) {
             minReadings += Point3D.POINT3D_INHOMOGENEOUS_COORDINATES_LENGTH;
         }
@@ -2853,50 +2285,38 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
     @Override
     @SuppressWarnings("unchecked")
     public RadioSourceWithPowerAndLocated<Point3D> getEstimatedRadioSource() {
-        final List<? extends RssiReadingLocated<S, Point3D>> readings = getReadings();
+        final var readings = getReadings();
         if (readings == null || readings.isEmpty()) {
             return null;
         }
-        final S source = readings.get(0).getSource();
+        final var source = readings.get(0).getSource();
 
-        final Point3D estimatedPosition = getEstimatedPosition();
+        final var estimatedPosition = getEstimatedPosition();
         if (estimatedPosition == null) {
             return null;
         }
 
-        final Matrix estimatedPositionCovariance = getEstimatedPositionCovariance();
+        final var estimatedPositionCovariance = getEstimatedPositionCovariance();
 
-        final Double transmittedPowerVariance =
-                getEstimatedTransmittedPowerVariance();
-        final Double transmittedPowerStandardDeviation = transmittedPowerVariance != null ?
-                Math.sqrt(transmittedPowerVariance) : null;
+        final var transmittedPowerVariance = getEstimatedTransmittedPowerVariance();
+        final var transmittedPowerStandardDeviation = transmittedPowerVariance != null
+                ? Math.sqrt(transmittedPowerVariance) : null;
 
-        final Double pathlossExponentVariance =
-                getEstimatedPathLossExponentVariance();
-        final Double pathlossExponentStandardDeviation = pathlossExponentVariance != null ?
-                Math.sqrt(pathlossExponentVariance) : null;
+        final var pathlossExponentVariance = getEstimatedPathLossExponentVariance();
+        final var pathlossExponentStandardDeviation = pathlossExponentVariance != null
+                ? Math.sqrt(pathlossExponentVariance) : null;
 
-        if (source instanceof WifiAccessPoint) {
-            final WifiAccessPoint accessPoint = (WifiAccessPoint) source;
-            return new WifiAccessPointWithPowerAndLocated3D(accessPoint.getBssid(),
-                    source.getFrequency(), accessPoint.getSsid(),
-                    getEstimatedTransmittedPowerdBm(),
-                    transmittedPowerStandardDeviation,
-                    getEstimatedPathLossExponent(),
-                    pathlossExponentStandardDeviation,
-                    estimatedPosition,
+        if (source instanceof WifiAccessPoint accessPoint) {
+            return new WifiAccessPointWithPowerAndLocated3D(accessPoint.getBssid(), source.getFrequency(),
+                    accessPoint.getSsid(), getEstimatedTransmittedPowerdBm(), transmittedPowerStandardDeviation,
+                    getEstimatedPathLossExponent(), pathlossExponentStandardDeviation, estimatedPosition,
                     estimatedPositionCovariance);
-        } else if (source instanceof Beacon) {
-            final Beacon beacon = (Beacon) source;
-            return new BeaconWithPowerAndLocated3D(beacon.getIdentifiers(),
-                    getEstimatedTransmittedPowerdBm(), beacon.getFrequency(),
-                    beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(),
-                    beacon.getManufacturer(), beacon.getServiceUuid(),
-                    beacon.getBluetoothName(),
-                    getEstimatedPathLossExponent(),
-                    transmittedPowerStandardDeviation,
-                    pathlossExponentStandardDeviation,
-                    estimatedPosition, estimatedPositionCovariance);
+        } else if (source instanceof Beacon beacon) {
+            return new BeaconWithPowerAndLocated3D(beacon.getIdentifiers(), getEstimatedTransmittedPowerdBm(),
+                    beacon.getFrequency(), beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(),
+                    beacon.getManufacturer(), beacon.getServiceUuid(), beacon.getBluetoothName(),
+                    getEstimatedPathLossExponent(), transmittedPowerStandardDeviation,
+                    pathlossExponentStandardDeviation, estimatedPosition, estimatedPositionCovariance);
         } else {
             return null;
         }
@@ -2908,40 +2328,31 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @param samplesIndices indices of subset samples.
      * @param solutions      instance where solution will be stored.
      */
-    protected void solvePreliminarySolutions(
-            final int[] samplesIndices,
-            final List<Solution<Point3D>> solutions) {
+    protected void solvePreliminarySolutions(final int[] samplesIndices, final List<Solution<Point3D>> solutions) {
 
         try {
-            int index;
-
-            mInnerReadings.clear();
-            for (final int samplesIndex : samplesIndices) {
-                index = samplesIndex;
-                mInnerReadings.add(mReadings.get(index));
+            innerReadings.clear();
+            for (final var samplesIndex : samplesIndices) {
+                innerReadings.add(readings.get(samplesIndex));
             }
 
             // initial transmitted power and position might or might not be available
-            mInnerEstimator.setInitialTransmittedPowerdBm(
-                    mInitialTransmittedPowerdBm);
-            mInnerEstimator.setInitialPosition(mInitialPosition);
-            mInnerEstimator.setInitialPathLossExponent(mInitialPathLossExponent);
+            innerEstimator.setInitialTransmittedPowerdBm(initialTransmittedPowerdBm);
+            innerEstimator.setInitialPosition(initialPosition);
+            innerEstimator.setInitialPathLossExponent(initialPathLossExponent);
 
-            mInnerEstimator.setTransmittedPowerEstimationEnabled(mTransmittedPowerEstimationEnabled);
-            mInnerEstimator.setPositionEstimationEnabled(mPositionEstimationEnabled);
-            mInnerEstimator.setPathLossEstimationEnabled(mPathLossEstimationEnabled);
+            innerEstimator.setTransmittedPowerEstimationEnabled(transmittedPowerEstimationEnabled);
+            innerEstimator.setPositionEstimationEnabled(positionEstimationEnabled);
+            innerEstimator.setPathLossEstimationEnabled(pathLossEstimationEnabled);
 
-            mInnerEstimator.setReadings(mInnerReadings);
+            innerEstimator.setReadings(innerReadings);
 
-            mInnerEstimator.estimate();
+            innerEstimator.estimate();
 
-            final Point3D estimatedPosition = mInnerEstimator.getEstimatedPosition();
-            final double estimatedTransmittedPowerdBm =
-                    mInnerEstimator.getEstimatedTransmittedPowerdBm();
-            final double estimatedPathLossExponent =
-                    mInnerEstimator.getEstimatedPathLossExponent();
-            solutions.add(new Solution<>(estimatedPosition,
-                    estimatedTransmittedPowerdBm, estimatedPathLossExponent));
+            final var estimatedPosition = innerEstimator.getEstimatedPosition();
+            final var estimatedTransmittedPowerdBm = innerEstimator.getEstimatedTransmittedPowerdBm();
+            final var estimatedPathLossExponent = innerEstimator.getEstimatedPathLossExponent();
+            solutions.add(new Solution<>(estimatedPosition, estimatedTransmittedPowerdBm, estimatedPathLossExponent));
         } catch (final NavigationException ignore) {
             // if anything fails, no solution is added
         }
@@ -2959,109 +2370,102 @@ public abstract class RobustRssiRadioSourceEstimator3D<S extends RadioSource> ex
      * @param result result to be refined.
      */
     protected void attemptRefine(final Solution<Point3D> result) {
-        final Point3D initialPosition = result.getEstimatedPosition();
-        final double initialTransmittedPowerdBm =
-                result.getEstimatedTransmittedPowerdBm();
-        final double initialPathLossExponent = result.getEstimatedPathLossExponent();
+        final var initialPosition = result.getEstimatedPosition();
+        final var initialTransmittedPowerdBm = result.getEstimatedTransmittedPowerdBm();
+        final var initialPathLossExponent = result.getEstimatedPathLossExponent();
 
-        if (mRefineResult && mInliersData != null) {
-            final BitSet inliers = mInliersData.getInliers();
-            final int nSamples = mReadings.size();
+        if (refineResult && inliersData != null) {
+            final var inliers = inliersData.getInliers();
+            final var nSamples = readings.size();
 
-            mInnerReadings.clear();
+            innerReadings.clear();
 
-            for (int i = 0; i < nSamples; i++) {
+            for (var i = 0; i < nSamples; i++) {
                 if (inliers.get(i)) {
                     // sample is inlier
-                    mInnerReadings.add(mReadings.get(i));
+                    innerReadings.add(readings.get(i));
                 }
             }
 
             try {
-                mInnerEstimator.setInitialPosition(initialPosition);
-                mInnerEstimator.setInitialTransmittedPowerdBm(initialTransmittedPowerdBm);
-                mInnerEstimator.setInitialPathLossExponent(initialPathLossExponent);
-                mInnerEstimator.setTransmittedPowerEstimationEnabled(mTransmittedPowerEstimationEnabled);
-                mInnerEstimator.setPositionEstimationEnabled(mPositionEstimationEnabled);
-                mInnerEstimator.setPathLossEstimationEnabled(mPathLossEstimationEnabled);
-                mInnerEstimator.setReadings(mInnerReadings);
+                innerEstimator.setInitialPosition(initialPosition);
+                innerEstimator.setInitialTransmittedPowerdBm(initialTransmittedPowerdBm);
+                innerEstimator.setInitialPathLossExponent(initialPathLossExponent);
+                innerEstimator.setTransmittedPowerEstimationEnabled(transmittedPowerEstimationEnabled);
+                innerEstimator.setPositionEstimationEnabled(positionEstimationEnabled);
+                innerEstimator.setPathLossEstimationEnabled(pathLossEstimationEnabled);
+                innerEstimator.setReadings(innerReadings);
 
-                mInnerEstimator.estimate();
+                innerEstimator.estimate();
 
-                final Matrix cov = mInnerEstimator.getEstimatedCovariance();
-                if (mKeepCovariance && cov != null) {
+                final var cov = innerEstimator.getEstimatedCovariance();
+                if (keepCovariance && cov != null) {
                     // keep covariance
-                    mCovariance = cov;
+                    covariance = cov;
 
-                    final int dims = getNumberOfDimensions();
-                    int pos = 0;
-                    if (mPositionEstimationEnabled) {
+                    final var dims = getNumberOfDimensions();
+                    var pos = 0;
+                    if (positionEstimationEnabled) {
                         // position estimation enabled
-                        final int d = dims - 1;
-                        if (mEstimatedPositionCovariance == null) {
-                            mEstimatedPositionCovariance = mCovariance.
-                                    getSubmatrix(0, 0, d, d);
+                        final var d = dims - 1;
+                        if (estimatedPositionCovariance == null) {
+                            estimatedPositionCovariance = covariance.getSubmatrix(0, 0, d, d);
                         } else {
-                            mCovariance.getSubmatrix(0, 0, d, d,
-                                    mEstimatedPositionCovariance);
+                            covariance.getSubmatrix(0, 0, d, d, estimatedPositionCovariance);
                         }
                         pos += dims;
                     } else {
                         // position estimation disabled
-                        mEstimatedPositionCovariance = null;
+                        estimatedPositionCovariance = null;
                     }
 
-                    if (mTransmittedPowerEstimationEnabled) {
+                    if (transmittedPowerEstimationEnabled) {
                         // transmitted power estimation enabled
-                        mEstimatedTransmittedPowerVariance = mCovariance.
-                                getElementAt(pos, pos);
+                        estimatedTransmittedPowerVariance = covariance.getElementAt(pos, pos);
                         pos++;
                     } else {
                         // transmitted power estimation disabled
-                        mEstimatedTransmittedPowerVariance = null;
+                        estimatedTransmittedPowerVariance = null;
                     }
 
-                    if (mPathLossEstimationEnabled) {
+                    if (pathLossEstimationEnabled) {
                         // path-loss exponent estimation enabled
-                        mEstimatedPathLossExponentVariance = mCovariance.
-                                getElementAt(pos, pos);
+                        estimatedPathLossExponentVariance = covariance.getElementAt(pos, pos);
                     } else {
                         // path-loss exponent estimation disabled
-                        mEstimatedPathLossExponentVariance = null;
+                        estimatedPathLossExponentVariance = null;
                     }
                 } else {
-                    mCovariance = null;
-                    mEstimatedPositionCovariance = null;
-                    mEstimatedTransmittedPowerVariance = null;
-                    mEstimatedPathLossExponentVariance = null;
+                    covariance = null;
+                    estimatedPositionCovariance = null;
+                    estimatedTransmittedPowerVariance = null;
+                    estimatedPathLossExponentVariance = null;
                 }
 
-                mEstimatedPosition = mInnerEstimator.getEstimatedPosition();
-                mEstimatedTransmittedPowerdBm =
-                        mInnerEstimator.getEstimatedTransmittedPowerdBm();
-                mEstimatedPathLossExponent =
-                        mInnerEstimator.getEstimatedPathLossExponent();
+                estimatedPosition = innerEstimator.getEstimatedPosition();
+                estimatedTransmittedPowerdBm = innerEstimator.getEstimatedTransmittedPowerdBm();
+                estimatedPathLossExponent = innerEstimator.getEstimatedPathLossExponent();
             } catch (final Exception e) {
                 // refinement failed, so we return input value, and covariance
                 // becomes unavailable
-                mCovariance = null;
-                mEstimatedPositionCovariance = null;
-                mEstimatedTransmittedPowerVariance = null;
-                mEstimatedPathLossExponentVariance = null;
+                covariance = null;
+                estimatedPositionCovariance = null;
+                estimatedTransmittedPowerVariance = null;
+                estimatedPathLossExponentVariance = null;
 
-                mEstimatedPosition = initialPosition;
-                mEstimatedTransmittedPowerdBm = initialTransmittedPowerdBm;
-                mEstimatedPathLossExponent = initialPathLossExponent;
+                estimatedPosition = initialPosition;
+                estimatedTransmittedPowerdBm = initialTransmittedPowerdBm;
+                estimatedPathLossExponent = initialPathLossExponent;
             }
         } else {
-            mCovariance = null;
-            mEstimatedPositionCovariance = null;
-            mEstimatedTransmittedPowerVariance = null;
-            mEstimatedPathLossExponentVariance = null;
+            covariance = null;
+            estimatedPositionCovariance = null;
+            estimatedTransmittedPowerVariance = null;
+            estimatedPathLossExponentVariance = null;
 
-            mEstimatedPosition = initialPosition;
-            mEstimatedTransmittedPowerdBm = initialTransmittedPowerdBm;
-            mEstimatedPathLossExponent = initialPathLossExponent;
+            estimatedPosition = initialPosition;
+            estimatedTransmittedPowerdBm = initialTransmittedPowerdBm;
+            estimatedPathLossExponent = initialPathLossExponent;
         }
     }
 }

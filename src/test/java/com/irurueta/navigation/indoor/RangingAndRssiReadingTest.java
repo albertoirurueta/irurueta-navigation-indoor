@@ -15,20 +15,20 @@
  */
 package com.irurueta.navigation.indoor;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class RangingAndRssiReadingTest {
+class RangingAndRssiReadingTest {
 
     private static final double FREQUENCY = 2.4e9;
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         // test empty constructor
-        RangingAndRssiReading<WifiAccessPoint> reading = new RangingAndRssiReading<>();
+        var reading = new RangingAndRssiReading<WifiAccessPoint>();
 
         // check
         assertNull(reading.getSource());
@@ -41,7 +41,7 @@ public class RangingAndRssiReadingTest {
         assertEquals(RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS, reading.getNumSuccessfulMeasurements());
 
         // test constructor with access point, distance and RSSI
-        final WifiAccessPoint ap = new WifiAccessPoint("bssid", FREQUENCY);
+        final var ap = new WifiAccessPoint("bssid", FREQUENCY);
         reading = new RangingAndRssiReading<>(ap, 1.2, -50.0);
 
         // check
@@ -55,18 +55,9 @@ public class RangingAndRssiReadingTest {
         assertEquals(RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS, reading.getNumSuccessfulMeasurements());
 
         // Force IllegalArgumentException
-        reading = null;
-        try {
-            reading = new RangingAndRssiReading<>(null, 1.2, -50.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            reading = new RangingAndRssiReading<>(ap, -1.0, -50.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(reading);
+        assertThrows(IllegalArgumentException.class, () -> new RangingAndRssiReading<>(null, 1.2,
+                -50.0));
+        assertThrows(IllegalArgumentException.class, () -> new RangingAndRssiReading<>(ap, -1.0, -50.0));
 
         // test constructor with access point, distance, RSSI and number of measurements.
         reading = new RangingAndRssiReading<>(ap, 1.2, -50.0, 8,
@@ -83,32 +74,14 @@ public class RangingAndRssiReadingTest {
         assertEquals(7, reading.getNumSuccessfulMeasurements());
 
         // Force IllegalArgumentException
-        reading = null;
-        try {
-            reading = new RangingAndRssiReading<>(null, 1.2, -50, 8,
-                    7);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            reading = new RangingAndRssiReading<>(ap, -1.0, -50.0, 8,
-                    7);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            reading = new RangingAndRssiReading<>(ap, 1.2, -50.0, 0,
-                    7);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            reading = new RangingAndRssiReading<>(ap, 1.2, -50.0, 8,
-                    -1);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(reading);
+        assertThrows(IllegalArgumentException.class, () -> new RangingAndRssiReading<>(null, 1.2,
+                -50, 8, 7));
+        assertThrows(IllegalArgumentException.class, () -> new RangingAndRssiReading<>(ap, -1.0, -50.0,
+                8, 7));
+        assertThrows(IllegalArgumentException.class, () -> new RangingAndRssiReading<>(ap, 1.2, -50.0,
+                0, 7));
+        assertThrows(IllegalArgumentException.class, () -> new RangingAndRssiReading<>(ap, 1.2, -50.0,
+                8, -1));
 
         // test constructor with access point, distance, RSSI and standard deviations
         reading = new RangingAndRssiReading<>(ap, 1.5, -50.0, 0.1,
@@ -125,35 +98,16 @@ public class RangingAndRssiReadingTest {
         assertEquals(RangingAndRssiReading.DEFAULT_NUM_MEASUREMENTS, reading.getNumSuccessfulMeasurements());
 
         // Force IllegalArgumentException
-        reading = null;
-        try {
-            reading = new RangingAndRssiReading<>(null, 1.5, -50.0, 0.1,
-                    5.5);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            reading = new RangingAndRssiReading<>(ap, -1.0, -50.0, 0.1,
-                    5.5);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            reading = new RangingAndRssiReading<>(ap, 1.0, -50.0, 0.0,
-                    5.5);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            reading = new RangingAndRssiReading<>(ap, 1.0, -50.0, 0.1,
-                    0.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(reading);
+        assertThrows(IllegalArgumentException.class, () -> new RangingAndRssiReading<>(null, 1.5,
+                -50.0, 0.1, 5.5));
+        assertThrows(IllegalArgumentException.class, () -> new RangingAndRssiReading<>(ap, -1.0, -50.0,
+                0.1, 5.5));
+        assertThrows(IllegalArgumentException.class, () -> new RangingAndRssiReading<>(ap, 1.0, -50.0,
+                0.0, 5.5));
+        assertThrows(IllegalArgumentException.class, () -> new RangingAndRssiReading<>(ap, 1.0, -50.0,
+                0.1, 0.0));
 
-        // test constructor with access point, distance, RSS, standard deviations and
-        // number of measurements
+        // test constructor with access point, distance, RSS, standard deviations and number of measurements
         reading = new RangingAndRssiReading<>(ap, 1.5, -50.0, 0.1,
                 5.5, 8, 7);
 
@@ -168,57 +122,34 @@ public class RangingAndRssiReadingTest {
         assertEquals(7, reading.getNumSuccessfulMeasurements());
 
         // Force IllegalArgumentException.
-        reading = null;
-        try {
-            reading = new RangingAndRssiReading<>(null, 1.5, -50.0, 0.1,
-                    5.5, 8, 7);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            reading = new RangingAndRssiReading<>(ap, -1.0, -50.0, 0.1,
-                    5.5, 8, 7);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            reading = new RangingAndRssiReading<>(ap, 1.0, -50.0, 0.0,
-                    5.5, 8, 7);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            reading = new RangingAndRssiReading<>(ap, 1.0, -50.0, 0.1,
-                    0.0, 8, 7);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            reading = new RangingAndRssiReading<>(ap, 1.5, -50.0, 0.1,
-                    5.5, 0, 7);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            reading = new RangingAndRssiReading<>(ap, 1.5, -50.0, 0.1,
-                    5.5, 8, -1);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(reading);
+        assertThrows(IllegalArgumentException.class, () -> new RangingAndRssiReading<>(null, 1.5,
+                -50.0, 0.1, 5.5, 8,
+                7));
+        assertThrows(IllegalArgumentException.class, () -> new RangingAndRssiReading<>(ap, -1.0, -50.0,
+                0.1, 5.5, 8,
+                7));
+        assertThrows(IllegalArgumentException.class, () -> new RangingAndRssiReading<>(ap, 1.0, -50.0,
+                0.0, 5.5, 8,
+                7));
+        assertThrows(IllegalArgumentException.class, () -> new RangingAndRssiReading<>(ap, 1.0, -50.0,
+                0.1, 0.0, 8,
+                7));
+        assertThrows(IllegalArgumentException.class, () -> new RangingAndRssiReading<>(ap, 1.5, -50.0,
+                0.1, 5.5, 0,
+                7));
+        assertThrows(IllegalArgumentException.class, () -> new RangingAndRssiReading<>(ap, 1.5, -50.0,
+                0.1, 5.5, 8,
+                -1));
     }
 
     @Test
-    public void testHasSameAccessPoint() {
-        final WifiAccessPoint ap1 = new WifiAccessPoint("bssid1", FREQUENCY);
-        final WifiAccessPoint ap2 = new WifiAccessPoint("bssid2", FREQUENCY);
+    void testHasSameAccessPoint() {
+        final var ap1 = new WifiAccessPoint("bssid1", FREQUENCY);
+        final var ap2 = new WifiAccessPoint("bssid2", FREQUENCY);
 
-        final RangingAndRssiReading<WifiAccessPoint> reading1 = new RangingAndRssiReading<>(ap1,
-                1.5, -50.0);
-        final RangingAndRssiReading<WifiAccessPoint> reading2 = new RangingAndRssiReading<>(ap1,
-                1.5, -50.0);
-        final RangingAndRssiReading<WifiAccessPoint> reading3 = new RangingAndRssiReading<>(ap2,
-                1.5, -50.0);
+        final var reading1 = new RangingAndRssiReading<>(ap1, 1.5, -50.0);
+        final var reading2 = new RangingAndRssiReading<>(ap1, 1.5, -50.0);
+        final var reading3 = new RangingAndRssiReading<>(ap2, 1.5, -50.0);
 
         // check
         assertTrue(reading1.hasSameSource(reading1));
@@ -227,11 +158,10 @@ public class RangingAndRssiReadingTest {
     }
 
     @Test
-    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
-        final WifiAccessPoint ap = new WifiAccessPoint("bssid", FREQUENCY);
-        final RangingAndRssiReading<WifiAccessPoint> reading1 = new RangingAndRssiReading<>(ap, 1.5,
-                -50.0, 0.1, 5.5, 8,
-                7);
+    void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final var ap = new WifiAccessPoint("bssid", FREQUENCY);
+        final var reading1 = new RangingAndRssiReading<>(ap, 1.5, -50.0, 0.1,
+                5.5, 8, 7);
 
         // check
         assertSame(ap, reading1.getSource());
@@ -244,22 +174,18 @@ public class RangingAndRssiReadingTest {
         assertEquals(7, reading1.getNumSuccessfulMeasurements());
 
         // serialize and deserialize
-        final byte[] bytes = SerializationHelper.serialize(reading1);
-        final RangingAndRssiReading<WifiAccessPoint> reading2 = SerializationHelper.deserialize(bytes);
+        final var bytes = SerializationHelper.serialize(reading1);
+        final var reading2 = SerializationHelper.<RangingAndRssiReading<WifiAccessPoint>>deserialize(bytes);
 
         // check
         assertNotSame(reading1, reading2);
         assertEquals(reading1.getSource(), reading2.getSource());
         assertEquals(reading1.getDistance(), reading2.getDistance(), 0.0);
-        assertEquals(reading1.getDistanceStandardDeviation(),
-                reading2.getDistanceStandardDeviation(), 0.0);
+        assertEquals(reading1.getDistanceStandardDeviation(), reading2.getDistanceStandardDeviation(), 0.0);
         assertEquals(reading1.getRssi(), reading2.getRssi(), 0.0);
-        assertEquals(reading1.getRssiStandardDeviation(),
-                reading2.getRssiStandardDeviation(), 0.0);
+        assertEquals(reading1.getRssiStandardDeviation(), reading2.getRssiStandardDeviation(), 0.0);
         assertEquals(reading1.getType(), reading2.getType());
-        assertEquals(reading1.getNumAttemptedMeasurements(),
-                reading2.getNumAttemptedMeasurements());
-        assertEquals(reading1.getNumSuccessfulMeasurements(),
-                reading2.getNumSuccessfulMeasurements());
+        assertEquals(reading1.getNumAttemptedMeasurements(), reading2.getNumAttemptedMeasurements());
+        assertEquals(reading1.getNumSuccessfulMeasurements(), reading2.getNumSuccessfulMeasurements());
     }
 }

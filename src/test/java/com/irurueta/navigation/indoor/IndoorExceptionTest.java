@@ -15,15 +15,15 @@
  */
 package com.irurueta.navigation.indoor;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class IndoorExceptionTest {
+class IndoorExceptionTest {
 
     @Test
-    public void testConstructor() {
-        IndoorException ex = new IndoorException();
+    void testConstructor() {
+        var ex = new IndoorException();
         assertNotNull(ex);
 
         ex = new IndoorException("message");

@@ -15,15 +15,15 @@
  */
 package com.irurueta.navigation.indoor.radiosource;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class RadioSourceEstimationExceptionTest {
+class RadioSourceEstimationExceptionTest {
 
     @Test
-    public void testConstructor() {
-        RadioSourceEstimationException ex = new RadioSourceEstimationException();
+    void testConstructor() {
+        var ex = new RadioSourceEstimationException();
         assertNotNull(ex);
 
         ex = new RadioSourceEstimationException("message");

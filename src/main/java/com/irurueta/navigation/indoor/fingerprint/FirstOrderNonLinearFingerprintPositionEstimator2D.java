@@ -24,7 +24,6 @@ import com.irurueta.navigation.indoor.RssiFingerprint;
 import com.irurueta.navigation.indoor.RssiFingerprintLocated;
 import com.irurueta.navigation.indoor.RssiReading;
 import com.irurueta.navigation.indoor.Utils;
-import com.irurueta.statistics.MultivariateNormalDist;
 
 import java.util.List;
 
@@ -39,8 +38,7 @@ import java.util.List;
  * otherwise the average point of selected nearest fingerprints is used as a starting
  * point.
  */
-public class FirstOrderNonLinearFingerprintPositionEstimator2D extends
-        NonLinearFingerprintPositionEstimator2D {
+public class FirstOrderNonLinearFingerprintPositionEstimator2D extends NonLinearFingerprintPositionEstimator2D {
 
     /**
      * Constructor.
@@ -183,50 +181,47 @@ public class FirstOrderNonLinearFingerprintPositionEstimator2D extends
     @Override
     @SuppressWarnings("Duplicates")
     protected double evaluate(
-            final int i, final double[] point, final double[] params,
-            final double[] derivatives) {
+            final int i, final double[] point, final double[] params, final double[] derivatives) {
         // This method implements received power at point pi = (xi, yi) and its derivatives
 
         // Pr(pi) = Pr(p1)
         //   - 10*n*(x1 - xa)/(ln(10)*d1a^2)*(xi - x1)
         //   - 10*n*(y1 - ya)/(ln(10)*d1a^2)*(yi - y1)
 
-        final double xi = params[0];
-        final double yi = params[1];
+        final var xi = params[0];
+        final var yi = params[1];
 
         // received power
-        final double pr = point[0];
+        final var pr = point[0];
 
         // fingerprint coordinates
-        final double x1 = point[1];
-        final double y1 = point[2];
+        final var x1 = point[1];
+        final var y1 = point[2];
 
         // radio source coordinates
-        final double xa = point[3];
-        final double ya = point[4];
+        final var xa = point[3];
+        final var ya = point[4];
 
         // path loss exponent
-        final double n = point[5];
+        final var n = point[5];
 
-        final double ln10 = Math.log(10.0);
+        final var ln10 = Math.log(10.0);
 
-        final double diffXi1 = xi - x1;
-        final double diffYi1 = yi - y1;
+        final var diffXi1 = xi - x1;
+        final var diffYi1 = yi - y1;
 
-        final double diffX1a = x1 - xa;
-        final double diffY1a = y1 - ya;
+        final var diffX1a = x1 - xa;
+        final var diffY1a = y1 - ya;
 
-        final double diffX1a2 = diffX1a * diffX1a;
-        final double diffY1a2 = diffY1a * diffY1a;
+        final var diffX1a2 = diffX1a * diffX1a;
+        final var diffY1a2 = diffY1a * diffY1a;
 
-        final double d1a2 = diffX1a2 + diffY1a2;
+        final var d1a2 = diffX1a2 + diffY1a2;
 
-        final double value1 = -10.0 * n * diffX1a / (ln10 * d1a2);
-        final double value2 = -10.0 * n * diffY1a / (ln10 * d1a2);
+        final var value1 = -10.0 * n * diffX1a / (ln10 * d1a2);
+        final var value2 = -10.0 * n * diffY1a / (ln10 * d1a2);
 
-        final double result = pr
-                + value1 * diffXi1
-                + value2 * diffYi1;
+        final var result = pr + value1 * diffXi1 + value2 * diffYi1;
 
         // derivative respect xi
         // diff(Pr(pi))/diff(xi) = - 10*n*(x1 - xa)/(ln(10)*d1a^2)
@@ -260,24 +255,20 @@ public class FirstOrderNonLinearFingerprintPositionEstimator2D extends
     @Override
     @SuppressWarnings("Duplicates")
     protected Double propagateVariances(
-            final double fingerprintRssi, final double pathlossExponent,
-            final Point2D fingerprintPosition, final Point2D radioSourcePosition,
-            final Point2D estimatedPosition, final Double fingerprintRssiVariance,
-            final Double pathlossExponentVariance,
-            final Matrix fingerprintPositionCovariance,
+            final double fingerprintRssi, final double pathlossExponent, final Point2D fingerprintPosition,
+            final Point2D radioSourcePosition, final Point2D estimatedPosition, final Double fingerprintRssiVariance,
+            final Double pathlossExponentVariance, final Matrix fingerprintPositionCovariance,
             final Matrix radioSourcePositionCovariance) {
         try {
-            final MultivariateNormalDist dist =
-                    Utils.propagateVariancesToRssiVarianceFirstOrderNonLinear2D(
-                            fingerprintRssi, pathlossExponent, fingerprintPosition,
-                            radioSourcePosition, estimatedPosition, fingerprintRssiVariance,
-                            pathlossExponentVariance, fingerprintPositionCovariance,
-                            radioSourcePositionCovariance, null);
+            final var dist = Utils.propagateVariancesToRssiVarianceFirstOrderNonLinear2D(fingerprintRssi,
+                    pathlossExponent, fingerprintPosition, radioSourcePosition, estimatedPosition,
+                    fingerprintRssiVariance, pathlossExponentVariance, fingerprintPositionCovariance,
+                    radioSourcePositionCovariance, null);
             if (dist == null) {
                 return null;
             }
 
-            final Matrix covariance = dist.getCovariance();
+            final var covariance = dist.getCovariance();
             if (covariance == null) {
                 return null;
             }

@@ -45,6 +45,5 @@ public interface SequentialRobustMixedPositionEstimatorListener<P extends Point<
      * @param estimator estimator raising the event.
      * @param progress  progress of estimation expressed as a value between 0.0 and 1.0.
      */
-    void onEstimateProgressChange(final SequentialRobustMixedPositionEstimator<P> estimator,
-                                  final float progress);
+    void onEstimateProgressChange(final SequentialRobustMixedPositionEstimator<P> estimator, final float progress);
 }

@@ -34,8 +34,7 @@ import java.util.List;
  * getting RSSI+ranging readings at an unknown location of different radio sources whose
  * locations are known.
  */
-public class LinearRangingAndRssiPositionEstimator2D extends
-        LinearRangingAndRssiPositionEstimator<Point2D> {
+public class LinearRangingAndRssiPositionEstimator2D extends LinearRangingAndRssiPositionEstimator<Point2D> {
 
     /**
      * Constructor.
@@ -53,8 +52,7 @@ public class LinearRangingAndRssiPositionEstimator2D extends
      *                                  provided sources is less than the required
      *                                  minimum.
      */
-    public LinearRangingAndRssiPositionEstimator2D(
-            final List<? extends RadioSourceLocated<Point2D>> sources) {
+    public LinearRangingAndRssiPositionEstimator2D(final List<? extends RadioSourceLocated<Point2D>> sources) {
         super();
         initialize();
         internalSetSources(sources);
@@ -98,8 +96,7 @@ public class LinearRangingAndRssiPositionEstimator2D extends
      *
      * @param listener listener in charge of handling events.
      */
-    public LinearRangingAndRssiPositionEstimator2D(
-            final RangingAndRssiPositionEstimatorListener<Point2D> listener) {
+    public LinearRangingAndRssiPositionEstimator2D(final RangingAndRssiPositionEstimatorListener<Point2D> listener) {
         super(listener);
         initialize();
     }
@@ -165,11 +162,11 @@ public class LinearRangingAndRssiPositionEstimator2D extends
      */
     @Override
     public Point2D getEstimatedPosition() {
-        if (mEstimatedPositionCoordinates == null) {
+        if (estimatedPositionCoordinates == null) {
             return null;
         }
 
-        final InhomogeneousPoint2D result = new InhomogeneousPoint2D();
+        final var result = new InhomogeneousPoint2D();
         getEstimatedPosition(result);
         return result;
     }
@@ -185,18 +182,18 @@ public class LinearRangingAndRssiPositionEstimator2D extends
     @SuppressWarnings("Duplicates")
     protected void setPositionsAndDistances(
             final List<Point2D> positions, final List<Double> distances) {
-        final int size = positions.size();
+        final var size = positions.size();
         Point2D[] positionsArray = new InhomogeneousPoint2D[size];
         positionsArray = positions.toArray(positionsArray);
 
-        final double[] distancesArray = new double[size];
-        for (int i = 0; i < size; i++) {
+        final var distancesArray = new double[size];
+        for (var i = 0; i < size; i++) {
             distancesArray[i] = distances.get(i);
         }
 
         try {
-            mHomogeneousTrilaterationSolver.setPositionsAndDistances(positionsArray, distancesArray);
-            mInhomogeneousTrilaterationSolver.setPositionsAndDistances(positionsArray, distancesArray);
+            homogeneousTrilaterationSolver.setPositionsAndDistances(positionsArray, distancesArray);
+            inhomogeneousTrilaterationSolver.setPositionsAndDistances(positionsArray, distancesArray);
         } catch (final LockedException e) {
             throw new IllegalArgumentException(e);
         }
@@ -206,9 +203,8 @@ public class LinearRangingAndRssiPositionEstimator2D extends
      * Initializes lateration solver.
      */
     private void initialize() {
-        mHomogeneousTrilaterationSolver = new HomogeneousLinearLeastSquaresLateration2DSolver(
-                mLaterationSolverListener);
-        mInhomogeneousTrilaterationSolver = new InhomogeneousLinearLeastSquaresLateration2DSolver(
-                mLaterationSolverListener);
+        homogeneousTrilaterationSolver = new HomogeneousLinearLeastSquaresLateration2DSolver(laterationSolverListener);
+        inhomogeneousTrilaterationSolver = new InhomogeneousLinearLeastSquaresLateration2DSolver(
+                laterationSolverListener);
     }
 }

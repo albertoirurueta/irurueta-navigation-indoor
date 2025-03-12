@@ -485,42 +485,42 @@ public abstract class NonLinearFingerprintPositionEstimator<P extends Point<?>> 
         }
 
         try {
-            mLocked = true;
+            locked = true;
 
-            if (mListener != null) {
-                mListener.onEstimateStart(this);
+            if (listener != null) {
+                listener.onEstimateStart(this);
             }
 
             RadioSourceNoMeanKNearestFinder<P, RadioSource> noMeanFinder = null;
             RadioSourceKNearestFinder<P, RadioSource> finder = null;
-            if (mUseNoMeanNearestFingerprintFinder) {
+            if (useNoMeanNearestFingerprintFinder) {
                 //noinspection unchecked
                 noMeanFinder = new RadioSourceNoMeanKNearestFinder<>(
                         (Collection<RssiFingerprintLocated<RadioSource,
-                                RssiReading<RadioSource>, P>>) mLocatedFingerprints);
+                                RssiReading<RadioSource>, P>>) locatedFingerprints);
             } else {
                 //noinspection unchecked
                 finder = new RadioSourceKNearestFinder<>(
                         (Collection<RssiFingerprintLocated<RadioSource,
-                                RssiReading<RadioSource>, P>>) mLocatedFingerprints);
+                                RssiReading<RadioSource>, P>>) locatedFingerprints);
             }
 
-            mEstimatedPositionCoordinates = null;
+            estimatedPositionCoordinates = null;
             mCovariance = null;
-            mNearestFingerprints = null;
+            nearestFingerprints = null;
 
-            final int max = mMaxNearestFingerprints < 0 ?
-                    mLocatedFingerprints.size() :
-                    Math.min(mMaxNearestFingerprints, mLocatedFingerprints.size());
-            for (int k = mMinNearestFingerprints; k <= max; k++) {
+            final int max = maxNearestFingerprints < 0 ?
+                    locatedFingerprints.size() :
+                    Math.min(maxNearestFingerprints, locatedFingerprints.size());
+            for (int k = minNearestFingerprints; k <= max; k++) {
                 if (noMeanFinder != null) {
                     //noinspection unchecked
-                    mNearestFingerprints = noMeanFinder.findKNearestTo(
-                            (RssiFingerprint<RadioSource, RssiReading<RadioSource>>) mFingerprint, k);
+                    nearestFingerprints = noMeanFinder.findKNearestTo(
+                            (RssiFingerprint<RadioSource, RssiReading<RadioSource>>) fingerprint, k);
                 } else {
                     //noinspection unchecked
-                    mNearestFingerprints = finder.findKNearestTo(
-                            (RssiFingerprint<RadioSource, RssiReading<RadioSource>>) mFingerprint, k);
+                    nearestFingerprints = finder.findKNearestTo(
+                            (RssiFingerprint<RadioSource, RssiReading<RadioSource>>) fingerprint, k);
                 }
 
                 // Demonstration in 2D:
@@ -794,7 +794,7 @@ public abstract class NonLinearFingerprintPositionEstimator<P extends Point<?>> 
                     mFitter.fit();
 
                     // estimated position
-                    mEstimatedPositionCoordinates = mFitter.getA();
+                    estimatedPositionCoordinates = mFitter.getA();
                     mCovariance = mFitter.getCovar();
                     mChiSq = mFitter.getChisq();
 
@@ -803,22 +803,22 @@ public abstract class NonLinearFingerprintPositionEstimator<P extends Point<?>> 
                 } catch (NumericalException e) {
                     // solution could not be found with current data
                     // Iterate to use additional nearby fingerprints
-                    mEstimatedPositionCoordinates = null;
+                    estimatedPositionCoordinates = null;
                     mCovariance = null;
-                    mNearestFingerprints = null;
+                    nearestFingerprints = null;
                 }
             }
 
-            if (mEstimatedPositionCoordinates == null) {
+            if (estimatedPositionCoordinates == null) {
                 // no solution could be found
                 throw new FingerprintEstimationException();
             }
 
-            if (mListener != null) {
-                mListener.onEstimateEnd(this);
+            if (listener != null) {
+                listener.onEstimateEnd(this);
             }
         } finally {
-            mLocked = false;
+            locked = false;
         }
     }
 
@@ -844,8 +844,7 @@ public abstract class NonLinearFingerprintPositionEstimator<P extends Point<?>> 
      * @return function evaluation at provided point.
      */
     protected abstract double evaluate(
-            final int i, final double[] point, final double[] params,
-            final double[] derivatives);
+            final int i, final double[] point, final double[] params, final double[] derivatives);
 
     /**
      * Propagates provided variances into RSSI variance of non-located fingerprint
@@ -866,11 +865,9 @@ public abstract class NonLinearFingerprintPositionEstimator<P extends Point<?>> 
      * @return variance of RSSI measured at non located fingerprint reading.
      */
     protected abstract Double propagateVariances(
-            final double fingerprintRssi, final double pathlossExponent,
-            final P fingerprintPosition, final P radioSourcePosition,
-            final P estimatedPosition, final Double fingerprintRssiVariance,
-            final Double pathlossExponentVariance,
-            final Matrix fingerprintPositionCovariance,
+            final double fingerprintRssi, final double pathlossExponent, final P fingerprintPosition,
+            final P radioSourcePosition, final P estimatedPosition, final Double fingerprintRssiVariance,
+            final Double pathlossExponentVariance, final Matrix fingerprintPositionCovariance,
             final Matrix radioSourcePositionCovariance);
 
     /**
@@ -891,27 +888,24 @@ public abstract class NonLinearFingerprintPositionEstimator<P extends Point<?>> 
             final List<P> allSourcesPositions,
             final List<Double> allPathLossExponents,
             final List<Double> allStandardDeviations) {
-        for (final RssiFingerprintLocated<RadioSource, RssiReading<RadioSource>, P> locatedFingerprint :
-                mNearestFingerprints) {
+        for (final var locatedFingerprint : nearestFingerprints) {
 
-            final List<RssiReading<RadioSource>> locatedReadings =
-                    locatedFingerprint.getReadings();
+            final var locatedReadings = locatedFingerprint.getReadings();
             if (locatedReadings == null) {
                 continue;
             }
 
-            final P fingerprintPosition = locatedFingerprint.getPosition();
-            final Matrix fingerprintPositionCovariance = locatedFingerprint.
-                    getPositionCovariance();
+            final var fingerprintPosition = locatedFingerprint.getPosition();
+            final var fingerprintPositionCovariance = locatedFingerprint.getPositionCovariance();
 
-            double locatedMeanRssi = 0.0;
-            double meanRssi = 0.0;
-            if (mRemoveMeansFromFingerprintReadings) {
+            var locatedMeanRssi = 0.0;
+            var meanRssi = 0.0;
+            if (removeMeansFromFingerprintReadings) {
                 locatedMeanRssi = locatedFingerprint.getMeanRssi();
             }
 
-            for (final RssiReading<RadioSource> locatedReading : locatedReadings) {
-                final RadioSource source = locatedReading.getSource();
+            for (final var locatedReading : locatedReadings) {
+                final var source = locatedReading.getSource();
 
                 // find within the list of located sources the source of
                 // current located fingerprint reading.
@@ -919,62 +913,52 @@ public abstract class NonLinearFingerprintPositionEstimator<P extends Point<?>> 
                 // regardless of them being located or not
 
                 //noinspection SuspiciousMethodCalls
-                final int pos = mSources.indexOf(source);
+                final var pos = sources.indexOf(source);
                 if (pos < 0) {
                     continue;
                 }
 
-                final RadioSourceLocated<P> locatedSource = mSources.get(pos);
-                double pathLossExponent = mPathLossExponent;
+                final var locatedSource = sources.get(pos);
+                var pathLossExponent = this.pathLossExponent;
                 Double pathLossExponentVariance = null;
-                if (mUseSourcesPathLossExponentWhenAvailable &&
-                        locatedSource instanceof RadioSourceWithPower) {
-                    final RadioSourceWithPower locatedSourceWithPower =
-                            (RadioSourceWithPower) locatedSource;
+                if (useSourcesPathLossExponentWhenAvailable
+                        && locatedSource instanceof RadioSourceWithPower locatedSourceWithPower) {
                     pathLossExponent = locatedSourceWithPower.getPathLossExponent();
-                    final Double std = locatedSourceWithPower.
-                            getPathLossExponentStandardDeviation();
+                    final var std = locatedSourceWithPower.getPathLossExponentStandardDeviation();
                     pathLossExponentVariance = std != null ? std * std : null;
                 }
 
-                final P sourcePosition = locatedSource.getPosition();
-                final Matrix sourcePositionCovariance = locatedSource.getPositionCovariance();
-                double locatedRssi = locatedReading.getRssi();
+                final var sourcePosition = locatedSource.getPosition();
+                final var sourcePositionCovariance = locatedSource.getPositionCovariance();
+                var locatedRssi = locatedReading.getRssi();
                 locatedRssi -= locatedMeanRssi;
 
-                final Double locatedRssiStd = locatedReading.getRssiStandardDeviation();
-                final Double locatedRssiVariance = locatedRssiStd != null ?
-                        locatedRssiStd * locatedRssiStd : null;
-                if (mRemoveMeansFromFingerprintReadings) {
-                    meanRssi = mFingerprint.getMeanRssi();
+                final var locatedRssiStd = locatedReading.getRssiStandardDeviation();
+                final var locatedRssiVariance = locatedRssiStd != null ? locatedRssiStd * locatedRssiStd : null;
+                if (removeMeansFromFingerprintReadings) {
+                    meanRssi = fingerprint.getMeanRssi();
                 }
 
-                final List<? extends RssiReading<? extends RadioSource>> readings =
-                        mFingerprint.getReadings();
-                for (final RssiReading<? extends RadioSource> reading : readings) {
-                    if (reading.getSource() == null ||
-                            !reading.getSource().equals(locatedSource)) {
+                final var readings = fingerprint.getReadings();
+                for (final var reading : readings) {
+                    if (reading.getSource() == null || !reading.getSource().equals(locatedSource)) {
                         continue;
                     }
 
                     // only take into account reading for matching sources on located and
                     // non-located readings
-                    double rssi = reading.getRssi();
+                    var rssi = reading.getRssi();
                     rssi -= meanRssi;
 
                     Double standardDeviation = null;
-                    if (mPropagateFingerprintRssiStandardDeviation ||
-                            mPropagatePathlossExponentStandardDeviation ||
-                            mPropagateFingerprintPositionCovariance ||
-                            mPropagateRadioSourcePositionCovariance) {
+                    if (mPropagateFingerprintRssiStandardDeviation || mPropagatePathlossExponentStandardDeviation
+                            || mPropagateFingerprintPositionCovariance || mPropagateRadioSourcePositionCovariance) {
 
                         // compute initial position
-                        final P initialPosition = mInitialPosition != null ?
-                                mInitialPosition : fingerprintPosition;
+                        final var initialPosition = mInitialPosition != null ? mInitialPosition : fingerprintPosition;
 
-                        final Double variance = propagateVariances(locatedRssi,
-                                pathLossExponent, fingerprintPosition, sourcePosition,
-                                initialPosition,
+                        final var variance = propagateVariances(locatedRssi, pathLossExponent, fingerprintPosition,
+                                sourcePosition, initialPosition,
                                 mPropagateFingerprintRssiStandardDeviation ? locatedRssiVariance : null,
                                 mPropagatePathlossExponentStandardDeviation ? pathLossExponentVariance : null,
                                 mPropagateFingerprintPositionCovariance ? fingerprintPositionCovariance : null,
@@ -1017,19 +1001,18 @@ public abstract class NonLinearFingerprintPositionEstimator<P extends Point<?>> 
     @SuppressWarnings("Duplicates")
     private void setupFitter() throws FittingException {
         // build lists of data
-        final List<Double> allReceivedPower = new ArrayList<>();
-        final List<Double> allFingerprintPower = new ArrayList<>();
-        final List<P> allFingerprintPositions = new ArrayList<>();
-        final List<P> allSourcesPosition = new ArrayList<>();
-        final List<Double> allPathLossExponents = new ArrayList<>();
-        final List<Double> allStandardDeviations = new ArrayList<>();
-        buildData(allReceivedPower, allFingerprintPower,
-                allFingerprintPositions, allSourcesPosition, allPathLossExponents,
-                allStandardDeviations);
+        final var allReceivedPower = new ArrayList<Double>();
+        final var allFingerprintPower = new ArrayList<Double>();
+        final var allFingerprintPositions = new ArrayList<P>();
+        final var allSourcesPosition = new ArrayList<P>();
+        final var allPathLossExponents = new ArrayList<Double>();
+        final var allStandardDeviations = new ArrayList<Double>();
+        buildData(allReceivedPower, allFingerprintPower, allFingerprintPositions, allSourcesPosition,
+                allPathLossExponents, allStandardDeviations);
 
-        final int totalReadings = allReceivedPower.size();
-        final int dims = getNumberOfDimensions();
-        final int n = 2 + 2 * dims;
+        final var totalReadings = allReceivedPower.size();
+        final var dims = getNumberOfDimensions();
+        final var n = 2 + 2 * dims;
 
         mFitter.setFunctionEvaluator(new LevenbergMarquardtMultiDimensionFunctionEvaluator() {
             @Override
@@ -1040,32 +1023,31 @@ public abstract class NonLinearFingerprintPositionEstimator<P extends Point<?>> 
             @Override
             public double[] createInitialParametersArray() {
 
-                final double[] initial = new double[dims];
+                final var initial = new double[dims];
 
                 if (mInitialPosition == null) {
                     // use centroid of nearest fingerprints as initial value
-                    int num = 0;
-                    for (final RssiFingerprintLocated<? extends RadioSource,
-                            ? extends RssiReading<? extends RadioSource>, P> fingerprint : mNearestFingerprints) {
-                        final P position = fingerprint.getPosition();
+                    var num = 0;
+                    for (var fingerprint : nearestFingerprints) {
+                        final var position = fingerprint.getPosition();
                         if (position == null) {
                             continue;
                         }
 
-                        for (int i = 0; i < dims; i++) {
+                        for (var i = 0; i < dims; i++) {
                             initial[i] += position.getInhomogeneousCoordinate(i);
                         }
                         num++;
                     }
 
                     if (num > 0) {
-                        for (int i = 0; i < dims; i++) {
+                        for (var i = 0; i < dims; i++) {
                             initial[i] /= num;
                         }
                     }
                 } else {
                     // use provided initial position
-                    for (int i = 0; i < dims; i++) {
+                    for (var i = 0; i < dims; i++) {
                         initial[i] = mInitialPosition.getInhomogeneousCoordinate(i);
                     }
                 }
@@ -1074,24 +1056,21 @@ public abstract class NonLinearFingerprintPositionEstimator<P extends Point<?>> 
 
             @Override
             public double evaluate(
-                    final int i, final double[] point, final double[] params,
-                    final double[] derivatives) {
+                    final int i, final double[] point, final double[] params, final double[] derivatives) {
                 return NonLinearFingerprintPositionEstimator.this.evaluate(i, point, params, derivatives);
             }
         });
 
         try {
-            final Matrix x = new Matrix(totalReadings, n);
-            final double[] y = new double[totalReadings];
-            final double[] standardDeviations = new double[totalReadings];
-            for (int i = 0; i < totalReadings; i++) {
+            final var x = new Matrix(totalReadings, n);
+            final var y = new double[totalReadings];
+            final var standardDeviations = new double[totalReadings];
+            for (var i = 0; i < totalReadings; i++) {
                 // fingerprint power Pr(p1)
                 x.setElementAt(i, 0, allFingerprintPower.get(i));
-                for (int j = 0; j < dims; j++) {
-                    x.setElementAt(i, j + 1,
-                            allFingerprintPositions.get(i).getInhomogeneousCoordinate(j));
-                    x.setElementAt(i, j + 1 + dims,
-                            allSourcesPosition.get(i).getInhomogeneousCoordinate(j));
+                for (var j = 0; j < dims; j++) {
+                    x.setElementAt(i, j + 1, allFingerprintPositions.get(i).getInhomogeneousCoordinate(j));
+                    x.setElementAt(i, j + 1 + dims, allSourcesPosition.get(i).getInhomogeneousCoordinate(j));
                 }
                 x.setElementAt(i, 1 + 2 * dims, allPathLossExponents.get(i));
 

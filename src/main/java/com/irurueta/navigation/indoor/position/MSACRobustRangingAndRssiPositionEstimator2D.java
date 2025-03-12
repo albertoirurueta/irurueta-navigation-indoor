@@ -51,8 +51,7 @@ public class MSACRobustRangingAndRssiPositionEstimator2D extends RobustRangingAn
      * @throws IllegalArgumentException if provided sources is null or the number of
      *                                  provided sources is less than the required minimum.
      */
-    public MSACRobustRangingAndRssiPositionEstimator2D(
-            final List<? extends RadioSourceLocated<Point2D>> sources) {
+    public MSACRobustRangingAndRssiPositionEstimator2D(final List<? extends RadioSourceLocated<Point2D>> sources) {
         super();
         init();
         internalSetSources(sources);
@@ -163,8 +162,7 @@ public class MSACRobustRangingAndRssiPositionEstimator2D extends RobustRangingAn
      * @return threshold to determine whether samples are inliers or not.
      */
     public double getThreshold() {
-        return ((MSACRobustLateration2DSolver) mLaterationSolver).
-                getThreshold();
+        return ((MSACRobustLateration2DSolver) laterationSolver).getThreshold();
     }
 
     /**
@@ -177,8 +175,7 @@ public class MSACRobustRangingAndRssiPositionEstimator2D extends RobustRangingAn
      * @throws LockedException          if this solver is locked.
      */
     public void setThreshold(final double threshold) throws LockedException {
-        ((MSACRobustLateration2DSolver) mLaterationSolver).
-                setThreshold(threshold);
+        ((MSACRobustLateration2DSolver) laterationSolver).setThreshold(threshold);
     }
 
     /**
@@ -195,7 +192,6 @@ public class MSACRobustRangingAndRssiPositionEstimator2D extends RobustRangingAn
      * Initializes robust lateration solver.
      */
     private void init() {
-        mLaterationSolver = new MSACRobustLateration2DSolver(
-                mTrilaterationSolverListener);
+        laterationSolver = new MSACRobustLateration2DSolver(trilaterationSolverListener);
     }
 }

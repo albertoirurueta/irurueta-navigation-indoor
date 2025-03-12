@@ -23,18 +23,18 @@ import com.irurueta.geometry.Point;
  *
  * @param <P> a {@link Point} type.
  */
-public abstract class WifiAccessPointLocated<P extends Point<?>>
-        extends WifiAccessPoint implements RadioSourceLocated<P> {
+public abstract class WifiAccessPointLocated<P extends Point<?>> extends WifiAccessPoint implements
+        RadioSourceLocated<P> {
 
     /**
      * Position where access point is located.
      */
-    private P mPosition;
+    private P position;
 
     /**
      * Covariance of inhomogeneous coordinates of current position (if available).
      */
-    private Matrix mPositionCovariance;
+    private Matrix positionCovariance;
 
     /**
      * Constructor.
@@ -46,15 +46,14 @@ public abstract class WifiAccessPointLocated<P extends Point<?>>
      * @throws IllegalArgumentException if either BSSID or position are null or
      *                                  frequency is negative.
      */
-    protected WifiAccessPointLocated(
-            final String bssid, final double frequency, final P position) {
+    protected WifiAccessPointLocated(final String bssid, final double frequency, final P position) {
         super(bssid, frequency);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -69,15 +68,14 @@ public abstract class WifiAccessPointLocated<P extends Point<?>>
      *                                  frequency is negative.
      */
     protected WifiAccessPointLocated(
-            final String bssid, final double frequency, final String ssid,
-            final P position) {
+            final String bssid, final double frequency, final String ssid, final P position) {
         super(bssid, frequency, ssid);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -93,18 +91,16 @@ public abstract class WifiAccessPointLocated<P extends Point<?>>
      *                                  frequency is negative, or covariance does not have proper size.
      */
     protected WifiAccessPointLocated(
-            final String bssid, final double frequency, final P position,
-            final Matrix positionCovariance) {
+            final String bssid, final double frequency, final P position, final Matrix positionCovariance) {
         this(bssid, frequency, position);
 
         if (positionCovariance != null) {
-            final int dims = position.getDimensions();
-            if (positionCovariance.getRows() != dims ||
-                    positionCovariance.getColumns() != dims) {
+            final var dims = position.getDimensions();
+            if (positionCovariance.getRows() != dims || positionCovariance.getColumns() != dims) {
                 throw new IllegalArgumentException();
             }
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -121,18 +117,17 @@ public abstract class WifiAccessPointLocated<P extends Point<?>>
      *                                  frequency is negative, or covariance does not have proper size.
      */
     protected WifiAccessPointLocated(
-            final String bssid, final double frequency, final String ssid,
-            final P position, final Matrix positionCovariance) {
+            final String bssid, final double frequency, final String ssid, final P position,
+            final Matrix positionCovariance) {
         this(bssid, frequency, ssid, position);
 
         if (positionCovariance != null) {
-            final int dims = position.getDimensions();
-            if (positionCovariance.getRows() != dims ||
-                    positionCovariance.getColumns() != dims) {
+            final var dims = position.getDimensions();
+            if (positionCovariance.getRows() != dims || positionCovariance.getColumns() != dims) {
                 throw new IllegalArgumentException();
             }
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -148,7 +143,7 @@ public abstract class WifiAccessPointLocated<P extends Point<?>>
      * @return position where access point is located.
      */
     public P getPosition() {
-        return mPosition;
+        return position;
     }
 
     /**
@@ -157,6 +152,6 @@ public abstract class WifiAccessPointLocated<P extends Point<?>>
      * @return covariance of position or null.
      */
     public Matrix getPositionCovariance() {
-        return mPositionCovariance;
+        return positionCovariance;
     }
 }

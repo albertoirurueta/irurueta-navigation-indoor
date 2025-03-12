@@ -32,7 +32,7 @@ public class RadioSourceKNearestFinder<P extends Point<?>, S extends RadioSource
     /**
      * Collection of fingerprints to match against.
      */
-    private final Collection<? extends RssiFingerprintLocated<S, RssiReading<S>, P>> mFingerprints;
+    private final Collection<? extends RssiFingerprintLocated<S, RssiReading<S>, P>> fingerprints;
 
     /**
      * Constructor.
@@ -45,7 +45,7 @@ public class RadioSourceKNearestFinder<P extends Point<?>, S extends RadioSource
         if (fingerprints == null) {
             throw new IllegalArgumentException();
         }
-        mFingerprints = fingerprints;
+        this.fingerprints = fingerprints;
     }
 
     /**
@@ -57,7 +57,7 @@ public class RadioSourceKNearestFinder<P extends Point<?>, S extends RadioSource
      */
     public RssiFingerprintLocated<S, RssiReading<S>, P> findNearestTo(
             final RssiFingerprint<S, RssiReading<S>> fingerprint) {
-        return findNearestTo(fingerprint, mFingerprints);
+        return findNearestTo(fingerprint, fingerprints);
     }
 
     /**
@@ -70,9 +70,8 @@ public class RadioSourceKNearestFinder<P extends Point<?>, S extends RadioSource
      * @throws IllegalArgumentException if either fingerprint is null or k is less than 1.
      */
     public List<RssiFingerprintLocated<S, RssiReading<S>, P>> findKNearestTo(
-            final RssiFingerprint<S, RssiReading<S>> fingerprint,
-            final int k) {
-        return findKNearestTo(fingerprint, mFingerprints, k);
+            final RssiFingerprint<S, RssiReading<S>> fingerprint, final int k) {
+        return findKNearestTo(fingerprint, fingerprints, k);
     }
 
     /**
@@ -88,11 +87,10 @@ public class RadioSourceKNearestFinder<P extends Point<?>, S extends RadioSource
      * @throws IllegalArgumentException if any parameter is null or k is less than 1.
      */
     public void findKNearestTo(
-            final RssiFingerprint<S, RssiReading<S>> fingerprint,
-            final int k,
+            final RssiFingerprint<S, RssiReading<S>> fingerprint, final int k,
             final List<RssiFingerprintLocated<S, RssiReading<S>, P>> nearestFingerprints,
             final List<Double> nearestSqrDistances) {
-        findKNearestTo(fingerprint, mFingerprints, k, nearestFingerprints, nearestSqrDistances);
+        findKNearestTo(fingerprint, fingerprints, k, nearestFingerprints, nearestSqrDistances);
     }
 
     /**
@@ -102,7 +100,7 @@ public class RadioSourceKNearestFinder<P extends Point<?>, S extends RadioSource
      */
     public Collection<RssiFingerprintLocated<S, RssiReading<S>, P>> getFingerprints() {
         //noinspection unchecked
-        return (Collection<RssiFingerprintLocated<S, RssiReading<S>,P>>) mFingerprints;
+        return (Collection<RssiFingerprintLocated<S, RssiReading<S>,P>>) fingerprints;
     }
 
     /**
@@ -124,10 +122,10 @@ public class RadioSourceKNearestFinder<P extends Point<?>, S extends RadioSource
             throw new IllegalArgumentException();
         }
 
-        double bestSqrDist = Double.MAX_VALUE;
+        var bestSqrDist = Double.MAX_VALUE;
         RssiFingerprintLocated<S, RssiReading<S>, P> result = null;
-        for (final RssiFingerprintLocated<S, RssiReading<S>, P> f : fingerprints) {
-            final double sqrDist = f.sqrDistanceTo(fingerprint);
+        for (final var f : fingerprints) {
+            final var sqrDist = f.sqrDistanceTo(fingerprint);
             if (sqrDist < bestSqrDist) {
                 bestSqrDist = sqrDist;
                 result = f;
@@ -151,14 +149,12 @@ public class RadioSourceKNearestFinder<P extends Point<?>, S extends RadioSource
      *                                  1.
      */
     @SuppressWarnings("DuplicatedCode")
-    public static <P extends Point<?>, S extends RadioSource> List<RssiFingerprintLocated<S, RssiReading<S>,
-            P>> findKNearestTo(final RssiFingerprint<S, RssiReading<S>> fingerprint,
-                               final Collection<? extends RssiFingerprintLocated<S, RssiReading<S>, P>> fingerprints,
-                               final int k) {
+    public static <P extends Point<?>, S extends RadioSource> List<RssiFingerprintLocated<S, RssiReading<S>, P>>
+    findKNearestTo(final RssiFingerprint<S, RssiReading<S>> fingerprint, final Collection<? extends
+                           RssiFingerprintLocated<S, RssiReading<S>, P>> fingerprints, final int k) {
 
-        final List<RssiFingerprintLocated<S, RssiReading<S>, P>> result =
-                new ArrayList<>();
-        final List<Double> nearestSqrDistances = new ArrayList<>();
+        final var result = new ArrayList<RssiFingerprintLocated<S, RssiReading<S>, P>>();
+        final var nearestSqrDistances = new ArrayList<Double>();
         findKNearestTo(fingerprint, fingerprints, k, result, nearestSqrDistances);
 
         return result;
@@ -187,23 +183,23 @@ public class RadioSourceKNearestFinder<P extends Point<?>, S extends RadioSource
             final List<RssiFingerprintLocated<S, RssiReading<S>, P>> nearestFingerprints,
             final List<Double> nearestSqrDistances) {
 
-        if (fingerprint == null || fingerprints == null || k < 1 || nearestFingerprints == null ||
-                nearestSqrDistances == null) {
+        if (fingerprint == null || fingerprints == null || k < 1 || nearestFingerprints == null
+                || nearestSqrDistances == null) {
             throw new IllegalArgumentException();
         }
 
         nearestSqrDistances.clear();
         nearestFingerprints.clear();
 
-        double maxSqrDist = Double.MAX_VALUE;
-        for (RssiFingerprintLocated<S, RssiReading<S>, P> f : fingerprints) {
-            final double sqrDist = f.sqrDistanceTo(fingerprint);
+        var maxSqrDist = Double.MAX_VALUE;
+        for (final var f : fingerprints) {
+            final var sqrDist = f.sqrDistanceTo(fingerprint);
             if (sqrDist < maxSqrDist || nearestSqrDistances.size() < k) {
 
                 // find insertion point
-                int pos = -1;
-                int i = 0;
-                for (final Double sd : nearestSqrDistances) {
+                var pos = -1;
+                var i = 0;
+                for (final var sd : nearestSqrDistances) {
                     if (sqrDist < sd) {
                         // insertion point found
                         pos = i;

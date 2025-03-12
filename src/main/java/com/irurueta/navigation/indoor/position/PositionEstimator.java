@@ -43,22 +43,22 @@ public abstract class PositionEstimator<P extends Point<?>,
     /**
      * Located radio sources used for lateration.
      */
-    protected List<? extends RadioSourceLocated<P>> mSources;
+    protected List<? extends RadioSourceLocated<P>> sources;
 
     /**
      * Fingerprint containing readings at an unknown location for provided located radio sources.
      */
-    protected Fingerprint<? extends RadioSource, ? extends R> mFingerprint;
+    protected Fingerprint<? extends RadioSource, ? extends R> fingerprint;
 
     /**
      * Listener to be notified of events raised by this instance.
      */
-    protected L mListener;
+    protected L listener;
 
     /**
      * Estimated inhomogeneous position coordinates.
      */
-    protected double[] mEstimatedPositionCoordinates;
+    protected double[] estimatedPositionCoordinates;
 
     /**
      * Constructor.
@@ -72,7 +72,7 @@ public abstract class PositionEstimator<P extends Point<?>,
      * @param listener listener in charge of handling events.
      */
     protected PositionEstimator(final L listener) {
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -82,7 +82,7 @@ public abstract class PositionEstimator<P extends Point<?>,
      */
     public List<RadioSourceLocated<P>> getSources() {
         //noinspection unchecked
-        return (List<RadioSourceLocated<P>>) mSources;
+        return (List<RadioSourceLocated<P>>) sources;
     }
 
     /**
@@ -93,8 +93,7 @@ public abstract class PositionEstimator<P extends Point<?>,
      * @throws IllegalArgumentException if provided value is null or the number of provided
      *                                  sources is less than the required minimum.
      */
-    public void setSources(final List<? extends RadioSourceLocated<P>> sources)
-            throws LockedException {
+    public void setSources(final List<? extends RadioSourceLocated<P>> sources) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
@@ -111,7 +110,7 @@ public abstract class PositionEstimator<P extends Point<?>,
      */
     public Fingerprint<RadioSource, Reading<RadioSource>> getFingerprint() {
         //noinspection unchecked
-        return (Fingerprint<RadioSource, Reading<RadioSource>>) mFingerprint;
+        return (Fingerprint<RadioSource, Reading<RadioSource>>) fingerprint;
     }
 
     /**
@@ -138,7 +137,7 @@ public abstract class PositionEstimator<P extends Point<?>,
      * @return listener to be notified of events raised by this instance.
      */
     public L getListener() {
-        return mListener;
+        return listener;
     }
 
     /**
@@ -151,7 +150,7 @@ public abstract class PositionEstimator<P extends Point<?>,
         if (isLocked()) {
             throw new LockedException();
         }
-        mListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -160,7 +159,7 @@ public abstract class PositionEstimator<P extends Point<?>,
      * @return estimated inhomogeneous position coordinates.
      */
     public double[] getEstimatedPositionCoordinates() {
-        return mEstimatedPositionCoordinates;
+        return estimatedPositionCoordinates;
     }
 
     /**
@@ -169,10 +168,9 @@ public abstract class PositionEstimator<P extends Point<?>,
      * @param estimatedPosition instance where estimated position will be stored.
      */
     public void getEstimatedPosition(final P estimatedPosition) {
-        if (mEstimatedPositionCoordinates != null) {
-            for (int i = 0; i < mEstimatedPositionCoordinates.length; i++) {
-                estimatedPosition.setInhomogeneousCoordinate(i,
-                        mEstimatedPositionCoordinates[i]);
+        if (estimatedPositionCoordinates != null) {
+            for (int i = 0; i < estimatedPositionCoordinates.length; i++) {
+                estimatedPosition.setInhomogeneousCoordinate(i, estimatedPositionCoordinates[i]);
             }
         }
     }
@@ -251,7 +249,7 @@ public abstract class PositionEstimator<P extends Point<?>,
             throw new IllegalArgumentException();
         }
 
-        mSources = sources;
+        this.sources = sources;
     }
 
     /**
@@ -262,12 +260,11 @@ public abstract class PositionEstimator<P extends Point<?>,
      *                    provided located radio sources.
      * @throws IllegalArgumentException if provided value is null.
      */
-    protected void internalSetFingerprint(
-            final Fingerprint<? extends RadioSource, ? extends R> fingerprint) {
+    protected void internalSetFingerprint(final Fingerprint<? extends RadioSource, ? extends R> fingerprint) {
         if (fingerprint == null) {
             throw new IllegalArgumentException();
         }
 
-        mFingerprint = fingerprint;
+        this.fingerprint = fingerprint;
     }
 }

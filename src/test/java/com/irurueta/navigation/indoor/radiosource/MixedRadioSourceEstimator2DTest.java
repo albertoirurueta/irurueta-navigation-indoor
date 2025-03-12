@@ -25,26 +25,24 @@ import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.indoor.*;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.text.MessageFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.irurueta.navigation.indoor.Utils.dBmToPower;
 import static com.irurueta.navigation.indoor.Utils.powerTodBm;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimatorListener<WifiAccessPoint, Point2D> {
+class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimatorListener<WifiAccessPoint, Point2D> {
 
-    private static final Logger LOGGER = Logger.getLogger(
-            MixedRadioSourceEstimator2DTest.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(MixedRadioSourceEstimator2DTest.class.getName());
 
     private static final double FREQUENCY = 2.4e9; // (Hz)
 
@@ -75,7 +73,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
     private int estimateEnd;
 
     @Test
-    public void testConstants() {
+    void testConstants() {
         assertEquals(299792458.0, MixedRadioSourceEstimator.SPEED_OF_LIGHT, 0.0);
         assertEquals(2.0, MixedRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, 0.0);
         assertTrue(MixedRadioSourceEstimator.DEFAULT_TRANSMITTED_POWER_ESTIMATION_ENABLED);
@@ -84,11 +82,11 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
     }
 
     @Test
-    public void testConstructor() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testConstructor() {
+        final var randomizer = new UniformRandomizer();
 
         // test empty constructor
-        MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
+        var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
 
         // check default values
         assertEquals(3, estimator.getMinRangingReadings());
@@ -101,8 +99,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertNull(estimator.getInitialTransmittedPower());
         assertTrue(estimator.isTransmittedPowerEstimationEnabled());
         assertNull(estimator.getInitialPosition());
-        assertEquals(MixedRadioSourceEstimator2D.DEFAULT_PATH_LOSS_EXPONENT,
-                estimator.getInitialPathLossExponent(), 0.0);
+        assertEquals(MixedRadioSourceEstimator2D.DEFAULT_PATH_LOSS_EXPONENT, estimator.getInitialPathLossExponent(),
+                0.0);
         assertFalse(estimator.isPathLossEstimationEnabled());
         assertEquals(MixedRadioSourceEstimator2D.DEFAULT_USE_READING_POSITION_COVARIANCES,
                 estimator.getUseReadingPositionCovariance());
@@ -115,20 +113,19 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertNull(estimator.getEstimatedTransmittedPower());
         assertNull(estimator.getEstimatedTransmittedPowerdBm());
         assertNull(estimator.getEstimatedPositionCoordinates());
-        assertEquals(MixedRadioSourceEstimator2D.DEFAULT_PATH_LOSS_EXPONENT,
-                estimator.getEstimatedPathLossExponent(), 0.0);
+        assertEquals(MixedRadioSourceEstimator2D.DEFAULT_PATH_LOSS_EXPONENT, estimator.getEstimatedPathLossExponent(),
+                0.0);
         assertNull(estimator.getEstimatedCovariance());
         assertNull(estimator.getEstimatedPositionCovariance());
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
         // test constructor with readings
-        final List<RangingAndRssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-        final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
-        for (int i = 0; i < 4; i++) {
-            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+        final var readings = new ArrayList<RangingAndRssiReadingLocated2D<WifiAccessPoint>>();
+        final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+        for (var i = 0; i < 4; i++) {
+            final var position = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
             readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, 0.0, 0.0, position));
         }
 
@@ -145,8 +142,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertNull(estimator.getInitialTransmittedPower());
         assertTrue(estimator.isTransmittedPowerEstimationEnabled());
         assertNull(estimator.getInitialPosition());
-        assertEquals(MixedRadioSourceEstimator2D.DEFAULT_PATH_LOSS_EXPONENT,
-                estimator.getInitialPathLossExponent(), 0.0);
+        assertEquals(MixedRadioSourceEstimator2D.DEFAULT_PATH_LOSS_EXPONENT, estimator.getInitialPathLossExponent(),
+                0.0);
         assertFalse(estimator.isPathLossEstimationEnabled());
         assertEquals(MixedRadioSourceEstimator2D.DEFAULT_USE_READING_POSITION_COVARIANCES,
                 estimator.getUseReadingPositionCovariance());
@@ -167,18 +164,10 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
         // force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new MixedRadioSourceEstimator2D<>((List<ReadingLocated<Point2D>>) null);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new MixedRadioSourceEstimator2D<>(new ArrayList<ReadingLocated<Point2D>>());
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new MixedRadioSourceEstimator2D<>(
+                (List<ReadingLocated<Point2D>>) null));
+        final var wrongReadings = new ArrayList<ReadingLocated<Point2D>>();
+        assertThrows(IllegalArgumentException.class, () -> new MixedRadioSourceEstimator2D<>(wrongReadings));
 
         // test constructor with listener
         estimator = new MixedRadioSourceEstimator2D<>(this);
@@ -229,8 +218,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertNull(estimator.getInitialTransmittedPower());
         assertTrue(estimator.isTransmittedPowerEstimationEnabled());
         assertNull(estimator.getInitialPosition());
-        assertEquals(MixedRadioSourceEstimator2D.DEFAULT_PATH_LOSS_EXPONENT,
-                estimator.getInitialPathLossExponent(), 0.0);
+        assertEquals(MixedRadioSourceEstimator2D.DEFAULT_PATH_LOSS_EXPONENT, estimator.getInitialPathLossExponent(),
+                0.0);
         assertFalse(estimator.isPathLossEstimationEnabled());
         assertEquals(MixedRadioSourceEstimator2D.DEFAULT_USE_READING_POSITION_COVARIANCES,
                 estimator.getUseReadingPositionCovariance());
@@ -251,23 +240,14 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
         // force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new MixedRadioSourceEstimator2D<>((List<ReadingLocated<Point2D>>) null, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new MixedRadioSourceEstimator2D<>(new ArrayList<ReadingLocated<Point2D>>(), this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new MixedRadioSourceEstimator2D<>(
+                (List<ReadingLocated<Point2D>>) null, this));
+        assertThrows(IllegalArgumentException.class, () -> new MixedRadioSourceEstimator2D<>(wrongReadings,
+                this));
 
         // test constructor with initial position
-        final InhomogeneousPoint2D initialPosition = new InhomogeneousPoint2D(
-                randomizer.nextDouble(MIN_POS, MAX_POS),
-                randomizer.nextDouble(MIN_POS, MAX_POS));
+        final var initialPosition = new InhomogeneousPoint2D(
+                randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
         estimator = new MixedRadioSourceEstimator2D<>(initialPosition);
 
         // check default values
@@ -281,8 +261,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertNull(estimator.getInitialTransmittedPower());
         assertTrue(estimator.isTransmittedPowerEstimationEnabled());
         assertSame(initialPosition, estimator.getInitialPosition());
-        assertEquals(MixedRadioSourceEstimator2D.DEFAULT_PATH_LOSS_EXPONENT,
-                estimator.getInitialPathLossExponent(), 0.0);
+        assertEquals(MixedRadioSourceEstimator2D.DEFAULT_PATH_LOSS_EXPONENT, estimator.getInitialPathLossExponent(),
+                0.0);
         assertFalse(estimator.isPathLossEstimationEnabled());
         assertEquals(MixedRadioSourceEstimator2D.DEFAULT_USE_READING_POSITION_COVARIANCES,
                 estimator.getUseReadingPositionCovariance());
@@ -338,18 +318,10 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
         // force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new MixedRadioSourceEstimator2D<>(null, initialPosition);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new MixedRadioSourceEstimator2D<>(new ArrayList<ReadingLocated<Point2D>>(), initialPosition);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new MixedRadioSourceEstimator2D<>(null,
+                initialPosition));
+        assertThrows(IllegalArgumentException.class, () -> new MixedRadioSourceEstimator2D<>(wrongReadings,
+                initialPosition));
 
         // test constructor with initial position and listener
         estimator = new MixedRadioSourceEstimator2D<>(initialPosition, this);
@@ -365,8 +337,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertNull(estimator.getInitialTransmittedPower());
         assertTrue(estimator.isTransmittedPowerEstimationEnabled());
         assertSame(estimator.getInitialPosition(), initialPosition);
-        assertEquals(MixedRadioSourceEstimator2D.DEFAULT_PATH_LOSS_EXPONENT,
-                estimator.getInitialPathLossExponent(), 0.0);
+        assertEquals(MixedRadioSourceEstimator2D.DEFAULT_PATH_LOSS_EXPONENT, estimator.getInitialPathLossExponent(),
+                0.0);
         assertFalse(estimator.isPathLossEstimationEnabled());
         assertEquals(MixedRadioSourceEstimator2D.DEFAULT_USE_READING_POSITION_COVARIANCES,
                 estimator.getUseReadingPositionCovariance());
@@ -422,19 +394,10 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
         // force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new MixedRadioSourceEstimator2D<>(null, initialPosition, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new MixedRadioSourceEstimator2D<>(new ArrayList<ReadingLocated<Point2D>>(),
-                    initialPosition, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new MixedRadioSourceEstimator2D<>(null,
+                initialPosition, this));
+        assertThrows(IllegalArgumentException.class, () -> new MixedRadioSourceEstimator2D<>(wrongReadings,
+                initialPosition, this));
 
         // test constructor with initial transmitted power
         estimator = new MixedRadioSourceEstimator2D<>(MAX_RSSI);
@@ -450,8 +413,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertEquals(Utils.dBmToPower(MAX_RSSI), estimator.getInitialTransmittedPower(), 0.0);
         assertTrue(estimator.isTransmittedPowerEstimationEnabled());
         assertNull(estimator.getInitialPosition());
-        assertEquals(MixedRadioSourceEstimator2D.DEFAULT_PATH_LOSS_EXPONENT,
-                estimator.getInitialPathLossExponent(), 0.0);
+        assertEquals(MixedRadioSourceEstimator2D.DEFAULT_PATH_LOSS_EXPONENT, estimator.getInitialPathLossExponent(),
+                0.0);
         assertFalse(estimator.isPathLossEstimationEnabled());
         assertEquals(MixedRadioSourceEstimator2D.DEFAULT_USE_READING_POSITION_COVARIANCES,
                 estimator.getUseReadingPositionCovariance());
@@ -485,8 +448,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertEquals(Utils.dBmToPower(MAX_RSSI), estimator.getInitialTransmittedPower(), 0.0);
         assertTrue(estimator.isTransmittedPowerEstimationEnabled());
         assertNull(estimator.getInitialPosition());
-        assertEquals(MixedRadioSourceEstimator2D.DEFAULT_PATH_LOSS_EXPONENT,
-                estimator.getInitialPathLossExponent(), 0.0);
+        assertEquals(MixedRadioSourceEstimator2D.DEFAULT_PATH_LOSS_EXPONENT, estimator.getInitialPathLossExponent(),
+                0.0);
         assertFalse(estimator.isPathLossEstimationEnabled());
         assertEquals(MixedRadioSourceEstimator2D.DEFAULT_USE_READING_POSITION_COVARIANCES,
                 estimator.getUseReadingPositionCovariance());
@@ -499,26 +462,17 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertNull(estimator.getEstimatedTransmittedPower());
         assertNull(estimator.getEstimatedTransmittedPowerdBm());
         assertNull(estimator.getEstimatedPositionCoordinates());
-        assertEquals(MixedRadioSourceEstimator2D.DEFAULT_PATH_LOSS_EXPONENT,
-                estimator.getEstimatedPathLossExponent(), 0.0);
+        assertEquals(MixedRadioSourceEstimator2D.DEFAULT_PATH_LOSS_EXPONENT, estimator.getEstimatedPathLossExponent(),
+                0.0);
         assertNull(estimator.getEstimatedCovariance());
         assertNull(estimator.getEstimatedPositionCovariance());
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
         // force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new MixedRadioSourceEstimator2D<>((List<ReadingLocated<Point2D>>) null, MAX_RSSI);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new MixedRadioSourceEstimator2D<>(new ArrayList<ReadingLocated<Point2D>>(), MAX_RSSI);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new MixedRadioSourceEstimator2D<>(
+                (List<ReadingLocated<Point2D>>) null, MAX_RSSI));
+        assertThrows(IllegalArgumentException.class, () -> new MixedRadioSourceEstimator2D<>(wrongReadings, MAX_RSSI));
 
         // test constructor with initial transmitted power and listener
         estimator = new MixedRadioSourceEstimator2D<>(MAX_RSSI, this);
@@ -534,8 +488,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertEquals(Utils.dBmToPower(MAX_RSSI), estimator.getInitialTransmittedPower(), 0.0);
         assertTrue(estimator.isTransmittedPowerEstimationEnabled());
         assertNull(estimator.getInitialPosition());
-        assertEquals(MixedRadioSourceEstimator2D.DEFAULT_PATH_LOSS_EXPONENT,
-                estimator.getInitialPathLossExponent(), 0.0);
+        assertEquals(MixedRadioSourceEstimator2D.DEFAULT_PATH_LOSS_EXPONENT, estimator.getInitialPathLossExponent(),
+                0.0);
         assertFalse(estimator.isPathLossEstimationEnabled());
         assertEquals(MixedRadioSourceEstimator2D.DEFAULT_USE_READING_POSITION_COVARIANCES,
                 estimator.getUseReadingPositionCovariance());
@@ -591,20 +545,10 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
         // force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new MixedRadioSourceEstimator2D<>((List<ReadingLocated<Point2D>>) null, MAX_RSSI,
-                    this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new MixedRadioSourceEstimator2D<>(new ArrayList<ReadingLocated<Point2D>>(), MAX_RSSI,
-                    this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new MixedRadioSourceEstimator2D<>(
+                (List<ReadingLocated<Point2D>>) null, MAX_RSSI, this));
+        assertThrows(IllegalArgumentException.class, () -> new MixedRadioSourceEstimator2D<>(wrongReadings, MAX_RSSI,
+                this));
 
         // test constructor with readings, initial position and
         // initial transmitted power
@@ -642,19 +586,10 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
         // force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new MixedRadioSourceEstimator2D<>(null, initialPosition, MAX_RSSI);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new MixedRadioSourceEstimator2D<>(new ArrayList<ReadingLocated<Point2D>>(),
-                    initialPosition, MAX_RSSI);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new MixedRadioSourceEstimator2D<>(null,
+                initialPosition, MAX_RSSI));
+        assertThrows(IllegalArgumentException.class, () -> new MixedRadioSourceEstimator2D<>(wrongReadings,
+                initialPosition, MAX_RSSI));
 
         // test constructor with initial position and initial transmitted power
         estimator = new MixedRadioSourceEstimator2D<>(initialPosition, MAX_RSSI);
@@ -670,8 +605,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertEquals(Utils.dBmToPower(MAX_RSSI), estimator.getInitialTransmittedPower(), 0.0);
         assertTrue(estimator.isTransmittedPowerEstimationEnabled());
         assertSame(initialPosition, estimator.getInitialPosition());
-        assertEquals(MixedRadioSourceEstimator2D.DEFAULT_PATH_LOSS_EXPONENT,
-                estimator.getInitialPathLossExponent(), 0.0);
+        assertEquals(MixedRadioSourceEstimator2D.DEFAULT_PATH_LOSS_EXPONENT, estimator.getInitialPathLossExponent(),
+                0.0);
         assertFalse(estimator.isPathLossEstimationEnabled());
         assertEquals(MixedRadioSourceEstimator2D.DEFAULT_USE_READING_POSITION_COVARIANCES,
                 estimator.getUseReadingPositionCovariance());
@@ -684,8 +619,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertNull(estimator.getEstimatedTransmittedPower());
         assertNull(estimator.getEstimatedTransmittedPowerdBm());
         assertNull(estimator.getEstimatedPositionCoordinates());
-        assertEquals(MixedRadioSourceEstimator2D.DEFAULT_PATH_LOSS_EXPONENT,
-                estimator.getEstimatedPathLossExponent(), 0.0);
+        assertEquals(MixedRadioSourceEstimator2D.DEFAULT_PATH_LOSS_EXPONENT, estimator.getEstimatedPathLossExponent(),
+                0.0);
         assertNull(estimator.getEstimatedCovariance());
         assertNull(estimator.getEstimatedPositionCovariance());
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
@@ -764,19 +699,10 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
         // force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new MixedRadioSourceEstimator2D<>(null, initialPosition, MAX_RSSI, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new MixedRadioSourceEstimator2D<>(new ArrayList<ReadingLocated<Point2D>>(), initialPosition,
-                    MAX_RSSI, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new MixedRadioSourceEstimator2D<>(null,
+                initialPosition, MAX_RSSI, this));
+        assertThrows(IllegalArgumentException.class, () -> new MixedRadioSourceEstimator2D<>(wrongReadings,
+                initialPosition, MAX_RSSI, this));
 
         // test constructor with readings, initial position, initial
         // transmitted power and initial path loss exponent
@@ -813,20 +739,10 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
         // force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new MixedRadioSourceEstimator2D<>(null, initialPosition, MAX_RSSI,
-                    MIN_PATH_LOSS_EXPONENT);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new MixedRadioSourceEstimator2D<>(new ArrayList<ReadingLocated<Point2D>>(), initialPosition,
-                    MAX_RSSI, MIN_PATH_LOSS_EXPONENT);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new MixedRadioSourceEstimator2D<>(null,
+                initialPosition, MAX_RSSI, MIN_PATH_LOSS_EXPONENT));
+        assertThrows(IllegalArgumentException.class, () -> new MixedRadioSourceEstimator2D<>(wrongReadings,
+                initialPosition, MAX_RSSI, MIN_PATH_LOSS_EXPONENT));
 
         // test constructor with initial position and initial transmitted power
         estimator = new MixedRadioSourceEstimator2D<>(initialPosition, MAX_RSSI, MIN_PATH_LOSS_EXPONENT);
@@ -855,8 +771,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertNull(estimator.getEstimatedTransmittedPower());
         assertNull(estimator.getEstimatedTransmittedPowerdBm());
         assertNull(estimator.getEstimatedPositionCoordinates());
-        assertEquals(MixedRadioSourceEstimator2D.DEFAULT_PATH_LOSS_EXPONENT,
-                estimator.getEstimatedPathLossExponent(), 0.0);
+        assertEquals(MixedRadioSourceEstimator2D.DEFAULT_PATH_LOSS_EXPONENT, estimator.getEstimatedPathLossExponent(),
+                0.0);
         assertNull(estimator.getEstimatedCovariance());
         assertNull(estimator.getEstimatedPositionCovariance());
         assertNull(estimator.getEstimatedTransmittedPowerVariance());
@@ -932,25 +848,15 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertNull(estimator.getEstimatedPathLossExponentVariance());
 
         // force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new MixedRadioSourceEstimator2D<>(null, initialPosition, MAX_RSSI,
-                    MIN_PATH_LOSS_EXPONENT, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new MixedRadioSourceEstimator2D<>(new ArrayList<ReadingLocated<Point2D>>(),
-                    initialPosition, MAX_RSSI, MIN_PATH_LOSS_EXPONENT, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new MixedRadioSourceEstimator2D<>(null,
+                initialPosition, MAX_RSSI, MIN_PATH_LOSS_EXPONENT, this));
+        assertThrows(IllegalArgumentException.class, () -> new MixedRadioSourceEstimator2D<>(wrongReadings,
+                initialPosition, MAX_RSSI, MIN_PATH_LOSS_EXPONENT, this));
     }
 
     @Test
-    public void testGetMinReadings() throws LockedException {
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
+    void testGetMinReadings() throws LockedException {
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
 
         // check default value
         assertEquals(4, estimator.getMinReadings());
@@ -985,15 +891,15 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
     }
 
     @Test
-    public void testGetSetInitialTransmittedPowerdBm() throws LockedException {
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
+    void testGetSetInitialTransmittedPowerdBm() throws LockedException {
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
 
         // check default value
         assertNull(estimator.getInitialTransmittedPowerdBm());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double value = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+        final var randomizer = new UniformRandomizer();
+        final var value = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
         estimator.setInitialTransmittedPowerdBm(value);
 
         // check
@@ -1001,26 +907,22 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
     }
 
     @Test
-    public void testGetSetInitialTransmittedPower() throws LockedException {
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
+    void testGetSetInitialTransmittedPower() throws LockedException {
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
 
         // check default value
         assertNull(estimator.getInitialTransmittedPower());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double value = Utils.dBmToPower(randomizer.nextDouble(MIN_RSSI, MAX_RSSI));
+        final var randomizer = new UniformRandomizer();
+        final var value = Utils.dBmToPower(randomizer.nextDouble(MIN_RSSI, MAX_RSSI));
         estimator.setInitialTransmittedPower(value);
 
         // check
         assertEquals(value, estimator.getInitialTransmittedPower(), ABSOLUTE_ERROR);
 
         // force IllegalArgumentException
-        try {
-            estimator.setInitialTransmittedPower(-1.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> estimator.setInitialTransmittedPower(-1.0));
 
         // set null value
         estimator.setInitialTransmittedPower(null);
@@ -1030,15 +932,15 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
     }
 
     @Test
-    public void testGetSetInitialPosition() throws LockedException {
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
+    void testGetSetInitialPosition() throws LockedException {
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
 
         // check default value
         assertNull(estimator.getInitialPosition());
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final InhomogeneousPoint2D initialPosition = new InhomogeneousPoint2D(
+        final var randomizer = new UniformRandomizer();
+        final var initialPosition = new InhomogeneousPoint2D(
                 randomizer.nextDouble(MIN_POS, MAX_POS),
                 randomizer.nextDouble(MIN_POS, MAX_POS));
         estimator.setInitialPosition(initialPosition);
@@ -1048,16 +950,16 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
     }
 
     @Test
-    public void testGetSetInitialPathLossExponent() throws LockedException {
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
+    void testGetSetInitialPathLossExponent() throws LockedException {
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
 
         // check default value
         assertEquals(RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT, estimator.getInitialPathLossExponent(),
                 0.0);
 
         // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final double value = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
+        final var randomizer = new UniformRandomizer();
+        final var value = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
         estimator.setInitialPathLossExponent(value);
 
         // check
@@ -1065,8 +967,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
     }
 
     @Test
-    public void testIsSetTransmittedPowerEstimationEnabled() throws LockedException {
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
+    void testIsSetTransmittedPowerEstimationEnabled() throws LockedException {
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
 
         // check default value
         assertTrue(estimator.isTransmittedPowerEstimationEnabled());
@@ -1079,8 +981,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
     }
 
     @Test
-    public void testIsSetPathLossEstimationEnabled() throws LockedException {
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
+    void testIsSetPathLossEstimationEnabled() throws LockedException {
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
 
         // check default value
         assertFalse(estimator.isPathLossEstimationEnabled());
@@ -1093,8 +995,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
     }
 
     @Test
-    public void testGetSetUseReadingPositionCovariance() throws LockedException {
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
+    void testGetSetUseReadingPositionCovariance() throws LockedException {
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
 
         // check default value
         assertEquals(MixedRadioSourceEstimator2D.DEFAULT_USE_READING_POSITION_COVARIANCES,
@@ -1110,8 +1012,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
     }
 
     @Test
-    public void testIsSetHomogeneousRangingLinearSolverUsed() throws LockedException {
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
+    void testIsSetHomogeneousRangingLinearSolverUsed() throws LockedException {
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
 
         // check default value
         assertTrue(estimator.isHomogeneousRangingLinearSolverUsed());
@@ -1124,20 +1026,19 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
     }
 
     @Test
-    public void testAreValidReadings() throws LockedException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testAreValidReadings() throws LockedException {
+        final var randomizer = new UniformRandomizer();
 
         // test with enough ranging+rssi readings
-        List<ReadingLocated<Point2D>> readings = new ArrayList<>();
-        final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
-        for (int i = 0; i < 5; i++) {
-            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+        var readings = new ArrayList<ReadingLocated<Point2D>>();
+        final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+        for (var i = 0; i < 5; i++) {
+            final var position = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
             readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, 0.0, 0.0, position));
         }
 
-        MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
+        var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
         estimator.setTransmittedPowerEstimationEnabled(true);
         estimator.setPathLossEstimationEnabled(false);
 
@@ -1145,10 +1046,9 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
 
         // test with only ranging readings
         readings = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+        for (var i = 0; i < 5; i++) {
+            final var position = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
             readings.add(new RangingReadingLocated2D<>(accessPoint, 0.0, position));
         }
 
@@ -1160,10 +1060,9 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
 
         // test with only rssi readings
         readings = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+        for (var i = 0; i < 5; i++) {
+            final var position = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
             readings.add(new RssiReadingLocated2D<>(accessPoint, 0.0, position));
         }
 
@@ -1175,16 +1074,14 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
 
         // test with ranging readings and rssi readings
         readings = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+        for (var i = 0; i < 3; i++) {
+            final var position = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
             readings.add(new RangingReadingLocated2D<>(accessPoint, 0.0, position));
         }
-        for (int i = 0; i < 4; i++) {
-            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+        for (var i = 0; i < 4; i++) {
+            final var position = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
             readings.add(new RssiReadingLocated2D<>(accessPoint, 0.0, position));
         }
 
@@ -1200,19 +1097,18 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
     }
 
     @Test
-    public void testGetSetReadings() throws LockedException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testGetSetReadings() throws LockedException {
+        final var randomizer = new UniformRandomizer();
 
-        final List<RangingAndRssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-        final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
-        for (int i = 0; i < 3; i++) {
-            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+        final var readings = new ArrayList<RangingAndRssiReadingLocated2D<WifiAccessPoint>>();
+        final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+        for (var i = 0; i < 3; i++) {
+            final var position = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
             readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, 0.0, 0.0, position));
         }
 
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
         estimator.setTransmittedPowerEstimationEnabled(false);
         estimator.setInitialTransmittedPowerdBm(MAX_RSSI);
         estimator.setPathLossEstimationEnabled(false);
@@ -1230,16 +1126,12 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertTrue(estimator.isReady());
 
         // force IllegalArgumentException
-        try {
-            estimator.setReadings(null);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> estimator.setReadings(null));
     }
 
     @Test
-    public void testGetSetListener() throws LockedException {
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
+    void testGetSetListener() throws LockedException {
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
 
         // check default value
         assertNull(estimator.getListener());
@@ -1252,43 +1144,43 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
     }
 
     @Test
-    public void testEstimateWithoutInitialPositionAndInitialTransmittedPowerAndWithoutError()
-            throws LockedException, NotReadyException, IndoorException, AlgebraException {
+    void testEstimateWithoutInitialPositionAndInitialTransmittedPowerAndWithoutError() throws LockedException,
+            NotReadyException, IndoorException, AlgebraException {
 
-        int numValidPosition = 0, numValidPower = 0;
-        double positionError = 0.0;
-        double powerError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double powerStd = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValidPosition = 0;
+        var numValidPower = 0;
+        var positionError = 0.0;
+        var powerError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var powerStd = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-            final double transmittedPower = dBmToPower(transmittedPowerdBm);
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            final var transmittedPower = dBmToPower(transmittedPowerdBm);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingAndRssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingAndRssiReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                final double rssi = powerTodBm(receivedPower(transmittedPower, distance,
-                        accessPoint.getFrequency(), MAX_PATH_LOSS_EXPONENT));
+                final var rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
+                        MAX_PATH_LOSS_EXPONENT));
 
                 readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, distance, rssi, readingsPositions[i]));
             }
 
-            final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new MixedRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new MixedRadioSourceEstimator2D<>(readings, this);
             estimator.setTransmittedPowerEstimationEnabled(true);
             estimator.setPathLossEstimationEnabled(false);
 
@@ -1316,8 +1208,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointWithPowerAndLocated2D estimatedAccessPoint =
-                    (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -1331,13 +1222,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
                     estimatedAccessPoint.getTransmittedPowerStandardDeviation(), 0.0);
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final double powerVariance = estimator.getEstimatedTransmittedPowerVariance();
+            final var powerVariance = estimator.getEstimatedTransmittedPowerVariance();
             assertTrue(powerVariance > 0.0);
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -1374,15 +1265,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertTrue(numValidPosition > 0);
         assertTrue(numValidPower > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
@@ -1390,57 +1279,53 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB", powerStd);
 
         // force NotReadyException
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateWithInitialPositionWithoutError() throws LockedException, NotReadyException,
-            IndoorException, AlgebraException {
+    void testEstimateWithInitialPositionWithoutError() throws LockedException, NotReadyException, IndoorException,
+            AlgebraException {
 
-        int numValidPosition = 0, numValidPower = 0;
-        double positionError = 0.0;
-        double powerError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double powerStd = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValidPosition = 0;
+        var numValidPower = 0;
+        var positionError = 0.0;
+        var powerError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var powerStd = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-            final double transmittedPower = dBmToPower(transmittedPowerdBm);
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            final var transmittedPower = dBmToPower(transmittedPowerdBm);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingAndRssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingAndRssiReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                final double rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
+                final var rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
                         MAX_PATH_LOSS_EXPONENT));
 
                 readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, distance, rssi, readingsPositions[i]));
             }
 
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
-            final InhomogeneousPoint2D initialPosition = new InhomogeneousPoint2D(
+            final var errorRandomizer = new GaussianRandomizer(0.0, ERROR_STD);
+            final var initialPosition = new InhomogeneousPoint2D(
                     accessPointPosition.getInhomX() + errorRandomizer.nextDouble(),
                     accessPointPosition.getInhomY() + errorRandomizer.nextDouble());
 
-            final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new MixedRadioSourceEstimator2D<>(readings, initialPosition, this);
+            final var estimator = new MixedRadioSourceEstimator2D<>(readings, initialPosition, this);
             estimator.setTransmittedPowerEstimationEnabled(true);
             estimator.setPathLossEstimationEnabled(false);
 
@@ -1464,8 +1349,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointWithPowerAndLocated2D estimatedAccessPoint =
-                    (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -1479,13 +1363,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
                     estimatedAccessPoint.getTransmittedPowerStandardDeviation(), 0.0);
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final double powerVariance = estimator.getEstimatedTransmittedPowerVariance();
+            final var powerVariance = estimator.getEstimatedTransmittedPowerVariance();
             assertTrue(powerVariance > 0.0);
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -1511,8 +1395,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertEquals(transmittedPowerdBm, estimator.getEstimatedTransmittedPowerdBm(), ABSOLUTE_ERROR);
             numValidPower++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -1522,15 +1406,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertTrue(numValidPosition > 0);
         assertTrue(numValidPower > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
@@ -1538,56 +1420,51 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB", powerStd);
 
         // force NotReadyException
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                new MixedRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateWithInitialTransmittedPowerWithoutError() throws LockedException, NotReadyException,
+    void testEstimateWithInitialTransmittedPowerWithoutError() throws LockedException, NotReadyException,
             IndoorException, AlgebraException {
 
-        int numValidPosition = 0, numValidPower = 0;
-        double positionError = 0.0;
-        double powerError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double powerStd = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValidPosition = 0;
+        var numValidPower = 0;
+        var positionError = 0.0;
+        var powerError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var powerStd = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-            final double transmittedPower = dBmToPower(transmittedPowerdBm);
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            final var transmittedPower = dBmToPower(transmittedPowerdBm);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingAndRssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingAndRssiReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                final double rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
+                final var rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
                         MAX_PATH_LOSS_EXPONENT));
 
                 readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, distance, rssi, readingsPositions[i]));
             }
 
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
-            final double initialTransmittedPowerdBm = transmittedPowerdBm + errorRandomizer.nextDouble();
+            final var errorRandomizer = new GaussianRandomizer(0.0, ERROR_STD);
+            final var initialTransmittedPowerdBm = transmittedPowerdBm + errorRandomizer.nextDouble();
 
-            final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new MixedRadioSourceEstimator2D<>(readings, initialTransmittedPowerdBm, this);
+            final var estimator = new MixedRadioSourceEstimator2D<>(readings, initialTransmittedPowerdBm, this);
             estimator.setTransmittedPowerEstimationEnabled(true);
             estimator.setPathLossEstimationEnabled(false);
 
@@ -1611,8 +1488,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointWithPowerAndLocated2D estimatedAccessPoint =
-                    (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -1626,13 +1502,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
                     estimatedAccessPoint.getTransmittedPowerStandardDeviation(), 0.0);
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final double powerVariance = estimator.getEstimatedTransmittedPowerVariance();
+            final var powerVariance = estimator.getEstimatedTransmittedPowerVariance();
             assertTrue(powerVariance > 0.0);
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -1658,8 +1534,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertEquals(transmittedPowerdBm, estimator.getEstimatedTransmittedPowerdBm(), ABSOLUTE_ERROR);
             numValidPower++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -1669,15 +1545,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertTrue(numValidPosition > 0);
         assertTrue(numValidPower > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
@@ -1685,59 +1559,55 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB", powerStd);
 
         // force NotReadyException
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateWithInitialPositionAndInitialTransmittedPowerWithoutError() throws LockedException,
+    void testEstimateWithInitialPositionAndInitialTransmittedPowerWithoutError() throws LockedException,
             NotReadyException, IndoorException, AlgebraException {
 
-        int numValidPosition = 0, numValidPower = 0;
-        double positionError = 0.0;
-        double powerError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double powerStd = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValidPosition = 0;
+        var numValidPower = 0;
+        var positionError = 0.0;
+        var powerError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var powerStd = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-            final double transmittedPower = dBmToPower(transmittedPowerdBm);
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            final var transmittedPower = dBmToPower(transmittedPowerdBm);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingAndRssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingAndRssiReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                final double rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
+                final var rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
                         MAX_PATH_LOSS_EXPONENT));
 
                 readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, distance, rssi, readingsPositions[i]));
             }
 
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
-            final InhomogeneousPoint2D initialPosition = new InhomogeneousPoint2D(
+            final var errorRandomizer = new GaussianRandomizer(0.0, ERROR_STD);
+            final var initialPosition = new InhomogeneousPoint2D(
                     accessPointPosition.getInhomX() + errorRandomizer.nextDouble(),
                     accessPointPosition.getInhomY() + errorRandomizer.nextDouble());
-            final double initialTransmittedPowerdBm = transmittedPowerdBm + errorRandomizer.nextDouble();
+            final var initialTransmittedPowerdBm = transmittedPowerdBm + errorRandomizer.nextDouble();
 
-            final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new MixedRadioSourceEstimator2D<>(readings, initialPosition, initialTransmittedPowerdBm,
-                            this);
+            final var estimator = new MixedRadioSourceEstimator2D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm, this);
             estimator.setTransmittedPowerEstimationEnabled(true);
             estimator.setPathLossEstimationEnabled(false);
 
@@ -1761,8 +1631,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointWithPowerAndLocated2D estimatedAccessPoint =
-                    (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -1776,13 +1645,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
                     estimatedAccessPoint.getTransmittedPowerStandardDeviation(), 0.0);
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final double powerVariance = estimator.getEstimatedTransmittedPowerVariance();
+            final var powerVariance = estimator.getEstimatedTransmittedPowerVariance();
             assertTrue(powerVariance > 0.0);
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -1808,8 +1677,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertEquals(transmittedPowerdBm, estimator.getEstimatedTransmittedPowerdBm(), ABSOLUTE_ERROR);
             numValidPower++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -1819,15 +1688,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertTrue(numValidPosition > 0);
         assertTrue(numValidPower > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
@@ -1835,56 +1702,51 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB", powerStd);
 
         // force NotReadyException
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                new MixedRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateWithoutInitialPositionAndInitialTransmittedPowerAndWithError() throws LockedException,
+    void testEstimateWithoutInitialPositionAndInitialTransmittedPowerAndWithError() throws LockedException,
             NotReadyException, IndoorException, AlgebraException {
 
-        int numValidPosition = 0, numValidPower = 0;
-        double positionError = 0.0;
-        double powerError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double powerStd = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
+        var numValidPosition = 0;
+        var numValidPower = 0;
+        var positionError = 0.0;
+        var powerError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var powerStd = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var errorRandomizer = new GaussianRandomizer(0.0, ERROR_STD);
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-            final double transmittedPower = dBmToPower(transmittedPowerdBm);
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            final var transmittedPower = dBmToPower(transmittedPowerdBm);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingAndRssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingAndRssiReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                final double error = errorRandomizer.nextDouble();
-                final double rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
+                final var error = errorRandomizer.nextDouble();
+                final var rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
                         MAX_PATH_LOSS_EXPONENT)) + error;
 
                 readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, distance, rssi, readingsPositions[i],
                         ERROR_STD, ERROR_STD));
             }
 
-            final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new MixedRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new MixedRadioSourceEstimator2D<>(readings, this);
             estimator.setTransmittedPowerEstimationEnabled(true);
             estimator.setPathLossEstimationEnabled(false);
 
@@ -1908,8 +1770,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointWithPowerAndLocated2D estimatedAccessPoint =
-                    (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -1923,13 +1784,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
                     estimatedAccessPoint.getTransmittedPowerStandardDeviation(), 0.0);
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final double powerVariance = estimator.getEstimatedTransmittedPowerVariance();
+            final var powerVariance = estimator.getEstimatedTransmittedPowerVariance();
             assertTrue(powerVariance > 0.0);
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -1954,8 +1815,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertEquals(estimator.getEstimatedTransmittedPowerdBm(), transmittedPowerdBm, LARGE_POWER_ERROR);
             numValidPower++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -1965,15 +1826,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertTrue(numValidPosition > 0);
         assertTrue(numValidPower > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
@@ -1981,60 +1840,55 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB", powerStd);
 
         // force NotReadyException
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                new MixedRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateWithInitialPositionAndWithError() throws LockedException, NotReadyException,
-            IndoorException, AlgebraException {
+    void testEstimateWithInitialPositionAndWithError() throws LockedException, NotReadyException, IndoorException,
+            AlgebraException {
 
-        int numValidPosition = 0, numValidPower = 0;
-        double positionError = 0.0;
-        double powerError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double powerStd = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
+        var numValidPosition = 0;
+        var numValidPower = 0;
+        var positionError = 0.0;
+        var powerError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var powerStd = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var errorRandomizer = new GaussianRandomizer(0.0, ERROR_STD);
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-            final double transmittedPower = dBmToPower(transmittedPowerdBm);
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            final var transmittedPower = dBmToPower(transmittedPowerdBm);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingAndRssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingAndRssiReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                final double error = errorRandomizer.nextDouble();
-                final double rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
+                final var error = errorRandomizer.nextDouble();
+                final var rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
                         MAX_PATH_LOSS_EXPONENT)) + error;
 
                 readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, distance, rssi, readingsPositions[i],
                         ERROR_STD, ERROR_STD));
             }
 
-            final InhomogeneousPoint2D initialPosition = new InhomogeneousPoint2D(
+            final var initialPosition = new InhomogeneousPoint2D(
                     accessPointPosition.getInhomX() + errorRandomizer.nextDouble(),
                     accessPointPosition.getInhomY() + errorRandomizer.nextDouble());
 
-            final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new MixedRadioSourceEstimator2D<>(readings, initialPosition, this);
+            final var estimator = new MixedRadioSourceEstimator2D<>(readings, initialPosition, this);
             estimator.setTransmittedPowerEstimationEnabled(true);
             estimator.setPathLossEstimationEnabled(false);
 
@@ -2058,29 +1912,27 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointWithPowerAndLocated2D estimatedAccessPoint =
-                    (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
             assertNull(estimatedAccessPoint.getSsid());
-            assertEquals(estimatedAccessPoint.getTransmittedPower(),
-                    estimator.getEstimatedTransmittedPowerdBm(), 0.0);
-            assertEquals(estimatedAccessPoint.getPosition(),
-                    estimator.getEstimatedPosition());
+            assertEquals(estimatedAccessPoint.getTransmittedPower(), estimator.getEstimatedTransmittedPowerdBm(),
+                    0.0);
+            assertEquals(estimatedAccessPoint.getPosition(), estimator.getEstimatedPosition());
             assertEquals(MAX_PATH_LOSS_EXPONENT, estimator.getEstimatedPathLossExponent(), 0.0);
             assertEquals(MAX_PATH_LOSS_EXPONENT, estimatedAccessPoint.getPathLossExponent(), 0.0);
             assertEquals(Math.sqrt(estimator.getEstimatedTransmittedPowerVariance()),
                     estimatedAccessPoint.getTransmittedPowerStandardDeviation(), 0.0);
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final double powerVariance = estimator.getEstimatedTransmittedPowerVariance();
+            final var powerVariance = estimator.getEstimatedTransmittedPowerVariance();
             assertTrue(powerVariance > 0.0);
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -2105,8 +1957,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertEquals(estimator.getEstimatedTransmittedPowerdBm(), transmittedPowerdBm, LARGE_POWER_ERROR);
             numValidPower++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -2116,15 +1968,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertTrue(numValidPosition > 0);
         assertTrue(numValidPower > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
@@ -2132,57 +1982,53 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB", powerStd);
 
         // force NotReadyException
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateWithInitialTransmittedPowerAndWithError() throws LockedException, NotReadyException,
+    void testEstimateWithInitialTransmittedPowerAndWithError() throws LockedException, NotReadyException,
             IndoorException, AlgebraException {
 
-        int numValidPosition = 0, numValidPower = 0;
-        double positionError = 0.0;
-        double powerError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double powerStd = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
+        var numValidPosition = 0;
+        var numValidPower = 0;
+        var positionError = 0.0;
+        var powerError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var powerStd = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var errorRandomizer = new GaussianRandomizer(0.0, ERROR_STD);
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-            final double transmittedPower = dBmToPower(transmittedPowerdBm);
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            final var transmittedPower = dBmToPower(transmittedPowerdBm);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingAndRssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingAndRssiReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                final double error = errorRandomizer.nextDouble();
-                final double rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
+                final var error = errorRandomizer.nextDouble();
+                final var rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
                         MAX_PATH_LOSS_EXPONENT)) + error;
 
                 readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, distance, rssi, readingsPositions[i],
                         ERROR_STD, ERROR_STD));
             }
 
-            final double initialTransmittedPowerdBm = transmittedPowerdBm + errorRandomizer.nextDouble();
+            final var initialTransmittedPowerdBm = transmittedPowerdBm + errorRandomizer.nextDouble();
 
-            final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new MixedRadioSourceEstimator2D<>(readings, initialTransmittedPowerdBm, this);
+            final var estimator = new MixedRadioSourceEstimator2D<>(readings, initialTransmittedPowerdBm, this);
             estimator.setTransmittedPowerEstimationEnabled(true);
             estimator.setPathLossEstimationEnabled(false);
 
@@ -2206,8 +2052,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointWithPowerAndLocated2D estimatedAccessPoint =
-                    (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -2221,13 +2066,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
                     estimatedAccessPoint.getTransmittedPowerStandardDeviation(), 0.0);
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final double powerVariance = estimator.getEstimatedTransmittedPowerVariance();
+            final var powerVariance = estimator.getEstimatedTransmittedPowerVariance();
             assertTrue(powerVariance > 0.0);
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -2252,8 +2097,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertEquals(estimator.getEstimatedTransmittedPowerdBm(), transmittedPowerdBm, LARGE_POWER_ERROR);
             numValidPower++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -2263,15 +2108,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertTrue(numValidPosition > 0);
         assertTrue(numValidPower > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
@@ -2279,60 +2122,57 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB", powerStd);
 
         // force NotReadyException
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateWithInitialPositionAndInitialTransmittedPowerAndWithError() throws LockedException,
+    void testEstimateWithInitialPositionAndInitialTransmittedPowerAndWithError() throws LockedException,
             NotReadyException, IndoorException, AlgebraException {
 
-        int numValidPosition = 0, numValidPower = 0;
-        double positionError = 0.0;
-        double powerError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double powerStd = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
+        var numValidPosition = 0;
+        var numValidPower = 0;
+        var positionError = 0.0;
+        var powerError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var powerStd = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var errorRandomizer = new GaussianRandomizer(0.0, ERROR_STD);
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-            final double transmittedPower = dBmToPower(transmittedPowerdBm);
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            final var transmittedPower = dBmToPower(transmittedPowerdBm);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingAndRssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingAndRssiReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                final double error = errorRandomizer.nextDouble();
-                final double rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
+                final var error = errorRandomizer.nextDouble();
+                final var rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
                         MAX_PATH_LOSS_EXPONENT)) + error;
 
                 readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, distance, rssi, readingsPositions[i],
                         ERROR_STD, ERROR_STD));
             }
 
-            final InhomogeneousPoint2D initialPosition = new InhomogeneousPoint2D(
+            final var initialPosition = new InhomogeneousPoint2D(
                     accessPointPosition.getInhomX() + errorRandomizer.nextDouble(),
                     accessPointPosition.getInhomY() + errorRandomizer.nextDouble());
-            final double initialTransmittedPowerdBm = transmittedPowerdBm + errorRandomizer.nextDouble();
+            final var initialTransmittedPowerdBm = transmittedPowerdBm + errorRandomizer.nextDouble();
 
-            final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>(readings,
-                    initialPosition, initialTransmittedPowerdBm, this);
+            final var estimator = new MixedRadioSourceEstimator2D<>(readings, initialPosition,
+                    initialTransmittedPowerdBm, this);
             estimator.setTransmittedPowerEstimationEnabled(true);
             estimator.setPathLossEstimationEnabled(false);
 
@@ -2356,8 +2196,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointWithPowerAndLocated2D estimatedAccessPoint =
-                    (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -2371,13 +2210,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
                     estimatedAccessPoint.getTransmittedPowerStandardDeviation(), 0.0);
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final double powerVariance = estimator.getEstimatedTransmittedPowerVariance();
+            final var powerVariance = estimator.getEstimatedTransmittedPowerVariance();
             assertTrue(powerVariance > 0.0);
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -2402,8 +2241,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertEquals(transmittedPowerdBm, estimator.getEstimatedTransmittedPowerdBm(), LARGE_POWER_ERROR);
             numValidPower++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -2413,15 +2252,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertTrue(numValidPosition > 0);
         assertTrue(numValidPower > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
@@ -2429,57 +2266,53 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB", powerStd);
 
         // force NotReadyException
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                new MixedRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimatePositionTransmittedPowerAndPathLossEstimationEnabled() throws LockedException,
-            NotReadyException, IndoorException, AlgebraException {
+    void testEstimatePositionTransmittedPowerAndPathLossEstimationEnabled() throws LockedException, NotReadyException,
+            IndoorException, AlgebraException {
 
-        int numValidPosition = 0, numValidPower = 0, numValidPathLoss = 0;
-        double positionError = 0.0;
-        double powerError = 0.0;
-        double pathLossError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double powerStd = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        double pathLossStd = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValidPosition = 0;
+        var numValidPower = 0;
+        var numValidPathLoss = 0;
+        var positionError = 0.0;
+        var powerError = 0.0;
+        var pathLossError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var powerStd = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        var pathLossStd = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
+            final var pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-            final double transmittedPower = dBmToPower(transmittedPowerdBm);
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            final var transmittedPower = dBmToPower(transmittedPowerdBm);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingAndRssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingAndRssiReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                final double rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
+                final var rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
                         pathLossExponent));
 
                 readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, distance, rssi, readingsPositions[i]));
             }
 
-            final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new MixedRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new MixedRadioSourceEstimator2D<>(readings, this);
             estimator.setTransmittedPowerEstimationEnabled(true);
             estimator.setPathLossEstimationEnabled(true);
 
@@ -2505,8 +2338,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNotNull(estimator.getEstimatedTransmittedPowerVariance());
             assertNotNull(estimator.getEstimatedPathLossExponentVariance());
 
-            final WifiAccessPointWithPowerAndLocated2D estimatedAccessPoint =
-                    (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -2514,26 +2346,26 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertEquals(estimator.getEstimatedTransmittedPowerdBm(), estimatedAccessPoint.getTransmittedPower(),
                     0.0);
             assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
-            assertEquals(estimator.getEstimatedPathLossExponent(),
-                    estimatedAccessPoint.getPathLossExponent(), 0.0);
+            assertEquals(estimator.getEstimatedPathLossExponent(), estimatedAccessPoint.getPathLossExponent(),
+                    0.0);
             assertEquals(Math.sqrt(estimator.getEstimatedTransmittedPowerVariance()),
                     estimatedAccessPoint.getTransmittedPowerStandardDeviation(), 0.0);
             assertEquals(Math.sqrt(estimator.getEstimatedPathLossExponentVariance()),
                     estimatedAccessPoint.getPathLossExponentStandardDeviation(), 0.0);
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final double powerVariance = estimator.getEstimatedTransmittedPowerVariance();
+            final var powerVariance = estimator.getEstimatedTransmittedPowerVariance();
             if (powerVariance <= 0.0) {
                 continue;
             }
             assertTrue(powerVariance > 0.0);
-            final double pathLossVariance = estimator.getEstimatedPathLossExponentVariance();
+            final var pathLossVariance = estimator.getEstimatedPathLossExponentVariance();
             assertTrue(pathLossVariance > 0.0);
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -2568,8 +2400,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertEquals(pathLossExponent, estimator.getEstimatedPathLossExponent(), PATH_LOSS_ERROR);
             numValidPathLoss++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -2580,15 +2412,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertTrue(numValidPower > 0);
         assertTrue(numValidPathLoss > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
@@ -2598,57 +2428,54 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         LOGGER.log(Level.INFO, "Path loss standard deviation {0}", pathLossStd);
 
         // force NotReadyException
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimatePositionTransmittedPowerAndPathLossEstimationEnabledWithInitialValues()
-            throws LockedException, NotReadyException, IndoorException, AlgebraException {
+    void testEstimatePositionTransmittedPowerAndPathLossEstimationEnabledWithInitialValues() throws LockedException,
+            NotReadyException, IndoorException, AlgebraException {
 
-        int numValidPosition = 0, numValidPower = 0, numValidPathLoss = 0;
-        double positionError = 0.0;
-        double powerError = 0.0;
-        double pathLossError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double powerStd = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        double pathLossStd = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValidPosition = 0;
+        var numValidPower = 0;
+        var numValidPathLoss = 0;
+        var positionError = 0.0;
+        var powerError = 0.0;
+        var pathLossError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var powerStd = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        var pathLossStd = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
+            final var pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-            final double transmittedPower = dBmToPower(transmittedPowerdBm);
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            final var transmittedPower = dBmToPower(transmittedPowerdBm);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingAndRssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingAndRssiReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                final double rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
+                final var rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
                         pathLossExponent));
 
                 readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, distance, rssi, readingsPositions[i],
                         ERROR_STD, ERROR_STD));
             }
 
-            final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new MixedRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new MixedRadioSourceEstimator2D<>(readings, this);
             estimator.setInitialPosition(accessPointPosition);
             estimator.setTransmittedPowerEstimationEnabled(true);
             estimator.setInitialTransmittedPowerdBm(transmittedPowerdBm);
@@ -2677,8 +2504,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNotNull(estimator.getEstimatedTransmittedPowerVariance());
             assertNotNull(estimator.getEstimatedPathLossExponentVariance());
 
-            final WifiAccessPointWithPowerAndLocated2D estimatedAccessPoint =
-                    (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -2686,26 +2512,26 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertEquals(estimator.getEstimatedTransmittedPowerdBm(), estimatedAccessPoint.getTransmittedPower(),
                     0.0);
             assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
-            assertEquals(estimator.getEstimatedPathLossExponent(),
-                    estimatedAccessPoint.getPathLossExponent(), 0.0);
+            assertEquals(estimator.getEstimatedPathLossExponent(), estimatedAccessPoint.getPathLossExponent(),
+                    0.0);
             assertEquals(Math.sqrt(estimator.getEstimatedTransmittedPowerVariance()),
                     estimatedAccessPoint.getTransmittedPowerStandardDeviation(), 0.0);
             assertEquals(Math.sqrt(estimator.getEstimatedPathLossExponentVariance()),
                     estimatedAccessPoint.getPathLossExponentStandardDeviation(), 0.0);
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final double powerVariance = estimator.getEstimatedTransmittedPowerVariance();
+            final var powerVariance = estimator.getEstimatedTransmittedPowerVariance();
             if (powerVariance <= 0.0) {
                 continue;
             }
             assertTrue(powerVariance > 0.0);
-            final double pathLossVariance = estimator.getEstimatedPathLossExponentVariance();
+            final var pathLossVariance = estimator.getEstimatedPathLossExponentVariance();
             assertTrue(pathLossVariance > 0.0);
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -2740,8 +2566,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertEquals(pathLossExponent, estimator.getEstimatedPathLossExponent(), PATH_LOSS_ERROR);
             numValidPathLoss++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -2752,15 +2578,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertTrue(numValidPower > 0);
         assertTrue(numValidPathLoss > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
@@ -2770,54 +2594,50 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         LOGGER.log(Level.INFO, "Path loss standard deviation {0}", pathLossStd);
 
         // force NotReadyException
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateWithInitialPathLoss() throws LockedException, NotReadyException, IndoorException,
+    void testEstimateWithInitialPathLoss() throws LockedException, NotReadyException, IndoorException,
             AlgebraException {
 
-        int numValidPosition = 0, numValidPower = 0;
-        double positionError = 0.0;
-        double powerError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double powerStd = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValidPosition = 0;
+        var numValidPower = 0;
+        var positionError = 0.0;
+        var powerError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var powerStd = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
+            final var pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-            final double transmittedPower = dBmToPower(transmittedPowerdBm);
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            final var transmittedPower = dBmToPower(transmittedPowerdBm);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingAndRssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingAndRssiReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                final double rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
+                final var rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
                         pathLossExponent));
 
                 readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, distance, rssi, readingsPositions[i]));
             }
 
-            final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new MixedRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new MixedRadioSourceEstimator2D<>(readings, this);
             estimator.setTransmittedPowerEstimationEnabled(true);
             estimator.setPathLossEstimationEnabled(false);
             estimator.setInitialPathLossExponent(pathLossExponent);
@@ -2842,8 +2662,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointWithPowerAndLocated2D estimatedAccessPoint =
-                    (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -2857,13 +2676,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
                     estimatedAccessPoint.getTransmittedPowerStandardDeviation(), 0.0);
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final double powerVariance = estimator.getEstimatedTransmittedPowerVariance();
+            final var powerVariance = estimator.getEstimatedTransmittedPowerVariance();
             assertTrue(powerVariance > 0.0);
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -2889,8 +2708,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertEquals(transmittedPowerdBm, estimator.getEstimatedTransmittedPowerdBm(), ABSOLUTE_ERROR);
             numValidPower++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -2900,15 +2719,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertTrue(numValidPosition > 0);
         assertTrue(numValidPower > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
@@ -2916,52 +2733,49 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB", powerStd);
 
         // force NotReadyException
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateBeacon() throws LockedException, NotReadyException, IndoorException, AlgebraException {
+    void testEstimateBeacon() throws LockedException, NotReadyException, IndoorException, AlgebraException {
 
-        int numValidPosition = 0, numValidPower = 0;
-        double positionError = 0.0;
-        double powerError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double powerStd = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValidPosition = 0;
+        var numValidPower = 0;
+        var positionError = 0.0;
+        var powerError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var powerStd = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final InhomogeneousPoint2D beaconPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-            final double transmittedPower = dBmToPower(transmittedPowerdBm);
+            final var beaconPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            final var transmittedPower = dBmToPower(transmittedPowerdBm);
 
-            final BeaconIdentifier identifier = BeaconIdentifier.fromUuid(UUID.randomUUID());
-            final Beacon beacon = new Beacon(Collections.singletonList(identifier), transmittedPowerdBm, FREQUENCY);
+            final var identifier = BeaconIdentifier.fromUuid(UUID.randomUUID());
+            final var beacon = new Beacon(Collections.singletonList(identifier), transmittedPowerdBm, FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingAndRssiReadingLocated2D<Beacon>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingAndRssiReadingLocated2D<Beacon>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(beaconPosition);
+                final var distance = readingsPositions[i].distanceTo(beaconPosition);
 
-                final double rssi = powerTodBm(receivedPower(transmittedPower, distance, beacon.getFrequency(),
+                final var rssi = powerTodBm(receivedPower(transmittedPower, distance, beacon.getFrequency(),
                         MAX_PATH_LOSS_EXPONENT));
 
                 readings.add(new RangingAndRssiReadingLocated2D<>(beacon, distance, rssi, readingsPositions[i]));
             }
 
-            final MixedRadioSourceEstimator2D<Beacon> estimator = new MixedRadioSourceEstimator2D<>(readings);
+            final var estimator = new MixedRadioSourceEstimator2D<>(readings);
             estimator.setTransmittedPowerEstimationEnabled(true);
             estimator.setPathLossEstimationEnabled(false);
 
@@ -2983,8 +2797,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final BeaconWithPowerAndLocated2D estimatedBeacon =
-                    (BeaconWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedBeacon = (BeaconWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals(beacon.getIdentifiers(), estimatedBeacon.getIdentifiers());
             assertEquals(estimator.getEstimatedTransmittedPowerdBm(), estimatedBeacon.getTransmittedPower(),
@@ -2997,13 +2810,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedBeacon.getPositionCovariance());
             assertNull(estimatedBeacon.getPathLossExponentStandardDeviation());
 
-            final double powerVariance = estimator.getEstimatedTransmittedPowerVariance();
+            final var powerVariance = estimator.getEstimatedTransmittedPowerVariance();
             assertTrue(powerVariance > 0.0);
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -3029,8 +2842,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertEquals(transmittedPowerdBm, estimator.getEstimatedTransmittedPowerdBm(), ABSOLUTE_ERROR);
             numValidPower++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
 
             break;
         }
@@ -3038,15 +2851,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertTrue(numValidPosition > 0);
         assertTrue(numValidPower > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
@@ -3054,52 +2865,46 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB", powerStd);
 
         // force NotReadyException
-        final MixedRadioSourceEstimator2D<Beacon> estimator = new MixedRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MixedRadioSourceEstimator2D<Beacon>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimatePositionOnly() throws LockedException, NotReadyException, IndoorException,
-            AlgebraException {
+    void testEstimatePositionOnly() throws LockedException, NotReadyException, IndoorException, AlgebraException {
 
-        int numValidPosition = 0;
+        var numValidPosition = 0;
         double positionError;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
+            final var pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-            final double transmittedPower = dBmToPower(transmittedPowerdBm);
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            final var transmittedPower = dBmToPower(transmittedPowerdBm);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingAndRssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingAndRssiReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                final double rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
+                final var rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
                         pathLossExponent));
 
                 readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, distance, rssi, readingsPositions[i]));
             }
 
-            final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new MixedRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new MixedRadioSourceEstimator2D<>(readings, this);
             estimator.setTransmittedPowerEstimationEnabled(false);
             estimator.setInitialTransmittedPowerdBm(transmittedPowerdBm);
             estimator.setPathLossEstimationEnabled(false);
@@ -3127,8 +2932,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNull(estimator.getEstimatedTransmittedPowerVariance());
             assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-            final WifiAccessPointWithPowerAndLocated2D estimatedAccessPoint =
-                    (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -3144,10 +2948,10 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNull(estimatedAccessPoint.getPathLossExponentStandardDeviation());
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -3163,8 +2967,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -3173,65 +2977,58 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
 
         assertTrue(numValidPosition > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         // force NotReadyException
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimatePositionOnlyWithInitialPosition() throws LockedException, NotReadyException,
-            IndoorException, AlgebraException {
+    void testEstimatePositionOnlyWithInitialPosition() throws LockedException, NotReadyException, IndoorException,
+            AlgebraException {
 
-        int numValidPosition = 0;
+        var numValidPosition = 0;
         double positionError;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
+            final var pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
             final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
             final double transmittedPower = dBmToPower(transmittedPowerdBm);
             final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
             final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
             final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingAndRssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var readings = new ArrayList<RangingAndRssiReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                final double rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
+                final var rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
                         pathLossExponent));
 
                 readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, distance, rssi, readingsPositions[i],
                         ERROR_STD, ERROR_STD));
             }
 
-            final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new MixedRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new MixedRadioSourceEstimator2D<>(readings, this);
             estimator.setInitialPosition(accessPointPosition);
             estimator.setTransmittedPowerEstimationEnabled(false);
             estimator.setInitialTransmittedPowerdBm(transmittedPowerdBm);
@@ -3260,8 +3057,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNull(estimator.getEstimatedTransmittedPowerVariance());
             assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-            final WifiAccessPointWithPowerAndLocated2D estimatedAccessPoint =
-                    (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -3271,16 +3067,16 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
                     0.0);
             assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
             assertEquals(pathLossExponent, estimator.getEstimatedPathLossExponent(), 0.0);
-            assertEquals(estimator.getEstimatedPathLossExponent(),
-                    estimatedAccessPoint.getPathLossExponent(), 0.0);
+            assertEquals(estimator.getEstimatedPathLossExponent(), estimatedAccessPoint.getPathLossExponent(),
+                    0.0);
             assertNull(estimatedAccessPoint.getTransmittedPowerStandardDeviation());
             assertNull(estimatedAccessPoint.getPathLossExponentStandardDeviation());
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -3296,8 +3092,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -3306,64 +3102,57 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
 
         assertTrue(numValidPosition > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         // force NotReadyException
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimatePositionOnlyRepeated() throws LockedException, NotReadyException, IndoorException,
+    void testEstimatePositionOnlyRepeated() throws LockedException, NotReadyException, IndoorException,
             AlgebraException {
 
-        int numValidPosition = 0;
+        var numValidPosition = 0;
         double positionError;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
+            final var pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-            final double transmittedPower = dBmToPower(transmittedPowerdBm);
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            final var transmittedPower = dBmToPower(transmittedPowerdBm);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingAndRssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingAndRssiReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                final double rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
+                final var rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
                         pathLossExponent));
 
                 readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, distance, rssi, readingsPositions[i]));
             }
 
-            final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new MixedRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new MixedRadioSourceEstimator2D<>(readings, this);
             estimator.setTransmittedPowerEstimationEnabled(false);
             estimator.setInitialTransmittedPowerdBm(transmittedPowerdBm);
             estimator.setPathLossEstimationEnabled(false);
@@ -3394,8 +3183,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNull(estimator.getEstimatedTransmittedPowerVariance());
             assertNull(estimator.getEstimatedPathLossExponentVariance());
 
-            final WifiAccessPointWithPowerAndLocated2D estimatedAccessPoint =
-                    (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -3405,16 +3193,16 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
                     0.0);
             assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
             assertEquals(pathLossExponent, estimator.getEstimatedPathLossExponent(), 0.0);
-            assertEquals(estimator.getEstimatedPathLossExponent(),
-                    estimatedAccessPoint.getPathLossExponent(), 0.0);
+            assertEquals(estimator.getEstimatedPathLossExponent(), estimatedAccessPoint.getPathLossExponent(),
+                    0.0);
             assertNull(estimatedAccessPoint.getTransmittedPowerStandardDeviation());
             assertNull(estimatedAccessPoint.getPathLossExponentStandardDeviation());
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -3430,8 +3218,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(2, estimateStart);
             assertEquals(2, estimateEnd);
 
@@ -3440,66 +3228,60 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
 
         assertTrue(numValidPosition > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         // force NotReadyException
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimatePositionAndPathloss() throws LockedException, NotReadyException, IndoorException,
+    void testEstimatePositionAndPathloss() throws LockedException, NotReadyException, IndoorException,
             AlgebraException {
 
-        int numValidPosition = 0, numValidPathLoss = 0;
-        double positionError = 0.0;
-        double pathLossError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        double pathLossStd = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValidPosition = 0;
+        var numValidPathLoss = 0;
+        var positionError = 0.0;
+        var pathLossError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        var pathLossStd = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
+            final var pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-            final double transmittedPower = dBmToPower(transmittedPowerdBm);
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            final var transmittedPower = dBmToPower(transmittedPowerdBm);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingAndRssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingAndRssiReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                final double rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
+                final var rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
                         pathLossExponent));
 
                 readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, distance, rssi, readingsPositions[i]));
             }
 
-            final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new MixedRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new MixedRadioSourceEstimator2D<>(readings, this);
             estimator.setTransmittedPowerEstimationEnabled(false);
             estimator.setInitialTransmittedPowerdBm(transmittedPowerdBm);
             estimator.setPathLossEstimationEnabled(true);
@@ -3526,8 +3308,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNull(estimator.getEstimatedTransmittedPowerVariance());
             assertNotNull(estimator.getEstimatedPathLossExponentVariance());
 
-            final WifiAccessPointWithPowerAndLocated2D estimatedAccessPoint =
-                    (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -3535,20 +3316,20 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertEquals(transmittedPowerdBm, estimatedAccessPoint.getTransmittedPower(), 0.0);
             assertEquals(transmittedPowerdBm, estimator.getEstimatedTransmittedPowerdBm(), 0.0);
             assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
-            assertEquals(estimator.getEstimatedPathLossExponent(),
-                    estimatedAccessPoint.getPathLossExponent(), 0.0);
+            assertEquals(estimator.getEstimatedPathLossExponent(), estimatedAccessPoint.getPathLossExponent(),
+                    0.0);
             assertNull(estimatedAccessPoint.getTransmittedPowerStandardDeviation());
             assertEquals(Math.sqrt(estimator.getEstimatedPathLossExponentVariance()),
                     estimatedAccessPoint.getPathLossExponentStandardDeviation(), 0.0);
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final double pathLossVariance = estimator.getEstimatedPathLossExponentVariance();
+            final var pathLossVariance = estimator.getEstimatedPathLossExponentVariance();
             assertTrue(pathLossVariance > 0.0);
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -3573,8 +3354,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertEquals(estimator.getEstimatedPathLossExponent(), pathLossExponent, PATH_LOSS_ERROR);
             numValidPathLoss++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -3584,15 +3365,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertTrue(numValidPosition > 0);
         assertTrue(numValidPathLoss > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
@@ -3600,56 +3379,52 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         LOGGER.log(Level.INFO, "Path loss standard deviation {0}", pathLossStd);
 
         // force NotReadyException
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimatePositionAndPathlossWithInitialValues() throws LockedException, NotReadyException,
-            IndoorException, AlgebraException {
+    void testEstimatePositionAndPathlossWithInitialValues() throws LockedException, NotReadyException, IndoorException,
+            AlgebraException {
 
-        int numValidPosition = 0, numValidPathLoss = 0;
-        double positionError = 0.0;
-        double powerError = 0.0;
-        double pathLossError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        double pathLossStd = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValidPosition = 0;
+        var numValidPathLoss = 0;
+        var positionError = 0.0;
+        var powerError = 0.0;
+        var pathLossError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        var pathLossStd = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
+            final var pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS_EXPONENT, MAX_PATH_LOSS_EXPONENT);
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-            final double transmittedPower = dBmToPower(transmittedPowerdBm);
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            final var transmittedPower = dBmToPower(transmittedPowerdBm);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingAndRssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingAndRssiReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                final double rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
+                final var rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
                         pathLossExponent));
 
                 readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, distance, rssi, readingsPositions[i],
                         ERROR_STD, ERROR_STD));
             }
 
-            final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new MixedRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new MixedRadioSourceEstimator2D<>(readings, this);
             estimator.setInitialPosition(accessPointPosition);
             estimator.setTransmittedPowerEstimationEnabled(false);
             estimator.setInitialTransmittedPowerdBm(transmittedPowerdBm);
@@ -3678,8 +3453,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNull(estimator.getEstimatedTransmittedPowerVariance());
             assertNotNull(estimator.getEstimatedPathLossExponentVariance());
 
-            final WifiAccessPointWithPowerAndLocated2D estimatedAccessPoint =
-                    (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -3687,20 +3461,20 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertEquals(transmittedPowerdBm, estimatedAccessPoint.getTransmittedPower(), 0.0);
             assertEquals(transmittedPowerdBm, estimator.getEstimatedTransmittedPowerdBm(), 0.0);
             assertEquals(estimator.getEstimatedPosition(), estimatedAccessPoint.getPosition());
-            assertEquals(estimator.getEstimatedPathLossExponent(),
-                    estimatedAccessPoint.getPathLossExponent(), 0.0);
+            assertEquals(estimator.getEstimatedPathLossExponent(), estimatedAccessPoint.getPathLossExponent(),
+                    0.0);
             assertNull(estimatedAccessPoint.getTransmittedPowerStandardDeviation());
             assertEquals(Math.sqrt(estimator.getEstimatedPathLossExponentVariance()),
                     estimatedAccessPoint.getPathLossExponentStandardDeviation(), 0.0);
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final double pathLossVariance = estimator.getEstimatedPathLossExponentVariance();
+            final var pathLossVariance = estimator.getEstimatedPathLossExponentVariance();
             assertTrue(pathLossVariance > 0.0);
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -3725,8 +3499,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertEquals(pathLossExponent, estimator.getEstimatedPathLossExponent(), PATH_LOSS_ERROR);
             numValidPathLoss++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -3736,15 +3510,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertTrue(numValidPosition > 0);
         assertTrue(numValidPathLoss > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
@@ -3753,55 +3525,51 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         LOGGER.log(Level.INFO, "Path loss standard deviation {0}", pathLossStd);
 
         // force NotReadyException
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateWithRangingStandardDeviations() throws LockedException, NotReadyException,
-            IndoorException, AlgebraException {
+    void testEstimateWithRangingStandardDeviations() throws LockedException, NotReadyException, IndoorException,
+            AlgebraException {
 
-        int numValidPosition = 0, numValidPower = 0;
-        double positionError = 0.0;
-        double powerError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double powerStd = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
+        var numValidPosition = 0;
+        var numValidPower = 0;
+        var positionError = 0.0;
+        var powerError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var powerStd = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var errorRandomizer = new GaussianRandomizer(0.0, ERROR_STD);
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-            final double transmittedPower = dBmToPower(transmittedPowerdBm);
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            final var transmittedPower = dBmToPower(transmittedPowerdBm);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingAndRssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingAndRssiReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
-                final double error = Math.abs(errorRandomizer.nextDouble());
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var error = Math.abs(errorRandomizer.nextDouble());
 
-                final double rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
+                final var rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
                         MAX_PATH_LOSS_EXPONENT));
 
                 readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, distance + error, rssi,
                         readingsPositions[i], ERROR_STD, null, null));
             }
 
-            final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new MixedRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new MixedRadioSourceEstimator2D<>(readings, this);
             estimator.setTransmittedPowerEstimationEnabled(true);
             estimator.setPathLossEstimationEnabled(false);
 
@@ -3829,8 +3597,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointWithPowerAndLocated2D estimatedAccessPoint =
-                    (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -3844,13 +3611,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
                     estimatedAccessPoint.getTransmittedPowerStandardDeviation(), 0.0);
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final double powerVariance = estimator.getEstimatedTransmittedPowerVariance();
+            final var powerVariance = estimator.getEstimatedTransmittedPowerVariance();
             assertTrue(powerVariance > 0.0);
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -3876,8 +3643,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertEquals(transmittedPowerdBm, estimator.getEstimatedTransmittedPowerdBm(), LARGE_POWER_ERROR);
             numValidPower++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -3887,15 +3654,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertTrue(numValidPosition > 0);
         assertTrue(numValidPower > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
@@ -3903,55 +3668,51 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB", powerStd);
 
         // force NotReadyException
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateWithRSSIStandardDeviations() throws LockedException, NotReadyException,
-            IndoorException, AlgebraException {
+    void testEstimateWithRSSIStandardDeviations() throws LockedException, NotReadyException, IndoorException,
+            AlgebraException {
 
-        int numValidPosition = 0, numValidPower = 0;
-        double positionError = 0.0;
-        double powerError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double powerStd = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
+        var numValidPosition = 0;
+        var numValidPower = 0;
+        var positionError = 0.0;
+        var powerError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var powerStd = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var errorRandomizer = new GaussianRandomizer(0.0, ERROR_STD);
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-            final double transmittedPower = dBmToPower(transmittedPowerdBm);
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            final var transmittedPower = dBmToPower(transmittedPowerdBm);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingAndRssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingAndRssiReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
-                final double error = Math.abs(errorRandomizer.nextDouble());
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var error = Math.abs(errorRandomizer.nextDouble());
 
-                final double rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
+                final var rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
                         MAX_PATH_LOSS_EXPONENT));
 
                 readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, distance, rssi + error,
                         readingsPositions[i], null, ERROR_STD, null));
             }
 
-            final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new MixedRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new MixedRadioSourceEstimator2D<>(readings, this);
             estimator.setTransmittedPowerEstimationEnabled(true);
             estimator.setPathLossEstimationEnabled(false);
 
@@ -3979,8 +3740,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointWithPowerAndLocated2D estimatedAccessPoint =
-                    (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -3994,13 +3754,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
                     estimatedAccessPoint.getTransmittedPowerStandardDeviation(), 0.0);
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final double powerVariance = estimator.getEstimatedTransmittedPowerVariance();
+            final var powerVariance = estimator.getEstimatedTransmittedPowerVariance();
             assertTrue(powerVariance > 0.0);
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -4026,8 +3786,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertEquals(transmittedPowerdBm, estimator.getEstimatedTransmittedPowerdBm(), LARGE_POSITION_ERROR);
             numValidPower++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -4037,15 +3797,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertTrue(numValidPosition > 0);
         assertTrue(numValidPower > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
@@ -4053,61 +3811,57 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB", powerStd);
 
         // force NotReadyException
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateWithPositionCovariance() throws LockedException, NotReadyException, IndoorException,
+    void testEstimateWithPositionCovariance() throws LockedException, NotReadyException, IndoorException,
             AlgebraException {
 
-        int numValidPosition = 0, numValidPower = 0;
-        double positionError = 0.0;
-        double powerError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double powerStd = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
+        var numValidPosition = 0;
+        var numValidPower = 0;
+        var positionError = 0.0;
+        var powerError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var powerStd = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var errorRandomizer = new GaussianRandomizer(0.0, ERROR_STD);
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-            final double transmittedPower = dBmToPower(transmittedPowerdBm);
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            final var transmittedPower = dBmToPower(transmittedPowerdBm);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingAndRssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingAndRssiReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 readingsPositions[i].setInhomogeneousCoordinates(
                         readingsPositions[i].getInhomX() + errorRandomizer.nextDouble(),
                         readingsPositions[i].getInhomY() + errorRandomizer.nextDouble());
 
-                final Matrix positionCovariance = Matrix.diagonal(
+                final var positionCovariance = Matrix.diagonal(
                         new double[]{ERROR_STD * ERROR_STD, ERROR_STD * ERROR_STD});
 
-                final double rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
+                final var rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
                         MAX_PATH_LOSS_EXPONENT));
 
                 readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, distance, rssi, readingsPositions[i],
                         null, null, positionCovariance));
             }
 
-            final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new MixedRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new MixedRadioSourceEstimator2D<>(readings, this);
             estimator.setTransmittedPowerEstimationEnabled(true);
             estimator.setPathLossEstimationEnabled(false);
 
@@ -4135,8 +3889,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointWithPowerAndLocated2D estimatedAccessPoint =
-                    (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -4150,13 +3903,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
                     estimatedAccessPoint.getTransmittedPowerStandardDeviation(), 0.0);
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final double powerVariance = estimator.getEstimatedTransmittedPowerVariance();
+            final var powerVariance = estimator.getEstimatedTransmittedPowerVariance();
             assertTrue(powerVariance > 0.0);
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -4182,8 +3935,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertEquals(transmittedPowerdBm, estimator.getEstimatedTransmittedPowerdBm(), LARGE_POSITION_ERROR);
             numValidPower++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -4193,15 +3946,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertTrue(numValidPosition > 0);
         assertTrue(numValidPower > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
@@ -4209,57 +3960,53 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB", powerStd);
 
         // force NotReadyException
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateWithRangingAndRSSIStandardDeviations() throws LockedException, NotReadyException,
-            IndoorException, AlgebraException {
+    void testEstimateWithRangingAndRSSIStandardDeviations() throws LockedException, NotReadyException, IndoorException,
+            AlgebraException {
 
-        int numValidPosition = 0, numValidPower = 0;
-        double positionError = 0.0;
-        double powerError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double powerStd = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
+        var numValidPosition = 0;
+        var numValidPower = 0;
+        var positionError = 0.0;
+        var powerError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var powerStd = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var errorRandomizer = new GaussianRandomizer(0.0, ERROR_STD);
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-            final double transmittedPower = dBmToPower(transmittedPowerdBm);
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            final var transmittedPower = dBmToPower(transmittedPowerdBm);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingAndRssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingAndRssiReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                final double rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
+                final var rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
                         MAX_PATH_LOSS_EXPONENT));
 
-                final double errorDistance = Math.abs(errorRandomizer.nextDouble());
-                final double errorRssi = errorRandomizer.nextDouble();
+                final var errorDistance = Math.abs(errorRandomizer.nextDouble());
+                final var errorRssi = errorRandomizer.nextDouble();
 
                 readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, distance + errorDistance,
                         rssi + errorRssi, readingsPositions[i], ERROR_STD, ERROR_STD, null));
             }
 
-            final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new MixedRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new MixedRadioSourceEstimator2D<>(readings, this);
             estimator.setTransmittedPowerEstimationEnabled(true);
             estimator.setPathLossEstimationEnabled(false);
 
@@ -4287,8 +4034,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointWithPowerAndLocated2D estimatedAccessPoint =
-                    (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -4302,13 +4048,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
                     estimatedAccessPoint.getTransmittedPowerStandardDeviation(), 0.0);
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final double powerVariance = estimator.getEstimatedTransmittedPowerVariance();
+            final var powerVariance = estimator.getEstimatedTransmittedPowerVariance();
             assertTrue(powerVariance > 0.0);
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -4334,8 +4080,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertEquals(transmittedPowerdBm, estimator.getEstimatedTransmittedPowerdBm(), LARGE_POSITION_ERROR);
             numValidPower++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -4345,15 +4091,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertTrue(numValidPosition > 0);
         assertTrue(numValidPower > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
@@ -4361,62 +4105,58 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB", powerStd);
 
         // force NotReadyException
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateWithRangingStandardDeviationsAndPositionCovariance() throws LockedException,
-            NotReadyException, IndoorException, AlgebraException {
+    void testEstimateWithRangingStandardDeviationsAndPositionCovariance() throws LockedException, NotReadyException,
+            IndoorException, AlgebraException {
 
-        int numValidPosition = 0, numValidPower = 0;
-        double positionError = 0.0;
-        double powerError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double powerStd = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
+        var numValidPosition = 0;
+        var numValidPower = 0;
+        var positionError = 0.0;
+        var powerError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var powerStd = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var errorRandomizer = new GaussianRandomizer(0.0, ERROR_STD);
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-            final double transmittedPower = dBmToPower(transmittedPowerdBm);
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            final var transmittedPower = dBmToPower(transmittedPowerdBm);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingAndRssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingAndRssiReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
-                final double error = Math.abs(errorRandomizer.nextDouble());
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var error = Math.abs(errorRandomizer.nextDouble());
 
                 readingsPositions[i].setInhomogeneousCoordinates(
                         readingsPositions[i].getInhomX() + errorRandomizer.nextDouble(),
                         readingsPositions[i].getInhomY() + errorRandomizer.nextDouble());
 
-                final Matrix positionCovariance = Matrix.diagonal(
+                final var positionCovariance = Matrix.diagonal(
                         new double[]{ERROR_STD * ERROR_STD, ERROR_STD * ERROR_STD});
 
-                final double rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
+                final var rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
                         MAX_PATH_LOSS_EXPONENT));
 
                 readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, distance + error, rssi,
                         readingsPositions[i], ERROR_STD, null, positionCovariance));
             }
 
-            final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new MixedRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new MixedRadioSourceEstimator2D<>(readings, this);
             estimator.setTransmittedPowerEstimationEnabled(true);
             estimator.setPathLossEstimationEnabled(false);
 
@@ -4444,8 +4184,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointWithPowerAndLocated2D estimatedAccessPoint =
-                    (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -4459,13 +4198,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
                     estimatedAccessPoint.getTransmittedPowerStandardDeviation(), 0.0);
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final double powerVariance = estimator.getEstimatedTransmittedPowerVariance();
+            final var powerVariance = estimator.getEstimatedTransmittedPowerVariance();
             assertTrue(powerVariance > 0.0);
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -4491,8 +4230,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertEquals(transmittedPowerdBm, estimator.getEstimatedTransmittedPowerdBm(), LARGE_POSITION_ERROR);
             numValidPower++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -4502,15 +4241,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertTrue(numValidPosition > 0);
         assertTrue(numValidPower > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
@@ -4518,62 +4255,58 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB", powerStd);
 
         // force NotReadyException
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateWithRSSIStandardDeviationsAndPositionCovariance() throws LockedException,
-            NotReadyException, IndoorException, AlgebraException {
+    void testEstimateWithRSSIStandardDeviationsAndPositionCovariance() throws LockedException, NotReadyException,
+            IndoorException, AlgebraException {
 
-        int numValidPosition = 0, numValidPower = 0;
-        double positionError = 0.0;
-        double powerError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double powerStd = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
+        var numValidPosition = 0;
+        var numValidPower = 0;
+        var positionError = 0.0;
+        var powerError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var powerStd = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var errorRandomizer = new GaussianRandomizer(0.0, ERROR_STD);
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-            final double transmittedPower = dBmToPower(transmittedPowerdBm);
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            final var transmittedPower = dBmToPower(transmittedPowerdBm);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingAndRssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingAndRssiReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
-                final double error = Math.abs(errorRandomizer.nextDouble());
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var error = Math.abs(errorRandomizer.nextDouble());
 
                 readingsPositions[i].setInhomogeneousCoordinates(
                         readingsPositions[i].getInhomX() + errorRandomizer.nextDouble(),
                         readingsPositions[i].getInhomY() + errorRandomizer.nextDouble());
 
-                final Matrix positionCovariance = Matrix.diagonal(
+                final var positionCovariance = Matrix.diagonal(
                         new double[]{ERROR_STD * ERROR_STD, ERROR_STD * ERROR_STD});
 
-                final double rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
+                final var rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
                         MAX_PATH_LOSS_EXPONENT));
 
                 readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, distance, rssi + error,
                         readingsPositions[i], null, ERROR_STD, positionCovariance));
             }
 
-            final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new MixedRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new MixedRadioSourceEstimator2D<>(readings, this);
             estimator.setTransmittedPowerEstimationEnabled(true);
             estimator.setPathLossEstimationEnabled(false);
 
@@ -4601,8 +4334,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointWithPowerAndLocated2D estimatedAccessPoint =
-                    (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -4616,13 +4348,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
                     estimatedAccessPoint.getTransmittedPowerStandardDeviation(), 0.0);
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final double powerVariance = estimator.getEstimatedTransmittedPowerVariance();
+            final var powerVariance = estimator.getEstimatedTransmittedPowerVariance();
             assertTrue(powerVariance > 0.0);
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -4648,8 +4380,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertEquals(transmittedPowerdBm, estimator.getEstimatedTransmittedPowerdBm(), LARGE_POSITION_ERROR);
             numValidPower++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -4659,15 +4391,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertTrue(numValidPosition > 0);
         assertTrue(numValidPower > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
@@ -4675,65 +4405,61 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB", powerStd);
 
         // force NotReadyException
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateWithRangingAndRSSIStandardDeviationsAndPositionCovariance() throws LockedException,
+    void testEstimateWithRangingAndRSSIStandardDeviationsAndPositionCovariance() throws LockedException,
             NotReadyException, IndoorException, AlgebraException {
 
-        int numValidPosition = 0, numValidPower = 0;
-        double positionError = 0.0;
-        double powerError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double powerStd = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(), 0.0, ERROR_STD);
+        var numValidPosition = 0;
+        var numValidPower = 0;
+        var positionError = 0.0;
+        var powerError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var powerStd = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
+            final var errorRandomizer = new GaussianRandomizer(0.0, ERROR_STD);
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-            final double transmittedPower = dBmToPower(transmittedPowerdBm);
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            final var transmittedPower = dBmToPower(transmittedPowerdBm);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<RangingAndRssiReadingLocated2D<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<RangingAndRssiReadingLocated2D<WifiAccessPoint>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 readingsPositions[i].setInhomogeneousCoordinates(
                         readingsPositions[i].getInhomX() + errorRandomizer.nextDouble(),
                         readingsPositions[i].getInhomY() + errorRandomizer.nextDouble());
 
-                final Matrix positionCovariance = Matrix.diagonal(
+                final var positionCovariance = Matrix.diagonal(
                         new double[]{ERROR_STD * ERROR_STD, ERROR_STD * ERROR_STD});
 
-                final double rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
+                final var rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
                         MAX_PATH_LOSS_EXPONENT));
 
-                final double errorDistance = Math.abs(errorRandomizer.nextDouble());
-                final double errorRssi = errorRandomizer.nextDouble();
+                final var errorDistance = Math.abs(errorRandomizer.nextDouble());
+                final var errorRssi = errorRandomizer.nextDouble();
 
 
                 readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, distance + errorDistance,
                         rssi + errorRssi, readingsPositions[i], ERROR_STD, ERROR_STD, positionCovariance));
             }
 
-            final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new MixedRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new MixedRadioSourceEstimator2D<>(readings, this);
             estimator.setTransmittedPowerEstimationEnabled(true);
             estimator.setPathLossEstimationEnabled(false);
 
@@ -4761,8 +4487,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointWithPowerAndLocated2D estimatedAccessPoint =
-                    (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -4776,13 +4501,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
                     estimatedAccessPoint.getTransmittedPowerStandardDeviation(), 0.0);
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final double powerVariance = estimator.getEstimatedTransmittedPowerVariance();
+            final var powerVariance = estimator.getEstimatedTransmittedPowerVariance();
             assertTrue(powerVariance > 0.0);
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -4819,15 +4544,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertTrue(numValidPosition > 0);
         assertTrue(numValidPower > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
@@ -4835,46 +4558,42 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB", powerStd);
 
         // force NotReadyException
-        final RangingAndRssiRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                new RangingAndRssiRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new RangingAndRssiRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateWithMixedRangingAndRssiReadings() throws LockedException, NotReadyException,
-            IndoorException, AlgebraException {
+    void testEstimateWithMixedRangingAndRssiReadings() throws LockedException, NotReadyException, IndoorException,
+            AlgebraException {
 
-        int numValidPosition = 0, numValidPower = 0;
-        double positionError = 0.0;
-        double powerError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double powerStd = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValidPosition = 0;
+        var numValidPower = 0;
+        var positionError = 0.0;
+        var powerError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var powerStd = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-            final double transmittedPower = dBmToPower(transmittedPowerdBm);
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            final var transmittedPower = dBmToPower(transmittedPowerdBm);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<ReadingLocated<Point2D>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<ReadingLocated<Point2D>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                final double rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
+                final var rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
                         MAX_PATH_LOSS_EXPONENT));
 
                 readings.add(new RangingReadingLocated2D<>(accessPoint, distance, readingsPositions[i]));
@@ -4882,8 +4601,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
                 readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, distance, rssi, readingsPositions[i]));
             }
 
-            final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new MixedRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new MixedRadioSourceEstimator2D<>(readings, this);
             estimator.setTransmittedPowerEstimationEnabled(true);
             estimator.setPathLossEstimationEnabled(false);
 
@@ -4911,8 +4629,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointWithPowerAndLocated2D estimatedAccessPoint =
-                    (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -4926,13 +4643,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
                     estimatedAccessPoint.getTransmittedPowerStandardDeviation(), 0.0);
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final double powerVariance = estimator.getEstimatedTransmittedPowerVariance();
+            final var powerVariance = estimator.getEstimatedTransmittedPowerVariance();
             assertTrue(powerVariance > 0.0);
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -4958,8 +4675,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertEquals(transmittedPowerdBm, estimator.getEstimatedTransmittedPowerdBm(), ABSOLUTE_ERROR);
             numValidPower++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -4969,15 +4686,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertTrue(numValidPosition > 0);
         assertTrue(numValidPower > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
@@ -4985,52 +4700,48 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB", powerStd);
 
         // force NotReadyException
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateWithOnlyRssiReadings() throws LockedException, NotReadyException, IndoorException,
+    void testEstimateWithOnlyRssiReadings() throws LockedException, NotReadyException, IndoorException,
             AlgebraException {
 
-        int numValidPosition = 0, numValidPower = 0;
-        double positionError = 0.0;
-        double powerError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double powerStd = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValidPosition = 0;
+        var numValidPower = 0;
+        var positionError = 0.0;
+        var powerError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var powerStd = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-            final double transmittedPower = dBmToPower(transmittedPowerdBm);
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            final var transmittedPower = dBmToPower(transmittedPowerdBm);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<ReadingLocated<Point2D>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<ReadingLocated<Point2D>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                final double rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
+                final var rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
                         MAX_PATH_LOSS_EXPONENT));
 
                 readings.add(new RssiReadingLocated2D<>(accessPoint, rssi, readingsPositions[i]));
             }
 
-            final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new MixedRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new MixedRadioSourceEstimator2D<>(readings, this);
             estimator.setTransmittedPowerEstimationEnabled(true);
             estimator.setPathLossEstimationEnabled(false);
 
@@ -5058,8 +4769,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointWithPowerAndLocated2D estimatedAccessPoint =
-                    (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -5073,13 +4783,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
                     estimatedAccessPoint.getTransmittedPowerStandardDeviation(), 0.0);
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final double powerVariance = estimator.getEstimatedTransmittedPowerVariance();
+            final var powerVariance = estimator.getEstimatedTransmittedPowerVariance();
             assertTrue(powerVariance > 0.0);
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -5105,8 +4815,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertEquals(transmittedPowerdBm, estimator.getEstimatedTransmittedPowerdBm(), ABSOLUTE_ERROR);
             numValidPower++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -5116,15 +4826,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertTrue(numValidPosition > 0);
         assertTrue(numValidPower > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
@@ -5132,55 +4840,46 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         LOGGER.log(Level.INFO, "Power standard deviation {0} dB", powerStd);
 
         // force NotReadyException
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateWithOnlyRangingReadings() throws LockedException, NotReadyException, IndoorException,
+    void testEstimateWithOnlyRangingReadings() throws LockedException, NotReadyException, IndoorException,
             AlgebraException {
 
-        int numValidPosition = 0;
-        double positionError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValidPosition = 0;
+        var positionError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<ReadingLocated<Point2D>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<ReadingLocated<Point2D>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
                 readings.add(new RangingReadingLocated2D<>(accessPoint, distance, readingsPositions[i]));
             }
 
-            final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new MixedRadioSourceEstimator2D<>(this);
+            final var estimator = new MixedRadioSourceEstimator2D<>(this);
             estimator.setTransmittedPowerEstimationEnabled(true);
             estimator.setPathLossEstimationEnabled(false);
 
             // because transmitted power is required, estimator is not ready without
             // enough RSSI readings
-            try {
-                estimator.setReadings(readings);
-                fail("IllegalArgumentException expected but not thrown");
-            } catch (final IllegalArgumentException ignore) {
-            }
+            assertThrows(IllegalArgumentException.class, () -> estimator.setReadings(readings));
             assertFalse(estimator.isReady());
 
             // if we enable only position estimation, then estimator becomes ready
@@ -5214,8 +4913,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointLocated2D estimatedAccessPoint =
-                    (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -5226,10 +4924,10 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
 
             assertNull(estimator.getEstimatedTransmittedPowerVariance());
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -5245,67 +4943,62 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertTrue(estimator.getEstimatedPosition().equals(accessPointPosition, ABSOLUTE_ERROR));
             numValidPosition++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
         }
 
         assertTrue(numValidPosition > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
 
         // force NotReadyException
-        final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator = new MixedRadioSourceEstimator2D<>();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new MixedRadioSourceEstimator2D<WifiAccessPoint>();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateWithMixedRangingAndRssiReadingsAndHomogeneousRangingLinearSolver()
-            throws LockedException, NotReadyException, AlgebraException {
+    void testEstimateWithMixedRangingAndRssiReadingsAndHomogeneousRangingLinearSolver() throws LockedException,
+            NotReadyException, AlgebraException {
 
-        int numValidPosition = 0, numValidPower = 0;
-        double positionError = 0.0;
-        double powerError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double powerStd = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValidPosition = 0;
+        var numValidPower = 0;
+        var positionError = 0.0;
+        var powerError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var powerStd = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-            final double transmittedPower = dBmToPower(transmittedPowerdBm);
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            final var transmittedPower = dBmToPower(transmittedPowerdBm);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<ReadingLocated<Point2D>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<ReadingLocated<Point2D>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                final double rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
+                final var rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
                         MAX_PATH_LOSS_EXPONENT));
 
                 readings.add(new RangingReadingLocated2D<>(accessPoint, distance, readingsPositions[i]));
@@ -5313,8 +5006,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
                 readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, distance, rssi, readingsPositions[i]));
             }
 
-            final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new MixedRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new MixedRadioSourceEstimator2D<>(readings, this);
             estimator.setTransmittedPowerEstimationEnabled(true);
             estimator.setPathLossEstimationEnabled(false);
             estimator.setHomogeneousRangingLinearSolverUsed(true);
@@ -5343,8 +5035,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointWithPowerAndLocated2D estimatedAccessPoint =
-                    (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -5358,13 +5049,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
                     estimatedAccessPoint.getTransmittedPowerStandardDeviation(), 0.0);
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final double powerVariance = estimator.getEstimatedTransmittedPowerVariance();
+            final var powerVariance = estimator.getEstimatedTransmittedPowerVariance();
             assertTrue(powerVariance > 0.0);
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -5390,8 +5081,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertEquals(transmittedPowerdBm, estimator.getEstimatedTransmittedPowerdBm(), ABSOLUTE_ERROR);
             numValidPower++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -5401,15 +5092,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertTrue(numValidPosition > 0);
         assertTrue(numValidPower > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
@@ -5418,36 +5107,37 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
     }
 
     @Test
-    public void testEstimateWithMixedRangingAndRssiReadingsAndInhomogeneousRangingLinearSolver()
-            throws LockedException, NotReadyException, AlgebraException {
+    void testEstimateWithMixedRangingAndRssiReadingsAndInhomogeneousRangingLinearSolver() throws LockedException,
+            NotReadyException, AlgebraException {
 
-        int numValidPosition = 0, numValidPower = 0;
-        double positionError = 0.0;
-        double powerError = 0.0;
-        double positionStd = 0.0, positionStdConfidence = 0.0;
-        double powerStd = 0.0;
-        double positionAccuracy = 0.0, positionAccuracyConfidence = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValidPosition = 0;
+        var numValidPower = 0;
+        var positionError = 0.0;
+        var powerError = 0.0;
+        var positionStd = 0.0;
+        var positionStdConfidence = 0.0;
+        var powerStd = 0.0;
+        var positionAccuracy = 0.0;
+        var positionAccuracyConfidence = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final double transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
-            final double transmittedPower = dBmToPower(transmittedPowerdBm);
-            final WifiAccessPoint accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
+            final var accessPointPosition = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var transmittedPowerdBm = randomizer.nextDouble(MIN_RSSI, MAX_RSSI);
+            final var transmittedPower = dBmToPower(transmittedPowerdBm);
+            final var accessPoint = new WifiAccessPoint("bssid", FREQUENCY);
 
-            final int numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
-            final Point2D[] readingsPositions = new Point2D[numReadings];
-            final List<ReadingLocated<Point2D>> readings = new ArrayList<>();
-            for (int i = 0; i < numReadings; i++) {
+            final var numReadings = randomizer.nextInt(MIN_READINGS, MAX_READINGS);
+            final var readingsPositions = new Point2D[numReadings];
+            final var readings = new ArrayList<ReadingLocated<Point2D>>();
+            for (var i = 0; i < numReadings; i++) {
                 readingsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final double distance = readingsPositions[i].distanceTo(accessPointPosition);
+                final var distance = readingsPositions[i].distanceTo(accessPointPosition);
 
-                final double rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
+                final var rssi = powerTodBm(receivedPower(transmittedPower, distance, accessPoint.getFrequency(),
                         MAX_PATH_LOSS_EXPONENT));
 
                 readings.add(new RangingReadingLocated2D<>(accessPoint, distance, readingsPositions[i]));
@@ -5455,8 +5145,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
                 readings.add(new RangingAndRssiReadingLocated2D<>(accessPoint, distance, rssi, readingsPositions[i]));
             }
 
-            final MixedRadioSourceEstimator2D<WifiAccessPoint> estimator =
-                    new MixedRadioSourceEstimator2D<>(readings, this);
+            final var estimator = new MixedRadioSourceEstimator2D<>(readings, this);
             estimator.setTransmittedPowerEstimationEnabled(true);
             estimator.setPathLossEstimationEnabled(false);
             estimator.setHomogeneousRangingLinearSolverUsed(false);
@@ -5485,8 +5174,7 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertNotNull(estimator.getEstimatedCovariance());
             assertNotNull(estimator.getEstimatedPositionCovariance());
 
-            final WifiAccessPointWithPowerAndLocated2D estimatedAccessPoint =
-                    (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
+            final var estimatedAccessPoint = (WifiAccessPointWithPowerAndLocated2D) estimator.getEstimatedRadioSource();
 
             assertEquals("bssid", estimatedAccessPoint.getBssid());
             assertEquals(FREQUENCY, estimatedAccessPoint.getFrequency(), 0.0);
@@ -5500,13 +5188,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
                     estimatedAccessPoint.getTransmittedPowerStandardDeviation(), 0.0);
             assertEquals(estimator.getEstimatedPositionCovariance(), estimatedAccessPoint.getPositionCovariance());
 
-            final double powerVariance = estimator.getEstimatedTransmittedPowerVariance();
+            final var powerVariance = estimator.getEstimatedTransmittedPowerVariance();
             assertTrue(powerVariance > 0.0);
 
-            final Accuracy2D accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracyStd = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracyStd.setStandardDeviationFactor(1.0);
 
-            final Accuracy2D accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
+            final var accuracy = new Accuracy2D(estimator.getEstimatedPositionCovariance());
             accuracy.setConfidence(0.99);
 
             positionStd = accuracyStd.getAverageAccuracy();
@@ -5532,8 +5220,8 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
             assertEquals(transmittedPowerdBm, estimator.getEstimatedTransmittedPowerdBm(), ABSOLUTE_ERROR);
             numValidPower++;
 
-            assertArrayEquals(estimator.getEstimatedPosition().asArray(),
-                    estimator.getEstimatedPositionCoordinates(), 0.0);
+            assertArrayEquals(estimator.getEstimatedPosition().asArray(), estimator.getEstimatedPositionCoordinates(),
+                    0.0);
             assertEquals(1, estimateStart);
             assertEquals(1, estimateEnd);
 
@@ -5543,15 +5231,13 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         assertTrue(numValidPosition > 0);
         assertTrue(numValidPower > 0);
 
-        final NumberFormat format = NumberFormat.getPercentInstance();
-        String formattedConfidence = format.format(positionStdConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position standard deviation {0} meters ({1} confidence)",
+        final var format = NumberFormat.getPercentInstance();
+        var formattedConfidence = format.format(positionStdConfidence);
+        LOGGER.log(Level.INFO, MessageFormat.format("Position standard deviation {0} meters ({1} confidence)",
                 positionStd, formattedConfidence));
 
         formattedConfidence = format.format(positionAccuracyConfidence);
-        LOGGER.log(Level.INFO, MessageFormat.format(
-                "Position accuracy {0} meters ({1} confidence)",
+        LOGGER.log(Level.INFO, MessageFormat.format("Position accuracy {0} meters ({1} confidence)",
                 positionAccuracy, formattedConfidence));
 
         LOGGER.log(Level.INFO, "Position error: {0} meters", positionError);
@@ -5575,73 +5261,27 @@ public class MixedRadioSourceEstimator2DTest implements MixedRadioSourceEstimato
         estimateStart = estimateEnd = 0;
     }
 
-    private double receivedPower(final double equivalentTransmittedPower, final double distance,
-                                 final double frequency, final double pathLossExponent) {
+    private static double receivedPower(final double equivalentTransmittedPower, final double distance,
+                                        final double frequency, final double pathLossExponent) {
         // Pr = Pt*Gt*Gr*lambda^2/(4*pi*d)^2,    where Pr is the received power
         // lambda = c/f, where lambda is wavelength,
         // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the received Gain
         // Pr = Pte*c^2/((4*pi*f)^2 * d^2)
-        final double k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI * frequency), pathLossExponent);
+        final var k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI * frequency), pathLossExponent);
         return equivalentTransmittedPower * k / Math.pow(distance, pathLossExponent);
     }
 
-    private void checkLocked(final MixedRadioSourceEstimator<WifiAccessPoint, Point2D> estimator) {
-        try {
-            estimator.setUseReadingPositionCovariances(false);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setHomogeneousRangingLinearSolverUsed(false);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setInitialTransmittedPowerdBm(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setInitialTransmittedPower(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setTransmittedPowerEstimationEnabled(true);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setInitialPosition(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setInitialPathLossExponent(2.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setPathLossEstimationEnabled(false);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setReadings(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.setListener(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimator.estimate();
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        } catch (final Exception e) {
-            fail("LockedException expected but not thrown");
-        }
+    private static void checkLocked(final MixedRadioSourceEstimator<WifiAccessPoint, Point2D> estimator) {
+        assertThrows(LockedException.class, () -> estimator.setUseReadingPositionCovariances(false));
+        assertThrows(LockedException.class, () -> estimator.setHomogeneousRangingLinearSolverUsed(false));
+        assertThrows(LockedException.class, () -> estimator.setInitialTransmittedPowerdBm(null));
+        assertThrows(LockedException.class, () -> estimator.setInitialTransmittedPower(null));
+        assertThrows(LockedException.class, () -> estimator.setTransmittedPowerEstimationEnabled(true));
+        assertThrows(LockedException.class, () -> estimator.setInitialPosition(null));
+        assertThrows(LockedException.class, () -> estimator.setInitialPathLossExponent(2.0));
+        assertThrows(LockedException.class, () -> estimator.setPathLossEstimationEnabled(false));
+        assertThrows(LockedException.class, () -> estimator.setReadings(null));
+        assertThrows(LockedException.class, () -> estimator.setListener(null));
+        assertThrows(LockedException.class, estimator::estimate);
     }
 }

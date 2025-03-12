@@ -31,7 +31,7 @@ public class Fingerprint<S extends RadioSource, R extends Reading<S>> implements
     /**
      * Non-located ranging and RSSI readings.
      */
-    protected ArrayList<R> mReadings = new ArrayList<>();
+    protected ArrayList<R> readings = new ArrayList<>();
 
     /**
      * Constructor.
@@ -49,7 +49,7 @@ public class Fingerprint<S extends RadioSource, R extends Reading<S>> implements
         if (readings == null) {
             throw new IllegalArgumentException();
         }
-        mReadings = new ArrayList<>(readings);
+        this.readings = new ArrayList<>(readings);
     }
 
     /**
@@ -58,7 +58,7 @@ public class Fingerprint<S extends RadioSource, R extends Reading<S>> implements
      * @return non-located ranging readings.
      */
     public List<R> getReadings() {
-        return mReadings;
+        return readings;
     }
 
     /**
@@ -71,6 +71,6 @@ public class Fingerprint<S extends RadioSource, R extends Reading<S>> implements
         if (readings == null) {
             throw new IllegalArgumentException();
         }
-        mReadings = new ArrayList<>(readings);
+        this.readings = new ArrayList<>(readings);
     }
 }

@@ -33,8 +33,7 @@ import java.util.List;
  * getting ranging readings at an unknown location of different radio sources whose
  * locations are known.
  */
-public class NonLinearRangingPositionEstimator3D extends
-        NonLinearRangingPositionEstimator<Point3D> {
+public class NonLinearRangingPositionEstimator3D extends NonLinearRangingPositionEstimator<Point3D> {
 
     /**
      * Constructor.
@@ -52,8 +51,7 @@ public class NonLinearRangingPositionEstimator3D extends
      *                                  provided sources is less than the required
      *                                  minimum.
      */
-    public NonLinearRangingPositionEstimator3D(
-            final List<? extends RadioSourceLocated<Point3D>> sources) {
+    public NonLinearRangingPositionEstimator3D(final List<? extends RadioSourceLocated<Point3D>> sources) {
         super();
         initialize();
         internalSetSources(sources);
@@ -97,8 +95,7 @@ public class NonLinearRangingPositionEstimator3D extends
      *
      * @param listener listener in charge of handling events.
      */
-    public NonLinearRangingPositionEstimator3D(
-            final RangingPositionEstimatorListener<Point3D> listener) {
+    public NonLinearRangingPositionEstimator3D(final RangingPositionEstimatorListener<Point3D> listener) {
         super(listener);
         initialize();
     }
@@ -177,8 +174,7 @@ public class NonLinearRangingPositionEstimator3D extends
      *                                  minimum.
      */
     public NonLinearRangingPositionEstimator3D(
-            final List<? extends RadioSourceLocated<Point3D>> sources,
-            final Point3D initialPosition) {
+            final List<? extends RadioSourceLocated<Point3D>> sources, final Point3D initialPosition) {
         super(initialPosition);
         initialize();
         internalSetSources(sources);
@@ -228,8 +224,7 @@ public class NonLinearRangingPositionEstimator3D extends
      * @param listener        listener in charge of handling events.
      */
     public NonLinearRangingPositionEstimator3D(
-            final Point3D initialPosition,
-            final RangingPositionEstimatorListener<Point3D> listener) {
+            final Point3D initialPosition, final RangingPositionEstimatorListener<Point3D> listener) {
         super(initialPosition, listener);
         initialize();
     }
@@ -245,8 +240,7 @@ public class NonLinearRangingPositionEstimator3D extends
      *                                  minimum.
      */
     public NonLinearRangingPositionEstimator3D(
-            final List<? extends RadioSourceLocated<Point3D>> sources,
-            final Point3D initialPosition,
+            final List<? extends RadioSourceLocated<Point3D>> sources, final Point3D initialPosition,
             final RangingPositionEstimatorListener<Point3D> listener) {
         super(initialPosition, listener);
         initialize();
@@ -264,8 +258,7 @@ public class NonLinearRangingPositionEstimator3D extends
      */
     public NonLinearRangingPositionEstimator3D(
             final Fingerprint<? extends RadioSource, ? extends RangingReading<? extends RadioSource>> fingerprint,
-            final Point3D initialPosition,
-            final RangingPositionEstimatorListener<Point3D> listener) {
+            final Point3D initialPosition, final RangingPositionEstimatorListener<Point3D> listener) {
         super(initialPosition, listener);
         initialize();
         internalSetFingerprint(fingerprint);
@@ -286,8 +279,7 @@ public class NonLinearRangingPositionEstimator3D extends
     public NonLinearRangingPositionEstimator3D(
             final List<? extends RadioSourceLocated<Point3D>> sources,
             final Fingerprint<? extends RadioSource, ? extends RangingReading<? extends RadioSource>> fingerprint,
-            final Point3D initialPosition,
-            final RangingPositionEstimatorListener<Point3D> listener) {
+            final Point3D initialPosition, final RangingPositionEstimatorListener<Point3D> listener) {
         super(initialPosition, listener);
         initialize();
         internalSetSources(sources);
@@ -300,11 +292,11 @@ public class NonLinearRangingPositionEstimator3D extends
      * @return estimated position.
      */
     public Point3D getEstimatedPosition() {
-        if (mEstimatedPositionCoordinates == null) {
+        if (estimatedPositionCoordinates == null) {
             return null;
         }
 
-        final InhomogeneousPoint3D result = new InhomogeneousPoint3D();
+        final var result = new InhomogeneousPoint3D();
         getEstimatedPosition(result);
         return result;
     }
@@ -323,20 +315,20 @@ public class NonLinearRangingPositionEstimator3D extends
             final List<Point3D> positions, final List<Double> distances,
             final List<Double> distanceStandardDeviations) {
 
-        final int size = positions.size();
+        final var size = positions.size();
         Point3D[] positionsArray = new InhomogeneousPoint3D[size];
         positionsArray = positions.toArray(positionsArray);
 
-        final double[] distancesArray = new double[size];
-        final double[] distanceStandardDeviationsArray = new double[size];
-        for (int i = 0; i < size; i++) {
+        final var distancesArray = new double[size];
+        final var distanceStandardDeviationsArray = new double[size];
+        for (var i = 0; i < size; i++) {
             distancesArray[i] = distances.get(i);
             distanceStandardDeviationsArray[i] = distanceStandardDeviations.get(i);
         }
 
         try {
-            mTrilaterationSolver.setPositionsDistancesAndStandardDeviations(
-                    positionsArray, distancesArray, distanceStandardDeviationsArray);
+            trilaterationSolver.setPositionsDistancesAndStandardDeviations(positionsArray, distancesArray,
+                    distanceStandardDeviationsArray);
         } catch (final LockedException e) {
             throw new IllegalArgumentException(e);
         }
@@ -346,7 +338,6 @@ public class NonLinearRangingPositionEstimator3D extends
      * Initializes lateration solver.
      */
     private void initialize() {
-        mTrilaterationSolver = new NonLinearLeastSquaresLateration3DSolver(
-                mLaterationSolverListener);
+        trilaterationSolver = new NonLinearLeastSquaresLateration3DSolver(laterationSolverListener);
     }
 }

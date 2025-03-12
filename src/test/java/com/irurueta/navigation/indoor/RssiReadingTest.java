@@ -15,20 +15,20 @@
  */
 package com.irurueta.navigation.indoor;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class RssiReadingTest {
+class RssiReadingTest {
 
     private static final double FREQUENCY = 2.4e9;
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         // test empty constructor
-        RssiReading<WifiAccessPoint> reading = new RssiReading<>();
+        var reading = new RssiReading<WifiAccessPoint>();
 
         // check
         assertNull(reading.getSource());
@@ -37,7 +37,7 @@ public class RssiReadingTest {
         assertEquals(ReadingType.RSSI_READING, reading.getType());
 
         // test constructor with access point and RSSI
-        final WifiAccessPoint ap = new WifiAccessPoint("bssid", FREQUENCY);
+        final var ap = new WifiAccessPoint("bssid", FREQUENCY);
         reading = new RssiReading<>(ap, -50.0);
 
         // check
@@ -47,13 +47,7 @@ public class RssiReadingTest {
         assertEquals(ReadingType.RSSI_READING, reading.getType());
 
         // Force IllegalArgumentException
-        reading = null;
-        try {
-            reading = new RssiReading<>(null, -50.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(reading);
+        assertThrows(IllegalArgumentException.class, () -> new RssiReading<>(null, -50.0));
 
         // test constructor with access point, RSSI and RSSI standard deviation
         reading = new RssiReading<>(ap, -50.0, 5.5);
@@ -65,28 +59,19 @@ public class RssiReadingTest {
         assertEquals(ReadingType.RSSI_READING, reading.getType());
 
         // Force IllegalArgumentException
-        reading = null;
-        try {
-            reading = new RssiReading<>(null, -50.0, 5.5);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            reading = new RssiReading<>(ap, -50.0, 0.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(reading);
+        assertThrows(IllegalArgumentException.class,
+                () -> new RssiReading<>(null, -50.0, 5.5));
+        assertThrows(IllegalArgumentException.class, () -> new RssiReading<>(ap, -50.0, 0.0));
     }
 
     @Test
-    public void testHasSameAccessPoint() {
-        final WifiAccessPoint ap1 = new WifiAccessPoint("bssid1", FREQUENCY);
-        final WifiAccessPoint ap2 = new WifiAccessPoint("bssid2", FREQUENCY);
+    void testHasSameAccessPoint() {
+        final var ap1 = new WifiAccessPoint("bssid1", FREQUENCY);
+        final var ap2 = new WifiAccessPoint("bssid2", FREQUENCY);
 
-        final RssiReading<WifiAccessPoint> reading1 = new RssiReading<>(ap1, -50.0);
-        final RssiReading<WifiAccessPoint> reading2 = new RssiReading<>(ap1, -50.0);
-        final RssiReading<WifiAccessPoint> reading3 = new RssiReading<>(ap2, -50.0);
+        final var reading1 = new RssiReading<>(ap1, -50.0);
+        final var reading2 = new RssiReading<>(ap1, -50.0);
+        final var reading3 = new RssiReading<>(ap2, -50.0);
 
         // check
         assertTrue(reading1.hasSameSource(reading1));
@@ -95,9 +80,9 @@ public class RssiReadingTest {
     }
 
     @Test
-    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
-        final WifiAccessPoint ap = new WifiAccessPoint("bssid", FREQUENCY);
-        final RssiReading<WifiAccessPoint> reading1 = new RssiReading<>(ap, -50.0, 5.5);
+    void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final var ap = new WifiAccessPoint("bssid", FREQUENCY);
+        final var reading1 = new RssiReading<>(ap, -50.0, 5.5);
 
         // check
         assertSame(ap, reading1.getSource());
@@ -106,8 +91,8 @@ public class RssiReadingTest {
         assertEquals(ReadingType.RSSI_READING, reading1.getType());
 
         // serialize and deserialize
-        final byte[] bytes = SerializationHelper.serialize(reading1);
-        final RssiReading<WifiAccessPoint> reading2 = SerializationHelper.deserialize(bytes);
+        final var bytes = SerializationHelper.serialize(reading1);
+        final var reading2 = SerializationHelper.<RssiReading<WifiAccessPoint>>deserialize(bytes);
 
         // check
         assertNotSame(reading1, reading2);

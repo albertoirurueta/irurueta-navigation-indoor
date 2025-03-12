@@ -49,25 +49,25 @@ public class Beacon implements Serializable, RadioSource {
      * a unique beacon. The identifiers are ordered by significance for the purpose of grouping
      * beacons.
      */
-    private ArrayList<BeaconIdentifier> mIdentifiers;
+    private ArrayList<BeaconIdentifier> identifiers;
 
     /**
      * The calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * This value is baked into a Beacon when it is manufactured, and it is
      * transmitted with each packet to aid in the distance estimate.
      */
-    private double mTransmittedPower;
+    private double transmittedPower;
 
     /**
      * The Bluetooth mac address.
      */
-    private String mBluetoothAddress;
+    private String bluetoothAddress;
 
     /**
      * The two byte value indicating the type of beacon that this is, which is used for figuring
      * out the byte layout of the beacon advertisement.
      */
-    private int mBeaconTypeCode;
+    private int beaconTypeCode;
 
     /**
      * A two byte code indicating the beacon manufacturer. A list of registered manufacturer codes
@@ -78,25 +78,25 @@ public class Beacon implements Serializable, RadioSource {
      * <p>
      * If the beacon is a GATT-based beacon, this field will be set to -1.
      */
-    private int mManufacturer;
+    private int manufacturer;
 
     /**
      * A 32 bit service uuid for the beacon.
      * This is valid only for GATT-based beacons. If the beacon is a manufacturer data-based
      * beacon, this field will be -1
      */
-    private int mServiceUuid = -1;
+    private int serviceUuid = -1;
 
     /**
      * The Bluetooth device name.  This is a field transmitted by the remote beacon device separate
      * from the advertisement data
      */
-    private String mBluetoothName;
+    private String bluetoothName;
 
     /**
      * Frequency used by this Beacon(expressed in Hz).
      */
-    private double mFrequency = DEFAULT_FREQUENCY;
+    private double frequency = DEFAULT_FREQUENCY;
 
     /**
      * Constructor.
@@ -105,14 +105,13 @@ public class Beacon implements Serializable, RadioSource {
      * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
      * @throws IllegalArgumentException if identifiers is null.
      */
-    public Beacon(final List<BeaconIdentifier> identifiers,
-                  final double transmittedPower) {
+    public Beacon(final List<BeaconIdentifier> identifiers, final double transmittedPower) {
         if (identifiers == null) {
             throw new IllegalArgumentException();
         }
 
-        mIdentifiers = new ArrayList<>(identifiers);
-        mTransmittedPower = transmittedPower;
+        this.identifiers = new ArrayList<>(identifiers);
+        this.transmittedPower = transmittedPower;
     }
 
     /**
@@ -127,20 +126,16 @@ public class Beacon implements Serializable, RadioSource {
      * @param bluetoothName    the bluetooth device name.
      * @throws IllegalArgumentException if identifiers is null.
      */
-    public Beacon(final List<BeaconIdentifier> identifiers,
-                  final double transmittedPower,
-                  final String bluetoothAddress,
-                  final int beaconTypeCode,
-                  final int manufacturer,
-                  final int serviceUuid,
-                  final String bluetoothName) {
+    public Beacon(final List<BeaconIdentifier> identifiers, final double transmittedPower,
+                  final String bluetoothAddress, final int beaconTypeCode, final int manufacturer,
+                  final int serviceUuid, final String bluetoothName) {
         this(identifiers, transmittedPower);
 
-        mBluetoothAddress = bluetoothAddress;
-        mBeaconTypeCode = beaconTypeCode;
-        mManufacturer = manufacturer;
-        mServiceUuid = serviceUuid;
-        mBluetoothName = bluetoothName;
+        this.bluetoothAddress = bluetoothAddress;
+        this.beaconTypeCode = beaconTypeCode;
+        this.manufacturer = manufacturer;
+        this.serviceUuid = serviceUuid;
+        this.bluetoothName = bluetoothName;
     }
 
     /**
@@ -151,16 +146,14 @@ public class Beacon implements Serializable, RadioSource {
      * @param frequency        frequency used by this Beacon.
      * @throws IllegalArgumentException if identifiers is null or frequency is negative.
      */
-    public Beacon(final List<BeaconIdentifier> identifiers,
-                  final double transmittedPower,
-                  final double frequency) {
+    public Beacon(final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency) {
         this(identifiers, transmittedPower);
 
         if (frequency < 0.0) {
             throw new IllegalArgumentException();
         }
 
-        mFrequency = frequency;
+        this.frequency = frequency;
     }
 
     /**
@@ -176,22 +169,16 @@ public class Beacon implements Serializable, RadioSource {
      * @param bluetoothName    the bluetooth device name.
      * @throws IllegalArgumentException if identifiers is null.
      */
-    public Beacon(final List<BeaconIdentifier> identifiers,
-                  final double transmittedPower,
-                  final double frequency,
-                  final String bluetoothAddress,
-                  final int beaconTypeCode,
-                  final int manufacturer,
-                  final int serviceUuid,
-                  final String bluetoothName) {
-        this(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode,
-                manufacturer, serviceUuid, bluetoothName);
+    public Beacon(final List<BeaconIdentifier> identifiers, final double transmittedPower, final double frequency,
+                  final String bluetoothAddress, final int beaconTypeCode, final int manufacturer,
+                  final int serviceUuid, final String bluetoothName) {
+        this(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid, bluetoothName);
 
         if (frequency < 0.0) {
             throw new IllegalArgumentException();
         }
 
-        mFrequency = frequency;
+        this.frequency = frequency;
     }
 
     /**
@@ -208,10 +195,10 @@ public class Beacon implements Serializable, RadioSource {
      * @return identifier or null if not available.
      */
     public BeaconIdentifier getIdentifier(final int i) {
-        if (i < 0 || mIdentifiers == null || mIdentifiers.size() <= i) {
+        if (i < 0 || identifiers == null || identifiers.size() <= i) {
             return null;
         }
-        return mIdentifiers.get(i);
+        return identifiers.get(i);
     }
 
     /**
@@ -220,10 +207,10 @@ public class Beacon implements Serializable, RadioSource {
      * @return first identifier or null if not available.
      */
     public BeaconIdentifier getId1() {
-        if (mIdentifiers == null || mIdentifiers.isEmpty()) {
+        if (identifiers == null || identifiers.isEmpty()) {
             return null;
         }
-        return mIdentifiers.get(0);
+        return identifiers.get(0);
     }
 
     /**
@@ -232,10 +219,10 @@ public class Beacon implements Serializable, RadioSource {
      * @return second identifier or null if not available.
      */
     public BeaconIdentifier getId2() {
-        if (mIdentifiers == null || mIdentifiers.size() < 2) {
+        if (identifiers == null || identifiers.size() < 2) {
             return null;
         }
-        return mIdentifiers.get(1);
+        return identifiers.get(1);
     }
 
     /**
@@ -244,10 +231,10 @@ public class Beacon implements Serializable, RadioSource {
      * @return third identifier or null if not available.
      */
     public BeaconIdentifier getId3() {
-        if (mIdentifiers == null || mIdentifiers.size() < 3) {
+        if (identifiers == null || identifiers.size() < 3) {
             return null;
         }
-        return mIdentifiers.get(2);
+        return identifiers.get(2);
     }
 
     /**
@@ -258,7 +245,7 @@ public class Beacon implements Serializable, RadioSource {
      * @return list of identifiers of the beacon or null if not available.
      */
     public List<BeaconIdentifier> getIdentifiers() {
-        return mIdentifiers != null ? Collections.unmodifiableList(mIdentifiers) : null;
+        return identifiers != null ? Collections.unmodifiableList(identifiers) : null;
     }
 
     /**
@@ -269,7 +256,7 @@ public class Beacon implements Serializable, RadioSource {
      * @return the calibrated measured Tx power.
      */
     public double getTransmittedPower() {
-        return mTransmittedPower;
+        return transmittedPower;
     }
 
     /**
@@ -278,7 +265,7 @@ public class Beacon implements Serializable, RadioSource {
      * @return bluetooth mac address.
      */
     public String getBluetoothAddress() {
-        return mBluetoothAddress;
+        return bluetoothAddress;
     }
 
     /**
@@ -288,7 +275,7 @@ public class Beacon implements Serializable, RadioSource {
      * @return two byte value indicating the type of beacon.
      */
     public int getBeaconTypeCode() {
-        return mBeaconTypeCode;
+        return beaconTypeCode;
     }
 
 
@@ -299,7 +286,7 @@ public class Beacon implements Serializable, RadioSource {
      * @return bluetooth device name.
      */
     public String getBluetoothName() {
-        return mBluetoothName;
+        return bluetoothName;
     }
 
     /**
@@ -314,7 +301,7 @@ public class Beacon implements Serializable, RadioSource {
      * @return a two byte code indicating the beacon manufacturer.
      */
     public int getManufacturer() {
-        return mManufacturer;
+        return manufacturer;
     }
 
     /**
@@ -325,7 +312,7 @@ public class Beacon implements Serializable, RadioSource {
      * @return service uuid.
      */
     public int getServiceUuid() {
-        return mServiceUuid;
+        return serviceUuid;
     }
 
     /**
@@ -335,7 +322,7 @@ public class Beacon implements Serializable, RadioSource {
      */
     @Override
     public double getFrequency() {
-        return mFrequency;
+        return frequency;
     }
 
     /**
@@ -346,13 +333,11 @@ public class Beacon implements Serializable, RadioSource {
      */
     @Override
     public boolean equals(final Object that) {
-        if (!(that instanceof Beacon)) {
+        if (!(that instanceof Beacon thatBeacon)) {
             return false;
         }
 
-        final Beacon thatBeacon = (Beacon) that;
-        return mIdentifiers != null &&
-                mIdentifiers.equals(thatBeacon.mIdentifiers);
+        return identifiers != null && identifiers.equals(thatBeacon.identifiers);
     }
 
     /**
@@ -362,7 +347,7 @@ public class Beacon implements Serializable, RadioSource {
      */
     @Override
     public int hashCode() {
-        return mIdentifiers.hashCode();
+        return identifiers.hashCode();
     }
 
     /**

@@ -16,13 +16,11 @@
 package com.irurueta.navigation.indoor;
 
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import java.util.Random;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import static org.junit.Assert.assertEquals;
-
-public class AltBeaconUtilsTest {
+class AltBeaconUtilsTest {
 
     private static final double MIN_FREQUENCY = 2.4e9;
     private static final double MAX_FREQUENCY = 2.45e9;
@@ -54,226 +52,221 @@ public class AltBeaconUtilsTest {
     private static final double ABSOLUTE_ERROR = 1e-6;
 
     @Test
-    public void testGetK() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testGetK() {
+        final var randomizer = new UniformRandomizer();
 
-        final double frequency = randomizer.nextDouble(MIN_FREQUENCY, MAX_FREQUENCY);
+        final var frequency = randomizer.nextDouble(MIN_FREQUENCY, MAX_FREQUENCY);
 
-        final double k = AltBeaconUtils.getK(frequency);
+        final var k = AltBeaconUtils.getK(frequency);
 
         assertEquals(frequency, AltBeaconUtils.getFrequency(k), ABSOLUTE_ERROR);
     }
 
     @Test
-    public void testGetKWithCoefficients() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testGetKWithCoefficients() {
+        final var randomizer = new UniformRandomizer();
 
-        final double frequency = randomizer.nextDouble(MIN_FREQUENCY, MAX_FREQUENCY);
-        final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS, MAX_PATH_LOSS);
+        final var frequency = randomizer.nextDouble(MIN_FREQUENCY, MAX_FREQUENCY);
+        final var pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS, MAX_PATH_LOSS);
 
-        final double coefficient1 = AltBeaconUtils.getCoefficient1WithFrequency(frequency,
-                pathLossExponent);
-        final double coefficient2 = AltBeaconUtils.getCoefficient2(pathLossExponent);
+        final var coefficient1 = AltBeaconUtils.getCoefficient1WithFrequency(frequency, pathLossExponent);
+        final var coefficient2 = AltBeaconUtils.getCoefficient2(pathLossExponent);
 
-        final double k = AltBeaconUtils.getK(coefficient1, coefficient2);
+        final var k = AltBeaconUtils.getK(coefficient1, coefficient2);
 
-        assertEquals(frequency / 1e9,
-                AltBeaconUtils.getFrequency(k) / 1e9, ABSOLUTE_ERROR);
+        assertEquals(frequency / 1e9, AltBeaconUtils.getFrequency(k) / 1e9, ABSOLUTE_ERROR);
     }
 
     @Test
-    public void testGetFrequency() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testGetFrequency() {
+        final var randomizer = new UniformRandomizer();
 
-        final double k = randomizer.nextDouble(MIN_K, MAX_K);
+        final var k = randomizer.nextDouble(MIN_K, MAX_K);
 
-        final double frequency = AltBeaconUtils.getFrequency(k);
+        final var frequency = AltBeaconUtils.getFrequency(k);
 
         assertEquals(k, AltBeaconUtils.getK(frequency), ABSOLUTE_ERROR);
     }
 
     @Test
-    public void testGetFrequencyWithCoefficients() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testGetFrequencyWithCoefficients() {
+        final var randomizer = new UniformRandomizer();
 
-        final double c1 = randomizer.nextDouble(MIN_C1, MAX_C1);
-        final double c2 = randomizer.nextDouble(MIN_C2, MAX_C2);
+        final var c1 = randomizer.nextDouble(MIN_C1, MAX_C1);
+        final var c2 = randomizer.nextDouble(MIN_C2, MAX_C2);
 
-        final double frequency = AltBeaconUtils.getFrequency(c1, c2);
-        final double n = AltBeaconUtils.getPathLossExponent(c2);
+        final var frequency = AltBeaconUtils.getFrequency(c1, c2);
+        final var n = AltBeaconUtils.getPathLossExponent(c2);
 
-        assertEquals(c1, AltBeaconUtils.getCoefficient1WithFrequency(frequency, n),
-                ABSOLUTE_ERROR);
+        assertEquals(c1, AltBeaconUtils.getCoefficient1WithFrequency(frequency, n), ABSOLUTE_ERROR);
         assertEquals(c2, AltBeaconUtils.getCoefficient2(n), ABSOLUTE_ERROR);
     }
 
     @Test
-    public void testGetPathLossExponent() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testGetPathLossExponent() {
+        final var randomizer = new UniformRandomizer();
 
-        final double c2 = randomizer.nextDouble(MIN_C2, MAX_C2);
+        final var c2 = randomizer.nextDouble(MIN_C2, MAX_C2);
 
-        final double n = AltBeaconUtils.getPathLossExponent(c2);
+        final var n = AltBeaconUtils.getPathLossExponent(c2);
 
         assertEquals(c2, AltBeaconUtils.getCoefficient2(n), ABSOLUTE_ERROR);
     }
 
     @Test
-    public void testGetDistance() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testGetDistance() {
+        final var randomizer = new UniformRandomizer();
 
-        final double c1 = randomizer.nextDouble(MIN_C1, MAX_C1);
-        final double c2 = randomizer.nextDouble(MIN_C2, MAX_C2);
-        final double c3 = randomizer.nextDouble(MIN_C3, MAX_C3);
+        final var c1 = randomizer.nextDouble(MIN_C1, MAX_C1);
+        final var c2 = randomizer.nextDouble(MIN_C2, MAX_C2);
+        final var c3 = randomizer.nextDouble(MIN_C3, MAX_C3);
 
-        final double ratio = randomizer.nextDouble(MIN_RATIO, MAX_RATIO);
+        final var ratio = randomizer.nextDouble(MIN_RATIO, MAX_RATIO);
 
-        final double distance = AltBeaconUtils.getDistance(c1, c2, c3, ratio);
+        final var distance = AltBeaconUtils.getDistance(c1, c2, c3, ratio);
 
         assertEquals(ratio, AltBeaconUtils.getRatio(c1, c2, c3, distance), ABSOLUTE_ERROR);
         assertEquals(distance, c1 * Math.pow(ratio, c2) + c3, ABSOLUTE_ERROR);
     }
 
     @Test
-    public void testGetDistanceWithPower() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testGetDistanceWithPower() {
+        final var randomizer = new UniformRandomizer();
 
-        final double c1 = randomizer.nextDouble(MIN_C1, MAX_C1);
-        final double c2 = randomizer.nextDouble(MIN_C2, MAX_C2);
-        final double c3 = randomizer.nextDouble(MIN_C3, MAX_C3);
+        final var c1 = randomizer.nextDouble(MIN_C1, MAX_C1);
+        final var c2 = randomizer.nextDouble(MIN_C2, MAX_C2);
+        final var c3 = randomizer.nextDouble(MIN_C3, MAX_C3);
 
-        final double transmittedPower = randomizer.nextDouble(MIN_POWER, MAX_POWER);
-        final double ratio = randomizer.nextDouble(MIN_RATIO, MAX_RATIO);
+        final var transmittedPower = randomizer.nextDouble(MIN_POWER, MAX_POWER);
+        final var ratio = randomizer.nextDouble(MIN_RATIO, MAX_RATIO);
 
-        final double receivedPower = AltBeaconUtils.getReceivedPower(ratio, transmittedPower);
+        final var receivedPower = AltBeaconUtils.getReceivedPower(ratio, transmittedPower);
 
-        final double distance = AltBeaconUtils.getDistance(c1, c2, c3, receivedPower, transmittedPower);
+        final var distance = AltBeaconUtils.getDistance(c1, c2, c3, receivedPower, transmittedPower);
 
         assertEquals(ratio, AltBeaconUtils.getRatio(c1, c2, c3, distance), ABSOLUTE_ERROR);
         assertEquals(distance, c1 * Math.pow(ratio, c2) + c3, ABSOLUTE_ERROR);
     }
 
     @Test
-    public void testGetRatio() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testGetRatio() {
+        final var randomizer = new UniformRandomizer();
 
-        final double c1 = randomizer.nextDouble(MIN_C1, MAX_C1);
-        final double c2 = randomizer.nextDouble(MIN_C2, MAX_C2);
-        final double c3 = randomizer.nextDouble(MIN_C3, MAX_C3);
+        final var c1 = randomizer.nextDouble(MIN_C1, MAX_C1);
+        final var c2 = randomizer.nextDouble(MIN_C2, MAX_C2);
+        final var c3 = randomizer.nextDouble(MIN_C3, MAX_C3);
 
-        final double distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
+        final var distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
 
-        final double ratio = AltBeaconUtils.getRatio(c1, c2, c3, distance);
+        final var ratio = AltBeaconUtils.getRatio(c1, c2, c3, distance);
 
         assertEquals(distance, AltBeaconUtils.getDistance(c1, c2, c3, ratio), ABSOLUTE_ERROR);
     }
 
     @Test
-    public void testGetRatioWithPower() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testGetRatioWithPower() {
+        final var randomizer = new UniformRandomizer();
 
-        final double receivedPower = randomizer.nextDouble(MIN_POWER, MAX_POWER);
-        final double transmittedPower = randomizer.nextDouble(MIN_POWER, MAX_POWER);
+        final var receivedPower = randomizer.nextDouble(MIN_POWER, MAX_POWER);
+        final var transmittedPower = randomizer.nextDouble(MIN_POWER, MAX_POWER);
 
-        final double ratio = AltBeaconUtils.getRatio(receivedPower, transmittedPower);
+        final var ratio = AltBeaconUtils.getRatio(receivedPower, transmittedPower);
 
         // check
         assertEquals(ratio, receivedPower / transmittedPower, ABSOLUTE_ERROR);
     }
 
     @Test
-    public void testGetReceivedPower() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testGetReceivedPower() {
+        final var randomizer = new UniformRandomizer();
 
-        final double receivedPower = randomizer.nextDouble(MIN_POWER, MAX_POWER);
-        final double transmittedPower = randomizer.nextDouble(MIN_POWER, MAX_POWER);
+        final var receivedPower = randomizer.nextDouble(MIN_POWER, MAX_POWER);
+        final var transmittedPower = randomizer.nextDouble(MIN_POWER, MAX_POWER);
 
-        final double ratio = AltBeaconUtils.getRatio(receivedPower, transmittedPower);
+        final var ratio = AltBeaconUtils.getRatio(receivedPower, transmittedPower);
 
         assertEquals(receivedPower, AltBeaconUtils.getReceivedPower(ratio, transmittedPower), ABSOLUTE_ERROR);
     }
 
     @Test
-    public void testGetReceivedPowerWithCoefficients() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testGetReceivedPowerWithCoefficients() {
+        final var randomizer = new UniformRandomizer();
 
-        final double c1 = randomizer.nextDouble(MIN_C1, MAX_C1);
-        final double c2 = randomizer.nextDouble(MIN_C2, MAX_C2);
-        final double c3 = randomizer.nextDouble(MIN_C3, MAX_C3);
+        final var c1 = randomizer.nextDouble(MIN_C1, MAX_C1);
+        final var c2 = randomizer.nextDouble(MIN_C2, MAX_C2);
+        final var c3 = randomizer.nextDouble(MIN_C3, MAX_C3);
 
-        final double distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
-        final double transmittedPower = randomizer.nextDouble(MIN_POWER, MAX_POWER);
+        final var distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
+        final var transmittedPower = randomizer.nextDouble(MIN_POWER, MAX_POWER);
 
-        final double receivedPower = AltBeaconUtils.getReceivedPower(c1, c2, c3, distance, transmittedPower);
+        final var receivedPower = AltBeaconUtils.getReceivedPower(c1, c2, c3, distance, transmittedPower);
 
-        assertEquals(distance, AltBeaconUtils.getDistance(c1, c2, c3, receivedPower, transmittedPower),
-                ABSOLUTE_ERROR);
+        assertEquals(distance, AltBeaconUtils.getDistance(c1, c2, c3, receivedPower, transmittedPower), ABSOLUTE_ERROR);
     }
 
     @Test
-    public void testGetTransmittedPower() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testGetTransmittedPower() {
+        final var randomizer = new UniformRandomizer();
 
-        final double receivedPower = randomizer.nextDouble(MIN_POWER, MAX_POWER);
-        final double transmittedPower = randomizer.nextDouble(MIN_POWER, MAX_POWER);
+        final var receivedPower = randomizer.nextDouble(MIN_POWER, MAX_POWER);
+        final var transmittedPower = randomizer.nextDouble(MIN_POWER, MAX_POWER);
 
-        final double ratio = AltBeaconUtils.getRatio(receivedPower, transmittedPower);
+        final var ratio = AltBeaconUtils.getRatio(receivedPower, transmittedPower);
 
         assertEquals(transmittedPower, AltBeaconUtils.getTransmittedPower(ratio, receivedPower), ABSOLUTE_ERROR);
     }
 
     @Test
-    public void testGetTransmittedPowerWithCoefficients() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testGetTransmittedPowerWithCoefficients() {
+        final var randomizer = new UniformRandomizer();
 
-        final double c1 = randomizer.nextDouble(MIN_C1, MAX_C1);
-        final double c2 = randomizer.nextDouble(MIN_C2, MAX_C2);
-        final double c3 = randomizer.nextDouble(MIN_C3, MAX_C3);
+        final var c1 = randomizer.nextDouble(MIN_C1, MAX_C1);
+        final var c2 = randomizer.nextDouble(MIN_C2, MAX_C2);
+        final var c3 = randomizer.nextDouble(MIN_C3, MAX_C3);
 
-        final double distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
-        final double receivedPower = randomizer.nextDouble(MIN_POWER, MAX_POWER);
+        final var distance = randomizer.nextDouble(MIN_DISTANCE, MAX_DISTANCE);
+        final var receivedPower = randomizer.nextDouble(MIN_POWER, MAX_POWER);
 
-        final double transmittedPower = AltBeaconUtils.getTransmittedPower(c1, c2, c3, distance, receivedPower);
+        final var transmittedPower = AltBeaconUtils.getTransmittedPower(c1, c2, c3, distance, receivedPower);
 
-        assertEquals(distance, AltBeaconUtils.getDistance(c1, c2, c3, receivedPower, transmittedPower),
-                ABSOLUTE_ERROR);
+        assertEquals(distance, AltBeaconUtils.getDistance(c1, c2, c3, receivedPower, transmittedPower), ABSOLUTE_ERROR);
     }
 
     @Test
-    public void testGetCoefficient1() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testGetCoefficient1() {
+        final var randomizer = new UniformRandomizer();
 
-        final double frequency = randomizer.nextDouble(MIN_FREQUENCY, MAX_FREQUENCY);
-        final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS, MAX_PATH_LOSS);
+        final var frequency = randomizer.nextDouble(MIN_FREQUENCY, MAX_FREQUENCY);
+        final var pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS, MAX_PATH_LOSS);
 
-        final double coefficient1 = AltBeaconUtils.getCoefficient1WithFrequency(frequency, pathLossExponent);
-        final double coefficient2 = AltBeaconUtils.getCoefficient2(pathLossExponent);
+        final var coefficient1 = AltBeaconUtils.getCoefficient1WithFrequency(frequency, pathLossExponent);
+        final var coefficient2 = AltBeaconUtils.getCoefficient2(pathLossExponent);
 
-        final double k = AltBeaconUtils.getK(coefficient1, coefficient2);
+        final var k = AltBeaconUtils.getK(coefficient1, coefficient2);
 
         assertEquals(coefficient1, AltBeaconUtils.getCoefficient1(k, pathLossExponent), ABSOLUTE_ERROR);
     }
 
     @Test
-    public void testGetCoefficient1WithFrequency() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testGetCoefficient1WithFrequency() {
+        final var randomizer = new UniformRandomizer();
 
-        final double frequency = randomizer.nextDouble(MIN_FREQUENCY, MAX_FREQUENCY);
-        final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS, MAX_PATH_LOSS);
+        final var frequency = randomizer.nextDouble(MIN_FREQUENCY, MAX_FREQUENCY);
+        final var pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS, MAX_PATH_LOSS);
 
-        final double c1 = AltBeaconUtils.getCoefficient1WithFrequency(frequency, pathLossExponent);
-        final double c2 = AltBeaconUtils.getCoefficient2(pathLossExponent);
+        final var c1 = AltBeaconUtils.getCoefficient1WithFrequency(frequency, pathLossExponent);
+        final var c2 = AltBeaconUtils.getCoefficient2(pathLossExponent);
 
         assertEquals(frequency, AltBeaconUtils.getFrequency(c1, c2), 10.0 * ABSOLUTE_ERROR);
     }
 
     @Test
-    public void testGetCoefficient2() {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testGetCoefficient2() {
+        final var randomizer = new UniformRandomizer();
 
-        final double pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS, MAX_PATH_LOSS);
+        final var pathLossExponent = randomizer.nextDouble(MIN_PATH_LOSS, MAX_PATH_LOSS);
 
-        final double c2 = AltBeaconUtils.getCoefficient2(pathLossExponent);
+        final var c2 = AltBeaconUtils.getCoefficient2(pathLossExponent);
 
         assertEquals(pathLossExponent, AltBeaconUtils.getPathLossExponent(c2), ABSOLUTE_ERROR);
     }

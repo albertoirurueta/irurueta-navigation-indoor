@@ -43,14 +43,14 @@ public abstract class RobustRangingRadioSourceEstimator<S extends RadioSource, P
     /**
      * Initial position to start the estimation of radio source position.
      */
-    protected P mInitialPosition;
+    protected P initialPosition;
 
     /**
      * Indicates whether position covariances of readings must be taken into account to increase
      * the amount of standard deviation of each ranging measure by the amount of position standard deviation
      * assuming that both measures are statistically independent.
      */
-    protected boolean mUseReadingPositionCovariances = DEFAULT_USE_READING_POSITION_COVARIANCES;
+    protected boolean useReadingPositionCovariances = DEFAULT_USE_READING_POSITION_COVARIANCES;
 
     /**
      * Constructor.
@@ -67,8 +67,7 @@ public abstract class RobustRangingRadioSourceEstimator<S extends RadioSource, P
      *                 radio source.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    protected RobustRangingRadioSourceEstimator(
-            final List<? extends RangingReadingLocated<S, P>> readings) {
+    protected RobustRangingRadioSourceEstimator(final List<? extends RangingReadingLocated<S, P>> readings) {
         super(readings);
     }
 
@@ -77,8 +76,7 @@ public abstract class RobustRangingRadioSourceEstimator<S extends RadioSource, P
      *
      * @param listener listener in charge of attending events raised by this instance.
      */
-    protected RobustRangingRadioSourceEstimator(
-            final RobustRangingRadioSourceEstimatorListener<S, P> listener) {
+    protected RobustRangingRadioSourceEstimator(final RobustRangingRadioSourceEstimatorListener<S, P> listener) {
         super(listener);
     }
 
@@ -103,7 +101,7 @@ public abstract class RobustRangingRadioSourceEstimator<S extends RadioSource, P
      *                        source position.
      */
     protected RobustRangingRadioSourceEstimator(final P initialPosition) {
-        mInitialPosition = initialPosition;
+        this.initialPosition = initialPosition;
     }
 
     /**
@@ -116,10 +114,9 @@ public abstract class RobustRangingRadioSourceEstimator<S extends RadioSource, P
      * @throws IllegalArgumentException if readings are not valid.
      */
     protected RobustRangingRadioSourceEstimator(
-            final List<? extends RangingReadingLocated<S, P>> readings,
-            final P initialPosition) {
+            final List<? extends RangingReadingLocated<S, P>> readings, final P initialPosition) {
         super(readings);
-        mInitialPosition = initialPosition;
+        this.initialPosition = initialPosition;
     }
 
     /**
@@ -130,10 +127,9 @@ public abstract class RobustRangingRadioSourceEstimator<S extends RadioSource, P
      * @param listener        listener in charge of attending events raised by this instance.
      */
     protected RobustRangingRadioSourceEstimator(
-            final P initialPosition,
-            final RobustRangingRadioSourceEstimatorListener<S, P> listener) {
+            final P initialPosition, final RobustRangingRadioSourceEstimatorListener<S, P> listener) {
         super(listener);
-        mInitialPosition = initialPosition;
+        this.initialPosition = initialPosition;
     }
 
     /**
@@ -147,11 +143,10 @@ public abstract class RobustRangingRadioSourceEstimator<S extends RadioSource, P
      * @throws IllegalArgumentException if readings are not valid.
      */
     protected RobustRangingRadioSourceEstimator(
-            final List<? extends RangingReadingLocated<S, P>> readings,
-            final P initialPosition,
+            final List<? extends RangingReadingLocated<S, P>> readings, final P initialPosition,
             final RobustRangingRadioSourceEstimatorListener<S, P> listener) {
         super(readings, listener);
-        mInitialPosition = initialPosition;
+        this.initialPosition = initialPosition;
     }
 
     /**
@@ -161,7 +156,7 @@ public abstract class RobustRangingRadioSourceEstimator<S extends RadioSource, P
      * @return initial position.
      */
     public P getInitialPosition() {
-        return mInitialPosition;
+        return initialPosition;
     }
 
     /**
@@ -176,7 +171,7 @@ public abstract class RobustRangingRadioSourceEstimator<S extends RadioSource, P
         if (isLocked()) {
             throw new LockedException();
         }
-        mInitialPosition = initialPosition;
+        this.initialPosition = initialPosition;
     }
 
     /**
@@ -187,7 +182,7 @@ public abstract class RobustRangingRadioSourceEstimator<S extends RadioSource, P
      * @return true to take into account reading position covariances, false otherwise.
      */
     public boolean getUseReadingPositionCovariance() {
-        return mUseReadingPositionCovariances;
+        return useReadingPositionCovariances;
     }
 
     /**
@@ -199,12 +194,11 @@ public abstract class RobustRangingRadioSourceEstimator<S extends RadioSource, P
      *                                      otherwise.
      * @throws LockedException if estimator is locked.
      */
-    public void setUseReadingPositionCovariances(boolean useReadingPositionCovariances)
-            throws LockedException {
+    public void setUseReadingPositionCovariances(boolean useReadingPositionCovariances) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
-        mUseReadingPositionCovariances = useReadingPositionCovariances;
+        this.useReadingPositionCovariances = useReadingPositionCovariances;
     }
 
     /**
@@ -215,7 +209,7 @@ public abstract class RobustRangingRadioSourceEstimator<S extends RadioSource, P
     @Override
     public boolean isReady() {
         //readings must be valid
-        return areValidReadings(mReadings);
+        return areValidReadings(readings);
     }
 
     /**
@@ -235,8 +229,8 @@ public abstract class RobustRangingRadioSourceEstimator<S extends RadioSource, P
      *                                   if an inhomogeneous linear one is used instead.
      * @throws LockedException if estimator is locked.
      */
-    public abstract void setHomogeneousLinearSolverUsed(
-            final boolean useHomogeneousLinearSolver) throws LockedException;
+    public abstract void setHomogeneousLinearSolverUsed(final boolean useHomogeneousLinearSolver)
+            throws LockedException;
 
     /**
      * Returns method being used for robust estimation.
@@ -251,9 +245,7 @@ public abstract class RobustRangingRadioSourceEstimator<S extends RadioSource, P
      * @param samplesIndices indices of subset samples.
      * @param solutions      instance where solution will be stored.
      */
-    protected abstract void solvePreliminarySolutions(
-            final int[] samplesIndices,
-            final List<Solution<P>> solutions);
+    protected abstract void solvePreliminarySolutions(final int[] samplesIndices, final List<Solution<P>> solutions);
 
     /**
      * Estimates residual for a solution obtained for a subset of samples.
@@ -263,12 +255,12 @@ public abstract class RobustRangingRadioSourceEstimator<S extends RadioSource, P
      * @return difference between measured and expected RSSI value.
      */
     protected double residual(final Solution<P> currentEstimation, final int i) {
-        final RangingReadingLocated<S, P> reading = mReadings.get(i);
-        final double distance = reading.getDistance();
+        final var reading = readings.get(i);
+        final var distance = reading.getDistance();
 
         // get distance from estimated radio source position and reading position
-        final P readingPosition = reading.getPosition();
-        final P radioSourcePosition = currentEstimation.getEstimatedPosition();
+        final var readingPosition = reading.getPosition();
+        final var radioSourcePosition = currentEstimation.getEstimatedPosition();
 
         return Math.abs(radioSourcePosition.distanceTo(readingPosition) - distance);
     }

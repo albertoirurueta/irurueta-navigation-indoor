@@ -51,8 +51,7 @@ public class MSACRobustRangingAndRssiPositionEstimator3D extends RobustRangingAn
      * @throws IllegalArgumentException if provided sources is null or the number of
      *                                  provided sources is less than the required minimum.
      */
-    public MSACRobustRangingAndRssiPositionEstimator3D(
-            final List<? extends RadioSourceLocated<Point3D>> sources) {
+    public MSACRobustRangingAndRssiPositionEstimator3D(final List<? extends RadioSourceLocated<Point3D>> sources) {
         super();
         init();
         internalSetSources(sources);
@@ -163,8 +162,7 @@ public class MSACRobustRangingAndRssiPositionEstimator3D extends RobustRangingAn
      * @return threshold to determine whether samples are inliers or not.
      */
     public double getThreshold() {
-        return ((MSACRobustLateration3DSolver) mLaterationSolver).
-                getThreshold();
+        return ((MSACRobustLateration3DSolver) laterationSolver).getThreshold();
     }
 
     /**
@@ -177,8 +175,7 @@ public class MSACRobustRangingAndRssiPositionEstimator3D extends RobustRangingAn
      * @throws LockedException          if this solver is locked.
      */
     public void setThreshold(final double threshold) throws LockedException {
-        ((MSACRobustLateration3DSolver) mLaterationSolver).
-                setThreshold(threshold);
+        ((MSACRobustLateration3DSolver) laterationSolver).setThreshold(threshold);
     }
 
     /**
@@ -195,7 +192,6 @@ public class MSACRobustRangingAndRssiPositionEstimator3D extends RobustRangingAn
      * Initializes robust lateration solver.
      */
     private void init() {
-        mLaterationSolver = new MSACRobustLateration3DSolver(
-                mTrilaterationSolverListener);
+        laterationSolver = new MSACRobustLateration3DSolver(trilaterationSolverListener);
     }
 }

@@ -15,7 +15,6 @@
  */
 package com.irurueta.navigation.indoor.radiosource;
 
-import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.Point2D;
 import com.irurueta.navigation.indoor.*;
 
@@ -48,8 +47,7 @@ import java.util.List;
  * @param <S> a {@link RadioSource} type.
  */
 @SuppressWarnings("Duplicates")
-public class MixedRadioSourceEstimator2D<S extends RadioSource>
-        extends MixedRadioSourceEstimator<S, Point2D> {
+public class MixedRadioSourceEstimator2D<S extends RadioSource> extends MixedRadioSourceEstimator<S, Point2D> {
 
     /**
      * Constructor.
@@ -66,8 +64,7 @@ public class MixedRadioSourceEstimator2D<S extends RadioSource>
      *                 radio sources.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public MixedRadioSourceEstimator2D(
-            final List<? extends ReadingLocated<Point2D>> readings) {
+    public MixedRadioSourceEstimator2D(final List<? extends ReadingLocated<Point2D>> readings) {
         super(readings);
     }
 
@@ -76,8 +73,7 @@ public class MixedRadioSourceEstimator2D<S extends RadioSource>
      *
      * @param listener listener in charge of attending events raised by this instance.
      */
-    public MixedRadioSourceEstimator2D(
-            final MixedRadioSourceEstimatorListener<S, Point2D> listener) {
+    public MixedRadioSourceEstimator2D(final MixedRadioSourceEstimatorListener<S, Point2D> listener) {
         super(listener);
     }
 
@@ -115,8 +111,7 @@ public class MixedRadioSourceEstimator2D<S extends RadioSource>
      * @throws IllegalArgumentException if readings are not valid.
      */
     public MixedRadioSourceEstimator2D(
-            final List<? extends ReadingLocated<Point2D>> readings,
-            final Point2D initialPosition) {
+            final List<? extends ReadingLocated<Point2D>> readings, final Point2D initialPosition) {
         super(readings, initialPosition);
     }
 
@@ -128,8 +123,7 @@ public class MixedRadioSourceEstimator2D<S extends RadioSource>
      * @param listener        listener in charge of attending events raised by this instance.
      */
     public MixedRadioSourceEstimator2D(
-            final Point2D initialPosition,
-            final MixedRadioSourceEstimatorListener<S, Point2D> listener) {
+            final Point2D initialPosition, final MixedRadioSourceEstimatorListener<S, Point2D> listener) {
         super(initialPosition, listener);
     }
 
@@ -144,8 +138,7 @@ public class MixedRadioSourceEstimator2D<S extends RadioSource>
      * @throws IllegalArgumentException if readings are not valid.
      */
     public MixedRadioSourceEstimator2D(
-            final List<? extends ReadingLocated<Point2D>> readings,
-            final Point2D initialPosition,
+            final List<? extends ReadingLocated<Point2D>> readings, final Point2D initialPosition,
             final MixedRadioSourceEstimatorListener<S, Point2D> listener) {
         super(readings, initialPosition, listener);
     }
@@ -172,8 +165,7 @@ public class MixedRadioSourceEstimator2D<S extends RadioSource>
      * @throws IllegalArgumentException if readings are not valid.
      */
     public MixedRadioSourceEstimator2D(
-            final List<? extends ReadingLocated<Point2D>> readings,
-            final Double initialTransmittedPowerdBm) {
+            final List<? extends ReadingLocated<Point2D>> readings, final Double initialTransmittedPowerdBm) {
         super(readings, initialTransmittedPowerdBm);
     }
 
@@ -186,8 +178,7 @@ public class MixedRadioSourceEstimator2D<S extends RadioSource>
      * @param listener                   listener in charge of attending events raised by this instance.
      */
     public MixedRadioSourceEstimator2D(
-            final Double initialTransmittedPowerdBm,
-            final MixedRadioSourceEstimatorListener<S, Point2D> listener) {
+            final Double initialTransmittedPowerdBm, final MixedRadioSourceEstimatorListener<S, Point2D> listener) {
         super(initialTransmittedPowerdBm, listener);
     }
 
@@ -203,8 +194,7 @@ public class MixedRadioSourceEstimator2D<S extends RadioSource>
      * @throws IllegalArgumentException if readings are not valid.
      */
     public MixedRadioSourceEstimator2D(
-            final List<? extends ReadingLocated<Point2D>> readings,
-            final Double initialTransmittedPowerdBm,
+            final List<? extends ReadingLocated<Point2D>> readings, final Double initialTransmittedPowerdBm,
             final MixedRadioSourceEstimatorListener<S, Point2D> listener) {
         super(readings, initialTransmittedPowerdBm, listener);
     }
@@ -222,8 +212,8 @@ public class MixedRadioSourceEstimator2D<S extends RadioSource>
      * @throws IllegalArgumentException if readings are not valid.
      */
     public MixedRadioSourceEstimator2D(
-            final List<? extends ReadingLocated<Point2D>> readings,
-            final Point2D initialPosition, final Double initialTransmittedPowerdBm) {
+            final List<? extends ReadingLocated<Point2D>> readings, final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm) {
         super(readings, initialPosition, initialTransmittedPowerdBm);
     }
 
@@ -236,9 +226,7 @@ public class MixedRadioSourceEstimator2D<S extends RadioSource>
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's).
      */
-    public MixedRadioSourceEstimator2D(
-            final Point2D initialPosition,
-            final Double initialTransmittedPowerdBm) {
+    public MixedRadioSourceEstimator2D(final Point2D initialPosition, final Double initialTransmittedPowerdBm) {
         super(initialPosition, initialTransmittedPowerdBm);
     }
 
@@ -253,8 +241,7 @@ public class MixedRadioSourceEstimator2D<S extends RadioSource>
      * @param listener                   listener in charge of attending events raised by this instance.
      */
     public MixedRadioSourceEstimator2D(
-            final Point2D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final MixedRadioSourceEstimatorListener<S, Point2D> listener) {
         super(initialPosition, initialTransmittedPowerdBm, listener);
     }
@@ -273,9 +260,8 @@ public class MixedRadioSourceEstimator2D<S extends RadioSource>
      * @throws IllegalArgumentException if readings are not valid.
      */
     public MixedRadioSourceEstimator2D(
-            final List<? extends ReadingLocated<Point2D>> readings,
-            final Point2D initialPosition, final Double initialTransmittedPowerdBm,
-            final MixedRadioSourceEstimatorListener<S, Point2D> listener) {
+            final List<? extends ReadingLocated<Point2D>> readings, final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm, final MixedRadioSourceEstimatorListener<S, Point2D> listener) {
         super(readings, initialPosition, initialTransmittedPowerdBm, listener);
     }
 
@@ -293,11 +279,9 @@ public class MixedRadioSourceEstimator2D<S extends RadioSource>
      * @throws IllegalArgumentException if readings are not valid.
      */
     public MixedRadioSourceEstimator2D(
-            final List<? extends ReadingLocated<Point2D>> readings,
-            final Point2D initialPosition, final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent) {
-        super(readings, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent);
+            final List<? extends ReadingLocated<Point2D>> readings, final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm, final double initialPathLossExponent) {
+        super(readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);
     }
 
     /**
@@ -311,8 +295,7 @@ public class MixedRadioSourceEstimator2D<S extends RadioSource>
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      */
     public MixedRadioSourceEstimator2D(
-            final Point2D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final Point2D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
         super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);
     }
@@ -329,12 +312,9 @@ public class MixedRadioSourceEstimator2D<S extends RadioSource>
      * @param listener                   listener in charge of attending events raised by this instance.
      */
     public MixedRadioSourceEstimator2D(
-            final Point2D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent,
-            final MixedRadioSourceEstimatorListener<S, Point2D> listener) {
-        super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent,
-                listener);
+            final Point2D initialPosition, final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent, final MixedRadioSourceEstimatorListener<S, Point2D> listener) {
+        super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener);
     }
 
     /**
@@ -352,13 +332,10 @@ public class MixedRadioSourceEstimator2D<S extends RadioSource>
      * @throws IllegalArgumentException if readings are not valid.
      */
     public MixedRadioSourceEstimator2D(
-            final List<? extends ReadingLocated<Point2D>> readings,
-            final Point2D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent,
+            final List<? extends ReadingLocated<Point2D>> readings, final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm, final double initialPathLossExponent,
             final MixedRadioSourceEstimatorListener<S, Point2D> listener) {
-        super(readings, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent, listener);
+        super(readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener);
     }
 
     /**
@@ -379,13 +356,13 @@ public class MixedRadioSourceEstimator2D<S extends RadioSource>
     @SuppressWarnings("unchecked")
     @Override
     public RadioSourceLocated<Point2D> getEstimatedRadioSource() {
-        final List<? extends ReadingLocated<Point2D>> readings = getReadings();
+        final var readings = getReadings();
         if (readings == null || readings.isEmpty()) {
             return null;
         }
 
         final S source;
-        final ReadingLocated<Point2D> reading = readings.get(0);
+        final var reading = readings.get(0);
         if (reading instanceof RangingReadingLocated) {
             source = ((RangingReadingLocated<S, Point2D>) reading).getSource();
         } else if (reading instanceof RssiReadingLocated) {
@@ -396,50 +373,41 @@ public class MixedRadioSourceEstimator2D<S extends RadioSource>
             return null;
         }
 
-        final Point2D estimatedPosition = getEstimatedPosition();
+        final var estimatedPosition = getEstimatedPosition();
         if (estimatedPosition == null) {
             return null;
         }
 
-        final Matrix estimatedPositionCovariance = getEstimatedPositionCovariance();
+        final var estimatedPositionCovariance = getEstimatedPositionCovariance();
 
-        final Double transmittedPowerdBm = getEstimatedTransmittedPowerdBm();
+        final var transmittedPowerdBm = getEstimatedTransmittedPowerdBm();
 
-        final Double transmittedPowerVariance = getEstimatedTransmittedPowerVariance();
-        final Double transmittedPowerStandardDeviation = transmittedPowerVariance != null ?
-                Math.sqrt(transmittedPowerVariance) : null;
+        final var transmittedPowerVariance = getEstimatedTransmittedPowerVariance();
+        final var transmittedPowerStandardDeviation = transmittedPowerVariance != null
+                ? Math.sqrt(transmittedPowerVariance) : null;
 
-        final double pathLossExponent = getEstimatedPathLossExponent();
+        final var pathLossExponent = getEstimatedPathLossExponent();
 
-        final Double pathLossExponentVariance = getEstimatedPathLossExponentVariance();
-        final Double pathLossExponentStandardDeviation = pathLossExponentVariance != null ?
-                Math.sqrt(pathLossExponentVariance) : null;
+        final var pathLossExponentVariance = getEstimatedPathLossExponentVariance();
+        final var pathLossExponentStandardDeviation = pathLossExponentVariance != null
+                ? Math.sqrt(pathLossExponentVariance) : null;
 
-        if (source instanceof WifiAccessPoint) {
-            final WifiAccessPoint accessPoint = (WifiAccessPoint) source;
+        if (source instanceof WifiAccessPoint accessPoint) {
             if (transmittedPowerdBm != null) {
-                return new WifiAccessPointWithPowerAndLocated2D(accessPoint.getBssid(),
-                        accessPoint.getFrequency(), accessPoint.getSsid(),
-                        transmittedPowerdBm,
-                        transmittedPowerStandardDeviation,
-                        pathLossExponent, pathLossExponentStandardDeviation,
-                        estimatedPosition, estimatedPositionCovariance);
+                return new WifiAccessPointWithPowerAndLocated2D(accessPoint.getBssid(), accessPoint.getFrequency(),
+                        accessPoint.getSsid(), transmittedPowerdBm, transmittedPowerStandardDeviation, pathLossExponent,
+                        pathLossExponentStandardDeviation, estimatedPosition, estimatedPositionCovariance);
             } else {
-                return new WifiAccessPointLocated2D(accessPoint.getBssid(),
-                        accessPoint.getFrequency(), accessPoint.getSsid(),
-                        estimatedPosition, estimatedPositionCovariance);
+                return new WifiAccessPointLocated2D(accessPoint.getBssid(), accessPoint.getFrequency(),
+                        accessPoint.getSsid(), estimatedPosition, estimatedPositionCovariance);
             }
-        } else if (source instanceof Beacon) {
-            final Beacon beacon = (Beacon) source;
+        } else if (source instanceof Beacon beacon) {
             // transmitted power does not need to be estimated for beacons because
             // they broadcast such information
-            return new BeaconWithPowerAndLocated2D(beacon.getIdentifiers(),
-                    beacon.getTransmittedPower(), beacon.getFrequency(),
-                    beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(),
-                    beacon.getManufacturer(), beacon.getServiceUuid(),
-                    beacon.getBluetoothName(), pathLossExponent,
-                    transmittedPowerStandardDeviation,
-                    pathLossExponentStandardDeviation, estimatedPosition,
+            return new BeaconWithPowerAndLocated2D(beacon.getIdentifiers(), beacon.getTransmittedPower(),
+                    beacon.getFrequency(), beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(),
+                    beacon.getManufacturer(), beacon.getServiceUuid(), beacon.getBluetoothName(), pathLossExponent,
+                    transmittedPowerStandardDeviation, pathLossExponentStandardDeviation, estimatedPosition,
                     estimatedPositionCovariance);
         } else {
             return null;
@@ -451,13 +419,12 @@ public class MixedRadioSourceEstimator2D<S extends RadioSource>
      */
     @Override
     protected void createInnerEstimatorsIfNeeded() {
-        if (mRangingInnerEstimator == null) {
-            mRangingInnerEstimator = new RangingRadioSourceEstimator2D<>();
+        if (rangingInnerEstimator == null) {
+            rangingInnerEstimator = new RangingRadioSourceEstimator2D<>();
         }
 
-        if (mRssiInnerEstimator == null &&
-                (mTransmittedPowerEstimationEnabled || mPathLossEstimationEnabled)) {
-            mRssiInnerEstimator = new RssiRadioSourceEstimator2D<>();
+        if (rssiInnerEstimator == null && (transmittedPowerEstimationEnabled || pathLossEstimationEnabled)) {
+            rssiInnerEstimator = new RssiRadioSourceEstimator2D<>();
         }
     }
 }

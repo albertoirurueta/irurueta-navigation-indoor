@@ -33,8 +33,7 @@ import java.util.List;
  * Taylor approximation to estimate position.
  */
 @SuppressWarnings("DuplicatedCode")
-public abstract class NonLinearFingerprintPositionEstimator2D extends
-        NonLinearFingerprintPositionEstimator<Point2D> {
+public abstract class NonLinearFingerprintPositionEstimator2D extends NonLinearFingerprintPositionEstimator<Point2D> {
 
     /**
      * Constructor.
@@ -47,8 +46,7 @@ public abstract class NonLinearFingerprintPositionEstimator2D extends
      *
      * @param listener listener in charge of handling events.
      */
-    protected NonLinearFingerprintPositionEstimator2D(
-            final FingerprintPositionEstimatorListener<Point2D> listener) {
+    protected NonLinearFingerprintPositionEstimator2D(final FingerprintPositionEstimatorListener<Point2D> listener) {
         super(listener);
     }
 
@@ -167,11 +165,11 @@ public abstract class NonLinearFingerprintPositionEstimator2D extends
      */
     @Override
     public Point2D getEstimatedPosition() {
-        if (mEstimatedPositionCoordinates == null) {
+        if (estimatedPositionCoordinates == null) {
             return null;
         }
 
-        final Point2D result = new InhomogeneousPoint2D();
+        final var result = new InhomogeneousPoint2D();
         getEstimatedPosition(result);
         return result;
     }
@@ -182,17 +180,12 @@ public abstract class NonLinearFingerprintPositionEstimator2D extends
      * @param type type to be used.
      * @return a non-linear 2D position estimator.
      */
-    public static NonLinearFingerprintPositionEstimator2D create(
-            final NonLinearFingerprintPositionEstimatorType type) {
-        switch (type) {
-            case THIRD_ORDER:
-                return new ThirdOrderNonLinearFingerprintPositionEstimator2D();
-            case SECOND_ORDER:
-                return new SecondOrderNonLinearFingerprintPositionEstimator2D();
-            case FIRST_ORDER:
-            default:
-                return new FirstOrderNonLinearFingerprintPositionEstimator2D();
-        }
+    public static NonLinearFingerprintPositionEstimator2D create(final NonLinearFingerprintPositionEstimatorType type) {
+        return switch (type) {
+            case THIRD_ORDER -> new ThirdOrderNonLinearFingerprintPositionEstimator2D();
+            case SECOND_ORDER -> new SecondOrderNonLinearFingerprintPositionEstimator2D();
+            default -> new FirstOrderNonLinearFingerprintPositionEstimator2D();
+        };
     }
 
     /**
@@ -205,15 +198,11 @@ public abstract class NonLinearFingerprintPositionEstimator2D extends
     public static NonLinearFingerprintPositionEstimator2D create(
             final FingerprintPositionEstimatorListener<Point2D> listener,
             final NonLinearFingerprintPositionEstimatorType type) {
-        switch (type) {
-            case THIRD_ORDER:
-                return new ThirdOrderNonLinearFingerprintPositionEstimator2D(listener);
-            case SECOND_ORDER:
-                return new SecondOrderNonLinearFingerprintPositionEstimator2D(listener);
-            case FIRST_ORDER:
-            default:
-                return new FirstOrderNonLinearFingerprintPositionEstimator2D(listener);
-        }
+        return switch (type) {
+            case THIRD_ORDER -> new ThirdOrderNonLinearFingerprintPositionEstimator2D(listener);
+            case SECOND_ORDER -> new SecondOrderNonLinearFingerprintPositionEstimator2D(listener);
+            default -> new FirstOrderNonLinearFingerprintPositionEstimator2D(listener);
+        };
     }
 
     /**
@@ -239,18 +228,14 @@ public abstract class NonLinearFingerprintPositionEstimator2D extends
                     ? extends RssiReading<? extends RadioSource>> fingerprint,
             final List<? extends RadioSourceLocated<Point2D>> sources,
             final NonLinearFingerprintPositionEstimatorType type) {
-        switch (type) {
-            case THIRD_ORDER:
-                return new ThirdOrderNonLinearFingerprintPositionEstimator2D(
-                        locatedFingerprints, fingerprint, sources);
-            case SECOND_ORDER:
-                return new SecondOrderNonLinearFingerprintPositionEstimator2D(
-                        locatedFingerprints, fingerprint, sources);
-            case FIRST_ORDER:
-            default:
-                return new FirstOrderNonLinearFingerprintPositionEstimator2D(
-                        locatedFingerprints, fingerprint, sources);
-        }
+        return switch (type) {
+            case THIRD_ORDER -> new ThirdOrderNonLinearFingerprintPositionEstimator2D(
+                    locatedFingerprints, fingerprint, sources);
+            case SECOND_ORDER -> new SecondOrderNonLinearFingerprintPositionEstimator2D(
+                    locatedFingerprints, fingerprint, sources);
+            default -> new FirstOrderNonLinearFingerprintPositionEstimator2D(
+                    locatedFingerprints, fingerprint, sources);
+        };
     }
 
     /**
@@ -278,18 +263,14 @@ public abstract class NonLinearFingerprintPositionEstimator2D extends
             final List<? extends RadioSourceLocated<Point2D>> sources,
             final FingerprintPositionEstimatorListener<Point2D> listener,
             final NonLinearFingerprintPositionEstimatorType type) {
-        switch (type) {
-            case THIRD_ORDER:
-                return new ThirdOrderNonLinearFingerprintPositionEstimator2D(
-                        locatedFingerprints, fingerprint, sources, listener);
-            case SECOND_ORDER:
-                return new SecondOrderNonLinearFingerprintPositionEstimator2D(
-                        locatedFingerprints, fingerprint, sources, listener);
-            case FIRST_ORDER:
-            default:
-                return new FirstOrderNonLinearFingerprintPositionEstimator2D(
-                        locatedFingerprints, fingerprint, sources, listener);
-        }
+        return switch (type) {
+            case THIRD_ORDER -> new ThirdOrderNonLinearFingerprintPositionEstimator2D(
+                    locatedFingerprints, fingerprint, sources, listener);
+            case SECOND_ORDER -> new SecondOrderNonLinearFingerprintPositionEstimator2D(
+                    locatedFingerprints, fingerprint, sources, listener);
+            default -> new FirstOrderNonLinearFingerprintPositionEstimator2D(
+                    locatedFingerprints, fingerprint, sources, listener);
+        };
     }
 
     /**
@@ -317,18 +298,14 @@ public abstract class NonLinearFingerprintPositionEstimator2D extends
             final List<? extends RadioSourceLocated<Point2D>> sources,
             final Point2D initialPosition,
             final NonLinearFingerprintPositionEstimatorType type) {
-        switch (type) {
-            case THIRD_ORDER:
-                return new ThirdOrderNonLinearFingerprintPositionEstimator2D(
-                        locatedFingerprints, fingerprint, sources, initialPosition);
-            case SECOND_ORDER:
-                return new SecondOrderNonLinearFingerprintPositionEstimator2D(
-                        locatedFingerprints, fingerprint, sources, initialPosition);
-            case FIRST_ORDER:
-            default:
-                return new FirstOrderNonLinearFingerprintPositionEstimator2D(
-                        locatedFingerprints, fingerprint, sources, initialPosition);
-        }
+        return switch (type) {
+            case THIRD_ORDER -> new ThirdOrderNonLinearFingerprintPositionEstimator2D(
+                    locatedFingerprints, fingerprint, sources, initialPosition);
+            case SECOND_ORDER -> new SecondOrderNonLinearFingerprintPositionEstimator2D(
+                    locatedFingerprints, fingerprint, sources, initialPosition);
+            default -> new FirstOrderNonLinearFingerprintPositionEstimator2D(
+                    locatedFingerprints, fingerprint, sources, initialPosition);
+        };
     }
 
     /**
@@ -357,21 +334,14 @@ public abstract class NonLinearFingerprintPositionEstimator2D extends
             final List<? extends RadioSourceLocated<Point2D>> sources, Point2D initialPosition,
             final FingerprintPositionEstimatorListener<Point2D> listener,
             final NonLinearFingerprintPositionEstimatorType type) {
-        switch (type) {
-            case THIRD_ORDER:
-                return new ThirdOrderNonLinearFingerprintPositionEstimator2D(
-                        locatedFingerprints, fingerprint, sources, initialPosition,
-                        listener);
-            case SECOND_ORDER:
-                return new SecondOrderNonLinearFingerprintPositionEstimator2D(
-                        locatedFingerprints, fingerprint, sources, initialPosition,
-                        listener);
-            case FIRST_ORDER:
-            default:
-                return new FirstOrderNonLinearFingerprintPositionEstimator2D(
-                        locatedFingerprints, fingerprint, sources, initialPosition,
-                        listener);
-        }
+        return switch (type) {
+            case THIRD_ORDER -> new ThirdOrderNonLinearFingerprintPositionEstimator2D(
+                    locatedFingerprints, fingerprint, sources, initialPosition, listener);
+            case SECOND_ORDER -> new SecondOrderNonLinearFingerprintPositionEstimator2D(
+                    locatedFingerprints, fingerprint, sources, initialPosition, listener);
+            default -> new FirstOrderNonLinearFingerprintPositionEstimator2D(
+                    locatedFingerprints, fingerprint, sources, initialPosition, listener);
+        };
     }
 
     /**
@@ -441,8 +411,7 @@ public abstract class NonLinearFingerprintPositionEstimator2D extends
                     ? extends RssiReading<? extends RadioSource>> fingerprint,
             final List<? extends RadioSourceLocated<Point2D>> sources,
             final FingerprintPositionEstimatorListener<Point2D> listener) {
-        return create(locatedFingerprints, fingerprint, sources, listener,
-                DEFAULT_TYPE);
+        return create(locatedFingerprints, fingerprint, sources, listener, DEFAULT_TYPE);
     }
 
     /**
@@ -468,8 +437,7 @@ public abstract class NonLinearFingerprintPositionEstimator2D extends
                     ? extends RssiReading<? extends RadioSource>> fingerprint,
             final List<? extends RadioSourceLocated<Point2D>> sources,
             final Point2D initialPosition) {
-        return create(locatedFingerprints, fingerprint, sources, initialPosition,
-                DEFAULT_TYPE);
+        return create(locatedFingerprints, fingerprint, sources, initialPosition, DEFAULT_TYPE);
     }
 
     /**
@@ -496,7 +464,6 @@ public abstract class NonLinearFingerprintPositionEstimator2D extends
                     ? extends RssiReading<? extends RadioSource>> fingerprint,
             final List<? extends RadioSourceLocated<Point2D>> sources, Point2D initialPosition,
             final FingerprintPositionEstimatorListener<Point2D> listener) {
-        return create(locatedFingerprints, fingerprint, sources, initialPosition,
-                listener, DEFAULT_TYPE);
+        return create(locatedFingerprints, fingerprint, sources, initialPosition, listener, DEFAULT_TYPE);
     }
 }

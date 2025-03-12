@@ -19,22 +19,19 @@ import com.irurueta.algebra.AlgebraException;
 import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.geometry.InhomogeneousPoint3D;
-import com.irurueta.geometry.Point3D;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class RangingAndRssiFingerprintLocated3DTest {
+class RangingAndRssiFingerprintLocated3DTest {
 
     @Test
-    public void testConstructor() throws AlgebraException {
+    void testConstructor() throws AlgebraException {
         // empty constructor
-        RangingAndRssiFingerprintLocated3D<RadioSource, RangingAndRssiReading<RadioSource>> fingerprint =
-                new RangingAndRssiFingerprintLocated3D<>();
+        var fingerprint = new RangingAndRssiFingerprintLocated3D<RadioSource, RangingAndRssiReading<RadioSource>>();
 
         // check
         assertNotNull(fingerprint.getReadings());
@@ -43,8 +40,8 @@ public class RangingAndRssiFingerprintLocated3DTest {
         assertNull(fingerprint.getPositionCovariance());
 
         // constructor with readings and position
-        final List<RangingAndRssiReading<RadioSource>> readings = new ArrayList<>();
-        final Point3D position = new InhomogeneousPoint3D();
+        final var readings = new ArrayList<RangingAndRssiReading<RadioSource>>();
+        final var position = new InhomogeneousPoint3D();
         fingerprint = new RangingAndRssiFingerprintLocated3D<>(readings, position);
 
         // check
@@ -54,21 +51,13 @@ public class RangingAndRssiFingerprintLocated3DTest {
         assertNull(fingerprint.getPositionCovariance());
 
         // force IllegalArgumentException
-        fingerprint = null;
-        try {
-            fingerprint = new RangingAndRssiFingerprintLocated3D<>(null, position);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fingerprint = new RangingAndRssiFingerprintLocated3D<>(readings, null);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(fingerprint);
+        assertThrows(IllegalArgumentException.class, () -> new RangingAndRssiFingerprintLocated3D<>(null,
+                position));
+        assertThrows(IllegalArgumentException.class, () -> new RangingAndRssiFingerprintLocated3D<>(readings,
+                null));
 
         // constructor with readings, position and covariance
-        final Matrix cov = new Matrix(3, 3);
+        final var cov = new Matrix(3, 3);
         fingerprint = new RangingAndRssiFingerprintLocated3D<>(readings, position, cov);
 
         // check
@@ -86,33 +75,21 @@ public class RangingAndRssiFingerprintLocated3DTest {
         assertNull(fingerprint.getPositionCovariance());
 
         // force IllegalArgumentException
-        fingerprint = null;
-        try {
-            fingerprint = new RangingAndRssiFingerprintLocated3D<>(null, position, cov);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fingerprint = new RangingAndRssiFingerprintLocated3D<>(readings, null, cov);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            fingerprint = new RangingAndRssiFingerprintLocated3D<>(readings, position,
-                    new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(fingerprint);
+        assertThrows(IllegalArgumentException.class, () -> new RangingAndRssiFingerprintLocated3D<>(null,
+                position, cov));
+        assertThrows(IllegalArgumentException.class, () -> new RangingAndRssiFingerprintLocated3D<>(readings,
+                null, cov));
+        final var m = new Matrix(1, 1);
+        assertThrows(IllegalArgumentException.class, () -> new RangingAndRssiFingerprintLocated3D<>(readings, position,
+                m));
     }
 
     @Test
-    public void testSerializeDeserialize() throws WrongSizeException, IOException, ClassNotFoundException {
-        final List<RangingAndRssiReading<RadioSource>> readings = new ArrayList<>();
-        final Point3D position = new InhomogeneousPoint3D();
-        final Matrix cov = new Matrix(3, 3);
-        final RangingAndRssiFingerprintLocated3D<RadioSource, RangingAndRssiReading<RadioSource>> fingerprint1 =
-                new RangingAndRssiFingerprintLocated3D<>(readings, position, cov);
+    void testSerializeDeserialize() throws WrongSizeException, IOException, ClassNotFoundException {
+        final var readings = new ArrayList<RangingAndRssiReading<RadioSource>>();
+        final var position = new InhomogeneousPoint3D();
+        final var cov = new Matrix(3, 3);
+        final var fingerprint1 = new RangingAndRssiFingerprintLocated3D<>(readings, position, cov);
 
         // check
         assertEquals(readings, fingerprint1.getReadings());
@@ -121,9 +98,10 @@ public class RangingAndRssiFingerprintLocated3DTest {
         assertSame(cov, fingerprint1.getPositionCovariance());
 
         // serialize and deserialize
-        final byte[] bytes = SerializationHelper.serialize(fingerprint1);
-        final RangingAndRssiFingerprintLocated3D<RadioSource, RangingAndRssiReading<RadioSource>> fingerprint2 =
-                SerializationHelper.deserialize(bytes);
+        final var bytes = SerializationHelper.serialize(fingerprint1);
+        final var fingerprint2 = SerializationHelper
+                .<RangingAndRssiFingerprintLocated3D<RadioSource, RangingAndRssiReading<RadioSource>>>deserialize(
+                        bytes);
 
         // check
         assertNotSame(fingerprint1, fingerprint2);

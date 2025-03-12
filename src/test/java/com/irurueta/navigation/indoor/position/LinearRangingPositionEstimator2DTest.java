@@ -15,14 +15,6 @@
  */
 package com.irurueta.navigation.indoor.position;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import com.irurueta.geometry.InhomogeneousPoint2D;
 import com.irurueta.geometry.Point2D;
 import com.irurueta.navigation.LockedException;
@@ -35,10 +27,11 @@ import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class LinearRangingPositionEstimator2DTest implements RangingPositionEstimatorListener<Point2D> {
+import static org.junit.jupiter.api.Assertions.*;
+
+class LinearRangingPositionEstimator2DTest implements RangingPositionEstimatorListener<Point2D> {
 
     private static final double FREQUENCY = 2.4e9; // (Hz)
 
@@ -59,9 +52,9 @@ public class LinearRangingPositionEstimator2DTest implements RangingPositionEsti
     private int estimateEnd;
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         // empty constructor
-        LinearRangingPositionEstimator2D estimator = new LinearRangingPositionEstimator2D();
+        var estimator = new LinearRangingPositionEstimator2D();
 
         // check default values
         assertNull(estimator.getEstimatedPosition());
@@ -77,10 +70,9 @@ public class LinearRangingPositionEstimator2DTest implements RangingPositionEsti
         assertNull(estimator.getDistances());
 
         // constructor with sources
-        final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            sources.add(new WifiAccessPointLocated2D("id1", FREQUENCY,
-                    new InhomogeneousPoint2D()));
+        final var sources = new ArrayList<WifiAccessPointLocated2D>();
+        for (var i = 0; i < 3; i++) {
+            sources.add(new WifiAccessPointLocated2D("id1", FREQUENCY, new InhomogeneousPoint2D()));
         }
         estimator = new LinearRangingPositionEstimator2D(sources);
 
@@ -98,22 +90,13 @@ public class LinearRangingPositionEstimator2DTest implements RangingPositionEsti
         assertNull(estimator.getDistances());
 
         // force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new LinearRangingPositionEstimator2D((List<WifiAccessPointLocated2D>) null);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new LinearRangingPositionEstimator2D(new ArrayList<WifiAccessPointLocated2D>());
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new LinearRangingPositionEstimator2D(
+                (List<WifiAccessPointLocated2D>) null));
+        final var wrongSources = new ArrayList<WifiAccessPointLocated2D>();
+        assertThrows(IllegalArgumentException.class, () -> new LinearRangingPositionEstimator2D(wrongSources));
 
         // constructor with fingerprint
-        final RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
-                new RangingFingerprint<>();
+        final var fingerprint = new RangingFingerprint<>();
         estimator = new LinearRangingPositionEstimator2D(fingerprint);
 
         // check default value
@@ -130,14 +113,8 @@ public class LinearRangingPositionEstimator2DTest implements RangingPositionEsti
         assertNull(estimator.getDistances());
 
         // force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new LinearRangingPositionEstimator2D(
-                    (RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>>) null);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new LinearRangingPositionEstimator2D(
+                (RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>>) null));
 
         // constructor with sources and fingerprint
         estimator = new LinearRangingPositionEstimator2D(sources, fingerprint);
@@ -156,25 +133,12 @@ public class LinearRangingPositionEstimator2DTest implements RangingPositionEsti
         assertNull(estimator.getDistances());
 
         // force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new LinearRangingPositionEstimator2D(null, fingerprint);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new LinearRangingPositionEstimator2D(
-                    new ArrayList<WifiAccessPointLocated2D>(), fingerprint);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new LinearRangingPositionEstimator2D(sources,
-                    (RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>>) null);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new LinearRangingPositionEstimator2D(null,
+                fingerprint));
+        assertThrows(IllegalArgumentException.class, () -> new LinearRangingPositionEstimator2D(wrongSources,
+                fingerprint));
+        assertThrows(IllegalArgumentException.class, () -> new LinearRangingPositionEstimator2D(sources,
+                (RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>>) null));
 
         // constructor with listener
         estimator = new LinearRangingPositionEstimator2D(this);
@@ -209,20 +173,10 @@ public class LinearRangingPositionEstimator2DTest implements RangingPositionEsti
         assertNull(estimator.getDistances());
 
         // force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new LinearRangingPositionEstimator2D(
-                    (List<WifiAccessPointLocated2D>) null, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new LinearRangingPositionEstimator2D(
-                    new ArrayList<WifiAccessPointLocated2D>(), this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new LinearRangingPositionEstimator2D(
+                (List<WifiAccessPointLocated2D>) null, this));
+        assertThrows(IllegalArgumentException.class, () -> new LinearRangingPositionEstimator2D(wrongSources,
+                this));
 
         // constructor with fingerprint and listener
         estimator = new LinearRangingPositionEstimator2D(fingerprint, this);
@@ -241,15 +195,8 @@ public class LinearRangingPositionEstimator2DTest implements RangingPositionEsti
         assertNull(estimator.getDistances());
 
         // force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new LinearRangingPositionEstimator2D(
-                    (RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>>) null,
-                    this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new LinearRangingPositionEstimator2D(
+                (RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>>) null, this));
 
         // constructor with sources, fingerprint and listener
         estimator = new LinearRangingPositionEstimator2D(sources, fingerprint, this);
@@ -268,36 +215,24 @@ public class LinearRangingPositionEstimator2DTest implements RangingPositionEsti
         assertNull(estimator.getDistances());
 
         // force IllegalArgumentException
-        estimator = null;
-        try {
-            estimator = new LinearRangingPositionEstimator2D(null, fingerprint, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new LinearRangingPositionEstimator2D(
-                    new ArrayList<WifiAccessPointLocated2D>(), fingerprint, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator = new LinearRangingPositionEstimator2D(sources, null, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(estimator);
+        assertThrows(IllegalArgumentException.class, () -> new LinearRangingPositionEstimator2D(null,
+                fingerprint, this));
+        assertThrows(IllegalArgumentException.class, () -> new LinearRangingPositionEstimator2D(wrongSources,
+                fingerprint, this));
+        assertThrows(IllegalArgumentException.class, () -> new LinearRangingPositionEstimator2D(sources, null,
+                this));
     }
 
     @Test
-    public void testGetSetSources() throws LockedException {
-        final LinearRangingPositionEstimator2D estimator = new LinearRangingPositionEstimator2D();
+    void testGetSetSources() throws LockedException {
+        final var estimator = new LinearRangingPositionEstimator2D();
 
         // check default value
         assertNull(estimator.getSources());
 
         // set new value
-        final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
+        final var sources = new ArrayList<WifiAccessPointLocated2D>();
+        for (var i = 0; i < 3; i++) {
             sources.add(new WifiAccessPointLocated2D("id1", FREQUENCY, new InhomogeneousPoint2D()));
         }
 
@@ -307,44 +242,32 @@ public class LinearRangingPositionEstimator2DTest implements RangingPositionEsti
         assertSame(sources, estimator.getSources());
 
         // force IllegalArgumentException
-        try {
-            estimator.setSources(null);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            estimator.setSources(new ArrayList<WifiAccessPointLocated2D>());
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> estimator.setSources(null));
+        final var wrongSources = new ArrayList<WifiAccessPointLocated2D>();
+        assertThrows(IllegalArgumentException.class, () -> estimator.setSources(wrongSources));
     }
 
     @Test
-    public void testGetSetFingerprint() throws LockedException {
-        final LinearRangingPositionEstimator2D estimator = new LinearRangingPositionEstimator2D();
+    void testGetSetFingerprint() throws LockedException {
+        final var estimator = new LinearRangingPositionEstimator2D();
 
         // check default value
         assertNull(estimator.getFingerprint());
 
         // set new value
-        final RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
-                new RangingFingerprint<>();
+        final var fingerprint = new RangingFingerprint<>();
         estimator.setFingerprint(fingerprint);
 
         // check
         assertSame(fingerprint, estimator.getFingerprint());
 
         // force IllegalArgumentException
-        try {
-            estimator.setFingerprint(null);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> estimator.setFingerprint(null));
     }
 
     @Test
-    public void testGetSetListener() throws LockedException {
-        final LinearRangingPositionEstimator2D estimator = new LinearRangingPositionEstimator2D();
+    void testGetSetListener() throws LockedException {
+        final var estimator = new LinearRangingPositionEstimator2D();
 
         // check default size
         assertNull(estimator.getListener());
@@ -357,42 +280,38 @@ public class LinearRangingPositionEstimator2DTest implements RangingPositionEsti
     }
 
     @Test
-    public void testEstimateNoErrorHomogeneous() throws LockedException, NotReadyException,
-            PositionEstimationException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testEstimateNoErrorHomogeneous() throws LockedException, NotReadyException, PositionEstimationException {
+        final var randomizer = new UniformRandomizer();
 
-        for (int t = 0; t < TIMES; t++) {
-            final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+        for (var t = 0; t < TIMES; t++) {
+            final var numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
 
-            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
+            final var position = new InhomogeneousPoint2D(
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
 
-            final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-            final List<RangingReading<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numSources; i++) {
-                final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+            final var sources = new ArrayList<WifiAccessPointLocated2D>();
+            final var readings = new ArrayList<RangingReading<WifiAccessPoint>>();
+            for (var i = 0; i < numSources; i++) {
+                final var accessPointPosition = new InhomogeneousPoint2D(
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final String bssid = String.valueOf(i);
+                final var bssid = String.valueOf(i);
 
-                final WifiAccessPointLocated2D locatedAccessPoint =
-                        new WifiAccessPointLocated2D(bssid, FREQUENCY, accessPointPosition);
+                final var locatedAccessPoint = new WifiAccessPointLocated2D(bssid, FREQUENCY, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
-                final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
+                final var accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
-                final double distance = position.distanceTo(accessPointPosition);
+                final var distance = position.distanceTo(accessPointPosition);
 
                 readings.add(new RangingReading<>(accessPoint, distance));
             }
 
-            final RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
-                    new RangingFingerprint<>(readings);
+            final var fingerprint = new RangingFingerprint<>(readings);
 
-            final LinearRangingPositionEstimator2D estimator =
-                    new LinearRangingPositionEstimator2D(sources, fingerprint, this);
+            final var estimator = new LinearRangingPositionEstimator2D(sources, fingerprint, this);
 
             reset();
 
@@ -414,61 +333,52 @@ public class LinearRangingPositionEstimator2DTest implements RangingPositionEsti
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
-            Point2D estimatedPosition = estimator.getEstimatedPosition();
+            final var estimatedPosition = estimator.getEstimatedPosition();
             assertTrue(position.equals(estimatedPosition, ABSOLUTE_ERROR));
         }
 
         // force NotReadyException
-        final LinearRangingPositionEstimator2D estimator = new LinearRangingPositionEstimator2D();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new LinearRangingPositionEstimator2D();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateWithErrorHomogeneous() throws LockedException, NotReadyException,
-            PositionEstimationException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(),
-                0.0, ERROR_STD);
+    void testEstimateWithErrorHomogeneous() throws LockedException, NotReadyException, PositionEstimationException {
+        final var randomizer = new UniformRandomizer();
+        final var errorRandomizer = new GaussianRandomizer(0.0, ERROR_STD);
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
 
-            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
+            final var position = new InhomogeneousPoint2D(
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
 
-            final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-            final List<RangingReading<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numSources; i++) {
-                final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+            final var sources = new ArrayList<WifiAccessPointLocated2D>();
+            final var readings = new ArrayList<RangingReading<WifiAccessPoint>>();
+            for (var i = 0; i < numSources; i++) {
+                final var accessPointPosition = new InhomogeneousPoint2D(
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final String bssid = String.valueOf(i);
+                final var bssid = String.valueOf(i);
 
-                final WifiAccessPointLocated2D locatedAccessPoint =
-                        new WifiAccessPointLocated2D(bssid, FREQUENCY, accessPointPosition);
+                final var locatedAccessPoint = new WifiAccessPointLocated2D(bssid, FREQUENCY, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
-                final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
+                final var accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
-                final double distance = position.distanceTo(accessPointPosition);
+                final var distance = position.distanceTo(accessPointPosition);
 
-                final double error = errorRandomizer.nextDouble();
+                final var error = errorRandomizer.nextDouble();
 
                 readings.add(new RangingReading<>(accessPoint, distance + error));
             }
 
-            final RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
-                    new RangingFingerprint<>(readings);
+            final var fingerprint = new RangingFingerprint<>(readings);
 
-            final LinearRangingPositionEstimator2D estimator =
-                    new LinearRangingPositionEstimator2D(sources, fingerprint, this);
+            final var estimator = new LinearRangingPositionEstimator2D(sources, fingerprint, this);
 
             reset();
 
@@ -490,8 +400,8 @@ public class LinearRangingPositionEstimator2DTest implements RangingPositionEsti
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
-            final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            final double distance = position.distanceTo(estimatedPosition);
+            final var estimatedPosition = estimator.getEstimatedPosition();
+            final var distance = position.distanceTo(estimatedPosition);
             if (distance >= LARGE_ABSOLUTE_ERROR) {
                 continue;
             }
@@ -503,51 +413,43 @@ public class LinearRangingPositionEstimator2DTest implements RangingPositionEsti
         assertTrue(numValid > 0);
 
         // force NotReadyException
-        final LinearRangingPositionEstimator2D estimator = new LinearRangingPositionEstimator2D();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new LinearRangingPositionEstimator2D();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateNoErrorInhomogeneous() throws LockedException, NotReadyException,
-            PositionEstimationException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testEstimateNoErrorInhomogeneous() throws LockedException, NotReadyException, PositionEstimationException {
+        final var randomizer = new UniformRandomizer();
 
-        for (int t = 0; t < TIMES; t++) {
-            final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+        for (var t = 0; t < TIMES; t++) {
+            final var numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
 
-            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
+            final var position = new InhomogeneousPoint2D(
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
 
-            final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-            final List<RangingReading<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numSources; i++) {
-                final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+            final var sources = new ArrayList<WifiAccessPointLocated2D>();
+            final var readings = new ArrayList<RangingReading<WifiAccessPoint>>();
+            for (var i = 0; i < numSources; i++) {
+                final var accessPointPosition = new InhomogeneousPoint2D(
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final String bssid = String.valueOf(i);
+                final var bssid = String.valueOf(i);
 
-                final WifiAccessPointLocated2D locatedAccessPoint =
-                        new WifiAccessPointLocated2D(bssid, FREQUENCY, accessPointPosition);
+                final var locatedAccessPoint = new WifiAccessPointLocated2D(bssid, FREQUENCY, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
-                final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
+                final var accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
-                final double distance = position.distanceTo(accessPointPosition);
+                final var distance = position.distanceTo(accessPointPosition);
 
                 readings.add(new RangingReading<>(accessPoint, distance));
             }
 
-            final RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
-                    new RangingFingerprint<>(readings);
+            final var fingerprint = new RangingFingerprint<>(readings);
 
-            final LinearRangingPositionEstimator2D estimator =
-                    new LinearRangingPositionEstimator2D(sources, fingerprint, this);
+            final var estimator = new LinearRangingPositionEstimator2D(sources, fingerprint, this);
             estimator.setHomogeneousLinearSolverUsed(false);
 
             reset();
@@ -570,61 +472,52 @@ public class LinearRangingPositionEstimator2DTest implements RangingPositionEsti
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
-            final Point2D estimatedPosition = estimator.getEstimatedPosition();
+            final var estimatedPosition = estimator.getEstimatedPosition();
             assertTrue(position.equals(estimatedPosition, ABSOLUTE_ERROR));
         }
 
         // force NotReadyException
-        final LinearRangingPositionEstimator2D estimator = new LinearRangingPositionEstimator2D();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new LinearRangingPositionEstimator2D();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Test
-    public void testEstimateWithErrorInhomogeneous() throws LockedException, NotReadyException,
-            PositionEstimationException {
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final GaussianRandomizer errorRandomizer = new GaussianRandomizer(new Random(),
-                0.0, ERROR_STD);
+    void testEstimateWithErrorInhomogeneous() throws LockedException, NotReadyException, PositionEstimationException {
+        final var randomizer = new UniformRandomizer();
+        final var errorRandomizer = new GaussianRandomizer(0.0, ERROR_STD);
 
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final int numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var numSources = randomizer.nextInt(MIN_SOURCES, MAX_SOURCES);
 
-            final InhomogeneousPoint2D position = new InhomogeneousPoint2D(
+            final var position = new InhomogeneousPoint2D(
                     randomizer.nextDouble(MIN_POS, MAX_POS),
                     randomizer.nextDouble(MIN_POS, MAX_POS));
 
-            final List<WifiAccessPointLocated2D> sources = new ArrayList<>();
-            final List<RangingReading<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numSources; i++) {
-                final InhomogeneousPoint2D accessPointPosition = new InhomogeneousPoint2D(
+            final var sources = new ArrayList<WifiAccessPointLocated2D>();
+            final var readings = new ArrayList<RangingReading<WifiAccessPoint>>();
+            for (var i = 0; i < numSources; i++) {
+                final var accessPointPosition = new InhomogeneousPoint2D(
                         randomizer.nextDouble(MIN_POS, MAX_POS),
                         randomizer.nextDouble(MIN_POS, MAX_POS));
 
-                final String bssid = String.valueOf(i);
+                final var bssid = String.valueOf(i);
 
-                final WifiAccessPointLocated2D locatedAccessPoint =
-                        new WifiAccessPointLocated2D(bssid, FREQUENCY, accessPointPosition);
+                final var locatedAccessPoint = new WifiAccessPointLocated2D(bssid, FREQUENCY, accessPointPosition);
                 sources.add(locatedAccessPoint);
 
-                final WifiAccessPoint accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
+                final var accessPoint = new WifiAccessPoint(bssid, FREQUENCY);
 
-                final double distance = position.distanceTo(accessPointPosition);
+                final var distance = position.distanceTo(accessPointPosition);
 
-                final double error = errorRandomizer.nextDouble();
+                final var error = errorRandomizer.nextDouble();
 
                 readings.add(new RangingReading<>(accessPoint, distance + error));
             }
 
-            final RangingFingerprint<WifiAccessPoint, RangingReading<WifiAccessPoint>> fingerprint =
-                    new RangingFingerprint<>(readings);
+            final var fingerprint = new RangingFingerprint<>(readings);
 
-            final LinearRangingPositionEstimator2D estimator =
-                    new LinearRangingPositionEstimator2D(sources, fingerprint, this);
+            final var estimator = new LinearRangingPositionEstimator2D(sources, fingerprint, this);
             estimator.setHomogeneousLinearSolverUsed(false);
 
             reset();
@@ -647,8 +540,8 @@ public class LinearRangingPositionEstimator2DTest implements RangingPositionEsti
             assertTrue(estimator.isReady());
             assertFalse(estimator.isLocked());
 
-            final Point2D estimatedPosition = estimator.getEstimatedPosition();
-            final double distance = position.distanceTo(estimatedPosition);
+            final var estimatedPosition = estimator.getEstimatedPosition();
+            final var distance = position.distanceTo(estimatedPosition);
             if (distance >= LARGE_ABSOLUTE_ERROR) {
                 continue;
             }
@@ -660,12 +553,8 @@ public class LinearRangingPositionEstimator2DTest implements RangingPositionEsti
         assertTrue(numValid > 0);
 
         // force NotReadyException
-        final LinearRangingPositionEstimator2D estimator = new LinearRangingPositionEstimator2D();
-        try {
-            estimator.estimate();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var estimator = new LinearRangingPositionEstimator2D();
+        assertThrows(NotReadyException.class, estimator::estimate);
     }
 
     @Override
@@ -684,33 +573,11 @@ public class LinearRangingPositionEstimator2DTest implements RangingPositionEsti
         estimateStart = estimateEnd = 0;
     }
 
-    private void checkLocked(final LinearRangingPositionEstimator2D estimators) {
-        try {
-            estimators.setHomogeneousLinearSolverUsed(false);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimators.setSources(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimators.setFingerprint(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimators.setListener(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            estimators.estimate();
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        } catch (final Exception e) {
-            fail("LockedException expected but not thrown");
-        }
+    private static void checkLocked(final LinearRangingPositionEstimator2D estimators) {
+        assertThrows(LockedException.class, () -> estimators.setHomogeneousLinearSolverUsed(false));
+        assertThrows(LockedException.class, () -> estimators.setSources(null));
+        assertThrows(LockedException.class, () -> estimators.setFingerprint(null));
+        assertThrows(LockedException.class, () -> estimators.setListener(null));
+        assertThrows(LockedException.class, estimators::estimate);
     }
 }

@@ -39,13 +39,13 @@ public class PROSACRobustRangingPositionEstimator3D extends RobustRangingPositio
      * Quality scores corresponding to each provided located radio source.
      * The larger the score value the better the quality of the radio source.
      */
-    private double[] mSourceQualityScores;
+    private double[] sourceQualityScores;
 
     /**
      * Quality scores corresponding to each reading within provided fingerprint.
      * The larger the score value the better the quality of the reading.
      */
-    private double[] mFingerprintReadingsQualityScores;
+    private double[] fingerprintReadingsQualityScores;
 
     /**
      * Constructor.
@@ -62,8 +62,7 @@ public class PROSACRobustRangingPositionEstimator3D extends RobustRangingPositio
      * @throws IllegalArgumentException if provided sources is null or the number of
      *                                  provided sources is less than the required minimum.
      */
-    public PROSACRobustRangingPositionEstimator3D(
-            final List<? extends RadioSourceLocated<Point3D>> sources) {
+    public PROSACRobustRangingPositionEstimator3D(final List<? extends RadioSourceLocated<Point3D>> sources) {
         super();
         init();
         internalSetSources(sources);
@@ -108,8 +107,7 @@ public class PROSACRobustRangingPositionEstimator3D extends RobustRangingPositio
      *
      * @param listener listener in charge of handling events.
      */
-    public PROSACRobustRangingPositionEstimator3D(
-            final RobustRangingPositionEstimatorListener<Point3D> listener) {
+    public PROSACRobustRangingPositionEstimator3D(final RobustRangingPositionEstimatorListener<Point3D> listener) {
         super(listener);
         init();
     }
@@ -181,8 +179,7 @@ public class PROSACRobustRangingPositionEstimator3D extends RobustRangingPositio
      *                                        reading.
      */
     public PROSACRobustRangingPositionEstimator3D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores) {
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores) {
         this();
         internalSetSourceQualityScores(sourceQualityScores);
         internalSetFingerprintReadingsQualityScores(fingerprintReadingQualityScores);
@@ -205,8 +202,7 @@ public class PROSACRobustRangingPositionEstimator3D extends RobustRangingPositio
      *                                  provided sources is less than the required minimum.
      */
     public PROSACRobustRangingPositionEstimator3D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<Point3D>> sources) {
         this(sources);
         internalSetSourceQualityScores(sourceQualityScores);
@@ -230,8 +226,7 @@ public class PROSACRobustRangingPositionEstimator3D extends RobustRangingPositio
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public PROSACRobustRangingPositionEstimator3D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final RangingFingerprint<? extends RadioSource, ? extends RangingReading<?
                     extends RadioSource>> fingerprint) {
         this(fingerprint);
@@ -259,8 +254,7 @@ public class PROSACRobustRangingPositionEstimator3D extends RobustRangingPositio
      *                                  or the number of provided sources is less than the required minimum.
      */
     public PROSACRobustRangingPositionEstimator3D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<Point3D>> sources,
             final RangingFingerprint<? extends RadioSource, ? extends RangingReading<?
                     extends RadioSource>> fingerprint) {
@@ -283,8 +277,7 @@ public class PROSACRobustRangingPositionEstimator3D extends RobustRangingPositio
      * @param listener                        listener in charge of handling events.
      */
     public PROSACRobustRangingPositionEstimator3D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final RobustRangingPositionEstimatorListener<Point3D> listener) {
         this(listener);
         internalSetSourceQualityScores(sourceQualityScores);
@@ -309,8 +302,7 @@ public class PROSACRobustRangingPositionEstimator3D extends RobustRangingPositio
      *                                  provided sources is less than the required minimum.
      */
     public PROSACRobustRangingPositionEstimator3D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<Point3D>> sources,
             final RobustRangingPositionEstimatorListener<Point3D> listener) {
         this(sources, listener);
@@ -336,8 +328,7 @@ public class PROSACRobustRangingPositionEstimator3D extends RobustRangingPositio
      * @throws IllegalArgumentException if provided fingerprint is null.
      */
     public PROSACRobustRangingPositionEstimator3D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final RangingFingerprint<? extends RadioSource, ? extends RangingReading<?
                     extends RadioSource>> fingerprint,
             final RobustRangingPositionEstimatorListener<Point3D> listener) {
@@ -367,8 +358,7 @@ public class PROSACRobustRangingPositionEstimator3D extends RobustRangingPositio
      *                                  null or the number of provided sources is less than the required minimum.
      */
     public PROSACRobustRangingPositionEstimator3D(
-            final double[] sourceQualityScores,
-            final double[] fingerprintReadingQualityScores,
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
             final List<? extends RadioSourceLocated<Point3D>> sources,
             final RangingFingerprint<? extends RadioSource, ? extends RangingReading<?
                     extends RadioSource>> fingerprint,
@@ -386,7 +376,7 @@ public class PROSACRobustRangingPositionEstimator3D extends RobustRangingPositio
      */
     @Override
     public double[] getSourceQualityScores() {
-        return mSourceQualityScores;
+        return sourceQualityScores;
     }
 
     /**
@@ -399,8 +389,7 @@ public class PROSACRobustRangingPositionEstimator3D extends RobustRangingPositio
      *                                  than minimum required samples.
      */
     @Override
-    public void setSourceQualityScores(final double[] sourceQualityScores)
-            throws LockedException {
+    public void setSourceQualityScores(final double[] sourceQualityScores) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
@@ -418,7 +407,7 @@ public class PROSACRobustRangingPositionEstimator3D extends RobustRangingPositio
      */
     @Override
     public double[] getFingerprintReadingsQualityScores() {
-        return mFingerprintReadingsQualityScores;
+        return fingerprintReadingsQualityScores;
     }
 
     /**
@@ -434,8 +423,8 @@ public class PROSACRobustRangingPositionEstimator3D extends RobustRangingPositio
      *                                  than minimum required samples.
      */
     @Override
-    public void setFingerprintReadingsQualityScores(
-            final double[] fingerprintReadingsQualityScores) throws LockedException {
+    public void setFingerprintReadingsQualityScores(final double[] fingerprintReadingsQualityScores)
+            throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
@@ -450,8 +439,7 @@ public class PROSACRobustRangingPositionEstimator3D extends RobustRangingPositio
      * @return threshold to determine whether samples are inliers or not.
      */
     public double getThreshold() {
-        return ((PROSACRobustLateration3DSolver) mLaterationSolver).
-                getThreshold();
+        return ((PROSACRobustLateration3DSolver) laterationSolver).getThreshold();
     }
 
     /**
@@ -464,8 +452,7 @@ public class PROSACRobustRangingPositionEstimator3D extends RobustRangingPositio
      * @throws LockedException          if this solver is locked.
      */
     public void setThreshold(final double threshold) throws LockedException {
-        ((PROSACRobustLateration3DSolver) mLaterationSolver).
-                setThreshold(threshold);
+        ((PROSACRobustLateration3DSolver) laterationSolver).setThreshold(threshold);
     }
 
     /**
@@ -475,8 +462,7 @@ public class PROSACRobustRangingPositionEstimator3D extends RobustRangingPositio
      * only need to be computed but not kept.
      */
     public boolean isComputeAndKeepInliersEnabled() {
-        return ((PROSACRobustLateration3DSolver) mLaterationSolver).
-                isComputeAndKeepInliersEnabled();
+        return ((PROSACRobustLateration3DSolver) laterationSolver).isComputeAndKeepInliersEnabled();
     }
 
     /**
@@ -486,10 +472,8 @@ public class PROSACRobustRangingPositionEstimator3D extends RobustRangingPositio
      *                              false if inliers only need to be computed but not kept.
      * @throws LockedException if this solver is locked.
      */
-    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers)
-            throws LockedException {
-        ((PROSACRobustLateration3DSolver) mLaterationSolver).
-                setComputeAndKeepInliersEnabled(computeAndKeepInliers);
+    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers) throws LockedException {
+        ((PROSACRobustLateration3DSolver) laterationSolver).setComputeAndKeepInliersEnabled(computeAndKeepInliers);
     }
 
     /**
@@ -499,8 +483,7 @@ public class PROSACRobustRangingPositionEstimator3D extends RobustRangingPositio
      * only need to be computed but not kept.
      */
     public boolean isComputeAndKeepResidualsEnabled() {
-        return ((PROSACRobustLateration3DSolver) mLaterationSolver).
-                isComputeAndKeepResiduals();
+        return ((PROSACRobustLateration3DSolver) laterationSolver).isComputeAndKeepResiduals();
     }
 
     /**
@@ -510,10 +493,8 @@ public class PROSACRobustRangingPositionEstimator3D extends RobustRangingPositio
      *                                false if residuals only need to be computed but not kept.
      * @throws LockedException if this solver is locked.
      */
-    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals)
-            throws LockedException {
-        ((PROSACRobustLateration3DSolver) mLaterationSolver).
-                setComputeAndKeepResidualsEnabled(computeAndKeepResiduals);
+    public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals) throws LockedException {
+        ((PROSACRobustLateration3DSolver) laterationSolver).setComputeAndKeepResidualsEnabled(computeAndKeepResiduals);
     }
 
     /**
@@ -530,8 +511,7 @@ public class PROSACRobustRangingPositionEstimator3D extends RobustRangingPositio
      * Initializes robust lateration solver.
      */
     private void init() {
-        mLaterationSolver = new PROSACRobustLateration3DSolver(
-                mTrilaterationSolverListener);
+        laterationSolver = new PROSACRobustLateration3DSolver(trilaterationSolverListener);
     }
 
     /**
@@ -544,12 +524,11 @@ public class PROSACRobustRangingPositionEstimator3D extends RobustRangingPositio
      *                                  is smaller than 3 samples.
      */
     private void internalSetSourceQualityScores(final double[] sourceQualityScores) {
-        if (sourceQualityScores == null ||
-                sourceQualityScores.length < getMinRequiredSources()) {
+        if (sourceQualityScores == null || sourceQualityScores.length < getMinRequiredSources()) {
             throw new IllegalArgumentException();
         }
 
-        mSourceQualityScores = sourceQualityScores;
+        this.sourceQualityScores = sourceQualityScores;
 
         buildPositionsDistancesDistanceStandardDeviationsAndQualityScores();
     }
@@ -564,14 +543,13 @@ public class PROSACRobustRangingPositionEstimator3D extends RobustRangingPositio
      * @throws IllegalArgumentException if provided quality scores length is
      *                                  smaller than 3 samples.
      */
-    private void internalSetFingerprintReadingsQualityScores(
-            final double[] fingerprintReadingsQualityScores) {
-        if (fingerprintReadingsQualityScores == null ||
-                fingerprintReadingsQualityScores.length < getMinRequiredSources()) {
+    private void internalSetFingerprintReadingsQualityScores(final double[] fingerprintReadingsQualityScores) {
+        if (fingerprintReadingsQualityScores == null
+                || fingerprintReadingsQualityScores.length < getMinRequiredSources()) {
             throw new IllegalArgumentException();
         }
 
-        mFingerprintReadingsQualityScores = fingerprintReadingsQualityScores;
+        this.fingerprintReadingsQualityScores = fingerprintReadingsQualityScores;
 
         buildPositionsDistancesDistanceStandardDeviationsAndQualityScores();
     }

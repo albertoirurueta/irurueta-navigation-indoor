@@ -15,7 +15,6 @@
  */
 package com.irurueta.navigation.indoor.radiosource;
 
-import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.Point3D;
 import com.irurueta.navigation.indoor.Beacon;
 import com.irurueta.navigation.indoor.BeaconWithPowerAndLocated3D;
@@ -84,8 +83,7 @@ public class RangingAndRssiRadioSourceEstimator3D<S extends RadioSource> extends
      *
      * @param listener listener in charge of attending events raised by this instance.
      */
-    public RangingAndRssiRadioSourceEstimator3D(
-            final RangingAndRssiRadioSourceEstimatorListener<S, Point3D> listener) {
+    public RangingAndRssiRadioSourceEstimator3D(final RangingAndRssiRadioSourceEstimatorListener<S, Point3D> listener) {
         super(listener);
     }
 
@@ -123,8 +121,7 @@ public class RangingAndRssiRadioSourceEstimator3D<S extends RadioSource> extends
      * @throws IllegalArgumentException if readings are not valid.
      */
     public RangingAndRssiRadioSourceEstimator3D(
-            final List<? extends RangingAndRssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition) {
+            final List<? extends RangingAndRssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition) {
         super(readings, initialPosition);
     }
 
@@ -136,8 +133,7 @@ public class RangingAndRssiRadioSourceEstimator3D<S extends RadioSource> extends
      * @param listener        listener in charge of attending events raised by this instance.
      */
     public RangingAndRssiRadioSourceEstimator3D(
-            final Point3D initialPosition,
-            final RangingAndRssiRadioSourceEstimatorListener<S, Point3D> listener) {
+            final Point3D initialPosition, final RangingAndRssiRadioSourceEstimatorListener<S, Point3D> listener) {
         super(initialPosition, listener);
     }
 
@@ -152,8 +148,7 @@ public class RangingAndRssiRadioSourceEstimator3D<S extends RadioSource> extends
      * @throws IllegalArgumentException if readings are not valid.
      */
     public RangingAndRssiRadioSourceEstimator3D(
-            final List<? extends RangingAndRssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
+            final List<? extends RangingAndRssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
             final RangingAndRssiRadioSourceEstimatorListener<S, Point3D> listener) {
         super(readings, initialPosition, listener);
     }
@@ -165,8 +160,7 @@ public class RangingAndRssiRadioSourceEstimator3D<S extends RadioSource> extends
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's).
      */
-    public RangingAndRssiRadioSourceEstimator3D(
-            final Double initialTransmittedPowerDbm) {
+    public RangingAndRssiRadioSourceEstimator3D(final Double initialTransmittedPowerDbm) {
         super(initialTransmittedPowerDbm);
     }
 
@@ -231,8 +225,8 @@ public class RangingAndRssiRadioSourceEstimator3D<S extends RadioSource> extends
      * @throws IllegalArgumentException if readings are not valid.
      */
     public RangingAndRssiRadioSourceEstimator3D(
-            final List<? extends RangingAndRssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition, final Double initialTransmittedPowerdBm) {
+            final List<? extends RangingAndRssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm) {
         super(readings, initialPosition, initialTransmittedPowerdBm);
     }
 
@@ -245,9 +239,7 @@ public class RangingAndRssiRadioSourceEstimator3D<S extends RadioSource> extends
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's).
      */
-    public RangingAndRssiRadioSourceEstimator3D(
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm) {
+    public RangingAndRssiRadioSourceEstimator3D(final Point3D initialPosition, final Double initialTransmittedPowerdBm) {
         super(initialPosition, initialTransmittedPowerdBm);
     }
 
@@ -262,8 +254,7 @@ public class RangingAndRssiRadioSourceEstimator3D<S extends RadioSource> extends
      * @param listener                   listener in charge of attending events raised by this instance.
      */
     public RangingAndRssiRadioSourceEstimator3D(
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
             final RangingAndRssiRadioSourceEstimatorListener<S, Point3D> listener) {
         super(initialPosition, initialTransmittedPowerdBm, listener);
     }
@@ -282,8 +273,7 @@ public class RangingAndRssiRadioSourceEstimator3D<S extends RadioSource> extends
      * @throws IllegalArgumentException if readings are not valid.
      */
     public RangingAndRssiRadioSourceEstimator3D(
-            final List<? extends RangingAndRssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
+            final List<? extends RangingAndRssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
             final Double initialTransmittedPowerdBm,
             final RangingAndRssiRadioSourceEstimatorListener<S, Point3D> listener) {
         super(readings, initialPosition, initialTransmittedPowerdBm, listener);
@@ -303,12 +293,9 @@ public class RangingAndRssiRadioSourceEstimator3D<S extends RadioSource> extends
      * @throws IllegalArgumentException if readings are not valid.
      */
     public RangingAndRssiRadioSourceEstimator3D(
-            final List<? extends RangingAndRssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent) {
-        super(readings, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent);
+            final List<? extends RangingAndRssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm, final double initialPathLossExponent) {
+        super(readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);
     }
 
     /**
@@ -322,8 +309,7 @@ public class RangingAndRssiRadioSourceEstimator3D<S extends RadioSource> extends
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      */
     public RangingAndRssiRadioSourceEstimator3D(
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
         super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);
     }
@@ -340,12 +326,10 @@ public class RangingAndRssiRadioSourceEstimator3D<S extends RadioSource> extends
      * @param listener                   listener in charge of attending events raised by this instance.
      */
     public RangingAndRssiRadioSourceEstimator3D(
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final RangingAndRssiRadioSourceEstimatorListener<S, Point3D> listener) {
-        super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent,
-                listener);
+        super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener);
     }
 
     /**
@@ -363,13 +347,10 @@ public class RangingAndRssiRadioSourceEstimator3D<S extends RadioSource> extends
      * @throws IllegalArgumentException if readings are not valid.
      */
     public RangingAndRssiRadioSourceEstimator3D(
-            final List<? extends RangingAndRssiReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent,
+            final List<? extends RangingAndRssiReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm, final double initialPathLossExponent,
             final RangingAndRssiRadioSourceEstimatorListener<S, Point3D> listener) {
-        super(readings, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent, listener);
+        super(readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener);
     }
 
     /**
@@ -391,49 +372,40 @@ public class RangingAndRssiRadioSourceEstimator3D<S extends RadioSource> extends
     @Override
     @SuppressWarnings("unchecked")
     public RadioSourceLocated<Point3D> getEstimatedRadioSource() {
-        final List<? extends RangingAndRssiReadingLocated<S, Point3D>> readings =
-                getReadings();
+        final var readings = getReadings();
         if (readings == null || readings.isEmpty()) {
             return null;
         }
-        final S source = readings.get(0).getSource();
+        final var source = readings.get(0).getSource();
 
-        final Point3D estimatedPosition = getEstimatedPosition();
+        final var estimatedPosition = getEstimatedPosition();
         if (estimatedPosition == null) {
             return null;
         }
 
-        final Matrix estimatedPositionCovariance = getEstimatedPositionCovariance();
+        final var estimatedPositionCovariance = getEstimatedPositionCovariance();
 
-        final double transmittedPowerdBm = getEstimatedTransmittedPowerdBm();
+        final var transmittedPowerdBm = getEstimatedTransmittedPowerdBm();
 
-        final Double transmittedPowerVariance = getEstimatedTransmittedPowerVariance();
-        final Double transmittedPowerStandardDeviation = transmittedPowerVariance != null ?
-                Math.sqrt(transmittedPowerVariance) : null;
+        final var transmittedPowerVariance = getEstimatedTransmittedPowerVariance();
+        final var transmittedPowerStandardDeviation = transmittedPowerVariance != null
+                ? Math.sqrt(transmittedPowerVariance) : null;
 
-        final double pathLossExponent = getEstimatedPathLossExponent();
+        final var pathLossExponent = getEstimatedPathLossExponent();
 
-        final Double pathLossExponentVariance = getEstimatedPathLossExponentVariance();
-        final Double pathLossExponentStandardDeviation = pathLossExponentVariance != null ?
-                Math.sqrt(pathLossExponentVariance) : null;
+        final var pathLossExponentVariance = getEstimatedPathLossExponentVariance();
+        final var pathLossExponentStandardDeviation = pathLossExponentVariance != null
+                ? Math.sqrt(pathLossExponentVariance) : null;
 
-        if (source instanceof WifiAccessPoint) {
-            final WifiAccessPoint accessPoint = (WifiAccessPoint) source;
-            return new WifiAccessPointWithPowerAndLocated3D(accessPoint.getBssid(),
-                    accessPoint.getFrequency(), accessPoint.getSsid(),
-                    transmittedPowerdBm,
-                    transmittedPowerStandardDeviation,
-                    pathLossExponent, pathLossExponentStandardDeviation,
-                    estimatedPosition, estimatedPositionCovariance);
-        } else if (source instanceof Beacon) {
-            final Beacon beacon = (Beacon) source;
-            return new BeaconWithPowerAndLocated3D(beacon.getIdentifiers(),
-                    beacon.getTransmittedPower(), beacon.getFrequency(),
-                    beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(),
-                    beacon.getManufacturer(), beacon.getServiceUuid(),
-                    beacon.getBluetoothName(), pathLossExponent,
-                    transmittedPowerStandardDeviation,
-                    pathLossExponentStandardDeviation, estimatedPosition,
+        if (source instanceof WifiAccessPoint accessPoint) {
+            return new WifiAccessPointWithPowerAndLocated3D(accessPoint.getBssid(), accessPoint.getFrequency(),
+                    accessPoint.getSsid(), transmittedPowerdBm, transmittedPowerStandardDeviation, pathLossExponent,
+                    pathLossExponentStandardDeviation, estimatedPosition, estimatedPositionCovariance);
+        } else if (source instanceof Beacon beacon) {
+            return new BeaconWithPowerAndLocated3D(beacon.getIdentifiers(), beacon.getTransmittedPower(),
+                    beacon.getFrequency(), beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(),
+                    beacon.getManufacturer(), beacon.getServiceUuid(), beacon.getBluetoothName(), pathLossExponent,
+                    transmittedPowerStandardDeviation, pathLossExponentStandardDeviation, estimatedPosition,
                     estimatedPositionCovariance);
         } else {
             return null;
@@ -445,13 +417,12 @@ public class RangingAndRssiRadioSourceEstimator3D<S extends RadioSource> extends
      */
     @Override
     protected void createInnerEstimatorsIfNeeded() {
-        if (mRangingInnerEstimator == null) {
-            mRangingInnerEstimator = new RangingRadioSourceEstimator3D<>();
+        if (rangingInnerEstimator == null) {
+            rangingInnerEstimator = new RangingRadioSourceEstimator3D<>();
         }
 
-        if (mRssiInnerEstimator == null &&
-                (mTransmittedPowerEstimationEnabled || mPathLossEstimationEnabled)) {
-            mRssiInnerEstimator = new RssiRadioSourceEstimator3D<>();
+        if (rssiInnerEstimator == null && (transmittedPowerEstimationEnabled || pathLossEstimationEnabled)) {
+            rssiInnerEstimator = new RssiRadioSourceEstimator3D<>();
         }
     }
 }

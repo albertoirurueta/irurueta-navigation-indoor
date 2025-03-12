@@ -15,7 +15,6 @@
  */
 package com.irurueta.navigation.indoor.radiosource;
 
-import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.Accuracy3D;
 import com.irurueta.geometry.InhomogeneousPoint3D;
 import com.irurueta.geometry.Point3D;
@@ -43,8 +42,7 @@ import java.util.List;
  * @param <S> a {@link RadioSource} type.
  */
 @SuppressWarnings("DuplicatedCode")
-public class RangingRadioSourceEstimator3D<S extends RadioSource> extends
-        RangingRadioSourceEstimator<S, Point3D> {
+public class RangingRadioSourceEstimator3D<S extends RadioSource> extends RangingRadioSourceEstimator<S, Point3D> {
 
     /**
      * Constructor.
@@ -60,8 +58,7 @@ public class RangingRadioSourceEstimator3D<S extends RadioSource> extends
      * @param readings radio signal ranging readings belonging to the same radio source.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public RangingRadioSourceEstimator3D(
-            final List<? extends RangingReadingLocated<S, Point3D>> readings) {
+    public RangingRadioSourceEstimator3D(final List<? extends RangingReadingLocated<S, Point3D>> readings) {
         super(readings);
     }
 
@@ -70,8 +67,7 @@ public class RangingRadioSourceEstimator3D<S extends RadioSource> extends
      *
      * @param listener listener in charge of attending events raised by this instance.
      */
-    public RangingRadioSourceEstimator3D(
-            final RangingRadioSourceEstimatorListener<S, Point3D> listener) {
+    public RangingRadioSourceEstimator3D(final RangingRadioSourceEstimatorListener<S, Point3D> listener) {
         super(listener);
     }
 
@@ -109,8 +105,7 @@ public class RangingRadioSourceEstimator3D<S extends RadioSource> extends
      * @throws IllegalArgumentException if readings are not valid.
      */
     public RangingRadioSourceEstimator3D(
-            final List<? extends RangingReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition) {
+            final List<? extends RangingReadingLocated<S, Point3D>> readings, final Point3D initialPosition) {
         super(readings, initialPosition);
     }
 
@@ -122,8 +117,7 @@ public class RangingRadioSourceEstimator3D<S extends RadioSource> extends
      * @param listener        listener in charge of attending events raised by this instance.
      */
     public RangingRadioSourceEstimator3D(
-            final Point3D initialPosition,
-            final RangingRadioSourceEstimatorListener<S, Point3D> listener) {
+            final Point3D initialPosition, final RangingRadioSourceEstimatorListener<S, Point3D> listener) {
         super(initialPosition, listener);
     }
 
@@ -138,8 +132,7 @@ public class RangingRadioSourceEstimator3D<S extends RadioSource> extends
      * @throws IllegalArgumentException if readings are not valid.
      */
     public RangingRadioSourceEstimator3D(
-            final List<? extends RangingReadingLocated<S, Point3D>> readings,
-            final Point3D initialPosition,
+            final List<? extends RangingReadingLocated<S, Point3D>> readings, final Point3D initialPosition,
             final RangingRadioSourceEstimatorListener<S, Point3D> listener) {
         super(readings, initialPosition, listener);
     }
@@ -173,11 +166,11 @@ public class RangingRadioSourceEstimator3D<S extends RadioSource> extends
      */
     @Override
     public Point3D getEstimatedPosition() {
-        if (mEstimatedPositionCoordinates == null) {
+        if (estimatedPositionCoordinates == null) {
             return null;
         }
 
-        final InhomogeneousPoint3D result = new InhomogeneousPoint3D();
+        final var result = new InhomogeneousPoint3D();
         getEstimatedPosition(result);
         return result;
     }
@@ -190,32 +183,26 @@ public class RangingRadioSourceEstimator3D<S extends RadioSource> extends
     @Override
     @SuppressWarnings("unchecked")
     public RadioSourceLocated<Point3D> getEstimatedRadioSource() {
-        final List<? extends RangingReadingLocated<S, Point3D>> readings = getReadings();
+        final var readings = getReadings();
         if (readings == null || readings.isEmpty()) {
             return null;
         }
-        final S source = readings.get(0).getSource();
+        final var source = readings.get(0).getSource();
 
-        final Point3D estimatedPosition = getEstimatedPosition();
+        final var estimatedPosition = getEstimatedPosition();
         if (estimatedPosition == null) {
             return null;
         }
 
-        final Matrix estimatedPositionCovariance = getEstimatedPositionCovariance();
+        final var estimatedPositionCovariance = getEstimatedPositionCovariance();
 
-        if (source instanceof WifiAccessPoint) {
-            final WifiAccessPoint accessPoint = (WifiAccessPoint) source;
-            return new WifiAccessPointLocated3D(accessPoint.getBssid(),
-                    accessPoint.getFrequency(), accessPoint.getSsid(),
-                    estimatedPosition, estimatedPositionCovariance);
-        } else if (source instanceof Beacon) {
-            final Beacon beacon = (Beacon) source;
-            return new BeaconLocated3D(beacon.getIdentifiers(),
-                    beacon.getTransmittedPower(), beacon.getFrequency(),
-                    beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(),
-                    beacon.getManufacturer(), beacon.getServiceUuid(),
-                    beacon.getBluetoothName(), estimatedPosition,
-                    estimatedPositionCovariance);
+        if (source instanceof WifiAccessPoint accessPoint) {
+            return new WifiAccessPointLocated3D(accessPoint.getBssid(), accessPoint.getFrequency(),
+                    accessPoint.getSsid(), estimatedPosition, estimatedPositionCovariance);
+        } else if (source instanceof Beacon beacon) {
+            return new BeaconLocated3D(beacon.getIdentifiers(), beacon.getTransmittedPower(), beacon.getFrequency(),
+                    beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(), beacon.getManufacturer(),
+                    beacon.getServiceUuid(), beacon.getBluetoothName(), estimatedPosition, estimatedPositionCovariance);
         } else {
             return null;
         }
@@ -226,12 +213,12 @@ public class RangingRadioSourceEstimator3D<S extends RadioSource> extends
      */
     @Override
     protected void buildLinearSolverIfNeeded() {
-        if (mInitialPosition == null || !mNonLinearSolverEnabled) {
-            if (mUseHomogeneousLinearSolver && mHomogeneousLinearSolver == null) {
-                mHomogeneousLinearSolver = new HomogeneousLinearLeastSquaresLateration3DSolver();
+        if (initialPosition == null || !nonLinearSolverEnabled) {
+            if (useHomogeneousLinearSolver && homogeneousLinearSolver == null) {
+                homogeneousLinearSolver = new HomogeneousLinearLeastSquaresLateration3DSolver();
             }
-            if (!mUseHomogeneousLinearSolver && mInhomogeneousLinearSolver == null) {
-                mInhomogeneousLinearSolver = new InhomogeneousLinearLeastSquaresLateration3DSolver();
+            if (!useHomogeneousLinearSolver && inhomogeneousLinearSolver == null) {
+                inhomogeneousLinearSolver = new InhomogeneousLinearLeastSquaresLateration3DSolver();
             }
         }
     }
@@ -241,8 +228,8 @@ public class RangingRadioSourceEstimator3D<S extends RadioSource> extends
      */
     @Override
     protected void buildNonLinearSolverIfNeeded() {
-        if (mNonLinearSolver == null && mNonLinearSolverEnabled) {
-            mNonLinearSolver = new NonLinearLeastSquaresLateration3DSolver();
+        if (nonLinearSolver == null && nonLinearSolverEnabled) {
+            nonLinearSolver = new NonLinearLeastSquaresLateration3DSolver();
         }
     }
 
@@ -251,11 +238,11 @@ public class RangingRadioSourceEstimator3D<S extends RadioSource> extends
      */
     @Override
     protected void buildAccuracyIfNeeded() {
-        if (mAccuracy == null && mUseReadingPositionCovariances) {
-            mAccuracy = new Accuracy3D();
+        if (accuracy == null && useReadingPositionCovariances) {
+            accuracy = new Accuracy3D();
 
             // to work with standard deviations, we need a unitary factor
-            mAccuracy.setStandardDeviationFactor(1.0);
+            accuracy.setStandardDeviationFactor(1.0);
         }
     }
 
@@ -271,31 +258,31 @@ public class RangingRadioSourceEstimator3D<S extends RadioSource> extends
      */
     @Override
     protected void setPositionsDistancesAndDistanceStandardDeviations(
-            final List<Point3D> positions, final List<Double> distances,
-            final List<Double> distanceStandardDeviations) throws LockedException {
+            final List<Point3D> positions, final List<Double> distances, final List<Double> distanceStandardDeviations)
+            throws LockedException {
 
-        final int size = positions.size();
+        final var size = positions.size();
         Point3D[] positionsArray = new InhomogeneousPoint3D[size];
         positionsArray = positions.toArray(positionsArray);
 
-        final double[] distancesArray = new double[size];
-        final double[] distanceStandardDeviationsArray = new double[size];
-        for (int i = 0; i < size; i++) {
+        final var distancesArray = new double[size];
+        final var distanceStandardDeviationsArray = new double[size];
+        for (var i = 0; i < size; i++) {
             distancesArray[i] = distances.get(i);
             distanceStandardDeviationsArray[i] = distanceStandardDeviations.get(i);
         }
 
-        if (mInitialPosition == null || !mNonLinearSolverEnabled) {
-            if (mHomogeneousLinearSolver != null) {
-                mHomogeneousLinearSolver.setPositionsAndDistances(positionsArray, distancesArray);
+        if (initialPosition == null || !nonLinearSolverEnabled) {
+            if (homogeneousLinearSolver != null) {
+                homogeneousLinearSolver.setPositionsAndDistances(positionsArray, distancesArray);
             }
-            if (mInhomogeneousLinearSolver != null) {
-                mInhomogeneousLinearSolver.setPositionsAndDistances(positionsArray, distancesArray);
+            if (inhomogeneousLinearSolver != null) {
+                inhomogeneousLinearSolver.setPositionsAndDistances(positionsArray, distancesArray);
             }
         }
 
-        if (mNonLinearSolver != null && mNonLinearSolverEnabled) {
-            mNonLinearSolver.setPositionsDistancesAndStandardDeviations(positionsArray, distancesArray,
+        if (nonLinearSolver != null && nonLinearSolverEnabled) {
+            nonLinearSolver.setPositionsDistancesAndStandardDeviations(positionsArray, distancesArray,
                     distanceStandardDeviationsArray);
         }
     }

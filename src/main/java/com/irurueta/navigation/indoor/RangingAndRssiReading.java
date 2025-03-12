@@ -32,34 +32,34 @@ public class RangingAndRssiReading<S extends RadioSource> extends Reading<S> {
     /**
      * Distance in meters to the radio source.
      */
-    private double mDistance;
+    private double distance;
 
     /**
      * Standard deviation of distance, if available.
      */
-    private Double mDistanceStandardDeviation;
+    private Double distanceStandardDeviation;
 
     /**
      * Number of attempted measurements using in the RTT exchange.
      */
-    private int mNumAttemptedMeasurements = DEFAULT_NUM_MEASUREMENTS;
+    private int numAttemptedMeasurements = DEFAULT_NUM_MEASUREMENTS;
 
     /**
      * Number of successful measurements used to calculate the distance and standard
      * deviation.
      */
-    private int mNumSuccessfulMeasurements = DEFAULT_NUM_MEASUREMENTS;
+    private int numSuccessfulMeasurements = DEFAULT_NUM_MEASUREMENTS;
 
     /**
      * Received signal strength indicator (of this 802.11 network for a Wi-Fi access point or
      * of this bluetooth beacon), in dBm.
      */
-    private double mRssi;
+    private double rssi;
 
     /**
      * Standard deviation of RSSI, if available.
      */
-    private Double mRssiStandardDeviation;
+    private Double rssiStandardDeviation;
 
     /**
      * Constructor.
@@ -69,16 +69,15 @@ public class RangingAndRssiReading<S extends RadioSource> extends Reading<S> {
      * @param rssi     received signal strength indicator in dBm.
      * @throws IllegalArgumentException if radio source data is null or distance is negative.
      */
-    public RangingAndRssiReading(
-            final S source, final double distance, final double rssi) {
+    public RangingAndRssiReading(final S source, final double distance, final double rssi) {
         super(source);
 
         if (distance < 0.0) {
             throw new IllegalArgumentException();
         }
 
-        mDistance = distance;
-        mRssi = rssi;
+        this.distance = distance;
+        this.rssi = rssi;
     }
 
     /**
@@ -95,10 +94,10 @@ public class RangingAndRssiReading<S extends RadioSource> extends Reading<S> {
      *                                  negative.
      */
     public RangingAndRssiReading(
-            final S source, final double distance, final double rssi,
-            final int numAttemptedMeasurements, final int numSuccessfulMeasurements) {
-        this(source, distance, rssi, null, null,
-                numAttemptedMeasurements, numSuccessfulMeasurements);
+            final S source, final double distance, final double rssi, final int numAttemptedMeasurements,
+            final int numSuccessfulMeasurements) {
+        this(source, distance, rssi, null, null, numAttemptedMeasurements,
+                numSuccessfulMeasurements);
     }
 
     /**
@@ -113,10 +112,7 @@ public class RangingAndRssiReading<S extends RadioSource> extends Reading<S> {
      *                                  or any of the standard deviations is zero or negative.
      */
     public RangingAndRssiReading(
-            final S source,
-            final double distance,
-            final double rssi,
-            final Double distanceStandardDeviation,
+            final S source, final double distance, final double rssi, final Double distanceStandardDeviation,
             final Double rssiStandardDeviation) {
         this(source, distance, rssi);
 
@@ -127,8 +123,8 @@ public class RangingAndRssiReading<S extends RadioSource> extends Reading<S> {
             throw new IllegalArgumentException();
         }
 
-        mDistanceStandardDeviation = distanceStandardDeviation;
-        mRssiStandardDeviation = rssiStandardDeviation;
+        this.distanceStandardDeviation = distanceStandardDeviation;
+        this.rssiStandardDeviation = rssiStandardDeviation;
     }
 
     /**
@@ -147,22 +143,17 @@ public class RangingAndRssiReading<S extends RadioSource> extends Reading<S> {
      *                                  measures is less than 1 or number of successful measures is negative.
      */
     public RangingAndRssiReading(
-            final S source,
-            final double distance,
-            final double rssi,
-            final Double distanceStandardDeviation,
-            final Double rssiStandardDeviation,
-            final int numAttemptedMeasurements,
+            final S source, final double distance, final double rssi, final Double distanceStandardDeviation,
+            final Double rssiStandardDeviation, final int numAttemptedMeasurements,
             final int numSuccessfulMeasurements) {
         this(source, distance, rssi, distanceStandardDeviation, rssiStandardDeviation);
 
-        if (numAttemptedMeasurements < DEFAULT_NUM_MEASUREMENTS ||
-                numSuccessfulMeasurements < 0) {
+        if (numAttemptedMeasurements < DEFAULT_NUM_MEASUREMENTS || numSuccessfulMeasurements < 0) {
             throw new IllegalArgumentException();
         }
 
-        mNumAttemptedMeasurements = numAttemptedMeasurements;
-        mNumSuccessfulMeasurements = numSuccessfulMeasurements;
+        this.numAttemptedMeasurements = numAttemptedMeasurements;
+        this.numSuccessfulMeasurements = numSuccessfulMeasurements;
     }
 
     /**
@@ -188,7 +179,7 @@ public class RangingAndRssiReading<S extends RadioSource> extends Reading<S> {
      * @return distance in meters to the radio source.
      */
     public double getDistance() {
-        return mDistance;
+        return distance;
     }
 
     /**
@@ -197,7 +188,7 @@ public class RangingAndRssiReading<S extends RadioSource> extends Reading<S> {
      * @return standard deviation of distance or null.
      */
     public Double getDistanceStandardDeviation() {
-        return mDistanceStandardDeviation;
+        return distanceStandardDeviation;
     }
 
     /**
@@ -206,7 +197,7 @@ public class RangingAndRssiReading<S extends RadioSource> extends Reading<S> {
      * @return number of attempted measurements used in the RTT exchange.
      */
     public int getNumAttemptedMeasurements() {
-        return mNumAttemptedMeasurements;
+        return numAttemptedMeasurements;
     }
 
     /**
@@ -217,7 +208,7 @@ public class RangingAndRssiReading<S extends RadioSource> extends Reading<S> {
      * standard deviation.
      */
     public int getNumSuccessfulMeasurements() {
-        return mNumSuccessfulMeasurements;
+        return numSuccessfulMeasurements;
     }
 
     /**
@@ -227,7 +218,7 @@ public class RangingAndRssiReading<S extends RadioSource> extends Reading<S> {
      * @return received signal strength indicator.
      */
     public double getRssi() {
-        return mRssi;
+        return rssi;
     }
 
     /**
@@ -236,6 +227,6 @@ public class RangingAndRssiReading<S extends RadioSource> extends Reading<S> {
      * @return standard deviation of RSSI, if available.
      */
     public Double getRssiStandardDeviation() {
-        return mRssiStandardDeviation;
+        return rssiStandardDeviation;
     }
 }

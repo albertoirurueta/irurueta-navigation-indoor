@@ -44,7 +44,7 @@ public abstract class FingerprintPositionAndRadioSourceEstimator<P extends Point
      * By default, mean effects are removed to remove possible bias effects due to
      * readings measured by different devices with different hardware.
      */
-    protected boolean mUseNoMeanNearestFingerprintFinder = true;
+    protected boolean useNoMeanNearestFingerprintFinder = true;
 
     /**
      * Constructor.
@@ -110,7 +110,7 @@ public abstract class FingerprintPositionAndRadioSourceEstimator<P extends Point
      * @return indicates which fingerprint finder is used.
      */
     public boolean getUseNoMeanNearestFingerprintFinder() {
-        return mUseNoMeanNearestFingerprintFinder;
+        return useNoMeanNearestFingerprintFinder;
     }
 
     /**
@@ -125,12 +125,12 @@ public abstract class FingerprintPositionAndRadioSourceEstimator<P extends Point
      * @param useNoMeanNearestFingerprintFinder indicates which fingerprint finder is used.
      * @throws LockedException if estimator is locked.
      */
-    public void setUseNoMeanNearestFingerprintFinder(
-            final boolean useNoMeanNearestFingerprintFinder) throws LockedException {
+    public void setUseNoMeanNearestFingerprintFinder(final boolean useNoMeanNearestFingerprintFinder)
+            throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
-        mUseNoMeanNearestFingerprintFinder = useNoMeanNearestFingerprintFinder;
+        this.useNoMeanNearestFingerprintFinder = useNoMeanNearestFingerprintFinder;
     }
 
 }

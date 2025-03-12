@@ -15,26 +15,25 @@
  */
 package com.irurueta.navigation.indoor;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class RangingFingerprintTest {
+class RangingFingerprintTest {
 
     @Test
-    public void testConstructor() {
-        RangingFingerprint<RadioSource, RangingReading<RadioSource>> fingerprint = new RangingFingerprint<>();
+    void testConstructor() {
+        var fingerprint = new RangingFingerprint<>();
 
         // check
         assertNotNull(fingerprint.getReadings());
         assertTrue(fingerprint.getReadings().isEmpty());
 
         // constructor with readings
-        final List<RangingReading<RadioSource>> readings = new ArrayList<>();
+        final var readings = new ArrayList<RangingReading<RadioSource>>();
         fingerprint = new RangingFingerprint<>(readings);
 
         // check
@@ -42,30 +41,22 @@ public class RangingFingerprintTest {
         assertNotSame(readings, fingerprint.getReadings());
 
         // force IllegalArgumentException
-        fingerprint = null;
-        try {
-            fingerprint = new RangingFingerprint<>(null);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        //noinspection ConstantConditions
-        assertNull(fingerprint);
+        assertThrows(IllegalArgumentException.class, () -> new RangingFingerprint<>(null));
     }
 
     @Test
-    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
-        final List<RangingReading<RadioSource>> readings = new ArrayList<>();
-        final RangingFingerprint<RadioSource, RangingReading<RadioSource>> fingerprint1 =
-                new RangingFingerprint<>(readings);
+    void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final var readings = new ArrayList<RangingReading<RadioSource>>();
+        final var fingerprint1 = new RangingFingerprint<>(readings);
 
         // check
         assertEquals(readings, fingerprint1.getReadings());
         assertNotSame(readings, fingerprint1.getReadings());
 
         // serialize and deserialize
-        final byte[] bytes = SerializationHelper.serialize(fingerprint1);
-        final RangingFingerprint<RadioSource, RangingReading<RadioSource>> fingerprint2 =
-                SerializationHelper.deserialize(bytes);
+        final var bytes = SerializationHelper.serialize(fingerprint1);
+        final var fingerprint2 =
+                SerializationHelper.<RangingFingerprint<RadioSource, RangingReading<RadioSource>>>deserialize(bytes);
 
         // check
         assertNotSame(fingerprint1, fingerprint2);

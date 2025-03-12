@@ -51,8 +51,7 @@ public class NonLinearRssiPositionEstimator2D extends NonLinearRssiPositionEstim
      *                                  provided sources is less than the required
      *                                  minimum.
      */
-    public NonLinearRssiPositionEstimator2D(
-            final List<? extends RadioSourceLocated<Point2D>> sources) {
+    public NonLinearRssiPositionEstimator2D(final List<? extends RadioSourceLocated<Point2D>> sources) {
         super();
         initialize();
         internalSetSources(sources);
@@ -96,8 +95,7 @@ public class NonLinearRssiPositionEstimator2D extends NonLinearRssiPositionEstim
      *
      * @param listener listener in charge of handling events.
      */
-    public NonLinearRssiPositionEstimator2D(
-            final RssiPositionEstimatorListener<Point2D> listener) {
+    public NonLinearRssiPositionEstimator2D(final RssiPositionEstimatorListener<Point2D> listener) {
         super(listener);
         initialize();
     }
@@ -176,8 +174,7 @@ public class NonLinearRssiPositionEstimator2D extends NonLinearRssiPositionEstim
      *                                  minimum.
      */
     public NonLinearRssiPositionEstimator2D(
-            final List<? extends RadioSourceLocated<Point2D>> sources,
-            final Point2D initialPosition) {
+            final List<? extends RadioSourceLocated<Point2D>> sources, final Point2D initialPosition) {
         super(initialPosition);
         initialize();
         internalSetSources(sources);
@@ -227,8 +224,7 @@ public class NonLinearRssiPositionEstimator2D extends NonLinearRssiPositionEstim
      * @param listener        listener in charge of handling events.
      */
     public NonLinearRssiPositionEstimator2D(
-            final Point2D initialPosition,
-            final RssiPositionEstimatorListener<Point2D> listener) {
+            final Point2D initialPosition, final RssiPositionEstimatorListener<Point2D> listener) {
         super(initialPosition, listener);
         initialize();
     }
@@ -244,8 +240,7 @@ public class NonLinearRssiPositionEstimator2D extends NonLinearRssiPositionEstim
      *                                  minimum.
      */
     public NonLinearRssiPositionEstimator2D(
-            final List<? extends RadioSourceLocated<Point2D>> sources,
-            final Point2D initialPosition,
+            final List<? extends RadioSourceLocated<Point2D>> sources, final Point2D initialPosition,
             final RssiPositionEstimatorListener<Point2D> listener) {
         super(initialPosition, listener);
         initialize();
@@ -263,8 +258,7 @@ public class NonLinearRssiPositionEstimator2D extends NonLinearRssiPositionEstim
      */
     public NonLinearRssiPositionEstimator2D(
             final Fingerprint<? extends RadioSource, ? extends RssiReading<? extends RadioSource>> fingerprint,
-            final Point2D initialPosition,
-            final RssiPositionEstimatorListener<Point2D> listener) {
+            final Point2D initialPosition, final RssiPositionEstimatorListener<Point2D> listener) {
         super(initialPosition, listener);
         initialize();
         internalSetFingerprint(fingerprint);
@@ -285,8 +279,7 @@ public class NonLinearRssiPositionEstimator2D extends NonLinearRssiPositionEstim
     public NonLinearRssiPositionEstimator2D(
             final List<? extends RadioSourceLocated<Point2D>> sources,
             final Fingerprint<? extends RadioSource, ? extends RssiReading<? extends RadioSource>> fingerprint,
-            final Point2D initialPosition,
-            final RssiPositionEstimatorListener<Point2D> listener) {
+            final Point2D initialPosition, final RssiPositionEstimatorListener<Point2D> listener) {
         super(initialPosition, listener);
         initialize();
         internalSetSources(sources);
@@ -300,11 +293,11 @@ public class NonLinearRssiPositionEstimator2D extends NonLinearRssiPositionEstim
      */
     @Override
     public Point2D getEstimatedPosition() {
-        if (mEstimatedPositionCoordinates == null) {
+        if (estimatedPositionCoordinates == null) {
             return null;
         }
 
-        final InhomogeneousPoint2D result = new InhomogeneousPoint2D();
+        final var result = new InhomogeneousPoint2D();
         getEstimatedPosition(result);
         return result;
     }
@@ -323,20 +316,20 @@ public class NonLinearRssiPositionEstimator2D extends NonLinearRssiPositionEstim
             final List<Point2D> positions, final List<Double> distances,
             final List<Double> distanceStandardDeviations) {
 
-        final int size = positions.size();
+        final var size = positions.size();
         Point2D[] positionsArray = new InhomogeneousPoint2D[size];
         positionsArray = positions.toArray(positionsArray);
 
-        final double[] distancesArray = new double[size];
-        final double[] distanceStandardDeviationsArray = new double[size];
-        for (int i = 0; i < size; i++) {
+        final var distancesArray = new double[size];
+        final var distanceStandardDeviationsArray = new double[size];
+        for (var i = 0; i < size; i++) {
             distancesArray[i] = distances.get(i);
             distanceStandardDeviationsArray[i] = distanceStandardDeviations.get(i);
         }
 
         try {
-            mTrilaterationSolver.setPositionsDistancesAndStandardDeviations(
-                    positionsArray, distancesArray, distanceStandardDeviationsArray);
+            trilaterationSolver.setPositionsDistancesAndStandardDeviations(positionsArray, distancesArray,
+                    distanceStandardDeviationsArray);
         } catch (final LockedException e) {
             throw new IllegalArgumentException(e);
         }
@@ -346,7 +339,6 @@ public class NonLinearRssiPositionEstimator2D extends NonLinearRssiPositionEstim
      * Initializes lateration solver.
      */
     private void initialize() {
-        mTrilaterationSolver = new NonLinearLeastSquaresLateration2DSolver(
-                mLaterationSolverListener);
+        trilaterationSolver = new NonLinearLeastSquaresLateration2DSolver(laterationSolverListener);
     }
 }

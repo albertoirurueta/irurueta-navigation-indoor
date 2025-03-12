@@ -70,13 +70,13 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * transmitted power.
      * If not defined, average value of received power readings will be used.
      */
-    protected Double mInitialTransmittedPowerdBm;
+    protected Double initialTransmittedPowerdBm;
 
     /**
      * Initial position to start the estimation of radio source position.
      * If not defined, centroid of provided located readings will be used.
      */
-    protected P mInitialPosition;
+    protected P initialPosition;
 
     /**
      * Initial exponent typically used on free space for path loss propagation in
@@ -93,24 +93,23 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * to be exact and the estimated path loss exponent will be equal to this
      * value.
      */
-    protected double mInitialPathLossExponent =
-            RangingAndRssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT;
+    protected double initialPathLossExponent = RangingAndRssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT;
 
     /**
      * Indicates whether transmitted power estimation is enabled or not.
      */
-    protected boolean mTransmittedPowerEstimationEnabled =
+    protected boolean transmittedPowerEstimationEnabled =
             RangingAndRssiRadioSourceEstimator.DEFAULT_TRANSMITTED_POWER_ESTIMATION_ENABLED;
 
     /**
      * Indicates whether path loss estimation is enabled or not.
      */
-    protected boolean mPathLossEstimationEnabled;
+    protected boolean pathLossEstimationEnabled;
 
     /**
      * Estimated transmitted power expressed in dBm's.
      */
-    protected double mEstimatedTransmittedPowerdBm;
+    protected double estimatedTransmittedPowerdBm;
 
     /**
      * Estimated exponent typically used on free space for path loss propagation in
@@ -123,29 +122,28 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * If path loss exponent estimation is not enabled, this value will always be equal to
      * {@link RssiRadioSourceEstimator#DEFAULT_PATH_LOSS_EXPONENT}
      */
-    protected double mEstimatedPathLossExponent =
-            RangingAndRssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT;
+    protected double estimatedPathLossExponent = RangingAndRssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT;
 
     /**
      * Variance of estimated transmitted power.
      * This value will only be available when transmitted power
      * estimation is enabled.
      */
-    protected Double mEstimatedTransmittedPowerVariance;
+    protected Double estimatedTransmittedPowerVariance;
 
     /**
      * Variance of estimated path loss exponent.
      * This value will only be available when path-loss
      * exponent estimation is enabled.
      */
-    protected Double mEstimatedPathLossExponentVariance;
+    protected Double estimatedPathLossExponentVariance;
 
     /**
      * Indicates whether position covariances of readings must be taken into account to increase
      * the amount of standard deviation of each ranging measure by the amount of position standard deviation
      * assuming that both measures are statistically independent.
      */
-    protected boolean mUseReadingPositionCovariances = DEFAULT_USE_READING_POSITION_COVARIANCES;
+    protected boolean useReadingPositionCovariances = DEFAULT_USE_READING_POSITION_COVARIANCES;
 
     /**
      * Constructor.
@@ -200,10 +198,9 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @throws IllegalArgumentException if readings are not valid.
      */
     protected RobustRangingAndRssiRadioSourceEstimator(
-            final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
-            final P initialPosition) {
+            final List<? extends RangingAndRssiReadingLocated<S, P>> readings, final P initialPosition) {
         super(readings);
-        mInitialPosition = initialPosition;
+        this.initialPosition = initialPosition;
     }
 
     /**
@@ -212,9 +209,8 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @param initialPosition initial position to start the estimation of radio
      *                        source position.
      */
-    protected RobustRangingAndRssiRadioSourceEstimator(
-            final P initialPosition) {
-        mInitialPosition = initialPosition;
+    protected RobustRangingAndRssiRadioSourceEstimator(final P initialPosition) {
+        this.initialPosition = initialPosition;
     }
 
     /**
@@ -225,10 +221,9 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @param listener        listener in charge of attending events raised by this instance.
      */
     protected RobustRangingAndRssiRadioSourceEstimator(
-            final P initialPosition,
-            final RobustRangingAndRssiRadioSourceEstimatorListener<S, P> listener) {
+            final P initialPosition, final RobustRangingAndRssiRadioSourceEstimatorListener<S, P> listener) {
         super(listener);
-        mInitialPosition = initialPosition;
+        this.initialPosition = initialPosition;
     }
 
     /**
@@ -242,11 +237,10 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @throws IllegalArgumentException if readings are not valid.
      */
     protected RobustRangingAndRssiRadioSourceEstimator(
-            final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
-            final P initialPosition,
+            final List<? extends RangingAndRssiReadingLocated<S, P>> readings, final P initialPosition,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, P> listener) {
         super(readings, listener);
-        mInitialPosition = initialPosition;
+        this.initialPosition = initialPosition;
     }
 
     /**
@@ -256,9 +250,8 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's)
      */
-    protected RobustRangingAndRssiRadioSourceEstimator(
-            final Double initialTransmittedPowerdBm) {
-        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;
+    protected RobustRangingAndRssiRadioSourceEstimator(final Double initialTransmittedPowerdBm) {
+        this.initialTransmittedPowerdBm = initialTransmittedPowerdBm;
     }
 
     /**
@@ -275,7 +268,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
             final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
             final Double initialTransmittedPowerdBm) {
         super(readings);
-        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;
+        this.initialTransmittedPowerdBm = initialTransmittedPowerdBm;
     }
 
     /**
@@ -290,7 +283,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
             final Double initialTransmittedPowerdBm,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, P> listener) {
         super(listener);
-        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;
+        this.initialTransmittedPowerdBm = initialTransmittedPowerdBm;
     }
 
     /**
@@ -305,11 +298,10 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @throws IllegalArgumentException if readings are not valid.
      */
     protected RobustRangingAndRssiRadioSourceEstimator(
-            final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
-            final Double initialTransmittedPowerdBm,
+            final List<? extends RangingAndRssiReadingLocated<S, P>> readings, final Double initialTransmittedPowerdBm,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, P> listener) {
         super(readings, listener);
-        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;
+        this.initialTransmittedPowerdBm = initialTransmittedPowerdBm;
     }
 
     /**
@@ -325,12 +317,11 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @throws IllegalArgumentException if readings are not valid.
      */
     protected RobustRangingAndRssiRadioSourceEstimator(
-            final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
-            final P initialPosition,
+            final List<? extends RangingAndRssiReadingLocated<S, P>> readings, final P initialPosition,
             final Double initialTransmittedPowerdBm) {
         super(readings);
-        mInitialPosition = initialPosition;
-        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;
+        this.initialPosition = initialPosition;
+        this.initialTransmittedPowerdBm = initialTransmittedPowerdBm;
     }
 
     /**
@@ -343,10 +334,9 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      *                                   (expressed in dBm's).
      */
     protected RobustRangingAndRssiRadioSourceEstimator(
-            final P initialPosition,
-            final Double initialTransmittedPowerdBm) {
-        mInitialPosition = initialPosition;
-        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;
+            final P initialPosition, final Double initialTransmittedPowerdBm) {
+        this.initialPosition = initialPosition;
+        this.initialTransmittedPowerdBm = initialTransmittedPowerdBm;
     }
 
     /**
@@ -360,12 +350,11 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @param listener                   in charge of attending events raised by this instance.
      */
     protected RobustRangingAndRssiRadioSourceEstimator(
-            final P initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final P initialPosition, final Double initialTransmittedPowerdBm,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, P> listener) {
         super(listener);
-        mInitialPosition = initialPosition;
-        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;
+        this.initialPosition = initialPosition;
+        this.initialTransmittedPowerdBm = initialTransmittedPowerdBm;
     }
 
     /**
@@ -382,13 +371,12 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @throws IllegalArgumentException if readings are not valid.
      */
     protected RobustRangingAndRssiRadioSourceEstimator(
-            final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
-            final P initialPosition,
+            final List<? extends RangingAndRssiReadingLocated<S, P>> readings, final P initialPosition,
             final Double initialTransmittedPowerdBm,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, P> listener) {
         super(readings, listener);
-        mInitialPosition = initialPosition;
-        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;
+        this.initialPosition = initialPosition;
+        this.initialTransmittedPowerdBm = initialTransmittedPowerdBm;
     }
 
     /**
@@ -405,12 +393,10 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @throws IllegalArgumentException if readings are not valid.
      */
     protected RobustRangingAndRssiRadioSourceEstimator(
-            final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
-            final P initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent) {
+            final List<? extends RangingAndRssiReadingLocated<S, P>> readings, final P initialPosition,
+            final Double initialTransmittedPowerdBm, final double initialPathLossExponent) {
         this(readings, initialPosition, initialTransmittedPowerdBm);
-        mInitialPathLossExponent = initialPathLossExponent;
+        this.initialPathLossExponent = initialPathLossExponent;
     }
 
     /**
@@ -424,11 +410,9 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      */
     protected RobustRangingAndRssiRadioSourceEstimator(
-            final P initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent) {
+            final P initialPosition, final Double initialTransmittedPowerdBm, final double initialPathLossExponent) {
         this(initialPosition, initialTransmittedPowerdBm);
-        mInitialPathLossExponent = initialPathLossExponent;
+        this.initialPathLossExponent = initialPathLossExponent;
     }
 
     /**
@@ -443,12 +427,10 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @param listener                   listener in charge of attending events raised by this instance.
      */
     protected RobustRangingAndRssiRadioSourceEstimator(
-            final P initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent,
+            final P initialPosition, final Double initialTransmittedPowerdBm, final double initialPathLossExponent,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, P> listener) {
         this(initialPosition, initialTransmittedPowerdBm, listener);
-        mInitialPathLossExponent = initialPathLossExponent;
+        this.initialPathLossExponent = initialPathLossExponent;
     }
 
     /**
@@ -466,14 +448,11 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @throws IllegalArgumentException if readings are not valid.
      */
     protected RobustRangingAndRssiRadioSourceEstimator(
-            final List<? extends RangingAndRssiReadingLocated<S, P>> readings,
-            final P initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent,
+            final List<? extends RangingAndRssiReadingLocated<S, P>> readings, final P initialPosition,
+            final Double initialTransmittedPowerdBm, final double initialPathLossExponent,
             final RobustRangingAndRssiRadioSourceEstimatorListener<S, P> listener) {
-        this(readings, initialPosition, initialTransmittedPowerdBm,
-                listener);
-        mInitialPathLossExponent = initialPathLossExponent;
+        this(readings, initialPosition, initialTransmittedPowerdBm, listener);
+        this.initialPathLossExponent = initialPathLossExponent;
     }
 
     /**
@@ -485,7 +464,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * transmitted power.
      */
     public Double getInitialTransmittedPowerdBm() {
-        return mInitialTransmittedPowerdBm;
+        return initialTransmittedPowerdBm;
     }
 
     /**
@@ -498,12 +477,11 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      *                                   power.
      * @throws LockedException if estimator is locked.
      */
-    public void setInitialTransmittedPowerdBm(final Double initialTransmittedPowerdBm)
-            throws LockedException {
+    public void setInitialTransmittedPowerdBm(final Double initialTransmittedPowerdBm) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
-        mInitialTransmittedPowerdBm = initialTransmittedPowerdBm;
+        this.initialTransmittedPowerdBm = initialTransmittedPowerdBm;
     }
 
     /**
@@ -515,8 +493,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * transmitted power.
      */
     public Double getInitialTransmittedPower() {
-        return mInitialTransmittedPowerdBm != null ?
-                Utils.dBmToPower(mInitialTransmittedPowerdBm) : null;
+        return initialTransmittedPowerdBm != null ? Utils.dBmToPower(initialTransmittedPowerdBm) : null;
     }
 
     /**
@@ -529,8 +506,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @throws LockedException          if estimator is locked.
      * @throws IllegalArgumentException if provided value is negative.
      */
-    public void setInitialTransmittedPower(final Double initialTransmittedPower)
-            throws LockedException {
+    public void setInitialTransmittedPower(final Double initialTransmittedPower) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
@@ -538,10 +514,9 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
             if (initialTransmittedPower < 0.0) {
                 throw new IllegalArgumentException();
             }
-            mInitialTransmittedPowerdBm = Utils.powerTodBm(
-                    initialTransmittedPower);
+            initialTransmittedPowerdBm = Utils.powerTodBm(initialTransmittedPower);
         } else {
-            mInitialTransmittedPowerdBm = null;
+            initialTransmittedPowerdBm = null;
         }
     }
 
@@ -552,7 +527,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @return initial position to start the estimation of radio source position.
      */
     public P getInitialPosition() {
-        return mInitialPosition;
+        return initialPosition;
     }
 
     /**
@@ -567,7 +542,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
         if (isLocked()) {
             throw new LockedException();
         }
-        mInitialPosition = initialPosition;
+        this.initialPosition = initialPosition;
     }
 
     /**
@@ -588,7 +563,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @return initial path loss exponent.
      */
     public double getInitialPathLossExponent() {
-        return mInitialPathLossExponent;
+        return initialPathLossExponent;
     }
 
     /**
@@ -609,12 +584,11 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @param initialPathLossExponent initial path loss exponent.
      * @throws LockedException if estimator is locked.
      */
-    public void setInitialPathLossExponent(final double initialPathLossExponent)
-            throws LockedException {
+    public void setInitialPathLossExponent(final double initialPathLossExponent) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
-        mInitialPathLossExponent = initialPathLossExponent;
+        this.initialPathLossExponent = initialPathLossExponent;
     }
 
     /**
@@ -623,7 +597,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @return true if transmitted power estimation is enabled, false otherwise.
      */
     public boolean isTransmittedPowerEstimationEnabled() {
-        return mTransmittedPowerEstimationEnabled;
+        return transmittedPowerEstimationEnabled;
     }
 
     /**
@@ -633,13 +607,12 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      *                                          false otherwise.
      * @throws LockedException if estimator is locked.
      */
-    public void setTransmittedPowerEstimationEnabled(
-            final boolean transmittedPowerEstimationEnabled)
+    public void setTransmittedPowerEstimationEnabled(final boolean transmittedPowerEstimationEnabled)
             throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
-        mTransmittedPowerEstimationEnabled = transmittedPowerEstimationEnabled;
+        this.transmittedPowerEstimationEnabled = transmittedPowerEstimationEnabled;
     }
 
     /**
@@ -648,7 +621,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @return true if path loss estimation is enabled, false otherwise.
      */
     public boolean isPathLossEstimationEnabled() {
-        return mPathLossEstimationEnabled;
+        return pathLossEstimationEnabled;
     }
 
     /**
@@ -658,13 +631,11 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      *                                  false otherwise.
      * @throws LockedException if estimator is locked.
      */
-    public void setPathLossEstimationEnabled(
-            final boolean pathLossEstimationEnabled)
-            throws LockedException {
+    public void setPathLossEstimationEnabled(final boolean pathLossEstimationEnabled) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
-        mPathLossEstimationEnabled = pathLossEstimationEnabled;
+        this.pathLossEstimationEnabled = pathLossEstimationEnabled;
     }
 
     /**
@@ -675,7 +646,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @return true to take into account reading position covariances, false otherwise.
      */
     public boolean getUseReadingPositionCovariance() {
-        return mUseReadingPositionCovariances;
+        return useReadingPositionCovariances;
     }
 
     /**
@@ -687,13 +658,11 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      *                                      otherwise.
      * @throws LockedException if estimator is locked.
      */
-    public void setUseReadingPositionCovariances(
-            final boolean useReadingPositionCovariances)
-            throws LockedException {
+    public void setUseReadingPositionCovariances(final boolean useReadingPositionCovariances) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
-        mUseReadingPositionCovariances = useReadingPositionCovariances;
+        this.useReadingPositionCovariances = useReadingPositionCovariances;
     }
 
     /**
@@ -713,8 +682,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      *                                   if an inhomogeneous linear one is used instead.
      * @throws LockedException if estimator is locked.
      */
-    public abstract void setHomogeneousRangingLinearSolverUsed(
-            final boolean useHomogeneousLinearSolver)
+    public abstract void setHomogeneousRangingLinearSolverUsed(final boolean useHomogeneousLinearSolver)
             throws LockedException;
 
     /**
@@ -725,9 +693,9 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
     @Override
     public boolean isReady() {
         // if transmitted power estimation is disabled, an initial transmitted power must be provided
-        return !(!mTransmittedPowerEstimationEnabled && mInitialTransmittedPowerdBm == null) &&
+        return !(!transmittedPowerEstimationEnabled && initialTransmittedPowerdBm == null)
                 // readings must also be valid
-                areValidReadings(mReadings);
+                && areValidReadings(readings);
     }
 
     /**
@@ -737,7 +705,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @return estimated transmitted power variance.
      */
     public Double getEstimatedTransmittedPowerVariance() {
-        return mEstimatedTransmittedPowerVariance;
+        return estimatedTransmittedPowerVariance;
     }
 
     /**
@@ -747,7 +715,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @return estimated path loss exponent variance.
      */
     public Double getEstimatedPathLossExponentVariance() {
-        return mEstimatedPathLossExponentVariance;
+        return estimatedPathLossExponentVariance;
     }
 
     /**
@@ -756,7 +724,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @return estimated transmitted power expressed in milli watts.
      */
     public double getEstimatedTransmittedPower() {
-        return Utils.dBmToPower(mEstimatedTransmittedPowerdBm);
+        return Utils.dBmToPower(estimatedTransmittedPowerdBm);
     }
 
     /**
@@ -765,7 +733,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @return estimated transmitted power expressed in dBm's.
      */
     public double getEstimatedTransmittedPowerdBm() {
-        return mEstimatedTransmittedPowerdBm;
+        return estimatedTransmittedPowerdBm;
     }
 
     /**
@@ -782,7 +750,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @return estimated path loss exponent.
      */
     public double getEstimatedPathLossExponent() {
-        return mEstimatedPathLossExponent;
+        return estimatedPathLossExponent;
     }
 
     /**
@@ -798,9 +766,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
      * @param samplesIndices indices of subset samples.
      * @param solutions      instance where solution will be stored.
      */
-    protected abstract void solvePreliminarySolutions(
-            final int[] samplesIndices,
-            final List<Solution<P>> solutions);
+    protected abstract void solvePreliminarySolutions(final int[] samplesIndices, final List<Solution<P>> solutions);
 
     /**
      * Estimates residual for a solution obtained for a subset of samples.
@@ -817,31 +783,28 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
         // Pte is equivalent transmitted power, expressed in dBm
         // k is a constant equal to k = c^2 / (pi * f)^2, where c is speed of light
         // and d is equal to distance between fingerprint and estimated position
-        final RangingAndRssiReadingLocated<S, P> reading = mReadings.get(i);
-        final double frequency = reading.getSource().getFrequency();
+        final var reading = readings.get(i);
+        final var frequency = reading.getSource().getFrequency();
 
-        final double pathLossExponent = currentEstimation.getEstimatedPathLossExponent();
+        final var pathLossExponent = currentEstimation.getEstimatedPathLossExponent();
 
         // compute k as the constant part of the isotropic received power formula
         // so that: Pr = Pte*k^n/d^n
-        final double k = RssiRadioSourceEstimator.SPEED_OF_LIGHT /
-                (4.0 * Math.PI * frequency);
-        final double kdB = 10.0 * pathLossExponent * Math.log10(k);
+        final var k = RssiRadioSourceEstimator.SPEED_OF_LIGHT / (4.0 * Math.PI * frequency);
+        final var kdB = 10.0 * pathLossExponent * Math.log10(k);
 
         // get distance from estimated radio source position and reading position
-        final P readingPosition = reading.getPosition();
-        final P radioSourcePosition = currentEstimation.getEstimatedPosition();
+        final var readingPosition = reading.getPosition();
+        final var radioSourcePosition = currentEstimation.getEstimatedPosition();
 
-        final double sqrDistance = radioSourcePosition.sqrDistanceTo(readingPosition);
+        final var sqrDistance = radioSourcePosition.sqrDistanceTo(readingPosition);
 
-        final double transmittedPowerdBm = currentEstimation.
-                getEstimatedTransmittedPowerdBm();
+        final var transmittedPowerdBm = currentEstimation.getEstimatedTransmittedPowerdBm();
 
         // compute expected received power assuming isotropic transmission
         // and compare against measured RSSI at fingerprint location
-        final double expectedRSSI = kdB + transmittedPowerdBm -
-                5.0 * pathLossExponent * Math.log10(sqrDistance);
-        final double rssi = reading.getRssi();
+        final var expectedRSSI = kdB + transmittedPowerdBm - 5.0 * pathLossExponent * Math.log10(sqrDistance);
+        final var rssi = reading.getRssi();
 
         return Math.abs(expectedRSSI - rssi);
     }
@@ -856,17 +819,17 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
         /**
          * Estimated position for a subset of samples.
          */
-        private final P mEstimatedPosition;
+        private final P estimatedPosition;
 
         /**
          * Estimated transmitted power expressed in dBm's for a subset of samples.
          */
-        private final double mEstimatedTransmittedPowerdBm;
+        private final double estimatedTransmittedPowerdBm;
 
         /**
          * Estimated path loss exponent for a subset of samples.
          */
-        private final double mEstimatedPathLossExponent;
+        private final double estimatedPathLossExponent;
 
         /**
          * Constructor.
@@ -876,12 +839,11 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
          *                                     in dBm's for a subset of samples.
          * @param estimatedPathLossExponent    estimated path loss exponent.
          */
-        public Solution(final P estimatedPosition,
-                        final double estimatedTransmittedPowerdBm,
+        public Solution(final P estimatedPosition, final double estimatedTransmittedPowerdBm,
                         final double estimatedPathLossExponent) {
-            mEstimatedPosition = estimatedPosition;
-            mEstimatedTransmittedPowerdBm = estimatedTransmittedPowerdBm;
-            mEstimatedPathLossExponent = estimatedPathLossExponent;
+            this.estimatedPosition = estimatedPosition;
+            this.estimatedTransmittedPowerdBm = estimatedTransmittedPowerdBm;
+            this.estimatedPathLossExponent = estimatedPathLossExponent;
         }
 
         /**
@@ -890,7 +852,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
          * @return estimated position for a subset of samples.
          */
         public P getEstimatedPosition() {
-            return mEstimatedPosition;
+            return estimatedPosition;
         }
 
         /**
@@ -901,7 +863,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
          * of samples.
          */
         public double getEstimatedTransmittedPowerdBm() {
-            return mEstimatedTransmittedPowerdBm;
+            return estimatedTransmittedPowerdBm;
         }
 
         /**
@@ -910,7 +872,7 @@ public abstract class RobustRangingAndRssiRadioSourceEstimator<S extends RadioSo
          * @return estimated path loss exponent.
          */
         public double getEstimatedPathLossExponent() {
-            return mEstimatedPathLossExponent;
+            return estimatedPathLossExponent;
         }
     }
 }

@@ -57,38 +57,32 @@ public abstract class RobustRssiPositionEstimator<P extends Point<?>> extends Ro
      * Initializes robust lateration solver listener.
      */
     private void init() {
-        mTrilaterationSolverListener = new RobustLaterationSolverListener<P>() {
+        trilaterationSolverListener = new RobustLaterationSolverListener<>() {
             @Override
             public void onSolveStart(final RobustLaterationSolver<P> solver) {
-                if (mListener != null) {
-                    mListener.onEstimateStart(
-                            RobustRssiPositionEstimator.this);
+                if (listener != null) {
+                    listener.onEstimateStart(RobustRssiPositionEstimator.this);
                 }
             }
 
             @Override
             public void onSolveEnd(final RobustLaterationSolver<P> solver) {
-                if (mListener != null) {
-                    mListener.onEstimateEnd(
-                            RobustRssiPositionEstimator.this);
+                if (listener != null) {
+                    listener.onEstimateEnd(RobustRssiPositionEstimator.this);
                 }
             }
 
             @Override
-            public void onSolveNextIteration(final RobustLaterationSolver<P> solver,
-                                             final int iteration) {
-                if (mListener != null) {
-                    mListener.onEstimateNextIteration(
-                            RobustRssiPositionEstimator.this, iteration);
+            public void onSolveNextIteration(final RobustLaterationSolver<P> solver, final int iteration) {
+                if (listener != null) {
+                    listener.onEstimateNextIteration(RobustRssiPositionEstimator.this, iteration);
                 }
             }
 
             @Override
-            public void onSolveProgressChange(final RobustLaterationSolver<P> solver,
-                                              final float progress) {
-                if (mListener != null) {
-                    mListener.onEstimateProgressChange(
-                            RobustRssiPositionEstimator.this, progress);
+            public void onSolveProgressChange(final RobustLaterationSolver<P> solver, final float progress) {
+                if (listener != null) {
+                    listener.onEstimateProgressChange(RobustRssiPositionEstimator.this, progress);
                 }
             }
         };

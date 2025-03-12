@@ -42,8 +42,7 @@ import java.util.List;
  *
  * @param <P> a {@link Point} type.
  */
-public abstract class LinearFingerprintPositionEstimator<P extends Point<P>> extends
-        FingerprintPositionEstimator<P> {
+public abstract class LinearFingerprintPositionEstimator<P extends Point<P>> extends FingerprintPositionEstimator<P> {
 
     /**
      * Constructor.
@@ -56,8 +55,7 @@ public abstract class LinearFingerprintPositionEstimator<P extends Point<P>> ext
      *
      * @param listener listener in charge of handling events.
      */
-    protected LinearFingerprintPositionEstimator(
-            final FingerprintPositionEstimatorListener<P> listener) {
+    protected LinearFingerprintPositionEstimator(final FingerprintPositionEstimatorListener<P> listener) {
         super(listener);
     }
 
@@ -121,8 +119,7 @@ public abstract class LinearFingerprintPositionEstimator<P extends Point<P>> ext
      */
     @Override
     @SuppressWarnings("Duplicates")
-    public void estimate() throws LockedException, NotReadyException,
-            FingerprintEstimationException {
+    public void estimate() throws LockedException, NotReadyException, FingerprintEstimationException {
 
         if (!isReady()) {
             throw new NotReadyException();
@@ -132,43 +129,43 @@ public abstract class LinearFingerprintPositionEstimator<P extends Point<P>> ext
         }
 
         try {
-            mLocked = true;
+            locked = true;
 
-            if (mListener != null) {
-                mListener.onEstimateStart(this);
+            if (listener != null) {
+                listener.onEstimateStart(this);
             }
 
             RadioSourceNoMeanKNearestFinder<P, RadioSource> noMeanFinder = null;
             RadioSourceKNearestFinder<P, RadioSource> finder = null;
-            if (mUseNoMeanNearestFingerprintFinder) {
+            if (useNoMeanNearestFingerprintFinder) {
                 //noinspection unchecked
                 noMeanFinder = new RadioSourceNoMeanKNearestFinder<>(
                         (Collection<RssiFingerprintLocated<RadioSource,
-                                RssiReading<RadioSource>, P>>) mLocatedFingerprints);
+                                RssiReading<RadioSource>, P>>) locatedFingerprints);
             } else {
                 //noinspection unchecked
                 finder = new RadioSourceKNearestFinder<>(
                         (Collection<RssiFingerprintLocated<RadioSource,
-                                RssiReading<RadioSource>, P>>) mLocatedFingerprints);
+                                RssiReading<RadioSource>, P>>) locatedFingerprints);
             }
 
-            mEstimatedPositionCoordinates = null;
-            mNearestFingerprints = null;
+            estimatedPositionCoordinates = null;
+            nearestFingerprints = null;
 
-            final int dims = getNumberOfDimensions();
-            final int max = mMaxNearestFingerprints < 0 ?
-                    mLocatedFingerprints.size() :
-                    Math.min(mMaxNearestFingerprints, mLocatedFingerprints.size());
-            for (int k = mMinNearestFingerprints; k <= max; k++) {
+            final var dims = getNumberOfDimensions();
+            final var max = maxNearestFingerprints < 0
+                    ? locatedFingerprints.size()
+                    : Math.min(maxNearestFingerprints, locatedFingerprints.size());
+            for (var k = minNearestFingerprints; k <= max; k++) {
 
                 if (noMeanFinder != null) {
                     //noinspection unchecked
-                    mNearestFingerprints = noMeanFinder.findKNearestTo(
-                            (RssiFingerprint<RadioSource, RssiReading<RadioSource>>) mFingerprint, k);
+                    nearestFingerprints = noMeanFinder.findKNearestTo(
+                            (RssiFingerprint<RadioSource, RssiReading<RadioSource>>) fingerprint, k);
                 } else {
                     //noinspection unchecked
-                    mNearestFingerprints = finder.findKNearestTo(
-                            (RssiFingerprint<RadioSource, RssiReading<RadioSource>>) mFingerprint, k);
+                    nearestFingerprints = finder.findKNearestTo(
+                            (RssiFingerprint<RadioSource, RssiReading<RadioSource>>) fingerprint, k);
                 }
 
                 // Demonstration in 2D:
@@ -392,32 +389,29 @@ public abstract class LinearFingerprintPositionEstimator<P extends Point<P>> ext
 
 
                 // build system of equations
-                final int totalReadings = totalReadings(mNearestFingerprints);
+                final var totalReadings = totalReadings(nearestFingerprints);
 
                 try {
-                    final double ln10 = Math.log(10.0);
-                    int row = 0;
-                    final Matrix a = new Matrix(totalReadings, dims);
-                    final double[] b = new double[totalReadings];
-                    for (RssiFingerprintLocated<RadioSource, RssiReading<RadioSource>, P> locatedFingerprint :
-                            mNearestFingerprints) {
+                    final var ln10 = Math.log(10.0);
+                    var row = 0;
+                    final var a = new Matrix(totalReadings, dims);
+                    final var b = new double[totalReadings];
+                    for (final var locatedFingerprint : nearestFingerprints) {
 
-                        final P fingerprintPosition = locatedFingerprint.getPosition();
-                        final List<RssiReading<RadioSource>> locatedReadings =
-                                locatedFingerprint.getReadings();
+                        final var fingerprintPosition = locatedFingerprint.getPosition();
+                        final var locatedReadings = locatedFingerprint.getReadings();
                         if (locatedReadings == null) {
                             continue;
                         }
 
-                        double locatedMeanRssi = 0.0;
-                        double meanRssi = 0.0;
-                        if (mRemoveMeansFromFingerprintReadings) {
+                        var locatedMeanRssi = 0.0;
+                        var meanRssi = 0.0;
+                        if (removeMeansFromFingerprintReadings) {
                             locatedMeanRssi = locatedFingerprint.getMeanRssi();
                         }
 
-
-                        for (RssiReading<RadioSource> locatedReading : locatedReadings) {
-                            final RadioSource source = locatedReading.getSource();
+                        for (final var locatedReading : locatedReadings) {
+                            final var source = locatedReading.getSource();
 
                             // find within the list of located sources the source of
                             // current located fingerprint reading.
@@ -425,40 +419,36 @@ public abstract class LinearFingerprintPositionEstimator<P extends Point<P>> ext
                             // regardless of them being located or not
 
                             //noinspection SuspiciousMethodCalls
-                            final int pos = mSources.indexOf(source);
+                            final var pos = sources.indexOf(source);
                             if (pos < 0) {
                                 continue;
                             }
 
-                            final RadioSourceLocated<P> locatedSource = mSources.get(pos);
-                            double pathLossExponent = mPathLossExponent;
-                            if (mUseSourcesPathLossExponentWhenAvailable &&
-                                    locatedSource instanceof RadioSourceWithPower) {
-                                pathLossExponent = ((RadioSourceWithPower) locatedSource).
-                                        getPathLossExponent();
+                            final var locatedSource = sources.get(pos);
+                            var pathLossExponent = this.pathLossExponent;
+                            if (useSourcesPathLossExponentWhenAvailable
+                                    && locatedSource instanceof RadioSourceWithPower) {
+                                pathLossExponent = ((RadioSourceWithPower) locatedSource).getPathLossExponent();
                             }
 
-                            final double tmp = 10.0 * pathLossExponent / ln10;
+                            final var tmp = 10.0 * pathLossExponent / ln10;
 
-                            final P sourcePosition = locatedSource.getPosition();
-                            final double locatedRssi = locatedReading.getRssi();
-                            final double sqrDistance = fingerprintPosition.sqrDistanceTo(
-                                    sourcePosition);
-                            if (mRemoveMeansFromFingerprintReadings) {
-                                meanRssi = mFingerprint.getMeanRssi();
+                            final var sourcePosition = locatedSource.getPosition();
+                            final var locatedRssi = locatedReading.getRssi();
+                            final var sqrDistance = fingerprintPosition.sqrDistanceTo(sourcePosition);
+                            if (removeMeansFromFingerprintReadings) {
+                                meanRssi = fingerprint.getMeanRssi();
                             }
 
-                            final List<? extends RssiReading<? extends RadioSource>> readings =
-                                    mFingerprint.getReadings();
-                            for (RssiReading<? extends RadioSource> reading : readings) {
-                                if (reading.getSource() == null ||
-                                        !reading.getSource().equals(locatedSource)) {
+                            final var readings = fingerprint.getReadings();
+                            for (final var reading : readings) {
+                                if (reading.getSource() == null || !reading.getSource().equals(locatedSource)) {
                                     continue;
                                 }
 
                                 // only take into account reading for matching sources on located and
                                 // non-located readings
-                                final double rssi = reading.getRssi();
+                                final var rssi = reading.getRssi();
 
                                 // ideally if there was no bias between devices RSSI measures, we should compute:
                                 // diffRssi = locatedRssi - rssi
@@ -466,19 +456,17 @@ public abstract class LinearFingerprintPositionEstimator<P extends Point<P>> ext
                                 // both readings (ideally both should be equal, but they will only be approximate in
                                 // practice).
                                 double diffRssi;
-                                if (mRemoveMeansFromFingerprintReadings) {
+                                if (removeMeansFromFingerprintReadings) {
                                     diffRssi = (locatedRssi - locatedMeanRssi) - (rssi - meanRssi);
                                 } else {
                                     diffRssi = locatedRssi - rssi;
                                 }
 
                                 b[row] = diffRssi;
-                                for (int i = 0; i < dims; i++) {
-                                    final double fingerprintCoord = fingerprintPosition
-                                            .getInhomogeneousCoordinate(i);
-                                    final double sourceCoord = sourcePosition
-                                            .getInhomogeneousCoordinate(i);
-                                    final double diffCoord = fingerprintCoord - sourceCoord;
+                                for (var i = 0; i < dims; i++) {
+                                    final var fingerprintCoord = fingerprintPosition.getInhomogeneousCoordinate(i);
+                                    final var sourceCoord = sourcePosition.getInhomogeneousCoordinate(i);
+                                    final var diffCoord = fingerprintCoord - sourceCoord;
 
                                     a.setElementAt(row, i, tmp * diffCoord / sqrDistance);
 
@@ -489,28 +477,28 @@ public abstract class LinearFingerprintPositionEstimator<P extends Point<P>> ext
                         }
                     }
 
-                    mEstimatedPositionCoordinates = com.irurueta.algebra.Utils.solve(a, b);
+                    estimatedPositionCoordinates = com.irurueta.algebra.Utils.solve(a, b);
 
                     // a solution was found so we exit loop
                     break;
                 } catch (final AlgebraException e) {
                     // solution could not be found with current data
                     // Iterate to use additional nearby fingerprints
-                    mEstimatedPositionCoordinates = null;
-                    mNearestFingerprints = null;
+                    estimatedPositionCoordinates = null;
+                    nearestFingerprints = null;
                 }
             }
 
-            if (mEstimatedPositionCoordinates == null) {
+            if (estimatedPositionCoordinates == null) {
                 // no solution could be found
                 throw new FingerprintEstimationException();
             }
 
-            if (mListener != null) {
-                mListener.onEstimateEnd(this);
+            if (listener != null) {
+                listener.onEstimateEnd(this);
             }
         } finally {
-            mLocked = false;
+            locked = false;
         }
     }
 }

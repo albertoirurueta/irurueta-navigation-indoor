@@ -46,6 +46,5 @@ public interface SequentialRobustRangingAndRssiPositionEstimatorListener<P exten
      * @param progress  progress of estimation expressed as a value between 0.0 and 1.0.
      */
     void onEstimateProgressChange(
-            final SequentialRobustRangingAndRssiPositionEstimator<P> estimator,
-            final float progress);
+            final SequentialRobustRangingAndRssiPositionEstimator<P> estimator, final float progress);
 }

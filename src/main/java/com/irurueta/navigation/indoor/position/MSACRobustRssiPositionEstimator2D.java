@@ -50,8 +50,7 @@ public class MSACRobustRssiPositionEstimator2D extends RobustRssiPositionEstimat
      * @throws IllegalArgumentException if provided sources is null or the number of
      *                                  provided sources is less than the required minimum.
      */
-    public MSACRobustRssiPositionEstimator2D(
-            final List<? extends RadioSourceLocated<Point2D>> sources) {
+    public MSACRobustRssiPositionEstimator2D(final List<? extends RadioSourceLocated<Point2D>> sources) {
         super();
         init();
         internalSetSources(sources);
@@ -94,8 +93,7 @@ public class MSACRobustRssiPositionEstimator2D extends RobustRssiPositionEstimat
      *
      * @param listener listener in charge of handling events.
      */
-    public MSACRobustRssiPositionEstimator2D(
-            final RobustRssiPositionEstimatorListener<Point2D> listener) {
+    public MSACRobustRssiPositionEstimator2D(final RobustRssiPositionEstimatorListener<Point2D> listener) {
         super(listener);
         init();
     }
@@ -158,8 +156,7 @@ public class MSACRobustRssiPositionEstimator2D extends RobustRssiPositionEstimat
      * @return threshold to determine whether samples are inliers or not.
      */
     public double getThreshold() {
-        return ((MSACRobustLateration2DSolver) mLaterationSolver).
-                getThreshold();
+        return ((MSACRobustLateration2DSolver) laterationSolver).getThreshold();
     }
 
     /**
@@ -172,8 +169,7 @@ public class MSACRobustRssiPositionEstimator2D extends RobustRssiPositionEstimat
      * @throws LockedException          if this solver is locked.
      */
     public void setThreshold(final double threshold) throws LockedException {
-        ((MSACRobustLateration2DSolver) mLaterationSolver).
-                setThreshold(threshold);
+        ((MSACRobustLateration2DSolver) laterationSolver).setThreshold(threshold);
     }
 
     /**
@@ -190,7 +186,6 @@ public class MSACRobustRssiPositionEstimator2D extends RobustRssiPositionEstimat
      * Initializes robust lateration solver.
      */
     private void init() {
-        mLaterationSolver = new MSACRobustLateration2DSolver(
-                mTrilaterationSolverListener);
+        laterationSolver = new MSACRobustLateration2DSolver(trilaterationSolverListener);
     }
 }

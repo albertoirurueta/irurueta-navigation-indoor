@@ -15,22 +15,22 @@
  */
 package com.irurueta.navigation.indoor;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class WifiAccessPointTest {
+class WifiAccessPointTest {
 
     private static final String BSSID = "bssid";
     private static final String SSID = "ssid";
     private static final double FREQUENCY = 2.4e9;
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         // test empty constructor
-        WifiAccessPoint ap = new WifiAccessPoint();
+        var ap = new WifiAccessPoint();
 
         // check default values
         assertNull(ap.getBssid());
@@ -48,18 +48,8 @@ public class WifiAccessPointTest {
         assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // Force IllegalArgumentException
-        ap = null;
-        try {
-            ap = new WifiAccessPoint(null, FREQUENCY);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            ap = new WifiAccessPoint(BSSID, -FREQUENCY);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(ap);
+        assertThrows(IllegalArgumentException.class, () -> new WifiAccessPoint(null, FREQUENCY));
+        assertThrows(IllegalArgumentException.class, () -> new WifiAccessPoint(BSSID, -FREQUENCY));
 
         // test constructor with BSSID and SSID
         ap = new WifiAccessPoint(BSSID, FREQUENCY, SSID);
@@ -71,25 +61,15 @@ public class WifiAccessPointTest {
         assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap.getType());
 
         // Force IllegalArgumentException
-        ap = null;
-        try {
-            ap = new WifiAccessPoint(null, FREQUENCY, SSID);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            ap = new WifiAccessPoint(BSSID, -FREQUENCY, SSID);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(ap);
+        assertThrows(IllegalArgumentException.class, () -> new WifiAccessPoint(null, FREQUENCY, SSID));
+        assertThrows(IllegalArgumentException.class, () -> new WifiAccessPoint(BSSID, -FREQUENCY, SSID));
     }
 
     @Test
-    public void testEquals() {
-        final WifiAccessPoint ap1 = new WifiAccessPoint("bssid1", FREQUENCY);
-        final WifiAccessPoint ap2 = new WifiAccessPoint("bssid1", FREQUENCY);
-        final WifiAccessPoint ap3 = new WifiAccessPoint("bssid2", FREQUENCY);
+    void testEquals() {
+        final var ap1 = new WifiAccessPoint("bssid1", FREQUENCY);
+        final var ap2 = new WifiAccessPoint("bssid1", FREQUENCY);
+        final var ap3 = new WifiAccessPoint("bssid2", FREQUENCY);
 
         // check
         //noinspection EqualsWithItself
@@ -102,7 +82,7 @@ public class WifiAccessPointTest {
     }
 
     @Test
-    public void testHashCode() {
+    void testHashCode() {
         final WifiAccessPoint ap1 = new WifiAccessPoint("bssid1", FREQUENCY);
         final WifiAccessPoint ap2 = new WifiAccessPoint("bssid1", FREQUENCY);
         final WifiAccessPoint ap3 = new WifiAccessPoint("bssid2", FREQUENCY);
@@ -113,9 +93,9 @@ public class WifiAccessPointTest {
     }
 
     @Test
-    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+    void testSerializeDeserialize() throws IOException, ClassNotFoundException {
         // test constructor with BSSID and SSID
-        final WifiAccessPoint ap1 = new WifiAccessPoint(BSSID, FREQUENCY, SSID);
+        final var ap1 = new WifiAccessPoint(BSSID, FREQUENCY, SSID);
 
         // check
         assertEquals(BSSID, ap1.getBssid());
@@ -124,8 +104,8 @@ public class WifiAccessPointTest {
         assertEquals(RadioSourceType.WIFI_ACCESS_POINT, ap1.getType());
 
         // serialize and deserialize
-        final byte[] bytes = SerializationHelper.serialize(ap1);
-        final WifiAccessPoint ap2 = SerializationHelper.deserialize(bytes);
+        final var bytes = SerializationHelper.serialize(ap1);
+        final var ap2 = SerializationHelper.<WifiAccessPoint>deserialize(bytes);
 
         // check
         assertEquals(ap1, ap2);

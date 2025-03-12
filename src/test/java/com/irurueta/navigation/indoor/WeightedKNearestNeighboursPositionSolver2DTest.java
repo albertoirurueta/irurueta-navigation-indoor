@@ -22,20 +22,18 @@ import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import static com.irurueta.navigation.indoor.Utils.dBmToPower;
 import static com.irurueta.navigation.indoor.Utils.powerTodBm;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class WeightedKNearestNeighboursPositionSolver2DTest implements
+class WeightedKNearestNeighboursPositionSolver2DTest implements
         WeightedKNearestNeighboursPositionSolverListener<Point2D> {
 
     private static final Logger LOGGER = Logger.getLogger(
@@ -72,9 +70,9 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
     private int solveEnd;
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         // test empty constructor
-        WeightedKNearestNeighboursPositionSolver2D solver = new WeightedKNearestNeighboursPositionSolver2D();
+        var solver = new WeightedKNearestNeighboursPositionSolver2D();
 
         // check default values
         assertNull(solver.getEstimatedPosition());
@@ -87,11 +85,11 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
         assertEquals(WeightedKNearestNeighboursPositionSolver.DEFAULT_EPSILON, solver.getEpsilon(), 0.0);
         assertNull(solver.getEstimatedPositionCoordinates());
 
-        // test constructor with fingerprints and distances
-        // noinspection unchecked
+        // test constructor with fingerprints and distances noinspection unchecked
+        //noinspection unchecked
         final RssiFingerprintLocated2D<WifiAccessPoint, RssiReading<WifiAccessPoint>>[] fingerprints =
                 new RssiFingerprintLocated2D[1];
-        final double[] distances = new double[1];
+        final var distances = new double[1];
         solver = new WeightedKNearestNeighboursPositionSolver2D(fingerprints, distances);
 
         // check default values
@@ -106,29 +104,15 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
         assertNull(solver.getEstimatedPositionCoordinates());
 
         // Force IllegalArgumentException
-        solver = null;
-        try {
-            solver = new WeightedKNearestNeighboursPositionSolver2D(null, distances);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            solver = new WeightedKNearestNeighboursPositionSolver2D(fingerprints, null);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            // noinspection unchecked
-            solver = new WeightedKNearestNeighboursPositionSolver2D(new RssiFingerprintLocated2D[0], new double[0]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            solver = new WeightedKNearestNeighboursPositionSolver2D(fingerprints, new double[2]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(solver);
+        assertThrows(IllegalArgumentException.class, () -> new WeightedKNearestNeighboursPositionSolver2D(
+                null, distances));
+        assertThrows(IllegalArgumentException.class, () -> new WeightedKNearestNeighboursPositionSolver2D(fingerprints,
+                null));
+        //noinspection unchecked
+        assertThrows(IllegalArgumentException.class, () -> new WeightedKNearestNeighboursPositionSolver2D(
+                new RssiFingerprintLocated2D[0], new double[0]));
+        assertThrows(IllegalArgumentException.class, () -> new WeightedKNearestNeighboursPositionSolver2D(fingerprints,
+                new double[2]));
 
         // test constructor with listener
         solver = new WeightedKNearestNeighboursPositionSolver2D(this);
@@ -159,35 +143,20 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
         assertNull(solver.getEstimatedPositionCoordinates());
 
         // Force IllegalArgumentException
-        solver = null;
-        try {
-            solver = new WeightedKNearestNeighboursPositionSolver2D(null, distances, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            solver = new WeightedKNearestNeighboursPositionSolver2D(fingerprints, null, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            // noinspection unchecked
-            solver = new WeightedKNearestNeighboursPositionSolver2D(new RssiFingerprintLocated2D[0], new double[0],
-                    this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            solver = new WeightedKNearestNeighboursPositionSolver2D(fingerprints, new double[2], this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(solver);
+        assertThrows(IllegalArgumentException.class, () -> new WeightedKNearestNeighboursPositionSolver2D(
+                null, distances, this));
+        assertThrows(IllegalArgumentException.class, () -> new WeightedKNearestNeighboursPositionSolver2D(fingerprints,
+                null, this));
+        //noinspection unchecked
+        assertThrows(IllegalArgumentException.class, () -> new WeightedKNearestNeighboursPositionSolver2D(
+                new RssiFingerprintLocated2D[0], new double[0], this));
+        assertThrows(IllegalArgumentException.class, () -> new WeightedKNearestNeighboursPositionSolver2D(fingerprints,
+                new double[2], this));
     }
 
     @Test
-    public void testGetSetListener() throws LockedException {
-        final WeightedKNearestNeighboursPositionSolver2D solver = new WeightedKNearestNeighboursPositionSolver2D();
+    void testGetSetListener() throws LockedException {
+        final var solver = new WeightedKNearestNeighboursPositionSolver2D();
 
         // check default value
         assertNull(solver.getListener());
@@ -200,8 +169,8 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
     }
 
     @Test
-    public void testSetFingerprintsAndDistances() throws LockedException {
-        final WeightedKNearestNeighboursPositionSolver2D solver = new WeightedKNearestNeighboursPositionSolver2D();
+    void testSetFingerprintsAndDistances() throws LockedException {
+        final var solver = new WeightedKNearestNeighboursPositionSolver2D();
 
         // check default values
         assertNull(solver.getFingerprints());
@@ -211,7 +180,7 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
         //noinspection unchecked
         final RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>[] fingerprints =
                 new RssiFingerprintLocated[1];
-        final double[] distances = new double[1];
+        final var distances = new double[1];
         solver.setFingerprintsAndDistances(fingerprints, distances);
 
         // check
@@ -219,32 +188,20 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
         assertSame(distances, solver.getDistances());
 
         // force IllegalArgumentException
-        try {
-            solver.setFingerprintsAndDistances(null, distances);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            solver.setFingerprintsAndDistances(fingerprints, null);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            //noinspection unchecked
-            solver.setFingerprintsAndDistances(new RssiFingerprintLocated[0], new double[0]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            solver.setFingerprintsAndDistances(fingerprints, new double[2]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> solver.setFingerprintsAndDistances(null,
+                distances));
+        assertThrows(IllegalArgumentException.class, () -> solver.setFingerprintsAndDistances(fingerprints,
+                null));
+        //noinspection unchecked
+        assertThrows(IllegalArgumentException.class, () -> solver.setFingerprintsAndDistances(
+                new RssiFingerprintLocated[0], new double[0]));
+        assertThrows(IllegalArgumentException.class, () -> solver.setFingerprintsAndDistances(fingerprints,
+                new double[2]));
     }
 
     @Test
-    public void testGetSetEpsilon() throws LockedException {
-        final WeightedKNearestNeighboursPositionSolver2D solver = new WeightedKNearestNeighboursPositionSolver2D();
+    void testGetSetEpsilon() throws LockedException {
+        final var solver = new WeightedKNearestNeighboursPositionSolver2D();
 
         // check default value
         assertEquals(WeightedKNearestNeighboursPositionSolver.DEFAULT_EPSILON, solver.getEpsilon(), 0.0);
@@ -256,90 +213,79 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
         assertEquals(1.0, solver.getEpsilon(), 0.0);
 
         // force IllegalArgumentException
-        try {
-            solver.setEpsilon(0.0);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
+        assertThrows(IllegalArgumentException.class, () -> solver.setEpsilon(0.0));
     }
 
     @Test
-    public void testSolve1Fingerprint() throws NotReadyException, LockedException {
-        int numValid = 0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+    void testSolve1Fingerprint() throws NotReadyException, LockedException {
+        var numValid = 0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final int numAccessPoints = randomizer.nextInt(MIN_AP, MAX_AP);
-            final Point2D[] accessPointPositions = new Point2D[numAccessPoints];
-            final double[] transmittedPower = new double[numAccessPoints];
-            final WifiAccessPoint[] accessPoints = new WifiAccessPoint[numAccessPoints];
-            for (int i = 0; i < numAccessPoints; i++) {
+            final var numAccessPoints = randomizer.nextInt(MIN_AP, MAX_AP);
+            final var accessPointPositions = new Point2D[numAccessPoints];
+            final var transmittedPower = new double[numAccessPoints];
+            final var accessPoints = new WifiAccessPoint[numAccessPoints];
+            for (var i = 0; i < numAccessPoints; i++) {
                 accessPointPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
-                transmittedPower[i] = randomizer.nextDouble(
-                        dBmToPower(MIN_RSSI),
-                        dBmToPower(MAX_RSSI));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+                transmittedPower[i] = randomizer.nextDouble(dBmToPower(MIN_RSSI), dBmToPower(MAX_RSSI));
                 accessPoints[i] = new WifiAccessPoint(String.valueOf(i), FREQUENCY);
             }
 
-            final int numFingerprints = randomizer.nextInt(MIN_FINGERPRINTS, MAX_FINGERPRINTS);
-            final Point2D[] fingerprintsPositions = new Point2D[numFingerprints];
-            final List<RssiFingerprintLocated2D<WifiAccessPoint, RssiReading<WifiAccessPoint>>> fingerprints =
-                    new ArrayList<>();
-            for (int i = 0; i < numFingerprints; i++) {
+            final var numFingerprints = randomizer.nextInt(MIN_FINGERPRINTS, MAX_FINGERPRINTS);
+            final var fingerprintsPositions = new Point2D[numFingerprints];
+            final var fingerprints =
+                    new ArrayList<RssiFingerprintLocated2D<WifiAccessPoint, RssiReading<WifiAccessPoint>>>();
+            for (var i = 0; i < numFingerprints; i++) {
                 fingerprintsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
-                final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-                for (int j = 0; j < numAccessPoints; j++) {
-                    final double distance = fingerprintsPositions[i].distanceTo(accessPointPositions[j]);
-                    final double rssi = powerTodBm(receivedPower(
-                            transmittedPower[j], distance, accessPoints[j].getFrequency()));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+                final var readings = new ArrayList<RssiReading<WifiAccessPoint>>();
+                for (var j = 0; j < numAccessPoints; j++) {
+                    final var distance = fingerprintsPositions[i].distanceTo(accessPointPositions[j]);
+                    final var rssi = powerTodBm(receivedPower(transmittedPower[j], distance,
+                            accessPoints[j].getFrequency()));
                     readings.add(new RssiReading<>(accessPoints[j], rssi));
                 }
 
                 fingerprints.add(new RssiFingerprintLocated2D<>(readings, fingerprintsPositions[i]));
             }
 
-            final RadioSourceKNearestFinder<Point2D, WifiAccessPoint> finder =
-                    new RadioSourceKNearestFinder<>(fingerprints);
+            final var finder = new RadioSourceKNearestFinder<>(fingerprints);
 
             // build tree of fingerprint positions
-            final KDTree2D tree = new KDTree2D(Arrays.asList(fingerprintsPositions));
+            final var tree = new KDTree2D(Arrays.asList(fingerprintsPositions));
 
             // generate measurement at random position
-            final Point2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numAccessPoints; i++) {
-                final double distance = position.distanceTo(accessPointPositions[i]);
-                final double rssi = powerTodBm(receivedPower(
-                        transmittedPower[i], distance, accessPoints[i].getFrequency()));
+            final var position = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var readings = new ArrayList<RssiReading<WifiAccessPoint>>();
+            for (var i = 0; i < numAccessPoints; i++) {
+                final var distance = position.distanceTo(accessPointPositions[i]);
+                final var rssi = powerTodBm(receivedPower(transmittedPower[i], distance,
+                        accessPoints[i].getFrequency()));
                 readings.add(new RssiReading<>(accessPoints[i], rssi));
             }
-            final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
-                    new RssiFingerprint<>(readings);
+            final var fingerprint = new RssiFingerprint<>(readings);
 
             // find nearest fingerprint
-            int k = 1;
-            final List<RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>>
-                    nearestFingerprintsList = new ArrayList<>();
-            final List<Double> nearestDistancesList = new ArrayList<>();
+            var k = 1;
+            final var nearestFingerprintsList =
+                    new ArrayList<RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>>();
+            final var nearestDistancesList = new ArrayList<Double>();
             finder.findKNearestTo(fingerprint, k, nearestFingerprintsList, nearestDistancesList);
 
             //noinspection unchecked
             final RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>[] nearestFingerprints =
                     new RssiFingerprintLocated[k];
-            final double[] nearestDistances = new double[k];
-            for (int i = 0; i < k; i++) {
+            final var nearestDistances = new double[k];
+            for (var i = 0; i < k; i++) {
                 nearestFingerprints[i] = nearestFingerprintsList.get(i);
                 nearestDistances[i] = nearestDistancesList.get(i);
             }
 
-            final WeightedKNearestNeighboursPositionSolver2D solver = new WeightedKNearestNeighboursPositionSolver2D(
-                    nearestFingerprints, nearestDistances, this);
+            final var solver = new WeightedKNearestNeighboursPositionSolver2D(nearestFingerprints, nearestDistances,
+                    this);
 
             // solve
             reset();
@@ -356,11 +302,10 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
             assertEquals(1, solveStart);
             assertEquals(1, solveEnd);
 
-            final Point2D nearestPosition = tree.nearestPoint(position);
-            final Point2D estimatedPosition = solver.getEstimatedPosition();
+            final var nearestPosition = tree.nearestPoint(position);
+            final var estimatedPosition = solver.getEstimatedPosition();
 
-            // estimated position is always equal to provided fingerprint when
-            // only one is provided
+            // estimated position is always equal to provided fingerprint when only one is provided
             assertEquals(estimatedPosition, nearestFingerprints[0].getPosition());
 
             if (nearestPosition.equals(estimatedPosition, ABSOLUTE_ERROR)) {
@@ -371,59 +316,55 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
         assertTrue(numValid > 0);
 
         // force NotReadyException
-        final WeightedKNearestNeighboursPositionSolver2D solver = new WeightedKNearestNeighboursPositionSolver2D();
-        try {
-            solver.solve();
-            fail("NotReadyException expected but not thrown");
-        } catch (final NotReadyException ignore) {
-        }
+        final var solver = new WeightedKNearestNeighboursPositionSolver2D();
+        assertThrows(NotReadyException.class, solver::solve);
     }
 
     @Test
-    public void testSolveKFingerprints() throws NotReadyException, LockedException {
-        for (int k = 2; k < MAX_K; k++) {
+    void testSolveKFingerprints() throws NotReadyException, LockedException {
+        for (var k = 2; k < MAX_K; k++) {
             solveKFingerprints(k, 0.0);
         }
     }
 
     @Test
-    public void testSolveKFingerprintsWithError() throws NotReadyException, LockedException {
-        for (int k = 2; k < MAX_K; k++) {
+    void testSolveKFingerprintsWithError() throws NotReadyException, LockedException {
+        for (var k = 2; k < MAX_K; k++) {
             solveKFingerprints(k, ERROR_STD);
         }
     }
 
     @Test
-    public void testFindBestK() throws NotReadyException, LockedException {
+    void testFindBestK() throws NotReadyException, LockedException {
         findBestK(0.0);
     }
 
     @Test
-    public void testFindBestKWithError() throws NotReadyException, LockedException {
+    void testFindBestKWithError() throws NotReadyException, LockedException {
         findBestK(ERROR_STD);
     }
 
     @Test
-    public void testSolveKFingerprintsUniformFingerprints() throws NotReadyException, LockedException {
-        for (int k = 2; k < MAX_K; k++) {
+    void testSolveKFingerprintsUniformFingerprints() throws NotReadyException, LockedException {
+        for (var k = 2; k < MAX_K; k++) {
             solveKFingerprintsUniformFingerprints(k, 0.0);
         }
     }
 
     @Test
-    public void testSolveKFingerprintsWithErrorUniformFingerprints() throws NotReadyException, LockedException {
-        for (int k = 2; k < MAX_K; k++) {
+    void testSolveKFingerprintsWithErrorUniformFingerprints() throws NotReadyException, LockedException {
+        for (var k = 2; k < MAX_K; k++) {
             solveKFingerprintsUniformFingerprints(k, ERROR_STD);
         }
     }
 
     @Test
-    public void testFindBestKUniformFingerprints() throws NotReadyException, LockedException {
+    void testFindBestKUniformFingerprints() throws NotReadyException, LockedException {
         findBestKUniformFingerprints(0.0);
     }
 
     @Test
-    public void testFindBestKWithErrorUniformFingerprints() throws NotReadyException, LockedException {
+    void testFindBestKWithErrorUniformFingerprints() throws NotReadyException, LockedException {
         findBestKUniformFingerprints(ERROR_STD);
     }
 
@@ -442,86 +383,79 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
     private void solveKFingerprints(final int k, final double errorStd) throws NotReadyException, LockedException {
         GaussianRandomizer errorRandomizer = null;
         if (errorStd > 0.0) {
-            errorRandomizer = new GaussianRandomizer(new Random(), 0.0, errorStd);
+            errorRandomizer = new GaussianRandomizer(0.0, errorStd);
         }
 
-        int numValid = 0;
-        double avgDistance = 0.0;
-        double avgImprovedDistance = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValid = 0;
+        var avgDistance = 0.0;
+        var avgImprovedDistance = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final int numAccessPoints = randomizer.nextInt(MIN_AP, MAX_AP);
-            final Point2D[] accessPointPositions = new Point2D[numAccessPoints];
-            final double[] transmittedPower = new double[numAccessPoints];
-            final WifiAccessPoint[] accessPoints = new WifiAccessPoint[numAccessPoints];
-            for (int i = 0; i < numAccessPoints; i++) {
+            final var numAccessPoints = randomizer.nextInt(MIN_AP, MAX_AP);
+            final var accessPointPositions = new Point2D[numAccessPoints];
+            final var transmittedPower = new double[numAccessPoints];
+            final var accessPoints = new WifiAccessPoint[numAccessPoints];
+            for (var i = 0; i < numAccessPoints; i++) {
                 accessPointPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
-                transmittedPower[i] = randomizer.nextDouble(
-                        dBmToPower(MIN_RSSI),
-                        dBmToPower(MAX_RSSI));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+                transmittedPower[i] = randomizer.nextDouble(dBmToPower(MIN_RSSI), dBmToPower(MAX_RSSI));
                 accessPoints[i] = new WifiAccessPoint(String.valueOf(i), FREQUENCY);
             }
 
-            final int numFingerprints = randomizer.nextInt(MIN_FINGERPRINTS, MAX_FINGERPRINTS);
-            final Point2D[] fingerprintsPositions = new Point2D[numFingerprints];
-            final List<RssiFingerprintLocated2D<WifiAccessPoint, RssiReading<WifiAccessPoint>>> fingerprints =
-                    new ArrayList<>();
-            for (int i = 0; i < numFingerprints; i++) {
+            final var numFingerprints = randomizer.nextInt(MIN_FINGERPRINTS, MAX_FINGERPRINTS);
+            final var fingerprintsPositions = new Point2D[numFingerprints];
+            final var fingerprints =
+                    new ArrayList<RssiFingerprintLocated2D<WifiAccessPoint, RssiReading<WifiAccessPoint>>>();
+            for (var i = 0; i < numFingerprints; i++) {
                 fingerprintsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
-                final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-                for (int j = 0; j < numAccessPoints; j++) {
-                    final double distance = fingerprintsPositions[i].distanceTo(accessPointPositions[j]);
-                    final double error = errorRandomizer != null ? errorRandomizer.nextDouble() : 0.0;
-                    final double rssi = powerTodBm(receivedPower(
-                            transmittedPower[j], distance, accessPoints[j].getFrequency())) + error;
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+                final var readings = new ArrayList<RssiReading<WifiAccessPoint>>();
+                for (var j = 0; j < numAccessPoints; j++) {
+                    final var distance = fingerprintsPositions[i].distanceTo(accessPointPositions[j]);
+                    final var error = errorRandomizer != null ? errorRandomizer.nextDouble() : 0.0;
+                    final var rssi = powerTodBm(receivedPower(transmittedPower[j], distance,
+                            accessPoints[j].getFrequency())) + error;
                     readings.add(new RssiReading<>(accessPoints[j], rssi));
                 }
 
                 fingerprints.add(new RssiFingerprintLocated2D<>(readings, fingerprintsPositions[i]));
             }
 
-            final RadioSourceKNearestFinder<Point2D, WifiAccessPoint> finder =
-                    new RadioSourceKNearestFinder<>(fingerprints);
+            final var finder = new RadioSourceKNearestFinder<>(fingerprints);
 
             // build tree of fingerprint positions
-            final KDTree2D tree = new KDTree2D(Arrays.asList(fingerprintsPositions));
+            final var tree = new KDTree2D(Arrays.asList(fingerprintsPositions));
 
             // generate measurement at random position
-            final Point2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numAccessPoints; i++) {
-                final double distance = position.distanceTo(accessPointPositions[i]);
-                final double rssi = powerTodBm(receivedPower(
-                        transmittedPower[i], distance, accessPoints[i].getFrequency()));
+            final var position = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var readings = new ArrayList<RssiReading<WifiAccessPoint>>();
+            for (var i = 0; i < numAccessPoints; i++) {
+                final var distance = position.distanceTo(accessPointPositions[i]);
+                final var rssi = powerTodBm(receivedPower(transmittedPower[i], distance,
+                        accessPoints[i].getFrequency()));
                 readings.add(new RssiReading<>(accessPoints[i], rssi));
             }
-            final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
-                    new RssiFingerprint<>(readings);
+            final var fingerprint = new RssiFingerprint<>(readings);
 
             // find nearest fingerprints
-            final List<RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>>
-                    nearestFingerprintsList = new ArrayList<>();
-            final List<Double> nearestDistancesList = new ArrayList<>();
+            final var nearestFingerprintsList =
+                    new ArrayList<RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>>();
+            final var nearestDistancesList = new ArrayList<Double>();
             finder.findKNearestTo(fingerprint, k, nearestFingerprintsList, nearestDistancesList);
 
             //noinspection unchecked
             final RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>[] nearestFingerprints =
                     new RssiFingerprintLocated[k];
-            final double[] nearestDistances = new double[k];
-            for (int i = 0; i < k; i++) {
+            final var nearestDistances = new double[k];
+            for (var i = 0; i < k; i++) {
                 nearestFingerprints[i] = nearestFingerprintsList.get(i);
                 nearestDistances[i] = nearestDistancesList.get(i);
             }
 
-            final WeightedKNearestNeighboursPositionSolver2D solver = new WeightedKNearestNeighboursPositionSolver2D(
-                    nearestFingerprints, nearestDistances, this);
+            final var solver = new WeightedKNearestNeighboursPositionSolver2D(nearestFingerprints, nearestDistances,
+                    this);
 
             // solve
             reset();
@@ -538,12 +472,11 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
             assertEquals(1, solveStart);
             assertEquals(1, solveEnd);
 
-            final Point2D nearestPosition = tree.nearestPoint(position);
-            final Point2D estimatedPosition = solver.getEstimatedPosition();
+            final var nearestPosition = tree.nearestPoint(position);
+            final var estimatedPosition = solver.getEstimatedPosition();
 
-            // check if estimated position is closer to the actual position than
-            // nearest fingerprint
-            final double distance = estimatedPosition.distanceTo(position);
+            // check if estimated position is closer to the actual position than nearest fingerprint
+            final var distance = estimatedPosition.distanceTo(position);
             avgDistance += distance;
 
             if (distance <= nearestPosition.distanceTo(position)) {
@@ -569,91 +502,84 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
     private void findBestK(final double errorStd) throws NotReadyException, LockedException {
         GaussianRandomizer errorRandomizer = null;
         if (errorStd > 0.0) {
-            errorRandomizer = new GaussianRandomizer(new Random(), 0.0, errorStd);
+            errorRandomizer = new GaussianRandomizer(0.0, errorStd);
         }
 
-        double avgBestK = 0.0;
-        double avgBestDistance = 0.0;
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var avgBestK = 0.0;
+        var avgBestDistance = 0.0;
+        for (var t = 0; t < TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final int numAccessPoints = randomizer.nextInt(MIN_AP, MAX_AP);
-            final Point2D[] accessPointPositions = new Point2D[numAccessPoints];
-            final double[] transmittedPower = new double[numAccessPoints];
-            final WifiAccessPoint[] accessPoints = new WifiAccessPoint[numAccessPoints];
-            for (int i = 0; i < numAccessPoints; i++) {
+            final var numAccessPoints = randomizer.nextInt(MIN_AP, MAX_AP);
+            final var accessPointPositions = new Point2D[numAccessPoints];
+            final var transmittedPower = new double[numAccessPoints];
+            final var accessPoints = new WifiAccessPoint[numAccessPoints];
+            for (var i = 0; i < numAccessPoints; i++) {
                 accessPointPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
-                transmittedPower[i] = randomizer.nextDouble(
-                        dBmToPower(MIN_RSSI),
-                        dBmToPower(MAX_RSSI));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+                transmittedPower[i] = randomizer.nextDouble(dBmToPower(MIN_RSSI), dBmToPower(MAX_RSSI));
                 accessPoints[i] = new WifiAccessPoint(String.valueOf(i), FREQUENCY);
             }
 
-            final int numFingerprints = randomizer.nextInt(MIN_FINGERPRINTS, MAX_FINGERPRINTS);
-            final Point2D[] fingerprintsPositions = new Point2D[numFingerprints];
-            final List<RssiFingerprintLocated2D<WifiAccessPoint, RssiReading<WifiAccessPoint>>> fingerprints =
-                    new ArrayList<>();
-            for (int i = 0; i < numFingerprints; i++) {
+            final var numFingerprints = randomizer.nextInt(MIN_FINGERPRINTS, MAX_FINGERPRINTS);
+            final var fingerprintsPositions = new Point2D[numFingerprints];
+            final var fingerprints =
+                    new ArrayList<RssiFingerprintLocated2D<WifiAccessPoint, RssiReading<WifiAccessPoint>>>();
+            for (var i = 0; i < numFingerprints; i++) {
                 fingerprintsPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
-                final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-                for (int j = 0; j < numAccessPoints; j++) {
-                    final double distance = fingerprintsPositions[i].distanceTo(accessPointPositions[j]);
-                    final double error = errorRandomizer != null ? errorRandomizer.nextDouble() : 0.0;
-                    final double rssi = powerTodBm(receivedPower(
-                            transmittedPower[j], distance, accessPoints[j].getFrequency())) + error;
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+                final var readings = new ArrayList<RssiReading<WifiAccessPoint>>();
+                for (var j = 0; j < numAccessPoints; j++) {
+                    final var distance = fingerprintsPositions[i].distanceTo(accessPointPositions[j]);
+                    final var error = errorRandomizer != null ? errorRandomizer.nextDouble() : 0.0;
+                    final var rssi = powerTodBm(receivedPower(transmittedPower[j], distance,
+                            accessPoints[j].getFrequency())) + error;
                     readings.add(new RssiReading<>(accessPoints[j], rssi));
                 }
 
                 fingerprints.add(new RssiFingerprintLocated2D<>(readings, fingerprintsPositions[i]));
             }
 
-            final RadioSourceKNearestFinder<Point2D, WifiAccessPoint> finder =
-                    new RadioSourceKNearestFinder<>(fingerprints);
+            final var finder = new RadioSourceKNearestFinder<>(fingerprints);
 
             // generate measurement at random position
-            final Point2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numAccessPoints; i++) {
-                final double distance = position.distanceTo(accessPointPositions[i]);
-                final double rssi = powerTodBm(receivedPower(
+            final var position = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var readings = new ArrayList<RssiReading<WifiAccessPoint>>();
+            for (var i = 0; i < numAccessPoints; i++) {
+                final var distance = position.distanceTo(accessPointPositions[i]);
+                final var rssi = powerTodBm(receivedPower(
                         transmittedPower[i], distance, accessPoints[i].getFrequency()));
                 readings.add(new RssiReading<>(accessPoints[i], rssi));
             }
-            final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
-                    new RssiFingerprint<>(readings);
+            final var fingerprint = new RssiFingerprint<>(readings);
 
-            int bestK = 0;
-            double bestDistance = Double.MAX_VALUE;
-            int maxK = Math.min(numFingerprints, MAX_K);
-            for (int k = 1; k < maxK; k++) {
-                final List<RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>>
-                        nearestFingerprintsList = new ArrayList<>();
-                final List<Double> nearestDistancesList = new ArrayList<>();
+            var bestK = 0;
+            var bestDistance = Double.MAX_VALUE;
+            var maxK = Math.min(numFingerprints, MAX_K);
+            for (var k = 1; k < maxK; k++) {
+                final var nearestFingerprintsList =
+                        new ArrayList<RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>>();
+                final var nearestDistancesList = new ArrayList<Double>();
                 finder.findKNearestTo(fingerprint, k, nearestFingerprintsList, nearestDistancesList);
 
                 //noinspection unchecked
                 final RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>[]
                         nearestFingerprints = new RssiFingerprintLocated[k];
-                final double[] nearestDistances = new double[k];
-                for (int i = 0; i < k; i++) {
+                final var nearestDistances = new double[k];
+                for (var i = 0; i < k; i++) {
                     nearestFingerprints[i] = nearestFingerprintsList.get(i);
                     nearestDistances[i] = nearestDistancesList.get(i);
                 }
 
-                final WeightedKNearestNeighboursPositionSolver2D solver =
-                        new WeightedKNearestNeighboursPositionSolver2D(nearestFingerprints, nearestDistances);
+                final var solver = new WeightedKNearestNeighboursPositionSolver2D(nearestFingerprints,
+                        nearestDistances);
 
                 solver.solve();
 
-                final Point2D estimatedPosition = solver.getEstimatedPosition();
+                final var estimatedPosition = solver.getEstimatedPosition();
 
-                final double distance = estimatedPosition.distanceTo(position);
+                final var distance = estimatedPosition.distanceTo(position);
                 if (distance < bestDistance) {
                     bestDistance = distance;
                     bestK = k;
@@ -678,44 +604,41 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
             LockedException {
         GaussianRandomizer errorRandomizer = null;
         if (errorStd > 0.0) {
-            errorRandomizer = new GaussianRandomizer(new Random(), 0.0, errorStd);
+            errorRandomizer = new GaussianRandomizer(0.0, errorStd);
         }
 
-        int numValid = 0;
-        double avgDistance = 0.0;
-        double avgImprovedDistance = 0.0;
-        for (int t = 0; t < SHORT_TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var numValid = 0;
+        var avgDistance = 0.0;
+        var avgImprovedDistance = 0.0;
+        for (var t = 0; t < SHORT_TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final int numAccessPoints = randomizer.nextInt(MIN_AP, MAX_AP);
-            final Point2D[] accessPointPositions = new Point2D[numAccessPoints];
-            final double[] transmittedPower = new double[numAccessPoints];
-            final WifiAccessPoint[] accessPoints = new WifiAccessPoint[numAccessPoints];
-            for (int i = 0; i < numAccessPoints; i++) {
+            final var numAccessPoints = randomizer.nextInt(MIN_AP, MAX_AP);
+            final var accessPointPositions = new Point2D[numAccessPoints];
+            final var transmittedPower = new double[numAccessPoints];
+            final var accessPoints = new WifiAccessPoint[numAccessPoints];
+            for (var i = 0; i < numAccessPoints; i++) {
                 accessPointPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
-                transmittedPower[i] = randomizer.nextDouble(
-                        dBmToPower(MIN_RSSI),
-                        dBmToPower(MAX_RSSI));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+                transmittedPower[i] = randomizer.nextDouble(dBmToPower(MIN_RSSI), dBmToPower(MAX_RSSI));
                 accessPoints[i] = new WifiAccessPoint(String.valueOf(i), FREQUENCY);
             }
 
             // setup uniform fingerprint readings
-            final List<Point2D> fingerprintsPositionsList = new ArrayList<>();
-            final List<RssiFingerprintLocated2D<WifiAccessPoint, RssiReading<WifiAccessPoint>>> fingerprints =
-                    new ArrayList<>();
-            for (double x = MIN_POS; x < MAX_POS; x += SEPARATION_POS) {
-                for (double y = MIN_POS; y < MAX_POS; y += SEPARATION_POS) {
-                    final InhomogeneousPoint2D fingerprintPosition = new InhomogeneousPoint2D(x, y);
+            final var fingerprintsPositionsList = new ArrayList<Point2D>();
+            final var fingerprints =
+                    new ArrayList<RssiFingerprintLocated2D<WifiAccessPoint, RssiReading<WifiAccessPoint>>>();
+            for (var x = MIN_POS; x < MAX_POS; x += SEPARATION_POS) {
+                for (var y = MIN_POS; y < MAX_POS; y += SEPARATION_POS) {
+                    final var fingerprintPosition = new InhomogeneousPoint2D(x, y);
                     fingerprintsPositionsList.add(fingerprintPosition);
 
-                    final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-                    for (int j = 0; j < numAccessPoints; j++) {
-                        final double distance = fingerprintPosition.distanceTo(accessPointPositions[j]);
-                        final double error = errorRandomizer != null ? errorRandomizer.nextDouble() : 0.0;
-                        final double rssi = powerTodBm(receivedPower(
-                                transmittedPower[j], distance, accessPoints[j].getFrequency())) + error;
+                    final var readings = new ArrayList<RssiReading<WifiAccessPoint>>();
+                    for (var j = 0; j < numAccessPoints; j++) {
+                        final var distance = fingerprintPosition.distanceTo(accessPointPositions[j]);
+                        final var error = errorRandomizer != null ? errorRandomizer.nextDouble() : 0.0;
+                        final var rssi = powerTodBm(receivedPower(transmittedPower[j], distance,
+                                accessPoints[j].getFrequency())) + error;
                         readings.add(new RssiReading<>(accessPoints[j], rssi));
                     }
 
@@ -723,43 +646,40 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
                 }
             }
 
-            final RadioSourceKNearestFinder<Point2D, WifiAccessPoint> finder =
-                    new RadioSourceKNearestFinder<>(fingerprints);
+            final var finder = new RadioSourceKNearestFinder<>(fingerprints);
 
             // build tree of fingerprint positions
-            final KDTree2D tree = new KDTree2D(fingerprintsPositionsList);
+            final var tree = new KDTree2D(fingerprintsPositionsList);
 
             // generate measurement at random position
-            final Point2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numAccessPoints; i++) {
-                final double distance = position.distanceTo(accessPointPositions[i]);
-                final double rssi = powerTodBm(receivedPower(
-                        transmittedPower[i], distance, accessPoints[i].getFrequency()));
+            final var position = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var readings = new ArrayList<RssiReading<WifiAccessPoint>>();
+            for (var i = 0; i < numAccessPoints; i++) {
+                final var distance = position.distanceTo(accessPointPositions[i]);
+                final var rssi = powerTodBm(receivedPower(transmittedPower[i], distance,
+                        accessPoints[i].getFrequency()));
                 readings.add(new RssiReading<>(accessPoints[i], rssi));
             }
-            final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
-                    new RssiFingerprint<>(readings);
+            final var fingerprint = new RssiFingerprint<>(readings);
 
             // find nearest fingerprints
-            final List<RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>>
-                    nearestFingerprintsList = new ArrayList<>();
-            final List<Double> nearestDistancesList = new ArrayList<>();
+            final var nearestFingerprintsList =
+                    new ArrayList<RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>>();
+            final var nearestDistancesList = new ArrayList<Double>();
             finder.findKNearestTo(fingerprint, k, nearestFingerprintsList, nearestDistancesList);
 
             //noinspection unchecked
             final RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>[] nearestFingerprints =
                     new RssiFingerprintLocated[k];
-            final double[] nearestDistances = new double[k];
-            for (int i = 0; i < k; i++) {
+            final var nearestDistances = new double[k];
+            for (var i = 0; i < k; i++) {
                 nearestFingerprints[i] = nearestFingerprintsList.get(i);
                 nearestDistances[i] = nearestDistancesList.get(i);
             }
 
-            final WeightedKNearestNeighboursPositionSolver2D solver = new WeightedKNearestNeighboursPositionSolver2D(
-                    nearestFingerprints, nearestDistances, this);
+            final var solver = new WeightedKNearestNeighboursPositionSolver2D(nearestFingerprints, nearestDistances,
+                    this);
 
             // solve
             reset();
@@ -776,12 +696,12 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
             assertEquals(1, solveStart);
             assertEquals(1, solveEnd);
 
-            final Point2D nearestPosition = tree.nearestPoint(position);
-            final Point2D estimatedPosition = solver.getEstimatedPosition();
+            final var nearestPosition = tree.nearestPoint(position);
+            final var estimatedPosition = solver.getEstimatedPosition();
 
             // check if estimated position is closer to the actual position than
             // nearest fingerprint
-            final double distance = estimatedPosition.distanceTo(position);
+            final var distance = estimatedPosition.distanceTo(position);
             avgDistance += distance;
 
             if (distance <= nearestPosition.distanceTo(position)) {
@@ -808,41 +728,38 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
     private void findBestKUniformFingerprints(double errorStd) throws NotReadyException, LockedException {
         GaussianRandomizer errorRandomizer = null;
         if (errorStd > 0.0) {
-            errorRandomizer = new GaussianRandomizer(new Random(), 0.0, errorStd);
+            errorRandomizer = new GaussianRandomizer(0.0, errorStd);
         }
 
-        double avgBestK = 0.0;
-        double avgBestDistance = 0.0;
-        for (int t = 0; t < SHORT_TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        var avgBestK = 0.0;
+        var avgBestDistance = 0.0;
+        for (var t = 0; t < SHORT_TIMES; t++) {
+            final var randomizer = new UniformRandomizer();
 
-            final int numAccessPoints = randomizer.nextInt(MIN_AP, MAX_AP);
-            final Point2D[] accessPointPositions = new Point2D[numAccessPoints];
-            final double[] transmittedPower = new double[numAccessPoints];
-            final WifiAccessPoint[] accessPoints = new WifiAccessPoint[numAccessPoints];
-            for (int i = 0; i < numAccessPoints; i++) {
+            final var numAccessPoints = randomizer.nextInt(MIN_AP, MAX_AP);
+            final var accessPointPositions = new Point2D[numAccessPoints];
+            final var transmittedPower = new double[numAccessPoints];
+            final var accessPoints = new WifiAccessPoint[numAccessPoints];
+            for (var i = 0; i < numAccessPoints; i++) {
                 accessPointPositions[i] = new InhomogeneousPoint2D(
-                        randomizer.nextDouble(MIN_POS, MAX_POS),
-                        randomizer.nextDouble(MIN_POS, MAX_POS));
-                transmittedPower[i] = randomizer.nextDouble(
-                        dBmToPower(MIN_RSSI),
-                        dBmToPower(MAX_RSSI));
+                        randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+                transmittedPower[i] = randomizer.nextDouble(dBmToPower(MIN_RSSI), dBmToPower(MAX_RSSI));
                 accessPoints[i] = new WifiAccessPoint(String.valueOf(i), FREQUENCY);
             }
 
             // setup uniform fingerprint readings
-            final List<RssiFingerprintLocated2D<WifiAccessPoint, RssiReading<WifiAccessPoint>>> fingerprints =
-                    new ArrayList<>();
-            for (double x = MIN_POS; x < MAX_POS; x += SEPARATION_POS) {
-                for (double y = MIN_POS; y < MAX_POS; y += SEPARATION_POS) {
-                    final InhomogeneousPoint2D fingerprintPosition = new InhomogeneousPoint2D(x, y);
+            final var fingerprints =
+                    new ArrayList<RssiFingerprintLocated2D<WifiAccessPoint, RssiReading<WifiAccessPoint>>>();
+            for (var x = MIN_POS; x < MAX_POS; x += SEPARATION_POS) {
+                for (var y = MIN_POS; y < MAX_POS; y += SEPARATION_POS) {
+                    final var fingerprintPosition = new InhomogeneousPoint2D(x, y);
 
-                    final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-                    for (int j = 0; j < numAccessPoints; j++) {
-                        final double distance = fingerprintPosition.distanceTo(accessPointPositions[j]);
-                        final double error = errorRandomizer != null ? errorRandomizer.nextDouble() : 0.0;
-                        final double rssi = powerTodBm(receivedPower(
-                                transmittedPower[j], distance, accessPoints[j].getFrequency())) + error;
+                    final var readings = new ArrayList<RssiReading<WifiAccessPoint>>();
+                    for (var j = 0; j < numAccessPoints; j++) {
+                        final var distance = fingerprintPosition.distanceTo(accessPointPositions[j]);
+                        final var error = errorRandomizer != null ? errorRandomizer.nextDouble() : 0.0;
+                        final var rssi = powerTodBm(receivedPower(transmittedPower[j], distance,
+                                accessPoints[j].getFrequency())) + error;
                         readings.add(new RssiReading<>(accessPoints[j], rssi));
                     }
 
@@ -850,50 +767,47 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
                 }
             }
 
-            final RadioSourceKNearestFinder<Point2D, WifiAccessPoint> finder =
-                    new RadioSourceKNearestFinder<>(fingerprints);
+            final var finder = new RadioSourceKNearestFinder<>(fingerprints);
 
             // generate measurement at random position
-            final Point2D position = new InhomogeneousPoint2D(
-                    randomizer.nextDouble(MIN_POS, MAX_POS),
-                    randomizer.nextDouble(MIN_POS, MAX_POS));
-            final List<RssiReading<WifiAccessPoint>> readings = new ArrayList<>();
-            for (int i = 0; i < numAccessPoints; i++) {
-                final double distance = position.distanceTo(accessPointPositions[i]);
-                final double rssi = powerTodBm(receivedPower(
-                        transmittedPower[i], distance, accessPoints[i].getFrequency()));
+            final var position = new InhomogeneousPoint2D(
+                    randomizer.nextDouble(MIN_POS, MAX_POS), randomizer.nextDouble(MIN_POS, MAX_POS));
+            final var readings = new ArrayList<RssiReading<WifiAccessPoint>>();
+            for (var i = 0; i < numAccessPoints; i++) {
+                final var distance = position.distanceTo(accessPointPositions[i]);
+                final var rssi = powerTodBm(receivedPower(transmittedPower[i], distance,
+                        accessPoints[i].getFrequency()));
                 readings.add(new RssiReading<>(accessPoints[i], rssi));
             }
-            final RssiFingerprint<WifiAccessPoint, RssiReading<WifiAccessPoint>> fingerprint =
-                    new RssiFingerprint<>(readings);
+            final var fingerprint = new RssiFingerprint<>(readings);
 
-            int bestK = 0;
-            double bestDistance = Double.MAX_VALUE;
-            int numFingerprints = fingerprints.size();
-            int maxK = Math.min(numFingerprints, MAX_K);
-            for (int k = 1; k < maxK; k++) {
-                final List<RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>>
-                        nearestFingerprintsList = new ArrayList<>();
-                final List<Double> nearestDistancesList = new ArrayList<>();
+            var bestK = 0;
+            var bestDistance = Double.MAX_VALUE;
+            var numFingerprints = fingerprints.size();
+            var maxK = Math.min(numFingerprints, MAX_K);
+            for (var k = 1; k < maxK; k++) {
+                final var nearestFingerprintsList =
+                        new ArrayList<RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>>();
+                final var nearestDistancesList = new ArrayList<Double>();
                 finder.findKNearestTo(fingerprint, k, nearestFingerprintsList, nearestDistancesList);
 
                 // noinspection unchecked
                 final RssiFingerprintLocated<WifiAccessPoint, RssiReading<WifiAccessPoint>, Point2D>[]
                         nearestFingerprints = new RssiFingerprintLocated[k];
-                final double[] nearestDistances = new double[k];
-                for (int i = 0; i < k; i++) {
+                final var nearestDistances = new double[k];
+                for (var i = 0; i < k; i++) {
                     nearestFingerprints[i] = nearestFingerprintsList.get(i);
                     nearestDistances[i] = nearestDistancesList.get(i);
                 }
 
-                final WeightedKNearestNeighboursPositionSolver2D solver =
+                final var solver =
                         new WeightedKNearestNeighboursPositionSolver2D(nearestFingerprints, nearestDistances);
 
                 solver.solve();
 
-                final Point2D estimatedPosition = solver.getEstimatedPosition();
+                final var estimatedPosition = solver.getEstimatedPosition();
 
-                final double distance = estimatedPosition.distanceTo(position);
+                final var distance = estimatedPosition.distanceTo(position);
                 if (distance < bestDistance) {
                     bestDistance = distance;
                     bestK = k;
@@ -918,38 +832,20 @@ public class WeightedKNearestNeighboursPositionSolver2DTest implements
         solveStart = solveEnd = 0;
     }
 
-    private void checkLocked(final WeightedKNearestNeighboursPositionSolver2D solver) {
-        try {
-            solver.setListener(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            solver.setFingerprintsAndDistances(null, null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            solver.setEpsilon(1.0);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            solver.solve();
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        } catch (final Exception e) {
-            fail("LockedException expected but not thrown");
-        }
+    private static void checkLocked(final WeightedKNearestNeighboursPositionSolver2D solver) {
+        assertThrows(LockedException.class, () -> solver.setListener(null));
+        assertThrows(LockedException.class, () -> solver.setFingerprintsAndDistances(null, null));
+        assertThrows(LockedException.class, () -> solver.setEpsilon(1.0));
+        assertThrows(LockedException.class, solver::solve);
     }
 
-    private double receivedPower(final double equivalentTransmittedPower, final double distance,
-                                 final double frequency) {
+    private static double receivedPower(final double equivalentTransmittedPower, final double distance,
+                                        final double frequency) {
         // Pr = Pt*Gt*Gr*lambda^2/(4*pi*d)^2,    where Pr is the received power
         // lambda = c/f, where lambda is wavelength,
         // Pte = Pt*Gt*Gr, is the equivalent transmitted power, Gt is the transmitted Gain and Gr is the received Gain
         // Pr = Pte*c^2/((4*pi*f)^2 * d^2)
-        final double k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI * frequency), 2.0);
+        final var k = Math.pow(SPEED_OF_LIGHT / (4.0 * Math.PI * frequency), 2.0);
         return equivalentTransmittedPower * k / (distance * distance);
     }
 }

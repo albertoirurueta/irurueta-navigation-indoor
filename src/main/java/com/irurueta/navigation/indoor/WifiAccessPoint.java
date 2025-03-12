@@ -26,17 +26,17 @@ public class WifiAccessPoint implements Serializable, RadioSource {
      * Basic service set identifier of this access point in the form of a six-byte MAC address:
      * xx:xx:xx:xx:xx:xx.
      */
-    private String mBssid;
+    private String bssid;
 
     /**
      * Frequency used by this Access Point (expressed in Hz).
      */
-    private double mFrequency;
+    private double frequency;
 
     /**
      * Service set identifier (SSID) of this 802.11 network. This value is optional.
      */
-    private String mSsid;
+    private String ssid;
 
     /**
      * Constructor.
@@ -55,8 +55,8 @@ public class WifiAccessPoint implements Serializable, RadioSource {
             throw new IllegalArgumentException();
         }
 
-        mBssid = bssid;
-        mFrequency = frequency;
+        this.bssid = bssid;
+        this.frequency = frequency;
     }
 
     /**
@@ -70,7 +70,7 @@ public class WifiAccessPoint implements Serializable, RadioSource {
      */
     public WifiAccessPoint(final String bssid, final double frequency, final String ssid) {
         this(bssid, frequency);
-        mSsid = ssid;
+        this.ssid = ssid;
     }
 
     /**
@@ -86,7 +86,7 @@ public class WifiAccessPoint implements Serializable, RadioSource {
      * @return the basic service set identifier.
      */
     public String getBssid() {
-        return mBssid;
+        return bssid;
     }
 
     /**
@@ -96,7 +96,7 @@ public class WifiAccessPoint implements Serializable, RadioSource {
      */
     @Override
     public double getFrequency() {
-        return mFrequency;
+        return frequency;
     }
 
     /**
@@ -105,7 +105,7 @@ public class WifiAccessPoint implements Serializable, RadioSource {
      * @return service set identifier (SSID).
      */
     public String getSsid() {
-        return mSsid;
+        return ssid;
     }
 
     /**
@@ -124,12 +124,11 @@ public class WifiAccessPoint implements Serializable, RadioSource {
             return true;
         }
 
-        if (!(obj instanceof WifiAccessPoint)) {
+        if (!(obj instanceof WifiAccessPoint other)) {
             return false;
         }
 
-        final WifiAccessPoint other = (WifiAccessPoint) obj;
-        return mBssid.equals(other.mBssid);
+        return bssid.equals(other.bssid);
     }
 
     /**
@@ -139,7 +138,7 @@ public class WifiAccessPoint implements Serializable, RadioSource {
      */
     @Override
     public int hashCode() {
-        return mBssid.hashCode();
+        return bssid.hashCode();
     }
 
     /**

@@ -28,10 +28,8 @@ import com.irurueta.navigation.indoor.RangingAndRssiReading;
  *
  * @param <P> a {@link Point} type.
  */
-public abstract class RangingAndRssiPositionEstimator<
-        P extends Point<?>> extends PositionEstimator<P,
-        RangingAndRssiReading<? extends RadioSource>,
-        RangingAndRssiPositionEstimatorListener<P>> {
+public abstract class RangingAndRssiPositionEstimator<P extends Point<?>> extends PositionEstimator<P,
+        RangingAndRssiReading<? extends RadioSource>, RangingAndRssiPositionEstimatorListener<P>> {
 
     /**
      * Constructor.
@@ -45,8 +43,7 @@ public abstract class RangingAndRssiPositionEstimator<
      *
      * @param listener listener in charge of handling events.
      */
-    protected RangingAndRssiPositionEstimator(
-            final RangingAndRssiPositionEstimatorListener<P> listener) {
+    protected RangingAndRssiPositionEstimator(final RangingAndRssiPositionEstimatorListener<P> listener) {
         super(listener);
     }
 }

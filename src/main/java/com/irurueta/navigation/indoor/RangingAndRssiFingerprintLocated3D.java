@@ -26,8 +26,8 @@ import java.util.List;
  * @param <S> a {@link RadioSource} type.
  * @param <R> a {@link RangingAndRssiReading} type.
  */
-public class RangingAndRssiFingerprintLocated3D<S extends RadioSource,
-        R extends RangingAndRssiReading<S>> extends RangingAndRssiFingerprintLocated<S, R, Point3D> {
+public class RangingAndRssiFingerprintLocated3D<S extends RadioSource, R extends RangingAndRssiReading<S>> extends
+        RangingAndRssiFingerprintLocated<S, R, Point3D> {
 
     /**
      * Constructor.
@@ -38,8 +38,7 @@ public class RangingAndRssiFingerprintLocated3D<S extends RadioSource,
      * @throws IllegalArgumentException if either readings or position are
      *                                  null.
      */
-    public RangingAndRssiFingerprintLocated3D(
-            final List<R> readings, final Point3D position) {
+    public RangingAndRssiFingerprintLocated3D(final List<R> readings, final Point3D position) {
         super(readings, position);
     }
 
@@ -55,8 +54,7 @@ public class RangingAndRssiFingerprintLocated3D<S extends RadioSource,
      *                                  covariance has invalid size.
      */
     public RangingAndRssiFingerprintLocated3D(
-            final List<R> readings, final Point3D position,
-            final Matrix positionCovariance) {
+            final List<R> readings, final Point3D position, final Matrix positionCovariance) {
         super(readings, position, positionCovariance);
     }
 

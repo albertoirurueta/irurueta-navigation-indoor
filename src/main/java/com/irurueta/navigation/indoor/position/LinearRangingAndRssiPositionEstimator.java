@@ -52,22 +52,22 @@ public abstract class LinearRangingAndRssiPositionEstimator<P extends Point<P>> 
     /**
      * An homogeneous linear lateration solver to solve position.
      */
-    protected HomogeneousLinearLeastSquaresLaterationSolver<P> mHomogeneousTrilaterationSolver;
+    protected HomogeneousLinearLeastSquaresLaterationSolver<P> homogeneousTrilaterationSolver;
 
     /**
      * An inhomogeneous linear lateration solver to solve position.
      */
-    protected InhomogeneousLinearLeastSquaresLaterationSolver<P> mInhomogeneousTrilaterationSolver;
+    protected InhomogeneousLinearLeastSquaresLaterationSolver<P> inhomogeneousTrilaterationSolver;
 
     /**
      * Listener for the lateration solver.
      */
-    protected LaterationSolverListener<P> mLaterationSolverListener;
+    protected LaterationSolverListener<P> laterationSolverListener;
 
     /**
      * Indicates whether an homogeneous linear solver is used to estimate position.
      */
-    protected boolean mUseHomogeneousLinearSolver = DEFAULT_USE_HOMOGENEOUS_LINEAR_SOLVER;
+    protected boolean useHomogeneousLinearSolver = DEFAULT_USE_HOMOGENEOUS_LINEAR_SOLVER;
 
     /**
      * Constructor.
@@ -82,8 +82,7 @@ public abstract class LinearRangingAndRssiPositionEstimator<P extends Point<P>> 
      *
      * @param listener listener in charge of handling events.
      */
-    protected LinearRangingAndRssiPositionEstimator(
-            final RangingAndRssiPositionEstimatorListener<P> listener) {
+    protected LinearRangingAndRssiPositionEstimator(final RangingAndRssiPositionEstimatorListener<P> listener) {
         super(listener);
         init();
     }
@@ -95,7 +94,7 @@ public abstract class LinearRangingAndRssiPositionEstimator<P extends Point<P>> 
      * linear one is used instead.
      */
     public boolean isHomogeneousLinearSolverUsed() {
-        return mUseHomogeneousLinearSolver;
+        return useHomogeneousLinearSolver;
     }
 
     /**
@@ -105,13 +104,12 @@ public abstract class LinearRangingAndRssiPositionEstimator<P extends Point<P>> 
      *                                   if an inhomogeneous linear one is used instead.
      * @throws LockedException if estimator is locked.
      */
-    public void setHomogeneousLinearSolverUsed(final boolean useHomogeneousLinearSolver)
-            throws LockedException {
+    public void setHomogeneousLinearSolverUsed(final boolean useHomogeneousLinearSolver) throws LockedException {
         if (isLocked()) {
             throw new LockedException();
         }
 
-        mUseHomogeneousLinearSolver = useHomogeneousLinearSolver;
+        this.useHomogeneousLinearSolver = useHomogeneousLinearSolver;
     }
 
     /**
@@ -121,9 +119,8 @@ public abstract class LinearRangingAndRssiPositionEstimator<P extends Point<P>> 
      */
     @Override
     public int getMinRequiredSources() {
-        return mUseHomogeneousLinearSolver ?
-                mHomogeneousTrilaterationSolver.getMinRequiredPositionsAndDistances() :
-                mInhomogeneousTrilaterationSolver.getMinRequiredPositionsAndDistances();
+        return useHomogeneousLinearSolver ? homogeneousTrilaterationSolver.getMinRequiredPositionsAndDistances()
+                : inhomogeneousTrilaterationSolver.getMinRequiredPositionsAndDistances();
     }
 
     /**
@@ -133,8 +130,8 @@ public abstract class LinearRangingAndRssiPositionEstimator<P extends Point<P>> 
      */
     @Override
     public boolean isReady() {
-        return (!mUseHomogeneousLinearSolver && mInhomogeneousTrilaterationSolver.isReady()) ||
-                (mUseHomogeneousLinearSolver && mHomogeneousTrilaterationSolver.isReady());
+        return (!useHomogeneousLinearSolver && inhomogeneousTrilaterationSolver.isReady())
+                || (useHomogeneousLinearSolver && homogeneousTrilaterationSolver.isReady());
     }
 
     /**
@@ -144,8 +141,7 @@ public abstract class LinearRangingAndRssiPositionEstimator<P extends Point<P>> 
      */
     @Override
     public boolean isLocked() {
-        return mInhomogeneousTrilaterationSolver.isLocked() ||
-                mHomogeneousTrilaterationSolver.isLocked();
+        return inhomogeneousTrilaterationSolver.isLocked() || homogeneousTrilaterationSolver.isLocked();
     }
 
     /**
@@ -158,17 +154,14 @@ public abstract class LinearRangingAndRssiPositionEstimator<P extends Point<P>> 
      */
     @SuppressWarnings("Duplicates")
     @Override
-    public void estimate() throws LockedException, NotReadyException,
-            PositionEstimationException {
+    public void estimate() throws LockedException, NotReadyException, PositionEstimationException {
         try {
-            if (mUseHomogeneousLinearSolver) {
-                mHomogeneousTrilaterationSolver.solve();
-                mEstimatedPositionCoordinates =
-                        mHomogeneousTrilaterationSolver.getEstimatedPositionCoordinates();
+            if (useHomogeneousLinearSolver) {
+                homogeneousTrilaterationSolver.solve();
+                estimatedPositionCoordinates = homogeneousTrilaterationSolver.getEstimatedPositionCoordinates();
             } else {
-                mInhomogeneousTrilaterationSolver.solve();
-                mEstimatedPositionCoordinates =
-                        mInhomogeneousTrilaterationSolver.getEstimatedPositionCoordinates();
+                inhomogeneousTrilaterationSolver.solve();
+                estimatedPositionCoordinates = inhomogeneousTrilaterationSolver.getEstimatedPositionCoordinates();
             }
         } catch (final LaterationException e) {
             throw new PositionEstimationException(e);
@@ -182,9 +175,8 @@ public abstract class LinearRangingAndRssiPositionEstimator<P extends Point<P>> 
      */
     @Override
     public P[] getPositions() {
-        return mUseHomogeneousLinearSolver ?
-                mHomogeneousTrilaterationSolver.getPositions() :
-                mInhomogeneousTrilaterationSolver.getPositions();
+        return useHomogeneousLinearSolver ? homogeneousTrilaterationSolver.getPositions()
+                : inhomogeneousTrilaterationSolver.getPositions();
     }
 
     /**
@@ -196,9 +188,8 @@ public abstract class LinearRangingAndRssiPositionEstimator<P extends Point<P>> 
      */
     @Override
     public double[] getDistances() {
-        return mUseHomogeneousLinearSolver ?
-                mHomogeneousTrilaterationSolver.getDistances() :
-                mInhomogeneousTrilaterationSolver.getDistances();
+        return useHomogeneousLinearSolver ? homogeneousTrilaterationSolver.getDistances()
+                : inhomogeneousTrilaterationSolver.getDistances();
     }
 
     /**
@@ -236,28 +227,25 @@ public abstract class LinearRangingAndRssiPositionEstimator<P extends Point<P>> 
      * @param positions positions to be set.
      * @param distances distances to be set.
      */
-    protected abstract void setPositionsAndDistances(
-            final List<P> positions, final List<Double> distances);
+    protected abstract void setPositionsAndDistances(final List<P> positions, final List<Double> distances);
 
     /**
      * Initializes lateration solver listener.
      */
     @SuppressWarnings("Duplicates")
     private void init() {
-        mLaterationSolverListener = new LaterationSolverListener<P>() {
+        laterationSolverListener = new LaterationSolverListener<>() {
             @Override
             public void onSolveStart(final LaterationSolver<P> solver) {
-                if (mListener != null) {
-                    mListener.onEstimateStart(
-                            LinearRangingAndRssiPositionEstimator.this);
+                if (listener != null) {
+                    listener.onEstimateStart(LinearRangingAndRssiPositionEstimator.this);
                 }
             }
 
             @Override
             public void onSolveEnd(final LaterationSolver<P> solver) {
-                if (mListener != null) {
-                    mListener.onEstimateEnd(
-                            LinearRangingAndRssiPositionEstimator.this);
+                if (listener != null) {
+                    listener.onEstimateEnd(LinearRangingAndRssiPositionEstimator.this);
                 }
             }
         };
@@ -268,23 +256,20 @@ public abstract class LinearRangingAndRssiPositionEstimator<P extends Point<P>> 
      */
     @SuppressWarnings("Duplicates")
     private void buildPositionsAndDistances() {
-        if ((mUseHomogeneousLinearSolver && mHomogeneousTrilaterationSolver == null) ||
-                (!mUseHomogeneousLinearSolver && mInhomogeneousTrilaterationSolver == null)) {
+        if ((useHomogeneousLinearSolver && homogeneousTrilaterationSolver == null)
+                || (!useHomogeneousLinearSolver && inhomogeneousTrilaterationSolver == null)) {
             return;
         }
 
         final int min = getMinRequiredSources();
-        if (mSources == null || mFingerprint == null ||
-                mSources.size() < min ||
-                mFingerprint.getReadings() == null ||
-                mFingerprint.getReadings().size() < min) {
+        if (sources == null || fingerprint == null || sources.size() < min || fingerprint.getReadings() == null
+                || fingerprint.getReadings().size() < min) {
             return;
         }
 
-        final List<P> positions = new ArrayList<>();
-        final List<Double> distances = new ArrayList<>();
-        PositionEstimatorHelper.buildPositionsAndDistances(
-                mSources, mFingerprint, positions, distances);
+        final var positions = new ArrayList<P>();
+        final var distances = new ArrayList<Double>();
+        PositionEstimatorHelper.buildPositionsAndDistances(sources, fingerprint, positions, distances);
 
         setPositionsAndDistances(positions, distances);
     }

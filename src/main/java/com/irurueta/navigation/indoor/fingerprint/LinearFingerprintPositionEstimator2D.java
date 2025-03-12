@@ -32,8 +32,7 @@ import java.util.List;
  * This implementation uses a first-order Taylor approximation over provided located
  * fingerprints to determine an approximate position for a non-located fingerprint.
  */
-public class LinearFingerprintPositionEstimator2D extends
-        LinearFingerprintPositionEstimator<Point2D> {
+public class LinearFingerprintPositionEstimator2D extends LinearFingerprintPositionEstimator<Point2D> {
 
     /**
      * Constructor.
@@ -46,8 +45,7 @@ public class LinearFingerprintPositionEstimator2D extends
      *
      * @param listener listener in charge of handling events.
      */
-    public LinearFingerprintPositionEstimator2D(
-            final FingerprintPositionEstimatorListener<Point2D> listener) {
+    public LinearFingerprintPositionEstimator2D(final FingerprintPositionEstimatorListener<Point2D> listener) {
         super(listener);
     }
 
@@ -116,11 +114,11 @@ public class LinearFingerprintPositionEstimator2D extends
      */
     @Override
     public Point2D getEstimatedPosition() {
-        if (mEstimatedPositionCoordinates == null) {
+        if (estimatedPositionCoordinates == null) {
             return null;
         }
 
-        Point2D result = new InhomogeneousPoint2D();
+        final var result = new InhomogeneousPoint2D();
         getEstimatedPosition(result);
         return result;
     }

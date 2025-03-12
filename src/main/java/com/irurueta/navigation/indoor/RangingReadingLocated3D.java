@@ -36,8 +36,7 @@ public class RangingReadingLocated3D<S extends RadioSource> extends RangingReadi
      * @throws IllegalArgumentException if radio source data is null, distance is negative
      *                                  or position is null.
      */
-    public RangingReadingLocated3D(
-            final S source, final double distance, final Point3D position) {
+    public RangingReadingLocated3D(final S source, final double distance, final Point3D position) {
         super(source, distance, position);
     }
 
@@ -55,11 +54,9 @@ public class RangingReadingLocated3D<S extends RadioSource> extends RangingReadi
      *                                  measures is negative.
      */
     public RangingReadingLocated3D(
-            final S source, final double distance, final Point3D position,
-            final int numAttemptedMeasurements,
+            final S source, final double distance, final Point3D position, final int numAttemptedMeasurements,
             final int numSuccessfulMeasurements) {
-        super(source, distance, position, numAttemptedMeasurements,
-                numSuccessfulMeasurements);
+        super(source, distance, position, numAttemptedMeasurements, numSuccessfulMeasurements);
     }
 
     /**
@@ -73,8 +70,7 @@ public class RangingReadingLocated3D<S extends RadioSource> extends RangingReadi
      *                                  position is null or standard deviation is zero or negative.
      */
     public RangingReadingLocated3D(
-            final S source, final double distance, final Point3D position,
-            final Double distanceStandardDeviation) {
+            final S source, final double distance, final Point3D position, final Double distanceStandardDeviation) {
         super(source, distance, position, distanceStandardDeviation);
     }
 
@@ -93,12 +89,10 @@ public class RangingReadingLocated3D<S extends RadioSource> extends RangingReadi
      *                                  measures is less than 1 or number of successful measures is negative.
      */
     public RangingReadingLocated3D(
-            final S source, final double distance, final Point3D position,
-            final Double distanceStandardDeviation,
-            final int numAttemptedMeasurements,
-            final int numSuccessfulMeasurements) {
-        super(source, distance, position, distanceStandardDeviation,
-                numAttemptedMeasurements, numSuccessfulMeasurements);
+            final S source, final double distance, final Point3D position, final Double distanceStandardDeviation,
+            final int numAttemptedMeasurements, final int numSuccessfulMeasurements) {
+        super(source, distance, position, distanceStandardDeviation, numAttemptedMeasurements,
+                numSuccessfulMeasurements);
     }
 
     /**
@@ -113,8 +107,7 @@ public class RangingReadingLocated3D<S extends RadioSource> extends RangingReadi
      *                                  or position is null.
      */
     public RangingReadingLocated3D(
-            final S source, final double distance, final Point3D position,
-            final Matrix positionCovariance) {
+            final S source, final double distance, final Point3D position, final Matrix positionCovariance) {
         super(source, distance, position, positionCovariance);
     }
 
@@ -134,12 +127,9 @@ public class RangingReadingLocated3D<S extends RadioSource> extends RangingReadi
      *                                  measures is less than 1 or number of successful measures is negative.
      */
     public RangingReadingLocated3D(
-            final S source, final double distance, final Point3D position,
-            final Matrix positionCovariance,
-            final int numAttemptedMeasurements,
-            final int numSuccessfulMeasurements) {
-        super(source, distance, position, positionCovariance, numAttemptedMeasurements,
-                numSuccessfulMeasurements);
+            final S source, final double distance, final Point3D position, final Matrix positionCovariance,
+            final int numAttemptedMeasurements, final int numSuccessfulMeasurements) {
+        super(source, distance, position, positionCovariance, numAttemptedMeasurements, numSuccessfulMeasurements);
     }
 
     /**
@@ -155,11 +145,9 @@ public class RangingReadingLocated3D<S extends RadioSource> extends RangingReadi
      *                                  position is null or standard deviation is zero or negative.
      */
     public RangingReadingLocated3D(
-            final S source, final double distance, final Point3D position,
-            final Double distanceStandardDeviation,
+            final S source, final double distance, final Point3D position, final Double distanceStandardDeviation,
             final Matrix positionCovariance) {
-        super(source, distance, position, distanceStandardDeviation,
-                positionCovariance);
+        super(source, distance, position, distanceStandardDeviation, positionCovariance);
     }
 
     /**
@@ -180,13 +168,9 @@ public class RangingReadingLocated3D<S extends RadioSource> extends RangingReadi
      *                                  number of successful measures is negative.
      */
     public RangingReadingLocated3D(
-            final S source, final double distance, final Point3D position,
-            final Double distanceStandardDeviation,
-            final Matrix positionCovariance,
-            final int numAttemptedMeasurements,
-            final int numSuccessfulMeasurements) {
-        super(source, distance, position, distanceStandardDeviation,
-                positionCovariance, numAttemptedMeasurements,
+            final S source, final double distance, final Point3D position, final Double distanceStandardDeviation,
+            final Matrix positionCovariance, final int numAttemptedMeasurements, final int numSuccessfulMeasurements) {
+        super(source, distance, position, distanceStandardDeviation, positionCovariance, numAttemptedMeasurements,
                 numSuccessfulMeasurements);
     }
 

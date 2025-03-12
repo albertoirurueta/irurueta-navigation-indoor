@@ -50,8 +50,7 @@ public class MSACRobustMixedPositionEstimator3D extends RobustMixedPositionEstim
      * @throws IllegalArgumentException if provided sources is null or the number of
      *                                  provided sources is less than the required minimum.
      */
-    public MSACRobustMixedPositionEstimator3D(
-            final List<? extends RadioSourceLocated<Point3D>> sources) {
+    public MSACRobustMixedPositionEstimator3D(final List<? extends RadioSourceLocated<Point3D>> sources) {
         super();
         init();
         internalSetSources(sources);
@@ -94,8 +93,7 @@ public class MSACRobustMixedPositionEstimator3D extends RobustMixedPositionEstim
      *
      * @param listener listener in charge of handling events.
      */
-    public MSACRobustMixedPositionEstimator3D(
-            final RobustMixedPositionEstimatorListener<Point3D> listener) {
+    public MSACRobustMixedPositionEstimator3D(final RobustMixedPositionEstimatorListener<Point3D> listener) {
         super(listener);
         init();
     }
@@ -158,8 +156,7 @@ public class MSACRobustMixedPositionEstimator3D extends RobustMixedPositionEstim
      * @return threshold to determine whether samples are inliers or not.
      */
     public double getThreshold() {
-        return ((MSACRobustLateration3DSolver) mLaterationSolver).
-                getThreshold();
+        return ((MSACRobustLateration3DSolver) laterationSolver).getThreshold();
     }
 
     /**
@@ -172,8 +169,7 @@ public class MSACRobustMixedPositionEstimator3D extends RobustMixedPositionEstim
      * @throws LockedException          if this solver is locked.
      */
     public void setThreshold(final double threshold) throws LockedException {
-        ((MSACRobustLateration3DSolver) mLaterationSolver).
-                setThreshold(threshold);
+        ((MSACRobustLateration3DSolver) laterationSolver).setThreshold(threshold);
     }
 
     /**
@@ -190,7 +186,6 @@ public class MSACRobustMixedPositionEstimator3D extends RobustMixedPositionEstim
      * Initializes robust lateration solver.
      */
     private void init() {
-        mLaterationSolver = new MSACRobustLateration3DSolver(
-                mTrilaterationSolverListener);
+        laterationSolver = new MSACRobustLateration3DSolver(trilaterationSolverListener);
     }
 }

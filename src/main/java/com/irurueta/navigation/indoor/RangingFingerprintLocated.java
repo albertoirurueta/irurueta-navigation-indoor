@@ -27,19 +27,19 @@ import java.util.List;
  * @param <P> a {@link Point} type.
  * @param <R> a {@link RangingReading} type.
  */
-public class RangingFingerprintLocated<S extends RadioSource, R extends RangingReading<S>,
-        P extends Point<?>> extends RangingFingerprint<S, R> implements FingerprintLocated<P> {
+public class RangingFingerprintLocated<S extends RadioSource, R extends RangingReading<S>, P extends Point<?>> extends
+        RangingFingerprint<S, R> implements FingerprintLocated<P> {
 
     /**
      * Position where fingerprint readings were made.
      */
-    private P mPosition;
+    private P position;
 
     /**
      * Covariance of inhomogeneous coordinates of current
      * position (if available).
      */
-    private Matrix mPositionCovariance;
+    private Matrix positionCovariance;
 
     /**
      * Constructor.
@@ -49,15 +49,14 @@ public class RangingFingerprintLocated<S extends RadioSource, R extends RangingR
      * @throws IllegalArgumentException if either readings or position are
      *                                  null.
      */
-    public RangingFingerprintLocated(
-            final List<R> readings, final P position) {
+    public RangingFingerprintLocated(final List<R> readings, final P position) {
         super(readings);
 
         if (position == null) {
             throw new IllegalArgumentException();
         }
 
-        mPosition = position;
+        this.position = position;
     }
 
     /**
@@ -70,19 +69,16 @@ public class RangingFingerprintLocated<S extends RadioSource, R extends RangingR
      * @throws IllegalArgumentException if either readings or position are null, or
      *                                  covariance has invalid size.
      */
-    public RangingFingerprintLocated(
-            final List<R> readings, final P position,
-            final Matrix positionCovariance) {
+    public RangingFingerprintLocated(final List<R> readings, final P position, final Matrix positionCovariance) {
         this(readings, position);
 
         if (positionCovariance != null) {
-            final int dims = position.getDimensions();
-            if (positionCovariance.getRows() != dims ||
-                    positionCovariance.getColumns() != dims) {
+            final var dims = position.getDimensions();
+            if (positionCovariance.getRows() != dims || positionCovariance.getColumns() != dims) {
                 throw new IllegalArgumentException();
             }
         }
-        mPositionCovariance = positionCovariance;
+        this.positionCovariance = positionCovariance;
     }
 
     /**
@@ -98,7 +94,7 @@ public class RangingFingerprintLocated<S extends RadioSource, R extends RangingR
      * @return position where fingerprint readings were made.
      */
     public P getPosition() {
-        return mPosition;
+        return position;
     }
 
     /**
@@ -107,6 +103,6 @@ public class RangingFingerprintLocated<S extends RadioSource, R extends RangingR
      * @return covariance of position or null.
      */
     public Matrix getPositionCovariance() {
-        return mPositionCovariance;
+        return positionCovariance;
     }
 }

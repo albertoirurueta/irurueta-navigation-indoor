@@ -33,8 +33,7 @@ import java.util.List;
  * getting ranging+RSSI readings at an unknown location of different radio sources whose
  * locations are known.
  */
-public class NonLinearRangingAndRssiPositionEstimator2D extends
-        NonLinearRangingAndRssiPositionEstimator<Point2D> {
+public class NonLinearRangingAndRssiPositionEstimator2D extends NonLinearRangingAndRssiPositionEstimator<Point2D> {
 
     /**
      * Constructor.
@@ -52,8 +51,7 @@ public class NonLinearRangingAndRssiPositionEstimator2D extends
      *                                  provided sources is less than the required
      *                                  minimum.
      */
-    public NonLinearRangingAndRssiPositionEstimator2D(
-            final List<? extends RadioSourceLocated<Point2D>> sources) {
+    public NonLinearRangingAndRssiPositionEstimator2D(final List<? extends RadioSourceLocated<Point2D>> sources) {
         super();
         initialize();
         internalSetSources(sources);
@@ -99,8 +97,7 @@ public class NonLinearRangingAndRssiPositionEstimator2D extends
      *
      * @param listener listener in charge of handling events.
      */
-    public NonLinearRangingAndRssiPositionEstimator2D(
-            final RangingAndRssiPositionEstimatorListener<Point2D> listener) {
+    public NonLinearRangingAndRssiPositionEstimator2D(final RangingAndRssiPositionEstimatorListener<Point2D> listener) {
         super(listener);
         initialize();
     }
@@ -181,8 +178,7 @@ public class NonLinearRangingAndRssiPositionEstimator2D extends
      *                                  minimum.
      */
     public NonLinearRangingAndRssiPositionEstimator2D(
-            final List<? extends RadioSourceLocated<Point2D>> sources,
-            final Point2D initialPosition) {
+            final List<? extends RadioSourceLocated<Point2D>> sources, final Point2D initialPosition) {
         super(initialPosition);
         initialize();
         internalSetSources(sources);
@@ -234,8 +230,7 @@ public class NonLinearRangingAndRssiPositionEstimator2D extends
      * @param listener        listener in charge of handling events.
      */
     public NonLinearRangingAndRssiPositionEstimator2D(
-            final Point2D initialPosition,
-            final RangingAndRssiPositionEstimatorListener<Point2D> listener) {
+            final Point2D initialPosition, final RangingAndRssiPositionEstimatorListener<Point2D> listener) {
         super(initialPosition, listener);
         initialize();
     }
@@ -251,8 +246,7 @@ public class NonLinearRangingAndRssiPositionEstimator2D extends
      *                                  minimum.
      */
     public NonLinearRangingAndRssiPositionEstimator2D(
-            final List<? extends RadioSourceLocated<Point2D>> sources,
-            final Point2D initialPosition,
+            final List<? extends RadioSourceLocated<Point2D>> sources, final Point2D initialPosition,
             final RangingAndRssiPositionEstimatorListener<Point2D> listener) {
         super(initialPosition, listener);
         initialize();
@@ -308,11 +302,11 @@ public class NonLinearRangingAndRssiPositionEstimator2D extends
      * @return estimated position.
      */
     public Point2D getEstimatedPosition() {
-        if (mEstimatedPositionCoordinates == null) {
+        if (estimatedPositionCoordinates == null) {
             return null;
         }
 
-        final InhomogeneousPoint2D result = new InhomogeneousPoint2D();
+        final var result = new InhomogeneousPoint2D();
         getEstimatedPosition(result);
         return result;
     }
@@ -331,20 +325,20 @@ public class NonLinearRangingAndRssiPositionEstimator2D extends
             final List<Point2D> positions, final List<Double> distances,
             final List<Double> distanceStandardDeviations) {
 
-        final int size = positions.size();
+        final var size = positions.size();
         Point2D[] positionsArray = new InhomogeneousPoint2D[size];
         positionsArray = positions.toArray(positionsArray);
 
-        final double[] distancesArray = new double[size];
-        final double[] distanceStandardDeviationsArray = new double[size];
-        for (int i = 0; i < size; i++) {
+        final var distancesArray = new double[size];
+        final var distanceStandardDeviationsArray = new double[size];
+        for (var i = 0; i < size; i++) {
             distancesArray[i] = distances.get(i);
             distanceStandardDeviationsArray[i] = distanceStandardDeviations.get(i);
         }
 
         try {
-            mTrilaterationSolver.setPositionsDistancesAndStandardDeviations(
-                    positionsArray, distancesArray, distanceStandardDeviationsArray);
+            trilaterationSolver.setPositionsDistancesAndStandardDeviations(positionsArray, distancesArray,
+                    distanceStandardDeviationsArray);
         } catch (final LockedException e) {
             throw new IllegalArgumentException(e);
         }
@@ -354,7 +348,6 @@ public class NonLinearRangingAndRssiPositionEstimator2D extends
      * Initializes lateration solver.
      */
     private void initialize() {
-        mTrilaterationSolver = new NonLinearLeastSquaresLateration2DSolver(
-                mLaterationSolverListener);
+        trilaterationSolver = new NonLinearLeastSquaresLateration2DSolver(laterationSolverListener);
     }
 }

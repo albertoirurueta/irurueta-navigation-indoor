@@ -15,7 +15,6 @@
  */
 package com.irurueta.navigation.indoor.radiosource;
 
-import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.Point3D;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.indoor.*;
@@ -62,7 +61,7 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      * Constructor.
      */
     public SequentialRobustMixedRadioSourceEstimator3D() {
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -72,10 +71,9 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      * @param readings signal readings belonging to the same radio source.
      * @throws IllegalArgumentException if readings are not valid.
      */
-    public SequentialRobustMixedRadioSourceEstimator3D(
-            final List<? extends ReadingLocated<Point3D>> readings) {
+    public SequentialRobustMixedRadioSourceEstimator3D(final List<? extends ReadingLocated<Point3D>> readings) {
         super(readings);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -86,7 +84,7 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
     public SequentialRobustMixedRadioSourceEstimator3D(
             final SequentialRobustMixedRadioSourceEstimatorListener<S, Point3D> listener) {
         super(listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -101,7 +99,7 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
             final List<? extends ReadingLocated<Point3D>> readings,
             final SequentialRobustMixedRadioSourceEstimatorListener<S, Point3D> listener) {
         super(readings, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -114,10 +112,9 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      * @throws IllegalArgumentException if readings are not valid.
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final List<? extends ReadingLocated<Point3D>> readings,
-            final Point3D initialPosition) {
+            final List<? extends ReadingLocated<Point3D>> readings, final Point3D initialPosition) {
         super(readings, initialPosition);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -126,10 +123,9 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      * @param initialPosition initial position to start the estimation of radio
      *                        source position.
      */
-    public SequentialRobustMixedRadioSourceEstimator3D(
-            final Point3D initialPosition) {
+    public SequentialRobustMixedRadioSourceEstimator3D(final Point3D initialPosition) {
         super(initialPosition);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -143,7 +139,7 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
             final Point3D initialPosition,
             final SequentialRobustMixedRadioSourceEstimatorListener<S, Point3D> listener) {
         super(initialPosition, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -157,11 +153,10 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      * @throws IllegalArgumentException if readings are not valid.
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final List<? extends ReadingLocated<Point3D>> readings,
-            final Point3D initialPosition,
+            final List<? extends ReadingLocated<Point3D>> readings, final Point3D initialPosition,
             final SequentialRobustMixedRadioSourceEstimatorListener<S, Point3D> listener) {
         super(readings, initialPosition, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -171,10 +166,9 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      *                                   estimation of radio source transmitted power
      *                                   (expressed in dBm's).
      */
-    public SequentialRobustMixedRadioSourceEstimator3D(
-            final Double initialTransmittedPowerdBm) {
+    public SequentialRobustMixedRadioSourceEstimator3D(final Double initialTransmittedPowerdBm) {
         super(initialTransmittedPowerdBm);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -188,10 +182,9 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      * @throws IllegalArgumentException if readings are not valid.
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final List<? extends ReadingLocated<Point3D>> readings,
-            final Double initialTransmittedPowerdBm) {
+            final List<? extends ReadingLocated<Point3D>> readings, final Double initialTransmittedPowerdBm) {
         super(readings, initialTransmittedPowerdBm);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -206,7 +199,7 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
             final Double initialTransmittedPowerdBm,
             final SequentialRobustMixedRadioSourceEstimatorListener<S, Point3D> listener) {
         super(initialTransmittedPowerdBm, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -221,11 +214,10 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      * @throws IllegalArgumentException if readings are not valid.
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final List<? extends ReadingLocated<Point3D>> readings,
-            final Double initialTransmittedPowerdBm,
+            final List<? extends ReadingLocated<Point3D>> readings, final Double initialTransmittedPowerdBm,
             final SequentialRobustMixedRadioSourceEstimatorListener<S, Point3D> listener) {
         super(readings, initialTransmittedPowerdBm, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -241,11 +233,10 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      * @throws IllegalArgumentException if readings are not valid.
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final List<? extends ReadingLocated<Point3D>> readings,
-            final Point3D initialPosition,
+            final List<? extends ReadingLocated<Point3D>> readings, final Point3D initialPosition,
             final Double initialTransmittedPowerdBm) {
         super(readings, initialPosition, initialTransmittedPowerdBm);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -258,10 +249,9 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      *                                   (expressed in dBm's).
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm) {
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm) {
         super(initialPosition, initialTransmittedPowerdBm);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -275,11 +265,10 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      * @param listener                   in charge of attending events raised by this instance.
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
             final SequentialRobustMixedRadioSourceEstimatorListener<S, Point3D> listener) {
         super(initialPosition, initialTransmittedPowerdBm, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -296,12 +285,11 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      * @throws IllegalArgumentException if readings are not valid.
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final List<? extends ReadingLocated<Point3D>> readings,
-            final Point3D initialPosition,
+            final List<? extends ReadingLocated<Point3D>> readings, final Point3D initialPosition,
             final Double initialTransmittedPowerdBm,
             final SequentialRobustMixedRadioSourceEstimatorListener<S, Point3D> listener) {
         super(readings, initialPosition, initialTransmittedPowerdBm, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -318,13 +306,10 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      * @throws IllegalArgumentException if readings are not valid.
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final List<? extends ReadingLocated<Point3D>> readings,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent) {
-        super(readings, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+            final List<? extends ReadingLocated<Point3D>> readings, final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm, final double initialPathLossExponent) {
+        super(readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -338,11 +323,10 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
         super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -357,13 +341,11 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      * @param listener                   listener in charge of attending events raised by this instance.
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final SequentialRobustMixedRadioSourceEstimatorListener<S, Point3D> listener) {
-        super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent,
-                listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener);
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -381,14 +363,11 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      * @throws IllegalArgumentException if readings are not valid.
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final List<? extends ReadingLocated<Point3D>> readings,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
-            final double initialPathLossExponent,
+            final List<? extends ReadingLocated<Point3D>> readings, final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm, final double initialPathLossExponent,
             final SequentialRobustMixedRadioSourceEstimatorListener<S, Point3D> listener) {
-        super(readings, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        super(readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener);
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -402,7 +381,7 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      */
     public SequentialRobustMixedRadioSourceEstimator3D(final double[] qualityScores) {
         super(qualityScores);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -417,10 +396,9 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      *                                  null, or length of quality scores is less than required minimum.
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final double[] qualityScores,
-            final List<? extends ReadingLocated<Point3D>> readings) {
+            final double[] qualityScores, final List<? extends ReadingLocated<Point3D>> readings) {
         super(qualityScores, readings);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -437,7 +415,7 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
             final double[] qualityScores,
             final SequentialRobustMixedRadioSourceEstimatorListener<S, Point3D> listener) {
         super(qualityScores, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -453,11 +431,10 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      *                                  null, or length of quality scores is less than required minimum.
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final double[] qualityScores,
-            final List<? extends ReadingLocated<Point3D>> readings,
+            final double[] qualityScores, final List<? extends ReadingLocated<Point3D>> readings,
             final SequentialRobustMixedRadioSourceEstimatorListener<S, Point3D> listener) {
         super(qualityScores, readings, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -474,11 +451,10 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      *                                  null, or length of quality scores is less than required minimum.
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final double[] qualityScores,
-            final List<? extends ReadingLocated<Point3D>> readings,
+            final double[] qualityScores, final List<? extends ReadingLocated<Point3D>> readings,
             final Point3D initialPosition) {
         super(qualityScores, readings, initialPosition);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -492,11 +468,9 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      * @throws IllegalArgumentException if quality scores is null, or length
      *                                  of quality scores is less than required minimum.
      */
-    public SequentialRobustMixedRadioSourceEstimator3D(
-            final double[] qualityScores,
-            final Point3D initialPosition) {
+    public SequentialRobustMixedRadioSourceEstimator3D(final double[] qualityScores, final Point3D initialPosition) {
         super(qualityScores, initialPosition);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -512,11 +486,10 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      *                                  of quality scores is less than required minimum.
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final double[] qualityScores,
-            final Point3D initialPosition,
+            final double[] qualityScores, final Point3D initialPosition,
             final SequentialRobustMixedRadioSourceEstimatorListener<S, Point3D> listener) {
         super(qualityScores, initialPosition, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -534,12 +507,11 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      *                                  is null, or length of quality scores is less than required minimum.
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final double[] qualityScores,
-            final List<? extends ReadingLocated<Point3D>> readings,
+            final double[] qualityScores, final List<? extends ReadingLocated<Point3D>> readings,
             final Point3D initialPosition,
             final SequentialRobustMixedRadioSourceEstimatorListener<S, Point3D> listener) {
         super(qualityScores, readings, initialPosition, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -555,10 +527,9 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      *                                  of quality scores is less than required minimum.
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final double[] qualityScores,
-            final Double initialTransmittedPowerdBm) {
+            final double[] qualityScores, final Double initialTransmittedPowerdBm) {
         super(qualityScores, initialTransmittedPowerdBm);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -576,11 +547,10 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      *                                  is null, or length of quality scores is less than required minimum.
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final double[] qualityScores,
-            final List<? extends ReadingLocated<Point3D>> readings,
+            final double[] qualityScores, final List<? extends ReadingLocated<Point3D>> readings,
             final Double initialTransmittedPowerdBm) {
         super(qualityScores, readings, initialTransmittedPowerdBm);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -597,11 +567,10 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      *                                  of quality scores is less than required minimum.
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final double[] qualityScores,
-            final Double initialTransmittedPowerdBm,
+            final double[] qualityScores, final Double initialTransmittedPowerdBm,
             final SequentialRobustMixedRadioSourceEstimatorListener<S, Point3D> listener) {
         super(qualityScores, initialTransmittedPowerdBm, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -620,12 +589,11 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      *                                  is null, or length of quality scores is less than required minimum.
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final double[] qualityScores,
-            final List<? extends ReadingLocated<Point3D>> readings,
+            final double[] qualityScores, final List<? extends ReadingLocated<Point3D>> readings,
             final Double initialTransmittedPowerdBm,
             final SequentialRobustMixedRadioSourceEstimatorListener<S, Point3D> listener) {
         super(qualityScores, readings, initialTransmittedPowerdBm, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -645,12 +613,10 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      *                                  is null, or length of quality scores is less than required minimum.
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final double[] qualityScores,
-            final List<? extends ReadingLocated<Point3D>> readings,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm) {
+            final double[] qualityScores, final List<? extends ReadingLocated<Point3D>> readings,
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm) {
         super(qualityScores, readings, initialPosition, initialTransmittedPowerdBm);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -668,11 +634,9 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      *                                  of quality scores is less than required minimum.
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final double[] qualityScores,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm) {
+            final double[] qualityScores, final Point3D initialPosition, final Double initialTransmittedPowerdBm) {
         super(qualityScores, initialPosition, initialTransmittedPowerdBm);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -691,12 +655,10 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      *                                  of quality scores is less than required minimum.
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final double[] qualityScores,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final double[] qualityScores, final Point3D initialPosition, final Double initialTransmittedPowerdBm,
             final SequentialRobustMixedRadioSourceEstimatorListener<S, Point3D> listener) {
         super(qualityScores, initialPosition, initialTransmittedPowerdBm, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -717,14 +679,11 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      *                                  is null, or length of quality scores is less than required minimum.
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final double[] qualityScores,
-            final List<? extends ReadingLocated<Point3D>> readings,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final double[] qualityScores, final List<? extends ReadingLocated<Point3D>> readings,
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
             final SequentialRobustMixedRadioSourceEstimatorListener<S, Point3D> listener) {
-        super(qualityScores, readings, initialPosition, initialTransmittedPowerdBm,
-                listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        super(qualityScores, readings, initialPosition, initialTransmittedPowerdBm, listener);
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -745,14 +704,11 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      *                                  is null, or length of quality scores is less than required minimum.
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final double[] qualityScores,
-            final List<? extends ReadingLocated<Point3D>> readings,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final double[] qualityScores, final List<? extends ReadingLocated<Point3D>> readings,
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-        super(qualityScores, readings, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        super(qualityScores, readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -771,13 +727,10 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      *                                  of quality scores is less than required minimum.
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final double[] qualityScores,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final double[] qualityScores, final Point3D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent) {
-        super(qualityScores, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        super(qualityScores, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -797,14 +750,11 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      *                                  of quality scores is less than required minimum.
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final double[] qualityScores,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final double[] qualityScores, final Point3D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final SequentialRobustMixedRadioSourceEstimatorListener<S, Point3D> listener) {
-        super(qualityScores, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        super(qualityScores, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener);
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -826,15 +776,12 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      *                                  is null, or length of quality scores is less than required minimum.
      */
     public SequentialRobustMixedRadioSourceEstimator3D(
-            final double[] qualityScores,
-            final List<? extends ReadingLocated<Point3D>> readings,
-            final Point3D initialPosition,
-            final Double initialTransmittedPowerdBm,
+            final double[] qualityScores, final List<? extends ReadingLocated<Point3D>> readings,
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
             final double initialPathLossExponent,
             final SequentialRobustMixedRadioSourceEstimatorListener<S, Point3D> listener) {
-        super(qualityScores, readings, initialPosition, initialTransmittedPowerdBm,
-                initialPathLossExponent, listener);
-        mRangingPreliminarySubsetSize = mRssiPreliminarySubsetSize = getMinReadings();
+        super(qualityScores, readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener);
+        rangingPreliminarySubsetSize = rssiPreliminarySubsetSize = getMinReadings();
     }
 
     /**
@@ -848,7 +795,7 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      */
     @Override
     public int getMinReadings() {
-        int minReadings = Point3D.POINT3D_INHOMOGENEOUS_COORDINATES_LENGTH;
+        var minReadings = Point3D.POINT3D_INHOMOGENEOUS_COORDINATES_LENGTH;
         if (isTransmittedPowerEstimationEnabled()) {
             minReadings++;
         }
@@ -876,13 +823,13 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
     @Override
     @SuppressWarnings({"unchecked", "DuplicatedCode"})
     public RadioSourceLocated<Point3D> getEstimatedRadioSource() {
-        final List<? extends ReadingLocated<Point3D>> readings = getReadings();
+        final var readings = getReadings();
         if (readings == null || readings.isEmpty()) {
             return null;
         }
 
         final S source;
-        final ReadingLocated<Point3D> reading = readings.get(0);
+        final var reading = readings.get(0);
         if (reading instanceof RangingReadingLocated) {
             source = ((RangingReadingLocated<S, Point3D>) reading).getSource();
         } else if (reading instanceof RssiReadingLocated) {
@@ -893,52 +840,39 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
             return null;
         }
 
-        final Point3D estimatedPosition = getEstimatedPosition();
+        final var estimatedPosition = getEstimatedPosition();
         if (estimatedPosition == null) {
             return null;
         }
 
-        final Matrix estimatedPositionCovariance = getEstimatedPositionCovariance();
+        final var estimatedPositionCovariance = getEstimatedPositionCovariance();
 
-        final Double transmittedPowerdBm = getEstimatedTransmittedPowerdBm();
+        final var transmittedPowerdBm = getEstimatedTransmittedPowerdBm();
 
-        final Double transmittedPowerVariance =
-                getEstimatedTransmittedPowerVariance();
-        final Double transmittedPowerStandardDeviation = transmittedPowerVariance != null ?
-                Math.sqrt(transmittedPowerVariance) : null;
+        final var transmittedPowerVariance = getEstimatedTransmittedPowerVariance();
+        final var transmittedPowerStandardDeviation = transmittedPowerVariance != null
+                ? Math.sqrt(transmittedPowerVariance) : null;
 
-        final Double pathlossExponentVariance =
-                getEstimatedPathLossExponentVariance();
-        final Double pathlossExponentStandardDeviation = pathlossExponentVariance != null ?
-                Math.sqrt(pathlossExponentVariance) : null;
+        final var pathlossExponentVariance = getEstimatedPathLossExponentVariance();
+        final var pathlossExponentStandardDeviation = pathlossExponentVariance != null
+                ? Math.sqrt(pathlossExponentVariance) : null;
 
-        if (source instanceof WifiAccessPoint) {
-            final WifiAccessPoint accessPoint = (WifiAccessPoint) source;
+        if (source instanceof WifiAccessPoint accessPoint) {
             if (transmittedPowerdBm != null) {
-                return new WifiAccessPointWithPowerAndLocated3D(accessPoint.getBssid(),
-                        source.getFrequency(), accessPoint.getSsid(),
-                        transmittedPowerdBm,
-                        transmittedPowerStandardDeviation,
-                        getEstimatedPathLossExponent(),
-                        pathlossExponentStandardDeviation,
-                        estimatedPosition,
+                return new WifiAccessPointWithPowerAndLocated3D(accessPoint.getBssid(), source.getFrequency(),
+                        accessPoint.getSsid(), transmittedPowerdBm, transmittedPowerStandardDeviation,
+                        getEstimatedPathLossExponent(), pathlossExponentStandardDeviation, estimatedPosition,
                         estimatedPositionCovariance);
             } else {
-                return new WifiAccessPointLocated3D(accessPoint.getBssid(),
-                        source.getFrequency(), accessPoint.getSsid(),
-                        estimatedPosition, estimatedPositionCovariance);
+                return new WifiAccessPointLocated3D(accessPoint.getBssid(), source.getFrequency(),
+                        accessPoint.getSsid(), estimatedPosition, estimatedPositionCovariance);
             }
-        } else if (source instanceof Beacon) {
-            final Beacon beacon = (Beacon) source;
-            return new BeaconWithPowerAndLocated3D(beacon.getIdentifiers(),
-                    beacon.getTransmittedPower(), beacon.getFrequency(),
-                    beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(),
-                    beacon.getManufacturer(), beacon.getServiceUuid(),
-                    beacon.getBluetoothName(),
-                    getEstimatedPathLossExponent(),
-                    transmittedPowerStandardDeviation,
-                    pathlossExponentStandardDeviation,
-                    estimatedPosition, estimatedPositionCovariance);
+        } else if (source instanceof Beacon beacon) {
+            return new BeaconWithPowerAndLocated3D(beacon.getIdentifiers(), beacon.getTransmittedPower(),
+                    beacon.getFrequency(), beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(),
+                    beacon.getManufacturer(), beacon.getServiceUuid(), beacon.getBluetoothName(),
+                    getEstimatedPathLossExponent(), transmittedPowerStandardDeviation,
+                    pathlossExponentStandardDeviation, estimatedPosition, estimatedPositionCovariance);
         } else {
             return null;
         }
@@ -949,8 +883,8 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      */
     @Override
     protected void buildRangingEstimatorIfNeeded() {
-        if (mRangingEstimator == null || mRangingEstimator.getMethod() != mRangingRobustMethod) {
-            mRangingEstimator = RobustRangingRadioSourceEstimator3D.create(mRangingRobustMethod);
+        if (rangingEstimator == null || rangingEstimator.getMethod() != rangingRobustMethod) {
+            rangingEstimator = RobustRangingRadioSourceEstimator3D.create(rangingRobustMethod);
         }
     }
 
@@ -961,13 +895,13 @@ public class SequentialRobustMixedRadioSourceEstimator3D<S extends RadioSource> 
      */
     @Override
     protected void buildRssiEstimatorIfNeeded() throws LockedException {
-        if (mRssiEstimator == null || mRssiEstimator.getMethod() != mRssiRobustMethod) {
-            mRssiEstimator = RobustRssiRadioSourceEstimator3D.create(mRssiRobustMethod);
+        if (rssiEstimator == null || rssiEstimator.getMethod() != rssiRobustMethod) {
+            rssiEstimator = RobustRssiRadioSourceEstimator3D.create(rssiRobustMethod);
 
             // rssi estimator will never need position estimator, but to
             // ensure it is ready we need to provide an initial position
-            mRssiEstimator.setPositionEstimationEnabled(false);
-            mRssiEstimator.setInitialPosition(Point3D.create());
+            rssiEstimator.setPositionEstimationEnabled(false);
+            rssiEstimator.setInitialPosition(Point3D.create());
         }
     }
 }
