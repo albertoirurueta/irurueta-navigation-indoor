@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RangingRadioSourceEstimator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-indoor</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.indoor.radiosource</a> &gt; <span class="el_source">RangingRadioSourceEstimator.java</span></div><h1>RangingRadioSourceEstimator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2018 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.indoor.radiosource;
+
+import com.irurueta.algebra.NonSymmetricPositiveDefiniteMatrixException;
+import com.irurueta.geometry.Accuracy;
+import com.irurueta.geometry.Point;
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.NotReadyException;
+import com.irurueta.navigation.indoor.RadioSource;
+import com.irurueta.navigation.indoor.RangingReadingLocated;
+import com.irurueta.navigation.lateration.HomogeneousLinearLeastSquaresLaterationSolver;
+import com.irurueta.navigation.lateration.InhomogeneousLinearLeastSquaresLaterationSolver;
+import com.irurueta.navigation.lateration.LaterationException;
+import com.irurueta.navigation.lateration.NonLinearLeastSquaresLaterationSolver;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Estimates position of a radio source (e.g. Wi-Fi access point or bluetooth beacon)
+ * by using ranging measurements.
+ * Ranging measurements can be obtained by protocols such as ieee 802.11mc (Wi-Fi RTT) which
+ * measures travel time of signal and converts the result into distances by taking into
+ * account the speed of light as the propagation speed.
+ */
+public abstract class RangingRadioSourceEstimator&lt;S extends RadioSource, P extends Point&lt;P&gt;&gt;
+        extends RadioSourceEstimator&lt;P, RangingReadingLocated&lt;S, P&gt;, RangingRadioSourceEstimatorListener&lt;S, P&gt;&gt; {
+
+    /**
+     * Indicates that by default position covariances of readings must be taken into account to increase
+     * the amount of standard deviation of each ranging measure by the amount of position standard deviation
+     * assuming that both measures are statistically independent.
+     */
+    public static final boolean DEFAULT_USE_READING_POSITION_COVARIANCES = true;
+
+    /**
+     * Indicates that by default an homogeneous linear solver is used to estimate an
+     * initial position.
+     */
+    public static final boolean DEFAULT_USE_HOMOGENEOUS_LINEAR_SOLVER = true;
+
+    /**
+     * Internal homogeneous linear solver to find radio source position when no initial
+     * position is provided.
+     */
+    protected HomogeneousLinearLeastSquaresLaterationSolver&lt;P&gt; homogeneousLinearSolver;
+
+    /**
+     * Internal inhomogeneous linear solver to find radio source position when no initial
+     * position is provided.
+     */
+    protected InhomogeneousLinearLeastSquaresLaterationSolver&lt;P&gt; inhomogeneousLinearSolver;
+
+    /**
+     * Internal non-linear solver to estimate radio source position and covariance
+     * for an initial provided or estimated position.
+     */
+    protected NonLinearLeastSquaresLaterationSolver&lt;P&gt; nonLinearSolver;
+
+    /**
+     * Contains accuracy of a reading position.
+     * This is used internally to compute additional distance standard deviation due to position
+     * accuracy.
+     */
+    protected Accuracy accuracy;
+
+    /**
+     * Initial position to start the estimation of radio source position.
+     */
+    protected P initialPosition;
+
+    /**
+     * Indicates whether non-linear solver is enabled.
+     * If disabled a linear solver is always used, initial position ignored and
+     * covariance is not computed.
+     */
+<span class="fc" id="L91">    protected boolean nonLinearSolverEnabled = true;</span>
+
+    /**
+     * Indicates whether an homogeneous linear solver is used to estimate an initial
+     * position.
+     */
+<span class="fc" id="L97">    protected boolean useHomogeneousLinearSolver = DEFAULT_USE_HOMOGENEOUS_LINEAR_SOLVER;</span>
+
+    /**
+     * Indicates whether position covariances of readings must be taken into account to increase
+     * the amount of standard deviation of each ranging measure by the amount of position standard deviation
+     * assuming that both measures are statistically independent.
+     */
+<span class="fc" id="L104">    protected boolean useReadingPositionCovariances = DEFAULT_USE_READING_POSITION_COVARIANCES;</span>
+
+    /**
+     * Constructor.
+     */
+    protected RangingRadioSourceEstimator() {
+<span class="fc" id="L110">        super();</span>
+<span class="fc" id="L111">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal ranging readings belonging to the same radio source.
+     *
+     * @param readings radio signal ranging readings belonging to the same
+     *                 radio source.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected RangingRadioSourceEstimator(final List&lt;? extends RangingReadingLocated&lt;S, P&gt;&gt; readings) {
+<span class="fc" id="L122">        super(readings);</span>
+<span class="fc" id="L123">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener in charge of attending events raised by this instance.
+     */
+    protected RangingRadioSourceEstimator(final RangingRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L131">        super(listener);</span>
+<span class="fc" id="L132">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings radio signal readings belonging to the same radio source.
+     * @param listener listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected RangingRadioSourceEstimator(
+            final List&lt;? extends RangingReadingLocated&lt;S, P&gt;&gt; readings,
+            final RangingRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L145">        super(readings, listener);</span>
+<span class="fc" id="L146">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition initial position to start the estimation or radio
+     *                        source position.
+     */
+<span class="fc" id="L154">    protected RangingRadioSourceEstimator(final P initialPosition) {</span>
+<span class="fc" id="L155">        this.initialPosition = initialPosition;</span>
+<span class="fc" id="L156">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings        radio signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected RangingRadioSourceEstimator(
+            final List&lt;? extends RangingReadingLocated&lt;S, P&gt;&gt; readings, final P initialPosition) {
+<span class="fc" id="L169">        super(readings);</span>
+<span class="fc" id="L170">        this.initialPosition = initialPosition;</span>
+<span class="fc" id="L171">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     */
+    protected RangingRadioSourceEstimator(
+            final P initialPosition, final RangingRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L182">        super(listener);</span>
+<span class="fc" id="L183">        this.initialPosition = initialPosition;</span>
+<span class="fc" id="L184">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal ranging readings belonging to the same radio source.
+     *
+     * @param readings        radio signal ranging readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio source
+     *                        position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected RangingRadioSourceEstimator(
+            final List&lt;? extends RangingReadingLocated&lt;S, P&gt;&gt; readings, final P initialPosition,
+            final RangingRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L199">        super(readings, listener);</span>
+<span class="fc" id="L200">        this.initialPosition = initialPosition;</span>
+<span class="fc" id="L201">    }</span>
+
+    /**
+     * Gets initial position to start the non-linear estimation of radio source position.
+     * If not defined, a linear solution is found instead.
+     *
+     * @return initial position.
+     */
+    public P getInitialPosition() {
+<span class="fc" id="L210">        return initialPosition;</span>
+    }
+
+    /**
+     * Sets initial position to start the non-linear estimation of radio source position.
+     * If not defined, a linear solution is found instead.
+     *
+     * @param initialPosition initial position to start the estimation of radio source
+     *                        position or null.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setInitialPosition(final P initialPosition) throws LockedException {
+<span class="fc bfc" id="L222" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L223">            throw new LockedException();</span>
+        }
+<span class="fc" id="L225">        this.initialPosition = initialPosition;</span>
+<span class="fc" id="L226">    }</span>
+
+    /**
+     * Indicates whether non-linear solver is enabled.
+     * If disabled a linear solver is always used, initial position ignored and
+     * covariance is not computed.
+     *
+     * @return true if non-linear solver is enabled, false otherwise.
+     */
+    public boolean isNonLinearSolverEnabled() {
+<span class="fc" id="L236">        return nonLinearSolverEnabled;</span>
+    }
+
+    /**
+     * Specifies whether non-linear solver is enabled.
+     * If disabled a linear solver is always used, initial position ignored and
+     * covariance is not computed.
+     *
+     * @param nonLinearSolverEnabled true if non-linear solver is enabled,
+     *                               false otherwise.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setNonLinearSolverEnabled(final boolean nonLinearSolverEnabled) throws LockedException {
+<span class="fc bfc" id="L249" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L250">            throw new LockedException();</span>
+        }
+<span class="fc" id="L252">        this.nonLinearSolverEnabled = nonLinearSolverEnabled;</span>
+<span class="fc" id="L253">    }</span>
+
+    /**
+     * Indicates whether an homogeneous linear solver is used to estimate an initial
+     * position.
+     *
+     * @return true if homogeneous linear solver is used, false if an inhomogeneous linear
+     * one is used instead.
+     */
+    public boolean isHomogeneousLinearSolverUsed() {
+<span class="fc" id="L263">        return useHomogeneousLinearSolver;</span>
+    }
+
+    /**
+     * Specifies whether an homogeneous linear solver is used to estimate an initial
+     * position.
+     *
+     * @param useHomogeneousLinearSolver true if homogeneous linear solver is used, false
+     *                                   if an inhomogeneous linear one is used instead.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setHomogeneousLinearSolverUsed(final boolean useHomogeneousLinearSolver) throws LockedException {
+<span class="fc bfc" id="L275" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L276">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L279">        this.useHomogeneousLinearSolver = useHomogeneousLinearSolver;</span>
+<span class="fc" id="L280">    }</span>
+
+
+    /**
+     * Indicates whether position covariances of readings must be taken into account to increase
+     * the amount of standard deviation of each ranging measure by the amount of position standard
+     * deviation assuming that both measures are statistically independent.
+     *
+     * @return true to take into account reading position covariances, false otherwise.
+     */
+    public boolean getUseReadingPositionCovariance() {
+<span class="fc" id="L291">        return useReadingPositionCovariances;</span>
+    }
+
+    /**
+     * Specifies whether position covariances of readings must be taken into account to increase
+     * the amount of standard deviation of each ranging measure by the amount of position standard
+     * deviation assuming that both measures are statistically independent.
+     *
+     * @param useReadingPositionCovariances true to take into account reading position covariances, false
+     *                                      otherwise.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setUseReadingPositionCovariances(final boolean useReadingPositionCovariances) throws LockedException {
+<span class="fc bfc" id="L304" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L305">            throw new LockedException();</span>
+        }
+<span class="fc" id="L307">        this.useReadingPositionCovariances = useReadingPositionCovariances;</span>
+<span class="fc" id="L308">    }</span>
+
+    /**
+     * Indicates whether this instance is ready to start the estimation.
+     *
+     * @return true if this instance is ready, false otherwise.
+     */
+    @Override
+    public boolean isReady() {
+        // readings must be valid
+<span class="fc" id="L318">        return areValidReadings(readings);</span>
+    }
+
+    /**
+     * Estimate position of radio source.
+     *
+     * @throws RadioSourceEstimationException if estimation fails.
+     * @throws NotReadyException              if estimator is not ready.
+     * @throws LockedException                if estimator is locked.
+     */
+    @Override
+    public void estimate() throws RadioSourceEstimationException, NotReadyException, LockedException {
+<span class="fc bfc" id="L330" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L331">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L333" title="All 2 branches covered.">        if (!isReady()) {</span>
+<span class="fc" id="L334">            throw new NotReadyException();</span>
+        }
+
+        try {
+<span class="fc" id="L338">            locked = true;</span>
+
+<span class="fc bfc" id="L340" title="All 2 branches covered.">            if (listener != null) {</span>
+<span class="fc" id="L341">                listener.onEstimateStart(this);</span>
+            }
+
+<span class="fc" id="L344">            buildSolversIfNeeded();</span>
+<span class="fc" id="L345">            buildPositionsDistancesAndDistanceStandardDeviations();</span>
+
+<span class="pc bpc" id="L347" title="1 of 12 branches missed.">            if (((useHomogeneousLinearSolver &amp;&amp; homogeneousLinearSolver != null)</span>
+                    || (!useHomogeneousLinearSolver &amp;&amp; inhomogeneousLinearSolver != null))
+                    &amp;&amp; (initialPosition == null || !nonLinearSolverEnabled)) {
+                // if no initial position is provided, use linear solver to estimate one
+<span class="fc bfc" id="L351" title="All 2 branches covered.">                if (useHomogeneousLinearSolver) {</span>
+<span class="fc" id="L352">                    homogeneousLinearSolver.solve();</span>
+<span class="fc" id="L353">                    initialPosition = homogeneousLinearSolver.getEstimatedPosition();</span>
+                } else {
+<span class="fc" id="L355">                    inhomogeneousLinearSolver.solve();</span>
+<span class="fc" id="L356">                    initialPosition = inhomogeneousLinearSolver.getEstimatedPosition();</span>
+                }
+            }
+
+<span class="fc bfc" id="L360" title="All 4 branches covered.">            if (nonLinearSolver != null &amp;&amp; nonLinearSolverEnabled) {</span>
+<span class="fc" id="L361">                nonLinearSolver.setInitialPosition(initialPosition);</span>
+<span class="fc" id="L362">                nonLinearSolver.solve();</span>
+
+                // get position and covariance
+<span class="fc" id="L365">                estimatedPositionCoordinates = nonLinearSolver.getEstimatedPositionCoordinates();</span>
+<span class="fc" id="L366">                estimatedPositionCovariance = estimatedCovariance = nonLinearSolver.getCovariance();</span>
+            } else {
+                // non-linear solver disabled
+<span class="fc bfc" id="L369" title="All 2 branches covered.">                if (useHomogeneousLinearSolver) {</span>
+<span class="pc bpc" id="L370" title="1 of 2 branches missed.">                    estimatedPositionCoordinates = homogeneousLinearSolver != null</span>
+<span class="pc" id="L371">                            ? homogeneousLinearSolver.getEstimatedPositionCoordinates() : null;</span>
+                } else {
+<span class="pc bpc" id="L373" title="1 of 2 branches missed.">                    estimatedPositionCoordinates = inhomogeneousLinearSolver != null</span>
+<span class="pc" id="L374">                            ? inhomogeneousLinearSolver.getEstimatedPositionCoordinates() : null;</span>
+                }
+<span class="fc" id="L376">                estimatedPositionCovariance = estimatedCovariance = null;</span>
+            }
+
+<span class="fc bfc" id="L379" title="All 2 branches covered.">            if (listener != null) {</span>
+<span class="fc" id="L380">                listener.onEstimateEnd(this);</span>
+            }
+
+<span class="fc" id="L383">        } catch (final LaterationException e) {</span>
+<span class="fc" id="L384">            throw new RadioSourceEstimationException(e);</span>
+        } finally {
+<span class="fc" id="L386">            locked = false;</span>
+        }
+<span class="fc" id="L388">    }</span>
+
+    /**
+     * Builds an instance of a linear lateration solver if needed.
+     */
+    protected abstract void buildLinearSolverIfNeeded();
+
+    /**
+     * Builds an instance of a non-linear lateration solver if needed.
+     */
+    protected abstract void buildNonLinearSolverIfNeeded();
+
+    /**
+     * Build an instance of accuracy if needed.
+     */
+    protected abstract void buildAccuracyIfNeeded();
+
+    /**
+     * Sets positions, distances and standard deviations of distances on internal
+     * lateration solver.
+     *
+     * @param positions                  positions to be set.
+     * @param distances                  distances to be set.
+     * @param distanceStandardDeviations standard deviations of distances to be set or
+     *                                   null.
+     * @throws LockedException if solvers are locked.
+     */
+    protected abstract void setPositionsDistancesAndDistanceStandardDeviations(
+            final List&lt;P&gt; positions, List&lt;Double&gt; distances, final List&lt;Double&gt; distanceStandardDeviations)
+            throws LockedException;
+
+    /**
+     * Build instances of lateration solvers if needed.
+     */
+    private void buildSolversIfNeeded() {
+<span class="fc" id="L423">        buildLinearSolverIfNeeded();</span>
+<span class="fc" id="L424">        buildNonLinearSolverIfNeeded();</span>
+<span class="fc" id="L425">        buildAccuracyIfNeeded();</span>
+<span class="fc" id="L426">    }</span>
+
+    /**
+     * Builds positions, distances and standard deviations of distances for the
+     * internal lateration solver.
+     *
+     * @throws LockedException if solvers are locked.
+     */
+    private void buildPositionsDistancesAndDistanceStandardDeviations() throws LockedException {
+<span class="fc" id="L435">        final var min = getMinReadings();</span>
+<span class="pc bpc" id="L436" title="2 of 4 branches missed.">        if (readings == null || readings.size() &lt; min) {</span>
+<span class="nc" id="L437">            return;</span>
+        }
+
+<span class="fc" id="L440">        final var positions = new ArrayList&lt;P&gt;();</span>
+<span class="fc" id="L441">        final var distances = new ArrayList&lt;Double&gt;();</span>
+<span class="fc" id="L442">        final var distanceStandardDeviations = new ArrayList&lt;Double&gt;();</span>
+
+<span class="fc bfc" id="L444" title="All 2 branches covered.">        for (final var reading : readings) {</span>
+<span class="fc" id="L445">            final var position = reading.getPosition();</span>
+<span class="pc bpc" id="L446" title="1 of 2 branches missed.">            if (position == null) {</span>
+<span class="nc" id="L447">                return;</span>
+            }
+
+<span class="fc" id="L450">            var positionDistanceStandardDeviation = 0.0;</span>
+<span class="pc bpc" id="L451" title="1 of 6 branches missed.">            if (useReadingPositionCovariances &amp;&amp; accuracy != null &amp;&amp; reading.getPositionCovariance() != null) {</span>
+                try {
+<span class="fc" id="L453">                    accuracy.setCovarianceMatrix(reading.getPositionCovariance());</span>
+<span class="fc" id="L454">                    positionDistanceStandardDeviation = accuracy.getAverageAccuracy();</span>
+<span class="nc" id="L455">                } catch (final NonSymmetricPositiveDefiniteMatrixException e) {</span>
+<span class="nc" id="L456">                    positionDistanceStandardDeviation = 0.0;</span>
+<span class="fc" id="L457">                }</span>
+            }
+
+<span class="fc" id="L460">            final var distance = reading.getDistance();</span>
+<span class="fc" id="L461">            var distanceStandardDeviation = reading.getDistanceStandardDeviation();</span>
+<span class="fc bfc" id="L462" title="All 2 branches covered.">            if (distanceStandardDeviation == null) {</span>
+<span class="fc" id="L463">                distanceStandardDeviation = NonLinearLeastSquaresLaterationSolver.DEFAULT_DISTANCE_STANDARD_DEVIATION;</span>
+            }
+
+<span class="fc bfc" id="L466" title="All 2 branches covered.">            if (useReadingPositionCovariances) {</span>
+                // assuming that ranging measure and position measure are statistically independent, the
+                // resulting variance would be the sum of their variances, when the resulting standard
+                // deviation is the square root of the resulting variance (which is the sum of the square of
+                // the standard deviations)
+<span class="fc" id="L471">                distanceStandardDeviation = Math.sqrt(Math.pow(distanceStandardDeviation, 2.0)</span>
+<span class="fc" id="L472">                        + Math.pow(positionDistanceStandardDeviation, 2.0));</span>
+            }
+
+<span class="fc" id="L475">            positions.add(position);</span>
+<span class="fc" id="L476">            distances.add(distance);</span>
+<span class="fc" id="L477">            distanceStandardDeviations.add(distanceStandardDeviation);</span>
+<span class="fc" id="L478">        }</span>
+
+<span class="fc" id="L480">        setPositionsDistancesAndDistanceStandardDeviations(positions, distances, distanceStandardDeviations);</span>
+<span class="fc" id="L481">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

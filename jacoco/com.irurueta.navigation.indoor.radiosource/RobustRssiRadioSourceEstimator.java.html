@@ -1,0 +1,850 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RobustRssiRadioSourceEstimator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-indoor</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.indoor.radiosource</a> &gt; <span class="el_source">RobustRssiRadioSourceEstimator.java</span></div><h1>RobustRssiRadioSourceEstimator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2018 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.indoor.radiosource;
+
+import com.irurueta.geometry.Point;
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.indoor.RadioSource;
+import com.irurueta.navigation.indoor.RssiReadingLocated;
+import com.irurueta.navigation.indoor.Utils;
+import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
+import java.util.List;
+
+/**
+ * This is an abstract class to robustly estimate position, transmitted power and path-loss
+ * exponent of a radio source (e.g. Wi-Fi access point or bluetooth beacon), by discarding
+ * outliers and assuming that the radio source emits isotropically following the
+ * expression below:
+ * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,
+ * where Pr is the received power (expressed in mW),
+ * Gt is the Gain of the transmission antenna
+ * Gr is the Gain of the receiver antenna
+ * d is the distance between emitter and receiver
+ * and lambda is the wavelength and is equal to: lambda = c / f,
+ * where c is the speed of light
+ * and f is the carrier frequency of the radio signal.
+ * Because usually information about the antenna of the radio source cannot be
+ * retrieved (because many measurements are made on unknown devices where
+ * physical access is not possible), this implementation will estimate the
+ * equivalent transmitted power as: Pte = Pt * Gt * Gr.
+ * If RssiReadings contain RSSI standard deviations, those values will be used,
+ * otherwise it will be assumed an RSSI standard deviation of 1 dB.
+ * Implementations of this class should be able to detect and discard outliers in
+ * order to find the best solution.
+ * &lt;p&gt;
+ * IMPORTANT: Implementations of this class can choose to estimate a
+ * combination of radio source position, transmitted power and path loss
+ * exponent. However enabling all three estimations usually achieves
+ * inaccurate results. When using this class, estimation must be of at least
+ * one parameter (position, transmitted power or path loss exponent) when
+ * initial values are provided for the other two, and at most it should consist
+ * of two parameters (either position and transmitted power, position and
+ * path loss exponent or transmitted power and path loss exponent), providing an
+ * initial value for the remaining parameter.
+ *
+ * @param &lt;S&gt; a {@link RadioSource} type.
+ * @param &lt;P&gt; a {@link Point} type.
+ */
+public abstract class RobustRssiRadioSourceEstimator&lt;S extends RadioSource, P extends Point&lt;P&gt;&gt; extends
+        RobustRadioSourceEstimator&lt;P, RssiReadingLocated&lt;S, P&gt;, RobustRssiRadioSourceEstimatorListener&lt;S, P&gt;&gt; {
+
+    /**
+     * Initial transmitted power to start the estimation of radio source
+     * transmitted power.
+     * If not defined, average value of received power readings will be used.
+     */
+    protected Double initialTransmittedPowerdBm;
+
+    /**
+     * Initial position to start the estimation of radio source position.
+     * If not defined, centroid of provided located readings will be used.
+     */
+    protected P initialPosition;
+
+    /**
+     * Initial exponent typically used on free space for path loss propagation in
+     * terms of distance.
+     * On different environments path loss exponent might have different values:
+     * - Free space: 2.0
+     * - Urban Area: 2.7 to 3.5
+     * - Suburban Area: 3 to 5
+     * - Indoor (line-of-sight): 1.6 to 1.8
+     * &lt;p&gt;
+     * If path loss exponent estimation is enabled, estimation will start at this
+     * value and will converge to the most appropriate value.
+     * If path loss exponent estimation is disabled, this value will be assumed
+     * to be exact and the estimated path loss exponent will be equal to this
+     * value.
+     */
+<span class="fc" id="L93">    protected double initialPathLossExponent = RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT;</span>
+
+    /**
+     * Indicates whether transmitted power estimation is enabled or not.
+     */
+<span class="fc" id="L98">    protected boolean transmittedPowerEstimationEnabled =</span>
+            RssiRadioSourceEstimator.DEFAULT_TRANSMITTED_POWER_ESTIMATION_ENABLED;
+
+    /**
+     * Indicates whether radio source position estimation is enabled or not.
+     */
+<span class="fc" id="L104">    protected boolean positionEstimationEnabled = RssiRadioSourceEstimator.DEFAULT_POSITION_ESTIMATION_ENABLED;</span>
+
+    /**
+     * Indicates whether path loss estimation is enabled or not.
+     */
+    protected boolean pathLossEstimationEnabled;
+
+    /**
+     * Estimated transmitted power expressed in dBm's.
+     */
+    protected double estimatedTransmittedPowerdBm;
+
+    /**
+     * Estimated exponent typically used on free space for path loss propagation in
+     * terms of distance.
+     * On different environments path loss exponent might have different values:
+     * - Free space: 2.0
+     * - Urban Area: 2.7 to 3.5
+     * - Suburban Area: 3 to 5
+     * - Indoor (line-of-sight): 1.6 to 1.8
+     * If path loss exponent estimation is not enabled, this value will always be equal to
+     * {@link RssiRadioSourceEstimator#DEFAULT_PATH_LOSS_EXPONENT}
+     */
+<span class="fc" id="L127">    protected double estimatedPathLossExponent = RssiRadioSourceEstimator.DEFAULT_PATH_LOSS_EXPONENT;</span>
+
+    /**
+     * Variance of estimated transmitted power.
+     * This value will only be available when transmitted power
+     * estimation is enabled.
+     */
+    protected Double estimatedTransmittedPowerVariance;
+
+    /**
+     * Variance of estimated path loss exponent.
+     * This value will only be available when path-loss
+     * exponent estimation is enabled.
+     */
+    protected Double estimatedPathLossExponentVariance;
+
+    /**
+     * Constructor.
+     */
+    protected RobustRssiRadioSourceEstimator() {
+<span class="fc" id="L147">        super();</span>
+<span class="fc" id="L148">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings signal readings belonging to the same radio source.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected RobustRssiRadioSourceEstimator(final List&lt;? extends RssiReadingLocated&lt;S, P&gt;&gt; readings) {
+<span class="fc" id="L158">        super(readings);</span>
+<span class="fc" id="L159">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener in charge of attending events raised by this instance.
+     */
+    protected RobustRssiRadioSourceEstimator(final RobustRssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L167">        super(listener);</span>
+<span class="fc" id="L168">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings signal readings belonging to the same radio source.
+     * @param listener listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected RobustRssiRadioSourceEstimator(
+            final List&lt;? extends RssiReadingLocated&lt;S, P&gt;&gt; readings,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L181">        super(readings, listener);</span>
+<span class="fc" id="L182">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected RobustRssiRadioSourceEstimator(
+            final List&lt;? extends RssiReadingLocated&lt;S, P&gt;&gt; readings, final P initialPosition) {
+<span class="fc" id="L195">        super(readings);</span>
+<span class="fc" id="L196">        this.initialPosition = initialPosition;</span>
+<span class="fc" id="L197">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     */
+<span class="fc" id="L205">    protected RobustRssiRadioSourceEstimator(final P initialPosition) {</span>
+<span class="fc" id="L206">        this.initialPosition = initialPosition;</span>
+<span class="fc" id="L207">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     */
+    protected RobustRssiRadioSourceEstimator(
+            final P initialPosition, final RobustRssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L218">        super(listener);</span>
+<span class="fc" id="L219">        this.initialPosition = initialPosition;</span>
+<span class="fc" id="L220">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings        signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected RobustRssiRadioSourceEstimator(
+            final List&lt;? extends RssiReadingLocated&lt;S, P&gt;&gt; readings, final P initialPosition,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L235">        super(readings, listener);</span>
+<span class="fc" id="L236">        this.initialPosition = initialPosition;</span>
+<span class="fc" id="L237">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     */
+<span class="fc" id="L246">    protected RobustRssiRadioSourceEstimator(final Double initialTransmittedPowerdBm) {</span>
+<span class="fc" id="L247">        this.initialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L248">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected RobustRssiRadioSourceEstimator(
+            final List&lt;? extends RssiReadingLocated&lt;S, P&gt;&gt; readings, final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L262">        super(readings);</span>
+<span class="fc" id="L263">        this.initialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L264">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     */
+    protected RobustRssiRadioSourceEstimator(
+            final Double initialTransmittedPowerdBm, final RobustRssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L276">        super(listener);</span>
+<span class="fc" id="L277">        this.initialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L278">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected RobustRssiRadioSourceEstimator(
+            final List&lt;? extends RssiReadingLocated&lt;S, P&gt;&gt; readings, final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L294">        super(readings, listener);</span>
+<span class="fc" id="L295">        this.initialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L296">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected RobustRssiRadioSourceEstimator(
+            final List&lt;? extends RssiReadingLocated&lt;S, P&gt;&gt; readings, final P initialPosition,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L313">        super(readings);</span>
+<span class="fc" id="L314">        this.initialPosition = initialPosition;</span>
+<span class="fc" id="L315">        this.initialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L316">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     */
+    protected RobustRssiRadioSourceEstimator(
+<span class="fc" id="L328">            final P initialPosition, final Double initialTransmittedPowerdBm) {</span>
+<span class="fc" id="L329">        this.initialPosition = initialPosition;</span>
+<span class="fc" id="L330">        this.initialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L331">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   in charge of attending events raised by this instance.
+     */
+    protected RobustRssiRadioSourceEstimator(
+            final P initialPosition, final Double initialTransmittedPowerdBm,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L346">        super(listener);</span>
+<span class="fc" id="L347">        this.initialPosition = initialPosition;</span>
+<span class="fc" id="L348">        this.initialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L349">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected RobustRssiRadioSourceEstimator(
+            final List&lt;? extends RssiReadingLocated&lt;S, P&gt;&gt; readings, final P initialPosition,
+            final Double initialTransmittedPowerdBm, final RobustRssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L367">        super(readings, listener);</span>
+<span class="fc" id="L368">        this.initialPosition = initialPosition;</span>
+<span class="fc" id="L369">        this.initialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L370">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected RobustRssiRadioSourceEstimator(
+            final List&lt;? extends RssiReadingLocated&lt;S, P&gt;&gt; readings, final P initialPosition,
+            final Double initialTransmittedPowerdBm, final double initialPathLossExponent) {
+<span class="fc" id="L388">        this(readings, initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L389">        this.initialPathLossExponent = initialPathLossExponent;</span>
+<span class="fc" id="L390">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     */
+    protected RobustRssiRadioSourceEstimator(
+            final P initialPosition, final Double initialTransmittedPowerdBm, final double initialPathLossExponent) {
+<span class="fc" id="L404">        this(initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L405">        this.initialPathLossExponent = initialPathLossExponent;</span>
+<span class="fc" id="L406">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     */
+    protected RobustRssiRadioSourceEstimator(
+            final P initialPosition, final Double initialTransmittedPowerdBm, final double initialPathLossExponent,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L422">        this(initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L423">        this.initialPathLossExponent = initialPathLossExponent;</span>
+<span class="fc" id="L424">    }</span>
+
+    /**
+     * Constructor.
+     * Sets signal readings belonging to the same radio source.
+     *
+     * @param readings                   signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected RobustRssiRadioSourceEstimator(
+            final List&lt;? extends RssiReadingLocated&lt;S, P&gt;&gt; readings, final P initialPosition,
+            final Double initialTransmittedPowerdBm, final double initialPathLossExponent,
+            final RobustRssiRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L444">        this(readings, initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L445">        this.initialPathLossExponent = initialPathLossExponent;</span>
+<span class="fc" id="L446">    }</span>
+
+    /**
+     * Gets initial transmitted power to start the estimation of radio source
+     * transmitted power (expressed in dBm's).
+     * If not defined, average value of received power readings will be used.
+     *
+     * @return initial transmitted power to start the estimation of radio source
+     * transmitted power.
+     */
+    public Double getInitialTransmittedPowerdBm() {
+<span class="fc" id="L457">        return initialTransmittedPowerdBm;</span>
+    }
+
+    /**
+     * Sets initial transmitted power to start the estimation of radio source
+     * transmitted power (expressed in dBm's).
+     * If not defined, average value of received power readings will be used.
+     *
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted
+     *                                   power.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setInitialTransmittedPowerdBm(final Double initialTransmittedPowerdBm) throws LockedException {
+<span class="fc bfc" id="L471" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L472">            throw new LockedException();</span>
+        }
+<span class="fc" id="L474">        this.initialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L475">    }</span>
+
+    /**
+     * Gets initial transmitted power to start the estimation of radio source
+     * transmitted power (expressed in mW).
+     * If not defined, average value of received power readings will be used.
+     *
+     * @return initial transmitted power to start the estimation of radio source
+     * transmitted power.
+     */
+    public Double getInitialTransmittedPower() {
+<span class="fc bfc" id="L486" title="All 2 branches covered.">        return initialTransmittedPowerdBm != null ? Utils.dBmToPower(initialTransmittedPowerdBm) : null;</span>
+    }
+
+    /**
+     * Sets initial transmitted power to start the estimation of radio source
+     * transmitted power (expressed in mW).
+     * If not defined, average value of received power readings will be used.
+     *
+     * @param initialTransmittedPower initial transmitted power to start the
+     *                                estimation of radio source transmitted power.
+     * @throws LockedException          if estimator is locked.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public void setInitialTransmittedPower(final Double initialTransmittedPower) throws LockedException {
+<span class="fc bfc" id="L500" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L501">            throw new LockedException();</span>
+        }
+<span class="pc bpc" id="L503" title="1 of 2 branches missed.">        if (initialTransmittedPower != null) {</span>
+<span class="pc bpc" id="L504" title="1 of 2 branches missed.">            if (initialTransmittedPower &lt; 0.0) {</span>
+<span class="nc" id="L505">                throw new IllegalArgumentException();</span>
+            }
+<span class="fc" id="L507">            initialTransmittedPowerdBm = Utils.powerTodBm(initialTransmittedPower);</span>
+        } else {
+<span class="nc" id="L509">            initialTransmittedPowerdBm = null;</span>
+        }
+<span class="fc" id="L511">    }</span>
+
+    /**
+     * Gets initial position to start the estimation of radio source position.
+     * If not defined, centroid of provided fingerprints will be used.
+     *
+     * @return initial position to start the estimation of radio source position.
+     */
+    public P getInitialPosition() {
+<span class="fc" id="L520">        return initialPosition;</span>
+    }
+
+    /**
+     * Sets initial position to start the estimation of radio source position.
+     * If not defined, centroid of provided fingerprints will be used.
+     *
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setInitialPosition(final P initialPosition) throws LockedException {
+<span class="fc bfc" id="L532" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L533">            throw new LockedException();</span>
+        }
+<span class="fc" id="L535">        this.initialPosition = initialPosition;</span>
+<span class="fc" id="L536">    }</span>
+
+    /**
+     * Gets initial exponent typically used on free space for path loss propagation
+     * in terms of distance.
+     * On different environments path loss exponent might have different value:
+     * - Free space: 2.0
+     * - Urban Area: 2.7 to 3.5
+     * - Suburban Area: 3 to 5
+     * - Indoor (line-of-sight): 1.6 to 1.8
+     * &lt;p&gt;
+     * If path loss exponent estimation is enabled, estimation will start at this
+     * value and will converge to the most appropriate value.
+     * If path loss exponent estimation is disabled, this value will be assumed
+     * to be exact and the estimated path loss exponent will be equal to this
+     * value.
+     *
+     * @return initial path loss exponent.
+     */
+    public double getInitialPathLossExponent() {
+<span class="fc" id="L556">        return initialPathLossExponent;</span>
+    }
+
+    /**
+     * Sets initial exponent typically used on free space for path loss propagation
+     * in terms of distance.
+     * On different environments path loss exponent might have different value:
+     * - Free space: 2.0
+     * - Urban Area: 2.7 to 3.5
+     * - Suburban Area: 3 to 5
+     * - Indoor (line-of-sight): 1.6 to 1.8
+     * &lt;p&gt;
+     * If path loss exponent estimation is enabled, estimation will start at this
+     * value and will converge to the most appropriate value.
+     * If path loss exponent estimation is disabled, this value will be assumed
+     * to be exact and the estimated path loss exponent will be equal to this
+     * value.
+     *
+     * @param initialPathLossExponent initial path loss exponent.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setInitialPathLossExponent(final double initialPathLossExponent) throws LockedException {
+<span class="pc bpc" id="L578" title="1 of 2 branches missed.">        if (isLocked()) {</span>
+<span class="nc" id="L579">            throw new LockedException();</span>
+        }
+<span class="fc" id="L581">        this.initialPathLossExponent = initialPathLossExponent;</span>
+<span class="fc" id="L582">    }</span>
+
+    /**
+     * Indicates whether transmitted power estimation is enabled or not.
+     *
+     * @return true if transmitted power estimation is enabled, false otherwise.
+     */
+    public boolean isTransmittedPowerEstimationEnabled() {
+<span class="fc" id="L590">        return transmittedPowerEstimationEnabled;</span>
+    }
+
+    /**
+     * Specifies whether transmitted power estimation is enabled or not.
+     *
+     * @param transmittedPowerEstimationEnabled true if transmitted power estimation is enabled,
+     *                                          false otherwise.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setTransmittedPowerEstimationEnabled(final boolean transmittedPowerEstimationEnabled)
+            throws LockedException {
+<span class="fc bfc" id="L602" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L603">            throw new LockedException();</span>
+        }
+<span class="fc" id="L605">        this.transmittedPowerEstimationEnabled = transmittedPowerEstimationEnabled;</span>
+<span class="fc" id="L606">    }</span>
+
+    /**
+     * Indicates whether radio source position estimation is enabled or not.
+     *
+     * @return true if position estimation is enabled, false otherwise.
+     */
+    public boolean isPositionEstimationEnabled() {
+<span class="fc" id="L614">        return positionEstimationEnabled;</span>
+    }
+
+    /**
+     * Specifies whether radio source position estimation is enabled or not.
+     *
+     * @param positionEstimationEnabled true if position estimation is enabled,
+     *                                  false otherwise.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setPositionEstimationEnabled(final boolean positionEstimationEnabled) throws LockedException {
+<span class="fc bfc" id="L625" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L626">            throw new LockedException();</span>
+        }
+<span class="fc" id="L628">        this.positionEstimationEnabled = positionEstimationEnabled;</span>
+<span class="fc" id="L629">    }</span>
+
+    /**
+     * Indicates whether path loss estimation is enabled or not.
+     *
+     * @return true if path loss estimation is enabled, false otherwise.
+     */
+    public boolean isPathLossEstimationEnabled() {
+<span class="fc" id="L637">        return pathLossEstimationEnabled;</span>
+    }
+
+    /**
+     * Specifies whether path loss estimation is enabled or not.
+     *
+     * @param pathLossEstimationEnabled true if path loss estimation is enabled,
+     *                                  false otherwise.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setPathLossEstimationEnabled(final boolean pathLossEstimationEnabled) throws LockedException {
+<span class="fc bfc" id="L648" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L649">            throw new LockedException();</span>
+        }
+<span class="fc" id="L651">        this.pathLossEstimationEnabled = pathLossEstimationEnabled;</span>
+<span class="fc" id="L652">    }</span>
+
+    /**
+     * Indicates whether this instance is ready to start the estimation.
+     *
+     * @return true if this instance is ready, false otherwise.
+     */
+    @Override
+    public boolean isReady() {
+        // at least one parameter estimation must be enabled
+<span class="pc bpc" id="L662" title="3 of 14 branches missed.">        return (positionEstimationEnabled || transmittedPowerEstimationEnabled || pathLossEstimationEnabled)</span>
+                // if position estimation is disabled, an initial position must be provided
+                &amp;&amp; !(!positionEstimationEnabled &amp;&amp; initialPosition == null)
+                // if transmitted power estimation is disabled, an initial transmitted power must be provided
+                &amp;&amp; !(!transmittedPowerEstimationEnabled &amp;&amp; initialTransmittedPowerdBm == null)
+                // readings must also be valid
+<span class="fc bfc" id="L668" title="All 2 branches covered.">                &amp;&amp; areValidReadings(readings);</span>
+    }
+
+    /**
+     * Gets estimated transmitted power variance.
+     * This is only available when result has been refined and covariance is kept.
+     *
+     * @return estimated transmitted power variance.
+     */
+    public Double getEstimatedTransmittedPowerVariance() {
+<span class="fc" id="L678">        return estimatedTransmittedPowerVariance;</span>
+    }
+
+    /**
+     * Gets estimated path loss exponent variance.
+     * This is only available when result has been refined and covariance is kept.
+     *
+     * @return estimated path loss exponent variance.
+     */
+    public Double getEstimatedPathLossExponentVariance() {
+<span class="fc" id="L688">        return estimatedPathLossExponentVariance;</span>
+    }
+
+    /**
+     * Gets estimated transmitted power expressed in milli watts (mW).
+     *
+     * @return estimated transmitted power expressed in milli watts.
+     */
+    public double getEstimatedTransmittedPower() {
+<span class="fc" id="L697">        return Utils.dBmToPower(estimatedTransmittedPowerdBm);</span>
+    }
+
+    /**
+     * Gets estimated transmitted power expressed in dBm's.
+     *
+     * @return estimated transmitted power expressed in dBm's.
+     */
+    public double getEstimatedTransmittedPowerdBm() {
+<span class="fc" id="L706">        return estimatedTransmittedPowerdBm;</span>
+    }
+
+    /**
+     * Gets estimated exponent typically used on free space for path loss propagation in
+     * terms of distance.
+     * On different environments path loss exponent might have different values:
+     * - Free space: 2.0
+     * - Urban Area: 2.7 to 3.5
+     * - Suburban Area: 3 to 5
+     * - Indoor (line-of-sight): 1.6 to 1.8
+     * If path loss exponent estimation is not enabled, this value will always be equal to
+     * {@link RssiRadioSourceEstimator#DEFAULT_PATH_LOSS_EXPONENT}
+     *
+     * @return estimated path loss exponent.
+     */
+    public double getEstimatedPathLossExponent() {
+<span class="fc" id="L723">        return estimatedPathLossExponent;</span>
+    }
+
+    /**
+     * Returns method being used for robust estimation.
+     *
+     * @return method being used for robust estimation.
+     */
+    public abstract RobustEstimatorMethod getMethod();
+
+    /**
+     * Solves preliminary solution for a subset of samples.
+     *
+     * @param samplesIndices indices of subset samples.
+     * @param solutions      instance where solution will be stored.
+     */
+    protected abstract void solvePreliminarySolutions(final int[] samplesIndices, final List&lt;Solution&lt;P&gt;&gt; solutions);
+
+    /**
+     * Estimates residual for a solution obtained for a subset of samples.
+     *
+     * @param currentEstimation solution obtained for a subset of samples.
+     * @param i                 i-th fingerprint to obtain residual for.
+     * @return difference between measured and expected RSSI value.
+     */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
+    protected double residual(final Solution&lt;P&gt; currentEstimation, final int i) {
+        // Model fitted internally is equal to:
+        // Pr (dBm) = 10 * log(Pte * k^n / d^n) = 10*n*log(k) + 10*log(Pte) - 5*n*log(d^2)
+        // where:
+        // Pr is received, expressed in dBm
+        // Pte is equivalent transmitted power, expressed in dBm
+        // k is a constant equal to k = c^2 / (pi * f)^2, where c is speed of light
+        // and d is equal to distance between fingerprint and estimated position
+<span class="fc" id="L757">        final var reading = readings.get(i);</span>
+<span class="fc" id="L758">        final var frequency = reading.getSource().getFrequency();</span>
+
+<span class="fc" id="L760">        final var pathLossExponent = currentEstimation.getEstimatedPathLossExponent();</span>
+
+        // compute k as the constant part of the isotropic received power formula
+        // so that: Pr = Pte*k^n/d^n
+<span class="fc" id="L764">        final var k = RssiRadioSourceEstimator.SPEED_OF_LIGHT / (4.0 * Math.PI * frequency);</span>
+<span class="fc" id="L765">        final var kdB = 10.0 * pathLossExponent * Math.log10(k);</span>
+
+        // get distance from estimated radio source position and reading position
+<span class="fc" id="L768">        final var readingPosition = reading.getPosition();</span>
+<span class="fc" id="L769">        final var radioSourcePosition = currentEstimation.getEstimatedPosition();</span>
+
+<span class="fc" id="L771">        final var sqrDistance = radioSourcePosition.sqrDistanceTo(readingPosition);</span>
+
+<span class="fc" id="L773">        final var transmittedPowerdBm = currentEstimation.getEstimatedTransmittedPowerdBm();</span>
+
+        // compute expected received power assuming isotropic transmission
+        // and compare against measured RSSI at fingerprint location
+<span class="fc" id="L777">        final var expectedRSSI = kdB + transmittedPowerdBm - 5.0 * pathLossExponent * Math.log10(sqrDistance);</span>
+<span class="fc" id="L778">        final double rssi = reading.getRssi();</span>
+
+<span class="fc" id="L780">        return Math.abs(expectedRSSI - rssi);</span>
+    }
+
+    /**
+     * Contains a solution obtained during robust estimation for a subset of
+     * samples.
+     *
+     * @param &lt;P&gt; a {@link Point} type.
+     */
+    protected static class Solution&lt;P extends Point&lt;?&gt;&gt; {
+        /**
+         * Estimated position for a subset of samples.
+         */
+        private final P mEstimatedPosition;
+
+        /**
+         * Estimated transmitted power expressed in dBm's for a subset of samples.
+         */
+        private final double mEstimatedTransmittedPowerdBm;
+
+        /**
+         * Estimated path loss exponent for a subset of samples.
+         */
+        private final double mEstimatedPathLossExponent;
+
+        /**
+         * Constructor.
+         *
+         * @param estimatedPosition            estimated position for a subset of samples.
+         * @param estimatedTransmittedPowerdBm estimated transmitted power expressed
+         *                                     in dBm's for a subset of samples.
+         * @param estimatedPathLossExponent    estimated path loss exponent.
+         */
+        public Solution(final P estimatedPosition, final double estimatedTransmittedPowerdBm,
+<span class="fc" id="L814">                        final double estimatedPathLossExponent) {</span>
+<span class="fc" id="L815">            mEstimatedPosition = estimatedPosition;</span>
+<span class="fc" id="L816">            mEstimatedTransmittedPowerdBm = estimatedTransmittedPowerdBm;</span>
+<span class="fc" id="L817">            mEstimatedPathLossExponent = estimatedPathLossExponent;</span>
+<span class="fc" id="L818">        }</span>
+
+        /**
+         * Gets estimated position for a subset of samples.
+         *
+         * @return estimated position for a subset of samples.
+         */
+        public P getEstimatedPosition() {
+<span class="fc" id="L826">            return mEstimatedPosition;</span>
+        }
+
+        /**
+         * Gets estimated transmitted power expressed in dBm's for a subset of
+         * samples.
+         *
+         * @return estimated transmitted power expressed in dBm's for a subset
+         * of samples.
+         */
+        public double getEstimatedTransmittedPowerdBm() {
+<span class="fc" id="L837">            return mEstimatedTransmittedPowerdBm;</span>
+        }
+
+        /**
+         * Gets estimated path loss exponent.
+         *
+         * @return estimated path loss exponent.
+         */
+        public double getEstimatedPathLossExponent() {
+<span class="fc" id="L846">            return mEstimatedPathLossExponent;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
