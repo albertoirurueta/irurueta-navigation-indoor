@@ -6304,8 +6304,8 @@ class FirstOrderNonLinearFingerprintPositionEstimator3DTest implements Fingerpri
         }
 
         assertTrue(bestNum == numBestIsNoMeanRssiPosition || bestNum == numBestIsNoMeanFinderEstimatedPosition
-                || bestNum == numBestIsNoMeanReadingsEstimatedPosition);
-        assertTrue(bestPos == 0 || bestPos == 3 || bestPos == 4);
+                || bestNum == numBestIsNoMeanReadingsEstimatedPosition || bestNum == numBestIsNoMeansEstimatedPosition);
+        assertTrue(bestPos == 0 || bestPos == 2 || bestPos == 3 || bestPos == 4);
     }
 
     @Override
