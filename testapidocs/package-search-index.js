@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.irurueta.navigation.indoor"},{"l":"com.irurueta.navigation.indoor.fingerprint"},{"l":"com.irurueta.navigation.indoor.position"},{"l":"com.irurueta.navigation.indoor.radiosource"}];updateSearchResults();

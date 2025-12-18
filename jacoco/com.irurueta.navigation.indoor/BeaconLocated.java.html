@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BeaconLocated.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-indoor</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.indoor</a> &gt; <span class="el_source">BeaconLocated.java</span></div><h1>BeaconLocated.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2018 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.indoor;
+
+import com.irurueta.algebra.Matrix;
+import com.irurueta.geometry.Point;
+
+import java.util.List;
+
+/**
+ * Data related to a beacon whose location is known.
+ *
+ * @param &lt;P&gt; a {@link Point} type.
+ */
+public class BeaconLocated&lt;P extends Point&lt;?&gt;&gt; extends Beacon implements RadioSourceLocated&lt;P&gt; {
+
+    /**
+     * Position where beacon is located.
+     */
+    private P position;
+
+    /**
+     * Covariance of inhomogeneous coordinates of current position (if available).
+     */
+    private Matrix positionCovariance;
+
+    /**
+     * Constructor.
+     *
+     * @param identifiers      list of the multipart identifiers of the beacon.
+     * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI
+     *                         (expressed in dBm's).
+     * @param position         position where beacon is located.
+     * @throws IllegalArgumentException if either identifiers or position are null.
+     */
+    public BeaconLocated(final List&lt;BeaconIdentifier&gt; identifiers, final double transmittedPower, final P position) {
+<span class="fc" id="L50">        super(identifiers, transmittedPower);</span>
+
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        if (position == null) {</span>
+<span class="fc" id="L53">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L56">        this.position = position;</span>
+<span class="fc" id="L57">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param identifiers      list of the multipart identifiers of the beacon.
+     * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
+     * @param bluetoothAddress the bluetooth mac address.
+     * @param beaconTypeCode   the two byte value indicating the type of beacon.
+     * @param manufacturer     a two byte code indicating the beacon manufacturer.
+     * @param serviceUuid      a 32 bit service uuid for the beacon.
+     * @param bluetoothName    the bluetooth device name.
+     * @param position         position where beacon is located.
+     * @throws IllegalArgumentException if either identifiers or position are null.
+     */
+    public BeaconLocated(final List&lt;BeaconIdentifier&gt; identifiers, final double transmittedPower,
+                         final String bluetoothAddress, final int beaconTypeCode, final int manufacturer,
+                         final int serviceUuid, final String bluetoothName, final P position) {
+<span class="fc" id="L75">        super(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,</span>
+                bluetoothName);
+
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        if (position == null) {</span>
+<span class="fc" id="L79">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L82">        this.position = position;</span>
+<span class="fc" id="L83">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param identifiers        list of the multipart identifiers of the beacon.
+     * @param transmittedPower   calibrated measured Tx power of the Beacon in RSSI
+     *                           (expressed in dBm's).
+     * @param position           position where beacon is located.
+     * @param positionCovariance covariance of inhomogeneous coordinates of current
+     *                           position (if available).
+     * @throws IllegalArgumentException if either identifiers or position are null.
+     */
+    public BeaconLocated(final List&lt;BeaconIdentifier&gt; identifiers, final double transmittedPower, final P position,
+                         final Matrix positionCovariance) {
+<span class="fc" id="L98">        this(identifiers, transmittedPower, position);</span>
+
+<span class="fc bfc" id="L100" title="All 2 branches covered.">        if (positionCovariance != null) {</span>
+<span class="fc" id="L101">            var dims = position.getDimensions();</span>
+<span class="pc bpc" id="L102" title="1 of 4 branches missed.">            if (positionCovariance.getRows() != dims || positionCovariance.getColumns() != dims) {</span>
+<span class="fc" id="L103">                throw new IllegalArgumentException();</span>
+            }
+        }
+<span class="fc" id="L106">        this.positionCovariance = positionCovariance;</span>
+<span class="fc" id="L107">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param identifiers        list of the multipart identifiers of the beacon.
+     * @param transmittedPower   calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
+     * @param bluetoothAddress   the bluetooth mac address.
+     * @param beaconTypeCode     the two byte value indicating the type of beacon.
+     * @param manufacturer       a two byte code indicating the beacon manufacturer.
+     * @param serviceUuid        a 32 bit service uuid for the beacon.
+     * @param bluetoothName      the bluetooth device name.
+     * @param position           position where beacon is located.
+     * @param positionCovariance covariance of inhomogeneous coordinates of current
+     *                           position (if available).
+     * @throws IllegalArgumentException if either identifiers or position are null.
+     */
+    public BeaconLocated(final List&lt;BeaconIdentifier&gt; identifiers, final double transmittedPower,
+                         final String bluetoothAddress, final int beaconTypeCode, final int manufacturer,
+                         final int serviceUuid, final String bluetoothName, final P position,
+                         final Matrix positionCovariance) {
+<span class="fc" id="L128">        this(identifiers, transmittedPower, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid, bluetoothName,</span>
+                position);
+
+<span class="fc bfc" id="L131" title="All 2 branches covered.">        if (positionCovariance != null) {</span>
+<span class="fc" id="L132">            final var dims = position.getDimensions();</span>
+<span class="pc bpc" id="L133" title="1 of 4 branches missed.">            if (positionCovariance.getRows() != dims || positionCovariance.getColumns() != dims) {</span>
+<span class="fc" id="L134">                throw new IllegalArgumentException();</span>
+            }
+        }
+<span class="fc" id="L137">        this.positionCovariance = positionCovariance;</span>
+<span class="fc" id="L138">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param identifiers      list of the multipart identifiers of the beacon.
+     * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI
+     *                         (expressed in dBm's).
+     * @param frequency        frequency used by this Beacon.
+     * @param position         position where beacon is located.
+     * @throws IllegalArgumentException if either identifiers or position are null or
+     *                                  frequency is negative.
+     */
+    public BeaconLocated(final List&lt;BeaconIdentifier&gt; identifiers, final double transmittedPower,
+                         final double frequency, final P position) {
+<span class="fc" id="L153">        super(identifiers, transmittedPower, frequency);</span>
+
+<span class="fc bfc" id="L155" title="All 2 branches covered.">        if (position == null) {</span>
+<span class="fc" id="L156">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L159">        this.position = position;</span>
+<span class="fc" id="L160">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param identifiers      list of the multipart identifiers of the beacon.
+     * @param transmittedPower calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
+     * @param frequency        frequency used by this Beacon.
+     * @param bluetoothAddress the bluetooth mac address.
+     * @param beaconTypeCode   the two byte value indicating the type of beacon.
+     * @param manufacturer     a two byte code indicating the beacon manufacturer.
+     * @param serviceUuid      a 32 bit service uuid for the beacon.
+     * @param bluetoothName    the bluetooth device name.
+     * @param position         position where beacon is located.
+     * @throws IllegalArgumentException if either identifiers or position are null or
+     *                                  frequency is negative.
+     */
+    public BeaconLocated(final List&lt;BeaconIdentifier&gt; identifiers, final double transmittedPower,
+                         final double frequency, final String bluetoothAddress, final int beaconTypeCode,
+                         final int manufacturer, final int serviceUuid, final String bluetoothName, final P position) {
+<span class="fc" id="L180">        super(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,</span>
+                bluetoothName);
+
+<span class="fc bfc" id="L183" title="All 2 branches covered.">        if (position == null) {</span>
+<span class="fc" id="L184">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L187">        this.position = position;</span>
+<span class="fc" id="L188">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param identifiers        list of the multipart identifiers of the beacon.
+     * @param transmittedPower   calibrated measured Tx power of the Beacon in RSSI
+     *                           (expressed in dBm's).
+     * @param frequency          frequency used by this Beacon.
+     * @param position           position where beacon is located.
+     * @param positionCovariance covariance of inhomogeneous coordinates of current
+     *                           position (if available).
+     * @throws IllegalArgumentException if either identifiers or position are null or
+     *                                  frequency is negative.
+     */
+    public BeaconLocated(final List&lt;BeaconIdentifier&gt; identifiers, final double transmittedPower,
+                         final double frequency, final P position, final Matrix positionCovariance) {
+<span class="fc" id="L205">        this(identifiers, transmittedPower, frequency, position);</span>
+
+<span class="fc bfc" id="L207" title="All 2 branches covered.">        if (positionCovariance != null) {</span>
+<span class="fc" id="L208">            final var dims = position.getDimensions();</span>
+<span class="pc bpc" id="L209" title="1 of 4 branches missed.">            if (positionCovariance.getRows() != dims || positionCovariance.getColumns() != dims) {</span>
+<span class="fc" id="L210">                throw new IllegalArgumentException();</span>
+            }
+        }
+<span class="fc" id="L213">        this.positionCovariance = positionCovariance;</span>
+<span class="fc" id="L214">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param identifiers        list of the multipart identifiers of the beacon.
+     * @param transmittedPower   calibrated measured Tx power of the Beacon in RSSI (expressed in dBm's).
+     * @param frequency          frequency used by this Beacon.
+     * @param bluetoothAddress   the bluetooth mac address.
+     * @param beaconTypeCode     the two byte value indicating the type of beacon.
+     * @param manufacturer       a two byte code indicating the beacon manufacturer.
+     * @param serviceUuid        a 32 bit service uuid for the beacon.
+     * @param bluetoothName      the bluetooth device name.
+     * @param position           position where beacon is located.
+     * @param positionCovariance covariance of inhomogeneous coordinates of current
+     *                           position (if available).
+     * @throws IllegalArgumentException if either identifiers or position are null or
+     *                                  frequency is negative.
+     */
+    public BeaconLocated(final List&lt;BeaconIdentifier&gt; identifiers, final double transmittedPower,
+                         final double frequency, final String bluetoothAddress, final int beaconTypeCode,
+                         final int manufacturer, final int serviceUuid, final String bluetoothName, final P position,
+                         final Matrix positionCovariance) {
+<span class="fc" id="L237">        this(identifiers, transmittedPower, frequency, bluetoothAddress, beaconTypeCode, manufacturer, serviceUuid,</span>
+                bluetoothName, position);
+
+<span class="fc bfc" id="L240" title="All 2 branches covered.">        if (positionCovariance != null) {</span>
+<span class="fc" id="L241">            var dims = position.getDimensions();</span>
+<span class="pc bpc" id="L242" title="1 of 4 branches missed.">            if (positionCovariance.getRows() != dims || positionCovariance.getColumns() != dims) {</span>
+<span class="fc" id="L243">                throw new IllegalArgumentException();</span>
+            }
+        }
+<span class="fc" id="L246">        this.positionCovariance = positionCovariance;</span>
+<span class="fc" id="L247">    }</span>
+
+    /**
+     * Empty constructor.
+     */
+    protected BeaconLocated() {
+<span class="fc" id="L253">        super();</span>
+<span class="fc" id="L254">    }</span>
+
+    /**
+     * Gets position where beacon is located.
+     *
+     * @return position where beacon is located.
+     */
+    public P getPosition() {
+<span class="fc" id="L262">        return position;</span>
+    }
+
+    /**
+     * Gets covariance of inhomogeneous coordinates of current position (if available).
+     *
+     * @return covariance of position or null.
+     */
+    public Matrix getPositionCovariance() {
+<span class="fc" id="L271">        return positionCovariance;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

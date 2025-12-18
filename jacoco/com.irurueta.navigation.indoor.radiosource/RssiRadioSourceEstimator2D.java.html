@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RssiRadioSourceEstimator2D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-indoor</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.indoor.radiosource</a> &gt; <span class="el_source">RssiRadioSourceEstimator2D.java</span></div><h1>RssiRadioSourceEstimator2D.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2018 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.indoor.radiosource;
+
+import com.irurueta.geometry.InhomogeneousPoint2D;
+import com.irurueta.geometry.Point2D;
+import com.irurueta.navigation.indoor.Beacon;
+import com.irurueta.navigation.indoor.BeaconWithPowerAndLocated2D;
+import com.irurueta.navigation.indoor.RadioSource;
+import com.irurueta.navigation.indoor.RadioSourceWithPowerAndLocated;
+import com.irurueta.navigation.indoor.RssiReadingLocated;
+import com.irurueta.navigation.indoor.WifiAccessPoint;
+import com.irurueta.navigation.indoor.WifiAccessPointWithPowerAndLocated2D;
+
+import java.util.List;
+
+/**
+ * Estimates 2D position, transmitted power and path-loss exponent
+ * of a radio source assuming that the radio source emits
+ * isotropically following the expression below:
+ * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,
+ * where Pr is the received power (expressed in mW),
+ * Gt is the Gain of the transmission antenna
+ * Gr is the Gain of the receiver antenna
+ * d is the distance between emitter and receiver
+ * and lambda is the wavelength and is equal to: lambda = c / f,
+ * where c is the speed of light
+ * and f is the carrier frequency of the radio signal.
+ * Because usually information about the antenna of the radio source cannot be
+ * retrieved (because many measurements are made on unknown access points where
+ * physical access is not possible), this implementation will estimate the
+ * equivalent transmitted power as: Pte = Pt * Gt * Gr.
+ * If Readings contain RSSI standard deviations, those values will be used,
+ * otherwise it will be assumed an RSSI standard deviation of 1 dB.
+ * &lt;p&gt;
+ * IMPORTANT: Implementations of this class can choose to estimate a
+ * combination of radio source position, transmitted power and path loss
+ * exponent. However enabling all three estimations usually achieves
+ * inaccurate results. When using this class, estimation must be of at least
+ * one parameter (position, transmitted power or path loss exponent) when
+ * initial values are provided for the other two, and at most it should consist
+ * of two parameters (either position and transmitted power, position and
+ * path loss exponent or transmitted power and path loss exponent), providing an
+ * initial value for the remaining parameter.
+ *
+ * @param &lt;S&gt; a {@link RadioSource} type.
+ */
+@SuppressWarnings(&quot;Duplicates&quot;)
+public class RssiRadioSourceEstimator2D&lt;S extends RadioSource&gt; extends RssiRadioSourceEstimator&lt;S, Point2D&gt; {
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L67">    public RssiRadioSourceEstimator2D() {</span>
+<span class="fc" id="L68">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings radio signal readings belonging to the same
+     *                 radio source.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public RssiRadioSourceEstimator2D(final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings) {
+<span class="fc" id="L79">        super(readings);</span>
+<span class="fc" id="L80">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener in charge of attending events raised by this instance.
+     */
+    public RssiRadioSourceEstimator2D(final RssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L88">        super(listener);</span>
+<span class="fc" id="L89">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings radio signal readings belonging to the same
+     *                 radio source.
+     * @param listener listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public RssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings,
+            final RssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L103">        super(readings, listener);</span>
+<span class="fc" id="L104">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition initial position to start the estimation of access
+     *                        point position.
+     */
+    public RssiRadioSourceEstimator2D(final Point2D initialPosition) {
+<span class="fc" id="L113">        super(initialPosition);</span>
+<span class="fc" id="L114">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings        radio signal readings belonging to the same
+     *                        radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public RssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings, final Point2D initialPosition) {
+<span class="fc" id="L128">        super(readings, initialPosition);</span>
+<span class="fc" id="L129">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     */
+    public RssiRadioSourceEstimator2D(
+            final Point2D initialPosition, final RssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L140">        super(initialPosition, listener);</span>
+<span class="fc" id="L141">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings        radio signal readings belonging to the same
+     *                        radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public RssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings, final Point2D initialPosition,
+            final RssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L157">        super(readings, initialPosition, listener);</span>
+<span class="fc" id="L158">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     */
+    public RssiRadioSourceEstimator2D(final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L168">        super(initialTransmittedPowerdBm);</span>
+<span class="fc" id="L169">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings                   radio signal readings belonging to the same
+     *                                   radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public RssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings, final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L184">        super(readings, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L185">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of access point transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     */
+    public RssiRadioSourceEstimator2D(
+            final Double initialTransmittedPowerdBm, final RssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L197">        super(initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L198">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings                   radio signal readings belonging to the same
+     *                                   radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public RssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings, final Double initialTransmittedPowerdBm,
+            final RssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L215">        super(readings, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L216">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings                   radio signal readings belonging to the same
+     *                                   radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public RssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings, final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L234">        super(readings, initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L235">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     */
+    public RssiRadioSourceEstimator2D(final Point2D initialPosition, final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L247">        super(initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L248">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     */
+    public RssiRadioSourceEstimator2D(
+            final Point2D initialPosition, final Double initialTransmittedPowerdBm,
+            final RssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L263">        super(initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L264">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings                   radio signal readings belonging to the same
+     *                                   radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public RssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings, final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm, final RssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L283">        super(readings, initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L284">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings                   radio signal readings belonging to the same
+     *                                   radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public RssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings, final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm, final double initialPathLossExponent) {
+<span class="fc" id="L303">        super(readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);</span>
+<span class="fc" id="L304">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     */
+    public RssiRadioSourceEstimator2D(
+            final Point2D initialPosition, final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent) {
+<span class="fc" id="L319">        super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);</span>
+<span class="fc" id="L320">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     */
+    public RssiRadioSourceEstimator2D(
+            final Point2D initialPosition, final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent, final RssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L336">        super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener);</span>
+<span class="fc" id="L337">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings                   radio signal readings belonging to the same
+     *                                   radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's)
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public RssiRadioSourceEstimator2D(
+            final List&lt;? extends RssiReadingLocated&lt;S, Point2D&gt;&gt; readings, final Point2D initialPosition,
+            final Double initialTransmittedPowerdBm, final double initialPathLossExponent,
+            final RssiRadioSourceEstimatorListener&lt;S, Point2D&gt; listener) {
+<span class="fc" id="L358">        super(readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener);</span>
+<span class="fc" id="L359">    }</span>
+
+    /**
+     * Gets minimum required number of readings to estimate
+     * power, position and path-loss exponent.
+     * This value depends on the number of parameters to
+     * be estimated, but for position only, this is 3
+     * readings.
+     *
+     * @return minimum required number of readings.
+     */
+    @Override
+    public int getMinReadings() {
+<span class="fc" id="L372">        var minReadings = 0;</span>
+<span class="fc bfc" id="L373" title="All 2 branches covered.">        if (isPositionEstimationEnabled()) {</span>
+<span class="fc" id="L374">            minReadings += Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
+        }
+<span class="fc bfc" id="L376" title="All 2 branches covered.">        if (isTransmittedPowerEstimationEnabled()) {</span>
+<span class="fc" id="L377">            minReadings++;</span>
+        }
+<span class="fc bfc" id="L379" title="All 2 branches covered.">        if (isPathLossEstimationEnabled()) {</span>
+<span class="fc" id="L380">            minReadings++;</span>
+        }
+<span class="fc" id="L382">        return ++minReadings;</span>
+    }
+
+    /**
+     * Gets number of dimensions of position points.
+     * This is always 2.
+     *
+     * @return number of dimensions of position points.
+     */
+    @Override
+    public int getNumberOfDimensions() {
+<span class="fc" id="L393">        return Point2D.POINT2D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
+    }
+
+    /**
+     * Gets estimated radio source 2D position.
+     *
+     * @return estimated radio source 2D position.
+     */
+    @Override
+    public Point2D getEstimatedPosition() {
+<span class="fc bfc" id="L403" title="All 2 branches covered.">        if (estimatedPositionCoordinates == null) {</span>
+<span class="fc" id="L404">            return null;</span>
+        }
+
+<span class="fc" id="L407">        final var result = new InhomogeneousPoint2D();</span>
+<span class="fc" id="L408">        getEstimatedPosition(result);</span>
+<span class="fc" id="L409">        return result;</span>
+
+    }
+
+    /**
+     * Gets estimated located radio source with estimated transmitted power.
+     *
+     * @return estimated located radio source with estimated transmitted power or null.
+     */
+    @Override
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public RadioSourceWithPowerAndLocated&lt;Point2D&gt; getEstimatedRadioSource() {
+<span class="fc" id="L421">        final var readings = getReadings();</span>
+<span class="pc bpc" id="L422" title="1 of 4 branches missed.">        if (readings == null || readings.isEmpty()) {</span>
+<span class="fc" id="L423">            return null;</span>
+        }
+<span class="fc" id="L425">        final var source = readings.get(0).getSource();</span>
+
+<span class="fc" id="L427">        final var estimatedPosition = getEstimatedPosition();</span>
+<span class="fc bfc" id="L428" title="All 2 branches covered.">        if (estimatedPosition == null) {</span>
+<span class="fc" id="L429">            return null;</span>
+        }
+
+<span class="fc" id="L432">        final var estimatedPositionCovariance = getEstimatedPositionCovariance();</span>
+
+<span class="fc" id="L434">        final var transmittedPowerVariance = getEstimatedTransmittedPowerVariance();</span>
+<span class="fc bfc" id="L435" title="All 2 branches covered.">        final var transmittedPowerStandardDeviation = transmittedPowerVariance != null</span>
+<span class="fc" id="L436">                ? Math.sqrt(transmittedPowerVariance) : null;</span>
+
+<span class="fc" id="L438">        final var pathlossExponentVariance = getEstimatedPathLossExponentVariance();</span>
+<span class="fc bfc" id="L439" title="All 2 branches covered.">        final var pathlossExponentStandardDeviation = pathlossExponentVariance != null</span>
+<span class="fc" id="L440">                ? Math.sqrt(pathlossExponentVariance) : null;</span>
+
+<span class="fc bfc" id="L442" title="All 2 branches covered.">        if (source instanceof WifiAccessPoint accessPoint) {</span>
+<span class="fc" id="L443">            return new WifiAccessPointWithPowerAndLocated2D(accessPoint.getBssid(), source.getFrequency(),</span>
+<span class="fc" id="L444">                    accessPoint.getSsid(), getEstimatedTransmittedPowerdBm(), transmittedPowerStandardDeviation,</span>
+<span class="fc" id="L445">                    getEstimatedPathLossExponent(), pathlossExponentStandardDeviation, estimatedPosition,</span>
+                    estimatedPositionCovariance);
+<span class="pc bpc" id="L447" title="1 of 2 branches missed.">        } else if (source instanceof Beacon beacon) {</span>
+<span class="fc" id="L448">            return new BeaconWithPowerAndLocated2D(beacon.getIdentifiers(), getEstimatedTransmittedPowerdBm(),</span>
+<span class="fc" id="L449">                    beacon.getFrequency(), beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(),</span>
+<span class="fc" id="L450">                    beacon.getManufacturer(), beacon.getServiceUuid(), beacon.getBluetoothName(),</span>
+<span class="fc" id="L451">                    getEstimatedPathLossExponent(), transmittedPowerStandardDeviation,</span>
+                    pathlossExponentStandardDeviation, estimatedPosition, estimatedPositionCovariance);
+        } else {
+<span class="nc" id="L454">            return null;</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

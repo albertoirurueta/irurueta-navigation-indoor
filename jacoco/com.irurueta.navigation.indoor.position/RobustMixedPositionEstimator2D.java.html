@@ -1,0 +1,849 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RobustMixedPositionEstimator2D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-indoor</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.indoor.position</a> &gt; <span class="el_source">RobustMixedPositionEstimator2D.java</span></div><h1>RobustMixedPositionEstimator2D.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2019 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.indoor.position;
+
+import com.irurueta.geometry.InhomogeneousPoint2D;
+import com.irurueta.geometry.Point2D;
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.indoor.Fingerprint;
+import com.irurueta.navigation.indoor.RadioSource;
+import com.irurueta.navigation.indoor.RadioSourceLocated;
+import com.irurueta.navigation.indoor.Reading;
+import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
+import java.util.List;
+
+/**
+ * Base class for robust 2D position estimators using located radio sources and their
+ * readings at unknown locations.
+ * These kind of estimators can be used to robustly determine the 2D position of a given
+ * device by getting readings at an unknown location of different radio sources whose
+ * locations are known.
+ * Implementations of this class should be able to detect and discard outliers in order to
+ * find the best solution.
+ */
+@SuppressWarnings(&quot;DuplicatedCode&quot;)
+public abstract class RobustMixedPositionEstimator2D extends RobustMixedPositionEstimator&lt;Point2D&gt; {
+
+    /**
+     * Constructor.
+     */
+    protected RobustMixedPositionEstimator2D() {
+<span class="fc" id="L45">        super();</span>
+<span class="fc" id="L46">        preliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L47">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener in charge of handling events.
+     */
+    protected RobustMixedPositionEstimator2D(final RobustMixedPositionEstimatorListener&lt;Point2D&gt; listener) {
+<span class="fc" id="L55">        super(listener);</span>
+<span class="fc" id="L56">        preliminarySubsetSize = getMinRequiredSources();</span>
+<span class="fc" id="L57">    }</span>
+
+    /**
+     * Gets minimum required number of located radio sources to perform lateration.
+     *
+     * @return minimum required number of located radio sources to perform lateration.
+     */
+    @Override
+    public int getMinRequiredSources() {
+<span class="fc" id="L66">        return Point2D.POINT2D_HOMOGENEOUS_COORDINATES_LENGTH;</span>
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param method robust estimator method.
+     * @return a robust 2D position estimator.
+     */
+    public static RobustMixedPositionEstimator2D create(final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L76" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L77">            case RANSAC -&gt; new RANSACRobustMixedPositionEstimator2D();</span>
+<span class="fc" id="L78">            case LMEDS -&gt; new LMedSRobustMixedPositionEstimator2D();</span>
+<span class="fc" id="L79">            case MSAC -&gt; new MSACRobustMixedPositionEstimator2D();</span>
+<span class="fc" id="L80">            case PROSAC -&gt; new PROSACRobustMixedPositionEstimator2D();</span>
+<span class="fc" id="L81">            default -&gt; new PROMedSRobustMixedPositionEstimator2D();</span>
+        };
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param sources located radio sources used for lateration.
+     * @param method  robust estimator method.
+     * @return a robust 2D position estimator.
+     * @throws IllegalArgumentException if provided sources is null or the number of
+     *                                  provided sources is less than the required minimum.
+     */
+    public static RobustMixedPositionEstimator2D create(
+            final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources, final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L96" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L97">            case RANSAC -&gt; new RANSACRobustMixedPositionEstimator2D(sources);</span>
+<span class="fc" id="L98">            case LMEDS -&gt; new LMedSRobustMixedPositionEstimator2D(sources);</span>
+<span class="fc" id="L99">            case MSAC -&gt; new MSACRobustMixedPositionEstimator2D(sources);</span>
+<span class="fc" id="L100">            case PROSAC -&gt; new PROSACRobustMixedPositionEstimator2D(sources);</span>
+<span class="fc" id="L101">            default -&gt; new PROMedSRobustMixedPositionEstimator2D(sources);</span>
+        };
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param fingerprint fingerprint containing readings at an unknown
+     *                    location for provided located radio sources.
+     * @param method      robust estimator method.
+     * @return a robust 2D position estimator.
+     * @throws IllegalArgumentException if provided fingerprint is null.
+     */
+    public static RobustMixedPositionEstimator2D create(
+            final Fingerprint&lt;? extends RadioSource, ? extends Reading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L117" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L118">            case RANSAC -&gt; new RANSACRobustMixedPositionEstimator2D(fingerprint);</span>
+<span class="fc" id="L119">            case LMEDS -&gt; new LMedSRobustMixedPositionEstimator2D(fingerprint);</span>
+<span class="fc" id="L120">            case MSAC -&gt; new MSACRobustMixedPositionEstimator2D(fingerprint);</span>
+<span class="fc" id="L121">            case PROSAC -&gt; new PROSACRobustMixedPositionEstimator2D(fingerprint);</span>
+<span class="fc" id="L122">            default -&gt; new PROMedSRobustMixedPositionEstimator2D(fingerprint);</span>
+        };
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param sources     located radio sources used for lateration.
+     * @param fingerprint fingerprint containing readings at an unknown
+     *                    location for provided located radio sources.
+     * @param method      robust estimator method.
+     * @return a robust 2D position estimator.
+     * @throws IllegalArgumentException if either provided sources or fingerprint is null
+     *                                  or the number of provided sources is less than the required minimum.
+     */
+    public static RobustMixedPositionEstimator2D create(
+            final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
+            final Fingerprint&lt;? extends RadioSource, ? extends Reading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L141" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L142">            case RANSAC -&gt; new RANSACRobustMixedPositionEstimator2D(sources, fingerprint);</span>
+<span class="fc" id="L143">            case LMEDS -&gt; new LMedSRobustMixedPositionEstimator2D(sources, fingerprint);</span>
+<span class="fc" id="L144">            case MSAC -&gt; new MSACRobustMixedPositionEstimator2D(sources, fingerprint);</span>
+<span class="fc" id="L145">            case PROSAC -&gt; new PROSACRobustMixedPositionEstimator2D(sources, fingerprint);</span>
+<span class="fc" id="L146">            default -&gt; new PROMedSRobustMixedPositionEstimator2D(sources, fingerprint);</span>
+        };
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param listener listener in charge of handling events.
+     * @param method   robust estimator method.
+     * @return a robust 2D position estimator.
+     */
+    public static RobustMixedPositionEstimator2D create(
+            final RobustMixedPositionEstimatorListener&lt;Point2D&gt; listener, final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L159" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L160">            case RANSAC -&gt; new RANSACRobustMixedPositionEstimator2D(listener);</span>
+<span class="fc" id="L161">            case LMEDS -&gt; new LMedSRobustMixedPositionEstimator2D(listener);</span>
+<span class="fc" id="L162">            case MSAC -&gt; new MSACRobustMixedPositionEstimator2D(listener);</span>
+<span class="fc" id="L163">            case PROSAC -&gt; new PROSACRobustMixedPositionEstimator2D(listener);</span>
+<span class="fc" id="L164">            default -&gt; new PROMedSRobustMixedPositionEstimator2D(listener);</span>
+        };
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param sources  located radio sources used for lateration.
+     * @param listener listener in charge of handling events.
+     * @param method   robust estimator method.
+     * @return a robust 2D position estimator.
+     * @throws IllegalArgumentException if provided sources is null or the number of
+     *                                  provided sources is less than the required minimum.
+     */
+    public static RobustMixedPositionEstimator2D create(
+            final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
+            final RobustMixedPositionEstimatorListener&lt;Point2D&gt; listener, final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L181" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L182">            case RANSAC -&gt; new RANSACRobustMixedPositionEstimator2D(sources, listener);</span>
+<span class="fc" id="L183">            case LMEDS -&gt; new LMedSRobustMixedPositionEstimator2D(sources, listener);</span>
+<span class="fc" id="L184">            case MSAC -&gt; new MSACRobustMixedPositionEstimator2D(sources, listener);</span>
+<span class="fc" id="L185">            case PROSAC -&gt; new PROSACRobustMixedPositionEstimator2D(sources, listener);</span>
+<span class="fc" id="L186">            default -&gt; new PROMedSRobustMixedPositionEstimator2D(sources, listener);</span>
+        };
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param fingerprint fingerprint containing readings at an unknown
+     *                    location for provided located radio sources.
+     * @param listener    listener in charge of handling events.
+     * @param method      robust estimator method.
+     * @return a robust 2D position estimator.
+     * @throws IllegalArgumentException if provided fingerprint is null.
+     */
+    public static RobustMixedPositionEstimator2D create(
+            final Fingerprint&lt;? extends RadioSource, ? extends Reading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RobustMixedPositionEstimatorListener&lt;Point2D&gt; listener, final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L203" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L204">            case RANSAC -&gt; new RANSACRobustMixedPositionEstimator2D(fingerprint, listener);</span>
+<span class="fc" id="L205">            case LMEDS -&gt; new LMedSRobustMixedPositionEstimator2D(fingerprint, listener);</span>
+<span class="fc" id="L206">            case MSAC -&gt; new MSACRobustMixedPositionEstimator2D(fingerprint, listener);</span>
+<span class="fc" id="L207">            case PROSAC -&gt; new PROSACRobustMixedPositionEstimator2D(fingerprint, listener);</span>
+<span class="fc" id="L208">            default -&gt; new PROMedSRobustMixedPositionEstimator2D(fingerprint, listener);</span>
+        };
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param sources     located radio sources used for lateration.
+     * @param fingerprint fingerprint containing readings at an unknown
+     *                    location for provided located radio sources.
+     * @param listener    listener in charge of handling events.
+     * @param method      robust estimator method.
+     * @return a robust 2D position estimator.
+     * @throws IllegalArgumentException if either provided sources or fingerprint is null
+     *                                  or the number of provided sources is less than the required minimum.
+     */
+    public static RobustMixedPositionEstimator2D create(
+            final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
+            final Fingerprint&lt;? extends RadioSource, ? extends Reading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RobustMixedPositionEstimatorListener&lt;Point2D&gt; listener, final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L228" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L229">            case RANSAC -&gt; new RANSACRobustMixedPositionEstimator2D(sources, fingerprint, listener);</span>
+<span class="fc" id="L230">            case LMEDS -&gt; new LMedSRobustMixedPositionEstimator2D(sources, fingerprint, listener);</span>
+<span class="fc" id="L231">            case MSAC -&gt; new MSACRobustMixedPositionEstimator2D(sources, fingerprint, listener);</span>
+<span class="fc" id="L232">            case PROSAC -&gt; new PROSACRobustMixedPositionEstimator2D(sources, fingerprint, listener);</span>
+<span class="fc" id="L233">            default -&gt; new PROMedSRobustMixedPositionEstimator2D(sources, fingerprint, listener);</span>
+        };
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param sourceQualityScores             quality scores corresponding to
+     *                                        each provided located radio source.
+     *                                        The larger the score value the better
+     *                                        the quality of the radio source.
+     * @param fingerprintReadingQualityScores quality scores corresponding to readings
+     *                                        within provided fingerprint. The larger
+     *                                        the score the better the quality of the
+     *                                        reading.
+     * @param method                          robust estimator method.
+     * @return a robust 2D position estimator.
+     */
+    public static RobustMixedPositionEstimator2D create(
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L254" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L255">            case RANSAC -&gt; new RANSACRobustMixedPositionEstimator2D();</span>
+<span class="fc" id="L256">            case LMEDS -&gt; new LMedSRobustMixedPositionEstimator2D();</span>
+<span class="fc" id="L257">            case MSAC -&gt; new MSACRobustMixedPositionEstimator2D();</span>
+<span class="fc" id="L258">            case PROSAC -&gt; new PROSACRobustMixedPositionEstimator2D(sourceQualityScores,</span>
+                    fingerprintReadingQualityScores);
+<span class="fc" id="L260">            default -&gt; new PROMedSRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingQualityScores);</span>
+        };
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param sourceQualityScores             quality scores corresponding to
+     *                                        each provided located radio source.
+     *                                        The larger the score value the better
+     *                                        the quality of the radio source.
+     * @param fingerprintReadingQualityScores quality scores corresponding to readings
+     *                                        within provided fingerprint. The larger
+     *                                        the score the better the quality of the
+     *                                        reading.
+     * @param sources                         located radio sources used for
+     *                                        lateration.
+     * @param method                          robust estimator method.
+     * @return a robust 2D position estimator.
+     * @throws IllegalArgumentException if provided sources is null or the number of
+     *                                  provided sources is less than the required minimum.
+     */
+    public static RobustMixedPositionEstimator2D create(
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
+            final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources, final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L285" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L286">            case RANSAC -&gt; new RANSACRobustMixedPositionEstimator2D(sources);</span>
+<span class="fc" id="L287">            case LMEDS -&gt; new LMedSRobustMixedPositionEstimator2D(sources);</span>
+<span class="fc" id="L288">            case MSAC -&gt; new MSACRobustMixedPositionEstimator2D(sources);</span>
+<span class="fc" id="L289">            case PROSAC -&gt; new PROSACRobustMixedPositionEstimator2D(sourceQualityScores,</span>
+                    fingerprintReadingQualityScores, sources);
+<span class="fc" id="L291">            default -&gt; new PROMedSRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingQualityScores,</span>
+                    sources);
+        };
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param sourceQualityScores             quality scores corresponding to
+     *                                        each provided located radio source.
+     *                                        The larger the score value the better
+     *                                        the quality of the radio source.
+     * @param fingerprintReadingQualityScores quality scores corresponding to readings
+     *                                        within provided fingerprint. The larger
+     *                                        the score the better the quality of the
+     *                                        reading.
+     * @param fingerprint                     fingerprint containing
+     *                                        readings at an unknown location for
+     *                                        provided located radio sources.
+     * @param method                          robust estimator method.
+     * @return a robust 2D position estimator.
+     * @throws IllegalArgumentException if provided fingerprint is null.
+     */
+    public static RobustMixedPositionEstimator2D create(
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
+            final Fingerprint&lt;? extends RadioSource, ? extends Reading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L318" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L319">            case RANSAC -&gt; new RANSACRobustMixedPositionEstimator2D(fingerprint);</span>
+<span class="fc" id="L320">            case LMEDS -&gt; new LMedSRobustMixedPositionEstimator2D(fingerprint);</span>
+<span class="fc" id="L321">            case MSAC -&gt; new MSACRobustMixedPositionEstimator2D(fingerprint);</span>
+<span class="fc" id="L322">            case PROSAC -&gt; new PROSACRobustMixedPositionEstimator2D(sourceQualityScores,</span>
+                    fingerprintReadingQualityScores, fingerprint);
+<span class="fc" id="L324">            default -&gt; new PROMedSRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingQualityScores,</span>
+                    fingerprint);
+        };
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param sourceQualityScores             quality scores corresponding to
+     *                                        each provided located radio source.
+     *                                        The larger the score value the better
+     *                                        the quality of the radio source.
+     * @param fingerprintReadingQualityScores quality scores corresponding to readings
+     *                                        within provided fingerprint. The larger
+     *                                        the score the better the quality of the
+     *                                        reading.
+     * @param sources                         located radio sources used for
+     *                                        lateration.
+     * @param fingerprint                     fingerprint containing
+     *                                        readings at an unknown location for
+     *                                        provided located radio sources.
+     * @param method                          robust estimator method.
+     * @return a robust 2D position estimator.
+     * @throws IllegalArgumentException if either provided sources or fingerprint is null
+     *                                  or the number of provided sources is less than the required minimum.
+     */
+    public static RobustMixedPositionEstimator2D create(
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
+            final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
+            final Fingerprint&lt;? extends RadioSource, ? extends Reading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L355" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L356">            case RANSAC -&gt; new RANSACRobustMixedPositionEstimator2D(sources, fingerprint);</span>
+<span class="fc" id="L357">            case LMEDS -&gt; new LMedSRobustMixedPositionEstimator2D(sources, fingerprint);</span>
+<span class="fc" id="L358">            case MSAC -&gt; new MSACRobustMixedPositionEstimator2D(sources, fingerprint);</span>
+<span class="fc" id="L359">            case PROSAC -&gt; new PROSACRobustMixedPositionEstimator2D(sourceQualityScores,</span>
+                    fingerprintReadingQualityScores, sources, fingerprint);
+<span class="fc" id="L361">            default -&gt; new PROMedSRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingQualityScores,</span>
+                    sources, fingerprint);
+        };
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param sourceQualityScores             quality scores corresponding to
+     *                                        each provided located radio source.
+     *                                        The larger the score value the better
+     *                                        the quality of the radio source.
+     * @param fingerprintReadingQualityScores quality scores corresponding to readings
+     *                                        within provided fingerprint. The larger
+     *                                        the score the better the quality of the
+     *                                        reading.
+     * @param listener                        listener in charge of handling events.
+     * @param method                          robust estimator method.
+     * @return a robust 2D position estimator.
+     */
+    public static RobustMixedPositionEstimator2D create(
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
+            final RobustMixedPositionEstimatorListener&lt;Point2D&gt; listener, final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L384" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L385">            case RANSAC -&gt; new RANSACRobustMixedPositionEstimator2D(listener);</span>
+<span class="fc" id="L386">            case LMEDS -&gt; new LMedSRobustMixedPositionEstimator2D(listener);</span>
+<span class="fc" id="L387">            case MSAC -&gt; new MSACRobustMixedPositionEstimator2D(listener);</span>
+<span class="fc" id="L388">            case PROSAC -&gt; new PROSACRobustMixedPositionEstimator2D(sourceQualityScores,</span>
+                    fingerprintReadingQualityScores, listener);
+<span class="fc" id="L390">            default -&gt; new PROMedSRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingQualityScores,</span>
+                    listener);
+        };
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param sourceQualityScores             quality scores corresponding to
+     *                                        each provided located radio source.
+     *                                        The larger the score value the better
+     *                                        the quality of the radio source.
+     * @param fingerprintReadingQualityScores quality scores corresponding to readings
+     *                                        within provided fingerprint. The larger
+     *                                        the score the better the quality of the
+     *                                        reading.
+     * @param sources                         located radio sources used for
+     *                                        lateration.
+     * @param listener                        listener in charge of handling events.
+     * @param method                          robust estimator method.
+     * @return a robust 2D position estimator.
+     * @throws IllegalArgumentException if provided sources is null or the number of
+     *                                  provided sources is less than the required minimum.
+     */
+    public static RobustMixedPositionEstimator2D create(
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
+            final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
+            final RobustMixedPositionEstimatorListener&lt;Point2D&gt; listener, final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L418" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L419">            case RANSAC -&gt; new RANSACRobustMixedPositionEstimator2D(sources, listener);</span>
+<span class="fc" id="L420">            case LMEDS -&gt; new LMedSRobustMixedPositionEstimator2D(sources, listener);</span>
+<span class="fc" id="L421">            case MSAC -&gt; new MSACRobustMixedPositionEstimator2D(sources, listener);</span>
+<span class="fc" id="L422">            case PROSAC -&gt; new PROSACRobustMixedPositionEstimator2D(sourceQualityScores,</span>
+                    fingerprintReadingQualityScores, sources, listener);
+<span class="fc" id="L424">            default -&gt; new PROMedSRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingQualityScores,</span>
+                    sources, listener);
+        };
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param sourceQualityScores             quality scores corresponding to
+     *                                        each provided located radio source.
+     *                                        The larger the score value the better
+     *                                        the quality of the radio source.
+     * @param fingerprintReadingQualityScores quality scores corresponding to readings
+     *                                        within provided fingerprint. The larger
+     *                                        the score the better the quality of the
+     *                                        reading.
+     * @param fingerprint                     fingerprint containing
+     *                                        readings at an unknown location for
+     *                                        provided located radio sources.
+     * @param listener                        listener in charge of handling events.
+     * @param method                          robust estimator method.
+     * @return a robust 2D position estimator.
+     * @throws IllegalArgumentException if provided fingerprint is null.
+     */
+    public static RobustMixedPositionEstimator2D create(
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
+            final Fingerprint&lt;? extends RadioSource, ? extends Reading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RobustMixedPositionEstimatorListener&lt;Point2D&gt; listener, final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L452" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L453">            case RANSAC -&gt; new RANSACRobustMixedPositionEstimator2D(fingerprint, listener);</span>
+<span class="fc" id="L454">            case LMEDS -&gt; new LMedSRobustMixedPositionEstimator2D(fingerprint, listener);</span>
+<span class="fc" id="L455">            case MSAC -&gt; new MSACRobustMixedPositionEstimator2D(fingerprint, listener);</span>
+<span class="fc" id="L456">            case PROSAC -&gt; new PROSACRobustMixedPositionEstimator2D(sourceQualityScores,</span>
+                    fingerprintReadingQualityScores, fingerprint, listener);
+<span class="fc" id="L458">            default -&gt; new PROMedSRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingQualityScores,</span>
+                    fingerprint, listener);
+        };
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param sourceQualityScores             quality scores corresponding to
+     *                                        each provided located radio source.
+     *                                        The larger the score value the better
+     *                                        the quality of the radio source.
+     * @param fingerprintReadingQualityScores quality scores corresponding to readings
+     *                                        within provided fingerprint. The larger
+     *                                        the score the better the quality of the
+     *                                        reading.
+     * @param sources                         located radio sources used for
+     *                                        lateration.
+     * @param fingerprint                     fingerprint containing
+     *                                        readings at an unknown location for
+     *                                        provided located radio sources.
+     * @param listener                        listener in charge of handling events.
+     * @param method                          robust estimator method.
+     * @return a robust 2D position estimator.
+     * @throws IllegalArgumentException if either provided sources or fingerprint is null
+     *                                  or the number of provided sources is less than the required minimum.
+     */
+    public static RobustMixedPositionEstimator2D create(
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
+            final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
+            final Fingerprint&lt;? extends RadioSource, ? extends Reading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RobustMixedPositionEstimatorListener&lt;Point2D&gt; listener, final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L490" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L491">            case RANSAC -&gt; new RANSACRobustMixedPositionEstimator2D(sources, fingerprint, listener);</span>
+<span class="fc" id="L492">            case LMEDS -&gt; new LMedSRobustMixedPositionEstimator2D(sources, fingerprint, listener);</span>
+<span class="fc" id="L493">            case MSAC -&gt; new MSACRobustMixedPositionEstimator2D(sources, fingerprint, listener);</span>
+<span class="fc" id="L494">            case PROSAC -&gt; new PROSACRobustMixedPositionEstimator2D(sourceQualityScores,</span>
+                    fingerprintReadingQualityScores, sources, fingerprint, listener);
+<span class="fc" id="L496">            default -&gt; new PROMedSRobustMixedPositionEstimator2D(sourceQualityScores, fingerprintReadingQualityScores,</span>
+                    sources, fingerprint, listener);
+        };
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @return a robust 2D position estimator.
+     */
+    public static RobustMixedPositionEstimator2D create() {
+<span class="fc" id="L507">        return create(DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param sources located radio sources used for lateration.
+     * @return a robust 2D position estimator.
+     * @throws IllegalArgumentException if provided sources is null or the number of
+     *                                  provided sources is less than the required minimum.
+     */
+    public static RobustMixedPositionEstimator2D create(final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources) {
+<span class="fc" id="L519">        return create(sources, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param fingerprint fingerprint containing readings at an unknown
+     *                    location for provided located radio sources.
+     * @return a robust 2D position estimator.
+     * @throws IllegalArgumentException if provided fingerprint is null.
+     */
+    public static RobustMixedPositionEstimator2D create(
+            final Fingerprint&lt;? extends RadioSource, ? extends Reading&lt;? extends RadioSource&gt;&gt; fingerprint) {
+<span class="fc" id="L532">        return create(fingerprint, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param sources     located radio sources used for lateration.
+     * @param fingerprint fingerprint containing ranging+RSSI readings at an unknown
+     *                    location for provided located radio sources.
+     * @return a robust 2D position estimator.
+     * @throws IllegalArgumentException if either provided sources or fingerprint is null
+     *                                  or the number of provided sources is less than the required minimum.
+     */
+    public static RobustMixedPositionEstimator2D create(
+            final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
+            final Fingerprint&lt;? extends RadioSource, ? extends Reading&lt;? extends RadioSource&gt;&gt; fingerprint) {
+<span class="fc" id="L548">        return create(sources, fingerprint, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param listener listener in charge of handling events.
+     * @return a robust 2D position estimator.
+     */
+    public static RobustMixedPositionEstimator2D create(final RobustMixedPositionEstimatorListener&lt;Point2D&gt; listener) {
+<span class="fc" id="L558">        return create(listener, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param sources  located radio sources used for lateration.
+     * @param listener listener in charge of handling events.
+     * @return a robust 2D position estimator.
+     * @throws IllegalArgumentException if provided sources is null or the number of
+     *                                  provided sources is less than the required minimum.
+     */
+    public static RobustMixedPositionEstimator2D create(
+            final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
+            final RobustMixedPositionEstimatorListener&lt;Point2D&gt; listener) {
+<span class="fc" id="L573">        return create(sources, listener, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param fingerprint fingerprint containing readings at an unknown
+     *                    location for provided located radio sources.
+     * @param listener    listener in charge of handling events.
+     * @return a robust 2D position estimator.
+     * @throws IllegalArgumentException if provided fingerprint is null.
+     */
+    public static RobustMixedPositionEstimator2D create(
+            final Fingerprint&lt;? extends RadioSource, ? extends Reading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RobustMixedPositionEstimatorListener&lt;Point2D&gt; listener) {
+<span class="fc" id="L588">        return create(fingerprint, listener, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param sources     located radio sources used for lateration.
+     * @param fingerprint fingerprint containing readings at an unknown
+     *                    location for provided located radio sources.
+     * @param listener    listener in charge of handling events.
+     * @return a robust 2D position estimator.
+     * @throws IllegalArgumentException if either provided sources or fingerprint is null
+     *                                  or the number of provided sources is less than the required minimum.
+     */
+    public static RobustMixedPositionEstimator2D create(
+            final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
+            final Fingerprint&lt;? extends RadioSource, ? extends Reading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RobustMixedPositionEstimatorListener&lt;Point2D&gt; listener) {
+<span class="fc" id="L606">        return create(sources, fingerprint, listener, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param sourceQualityScores             quality scores corresponding to
+     *                                        each provided located radio source.
+     *                                        The larger the score value the better
+     *                                        the quality of the radio source.
+     * @param fingerprintReadingQualityScores quality scores corresponding to readings
+     *                                        within provided fingerprint. The larger
+     *                                        the score the better the quality of the
+     *                                        reading.
+     * @return a robust 2D position estimator.
+     */
+    public static RobustMixedPositionEstimator2D create(
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores) {
+<span class="fc" id="L624">        return create(sourceQualityScores, fingerprintReadingQualityScores, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param sourceQualityScores             quality scores corresponding to
+     *                                        each provided located radio source.
+     *                                        The larger the score value the better
+     *                                        the quality of the radio source.
+     * @param fingerprintReadingQualityScores quality scores corresponding to readings
+     *                                        within provided fingerprint. The larger
+     *                                        the score the better the quality of the
+     *                                        reading.
+     * @param sources                         located radio sources used for
+     *                                        lateration.
+     * @return a robust 2D position estimator.
+     * @throws IllegalArgumentException if provided sources is null or the number of
+     *                                  provided sources is less than the required minimum.
+     */
+    public static RobustMixedPositionEstimator2D create(
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
+            final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources) {
+<span class="fc" id="L647">        return create(sourceQualityScores, fingerprintReadingQualityScores, sources, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param sourceQualityScores             quality scores corresponding to
+     *                                        each provided located radio source.
+     *                                        The larger the score value the better
+     *                                        the quality of the radio source.
+     * @param fingerprintReadingQualityScores quality scores corresponding to readings
+     *                                        within provided fingerprint. The larger
+     *                                        the score the better the quality of the
+     *                                        reading.
+     * @param fingerprint                     fingerprint containing
+     *                                        readings at an unknown location for
+     *                                        provided located radio sources.
+     * @return a robust 2D position estimator.
+     * @throws IllegalArgumentException if provided fingerprint is null.
+     */
+    public static RobustMixedPositionEstimator2D create(
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
+            final Fingerprint&lt;? extends RadioSource, ? extends Reading&lt;? extends RadioSource&gt;&gt; fingerprint) {
+<span class="fc" id="L670">        return create(sourceQualityScores, fingerprintReadingQualityScores, fingerprint, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param sourceQualityScores             quality scores corresponding to
+     *                                        each provided located radio source.
+     *                                        The larger the score value the better
+     *                                        the quality of the radio source.
+     * @param fingerprintReadingQualityScores quality scores corresponding to readings
+     *                                        within provided fingerprint. The larger
+     *                                        the score the better the quality of the
+     *                                        reading.
+     * @param sources                         located radio sources used for
+     *                                        lateration.
+     * @param fingerprint                     fingerprint containing
+     *                                        readings at an unknown location for
+     *                                        provided located radio sources.
+     * @return a robust 2D position estimator.
+     * @throws IllegalArgumentException if either provided sources or fingerprint is null
+     *                                  or the number of provided sources is less than the required minimum.
+     */
+    public static RobustMixedPositionEstimator2D create(
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
+            final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
+            final Fingerprint&lt;? extends RadioSource, ? extends Reading&lt;? extends RadioSource&gt;&gt; fingerprint) {
+<span class="fc" id="L697">        return create(sourceQualityScores, fingerprintReadingQualityScores, sources, fingerprint,</span>
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param sourceQualityScores             quality scores corresponding to
+     *                                        each provided located radio source.
+     *                                        The larger the score value the better
+     *                                        the quality of the radio source.
+     * @param fingerprintReadingQualityScores quality scores corresponding to readings
+     *                                        within provided fingerprint. The larger
+     *                                        the score the better the quality of the
+     *                                        reading.
+     * @param listener                        listener in charge of handling events.
+     * @return a robust 2D position estimator.
+     */
+    public static RobustMixedPositionEstimator2D create(
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
+            final RobustMixedPositionEstimatorListener&lt;Point2D&gt; listener) {
+<span class="fc" id="L718">        return create(sourceQualityScores, fingerprintReadingQualityScores, listener, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param sourceQualityScores             quality scores corresponding to
+     *                                        each provided located radio source.
+     *                                        The larger the score value the better
+     *                                        the quality of the radio source.
+     * @param fingerprintReadingQualityScores quality scores corresponding to readings
+     *                                        within provided fingerprint. The larger
+     *                                        the score the better the quality of the
+     *                                        reading.
+     * @param sources                         located radio sources used for
+     *                                        lateration.
+     * @param listener                        listener in charge of handling events.
+     * @return a robust 2D position estimator.
+     * @throws IllegalArgumentException if provided sources is null or the number of
+     *                                  provided sources is less than the required minimum.
+     */
+    public static RobustMixedPositionEstimator2D create(
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
+            final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
+            final RobustMixedPositionEstimatorListener&lt;Point2D&gt; listener) {
+<span class="fc" id="L743">        return create(sourceQualityScores, fingerprintReadingQualityScores, sources, listener, DEFAULT_ROBUST_METHOD);</span>
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param sourceQualityScores             quality scores corresponding to
+     *                                        each provided located radio source.
+     *                                        The larger the score value the better
+     *                                        the quality of the radio source.
+     * @param fingerprintReadingQualityScores quality scores corresponding to readings
+     *                                        within provided fingerprint. The larger
+     *                                        the score the better the quality of the
+     *                                        reading.
+     * @param fingerprint                     fingerprint containing
+     *                                        readings at an unknown location for
+     *                                        provided located radio sources.
+     * @param listener                        listener in charge of handling events.
+     * @return a robust 2D position estimator.
+     * @throws IllegalArgumentException if provided fingerprint is null.
+     */
+    public static RobustMixedPositionEstimator2D create(
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
+            final Fingerprint&lt;? extends RadioSource, ? extends Reading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RobustMixedPositionEstimatorListener&lt;Point2D&gt; listener) {
+<span class="fc" id="L768">        return create(sourceQualityScores, fingerprintReadingQualityScores, fingerprint, listener,</span>
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Creates a robust 2D position estimator.
+     *
+     * @param sourceQualityScores             quality scores corresponding to
+     *                                        each provided located radio source.
+     *                                        The larger the score value the better
+     *                                        the quality of the radio source.
+     * @param fingerprintReadingQualityScores quality scores corresponding to readings
+     *                                        within provided fingerprint. The larger
+     *                                        the score the better the quality of the
+     *                                        reading.
+     * @param sources                         located radio sources used for
+     *                                        lateration.
+     * @param fingerprint                     fingerprint containing
+     *                                        readings at an unknown location for
+     *                                        provided located radio sources.
+     * @param listener                        listener in charge of handling events.
+     * @return a robust 2D position estimator.
+     * @throws IllegalArgumentException if either provided sources or fingerprint is null
+     *                                  or the number of provided sources is less than the required minimum.
+     */
+    public static RobustMixedPositionEstimator2D create(
+            final double[] sourceQualityScores, final double[] fingerprintReadingQualityScores,
+            final List&lt;? extends RadioSourceLocated&lt;Point2D&gt;&gt; sources,
+            final Fingerprint&lt;? extends RadioSource, ? extends Reading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final RobustMixedPositionEstimatorListener&lt;Point2D&gt; listener) {
+<span class="fc" id="L798">        return create(sourceQualityScores, fingerprintReadingQualityScores, sources, fingerprint, listener,</span>
+                DEFAULT_ROBUST_METHOD);
+    }
+
+    /**
+     * Sets positions, distances and standard deviations of distances on internal
+     * lateration solver.
+     *
+     * @param positions                  positions to be set.
+     * @param distances                  distances to be set.
+     * @param distanceStandardDeviations standard deviations of distances to be set.
+     * @param distanceQualityScores      distance quality scores or null if not
+     *                                   required.
+     */
+    @Override
+    protected void setPositionsDistancesDistanceStandardDeviationsAndQualityScores(
+            final List&lt;Point2D&gt; positions, List&lt;Double&gt; distances, final List&lt;Double&gt; distanceStandardDeviations,
+            final List&lt;Double&gt; distanceQualityScores) {
+<span class="fc" id="L816">        final var size = positions.size();</span>
+<span class="fc" id="L817">        Point2D[] positionsArray = new InhomogeneousPoint2D[size];</span>
+<span class="fc" id="L818">        positionsArray = positions.toArray(positionsArray);</span>
+
+<span class="fc" id="L820">        final var distancesArray = new double[size];</span>
+<span class="fc" id="L821">        final var distanceStandardDeviationsArray = new double[size];</span>
+
+<span class="fc" id="L823">        double[] qualityScoresArray = null;</span>
+<span class="pc bpc" id="L824" title="1 of 2 branches missed.">        if (distanceQualityScores != null) {</span>
+<span class="fc" id="L825">            qualityScoresArray = new double[size];</span>
+        }
+
+<span class="fc bfc" id="L828" title="All 2 branches covered.">        for (var i = 0; i &lt; size; i++) {</span>
+<span class="fc" id="L829">            distancesArray[i] = distances.get(i);</span>
+<span class="fc" id="L830">            distanceStandardDeviationsArray[i] = distanceStandardDeviations.get(i);</span>
+
+<span class="pc bpc" id="L832" title="1 of 2 branches missed.">            if (qualityScoresArray != null) {</span>
+<span class="fc" id="L833">                qualityScoresArray[i] = distanceQualityScores.get(i);</span>
+            }
+        }
+
+        try {
+<span class="fc" id="L838">            laterationSolver.setPositionsDistancesAndStandardDeviations(positionsArray, distancesArray,</span>
+                    distanceStandardDeviationsArray);
+
+<span class="pc bpc" id="L841" title="1 of 2 branches missed.">            if (qualityScoresArray != null) {</span>
+<span class="fc" id="L842">                laterationSolver.setQualityScores(qualityScoresArray);</span>
+            }
+<span class="nc" id="L844">        } catch (LockedException e) {</span>
+<span class="nc" id="L845">            throw new IllegalArgumentException(e);</span>
+<span class="fc" id="L846">        }</span>
+<span class="fc" id="L847">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

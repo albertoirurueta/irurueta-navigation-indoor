@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BaseFingerprintPositionEstimator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-indoor</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.indoor.fingerprint</a> &gt; <span class="el_source">BaseFingerprintPositionEstimator.java</span></div><h1>BaseFingerprintPositionEstimator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2018 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.indoor.fingerprint;
+
+import com.irurueta.geometry.Point;
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.NotReadyException;
+import com.irurueta.navigation.indoor.RadioSource;
+import com.irurueta.navigation.indoor.RssiFingerprint;
+import com.irurueta.navigation.indoor.RssiFingerprintLocated;
+import com.irurueta.navigation.indoor.RssiReading;
+
+import java.util.List;
+
+/**
+ * Base class for position estimators based on located fingerprints containing only
+ * RSSI readings without any prior knowledge of radio sources.
+ * These kind of estimators can be used to determine the position of a given device by
+ * getting RSSI readings at an unknown location of different radio sources and comparing
+ * those readings with other located ones.
+ *
+ * @param &lt;P&gt; a {@link Point} type.
+ * @param &lt;L&gt; a {@link BaseFingerprintEstimatorListener} type.
+ */
+public abstract class BaseFingerprintPositionEstimator&lt;P extends Point&lt;?&gt;,
+        L extends BaseFingerprintEstimatorListener&lt;?&gt;&gt; {
+
+    /**
+     * Default minimum number of nearest fingerprints to search.
+     */
+    public static final int DEFAULT_MIN_NEAREST_FINGERPRINTS = 1;
+
+    /**
+     * Default maximum number of nearest fingerprints to search (no limit).
+     */
+    public static final int DEFAULT_MAX_NEAREST_FINGERPRINTS = -1;
+
+    /**
+     * Default exponent typically used on free space for path loss propagation in
+     * terms of distance. This value is used for free space environments.
+     */
+    public static final double DEFAULT_PATH_LOSS_EXPONENT = 2.0;
+
+    /**
+     * Located fingerprints containing RSSI readings.
+     */
+    protected List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
+            ? extends RssiReading&lt;? extends RadioSource&gt;, P&gt;&gt; locatedFingerprints;
+
+    /**
+     * Fingerprint containing readings at an unknown location.
+     * Readings need to belong to the same radio sources as those given at located
+     * fingerprints
+     */
+    protected RssiFingerprint&lt;? extends RadioSource, ? extends RssiReading&lt;? extends RadioSource&gt;&gt; fingerprint;
+
+    /**
+     * Minimum number of nearest fingerprints to search.
+     */
+<span class="fc" id="L73">    protected int minNearestFingerprints = DEFAULT_MIN_NEAREST_FINGERPRINTS;</span>
+
+    /**
+     * Maximum number of nearest fingerprints to search or -1 if there is no limit and
+     * all provided fingerprints are used.
+     */
+<span class="fc" id="L79">    protected int maxNearestFingerprints = DEFAULT_MAX_NEAREST_FINGERPRINTS;</span>
+
+    /**
+     * Path loss exponent to be used by default.
+     * This is typically used on free space for path loss propagation in
+     * terms of distance.
+     * On different environments path loss exponent might have different values:
+     * - Free space: 2.0
+     * - Urban Area: 2.7 to 3.5
+     * - Suburban Area: 3 to 5
+     * - Indoor (line-of-sight): 1.6 to 1.8
+     */
+<span class="fc" id="L91">    protected double pathLossExponent = DEFAULT_PATH_LOSS_EXPONENT;</span>
+
+    /**
+     * Listener to be notified of events raised by this instance.
+     */
+    protected L listener;
+
+    /**
+     * Estimated inhomogeneous position coordinates.
+     */
+    protected double[] estimatedPositionCoordinates;
+
+    /**
+     * Nearest located fingerprints based on their RSSI readings respect to provided fingerprint.
+     * These are the fingerprints that are probably located close to the unknown location to be estimated,
+     * however their location is approximate due to errors on RSSI readings.
+     */
+    protected List&lt;RssiFingerprintLocated&lt;RadioSource, RssiReading&lt;RadioSource&gt;, P&gt;&gt; nearestFingerprints;
+
+    /**
+     * Indicates if this instance is locked.
+     */
+    protected boolean locked;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L118">    protected BaseFingerprintPositionEstimator() {</span>
+<span class="fc" id="L119">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener in charge of handling events.
+     */
+<span class="fc" id="L126">    protected BaseFingerprintPositionEstimator(final L listener) {</span>
+<span class="fc" id="L127">        this.listener = listener;</span>
+<span class="fc" id="L128">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param locatedFingerprints located fingerprints containing RSSI readings.
+     * @param fingerprint         fingerprint containing readings at an unknown location
+     *                            for provided located fingerprints.
+     * @throws IllegalArgumentException if provided non located fingerprint is null,
+     *                                  located fingerprints value is null or there are not enough fingerprints or
+     *                                  readings within provided fingerprints (for 2D position estimation at least 2
+     *                                  located total readings are required among all fingerprints, for example 2
+     *                                  readings are required in a single fingerprint, or at least 2 fingerprints at
+     *                                  different locations containing a single reading are required. For 3D position
+     *                                  estimation 3 located total readings are required among all fingerprints).
+     */
+    protected BaseFingerprintPositionEstimator(
+            final List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
+                    ? extends RssiReading&lt;? extends RadioSource&gt;, P&gt;&gt; locatedFingerprints,
+            final RssiFingerprint&lt;? extends RadioSource,
+<span class="fc" id="L148">                    ? extends RssiReading&lt;? extends RadioSource&gt;&gt; fingerprint) {</span>
+<span class="fc" id="L149">        internalSetLocatedFingerprints(locatedFingerprints);</span>
+<span class="fc" id="L150">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L151">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param locatedFingerprints located fingerprints containing RSSI readings.
+     * @param fingerprint         fingerprint containing readings at an unknown location
+     *                            for provided located fingerprints.
+     * @param listener            listener in charge of handling events.
+     * @throws IllegalArgumentException if provided non located fingerprint is null,
+     *                                  located fingerprints value is null or there are not enough fingerprints or
+     *                                  readings within provided fingerprints (for 2D position estimation at least 2
+     *                                  located total readings are required among all fingerprints, for example 2
+     *                                  readings are required in a single fingerprint, or at least 2 fingerprints at
+     *                                  different locations containing a single reading are required. For 3D position
+     *                                  estimation 3 located total readings are required among all fingerprints).
+     */
+    protected BaseFingerprintPositionEstimator(
+            final List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
+                    ? extends RssiReading&lt;? extends RadioSource&gt;, P&gt;&gt; locatedFingerprints,
+            final RssiFingerprint&lt;? extends RadioSource,
+                    ? extends RssiReading&lt;? extends RadioSource&gt;&gt; fingerprint,
+            final L listener) {
+<span class="fc" id="L174">        this(listener);</span>
+<span class="fc" id="L175">        internalSetLocatedFingerprints(locatedFingerprints);</span>
+<span class="fc" id="L176">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L177">    }</span>
+
+    /**
+     * Gets located fingerprints containing RSSI readings.
+     *
+     * @return located fingerprints containing RSSI readings.
+     */
+    public List&lt;RssiFingerprintLocated&lt;RadioSource, RssiReading&lt;RadioSource&gt;, P&gt;&gt; getLocatedFingerprints() {
+        //noinspection unchecked
+<span class="fc" id="L186">        return (List&lt;RssiFingerprintLocated&lt;RadioSource, RssiReading&lt;RadioSource&gt;,P&gt;&gt;) locatedFingerprints;</span>
+    }
+
+    /**
+     * Sets located fingerprints containing RSSI readings.
+     *
+     * @param locatedFingerprints located fingerprints containing RSSI readings.
+     * @throws LockedException          if estimator is locked.
+     * @throws IllegalArgumentException if provided value is null or there are not enough
+     *                                  fingerprints or readings within provided fingerprints (for 2D position estimation at
+     *                                  least 2 readings are required in a single fingerprint, or at least 2 fingerprints
+     *                                  at different locations containing a single reading are required. For 3D position
+     *                                  estimation 3 reading in a single fingerprint, or 3 fingerprints containing a single
+     *                                  reading or any combination resulting in at least 3 readings at different locations
+     *                                  are required).
+     */
+    public void setLocatedFingerprints(
+            final List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
+                    ? extends RssiReading&lt;? extends RadioSource&gt;, P&gt;&gt; locatedFingerprints) throws LockedException {
+<span class="fc bfc" id="L205" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L206">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L209">        internalSetLocatedFingerprints(locatedFingerprints);</span>
+<span class="fc" id="L210">    }</span>
+
+    /**
+     * Gets fingerprint containing readings at an unknown location for provided located
+     * fingerprints.
+     *
+     * @return fingerprint containing readings at an unknown location for provided located
+     * fingerprints.
+     */
+    public RssiFingerprint&lt;RadioSource, RssiReading&lt;RadioSource&gt;&gt; getFingerprint() {
+        //noinspection unchecked
+<span class="fc" id="L221">        return (RssiFingerprint&lt;RadioSource, RssiReading&lt;RadioSource&gt;&gt;) fingerprint;</span>
+    }
+
+    /**
+     * Sets fingerprint containing readings at an unknown location for provided located fingerprints.
+     *
+     * @param fingerprint fingerprint containing readings at an unknown location for provided located fingerprints.
+     * @throws LockedException          if estimator is locked.
+     * @throws IllegalArgumentException if provided value is null.
+     */
+    public void setFingerprint(
+            final RssiFingerprint&lt;? extends RadioSource, ? extends RssiReading&lt;? extends RadioSource&gt;&gt; fingerprint)
+            throws LockedException {
+<span class="fc bfc" id="L234" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L235">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L238">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L239">    }</span>
+
+    /**
+     * Get minimum number of nearest fingerprints to search.
+     *
+     * @return minimum number of nearest fingerprints.
+     */
+    public int getMinNearestFingerprints() {
+<span class="fc" id="L247">        return minNearestFingerprints;</span>
+    }
+
+    /**
+     * Gets maximum number of nearest fingerprints to search.
+     *
+     * @return maximum number of nearest fingerprints.
+     */
+    public int getMaxNearestFingerprints() {
+<span class="fc" id="L256">        return maxNearestFingerprints;</span>
+    }
+
+    /**
+     * Sets minimum and maximum number of nearest fingerprints to search.
+     *
+     * @param minNearestFingerprints minimum number of nearest fingerprints.
+     * @param maxNearestFingerprints maximum number of nearest fingerprints.
+     * @throws LockedException          if estimator is locked.
+     * @throws IllegalArgumentException if minimum value is larger than maximum value (as
+     *                                  long as it has a limit defined), or if minimum value is less than 1.
+     */
+    public void setMinMaxNearestFingerprints(
+            final int minNearestFingerprints, final int maxNearestFingerprints) throws LockedException {
+<span class="fc bfc" id="L270" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L271">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L274">        internalSetMinMaxNearestFingerprints(minNearestFingerprints, maxNearestFingerprints);</span>
+<span class="fc" id="L275">    }</span>
+
+    /**
+     * Gets path loss exponent to be used by default.
+     * This is typically used on free space for path loss propagation in
+     * terms of distance.
+     * On different environments path loss exponent might have different values:
+     * - Free space: 2.0
+     * - Urban Area: 2.7 to 3.5
+     * - Suburban Area: 3 to 5
+     * - Indoor (line-of-sight): 1.6 to 1.8
+     *
+     * @return path loss exponent to be used by default.
+     */
+    public double getPathLossExponent() {
+<span class="fc" id="L290">        return pathLossExponent;</span>
+    }
+
+    /**
+     * Sets path loss exponent to be used by default.
+     * This is typically used on free space for path loss propagation in
+     * terms of distance.
+     * On different environments path loss exponent might have different values:
+     * - Free space: 2.0
+     * - Urban Area: 2.7 to 3.5
+     * - Suburban Area: 3 to 5
+     * - Indoor (line-of-sight): 1.6 to 1.8
+     *
+     * @param pathLossExponent path loss exponent to be used by default.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setPathLossExponent(final double pathLossExponent) throws LockedException {
+<span class="fc bfc" id="L307" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L308">            throw new LockedException();</span>
+        }
+<span class="fc" id="L310">        this.pathLossExponent = pathLossExponent;</span>
+<span class="fc" id="L311">    }</span>
+
+    /**
+     * Gets listener to be notified of events raised by this instance.
+     *
+     * @return listener to be notified of events raised by this instance.
+     */
+    public L getListener() {
+<span class="fc" id="L319">        return listener;</span>
+    }
+
+    /**
+     * Sets listener to be notified of events raised by this instance.
+     *
+     * @param listener listener to be notified of events raised by this instance.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setListener(final L listener) throws LockedException {
+<span class="fc bfc" id="L329" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L330">            throw new LockedException();</span>
+        }
+<span class="fc" id="L332">        this.listener = listener;</span>
+<span class="fc" id="L333">    }</span>
+
+    /**
+     * Gets estimated inhomogeneous position coordinates.
+     *
+     * @return estimated inhomogeneous position coordinates.
+     */
+    public double[] getEstimatedPositionCoordinates() {
+<span class="fc" id="L341">        return estimatedPositionCoordinates;</span>
+    }
+
+    /**
+     * Gets estimated position and stores result into provided instance.
+     *
+     * @param estimatedPosition instance where estimated position will be stored.
+     */
+    public void getEstimatedPosition(final P estimatedPosition) {
+<span class="pc bpc" id="L350" title="1 of 2 branches missed.">        if (estimatedPositionCoordinates != null) {</span>
+<span class="fc bfc" id="L351" title="All 2 branches covered.">            for (var i = 0; i &lt; estimatedPositionCoordinates.length; i++) {</span>
+<span class="fc" id="L352">                estimatedPosition.setInhomogeneousCoordinate(i, estimatedPositionCoordinates[i]);</span>
+            }
+        }
+<span class="fc" id="L355">    }</span>
+
+    /**
+     * Gets nearest found located fingerprints based on their RSSI readings respect to provided fingerprint.
+     * These are the fingerprints that are probably located close to the unknown location to be estimated,
+     * however their location is approximate due to errors on RSSI readings.
+     *
+     * @return nearest located fingerprints based on their RSSI readings or null if estimation has not been done yet.
+     */
+    public List&lt;RssiFingerprintLocated&lt;RadioSource, RssiReading&lt;RadioSource&gt;, P&gt;&gt; getNearestFingerprints() {
+<span class="fc" id="L365">        return nearestFingerprints;</span>
+    }
+
+    /**
+     * Returns boolean indicating whether this estimator is locked because an estimation
+     * is already in progress.
+     *
+     * @return true if estimator is locked, false otherwise.
+     */
+    public boolean isLocked() {
+<span class="fc" id="L375">        return locked;</span>
+    }
+
+    /**
+     * Gets number of dimensions of points.
+     *
+     * @return number of dimensions of points.
+     */
+    public abstract int getNumberOfDimensions();
+
+    /**
+     * Indicates whether estimator is ready to find a solution.
+     *
+     * @return true if estimator is ready, false otherwise.
+     */
+    public abstract boolean isReady();
+
+    /**
+     * Starts estimation based on provided located radio sources and readings of such radio sources at
+     * an unknown location.
+     *
+     * @throws LockedException                if estimator is locked.
+     * @throws NotReadyException              if estimator is not ready.
+     * @throws FingerprintEstimationException if estimation fails for some other reason.
+     */
+    public abstract void estimate() throws LockedException, NotReadyException, FingerprintEstimationException;
+
+    /**
+     * Gets estimated position.
+     *
+     * @return estimated position.
+     */
+    public abstract P getEstimatedPosition();
+
+    /**
+     * Gets total number of readings contained within provided fingerprints.
+     *
+     * @param locatedFingerprints fingerprints to be checked.
+     * @return total number of readings contained within provided fingerprints.
+     */
+    int totalReadings(
+            final List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
+                    ? extends RssiReading&lt;? extends RadioSource&gt;, P&gt;&gt; locatedFingerprints) {
+<span class="fc bfc" id="L418" title="All 2 branches covered.">        if (locatedFingerprints == null) {</span>
+<span class="fc" id="L419">            return 0;</span>
+        }
+
+<span class="fc" id="L422">        var totalReadings = 0;</span>
+<span class="fc bfc" id="L423" title="All 2 branches covered.">        for (final var fingerprint : locatedFingerprints) {</span>
+<span class="fc" id="L424">            final var readings = fingerprint.getReadings();</span>
+<span class="pc bpc" id="L425" title="1 of 2 branches missed.">            if (readings != null) {</span>
+<span class="fc" id="L426">                totalReadings += readings.size();</span>
+            }
+<span class="fc" id="L428">        }</span>
+<span class="fc" id="L429">        return totalReadings;</span>
+    }
+
+    /**
+     * Internally sets located fingerprints containing RSSI readings.
+     *
+     * @param locatedFingerprints located fingerprints containing RSSI readings.
+     * @throws IllegalArgumentException if provided value is null or there are not enough
+     *                                  fingerprints or readings within provided fingerprints (for 2D position estimation at
+     *                                  least 2 located total readings are required among all fingerprints, for example
+     *                                  2 readings are required in a single fingerprint, or at least 2 fingerprints
+     *                                  at different locations containing a single reading are required. For 3D position
+     *                                  estimation 3 located total readings are required among all fingerprints).
+     */
+    private void internalSetLocatedFingerprints(
+            final List&lt;? extends RssiFingerprintLocated&lt;? extends RadioSource,
+                    ? extends RssiReading&lt;? extends RadioSource&gt;, P&gt;&gt; locatedFingerprints) {
+
+<span class="fc bfc" id="L447" title="All 2 branches covered.">        if (totalReadings(locatedFingerprints) &lt; getNumberOfDimensions()) {</span>
+<span class="fc" id="L448">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L451">        this.locatedFingerprints = locatedFingerprints;</span>
+<span class="fc" id="L452">    }</span>
+
+    /**
+     * Internally sets fingerprint containing readings at an unknown location for provided located fingerprints.
+     *
+     * @param fingerprint fingerprint containing readings at an unknown location for provided located fingerprints.
+     * @throws IllegalArgumentException if provided value is null.
+     */
+    private void internalSetFingerprint(
+            final RssiFingerprint&lt;? extends RadioSource, ? extends RssiReading&lt;? extends RadioSource&gt;&gt; fingerprint) {
+<span class="fc bfc" id="L462" title="All 2 branches covered.">        if (fingerprint == null) {</span>
+<span class="fc" id="L463">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L466">        this.fingerprint = fingerprint;</span>
+<span class="fc" id="L467">    }</span>
+
+    /**
+     * Sets minimum and maximum number of nearest fingerprints to search.
+     *
+     * @param minNearestFingerprints minimum number of nearest fingerprints.
+     * @param maxNearestFingerprints maximum number of nearest fingerprints.
+     * @throws IllegalArgumentException if minimum value is larger than maximum value (as
+     *                                  long as it has a limit defined), or if minimum value is less than 1.
+     */
+    @SuppressWarnings(&quot;Duplicates&quot;)
+    private void internalSetMinMaxNearestFingerprints(
+            final int minNearestFingerprints, final int maxNearestFingerprints) {
+<span class="pc bpc" id="L480" title="1 of 6 branches missed.">        if (minNearestFingerprints &lt; 1 || (maxNearestFingerprints &gt;= 0</span>
+                &amp;&amp; minNearestFingerprints &gt; maxNearestFingerprints)) {
+<span class="fc" id="L482">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L485">        this.minNearestFingerprints = minNearestFingerprints;</span>
+<span class="fc" id="L486">        this.maxNearestFingerprints = maxNearestFingerprints;</span>
+<span class="fc" id="L487">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

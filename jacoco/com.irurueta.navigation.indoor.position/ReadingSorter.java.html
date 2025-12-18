@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReadingSorter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-indoor</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.indoor.position</a> &gt; <span class="el_source">ReadingSorter.java</span></div><h1>ReadingSorter.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2019 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.indoor.position;
+
+import com.irurueta.geometry.Point;
+import com.irurueta.navigation.indoor.Fingerprint;
+import com.irurueta.navigation.indoor.RadioSource;
+import com.irurueta.navigation.indoor.RadioSourceLocated;
+import com.irurueta.navigation.indoor.Reading;
+import com.irurueta.navigation.indoor.ReadingType;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+
+/**
+ * Evenly sorts readings of a fingerprint among different radio sources taking into
+ * account their respective quality scores as well.
+ *
+ * @param &lt;P&gt; a {@link Point} type.
+ * @param &lt;R&gt; a {@link Reading} type.
+ */
+public class ReadingSorter&lt;P extends Point&lt;?&gt;, R extends Reading&lt;? extends RadioSource&gt;&gt; {
+
+    /**
+     * Sources to be taken into account within readings.
+     */
+    private final List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; sources;
+
+    /**
+     * Fingerprint containing readings of different sources.
+     */
+    private final Fingerprint&lt;? extends RadioSource, ? extends R&gt; fingerprint;
+
+    /**
+     * Quality scores associated to each radio source.
+     */
+    private final double[] sourceQualityScores;
+
+    /**
+     * Quality scores associated to each reading within the fingerprint.
+     */
+    private final double[] fingerprintReadingsQualityScores;
+
+    /**
+     * Contains sorted sources and readings.
+     */
+    private List&lt;RadioSourceSourceWithQualityScore&lt;P, R&gt;&gt; sortedSourcesAndReadings;
+
+    /**
+     * Constructor.
+     *
+     * @param sources                          sources to take into account within
+     *                                         readings.
+     * @param fingerprint                      fingerprint containing readings of
+     *                                         different sources.
+     * @param sourceQualityScores              quality scores associated to each radio
+     *                                         source.
+     * @param fingerprintReadingsQualityScores quality scores associated to each reading
+     *                                         within the fingerprint.
+     * @throws IllegalArgumentException if number of source quality scores is not equal
+     *                                  to the number of sources, or if number of
+     *                                  fingerprint reading quality scores is not equal
+     *                                  to the number of readings within fingerprint.
+     */
+    ReadingSorter(final List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; sources,
+                  final Fingerprint&lt;? extends RadioSource, ? extends R&gt; fingerprint,
+<span class="fc" id="L83">                  final double[] sourceQualityScores, final double[] fingerprintReadingsQualityScores) {</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        if (sources.size() != sourceQualityScores.length) {</span>
+<span class="fc" id="L85">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        if (fingerprint.getReadings().size() != fingerprintReadingsQualityScores.length) {</span>
+<span class="fc" id="L89">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L92">        this.sources = sources;</span>
+<span class="fc" id="L93">        this.fingerprint = fingerprint;</span>
+<span class="fc" id="L94">        this.sourceQualityScores = sourceQualityScores;</span>
+<span class="fc" id="L95">        this.fingerprintReadingsQualityScores = fingerprintReadingsQualityScores;</span>
+<span class="fc" id="L96">    }</span>
+
+    /**
+     * Gets sources to be taken into account within readings.
+     *
+     * @return sources to be taken into account within readings.
+     */
+    public List&lt;RadioSourceLocated&lt;P&gt;&gt; getSources() {
+        //noinspection unchecked
+<span class="fc" id="L105">        return (List&lt;RadioSourceLocated&lt;P&gt;&gt;) sources;</span>
+    }
+
+    /**
+     * Gets fingerprint containing readings of different sources.
+     *
+     * @return fingerprint containing readings of different sources.
+     */
+    public Fingerprint&lt;RadioSource, Reading&lt;RadioSource&gt;&gt; getFingerprint() {
+        //noinspection unchecked
+<span class="fc" id="L115">        return (Fingerprint&lt;RadioSource, Reading&lt;RadioSource&gt;&gt;) fingerprint;</span>
+    }
+
+    /**
+     * Gets quality scores associated to each radio source.
+     *
+     * @return quality scores associated to each radio source.
+     */
+    double[] getSourceQualityScores() {
+<span class="fc" id="L124">        return sourceQualityScores;</span>
+    }
+
+    /**
+     * Gets quality scores associated to each reading within the fingerprint.
+     *
+     * @return quality scores associated to each reading within the fingerprint.
+     */
+    double[] getFingerprintReadingsQualityScores() {
+<span class="fc" id="L133">        return fingerprintReadingsQualityScores;</span>
+    }
+
+    /**
+     * Sorts readings with quality scores.
+     */
+    void sort() {
+
+<span class="fc" id="L141">        final var sourcesMap = new HashMap&lt;RadioSourceLocated&lt;P&gt;, RadioSourceSourceWithQualityScore&lt;P, R&gt;&gt;();</span>
+
+        // build sources
+<span class="fc" id="L144">        final var sourcesWithQualityScores = new ArrayList&lt;RadioSourceSourceWithQualityScore&lt;P, R&gt;&gt;();</span>
+<span class="fc" id="L145">        var sourcePosition = 0;</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">        for (final var source : sources) {</span>
+<span class="fc" id="L147">            final var sourceWithQualityScore = new RadioSourceSourceWithQualityScore&lt;P, R&gt;();</span>
+<span class="fc" id="L148">            sourceWithQualityScore.source = source;</span>
+<span class="fc" id="L149">            sourceWithQualityScore.qualityScore = sourceQualityScores[sourcePosition];</span>
+<span class="fc" id="L150">            sourceWithQualityScore.position = sourcePosition;</span>
+<span class="fc" id="L151">            sourceWithQualityScore.readingsWithQualityScores = new ArrayList&lt;&gt;();</span>
+
+<span class="fc" id="L153">            sourcesWithQualityScores.add(sourceWithQualityScore);</span>
+
+<span class="fc" id="L155">            sourcesMap.put(source, sourceWithQualityScore);</span>
+
+<span class="fc" id="L157">            sourcePosition++;</span>
+<span class="fc" id="L158">        }</span>
+
+        // build readings
+<span class="fc" id="L161">        var readingPosition = 0;</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">        for (@SuppressWarnings(&quot;unchecked&quot;) final var reading : fingerprint.getReadings()) {</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">            if (!(reading.getSource() instanceof RadioSourceLocated)) {</span>
+<span class="fc" id="L164">                continue;</span>
+            }
+
+            //noinspection unchecked
+<span class="fc" id="L168">            final var radioSourceLocated = (RadioSourceLocated&lt;P&gt;) reading.getSource();</span>
+<span class="fc" id="L169">            final var sourceWithQualityScore = sourcesMap.get(radioSourceLocated);</span>
+
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">            if (sourceWithQualityScore == null) {</span>
+<span class="nc" id="L172">                continue;</span>
+            }
+
+<span class="fc" id="L175">            final var readingsWithQualityScores = sourceWithQualityScore.readingsWithQualityScores;</span>
+
+<span class="fc" id="L177">            final var readingWithQualityScore = new ReadingWithQualityScore&lt;R&gt;();</span>
+<span class="fc" id="L178">            readingWithQualityScore.reading = reading;</span>
+<span class="fc" id="L179">            readingWithQualityScore.qualityScore = fingerprintReadingsQualityScores[readingPosition];</span>
+<span class="fc" id="L180">            readingWithQualityScore.position = readingPosition;</span>
+
+<span class="fc" id="L182">            readingsWithQualityScores.add(readingWithQualityScore);</span>
+
+<span class="fc" id="L184">            readingPosition++;</span>
+<span class="fc" id="L185">        }</span>
+
+        // sort all readings within sources
+<span class="fc bfc" id="L188" title="All 2 branches covered.">        for (final var sourceWithQualityScore : sourcesWithQualityScores) {</span>
+            // sort all readings for this source from highest to lowest quality
+
+            // noinspection unchecked
+<span class="fc" id="L192">            final ReadingWithQualityScore&lt;R&gt;[] readingsWithQualityScoresArray =</span>
+<span class="fc" id="L193">                    new ReadingWithQualityScore[sourceWithQualityScore.readingsWithQualityScores.size()];</span>
+<span class="fc" id="L194">            sourceWithQualityScore.readingsWithQualityScores.toArray(readingsWithQualityScoresArray);</span>
+<span class="fc" id="L195">            Arrays.sort(readingsWithQualityScoresArray, new ReadingComparator&lt;&gt;());</span>
+
+<span class="fc" id="L197">            sourceWithQualityScore.readingsWithQualityScores = Arrays.asList(readingsWithQualityScoresArray);</span>
+<span class="fc" id="L198">        }</span>
+
+        // sort all sources from highest to lowest quality
+
+        // noinspection unchecked
+<span class="fc" id="L203">        final RadioSourceSourceWithQualityScore&lt;P, R&gt;[] sourcesWithQualityScoresArray =</span>
+<span class="fc" id="L204">                new RadioSourceSourceWithQualityScore[sourcesWithQualityScores.size()];</span>
+<span class="fc" id="L205">        sourcesWithQualityScores.toArray(sourcesWithQualityScoresArray);</span>
+<span class="fc" id="L206">        Arrays.sort(sourcesWithQualityScoresArray, new RadioSourceComparator&lt;&gt;());</span>
+
+<span class="fc" id="L208">        sortedSourcesAndReadings = Arrays.asList(sourcesWithQualityScoresArray);</span>
+<span class="fc" id="L209">    }</span>
+
+    /**
+     * Gets sorted sources and readings.
+     *
+     * @return sorted sources and readings.
+     */
+    List&lt;RadioSourceSourceWithQualityScore&lt;P, R&gt;&gt; getSortedSourcesAndReadings() {
+<span class="fc" id="L217">        return sortedSourcesAndReadings;</span>
+    }
+
+    /**
+     * Contains a reading with its associated quality score.
+     *
+     * @param &lt;R&gt; a {@link Reading} type.
+     */
+<span class="fc" id="L225">    static class ReadingWithQualityScore&lt;R extends Reading&lt;? extends RadioSource&gt;&gt; {</span>
+        /**
+         * A reading.
+         */
+        R reading;
+
+        /**
+         * Reading quality score.
+         */
+        double qualityScore;
+
+        /**
+         * Original position.
+         */
+        int position;
+    }
+
+    /**
+     * Contains a radio source with its associated quality score.
+     *
+     * @param &lt;P&gt; a {@link Point} type.
+     * @param &lt;R&gt; a {@link Reading} type.
+     */
+<span class="fc" id="L248">    static class RadioSourceSourceWithQualityScore&lt;P extends Point&lt;?&gt;, R extends Reading&lt;? extends RadioSource&gt;&gt; {</span>
+        /**
+         * Radio source.
+         */
+        RadioSourceLocated&lt;P&gt; source;
+
+        /**
+         * Radio source quality score.
+         */
+        double qualityScore;
+
+        /**
+         * Original position.
+         */
+        int position;
+
+        List&lt;ReadingWithQualityScore&lt;R&gt;&gt; readingsWithQualityScores;
+    }
+
+    /**
+     * Comparator to order readings based on their quality scores.
+     *
+     * @param &lt;R&gt; a {@link Reading} type.
+     */
+    private static class ReadingComparator&lt;R extends Reading&lt;? extends RadioSource&gt;&gt; implements
+            Comparator&lt;ReadingWithQualityScore&lt;R&gt;&gt; {
+
+        /**
+         * Orders readings so that readings with higher scores go first.
+         *
+         * @param o1 1st item to be compared.
+         * @param o2 2nd item to be compared.
+         * @return -1 if first item goes first, 0 if both are equal and 1 if first item
+         * goes second.
+         */
+        @Override
+        public int compare(final ReadingWithQualityScore&lt;R&gt; o1, final ReadingWithQualityScore&lt;R&gt; o2) {
+
+            // Take reading type into account so that ranging readings go first,
+            // then ranging+RSSI and finally RSSI readings.
+<span class="fc bfc" id="L288" title="All 2 branches covered.">            if (o1.reading.getType() != o2.reading.getType()) {</span>
+<span class="fc bfc" id="L289" title="All 3 branches covered.">                switch (o1.reading.getType()) {</span>
+                    case RANGING_READING:
+                        // o1 goes first (o2 last)
+<span class="fc" id="L292">                        return -1;</span>
+
+                    case RANGING_AND_RSSI_READING:
+<span class="fc bfc" id="L295" title="All 2 branches covered.">                        if (o2.reading.getType() == ReadingType.RANGING_READING) {</span>
+                            // RANGING_READING
+                            // o2 goes first (o1 last)
+<span class="fc" id="L298">                            return 1;</span>
+                        } else {
+                            // RSSI_READING
+                            // o1 goes first (o2 last)
+<span class="fc" id="L302">                            return -1;</span>
+                        }
+                    case RSSI_READING:
+                    default:
+                        // o2 goes first (o1 last)
+<span class="fc" id="L307">                        return 1;</span>
+                }
+            }
+
+            // same reading type
+
+            // order by reading quality score
+<span class="fc" id="L314">            return Double.compare(o2.qualityScore, o1.qualityScore);</span>
+        }
+    }
+
+    /**
+     * Comparator to order radio sources based on their quality scores.
+     *
+     * @param &lt;P&gt; a {@link Point} type.
+     * @param &lt;R&gt; a {@link Reading} type.
+     */
+    private static class RadioSourceComparator&lt;P extends Point&lt;?&gt;, R extends Reading&lt;? extends RadioSource&gt;&gt; implements
+            Comparator&lt;RadioSourceSourceWithQualityScore&lt;P, R&gt;&gt; {
+
+        /**
+         * Orders radio sources so that radio sources with higher scores go first.
+         *
+         * @param o1 1st item to be compared.
+         * @param o2 2nd item to be compared.
+         * @return -1 if first item goes first, 0 if both are equal and 1 if first item
+         * goes second.
+         */
+        @Override
+        public int compare(final RadioSourceSourceWithQualityScore&lt;P, R&gt; o1,
+                           final RadioSourceSourceWithQualityScore&lt;P, R&gt; o2) {
+<span class="fc" id="L338">            return Double.compare(o2.qualityScore, o1.qualityScore);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
