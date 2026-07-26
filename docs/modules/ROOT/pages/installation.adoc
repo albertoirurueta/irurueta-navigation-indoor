@@ -14,7 +14,7 @@ Latest release:
 <dependency>
     <groupId>com.irurueta</groupId>
     <artifactId>irurueta-navigation-indoor</artifactId>
-    <version>1.5.0</version>
+    <version>1.6.0</version>
     <scope>compile</scope>
 </dependency>
 ----
@@ -26,7 +26,7 @@ Latest snapshot:
 <dependency>
     <groupId>com.irurueta</groupId>
     <artifactId>irurueta-navigation-indoor</artifactId>
-    <version>1.6.0-SNAPSHOT</version>
+    <version>1.7.0-SNAPSHOT</version>
     <scope>compile</scope>
 </dependency>
 ----
@@ -41,19 +41,19 @@ Latest release:
 
 [source,groovy]
 ----
-implementation 'com.irurueta:irurueta-navigation-indoor:1.5.0'
+implementation 'com.irurueta:irurueta-navigation-indoor:1.6.0'
 ----
 
 Latest snapshot:
 
 [source,groovy]
 ----
-implementation 'com.irurueta:irurueta-navigation-indoor:1.6.0-SNAPSHOT'
+implementation 'com.irurueta:irurueta-navigation-indoor:1.7.0-SNAPSHOT'
 ----
 
 == Requirements
 
-The library targets Java 17 or newer (see the `maven.compiler.source`/`maven.compiler.target` properties in
+The library targets Java 21 or newer (see the `maven.compiler.source`/`maven.compiler.target` properties in
 `pom.xml`).
 
 == Building from source
