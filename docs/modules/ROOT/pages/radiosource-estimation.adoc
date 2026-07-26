@@ -1,0 +1,253 @@
+= Radio source estimators
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+The `com.irurueta.navigation.indoor.radiosource` package solves the **inverse problem** of
+xref:position-rssi.adoc[position estimation]: given RSSI and/or ranging readings taken at multiple *known*
+locations, estimate an *unknown* radio source's own position, transmitted power, and path-loss exponent.
+
+== Overview
+
+xref:position-rssi.adoc#_overview[RSSI-based position estimation] assumes the access point's position and
+transmitted power are known, and solves for the *device's* unknown position. Radio source estimation runs the
+same physics in reverse: now it's the *receivers'* positions that are known — several of them, placed around the
+area — and it's the source's position (plus its transmitted power, and optionally its
+https://en.wikipedia.org/wiki/Log-distance_path_loss_model[path-loss exponent]) that's unknown.
+
+Since the source radiates its signal equally in all directions, and that signal weakens with distance in the same
+predictable way, a receiver that reports a strong signal must be relatively close to the source, and one that
+reports a weak signal must be relatively far. Combining several such readings — each pulling the estimate toward
+or away from a receiver depending on how strong the signal was there — is enough to solve for where the source
+must be for all of them to make sense at once, along with how powerful it must be transmitting to produce exactly
+those readings.
+
+The same idea works with ranging (distance) readings instead of, or alongside, RSSI: see
+xref:#_ranging_based_estimation[ranging-based estimation] and xref:#_combining_ranging_and_rssi[combining ranging
+and RSSI] below.
+
+image::radiosource-estimation-overview.svg[Overview of radio source estimation: receivers at known positions measure the signal strength of an unknown source, and the source position is estimated as the point that best explains every observed signal strength at once,700]
+
+== Class hierarchy
+
+[mermaid]
+....
+classDiagram
+    class RadioSourceEstimator~P~ {
+        &lt;&lt;abstract&gt;&gt;
+    }
+    class RssiRadioSourceEstimator~P~ {
+        &lt;&lt;abstract&gt;&gt;
+        +positionEstimationEnabled
+        +transmittedPowerEstimationEnabled
+        +pathLossEstimationEnabled
+    }
+    class RangingRadioSourceEstimator~P~ {
+        &lt;&lt;abstract&gt;&gt;
+    }
+    class RangingAndRssiRadioSourceEstimator~P~ {
+        &lt;&lt;abstract&gt;&gt;
+    }
+    class MixedRadioSourceEstimator~P~ {
+        &lt;&lt;abstract&gt;&gt;
+    }
+    note for RangingRadioSourceEstimator "position only, pure lateration"
+    note for RangingAndRssiRadioSourceEstimator "ranging -> position, rssi -> power/path-loss"
+    note for MixedRadioSourceEstimator "heterogeneous, falls back to RSSI position"
+
+    RadioSourceEstimator <|-- RssiRadioSourceEstimator
+    RadioSourceEstimator <|-- RangingRadioSourceEstimator
+    RadioSourceEstimator <|-- RangingAndRssiRadioSourceEstimator
+    RadioSourceEstimator <|-- MixedRadioSourceEstimator
+
+    class RobustRadioSourceEstimator~P~ {
+        &lt;&lt;abstract&gt;&gt;
+    }
+    class RobustRssiRadioSourceEstimator~P~ {
+        &lt;&lt;abstract&gt;&gt;
+    }
+    class RobustRangingRadioSourceEstimator~P~ {
+        &lt;&lt;abstract&gt;&gt;
+    }
+    class RobustRangingAndRssiRadioSourceEstimator~P~ {
+        &lt;&lt;abstract&gt;&gt;
+    }
+
+    RobustRadioSourceEstimator <|-- RobustRssiRadioSourceEstimator
+    RobustRadioSourceEstimator <|-- RobustRangingRadioSourceEstimator
+    RobustRadioSourceEstimator <|-- RobustRangingAndRssiRadioSourceEstimator
+    RobustRssiRadioSourceEstimator <|-- RANSACRobustRssiRadioSourceEstimator2D
+    RobustRssiRadioSourceEstimator <|-- LMedSRobustRssiRadioSourceEstimator2D
+    RobustRssiRadioSourceEstimator <|-- MSACRobustRssiRadioSourceEstimator2D
+    RobustRssiRadioSourceEstimator <|-- PROSACRobustRssiRadioSourceEstimator2D
+    RobustRssiRadioSourceEstimator <|-- PROMedSRobustRssiRadioSourceEstimator2D
+
+    class SequentialRobustRangingAndRssiRadioSourceEstimator~P~
+    class SequentialRobustMixedRadioSourceEstimator~P~
+    note for SequentialRobustRangingAndRssiRadioSourceEstimator "stage 1: robust ranging -> position&lt;br/&gt;stage 2: robust rssi -> power/path-loss"
+    note for SequentialRobustMixedRadioSourceEstimator "same, tolerant of scarce reading types"
+....
+
+Every non-robust and robust class has 2D and 3D forms; robust classes have RANSAC/LMedS/MSAC/PROSAC/PROMedS
+concrete variants (5 per measurement type per dimension). There is **no** non-sequential robust `Mixed` estimator
+— robustly estimating from a heterogeneous, unpaired reading set is only available through
+`SequentialRobustMixedRadioSourceEstimator`. The `Sequential*` classes stand outside the `RobustRadioSourceEstimator`
+hierarchy; they compose two other robust estimators internally (see
+<<sequential-two-stage-estimation-1,Sequential two-stage estimation>>).
+
+== RSSI-based estimation
+
+`RssiRadioSourceEstimator` fits the log-distance path-loss model directly via Levenberg-Marquardt — there is no
+closed-form solution here, unlike position estimation, because the source position, its equivalent transmitted
+power latexmath:[P_{te}] (antenna gains folded in, since they're unknown for third-party sources), and the
+path-loss exponent latexmath:[n] are all potentially unknown at once:
+
+[latexmath]
+++++
+P_r(\mathrm{dBm}) = 10n\log_{10}(k) + 10\log_{10}(P_{te}) - 5n\log_{10}\!\left(d^2\right), \qquad k = \frac{c}{4\pi f}
+++++
+
+Three independent flags control what's actually solved for: `positionEstimationEnabled` (default `true`),
+`transmittedPowerEstimationEnabled` (default `true`), `pathLossEstimationEnabled` (default **`false`** — latexmath:[n]
+is fixed at `2.0` unless explicitly enabled). The class documentation warns that enabling all three at once
+"usually achieves inaccurate results" — at most two of the three should be estimated simultaneously, with an
+initial value supplied for the third. Seven separate fitter/Jacobian setups exist internally, one per
+enabled/fixed combination.
+
+Defaults for initial values: `initialTransmittedPowerdBm` falls back to the average RSSI across all readings if
+unset; `initialPosition` falls back to the centroid of all reading positions. The minimum number of readings is
+latexmath:[(\text{dims if position enabled}) + (1\text{ if power enabled}) + (1\text{ if path-loss enabled}) + 1]
+— one more than the number of unknowns.
+
+== Ranging-based estimation
+
+`RangingRadioSourceEstimator` is simpler: since ranging gives distance directly, there's no path-loss model to
+invert, and only **position** is ever estimated (no power, no path-loss exponent) — this is the same trilateration
+problem as xref:position-ranging.adoc[ranging position estimation], just with the roles of "known" and "unknown"
+swapped. It runs a linear lateration solve first (homogeneous or inhomogeneous, `useHomogeneousLinearSolver`
+default `true`) and then, by default (`nonLinearSolverEnabled = true`), refines the result with the same
+Levenberg-Marquardt lateration solver used elsewhere in this library. The minimum reading count is
+latexmath:[\text{dims}+1] — the classic trilateration minimum.
+
+== Combining ranging and RSSI
+
+=== RangingAndRssi (paired readings)
+
+`RangingAndRssiRadioSourceEstimator` requires every reading to carry both a ranging distance and an RSSI value for
+the same source. Rather than a single joint model, it *orchestrates two inner estimators*:
+
+[mermaid]
+....
+flowchart LR
+    A[Paired reading] --> B[Split into ranging half&lt;br/&gt;and RSSI half]
+    B --> C[Inner RangingRadioSourceEstimator&lt;br/&gt;estimates position]
+    C --> D{Power or path-loss&lt;br/&gt;estimation enabled?}
+    D -->|yes| E["Inner RssiRadioSourceEstimator&lt;br/&gt;(position fixed to C's result)&lt;br/&gt;estimates Pte / n"]
+    D -->|no| F[Done: position only]
+    E --> G[Combine covariances block-diagonally]
+    C --> G
+....
+
+Position always comes from the ranging half — the library's own documentation states implementations "should be
+preferred [over RSSI-only estimation] as they can provide greater accuracy." RSSI data is only ever used to solve
+for latexmath:[P_{te}]/latexmath:[n], never to re-estimate position. The two inner estimators' covariance matrices
+are combined block-diagonally, assuming zero cross-correlation between position and power/path-loss terms.
+
+=== Mixed (heterogeneous readings)
+
+`MixedRadioSourceEstimator` accepts an unpaired mixture of ranging-only, RSSI-only, and paired readings for the
+same source, using the same two-inner-estimator machinery as `RangingAndRssi` — with one added fallback: if there
+aren't enough ranging-capable readings (fewer than latexmath:[\text{dims}+1]), it estimates position directly from
+RSSI data instead (enabling position estimation in the inner RSSI estimator), degrading gracefully to a pure RSSI
+joint fit — "in a less reliable way," per the source comments — rather than failing outright.
+
+== Robust estimation
+
+All three measurement types share the same RANSAC-family scoring machinery, implemented once in
+`RobustRadioSourceEstimator` and its concrete subclasses. The residual differs only by measurement type:
+
+[latexmath]
+++++
+r_i^{\text{RSSI}} = \left| \left(10n\log_{10}(k) + 10\log_{10}(P_{te}) - 5n\log_{10}(d_i^2)\right) - \mathrm{RSSI}_i \right|
+++++
+
+[latexmath]
+++++
+r_i^{\text{ranging}} = \left| \lVert \hat{\mathbf{p}} - \mathbf{p}_i \rVert - d_i \right|
+++++
+
+[mermaid]
+....
+flowchart TD
+    A[All readings] --> B["Draw subset of size preliminarySubsetSize&lt;br/&gt;(random, or quality-guided for PROSAC/PROMedS)"]
+    B --> C[Solve candidate with the matching&lt;br/&gt;non-robust inner estimator]
+    C --> D[Score every reading against&lt;br/&gt;the candidate's residual]
+    D --> E{RANSAC / MSAC / LMedS / PROSAC / PROMedS}
+    E --> F{More iterations&lt;br/&gt;or converged?}
+    F -->|yes| B
+    F -->|no| G[Best candidate + inlier set]
+    G --> H[Refine: re-run inner estimator&lt;br/&gt;over inliers only]
+    H --> I[Final position + Pte + n + covariance]
+....
+
+[cols="1,2,2,1"]
+|===
+|Variant |Scoring |Threshold (default) |Quality scores
+
+|**RANSAC** |Maximizes inlier count (hard threshold) |`threshold = 0.1` (dB for RSSI, meters for ranging) |no
+|**MSAC** |Truncated/bounded residual cost, same hard threshold |`threshold = 0.1` |no
+|**LMedS** |Minimizes the median of squared residuals |`stopThreshold = 1e-4` (early-stop only) |no
+|**PROSAC** |Same as RANSAC, but samples highest-quality readings first |`threshold = 0.1` |**required**
+|**PROMedS** (default) |LMedS's median scoring + PROSAC's quality-guided sampling |`stopThreshold = 1e-4` |**required**
+|===
+
+If `refineResult` (default `true`), the winning candidate is always re-solved with the non-robust inner estimator
+restricted to its inlier subset, and `keepCovariance` (default `true`) retains the resulting covariance. The
+library-wide default robust method is PROMedS, not RANSAC.
+
+[[sequential-two-stage-estimation-1]]=== Sequential two-stage estimation
+
+`SequentialRobustRangingAndRssiRadioSourceEstimator` and `SequentialRobustMixedRadioSourceEstimator` stand outside
+the `RobustRadioSourceEstimator` hierarchy and instead run two independently configured robust estimators in
+sequence — mirroring the two-stage approach used by
+xref:position-combined.adoc#sequential-two-stage-estimation[the position-side Sequential estimators], but here
+both stages target the *same* radio source's unknowns rather than a device position:
+
+1. **Stage 1 (position via ranging)**: a `RobustRangingRadioSourceEstimator` (own `rangingRobustMethod`, default
+   PROMedS; own confidence, threshold, max iterations) robustly estimates position from ranging-capable readings.
+2. **Stage 2 (power/path-loss via RSSI)**: a `RobustRssiRadioSourceEstimator` (own `rssiRobustMethod`, default
+   PROMedS) robustly estimates latexmath:[P_{te}]/latexmath:[n] using stage 1's position as a *fixed* initial
+   position — position is only re-estimated here if stage 1 was skipped for lack of ranging data (same
+   `rssiPositionEnabled` fallback as the non-robust `Mixed` estimator).
+
+The class documentation notes this two-stage approach "might produce more stable positions... than
+[the joint, single-pass] `RobustRangingAndRssiRadioSourceEstimator`," since ranging-only lateration is a
+better-conditioned problem to robustify on its own before it anchors the RSSI fit. Quality scores supplied to the
+sequential estimator are split and forwarded to whichever inner stage uses PROSAC/PROMedS.
+
+== Usage parameters
+
+* `readings` (located, at known positions), `listener` — common to all estimators.
+* **RSSI**: `positionEstimationEnabled`/`transmittedPowerEstimationEnabled` (default `true`),
+  `pathLossEstimationEnabled` (default `false`), `initialPosition` (else centroid),
+  `initialTransmittedPowerdBm` (else average RSSI), `initialPathLossExponent` (default `2.0`).
+* **Ranging**: `useHomogeneousLinearSolver` (default `true`), `nonLinearSolverEnabled` (default `true`),
+  `useReadingPositionCovariances` (default `true`).
+* **Robust (common)**: `confidence` (default `0.99`), `maxIterations` (default `5000`), `preliminarySubsetSize`
+  (default = min readings), `refineResult`/`keepCovariance` (default `true`).
+* **RANSAC / MSAC / PROSAC**: `threshold` (default `0.1`).
+* **LMedS / PROMedS**: `stopThreshold` (default `1e-4`).
+* **PROSAC / PROMedS**: `qualityScores` (required, one per reading).
+* **Sequential (per stage, `ranging`/`rssi` prefixed)**: `rangingRobustMethod`/`rssiRobustMethod` (default PROMedS
+  each), `rangingConfidence`/`rssiConfidence`, `rangingThreshold`/`rssiThreshold`,
+  `rangingMaxIterations`/`rssiMaxIterations`.
+
+Static `create(...)` factories exist on the 2D/3D robust classes for each measurement type, building any variant
+from a `RobustEstimatorMethod` enum (default PROMedS).
+
+== Related
+
+* xref:position-rssi.adoc[] / xref:position-ranging.adoc[] / xref:position-combined.adoc[] — the forward problem:
+  estimating device position given known radio source locations.
+* xref:fingerprint-position.adoc[] — positioning without known source locations at all; its joint
+  position-and-radio-source estimator also refines source positions, using a related first-order log-distance
+  model.

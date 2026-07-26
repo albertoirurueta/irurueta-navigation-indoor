@@ -1,0 +1,5 @@
+name: irurueta-navigation-indoor
+version: 1.6.0
+title: irurueta-navigation-indoor
+nav:
+  - modules/ROOT/nav.adoc

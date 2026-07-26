@@ -1,0 +1,192 @@
+= Combined RSSI and ranging position estimators
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+`com.irurueta.navigation.indoor.position` also provides estimators that combine
+xref:position-rssi.adoc[RSSI] and xref:position-ranging.adoc[ranging] readings in a single position estimate.
+There are two distinct families, differing only in what kind of readings a fingerprint is allowed to hold:
+
+`RangingAndRssi`:: every reading is a single **paired** `RangingAndRssiReading` — a measurement that carries
+*both* a ranging distance and an RSSI value for the same source at the same instant.
+`Mixed`:: a fingerprint may hold an arbitrary, **unpaired** mixture of `RangingReading`, `RssiReading`, and/or
+`RangingAndRssiReading` instances — some sources may have only ranging, others only RSSI, others both, in any
+count. As the library's own documentation puts it, `Mixed` estimators are like their `RangingAndRssi`
+counterparts "but allow mixing different kinds of readings."
+
+== Class hierarchy
+
+[mermaid]
+....
+classDiagram
+    class PositionEstimator~P~ {
+        &lt;&lt;abstract&gt;&gt;
+    }
+    class RangingAndRssiPositionEstimator~P~ {
+        &lt;&lt;abstract&gt;&gt;
+    }
+    class MixedPositionEstimator~P~ {
+        &lt;&lt;abstract&gt;&gt;
+    }
+    class RobustPositionEstimator~P~ {
+        &lt;&lt;abstract&gt;&gt;
+    }
+    class RobustRangingAndRssiPositionEstimator~P~ {
+        &lt;&lt;abstract&gt;&gt;
+    }
+    class RobustMixedPositionEstimator~P~ {
+        &lt;&lt;abstract&gt;&gt;
+    }
+    class SequentialRobustRangingAndRssiPositionEstimator~P~
+    class SequentialRobustMixedPositionEstimator~P~
+    note for SequentialRobustRangingAndRssiPositionEstimator "coarse: RSSI, refine: ranging"
+    note for SequentialRobustMixedPositionEstimator "degrades gracefully if one type is scarce"
+
+    PositionEstimator <|-- RangingAndRssiPositionEstimator
+    RangingAndRssiPositionEstimator <|-- LinearRangingAndRssiPositionEstimator
+    RangingAndRssiPositionEstimator <|-- NonLinearRangingAndRssiPositionEstimator
+    RobustPositionEstimator <|-- RobustRangingAndRssiPositionEstimator
+    RobustRangingAndRssiPositionEstimator <|-- RANSACRobustRangingAndRssiPositionEstimator2D
+    RobustRangingAndRssiPositionEstimator <|-- LMedSRobustRangingAndRssiPositionEstimator2D
+    RobustRangingAndRssiPositionEstimator <|-- MSACRobustRangingAndRssiPositionEstimator2D
+    RobustRangingAndRssiPositionEstimator <|-- PROSACRobustRangingAndRssiPositionEstimator2D
+    RobustRangingAndRssiPositionEstimator <|-- PROMedSRobustRangingAndRssiPositionEstimator2D
+
+    PositionEstimator <|-- MixedPositionEstimator
+    MixedPositionEstimator <|-- LinearMixedPositionEstimator
+    MixedPositionEstimator <|-- NonLinearMixedPositionEstimator
+    RobustPositionEstimator <|-- RobustMixedPositionEstimator
+    RobustMixedPositionEstimator <|-- RANSACRobustMixedPositionEstimator2D
+    RobustMixedPositionEstimator <|-- LMedSRobustMixedPositionEstimator2D
+    RobustMixedPositionEstimator <|-- MSACRobustMixedPositionEstimator2D
+    RobustMixedPositionEstimator <|-- PROSACRobustMixedPositionEstimator2D
+    RobustMixedPositionEstimator <|-- PROMedSRobustMixedPositionEstimator2D
+....
+
+Every class above has a 2D and 3D form (`LinearRangingAndRssiPositionEstimator2D/3D`,
+`RANSACRobustMixedPositionEstimator3D`, etc.); `SequentialRobustRangingAndRssiPositionEstimator` and
+`SequentialRobustMixedPositionEstimator` stand outside the `RobustPositionEstimator` hierarchy entirely — they are
+self-contained classes that internally compose two other estimators (see
+<<sequential-two-stage-estimation,Sequential two-stage estimation>>).
+
+== How readings are combined
+
+The two measurement types are unified by `PositionEstimatorHelper`, shared by every linear, non-linear, and robust
+estimator in both families. For each reading, depending on its `ReadingType`:
+
+[cols="1,3"]
+|===
+|`RANGING_READING` |one distance row: latexmath:[d = \texttt{reading.getDistance()}]
+|`RSSI_READING` |one distance row, converted through the xref:position-rssi.adoc#_path_loss_distance_model[path-loss model]
+|`RANGING_AND_RSSI_READING` |**two** distance rows for the same source position: one from the ranging distance, one from the RSSI path-loss conversion
+|===
+
+There is no special joint equation — an RSSI value is simply converted to a plain Euclidean distance first, and
+every resulting `(position, distance)` pair is then stacked as an ordinary trilateration row, indistinguishable
+from a pure-ranging row once built. This is what "combining" means in both the linear and non-linear estimators:
+more rows in the same system, not a different system.
+
+== Linear estimation
+
+`LinearRangingAndRssiPositionEstimator` and `LinearMixedPositionEstimator` both call
+`PositionEstimatorHelper.buildPositionsAndDistances(...)` to pool every reading into `(position, distance)` rows as
+described above, then hand the pooled arrays to the same homogeneous/inhomogeneous linear trilateration solvers
+used by the xref:position-rssi.adoc[RSSI] and xref:position-ranging.adoc[ranging] hierarchies
+(`useHomogeneousLinearSolver`, default `true`). The linear system itself is agnostic to which physical phenomenon
+produced each row.
+
+== Non-linear estimation
+
+`NonLinearRangingAndRssiPositionEstimator` and `NonLinearMixedPositionEstimator` call
+`PositionEstimatorHelper.buildPositionsDistancesAndDistanceStandardDeviations(...)`, again emitting two triples
+per paired reading, with variance propagated per row (combining transmit-power, received-power, path-loss
+exponent, and optional source-position covariance for RSSI-derived rows). Levenberg-Marquardt then minimizes one
+joint weighted cost over every row regardless of origin:
+
+[latexmath]
+++++
+\hat{\mathbf{p}} = \arg\min_{\mathbf{p}} \sum_i \left( \frac{\lVert \mathbf{p} - \mathbf{s}_i \rVert - d_i}{\sigma_i} \right)^2
+++++
+
+RSSI-derived rows typically carry a larger latexmath:[\sigma_i] (reflecting extra path-loss-model uncertainty)
+than ranging-derived rows, so they are automatically down-weighted relative to direct ranging measurements — with
+no special-cased term needed in the cost function itself.
+
+== Robust estimation
+
+=== Plain robust estimators
+
+`RobustRangingAndRssiPositionEstimator` and `RobustMixedPositionEstimator` run a **single** robust lateration
+solver over the entire pooled row list — ranging-derived and RSSI-derived rows mixed together in one
+RANSAC/LMedS/MSAC/PROSAC/PROMedS sampling loop, exactly as described for the
+xref:position-rssi.adoc#_robust_estimation[RSSI] and xref:position-ranging.adoc#_robust_estimation[ranging]
+hierarchies. Thresholds and quality scores are **not** separated by measurement type — by the time data reaches
+the robust solver it is one homogeneous list of `(position, distance, latexmath:[\sigma][, qualityScore])` rows
+with no memory of which physical phenomenon produced each one.
+
+The one place reading type still matters is when `evenlyDistributeReadings` (default `true`) re-ranks sampling
+priority via `ReadingSorter`, which breaks quality-score ties in a fixed order:
+
+[latexmath]
+++++
+\text{RANGING\_READING} \;>\; \text{RANGING\_AND\_RSSI\_READING} \;>\; \text{RSSI\_READING}
+++++
+
+i.e. pure ranging rows are preferred first, paired rows next, pure RSSI rows last — affecting sampling order only,
+not the single scalar inlier threshold shared by the whole dataset.
+
+[[sequential-two-stage-estimation]]
+=== Sequential two-stage estimation
+
+`SequentialRobustRangingAndRssiPositionEstimator` and `SequentialRobustMixedPositionEstimator` are not
+`RobustPositionEstimator` subclasses — they are self-contained classes that internally *compose* two independent
+robust estimators in sequence: RSSI first for a coarse estimate, then ranging to refine it.
+
+[mermaid]
+....
+flowchart LR
+    A[Paired/mixed fingerprint] --> B[Split into pure RSSI&lt;br/&gt;and pure ranging fingerprints]
+    B --> C["Stage 1: RobustRssiPositionEstimator&lt;br/&gt;(own robust method, threshold, quality scores)"]
+    C --> D[Coarse position estimate]
+    D --> E["Stage 2: RobustRangingPositionEstimator&lt;br/&gt;seeded with coarse position as initial estimate"]
+    E --> F[Final refined position + covariance]
+....
+
+For the paired `RangingAndRssi` family, the fingerprint is split deterministically (every reading yields both a
+ranging and an RSSI sample), so both stages always run. For the `Mixed` family, each stage only runs if enough
+readings of that type are present (`numRangingReadings`/`numRssiReadings` each meet the minimum required
+sources); `Mixed` degrades gracefully:
+
+* If ranging readings are insufficient, the RSSI-only coarse result is returned directly as the final answer.
+* If RSSI readings are insufficient, `initialPosition` (or the centroid) seeds the ranging-only stage directly.
+* `isReady()` only requires *one* of the two stages to be available.
+
+Every configuration knob is duplicated per stage with a `ranging`/`rssi` prefix — separate robust method (both
+default PROMedS), confidence, max iterations, threshold, linear-solver flags, and quality scores — so each stage
+can be tuned independently even though both eventually contribute to one position.
+
+== Usage parameters
+
+* `sources`, `fingerprint` (`RangingAndRssiFingerprint` for the paired family, generic `Fingerprint` for `Mixed`),
+  `listener` — common to all variants.
+* **Linear**: `useHomogeneousLinearSolver` (default `true`).
+* **Non-linear**: `initialPosition` (else centroid), `useRadioSourcePositionCovariance`,
+  `fallbackDistanceStandardDeviation`, `getCovariance()`.
+* **Robust (plain, common)**: `confidence` (default `0.99`), `maxIterations` (default `5000`),
+  `preliminarySubsetSize`, `refineResult`/`keepCovariance` (default `true`), `evenlyDistributeReadings` (default
+  `true`), plus per-algorithm `threshold`/`stopThreshold` and, for PROSAC/PROMedS, `sourceQualityScores` /
+  `fingerprintReadingsQualityScores`.
+* **Sequential (per stage, `ranging`/`rssi` prefixed)**: `rangingRobustMethod`/`rssiRobustMethod` (default
+  PROMedS each), `rangingConfidence`/`rssiConfidence`, `rangingMaxIterations`/`rssiMaxIterations`,
+  `rangingThreshold`/`rssiThreshold`, `useRangingLinearSolver`/`useRssiLinearSolver`,
+  `evenlyDistributeRangingReadings`/`evenlyDistributeRssiReadings`; shared `initialPosition`, `refineResult`,
+  `keepCovariance`, `progressDelta`.
+
+Static `create(...)` factories on `RobustRangingAndRssiPositionEstimator2D/3D` and
+`RobustMixedPositionEstimator2D/3D` build any plain robust variant from a `RobustEstimatorMethod` enum.
+
+== Related
+
+* xref:position-rssi.adoc[] — RSSI-only position estimation.
+* xref:position-ranging.adoc[] — ranging-only position estimation.
+* xref:fingerprint-position.adoc[] — positioning without known source locations.
+* xref:radiosource-estimation.adoc[] — the inverse problem: estimating a radio source's own position.

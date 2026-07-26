@@ -1,0 +1,85 @@
+= irurueta-navigation-indoor
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+`irurueta-navigation-indoor` is a Java library for indoor positioning based on GNSS/INS-style navigation
+techniques applied to radio signals (Wi-Fi access points, Bluetooth beacons, and similar sources). Where GPS is
+unavailable, this library estimates a device's position and/or the location of the radio sources themselves from
+the signals a device observes indoors.
+
+== Why it exists
+
+Indoor environments block satellite navigation, so indoor positioning instead relies on radio signals already
+present in a building: Wi-Fi access points and Bluetooth beacons. This library turns raw signal readings — signal
+strength (RSSI) or distance (ranging) measurements — into position estimates, using well-established estimation
+and robust-statistics techniques (least squares, non-linear optimization, LMedS, MSAC, PROSAC) so that noisy or
+partially wrong measurements don't derail the result.
+
+== Core concepts
+
+The library is organized around three complementary problems, implemented respectively in the
+`com.irurueta.navigation.indoor.fingerprint`, `com.irurueta.navigation.indoor.position`, and
+`com.irurueta.navigation.indoor.radiosource` packages:
+
+Fingerprint-based positioning:: Signal readings collected at known locations are stored as ``Fingerprint``s. A new,
+unlocated fingerprint is then matched against that database — e.g. via `WeightedKNearestNeighboursPositionSolver`
+or a `FingerprintPositionEstimator` — to estimate the device's position without needing to know where the radio
+sources themselves are.
+
+Direct (lateration) positioning:: When the radio sources' locations *are* known, `RssiPositionEstimator` and
+`RangingPositionEstimator` solve directly for a device's position from `RssiReading`/`RangingReading`
+measurements, using linear or non-linear multilateration.
+
+Radio source estimation:: `RadioSourceEstimator` and its variants solve the inverse problem: given readings taken
+from multiple *known* locations, estimate an unknown radio source's own position and transmission parameters
+(transmit power, path-loss exponent).
+
+A `RadioSource` (implemented by `Beacon` and `WifiAccessPoint`) represents any transmitting device involved in
+these estimations.
+
+[mermaid]
+....
+flowchart LR
+    subgraph Fingerprinting
+        A[Signal readings at known locations] --> B[Fingerprint database]
+        C[New unlocated fingerprint] --> D[k-NN / fingerprint position estimator]
+        B --> D
+        D --> E[Estimated device position]
+    end
+    subgraph Direct lateration
+        F[RSSI / ranging readings] --> G[Known radio source locations]
+        G --> H[Rssi / Ranging position estimator]
+        F --> H
+        H --> E
+    end
+    subgraph Radio source estimation
+        I[Readings from known locations] --> J[Radio source estimator]
+        J --> K[Estimated source position + tx power + path-loss exponent]
+    end
+....
+
+=== Path-loss distance model
+
+Several estimators convert a received signal strength into an estimated distance using a log-distance path-loss
+model. Given a measured RSSI, the transmit power, and a path-loss exponent latexmath:[n], the estimated distance
+latexmath:[d] is:
+
+[latexmath]
+++++
+d = 10^{\frac{n \cdot k_{dB} + P_{tx} - \mathrm{RSSI}}{10 n}}
+++++
+
+where:
+
+[latexmath]
+++++
+k_{dB} = 10 \log_{10}\left(\dfrac{c}{4 \pi f}\right)
+++++
+
+depends on the signal's frequency latexmath:[f] and the speed of light latexmath:[c]. Robust variants of the
+estimators (LMedS, MSAC, PROSAC) apply this model while tolerating outlier readings.
+
+== Next steps
+
+* xref:installation.adoc[] — add the library to your Maven or Gradle project.
+* xref:reference.adoc[] — generated reports (Javadoc, coverage, static analysis, SonarCloud).

@@ -1,0 +1,252 @@
+= RSSI-based position estimators
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+The `com.irurueta.navigation.indoor.position` package estimates a device's position from **received signal
+strength (RSSI)** readings, given the *known* positions (and transmitted power) of the radio sources — Wi-Fi
+access points or Bluetooth beacons — that the device observes. This is direct (lateration) positioning, as
+opposed to xref:fingerprint-position.adoc[fingerprint-based positioning], which requires no known source
+positions at all.
+
+Every RSSI position estimator assumes signal is radiated equally in all directions and attenuates with distance
+following a log-distance path-loss model, then reduces the problem to classic multilateration once each RSSI
+reading has been converted into an estimated distance.
+
+== Overview
+
+Every access point radiates its signal equally in all directions, and that signal weakens with distance in a
+predictable way. If a device knows an access point's position and its transmitted power, and it measures how
+strong that signal is when it arrives, it can work out how far away it must be — the strength lost in transit is
+a function of distance alone. That gives one estimated distance per access point but, on its own, only narrows the
+device down to a circle (2D) or sphere (3D) around it, not a single point.
+
+The trick is to do this for several access points at once. Each one narrows the possibilities down to its own
+circle; the position consistent with *all* of them is where those circles overlap — the same
+https://en.wikipedia.org/wiki/Multilateration[multilateration] principle used by GPS. In practice, RSSI readings
+are noisy, so the circles rarely meet at one exact point: the estimator instead looks for the position with the
+smallest overall inconsistency across every reading, which is exactly what the
+xref:#_linear_estimation[linear], xref:#_non_linear_estimation[non-linear], and xref:#_robust_estimation[robust]
+estimators below solve for, with increasing tolerance for noisy or wrong readings.
+
+image::position-rssi-overview.svg[Overview of RSSI-based position estimation: three access points at known positions estimate their distance to the device from received signal strength, and the device position is found where the resulting circles best overlap,700]
+
+== Path-loss distance model
+
+Given a measured received power latexmath:[P_{rx}] (dBm), a known transmitted power latexmath:[P_{tx}] (dBm), a
+path-loss exponent latexmath:[n], and signal frequency latexmath:[f], the received-power model is:
+
+[latexmath]
+++++
+P_{rx} = n \, k_{dB} + P_{tx} - 5n \log_{10}\!\left(d^2\right)
+++++
+
+where the frequency-dependent constant latexmath:[k_{dB}] is:
+
+[latexmath]
+++++
+k_{dB} = 10 \log_{10}\!\left(\frac{c}{4 \pi f}\right)
+++++
+
+(latexmath:[c] is the speed of light). Solving for the distance latexmath:[d] gives the conversion every RSSI
+estimator applies before running lateration:
+
+[latexmath]
+++++
+d = 10^{\frac{n \, k_{dB} + P_{tx} - P_{rx}}{10n}}
+++++
+
+Typical path-loss exponent values: free space latexmath:[n \approx 2.0], urban latexmath:[2.7]–latexmath:[3.5],
+suburban latexmath:[3]–latexmath:[5], indoor line-of-sight latexmath:[1.6]–latexmath:[1.8]. The non-linear and
+robust estimators additionally propagate the variance of latexmath:[P_{rx}], latexmath:[P_{tx}], and latexmath:[n]
+into a distance standard deviation via the first-order (delta method) derivative:
+
+[latexmath]
+++++
+\frac{\partial d}{\partial P_{rx}} = -\frac{\ln 10}{10n} \, 10^{\frac{n k_{dB} + P_{tx} - P_{rx}}{10n}}
+++++
+
+This conversion is implemented once, in `Utils`/`PositionEstimatorHelper`, and reused by every class below —
+everything past this point is generic trilateration from `(known position, estimated distance)` pairs.
+
+== Class hierarchy
+
+[mermaid]
+....
+classDiagram
+    class PositionEstimator~P~ {
+        &lt;&lt;abstract&gt;&gt;
+    }
+    class RssiPositionEstimator~P~ {
+        &lt;&lt;abstract&gt;&gt;
+    }
+    class LinearRssiPositionEstimator~P~ {
+        &lt;&lt;abstract&gt;&gt;
+        +useHomogeneousLinearSolver
+    }
+    class NonLinearRssiPositionEstimator~P~ {
+        &lt;&lt;abstract&gt;&gt;
+        +initialPosition
+    }
+    class RobustPositionEstimator~P~ {
+        &lt;&lt;abstract&gt;&gt;
+    }
+    class RobustRssiPositionEstimator~P~ {
+        &lt;&lt;abstract&gt;&gt;
+    }
+
+    PositionEstimator <|-- RssiPositionEstimator
+    RssiPositionEstimator <|-- LinearRssiPositionEstimator
+    RssiPositionEstimator <|-- NonLinearRssiPositionEstimator
+    LinearRssiPositionEstimator <|-- LinearRssiPositionEstimator2D
+    LinearRssiPositionEstimator <|-- LinearRssiPositionEstimator3D
+    NonLinearRssiPositionEstimator <|-- NonLinearRssiPositionEstimator2D
+    NonLinearRssiPositionEstimator <|-- NonLinearRssiPositionEstimator3D
+
+    RobustPositionEstimator <|-- RobustRssiPositionEstimator
+    RobustRssiPositionEstimator <|-- RobustRssiPositionEstimator2D
+    RobustRssiPositionEstimator <|-- RobustRssiPositionEstimator3D
+    RobustRssiPositionEstimator2D <|-- RANSACRobustRssiPositionEstimator2D
+    RobustRssiPositionEstimator2D <|-- LMedSRobustRssiPositionEstimator2D
+    RobustRssiPositionEstimator2D <|-- MSACRobustRssiPositionEstimator2D
+    RobustRssiPositionEstimator2D <|-- PROSACRobustRssiPositionEstimator2D
+    RobustRssiPositionEstimator2D <|-- PROMedSRobustRssiPositionEstimator2D
+....
+
+3D robust classes mirror the 2D ones (`RANSACRobustRssiPositionEstimator3D`, `LMedSRobustRssiPositionEstimator3D`,
+etc.), omitted above for brevity. 2D estimators require a minimum of 3 sources; 3D estimators require 4 — one
+extra source acts as the reference point that lets the trilateration equations be linearized.
+
+The linear and non-linear indoor classes are thin wrappers that convert readings to
+`(position, distance, distance standard deviation)` triples and then delegate to the generic lateration solvers
+in the sibling `com.irurueta.navigation.lateration` package (`irurueta-navigation` module); the robust classes
+delegate similarly to that package's `RobustLaterationSolver` hierarchy.
+
+== Linear estimation
+
+`LinearRssiPositionEstimator` picks one of two closed-form solvers (`useHomogeneousLinearSolver`, default
+`true`) that both eliminate the path-loss model's non-linearity by taking pairwise differences of the sphere/circle
+equations before solving.
+
+=== Inhomogeneous solver
+
+Using the first source's position latexmath:[p_1] as reference and letting latexmath:[d_i] be the estimated
+distance to source latexmath:[i], subtracting the reference sphere equation from every other one cancels the
+quadratic terms in the unknown position, producing a linear system latexmath:[A\mathbf{x} = \mathbf{b}] in the
+unknown offset latexmath:[\mathbf{x} = (x-x_1, y-y_1, z-z_1)]:
+
+[latexmath]
+++++
+A = \begin{bmatrix} x_2 - x_1 & y_2 - y_1 & z_2 - z_1 \\ \vdots & \vdots & \vdots \end{bmatrix}, \qquad
+b_i = \frac{1}{2}\left(d_1^2 - d_i^2 + \lVert p_i - p_1 \rVert^2\right)
+++++
+
+solved by direct linear solve, then the reference position is added back. This is the default path for RSSI
+position estimation.
+
+=== Homogeneous solver
+
+Substituting homogeneous coordinates latexmath:[(x,y) = (x'/w', y'/w')] into the same pairwise-differenced
+equations produces a homogeneous system latexmath:[A\mathbf{x} = 0] whose solution is the right null-space vector
+of latexmath:[A] (found via SVD); the estimated position is recovered by dividing by latexmath:[w']. It is more
+numerically robust to certain degenerate configurations, at the cost of an SVD instead of a direct solve.
+
+== Non-linear estimation
+
+`NonLinearRssiPositionEstimator` minimizes, via Levenberg-Marquardt
+(`LevenbergMarquardtMultiDimensionFitter`), the squared-distance residual between a candidate position
+latexmath:[\mathbf{p}] and each known source position latexmath:[\mathbf{x}_i], fit against the squared estimated
+distance latexmath:[d_i^2]:
+
+[latexmath]
+++++
+f_i(\mathbf{p}) = \sum_j (p_j - x_{ij})^2, \qquad \frac{\partial f_i}{\partial p_j} = 2(p_j - x_{ij})
+++++
+
+The initial position defaults to the centroid of the known source positions unless `initialPosition` is set
+explicitly. Distance readings are weighted by their standard deviation (propagated from the path-loss model
+above, or a fallback of latexmath:[10^{-3}]), and the fitter additionally reports a position covariance and
+chi-squared value that the linear solvers cannot provide.
+
+== Robust estimation
+
+`RobustRssiPositionEstimator` adds outlier tolerance on top of the linear/non-linear solvers, following the same
+sample-and-score pattern for every variant:
+
+[mermaid]
+....
+flowchart TD
+    A[All position/distance pairs] --> B[Draw random subset of size preliminarySubsetSize]
+    B --> C[Solve preliminary position&lt;br/&gt;linear solver, optionally non-linear refined]
+    C --> D["Compute residual per sample:&lt;br/&gt;absolute trilateration distance error"]
+    D --> E[Score candidate: RANSAC / LMedS / MSAC / PROSAC / PROMedS]
+    E --> F{More iterations&lt;br/&gt;or converged?}
+    F -->|yes| B
+    F -->|no| G[Best candidate + inlier set]
+    G --> H[Refine with non-linear solver&lt;br/&gt;over inliers only]
+    H --> I[Final estimated position + covariance]
+....
+
+The residual is always the trilateration distance error latexmath:[\left|\lVert \mathbf{p} - \mathbf{p}_i \rVert -
+d_i\right|]; what differs between variants is how candidates are scored and, for two of them, how samples are
+prioritized:
+
+[cols="1,2,2,2"]
+|===
+|Variant |Threshold semantics |Quality scores |Notes
+
+|**RANSAC**
+|Fixed `threshold` (default latexmath:[10^{-2}]); sample is inlier iff residual latexmath:[\le] threshold
+|not used
+|Maximizes raw inlier count.
+
+|**MSAC**
+|Same `threshold` as RANSAC
+|not used
+|Scores by *truncated* residual cost (residual capped at threshold) instead of a binary inlier count — a soft
+version of RANSAC.
+
+|**LMedS**
+|No inlier cut; minimizes the *median* of squared residuals. `stopThreshold` (default latexmath:[10^{-5}]) is
+only an early-stop target, not a cutoff.
+|not used
+|Robust even when the outlier ratio is unknown; typically needs more iterations.
+
+|**PROSAC**
+|Same `threshold` as RANSAC/MSAC
+|**required** (`sourceQualityScores` / `fingerprintReadingsQualityScores`)
+|Samples higher-quality readings first instead of uniformly at random, converging faster when reading quality is
+known.
+
+|**PROMedS**
+|Same `stopThreshold` as LMedS
+|**required**, same as PROSAC
+|LMedS's median-residual robustness combined with PROSAC's quality-guided sampling order.
+|===
+
+If `isResultRefined` (default `true`), the winning candidate is always re-solved with the non-linear solver
+restricted to its inlier set, so every robust RSSI estimator ends up performing one final Levenberg-Marquardt pass
+regardless of variant. The default robust method across the library is PROMedS.
+
+== Usage parameters
+
+* `sources` — located radio sources (`RadioSourceLocated`) with known position and transmitted power.
+* `fingerprint` — the `RssiFingerprint` of readings observed at the unknown location.
+* **Linear**: `useHomogeneousLinearSolver` (default `true`).
+* **Non-linear**: `initialPosition` (else centroid), `useRadioSourcePositionCovariance`,
+  `fallbackDistanceStandardDeviation` (default latexmath:[10^{-3}]).
+* **Robust (common)**: `confidence` (default `0.99`), `maxIterations` (default `5000`), `preliminarySubsetSize`,
+  `isResultRefined` (default `true`), `isCovarianceKept` (default `true`), `evenlyDistributeReadings` (default
+  `true`, spreads sampling across sources so no single access point dominates).
+* **RANSAC / MSAC / PROSAC**: `threshold` (default latexmath:[10^{-2}]).
+* **LMedS / PROMedS**: `stopThreshold` (default latexmath:[10^{-5}]).
+* **PROSAC / PROMedS**: `sourceQualityScores`, `fingerprintReadingsQualityScores` (required).
+
+Static `create(...)` factories on `RobustRssiPositionEstimator2D`/`3D` build any robust variant from a
+`RobustEstimatorMethod` enum value.
+
+== Related
+
+* xref:position-ranging.adoc[] — the equivalent hierarchy for distance (Wi-Fi RTT) readings.
+* xref:position-combined.adoc[] — estimators that combine RSSI and ranging readings.
+* xref:fingerprint-position.adoc[] — positioning without known source locations.
+* xref:radiosource-estimation.adoc[] — the inverse problem: estimating a radio source's own position.
