@@ -26,8 +26,8 @@ An indoor GNSS/INS navigation library
 |---|---|
 | Language | Java 21 |
 | Build tool | Maven |
-| Current development version | 1.6.0-SNAPSHOT |
-| Latest release | 1.5.0 |
+| Current development version | 1.7.0-SNAPSHOT |
+| Latest release | 1.6.0 |
 | License | Apache License, Version 2.0 |
 | CI | GitHub Actions — builds/tests `develop` on every push and runs the `master` release pipeline on every published GitHub release |
 | Quality | SonarCloud, JaCoCo coverage, Checkstyle, PMD, SpotBugs, Javadoc |
@@ -48,7 +48,7 @@ Latest release:
 <dependency>
     <groupId>com.irurueta</groupId>
     <artifactId>irurueta-navigation-indoor</artifactId>
-    <version>1.5.0</version>
+    <version>1.6.0</version>
     <scope>compile</scope>
 </dependency>
 ```
@@ -58,7 +58,7 @@ Latest snapshot:
 <dependency>
     <groupId>com.irurueta</groupId>
     <artifactId>irurueta-navigation-indoor</artifactId>
-    <version>1.6.0-SNAPSHOT</version>
+    <version>1.7.0-SNAPSHOT</version>
     <scope>compile</scope>
 </dependency>
 ```

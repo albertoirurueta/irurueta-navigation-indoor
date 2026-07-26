@@ -7,6 +7,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.6.0] - 2026-07-26
+
+### Changed
+
+- Raised the minimum Java version required to build and use this library from Java 17 to Java 21.
+- Upgraded internal dependencies: `irurueta-navigation` to 1.8.1, `irurueta-numerical` to 1.6.0,
+  `irurueta-geometry` to 1.6.0, `irurueta-units` to 1.4.0, and `irurueta-algebra` to 1.4.0.
+
+### Added
+
+- Documentation covering the RSSI-based, ranging-based, combined, fingerprint-based, and radio source estimator
+  hierarchies, including algorithm explanations, equations, and overview diagrams.
+
 ## [1.5.0] - 2026-03-04
 
 No user-facing changes in this release; it consists solely of an internal dependency version bump in `pom.xml`
@@ -75,7 +88,8 @@ No user-facing changes in this release; it consists solely of a `README.md` upda
   - Radio source (e.g., WiFi access point) position and path-loss exponent estimators, including robust
     estimators (`com.irurueta.navigation.indoor.radiosource`).
 
-[Unreleased]: https://github.com/albertoirurueta/irurueta-navigation-indoor/compare/1.5.0...HEAD
+[Unreleased]: https://github.com/albertoirurueta/irurueta-navigation-indoor/compare/1.6.0...HEAD
+[1.6.0]: https://github.com/albertoirurueta/irurueta-navigation-indoor/compare/1.5.0...1.6.0
 [1.5.0]: https://github.com/albertoirurueta/irurueta-navigation-indoor/compare/1.4.0...1.5.0
 [1.4.0]: https://github.com/albertoirurueta/irurueta-navigation-indoor/compare/1.3.2...1.4.0
 [1.3.2]: https://github.com/albertoirurueta/irurueta-navigation-indoor/compare/1.3.1...1.3.2
