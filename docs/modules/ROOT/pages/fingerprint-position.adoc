@@ -1,0 +1,270 @@
+= Fingerprint-based position estimators
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+The `com.irurueta.navigation.indoor.fingerprint` package estimates a device's position by comparing its RSSI
+readings against a database of **fingerprints** — readings previously collected at known locations — rather than
+requiring the radio sources' own positions to be known in advance the way
+xref:position-rssi.adoc[direct RSSI]/xref:position-ranging.adoc[ranging] positioning does. Only the *k* nearest
+known fingerprints (by RSSI-space distance) are used for any single estimate.
+
+== Overview
+
+Fingerprinting takes a completely different approach from
+xref:position-rssi.adoc#_overview[RSSI]/xref:position-ranging.adoc#_overview[ranging] positioning: instead of
+converting a signal into a distance and solving a geometry problem, it treats the *whole combination* of signal
+strengths a device observes as a signature, and looks it up. This is the classic
+https://en.wikipedia.org/wiki/Wi-Fi_positioning_system#Fingerprinting[Wi-Fi fingerprinting] technique, built in
+two phases:
+
+Offline — building the radio map:: at many known locations, someone (or some automated process) records which
+access points are visible and how strong each one's signal is there. Each location ends up with its own
+signature: a vector of RSSI values, one per access point, stored alongside that location's known position.
+
+Online — matching a new reading:: the device's own signature (a vector of RSSI readings from the access points it
+currently sees) is compared against every signature in the database, and the *k* closest matches — by
+https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm[k-nearest-neighbors] in signal space, not physical
+space — are found. The device's position is then estimated as a weighted average of those matches' known
+locations: closer signal-space matches count for more.
+
+Because it never needs to know where the access points physically are, or how their signal decays with distance,
+fingerprinting sidesteps the path-loss model entirely — at the cost of needing a survey of the space first. The
+xref:#_linear_estimation[linear] and xref:#_non_linear_estimation[non-linear] estimators below differ in exactly
+how they turn a set of nearby matches into a single estimated position.
+
+image::fingerprint-position-overview.svg[Overview of fingerprint-based position estimation: a database of known locations each store a signal-strength signature, and a new reading is matched against its nearest signatures to estimate a position,700]
+
+== Class hierarchy
+
+[mermaid]
+....
+classDiagram
+    class BaseFingerprintPositionEstimator~P~ {
+        &lt;&lt;abstract&gt;&gt;
+        +minNearestFingerprints
+        +maxNearestFingerprints
+        +pathLossExponent
+    }
+    class FingerprintPositionEstimator~P~ {
+        &lt;&lt;abstract&gt;&gt;
+        +sources
+        +useSourcesPathLossExponentWhenAvailable
+    }
+    class LinearFingerprintPositionEstimator~P~ {
+        &lt;&lt;abstract&gt;&gt;
+    }
+    class NonLinearFingerprintPositionEstimator~P~ {
+        &lt;&lt;abstract&gt;&gt;
+        +initialPosition
+    }
+    class NonLinearFingerprintPositionEstimator2D {
+        &lt;&lt;abstract&gt;&gt;
+        +create(type)
+    }
+
+    BaseFingerprintPositionEstimator <|-- FingerprintPositionEstimator
+    FingerprintPositionEstimator <|-- LinearFingerprintPositionEstimator
+    FingerprintPositionEstimator <|-- NonLinearFingerprintPositionEstimator
+    LinearFingerprintPositionEstimator <|-- LinearFingerprintPositionEstimator2D
+    LinearFingerprintPositionEstimator <|-- LinearFingerprintPositionEstimator3D
+    NonLinearFingerprintPositionEstimator <|-- NonLinearFingerprintPositionEstimator2D
+    NonLinearFingerprintPositionEstimator <|-- NonLinearFingerprintPositionEstimator3D
+    NonLinearFingerprintPositionEstimator2D <|-- FirstOrderNonLinearFingerprintPositionEstimator2D
+    NonLinearFingerprintPositionEstimator2D <|-- SecondOrderNonLinearFingerprintPositionEstimator2D
+    NonLinearFingerprintPositionEstimator2D <|-- ThirdOrderNonLinearFingerprintPositionEstimator2D
+
+    class BaseFingerprintPositionAndRadioSourceEstimator~P~ {
+        &lt;&lt;abstract&gt;&gt;
+    }
+    class NonLinearFingerprintPositionAndRadioSourceEstimator~P~ {
+        &lt;&lt;abstract&gt;&gt;
+    }
+    note for NonLinearFingerprintPositionAndRadioSourceEstimator "joint position + source refinement"
+    BaseFingerprintPositionAndRadioSourceEstimator <|-- FingerprintPositionAndRadioSourceEstimator
+    FingerprintPositionAndRadioSourceEstimator <|-- NonLinearFingerprintPositionAndRadioSourceEstimator
+    NonLinearFingerprintPositionAndRadioSourceEstimator <|-- NonLinearFingerprintPositionAndRadioSourceEstimator2D
+    NonLinearFingerprintPositionAndRadioSourceEstimator <|-- NonLinearFingerprintPositionAndRadioSourceEstimator3D
+....
+
+3D non-linear classes have matching `FirstOrder`/`SecondOrder`/`ThirdOrder` subclasses, omitted above for
+brevity. There is no linear or order-variant form of the joint position-and-radio-source estimator — it always
+uses a single (first-order, gradient-based) model, described in
+<<joint-position-and-radio-source-refinement,its own section below>>.
+
+== Selecting the nearest fingerprints
+
+Both `LinearFingerprintPositionEstimator` and `NonLinearFingerprintPositionEstimator` first narrow the known
+fingerprint database down to the `k` nearest ones (by Euclidean distance in RSSI space) via either
+`RadioSourceKNearestFinder` (raw RSSI distance) or `RadioSourceNoMeanKNearestFinder` (mean-removed, bias-corrected
+distance — the default, `useNoMeanNearestFingerprintFinder = true`). If solving fails numerically with `k`
+neighbors, `k` is increased (up to `maxNearestFingerprints`, unlimited by default) and the solve is retried.
+
+== Linear estimation
+
+`LinearFingerprintPositionEstimator` linearizes the log-distance path-loss model with a **first-order Taylor
+expansion** of received power around each known fingerprint location, then solves the resulting system directly
+— no iterative fitting involved. Given received power as a function of squared distance to a source at position
+latexmath:[\mathbf{p}_a]:
+
+[latexmath]
+++++
+P_r(\mathbf{p}) = K - 5n\log_{10}\!\left(d^2\right), \qquad K = 10n\log_{10}(k) + 10\log_{10}(P_{te})
+++++
+
+expanding around a known fingerprint position latexmath:[\mathbf{p}_1] (2D case shown):
+
+[latexmath]
+++++
+P_r(\mathbf{p}_i) \approx P_r(\mathbf{p}_1) + \frac{\partial P_r(\mathbf{p}_1)}{\partial x}(x_i-x_1) + \frac{\partial P_r(\mathbf{p}_1)}{\partial y}(y_i-y_1)
+++++
+
+with the derivatives evaluated at the known, fixed distance latexmath:[d_{1a}] between fingerprint and source:
+
+[latexmath]
+++++
+\frac{\partial P_r(\mathbf{p}_1)}{\partial x} = \frac{-10n(x_1-x_a)}{\ln(10)\,d_{1a}^2}, \qquad
+\frac{\partial P_r(\mathbf{p}_1)}{\partial y} = \frac{-10n(y_1-y_a)}{\ln(10)\,d_{1a}^2}
+++++
+
+Rearranged, each `(known fingerprint, matched source reading)` pair contributes one row to a linear system in the
+unknown position latexmath:[(x_i, y_i)], solved directly (not by least-squares fitting). The 3D case simply adds
+the analogous latexmath:[z] terms. At least `dims` independent rows are required (2 for 2D, 3 for 3D).
+Class documentation calls this "a first-order Taylor approximation... solves the problem in a linear way" — it is
+mathematically the same first-order model as
+xref:#_first_order[the `FirstOrderNonLinearFingerprintPositionEstimator`] below, just solved directly instead of
+through Levenberg-Marquardt.
+
+== Non-linear estimation
+
+`NonLinearFingerprintPositionEstimator` fits the *same* Taylor-expansion model with
+`LevenbergMarquardtMultiDimensionFitter` instead of a direct solve, which lets it exploit second- and third-order
+terms — and report a position covariance/chi-squared — at the cost of iterative refinement. Each `(nearest
+fingerprint, matched reading)` pair becomes one non-linear sample; `evaluate()` returns the predicted RSSI at a
+trial position and its Jacobian, differing precisely by *order* (below). Measurement variance (fingerprint RSSI
+std, path-loss exponent std, position covariances) is propagated into a per-sample weight, falling back to
+`FALLBACK_RSSI_STANDARD_DEVIATION = 1.0` if it cannot be derived. As with the linear estimator, `k` grows on
+numerical failure.
+
+The full Taylor expansion being approximated at each order is:
+
+[latexmath]
+++++
+\begin{aligned}
+P_r(\mathbf{p}_i) = {}& P_r(\mathbf{p}_1) + \frac{\partial P_r}{\partial x}(x_i{-}x_1) + \frac{\partial P_r}{\partial y}(y_i{-}y_1) \\
+&+ \frac{1}{2}\left(\frac{\partial^2 P_r}{\partial x^2}(x_i{-}x_1)^2 + \frac{\partial^2 P_r}{\partial y^2}(y_i{-}y_1)^2 + 2\frac{\partial^2 P_r}{\partial x \partial y}(x_i{-}x_1)(y_i{-}y_1)\right) \\
+&+ \frac{1}{6}\Big(\frac{\partial^3 P_r}{\partial x^3}(x_i{-}x_1)^3 + \frac{\partial^3 P_r}{\partial y^3}(y_i{-}y_1)^3 \\
+&\quad + 3\frac{\partial^3 P_r}{\partial x^2 \partial y}(x_i{-}x_1)^2(y_i{-}y_1) + 3\frac{\partial^3 P_r}{\partial x \partial y^2}(x_i{-}x_1)(y_i{-}y_1)^2\Big)
+\end{aligned}
+++++
+
+all derivatives evaluated at the known fingerprint position latexmath:[\mathbf{p}_1] (fixed, known distance
+latexmath:[d_{1a}] to the source). `NonLinearFingerprintPositionEstimatorType` selects how many of these terms are
+used (default `THIRD_ORDER`); the 3D case has the same structure with one extra axis.
+
+[#_first_order]
+=== First order — `FirstOrderNonLinearFingerprintPositionEstimator{2D,3D}`
+
+Uses only the gradient term — mathematically identical to the linear estimator's model, just fit with
+Levenberg-Marquardt instead of solved directly:
+
+[latexmath]
+++++
+P_r(\mathbf{p}_i) \approx P_r(\mathbf{p}_1) + \frac{\partial P_r}{\partial x}(x_i{-}x_1) + \frac{\partial P_r}{\partial y}(y_i{-}y_1)
+++++
+
+The Jacobian returned to the fitter is constant (independent of the trial point) — a genuinely linear-in-parameters
+model.
+
+=== Second order — `SecondOrderNonLinearFingerprintPositionEstimator{2D,3D}`
+
+Adds the Hessian (quadratic and cross) terms:
+
+[latexmath]
+++++
+\frac{\partial^2 P_r}{\partial x^2} = \frac{-5n\left((y_1{-}y_a)^2-(x_1{-}x_a)^2\right)}{\ln(10)\,d_{1a}^4}, \qquad
+\frac{\partial^2 P_r}{\partial x \partial y} = \frac{20n(x_1{-}x_a)(y_1{-}y_a)}{\ln(10)\,d_{1a}^4}
+++++
+
+(latexmath:[\partial^2 P_r/\partial y^2] is the same expression with latexmath:[x] and latexmath:[y] swapped). The
+Jacobian now depends on the trial point — e.g. latexmath:[\partial P_r/\partial x] gains a
+latexmath:[2\cdot\partial^2 P_r/\partial x^2\cdot(x_i-x_1) + \partial^2P_r/\partial x\partial y\cdot(y_i-y_1)] term
+— making this genuinely non-linear, unlike first order.
+
+=== Third order — `ThirdOrderNonLinearFingerprintPositionEstimator{2D,3D}` (library default)
+
+Adds all third partial derivatives — pure cubic terms latexmath:[\partial^3 P_r/\partial x^3],
+latexmath:[\partial^3 P_r/\partial y^3], and mixed terms latexmath:[\partial^3 P_r/\partial x^2\partial y],
+latexmath:[\partial^3 P_r/\partial x \partial y^2] — each a quotient-rule expansion over latexmath:[d_{1a}^8]. The
+3D case additionally has a fully-mixed triple term with no 2D analogue:
+
+[latexmath]
+++++
+\frac{\partial^3 P_r}{\partial x\, \partial y\, \partial z} = \frac{-80n}{\ln(10)}\cdot\frac{(x_1{-}x_a)(y_1{-}y_a)(z_1{-}z_a)}{d_{1a}^6}
+++++
+
+This is the most accurate approximation of the three but also the most numerically sensitive, since it depends on
+higher powers of latexmath:[1/d_{1a}].
+
+[cols="1,3"]
+|===
+|Order |What's added
+|First |Gradient only — a linear model in the unknown position, just fit via Levenberg-Marquardt instead of solved directly.
+|Second |+ Hessian (quadratic + cross terms) — the model becomes genuinely non-linear in the unknown position.
+|Third (default) |+ all third partial derivatives (cubic + mixed cubic terms) — most accurate, most expensive, least numerically stable.
+|===
+
+[[joint-position-and-radio-source-refinement]]
+== Joint position and radio source refinement
+
+`NonLinearFingerprintPositionAndRadioSourceEstimator` solves a related but distinct problem: it treats *both* the
+unknown position latexmath:[\mathbf{p}_i] **and** each radio source's own position latexmath:[\mathbf{p}_a] as
+unknowns to refine jointly, rather than assuming source positions are already known and fixed. It eliminates the
+unknown transmitted-power constant latexmath:[K] by differencing the received power of a known fingerprint and
+the unknown-location reading for the *same* source:
+
+[latexmath]
+++++
+P_{r,\Delta} = P_r(\mathbf{p}_i) - P_r(\mathbf{p}_1) = 5n\log_{10}\!\left(d_{1a}^2\right) - 5n\log_{10}\!\left(d_{ia}^2\right)
+++++
+
+with partial derivatives (2D shown):
+
+[latexmath]
+++++
+\frac{\partial P_{r,\Delta}}{\partial x_i} = \frac{-10n(x_i-x_a)}{\ln(10)\,d_{ia}^2}, \qquad
+\frac{\partial P_{r,\Delta}}{\partial x_a} = 10n\left(\frac{-(x_1-x_a)}{\ln(10)\,d_{1a}^2} + \frac{x_i-x_a}{\ln(10)\,d_{ia}^2}\right)
+++++
+
+fit jointly via Levenberg-Marquardt over an unknown vector packing the fingerprint position and every observed
+source's position. Unlike the position-only estimators, this is inherently a first-order (gradient-only) model —
+there are no order variants — but applied to a larger joint unknown vector. It requires at least
+latexmath:[\text{dims}\times(1+\text{numSources})] nearest fingerprints, optionally accepts `initialLocatedSources`
+as a warm start, and returns refined source positions via `getEstimatedLocatedSources()` alongside the estimated
+device position.
+
+== Usage parameters
+
+* `locatedFingerprints`, `fingerprint` (unknown-location readings) — required for all estimators; `sources`
+  (known radio source positions) required for the position-only estimators, replaced by optional
+  `initialLocatedSources` for the joint estimator.
+* `minNearestFingerprints` / `maxNearestFingerprints` — k-NN search range (position-only default `min=1`,
+  unlimited max; joint estimator's minimum is auto-computed from `dims*(1+numSources)`).
+* `pathLossExponent` (default `2.0`) and `useSourcesPathLossExponentWhenAvailable` (default `true`) — use each
+  source's own path-loss exponent if available, else the estimator's configured value.
+* `useNoMeanNearestFingerprintFinder` (default `true`) — bias-corrected vs. raw RSSI-distance neighbor search.
+* `removeMeansFromFingerprintReadings` (position-only, default `false`) — corrects hardware/device RSSI bias by
+  differencing against each fingerprint's own mean.
+* **Non-linear only**: `initialPosition` (else centroid of selected neighbors), `fallbackRssiStandardDeviation`
+  (default `1.0`, `1e-3` for the joint estimator), four `propagate*` flags (RSSI std, path-loss exponent std,
+  fingerprint/source position covariance — all default `true`).
+* `NonLinearFingerprintPositionEstimator{2D,3D}.create(...)` — static factory selecting First/Second/Third order
+  via `NonLinearFingerprintPositionEstimatorType` (default `THIRD_ORDER`).
+* Outputs: `getEstimatedPosition()`, `getNearestFingerprints()`, and for non-linear estimators `getCovariance()`
+  / `getChiSq()`; the joint estimator additionally exposes `getEstimatedLocatedSources()`.
+
+== Related
+
+* xref:position-rssi.adoc[] / xref:position-ranging.adoc[] / xref:position-combined.adoc[] — direct positioning
+  when source locations are already known.
+* xref:radiosource-estimation.adoc[] — estimating a radio source's position and transmission parameters from
+  readings taken at known locations (the inverse problem this package's joint estimator also touches on).

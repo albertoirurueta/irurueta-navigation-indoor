@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 460" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <clipPath id="frame-rssi">
+      <rect x="8" y="8" width="624" height="384" rx="12" ry="12"/>
+    </clipPath>
+  </defs>
+
+  <rect x="8" y="8" width="624" height="384" rx="12" ry="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+
+  <g clip-path="url(#frame-rssi)">
+    <!-- estimated distance circles (from RSSI via path-loss model) -->
+    <circle cx="150" cy="100" r="195" fill="none" stroke="#2563eb" stroke-width="2" stroke-dasharray="6 5" opacity="0.55"/>
+    <circle cx="480" cy="95" r="228" fill="none" stroke="#2563eb" stroke-width="2" stroke-dasharray="6 5" opacity="0.55"/>
+    <circle cx="315" cy="330" r="120" fill="none" stroke="#2563eb" stroke-width="2" stroke-dasharray="6 5" opacity="0.55"/>
+
+    <!-- small residual/uncertainty region where the three circles nearly meet -->
+    <polygon points="292,205 316,232 286,238" fill="#f59e0b" opacity="0.18"/>
+  </g>
+
+  <!-- signal radiating outward from each access point (equal in all directions, decaying with distance) -->
+  <g stroke="#2563eb" fill="none">
+    <circle cx="150" cy="100" r="16" opacity="0.5"/>
+    <circle cx="150" cy="100" r="26" opacity="0.32"/>
+    <circle cx="150" cy="100" r="36" opacity="0.16"/>
+    <circle cx="480" cy="95" r="16" opacity="0.5"/>
+    <circle cx="480" cy="95" r="26" opacity="0.32"/>
+    <circle cx="480" cy="95" r="36" opacity="0.16"/>
+    <circle cx="315" cy="330" r="16" opacity="0.5"/>
+    <circle cx="315" cy="330" r="26" opacity="0.32"/>
+    <circle cx="315" cy="330" r="36" opacity="0.16"/>
+  </g>
+
+  <!-- access points (known position + known transmitted power) -->
+  <g>
+    <circle cx="150" cy="100" r="8" fill="#2563eb"/>
+    <text x="150" y="80" text-anchor="middle" font-size="15" fill="#1e293b" font-weight="600">AP1</text>
+    <text x="150" y="130" text-anchor="middle" font-size="11" fill="#64748b">RSSI = −55 dBm</text>
+
+    <circle cx="480" cy="95" r="8" fill="#2563eb"/>
+    <text x="480" y="75" text-anchor="middle" font-size="15" fill="#1e293b" font-weight="600">AP2</text>
+    <text x="480" y="125" text-anchor="middle" font-size="11" fill="#64748b">RSSI = −62 dBm</text>
+
+    <circle cx="315" cy="330" r="8" fill="#2563eb"/>
+    <text x="315" y="358" text-anchor="middle" font-size="15" fill="#1e293b" font-weight="600">AP3</text>
+    <text x="315" y="308" text-anchor="middle" font-size="11" fill="#64748b">RSSI = −48 dBm</text>
+  </g>
+
+  <!-- estimated device position -->
+  <circle cx="300" cy="222" r="7" fill="#f59e0b" stroke="#ffffff" stroke-width="1.5"/>
+  <text x="300" y="205" text-anchor="middle" font-size="12" fill="#92400e" font-weight="600">estimated position</text>
+
+  <!-- callout for the path-loss conversion -->
+  <line x1="245" y1="150" x2="180" y2="115" stroke="#475569" stroke-width="1" marker-end="url(#arrow-rssi)"/>
+  <defs>
+    <marker id="arrow-rssi" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#475569"/>
+    </marker>
+  </defs>
+  <text x="248" y="148" font-size="12" fill="#334155">d&#8321; &#8776; estimated distance</text>
+  <text x="248" y="163" font-size="12" fill="#334155">(RSSI &#8594; path-loss model)</text>
+
+  <!-- caption -->
+  <text x="320" y="418" text-anchor="middle" font-size="13" fill="#334155">
+    RSSI &#8594; estimated distance (path-loss model) &#8594; multilateration
+  </text>
+  <text x="320" y="438" text-anchor="middle" font-size="11" fill="#94a3b8">
+    dashed circles: distance estimated at each access point from its own RSSI reading
+  </text>
+</svg>
