@@ -1,0 +1,66 @@
+= Installation
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+`irurueta-navigation-indoor` is published to Maven Central. Add the dependency to your project using Maven or
+Gradle.
+
+== Maven
+
+Latest release:
+
+[source,xml]
+----
+<dependency>
+    <groupId>com.irurueta</groupId>
+    <artifactId>irurueta-navigation-indoor</artifactId>
+    <version>1.5.0</version>
+    <scope>compile</scope>
+</dependency>
+----
+
+Latest snapshot:
+
+[source,xml]
+----
+<dependency>
+    <groupId>com.irurueta</groupId>
+    <artifactId>irurueta-navigation-indoor</artifactId>
+    <version>1.6.0-SNAPSHOT</version>
+    <scope>compile</scope>
+</dependency>
+----
+
+NOTE: Snapshot versions are published to the Sonatype OSS snapshots repository. Add
+`https://s01.oss.sonatype.org/content/repositories/snapshots/` as a repository to your build in order to resolve
+them.
+
+== Gradle
+
+Latest release:
+
+[source,groovy]
+----
+implementation 'com.irurueta:irurueta-navigation-indoor:1.5.0'
+----
+
+Latest snapshot:
+
+[source,groovy]
+----
+implementation 'com.irurueta:irurueta-navigation-indoor:1.6.0-SNAPSHOT'
+----
+
+== Requirements
+
+The library targets Java 17 or newer (see the `maven.compiler.source`/`maven.compiler.target` properties in
+`pom.xml`).
+
+== Building from source
+
+[source,bash]
+----
+git clone git@github.com:albertoirurueta/irurueta-navigation-indoor.git
+cd irurueta-navigation-indoor
+mvn clean install
+----

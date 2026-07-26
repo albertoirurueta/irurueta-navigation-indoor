@@ -1,0 +1,22 @@
+= Reference
+
+NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
+
+These reports are generated during the build.
+
+== Generated Reports
+
+[cols="1,3",options="header"]
+|===
+|Report
+|Description
+
+|https://albertoirurueta.github.io/irurueta-navigation-indoor[Maven Site Report]
+|Aggregated project site including Javadoc API docs, unit test results (Surefire), code coverage (JaCoCo),
+and static analysis reports (Checkstyle, PMD, SpotBugs), published to GitHub Pages on every build of the
+`master` and `develop` branches.
+
+|https://sonarcloud.io/dashboard?id=albertoirurueta_irurueta-navigation-indoor[SonarCloud Dashboard]
+|Continuous code quality and security analysis (bugs, code smells, coverage, duplications, maintainability,
+reliability, security) reported by the `sonar-scanner` build step.
+|===
