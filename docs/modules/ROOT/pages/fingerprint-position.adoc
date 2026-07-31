@@ -262,6 +262,104 @@ device position.
 * Outputs: `getEstimatedPosition()`, `getNearestFingerprints()`, and for non-linear estimators `getCovariance()`
   / `getChiSq()`; the joint estimator additionally exposes `getEstimatedLocatedSources()`.
 
+== API reference
+
+Main classes used on this page, linked to their source code and Javadoc:
+
+[cols="1,1,1"]
+|===
+|Class |Source |Javadoc
+
+|`BaseFingerprintPositionAndRadioSourceEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/fingerprint/BaseFingerprintPositionAndRadioSourceEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/fingerprint/BaseFingerprintPositionAndRadioSourceEstimator.html[Javadoc]
+
+|`BaseFingerprintPositionEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/fingerprint/BaseFingerprintPositionEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/fingerprint/BaseFingerprintPositionEstimator.html[Javadoc]
+
+|`FingerprintPositionAndRadioSourceEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/fingerprint/FingerprintPositionAndRadioSourceEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/fingerprint/FingerprintPositionAndRadioSourceEstimator.html[Javadoc]
+
+|`FingerprintPositionEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/fingerprint/FingerprintPositionEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/fingerprint/FingerprintPositionEstimator.html[Javadoc]
+
+|`FirstOrderNonLinearFingerprintPositionEstimator2D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/fingerprint/FirstOrderNonLinearFingerprintPositionEstimator2D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/fingerprint/FirstOrderNonLinearFingerprintPositionEstimator2D.html[Javadoc]
+
+|`FirstOrderNonLinearFingerprintPositionEstimator3D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/fingerprint/FirstOrderNonLinearFingerprintPositionEstimator3D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/fingerprint/FirstOrderNonLinearFingerprintPositionEstimator3D.html[Javadoc]
+
+|`LinearFingerprintPositionEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/fingerprint/LinearFingerprintPositionEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/fingerprint/LinearFingerprintPositionEstimator.html[Javadoc]
+
+|`LinearFingerprintPositionEstimator2D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/fingerprint/LinearFingerprintPositionEstimator2D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/fingerprint/LinearFingerprintPositionEstimator2D.html[Javadoc]
+
+|`LinearFingerprintPositionEstimator3D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/fingerprint/LinearFingerprintPositionEstimator3D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/fingerprint/LinearFingerprintPositionEstimator3D.html[Javadoc]
+
+|`NonLinearFingerprintPositionAndRadioSourceEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/fingerprint/NonLinearFingerprintPositionAndRadioSourceEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/fingerprint/NonLinearFingerprintPositionAndRadioSourceEstimator.html[Javadoc]
+
+|`NonLinearFingerprintPositionAndRadioSourceEstimator2D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/fingerprint/NonLinearFingerprintPositionAndRadioSourceEstimator2D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/fingerprint/NonLinearFingerprintPositionAndRadioSourceEstimator2D.html[Javadoc]
+
+|`NonLinearFingerprintPositionAndRadioSourceEstimator3D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/fingerprint/NonLinearFingerprintPositionAndRadioSourceEstimator3D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/fingerprint/NonLinearFingerprintPositionAndRadioSourceEstimator3D.html[Javadoc]
+
+|`NonLinearFingerprintPositionEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/fingerprint/NonLinearFingerprintPositionEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/fingerprint/NonLinearFingerprintPositionEstimator.html[Javadoc]
+
+|`NonLinearFingerprintPositionEstimator2D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/fingerprint/NonLinearFingerprintPositionEstimator2D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/fingerprint/NonLinearFingerprintPositionEstimator2D.html[Javadoc]
+
+|`NonLinearFingerprintPositionEstimator3D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/fingerprint/NonLinearFingerprintPositionEstimator3D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/fingerprint/NonLinearFingerprintPositionEstimator3D.html[Javadoc]
+
+|`NonLinearFingerprintPositionEstimatorType`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/fingerprint/NonLinearFingerprintPositionEstimatorType.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/fingerprint/NonLinearFingerprintPositionEstimatorType.html[Javadoc]
+
+|`RadioSourceKNearestFinder`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/RadioSourceKNearestFinder.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/RadioSourceKNearestFinder.html[Javadoc]
+
+|`RadioSourceNoMeanKNearestFinder`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/RadioSourceNoMeanKNearestFinder.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/RadioSourceNoMeanKNearestFinder.html[Javadoc]
+
+|`SecondOrderNonLinearFingerprintPositionEstimator2D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/fingerprint/SecondOrderNonLinearFingerprintPositionEstimator2D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/fingerprint/SecondOrderNonLinearFingerprintPositionEstimator2D.html[Javadoc]
+
+|`SecondOrderNonLinearFingerprintPositionEstimator3D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/fingerprint/SecondOrderNonLinearFingerprintPositionEstimator3D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/fingerprint/SecondOrderNonLinearFingerprintPositionEstimator3D.html[Javadoc]
+
+|`ThirdOrderNonLinearFingerprintPositionEstimator2D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/fingerprint/ThirdOrderNonLinearFingerprintPositionEstimator2D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/fingerprint/ThirdOrderNonLinearFingerprintPositionEstimator2D.html[Javadoc]
+
+|`ThirdOrderNonLinearFingerprintPositionEstimator3D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/fingerprint/ThirdOrderNonLinearFingerprintPositionEstimator3D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/fingerprint/ThirdOrderNonLinearFingerprintPositionEstimator3D.html[Javadoc]
+
+|===
+
 == Related
 
 * xref:position-rssi.adoc[] / xref:position-ranging.adoc[] / xref:position-combined.adoc[] — direct positioning
