@@ -244,6 +244,80 @@ sequential estimator are split and forwarded to whichever inner stage uses PROSA
 Static `create(...)` factories exist on the 2D/3D robust classes for each measurement type, building any variant
 from a `RobustEstimatorMethod` enum (default PROMedS).
 
+== API reference
+
+Main classes used on this page, linked to their source code and Javadoc:
+
+[cols="1,1,1"]
+|===
+|Class |Source |Javadoc
+
+|`LMedSRobustRssiRadioSourceEstimator2D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/radiosource/LMedSRobustRssiRadioSourceEstimator2D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/radiosource/LMedSRobustRssiRadioSourceEstimator2D.html[Javadoc]
+
+|`MSACRobustRssiRadioSourceEstimator2D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/radiosource/MSACRobustRssiRadioSourceEstimator2D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/radiosource/MSACRobustRssiRadioSourceEstimator2D.html[Javadoc]
+
+|`MixedRadioSourceEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/radiosource/MixedRadioSourceEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/radiosource/MixedRadioSourceEstimator.html[Javadoc]
+
+|`PROMedSRobustRssiRadioSourceEstimator2D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/radiosource/PROMedSRobustRssiRadioSourceEstimator2D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/radiosource/PROMedSRobustRssiRadioSourceEstimator2D.html[Javadoc]
+
+|`PROSACRobustRssiRadioSourceEstimator2D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/radiosource/PROSACRobustRssiRadioSourceEstimator2D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/radiosource/PROSACRobustRssiRadioSourceEstimator2D.html[Javadoc]
+
+|`RANSACRobustRssiRadioSourceEstimator2D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/radiosource/RANSACRobustRssiRadioSourceEstimator2D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/radiosource/RANSACRobustRssiRadioSourceEstimator2D.html[Javadoc]
+
+|`RadioSourceEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/radiosource/RadioSourceEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/radiosource/RadioSourceEstimator.html[Javadoc]
+
+|`RangingAndRssiRadioSourceEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/radiosource/RangingAndRssiRadioSourceEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/radiosource/RangingAndRssiRadioSourceEstimator.html[Javadoc]
+
+|`RangingRadioSourceEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/radiosource/RangingRadioSourceEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/radiosource/RangingRadioSourceEstimator.html[Javadoc]
+
+|`RobustRadioSourceEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/radiosource/RobustRadioSourceEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/radiosource/RobustRadioSourceEstimator.html[Javadoc]
+
+|`RobustRangingAndRssiRadioSourceEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/radiosource/RobustRangingAndRssiRadioSourceEstimator.html[Javadoc]
+
+|`RobustRangingRadioSourceEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/radiosource/RobustRangingRadioSourceEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/radiosource/RobustRangingRadioSourceEstimator.html[Javadoc]
+
+|`RobustRssiRadioSourceEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/radiosource/RobustRssiRadioSourceEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/radiosource/RobustRssiRadioSourceEstimator.html[Javadoc]
+
+|`RssiRadioSourceEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/radiosource/RssiRadioSourceEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/radiosource/RssiRadioSourceEstimator.html[Javadoc]
+
+|`SequentialRobustMixedRadioSourceEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/radiosource/SequentialRobustMixedRadioSourceEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/radiosource/SequentialRobustMixedRadioSourceEstimator.html[Javadoc]
+
+|`SequentialRobustRangingAndRssiRadioSourceEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/radiosource/SequentialRobustRangingAndRssiRadioSourceEstimator.html[Javadoc]
+
+|===
+
 == Related
 
 * xref:position-rssi.adoc[] / xref:position-ranging.adoc[] / xref:position-combined.adoc[] — the forward problem:

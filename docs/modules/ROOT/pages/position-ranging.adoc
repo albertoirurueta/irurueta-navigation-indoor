@@ -186,6 +186,92 @@ readings dominate PROSAC/PROMedS regardless of raw quality-score magnitude.
 Static `create(...)` factories on `RobustRangingPositionEstimator2D`/`3D` build any variant from a
 `RobustEstimatorMethod` enum, defaulting to PROMedS.
 
+== API reference
+
+Main classes used on this page, linked to their source code and Javadoc:
+
+[cols="1,1,1"]
+|===
+|Class |Source |Javadoc
+
+|`LMedSRobustRangingPositionEstimator2D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/LMedSRobustRangingPositionEstimator2D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/LMedSRobustRangingPositionEstimator2D.html[Javadoc]
+
+|`LinearRangingPositionEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/LinearRangingPositionEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/LinearRangingPositionEstimator.html[Javadoc]
+
+|`LinearRangingPositionEstimator2D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/LinearRangingPositionEstimator2D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/LinearRangingPositionEstimator2D.html[Javadoc]
+
+|`LinearRangingPositionEstimator3D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/LinearRangingPositionEstimator3D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/LinearRangingPositionEstimator3D.html[Javadoc]
+
+|`MSACRobustRangingPositionEstimator2D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/MSACRobustRangingPositionEstimator2D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/MSACRobustRangingPositionEstimator2D.html[Javadoc]
+
+|`NonLinearRangingPositionEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/NonLinearRangingPositionEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/NonLinearRangingPositionEstimator.html[Javadoc]
+
+|`NonLinearRangingPositionEstimator2D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/NonLinearRangingPositionEstimator2D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/NonLinearRangingPositionEstimator2D.html[Javadoc]
+
+|`NonLinearRangingPositionEstimator3D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/NonLinearRangingPositionEstimator3D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/NonLinearRangingPositionEstimator3D.html[Javadoc]
+
+|`PROMedSRobustRangingPositionEstimator2D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/PROMedSRobustRangingPositionEstimator2D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/PROMedSRobustRangingPositionEstimator2D.html[Javadoc]
+
+|`PROSACRobustRangingPositionEstimator2D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/PROSACRobustRangingPositionEstimator2D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/PROSACRobustRangingPositionEstimator2D.html[Javadoc]
+
+|`PositionEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/PositionEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/PositionEstimator.html[Javadoc]
+
+|`RANSACRobustRangingPositionEstimator2D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/RANSACRobustRangingPositionEstimator2D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/RANSACRobustRangingPositionEstimator2D.html[Javadoc]
+
+|`RangingPositionEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/RangingPositionEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/RangingPositionEstimator.html[Javadoc]
+
+|`RangingReading`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/RangingReading.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/RangingReading.html[Javadoc]
+
+|`ReadingSorter`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/ReadingSorter.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/ReadingSorter.html[Javadoc]
+
+|`RobustPositionEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/RobustPositionEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/RobustPositionEstimator.html[Javadoc]
+
+|`RobustRangingPositionEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/RobustRangingPositionEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/RobustRangingPositionEstimator.html[Javadoc]
+
+|`RobustRangingPositionEstimator2D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/RobustRangingPositionEstimator2D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/RobustRangingPositionEstimator2D.html[Javadoc]
+
+|`RobustRangingPositionEstimator3D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/RobustRangingPositionEstimator3D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/RobustRangingPositionEstimator3D.html[Javadoc]
+
+|===
+
 == Related
 
 * xref:position-rssi.adoc[] — the equivalent hierarchy for signal-strength readings.
