@@ -27,6 +27,9 @@ The Maven reports are generated during Maven site execution and are available af
 |https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site[Maven Site]
 |Aggregation of project reports.
 
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site[Maven Site]
+|Aggregation of project reports.
+
 |https://github.com/albertoirurueta/irurueta-navigation-indoor[Repository]
 |Github repository
 |===
