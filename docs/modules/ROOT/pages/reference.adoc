@@ -1,4 +1,6 @@
 = Reference
+:description: Links to generated project reports for irurueta-navigation-indoor: Javadoc API reference, JaCoCo coverage, Surefire test results, and SonarCloud code quality analysis.
+:keywords: Javadoc, API reference, JaCoCo, code coverage, Surefire, SonarCloud, code quality, irurueta-navigation-indoor
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 

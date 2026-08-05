@@ -1,4 +1,6 @@
 = What's New
+:description: Release notes and changelog for irurueta-navigation-indoor, covering version upgrades, dependency updates, and new documentation.
+:keywords: release notes, changelog, whats new, irurueta-navigation-indoor, version history
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 

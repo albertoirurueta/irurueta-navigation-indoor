@@ -1,4 +1,6 @@
 = Radio source estimators
+:description: How RadioSourceEstimator and its RSSI, ranging, combined, and robust variants estimate an unknown radio source's position, transmitted power, and path-loss exponent from known-location readings.
+:keywords: radio source estimation, transmitted power estimation, path-loss exponent, RSSI, ranging, robust estimation, RANSAC, LMedS, MSAC, PROSAC, PROMedS, Wi-Fi access point, Bluetooth beacon, indoor positioning
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 
