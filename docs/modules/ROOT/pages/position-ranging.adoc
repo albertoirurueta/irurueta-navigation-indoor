@@ -90,12 +90,12 @@ every other one.
 (\mathbf{x}-\mathbf{p}_1)\cdot(\mathbf{p}_i-\mathbf{p}_1) = \frac{1}{2}\left(d_1^2 - d_i^2 + \lVert \mathbf{p}_i - \mathbf{p}_1 \rVert^2\right) \equiv b_i
 ++++
 
-giving the linear system latexmath:[A\mathbf{y} = \mathbf{b}] in the shifted unknown latexmath:[\mathbf{y} =
+giving the linear system latexmath:[\mathbf{A}\mathbf{y} = \mathbf{b}] in the shifted unknown latexmath:[\mathbf{y} =
 \mathbf{x} - \mathbf{p}_1]:
 
 [latexmath]
 ++++
-A = \begin{bmatrix} x_2-x_1 & y_2-y_1 & z_2-z_1 \\ \vdots & \vdots & \vdots \\ x_n-x_1 & y_n-y_1 & z_n-z_1\end{bmatrix}
+\mathbf{A} = \begin{bmatrix} x_2-x_1 & y_2-y_1 & z_2-z_1 \\ \vdots & \vdots & \vdots \\ x_n-x_1 & y_n-y_1 & z_n-z_1\end{bmatrix}
 ++++
 
 solved by a direct linear solve, then latexmath:[\mathbf{x} = \mathbf{y} + \mathbf{p}_1]. Based on Hereman &
