@@ -129,14 +129,14 @@ equations before solving.
 
 === Inhomogeneous solver
 
-Using the first source's position latexmath:[p_1] as reference and letting latexmath:[d_i] be the estimated
+Using the first source's position latexmath:[\mathbf{p}_1] as reference and letting latexmath:[d_i] be the estimated
 distance to source latexmath:[i], subtracting the reference sphere equation from every other one cancels the
-quadratic terms in the unknown position, producing a linear system latexmath:[A\mathbf{x} = \mathbf{b}] in the
+quadratic terms in the unknown position, producing a linear system latexmath:[\mathbf{A}\mathbf{x} = \mathbf{b}] in the
 unknown offset latexmath:[\mathbf{x} = (x-x_1, y-y_1, z-z_1)]:
 
 [latexmath]
 ++++
-A = \begin{bmatrix} x_2 - x_1 & y_2 - y_1 & z_2 - z_1 \\ \vdots & \vdots & \vdots \end{bmatrix}, \qquad
+\mathbf{A} = \begin{bmatrix} x_2 - x_1 & y_2 - y_1 & z_2 - z_1 \\ \vdots & \vdots & \vdots \end{bmatrix}, \qquad
 b_i = \frac{1}{2}\left(d_1^2 - d_i^2 + \lVert p_i - p_1 \rVert^2\right)
 ++++
 
@@ -146,8 +146,8 @@ position estimation.
 === Homogeneous solver
 
 Substituting homogeneous coordinates latexmath:[(x,y) = (x'/w', y'/w')] into the same pairwise-differenced
-equations produces a homogeneous system latexmath:[A\mathbf{x} = 0] whose solution is the right null-space vector
-of latexmath:[A] (found via SVD); the estimated position is recovered by dividing by latexmath:[w']. It is more
+equations produces a homogeneous system latexmath:[\mathbf{A}\mathbf{x} = 0] whose solution is the right null-space vector
+of latexmath:[\mathbf{A}] (found via SVD); the estimated position is recovered by dividing by latexmath:[w']. It is more
 numerically robust to certain degenerate configurations, at the cost of an SVD instead of a direct solve.
 
 == Non-linear estimation

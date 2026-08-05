@@ -61,22 +61,22 @@ flowchart LR
 === Path-loss distance model
 
 Several estimators convert a received signal strength into an estimated distance using a log-distance path-loss
-model. Given a measured RSSI, the transmit power, and a path-loss exponent latexmath:[n], the estimated distance
-latexmath:[d] is:
+model. Given a measured RSSI, the transmit power, and a path-loss exponent stem:[n], the estimated distance
+stem:[d] is:
 
-[latexmath]
+[stem]
 ++++
 d = 10^{\frac{n \cdot k_{dB} + P_{tx} - \mathrm{RSSI}}{10 n}}
 ++++
 
 where:
 
-[latexmath]
+[stem]
 ++++
 k_{dB} = 10 \log_{10}\left(\dfrac{c}{4 \pi f}\right)
 ++++
 
-depends on the signal's frequency latexmath:[f] and the speed of light latexmath:[c]. Robust variants of the
+depends on the signal's frequency stem:[f] and the speed of light stem:[c]. Robust variants of the
 estimators (LMedS, MSAC, PROSAC) apply this model while tolerating outlier readings.
 
 == API reference

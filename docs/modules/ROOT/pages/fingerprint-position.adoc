@@ -104,7 +104,7 @@ neighbors, `k` is increased (up to `maxNearestFingerprints`, unlimited by defaul
 `LinearFingerprintPositionEstimator` linearizes the log-distance path-loss model with a **first-order Taylor
 expansion** of received power around each known fingerprint location, then solves the resulting system directly
 — no iterative fitting involved. Given received power as a function of squared distance to a source at position
-latexmath:[\mathbf{p}_a]:
+stem:[\mathbf{\mathbf{p}}_a]:
 
 [latexmath]
 ++++
@@ -118,7 +118,7 @@ expanding around a known fingerprint position latexmath:[\mathbf{p}_1] (2D case 
 P_r(\mathbf{p}_i) \approx P_r(\mathbf{p}_1) + \frac{\partial P_r(\mathbf{p}_1)}{\partial x}(x_i-x_1) + \frac{\partial P_r(\mathbf{p}_1)}{\partial y}(y_i-y_1)
 ++++
 
-with the derivatives evaluated at the known, fixed distance latexmath:[d_{1a}] between fingerprint and source:
+with the derivatives evaluated at the known, fixed distance stem:[d_{1a}] between fingerprint and source:
 
 [latexmath]
 ++++
@@ -127,8 +127,8 @@ with the derivatives evaluated at the known, fixed distance latexmath:[d_{1a}] b
 ++++
 
 Rearranged, each `(known fingerprint, matched source reading)` pair contributes one row to a linear system in the
-unknown position latexmath:[(x_i, y_i)], solved directly (not by least-squares fitting). The 3D case simply adds
-the analogous latexmath:[z] terms. At least `dims` independent rows are required (2 for 2D, 3 for 3D).
+unknown position stem:[(x_i, y_i)], solved directly (not by least-squares fitting). The 3D case simply adds
+the analogous stem:[z] terms. At least `dims` independent rows are required (2 for 2D, 3 for 3D).
 Class documentation calls this "a first-order Taylor approximation... solves the problem in a linear way" — it is
 mathematically the same first-order model as
 xref:#_first_order[the `FirstOrderNonLinearFingerprintPositionEstimator`] below, just solved directly instead of
@@ -157,8 +157,8 @@ P_r(\mathbf{p}_i) = {}& P_r(\mathbf{p}_1) + \frac{\partial P_r}{\partial x}(x_i{
 \end{aligned}
 ++++
 
-all derivatives evaluated at the known fingerprint position latexmath:[\mathbf{p}_1] (fixed, known distance
-latexmath:[d_{1a}] to the source). `NonLinearFingerprintPositionEstimatorType` selects how many of these terms are
+all derivatives evaluated at the known fingerprint position stem:[\mathbf{p}_1] (fixed, known distance
+stem:[d_{1a}] to the source). `NonLinearFingerprintPositionEstimatorType` selects how many of these terms are
 used (default `THIRD_ORDER`); the 3D case has the same structure with one extra axis.
 
 [#_first_order]
