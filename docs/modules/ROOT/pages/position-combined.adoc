@@ -1,4 +1,6 @@
 = Combined RSSI and ranging position estimators
+:description: How RangingAndRssi and Mixed position estimators combine ranging and RSSI readings, including sequential two-stage robust estimation, into a single device position estimate.
+:keywords: combined RSSI and ranging, RangingAndRssiPositionEstimator, MixedPositionEstimator, sequential robust estimation, multilateration, indoor positioning, RANSAC, LMedS, MSAC, PROSAC, PROMedS
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 

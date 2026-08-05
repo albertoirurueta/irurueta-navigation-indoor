@@ -1,4 +1,6 @@
 = Ranging-based position estimators
+:description: How RangingPositionEstimator and its linear, non-linear, and robust variants estimate device position from Wi-Fi RTT (802.11mc) ranging distance readings.
+:keywords: ranging position estimation, Wi-Fi RTT, 802.11mc, round-trip time, multilateration, trilateration, linear estimator, non-linear estimator, robust estimation, RANSAC, LMedS, MSAC, PROSAC, PROMedS, indoor positioning
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 

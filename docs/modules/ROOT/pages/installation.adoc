@@ -1,4 +1,6 @@
 = Installation
+:description: How to add irurueta-navigation-indoor to a Maven or Gradle project, including release and snapshot dependency coordinates and build-from-source instructions.
+:keywords: installation, Maven dependency, Gradle dependency, Maven Central, irurueta-navigation-indoor, Java library setup, build from source, Sonatype snapshots
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 

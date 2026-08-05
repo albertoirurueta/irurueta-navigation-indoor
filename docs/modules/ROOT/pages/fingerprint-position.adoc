@@ -1,4 +1,6 @@
 = Fingerprint-based position estimators
+:description: How FingerprintPositionEstimator and its linear, non-linear (first/second/third-order), and joint position-and-radio-source variants estimate device position via k-nearest-neighbor RSSI fingerprint matching.
+:keywords: Wi-Fi fingerprinting, fingerprint-based positioning, k-nearest neighbors, RSSI fingerprint, Taylor expansion, non-linear estimation, joint position and radio source estimation, indoor positioning
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 

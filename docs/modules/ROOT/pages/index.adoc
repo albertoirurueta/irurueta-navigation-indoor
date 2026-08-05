@@ -1,4 +1,6 @@
 = Overview
+:description: Java library for indoor positioning from Wi-Fi and Bluetooth signals, using RSSI, ranging, fingerprinting, and radio source estimation with robust statistical methods.
+:keywords: indoor positioning, indoor navigation, Java library, Wi-Fi positioning, Bluetooth beacons, RSSI, ranging, fingerprinting, radio source estimation, multilateration, trilateration, robust estimation
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 
