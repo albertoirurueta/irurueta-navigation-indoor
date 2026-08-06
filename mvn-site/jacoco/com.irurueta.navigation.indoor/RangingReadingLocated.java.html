@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RangingReadingLocated.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-indoor</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.indoor</a> &gt; <span class="el_source">RangingReadingLocated.java</span></div><h1>RangingReadingLocated.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2018 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.indoor;
+
+import com.irurueta.algebra.Matrix;
+import com.irurueta.geometry.Point;
+
+/**
+ * Contains a located ranging reading associated to a given radio source (e.g. Wi-Fi access point or
+ * bluetooth beacon), indicating the distance to such access point.
+ *
+ * @param &lt;S&gt; a {@link RadioSource} type.
+ * @param &lt;P&gt; a {@link Point} type.
+ */
+public class RangingReadingLocated&lt;S extends RadioSource, P extends Point&lt;?&gt;&gt; extends RangingReading&lt;S&gt;
+        implements ReadingLocated&lt;P&gt; {
+
+    /**
+     * Position where Wi-Fi reading was made.
+     */
+    private P position;
+
+    /**
+     * Covariance of inhomogeneous coordinates of current position
+     * (if available).
+     */
+    private Matrix positionCovariance;
+
+    /**
+     * Constructor.
+     *
+     * @param source   radio source associated to this reading.
+     * @param distance distance in meters to the radio source.
+     * @param position position where reading was made.
+     * @throws IllegalArgumentException if radio source data is null, distance is negative
+     *                                  or position is null.
+     */
+    public RangingReadingLocated(final S source, final double distance, final P position) {
+<span class="fc" id="L52">        super(source, distance);</span>
+
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (position == null) {</span>
+<span class="fc" id="L55">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L58">        this.position = position;</span>
+<span class="fc" id="L59">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param source                    radio source associated to this reading.
+     * @param distance                  distance in meters to the radio source.
+     * @param position                  position where reading was made.
+     * @param numAttemptedMeasurements  number of attempted measurements used in the RTT exchange.
+     * @param numSuccessfulMeasurements number of successful measurements used to calculate the
+     *                                  distance and standard deviation.
+     * @throws IllegalArgumentException if radio source data is null, distance is negative,
+     *                                  position is null, number of attempted measures is less than 1 or number of successful
+     *                                  measures is negative.
+     */
+    public RangingReadingLocated(
+            final S source, final double distance, final P position, final int numAttemptedMeasurements,
+            final int numSuccessfulMeasurements) {
+<span class="fc" id="L77">        super(source, distance, numAttemptedMeasurements, numSuccessfulMeasurements);</span>
+
+<span class="fc bfc" id="L79" title="All 2 branches covered.">        if (position == null) {</span>
+<span class="fc" id="L80">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L83">        this.position = position;</span>
+<span class="fc" id="L84">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param source                    radio source associated to this reading.
+     * @param distance                  distance in meters to the radio source.
+     * @param position                  position where reading was made.
+     * @param distanceStandardDeviation standard deviation of distance, if available.
+     * @throws IllegalArgumentException if radio source data is null, distance is negative,
+     *                                  position is null or standard deviation is zero or negative.
+     */
+    public RangingReadingLocated(
+            final S source, final double distance, final P position, final Double distanceStandardDeviation) {
+<span class="fc" id="L98">        super(source, distance, distanceStandardDeviation);</span>
+
+<span class="fc bfc" id="L100" title="All 2 branches covered.">        if (position == null) {</span>
+<span class="fc" id="L101">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L104">        this.position = position;</span>
+<span class="fc" id="L105">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param source                    radio source associated to this reading.
+     * @param distance                  distance in meters to the radio source.
+     * @param position                  position where reading was made.
+     * @param distanceStandardDeviation standard deviation of distance, if available.
+     * @param numAttemptedMeasurements  number of attempted measurements used in the RTT exchange.
+     * @param numSuccessfulMeasurements number of successful measurements used to calculate the
+     *                                  distance and standard deviation.
+     * @throws IllegalArgumentException if radio source data is null, distance is negative,
+     *                                  position is null or standard deviation is zero or negative, number of attempted
+     *                                  measures is less than 1 or number of successful measures is negative.
+     */
+    public RangingReadingLocated(
+            final S source, final double distance, final P position, final Double distanceStandardDeviation,
+            final int numAttemptedMeasurements, final int numSuccessfulMeasurements) {
+<span class="fc" id="L124">        super(source, distance, distanceStandardDeviation, numAttemptedMeasurements, numSuccessfulMeasurements);</span>
+
+<span class="fc bfc" id="L126" title="All 2 branches covered.">        if (position == null) {</span>
+<span class="fc" id="L127">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L130">        this.position = position;</span>
+<span class="fc" id="L131">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param source             radio source associated to this reading.
+     * @param distance           distance in meters to the radio source.
+     * @param position           position where reading was made.
+     * @param positionCovariance covariance of inhomogeneous coordinates of
+     *                           current position (if available).
+     * @throws IllegalArgumentException if radio source data is null, distance is negative,
+     *                                  position is null or position covariance has wrong size.
+     */
+    public RangingReadingLocated(
+            final S source, final double distance, final P position, final Matrix positionCovariance) {
+<span class="fc" id="L146">        this(source, distance, position);</span>
+
+<span class="fc bfc" id="L148" title="All 2 branches covered.">        if (positionCovariance != null) {</span>
+<span class="fc" id="L149">            final var dims = position.getDimensions();</span>
+<span class="fc bfc" id="L150" title="All 4 branches covered.">            if (positionCovariance.getRows() != dims || positionCovariance.getColumns() != dims) {</span>
+<span class="fc" id="L151">                throw new IllegalArgumentException();</span>
+            }
+        }
+<span class="fc" id="L154">        this.positionCovariance = positionCovariance;</span>
+<span class="fc" id="L155">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param source                    radio source associated to this reading.
+     * @param distance                  distance in meters to the radio source.
+     * @param position                  position where reading was made.
+     * @param positionCovariance        covariance of inhomogeneous coordinates of
+     *                                  current position (if available).
+     * @param numAttemptedMeasurements  number of attempted measurements used in the RTT exchange.
+     * @param numSuccessfulMeasurements number of successful measurements used to calculate the
+     *                                  distance and standard deviation.
+     * @throws IllegalArgumentException if radio source data is null, distance is negative,
+     *                                  position is null, position covariance has wrong size, number of attempted
+     *                                  measures is less than 1 or number of successful measures is negative.
+     */
+    public RangingReadingLocated(
+            final S source, final double distance, final P position, final Matrix positionCovariance,
+            final int numAttemptedMeasurements, final int numSuccessfulMeasurements) {
+<span class="fc" id="L175">        super(source, distance, numAttemptedMeasurements, numSuccessfulMeasurements);</span>
+
+<span class="fc bfc" id="L177" title="All 2 branches covered.">        if (position == null) {</span>
+<span class="fc" id="L178">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">        if (positionCovariance != null) {</span>
+<span class="fc" id="L182">            final var dims = position.getDimensions();</span>
+<span class="fc bfc" id="L183" title="All 4 branches covered.">            if (positionCovariance.getRows() != dims || positionCovariance.getColumns() != dims) {</span>
+<span class="fc" id="L184">                throw new IllegalArgumentException();</span>
+            }
+        }
+
+<span class="fc" id="L188">        this.position = position;</span>
+<span class="fc" id="L189">        this.positionCovariance = positionCovariance;</span>
+<span class="fc" id="L190">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param source                    radio source associated to this reading.
+     * @param distance                  distance in meters to the radio source.
+     * @param position                  position where reading was made.
+     * @param distanceStandardDeviation standard deviation of distance, if available.
+     * @param positionCovariance        covariance of inhomogeneous coordinates of
+     *                                  current position (if available).
+     * @throws IllegalArgumentException if radio source data is null, distance is negative,
+     *                                  position is null or standard deviation is zero or negative.
+     */
+    public RangingReadingLocated(
+            final S source, final double distance, final P position, final Double distanceStandardDeviation,
+            final Matrix positionCovariance) {
+<span class="fc" id="L207">        this(source, distance, position, distanceStandardDeviation);</span>
+
+<span class="fc bfc" id="L209" title="All 2 branches covered.">        if (positionCovariance != null) {</span>
+<span class="fc" id="L210">            final var dims = position.getDimensions();</span>
+<span class="fc bfc" id="L211" title="All 4 branches covered.">            if (positionCovariance.getRows() != dims || positionCovariance.getColumns() != dims) {</span>
+<span class="fc" id="L212">                throw new IllegalArgumentException();</span>
+            }
+        }
+<span class="fc" id="L215">        this.positionCovariance = positionCovariance;</span>
+<span class="fc" id="L216">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param source                    radio source associated to this reading.
+     * @param distance                  distance in meters to the radio source.
+     * @param position                  position where reading was made.
+     * @param distanceStandardDeviation standard deviation of distance, if available.
+     * @param positionCovariance        covariance of inhomogeneous coordinates of
+     *                                  current position (if available).
+     * @param numAttemptedMeasurements  number of attempted measurements used in the RTT exchange.
+     * @param numSuccessfulMeasurements number of successful measurements used to calculate the
+     *                                  distance and standard deviation.
+     * @throws IllegalArgumentException if radio source data is null, distance is negative,
+     *                                  position is null, distance standard deviation is zero or negative, position
+     *                                  covariance has wrong size, number of attempted measures is less than 1 or
+     *                                  number of successful measures is negative.
+     */
+    public RangingReadingLocated(
+            final S source, final double distance, final P position, final Double distanceStandardDeviation,
+            final Matrix positionCovariance, final int numAttemptedMeasurements, final int numSuccessfulMeasurements) {
+<span class="fc" id="L238">        super(source, distance, distanceStandardDeviation, numAttemptedMeasurements, numSuccessfulMeasurements);</span>
+
+<span class="fc bfc" id="L240" title="All 2 branches covered.">        if (position == null) {</span>
+<span class="fc" id="L241">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="pc bpc" id="L244" title="1 of 2 branches missed.">        if (positionCovariance != null) {</span>
+<span class="fc" id="L245">            final var dims = position.getDimensions();</span>
+<span class="fc bfc" id="L246" title="All 4 branches covered.">            if (positionCovariance.getRows() != dims || positionCovariance.getColumns() != dims) {</span>
+<span class="fc" id="L247">                throw new IllegalArgumentException();</span>
+            }
+        }
+
+<span class="fc" id="L251">        this.position = position;</span>
+<span class="fc" id="L252">        this.positionCovariance = positionCovariance;</span>
+<span class="fc" id="L253">    }</span>
+
+    /**
+     * Empty constructor.
+     */
+    protected RangingReadingLocated() {
+<span class="fc" id="L259">        super();</span>
+<span class="fc" id="L260">    }</span>
+
+    /**
+     * Gets position where reading was made.
+     *
+     * @return position where reading was made.
+     */
+    public P getPosition() {
+<span class="fc" id="L268">        return position;</span>
+    }
+
+    /**
+     * Gets covariance of inhomogeneous coordinates of current position (if available).
+     *
+     * @return covariance of position or null.
+     */
+    public Matrix getPositionCovariance() {
+<span class="fc" id="L277">        return positionCovariance;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
