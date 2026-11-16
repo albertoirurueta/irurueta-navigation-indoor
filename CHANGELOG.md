@@ -7,6 +7,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [1.6.1] - 2026-11-16
+
+### Changed
+
+- Upgraded internal dependencies: `irurueta-navigation` to 1.8.2, `irurueta-numerical` to 1.6.1,
+  `irurueta-geometry` to 1.6.1, `irurueta-units` to 1.4.1, and `irurueta-algebra` to 1.4.1.
+
+### Fixed
+
+- `BeaconIdentifier.compareTo` now compares same-length identifiers byte by byte as unsigned values, so bytes of
+  `0x80` and above sort correctly.
+
 ## [1.6.0] - 2026-07-26
 
 ### Changed
@@ -88,7 +100,8 @@ No user-facing changes in this release; it consists solely of a `README.md` upda
   - Radio source (e.g., WiFi access point) position and path-loss exponent estimators, including robust
     estimators (`com.irurueta.navigation.indoor.radiosource`).
 
-[Unreleased]: https://github.com/albertoirurueta/irurueta-navigation-indoor/compare/1.6.0...HEAD
+[Unreleased]: https://github.com/albertoirurueta/irurueta-navigation-indoor/compare/1.6.1...HEAD
+[1.6.1]: https://github.com/albertoirurueta/irurueta-navigation-indoor/compare/1.6.0...1.6.1
 [1.6.0]: https://github.com/albertoirurueta/irurueta-navigation-indoor/compare/1.5.0...1.6.0
 [1.5.0]: https://github.com/albertoirurueta/irurueta-navigation-indoor/compare/1.4.0...1.5.0
 [1.4.0]: https://github.com/albertoirurueta/irurueta-navigation-indoor/compare/1.3.2...1.4.0

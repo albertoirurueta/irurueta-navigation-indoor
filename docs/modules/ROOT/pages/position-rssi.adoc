@@ -1,4 +1,6 @@
 = RSSI-based position estimators
+:description: How RssiPositionEstimator and its linear, non-linear, and robust (RANSAC, LMedS, MSAC, PROSAC, PROMedS) variants estimate device position from RSSI readings and known radio source locations.
+:keywords: RSSI position estimation, received signal strength, path-loss model, multilateration, trilateration, linear estimator, non-linear estimator, Levenberg-Marquardt, robust estimation, RANSAC, LMedS, MSAC, PROSAC, PROMedS, Wi-Fi positioning, Bluetooth beacons
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 
@@ -129,14 +131,14 @@ equations before solving.
 
 === Inhomogeneous solver
 
-Using the first source's position latexmath:[p_1] as reference and letting latexmath:[d_i] be the estimated
+Using the first source's position latexmath:[\mathbf{p}_1] as reference and letting latexmath:[d_i] be the estimated
 distance to source latexmath:[i], subtracting the reference sphere equation from every other one cancels the
-quadratic terms in the unknown position, producing a linear system latexmath:[A\mathbf{x} = \mathbf{b}] in the
+quadratic terms in the unknown position, producing a linear system latexmath:[\mathbf{A}\mathbf{x} = \mathbf{b}] in the
 unknown offset latexmath:[\mathbf{x} = (x-x_1, y-y_1, z-z_1)]:
 
 [latexmath]
 ++++
-A = \begin{bmatrix} x_2 - x_1 & y_2 - y_1 & z_2 - z_1 \\ \vdots & \vdots & \vdots \end{bmatrix}, \qquad
+\mathbf{A} = \begin{bmatrix} x_2 - x_1 & y_2 - y_1 & z_2 - z_1 \\ \vdots & \vdots & \vdots \end{bmatrix}, \qquad
 b_i = \frac{1}{2}\left(d_1^2 - d_i^2 + \lVert p_i - p_1 \rVert^2\right)
 ++++
 
@@ -146,8 +148,8 @@ position estimation.
 === Homogeneous solver
 
 Substituting homogeneous coordinates latexmath:[(x,y) = (x'/w', y'/w')] into the same pairwise-differenced
-equations produces a homogeneous system latexmath:[A\mathbf{x} = 0] whose solution is the right null-space vector
-of latexmath:[A] (found via SVD); the estimated position is recovered by dividing by latexmath:[w']. It is more
+equations produces a homogeneous system latexmath:[\mathbf{A}\mathbf{x} = 0] whose solution is the right null-space vector
+of latexmath:[\mathbf{A}] (found via SVD); the estimated position is recovered by dividing by latexmath:[w']. It is more
 numerically robust to certain degenerate configurations, at the cost of an SVD instead of a direct solve.
 
 == Non-linear estimation
@@ -243,6 +245,108 @@ regardless of variant. The default robust method across the library is PROMedS.
 
 Static `create(...)` factories on `RobustRssiPositionEstimator2D`/`3D` build any robust variant from a
 `RobustEstimatorMethod` enum value.
+
+== API reference
+
+Main classes used on this page, linked to their source code and Javadoc:
+
+[cols="1,1,1"]
+|===
+|Class |Source |Javadoc
+
+|`LMedSRobustRssiPositionEstimator2D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/LMedSRobustRssiPositionEstimator2D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/LMedSRobustRssiPositionEstimator2D.html[Javadoc]
+
+|`LMedSRobustRssiPositionEstimator3D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/LMedSRobustRssiPositionEstimator3D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/LMedSRobustRssiPositionEstimator3D.html[Javadoc]
+
+|`LinearRssiPositionEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/LinearRssiPositionEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/LinearRssiPositionEstimator.html[Javadoc]
+
+|`LinearRssiPositionEstimator2D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/LinearRssiPositionEstimator2D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/LinearRssiPositionEstimator2D.html[Javadoc]
+
+|`LinearRssiPositionEstimator3D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/LinearRssiPositionEstimator3D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/LinearRssiPositionEstimator3D.html[Javadoc]
+
+|`MSACRobustRssiPositionEstimator2D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/MSACRobustRssiPositionEstimator2D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/MSACRobustRssiPositionEstimator2D.html[Javadoc]
+
+|`NonLinearRssiPositionEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/NonLinearRssiPositionEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/NonLinearRssiPositionEstimator.html[Javadoc]
+
+|`NonLinearRssiPositionEstimator2D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/NonLinearRssiPositionEstimator2D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/NonLinearRssiPositionEstimator2D.html[Javadoc]
+
+|`NonLinearRssiPositionEstimator3D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/NonLinearRssiPositionEstimator3D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/NonLinearRssiPositionEstimator3D.html[Javadoc]
+
+|`PROMedSRobustRssiPositionEstimator2D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/PROMedSRobustRssiPositionEstimator2D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/PROMedSRobustRssiPositionEstimator2D.html[Javadoc]
+
+|`PROSACRobustRssiPositionEstimator2D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/PROSACRobustRssiPositionEstimator2D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/PROSACRobustRssiPositionEstimator2D.html[Javadoc]
+
+|`PositionEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/PositionEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/PositionEstimator.html[Javadoc]
+
+|`PositionEstimatorHelper`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/PositionEstimatorHelper.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/PositionEstimatorHelper.html[Javadoc]
+
+|`RANSACRobustRssiPositionEstimator2D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/RANSACRobustRssiPositionEstimator2D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/RANSACRobustRssiPositionEstimator2D.html[Javadoc]
+
+|`RANSACRobustRssiPositionEstimator3D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/RANSACRobustRssiPositionEstimator3D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/RANSACRobustRssiPositionEstimator3D.html[Javadoc]
+
+|`RadioSourceLocated`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/RadioSourceLocated.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/RadioSourceLocated.html[Javadoc]
+
+|`RobustPositionEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/RobustPositionEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/RobustPositionEstimator.html[Javadoc]
+
+|`RobustRssiPositionEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/RobustRssiPositionEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/RobustRssiPositionEstimator.html[Javadoc]
+
+|`RobustRssiPositionEstimator2D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/RobustRssiPositionEstimator2D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/RobustRssiPositionEstimator2D.html[Javadoc]
+
+|`RobustRssiPositionEstimator3D`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/RobustRssiPositionEstimator3D.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/RobustRssiPositionEstimator3D.html[Javadoc]
+
+|`RssiFingerprint`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/RssiFingerprint.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/RssiFingerprint.html[Javadoc]
+
+|`RssiPositionEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/RssiPositionEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/RssiPositionEstimator.html[Javadoc]
+
+|`Utils`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/Utils.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/Utils.html[Javadoc]
+
+|===
 
 == Related
 

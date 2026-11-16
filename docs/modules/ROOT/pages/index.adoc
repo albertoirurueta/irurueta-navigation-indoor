@@ -1,4 +1,6 @@
-= irurueta-navigation-indoor
+= Overview
+:description: Java library for indoor positioning from Wi-Fi and Bluetooth signals, using RSSI, ranging, fingerprinting, and radio source estimation with robust statistical methods.
+:keywords: indoor positioning, indoor navigation, Java library, Wi-Fi positioning, Bluetooth beacons, RSSI, ranging, fingerprinting, radio source estimation, multilateration, trilateration, robust estimation
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 
@@ -61,23 +63,77 @@ flowchart LR
 === Path-loss distance model
 
 Several estimators convert a received signal strength into an estimated distance using a log-distance path-loss
-model. Given a measured RSSI, the transmit power, and a path-loss exponent latexmath:[n], the estimated distance
-latexmath:[d] is:
+model. Given a measured RSSI, the transmit power, and a path-loss exponent stem:[n], the estimated distance
+stem:[d] is:
 
-[latexmath]
+[stem]
 ++++
 d = 10^{\frac{n \cdot k_{dB} + P_{tx} - \mathrm{RSSI}}{10 n}}
 ++++
 
 where:
 
-[latexmath]
+[stem]
 ++++
 k_{dB} = 10 \log_{10}\left(\dfrac{c}{4 \pi f}\right)
 ++++
 
-depends on the signal's frequency latexmath:[f] and the speed of light latexmath:[c]. Robust variants of the
+depends on the signal's frequency stem:[f] and the speed of light stem:[c]. Robust variants of the
 estimators (LMedS, MSAC, PROSAC) apply this model while tolerating outlier readings.
+
+== API reference
+
+Main classes used on this page, linked to their source code and Javadoc:
+
+[cols="1,1,1"]
+|===
+|Class |Source |Javadoc
+
+|`Beacon`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/Beacon.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/Beacon.html[Javadoc]
+
+|`Fingerprint`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/Fingerprint.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/Fingerprint.html[Javadoc]
+
+|`FingerprintPositionEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/fingerprint/FingerprintPositionEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/fingerprint/FingerprintPositionEstimator.html[Javadoc]
+
+|`RadioSource`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/RadioSource.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/RadioSource.html[Javadoc]
+
+|`RadioSourceEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/radiosource/RadioSourceEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/radiosource/RadioSourceEstimator.html[Javadoc]
+
+|`RangingPositionEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/RangingPositionEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/RangingPositionEstimator.html[Javadoc]
+
+|`RangingReading`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/RangingReading.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/RangingReading.html[Javadoc]
+
+|`RssiPositionEstimator`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/position/RssiPositionEstimator.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/position/RssiPositionEstimator.html[Javadoc]
+
+|`RssiReading`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/RssiReading.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/RssiReading.html[Javadoc]
+
+|`WeightedKNearestNeighboursPositionSolver`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/WeightedKNearestNeighboursPositionSolver.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/WeightedKNearestNeighboursPositionSolver.html[Javadoc]
+
+|`WifiAccessPoint`
+|https://github.com/albertoirurueta/irurueta-navigation-indoor/blob/master/src/main/java/com/irurueta/navigation/indoor/WifiAccessPoint.java[Source]
+|https://albertoirurueta.github.io/irurueta-navigation-indoor/mvn-site/apidocs/com/irurueta/navigation/indoor/WifiAccessPoint.html[Javadoc]
+
+|===
 
 == Next steps
 
