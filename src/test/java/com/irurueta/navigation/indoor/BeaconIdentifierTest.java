@@ -265,6 +265,40 @@ class BeaconIdentifierTest {
     }
 
     @Test
+    void testCompareToTreatsBytesAsUnsigned() {
+        // values whose bytes are 0x80 or above are negative as signed Java bytes,
+        // so they must still compare by their unsigned numeric value
+        final int[][] pairs = {
+                {0x8000, 0x7FFF},
+                {0x0080, 0x007F},
+                {0xFFFF, 0x0001},
+                {0x8001, 0x8000},
+                {0xFF00, 0x00FF}
+        };
+        for (final var pair : pairs) {
+            final var bigger = BeaconIdentifier.fromInt(pair[0]);
+            final var smaller = BeaconIdentifier.fromInt(pair[1]);
+            assertEquals(1, bigger.compareTo(smaller), "0x" + Integer.toHexString(pair[0]));
+            assertEquals(-1, smaller.compareTo(bigger), "0x" + Integer.toHexString(pair[1]));
+        }
+
+        final var big = BeaconIdentifier.fromLong(0x80000000L, 4);
+        final var small = BeaconIdentifier.fromLong(0x7FFFFFFFL, 4);
+        assertEquals(1, big.compareTo(small));
+        assertEquals(-1, small.compareTo(big));
+    }
+
+    @Test
+    void testCompareToMatchesNumericOrderForAllTwoByteValues() {
+        for (var value = 1; value <= 65535; value++) {
+            final var id = BeaconIdentifier.fromInt(value);
+            final var previous = BeaconIdentifier.fromInt(value - 1);
+            assertEquals(1, id.compareTo(previous), "value " + value);
+            assertEquals(-1, previous.compareTo(id), "value " + value);
+        }
+    }
+
+    @Test
     void testSerializeDeserialize() throws IOException, ClassNotFoundException {
         final var r = new Random();
 

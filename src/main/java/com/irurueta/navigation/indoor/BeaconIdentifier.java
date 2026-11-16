@@ -404,6 +404,8 @@ public class BeaconIdentifier implements Comparable<BeaconIdentifier>, Serializa
      * Compares two identifiers.
      * When the identifiers don't have the same length, the identifier having the shortest
      * array is considered smaller than the other.
+     * Identifiers having the same length are compared byte by byte (most significant byte first),
+     * treating each byte as unsigned, so that ordering matches the numeric value of the identifiers.
      *
      * @param that the other identifier.
      * @return 0 if both identifiers are equal. Otherwise, returns -1 or 1 depending on
@@ -417,7 +419,7 @@ public class BeaconIdentifier implements Comparable<BeaconIdentifier>, Serializa
         }
         for (var i = 0; i < value.length; i++) {
             if (value[i] != that.value[i]) {
-                return value[i] < that.value[i] ? -1 : 1;
+                return Byte.compareUnsigned(value[i], that.value[i]) < 0 ? -1 : 1;
             }
         }
         return 0;
