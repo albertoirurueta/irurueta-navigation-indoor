@@ -43,12 +43,18 @@ jobs:
           echo "next_snapshot=$NEXT_SNAPSHOT" >> "$GITHUB_OUTPUT"
           echo "sync_branch=$SYNC_BRANCH" >> "$GITHUB_OUTPUT"
 
-      - name: Skip if this release was already synced
+      # Patch releases share a sync branch name with the previous minor release (1.6.0 and 1.6.1
+      # both sync to 1.7.0), so a leftover, already-merged sync branch must not block the sync.
+      # Only an open sync pull request means this sync is already in progress.
+      - name: Skip if a sync pull request is already open
         id: guard
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          if git ls-remote --exit-code --heads origin "${{ steps.versions.outputs.sync_branch }}" >/dev/null 2>&1; then
-            echo "::notice::${{ steps.versions.outputs.sync_branch }} already exists on origin; skipping."
+          OPEN_PR=$(gh pr list --head "${{ steps.versions.outputs.sync_branch }}" --base develop --state open --json number --jq '.[0].number // empty')
+          if [ -n "$OPEN_PR" ]; then
+            echo "::notice::Sync pull request #$OPEN_PR for ${{ steps.versions.outputs.sync_branch }} is already open; skipping."
             echo "exists=true" >> "$GITHUB_OUTPUT"
           else
             echo "exists=false" >> "$GITHUB_OUTPUT"
@@ -94,7 +100,8 @@ jobs:
 
       - name: Push sync branch
         if: steps.guard.outputs.exists == 'false'
-        run: git push origin "${{ steps.versions.outputs.sync_branch }}"
+        # --force replaces a stale, already-merged sync branch left over from an earlier release.
+        run: git push --force origin "${{ steps.versions.outputs.sync_branch }}"
 
       - name: Ensure the sync label exists
         if: steps.guard.outputs.exists == 'false'
