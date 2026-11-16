@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NonLinearRangingAndRssiPositionEstimator3D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-indoor</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.indoor.position</a> &gt; <span class="el_source">NonLinearRangingAndRssiPositionEstimator3D.java</span></div><h1>NonLinearRangingAndRssiPositionEstimator3D.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2019 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.indoor.position;
+
+import com.irurueta.geometry.InhomogeneousPoint3D;
+import com.irurueta.geometry.Point3D;
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.indoor.Fingerprint;
+import com.irurueta.navigation.indoor.RadioSource;
+import com.irurueta.navigation.indoor.RadioSourceLocated;
+import com.irurueta.navigation.indoor.RangingAndRssiReading;
+import com.irurueta.navigation.lateration.NonLinearLeastSquaresLateration3DSolver;
+
+import java.util.List;
+
+/**
+ * Estimates 3D position non-linearly using located radio sources and their ranging+RSSI
+ * readings at unknown locations.
+ * These kind of estimators can be used to determine the position of a given device by
+ * getting ranging+RSSI readings at an unknown location of different radio sources whose
+ * locations are known.
+ */
+public class NonLinearRangingAndRssiPositionEstimator3D extends NonLinearRangingAndRssiPositionEstimator&lt;Point3D&gt; {
+
+    /**
+     * Constructor.
+     */
+    public NonLinearRangingAndRssiPositionEstimator3D() {
+<span class="fc" id="L42">        super();</span>
+<span class="fc" id="L43">        initialize();</span>
+<span class="fc" id="L44">    }</span>
+
+    /**
+     * Constructor
+     *
+     * @param sources located radio sources used for lateration.
+     * @throws IllegalArgumentException if provided sources is null or the number of
+     *                                  provided sources is less than the required
+     *                                  minimum.
+     */
+    public NonLinearRangingAndRssiPositionEstimator3D(final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources) {
+<span class="fc" id="L55">        super();</span>
+<span class="fc" id="L56">        initialize();</span>
+<span class="fc" id="L57">        internalSetSources(sources);</span>
+<span class="fc" id="L58">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param fingerprint fingerprint containing RSSI readings at an unknown location
+     *                    for provided located radio sources.
+     * @throws IllegalArgumentException if provided fingerprint is null.
+     */
+    public NonLinearRangingAndRssiPositionEstimator3D(
+            final Fingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint) {
+<span class="fc" id="L70">        super();</span>
+<span class="fc" id="L71">        initialize();</span>
+<span class="fc" id="L72">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L73">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param sources     located radio sources used for lateration.
+     * @param fingerprint fingerprint containing readings at an unknown location for
+     *                    provided located radio sources.
+     * @throws IllegalArgumentException if either provided sources or fingerprint is
+     *                                  null or the number of provided sources is less
+     *                                  than the required minimum.
+     */
+    public NonLinearRangingAndRssiPositionEstimator3D(
+            final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources,
+            final Fingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint) {
+<span class="fc" id="L89">        super();</span>
+<span class="fc" id="L90">        initialize();</span>
+<span class="fc" id="L91">        internalSetSources(sources);</span>
+<span class="fc" id="L92">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L93">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener in charge of handling events.
+     */
+    public NonLinearRangingAndRssiPositionEstimator3D(final RangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener) {
+<span class="fc" id="L101">        super(listener);</span>
+<span class="fc" id="L102">        initialize();</span>
+<span class="fc" id="L103">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param sources  located radio sources used for lateration.
+     * @param listener listener in charge of handling events.
+     * @throws IllegalArgumentException if provided sources is null or the number of
+     *                                  provided sources is less than the required
+     *                                  minimum.
+     */
+    public NonLinearRangingAndRssiPositionEstimator3D(
+            final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources,
+            final RangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener) {
+<span class="fc" id="L117">        super(listener);</span>
+<span class="fc" id="L118">        initialize();</span>
+<span class="fc" id="L119">        internalSetSources(sources);</span>
+<span class="fc" id="L120">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param fingerprint fingerprint containing readings at an unknown location for
+     *                    provided located radio sources.
+     * @param listener    listener in charge of handling events.
+     * @throws IllegalArgumentException if provided fingerprint is null.
+     */
+    public NonLinearRangingAndRssiPositionEstimator3D(
+            final Fingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
+            final RangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener) {
+<span class="fc" id="L134">        super(listener);</span>
+<span class="fc" id="L135">        initialize();</span>
+<span class="fc" id="L136">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L137">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param sources     located radio sources used for lateration.
+     * @param fingerprint fingerprint containing readings at an unknown location for
+     *                    provided located radio sources.
+     * @param listener    listener in charge of handling events.
+     * @throws IllegalArgumentException if either provided sources or fingerprint is
+     *                                  null or the number of provided sources is less
+     *                                  than the required minimum.
+     */
+    public NonLinearRangingAndRssiPositionEstimator3D(
+            final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources,
+            final Fingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
+            final RangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener) {
+<span class="fc" id="L155">        super(listener);</span>
+<span class="fc" id="L156">        initialize();</span>
+<span class="fc" id="L157">        internalSetSources(sources);</span>
+<span class="fc" id="L158">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L159">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition initial position to start position estimation.
+     */
+    public NonLinearRangingAndRssiPositionEstimator3D(final Point3D initialPosition) {
+<span class="fc" id="L167">        super(initialPosition);</span>
+<span class="fc" id="L168">        initialize();</span>
+<span class="fc" id="L169">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param sources         located radio sources used for lateration.
+     * @param initialPosition initial position to start position estimation.
+     * @throws IllegalArgumentException if provided sources is null or the number of
+     *                                  provided sources is less than the required
+     *                                  minimum.
+     */
+    public NonLinearRangingAndRssiPositionEstimator3D(
+            final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources,
+            final Point3D initialPosition) {
+<span class="fc" id="L183">        super(initialPosition);</span>
+<span class="fc" id="L184">        initialize();</span>
+<span class="fc" id="L185">        internalSetSources(sources);</span>
+<span class="fc" id="L186">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param fingerprint     fingerprint containing ranging readings at an unknown
+     *                        location for provided located radio sources.
+     * @param initialPosition initial position to start position estimation.
+     * @throws IllegalArgumentException if provided fingerprint is null.
+     */
+    public NonLinearRangingAndRssiPositionEstimator3D(
+            final Fingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
+            final Point3D initialPosition) {
+<span class="fc" id="L200">        super(initialPosition);</span>
+<span class="fc" id="L201">        initialize();</span>
+<span class="fc" id="L202">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L203">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param sources         located radio sources used for lateration.
+     * @param fingerprint     fingerprint containing readings at an unknown location
+     *                        for provided located radio sources.
+     * @param initialPosition initial position to start position estimation
+     * @throws IllegalArgumentException if either provided sources or fingerprint is
+     *                                  null or the number of provided sources is less
+     *                                  than the required minimum.
+     */
+    public NonLinearRangingAndRssiPositionEstimator3D(
+            final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources,
+            final Fingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
+            final Point3D initialPosition) {
+<span class="fc" id="L221">        super(initialPosition);</span>
+<span class="fc" id="L222">        initialize();</span>
+<span class="fc" id="L223">        internalSetSources(sources);</span>
+<span class="fc" id="L224">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L225">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition initial position to start position estimation.
+     * @param listener        listener in charge of handling events.
+     */
+    public NonLinearRangingAndRssiPositionEstimator3D(
+            final Point3D initialPosition, final RangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener) {
+<span class="fc" id="L235">        super(initialPosition, listener);</span>
+<span class="fc" id="L236">        initialize();</span>
+<span class="fc" id="L237">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param sources         located radio sources used for lateration.
+     * @param initialPosition initial position to start position estimation.
+     * @param listener        listener in charge of handling events.
+     * @throws IllegalArgumentException if provided sources is null or the number of
+     *                                  provided sources is less than the required
+     *                                  minimum.
+     */
+    public NonLinearRangingAndRssiPositionEstimator3D(
+            final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources,
+            final Point3D initialPosition,
+            final RangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener) {
+<span class="fc" id="L253">        super(initialPosition, listener);</span>
+<span class="fc" id="L254">        initialize();</span>
+<span class="fc" id="L255">        internalSetSources(sources);</span>
+<span class="fc" id="L256">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param fingerprint     fingerprint containing readings at an unknown location
+     *                        for provided located radio sources.
+     * @param initialPosition initial position to start position estimation.
+     * @param listener        listener in charge of handling events.
+     * @throws IllegalArgumentException if provided fingerprint is null.
+     */
+    public NonLinearRangingAndRssiPositionEstimator3D(
+            final Fingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
+            final Point3D initialPosition,
+            final RangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener) {
+<span class="fc" id="L272">        super(initialPosition, listener);</span>
+<span class="fc" id="L273">        initialize();</span>
+<span class="fc" id="L274">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L275">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param sources         located radio sources used for lateration.
+     * @param fingerprint     fingerprint containing readings at an unknown location
+     *                        for provided located radio sources.
+     * @param initialPosition initial position to start position estimation.
+     * @param listener        listener in charge of handling events.
+     * @throws IllegalArgumentException if either provided sources or fingerprint is
+     *                                  null or the number of provided sources is less
+     *                                  than the required minimum.
+     */
+    public NonLinearRangingAndRssiPositionEstimator3D(
+            final List&lt;? extends RadioSourceLocated&lt;Point3D&gt;&gt; sources,
+            final Fingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;?
+                    extends RadioSource&gt;&gt; fingerprint,
+            final Point3D initialPosition,
+            final RangingAndRssiPositionEstimatorListener&lt;Point3D&gt; listener) {
+<span class="fc" id="L295">        super(initialPosition, listener);</span>
+<span class="fc" id="L296">        initialize();</span>
+<span class="fc" id="L297">        internalSetSources(sources);</span>
+<span class="fc" id="L298">        internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L299">    }</span>
+
+    /**
+     * Gets estimated position.
+     *
+     * @return estimated position.
+     */
+    public Point3D getEstimatedPosition() {
+<span class="fc bfc" id="L307" title="All 2 branches covered.">        if (estimatedPositionCoordinates == null) {</span>
+<span class="fc" id="L308">            return null;</span>
+        }
+
+<span class="fc" id="L311">        final var result = new InhomogeneousPoint3D();</span>
+<span class="fc" id="L312">        getEstimatedPosition(result);</span>
+<span class="fc" id="L313">        return result;</span>
+    }
+
+    /**
+     * Sets positions, distances and standard deviations of distances on internal
+     * lateration solver.
+     *
+     * @param positions                  positions to be set.
+     * @param distances                  distances to be set.
+     * @param distanceStandardDeviations standard deviations of distances to be set.
+     */
+    @Override
+    @SuppressWarnings(&quot;Duplicates&quot;)
+    protected void setPositionsDistancesAndDistanceStandardDeviations(
+            final List&lt;Point3D&gt; positions, final List&lt;Double&gt; distances,
+            final List&lt;Double&gt; distanceStandardDeviations) {
+
+<span class="fc" id="L330">        final var size = positions.size();</span>
+<span class="fc" id="L331">        Point3D[] positionsArray = new InhomogeneousPoint3D[size];</span>
+<span class="fc" id="L332">        positionsArray = positions.toArray(positionsArray);</span>
+
+<span class="fc" id="L334">        final var distancesArray = new double[size];</span>
+<span class="fc" id="L335">        final var distanceStandardDeviationsArray = new double[size];</span>
+<span class="fc bfc" id="L336" title="All 2 branches covered.">        for (var i = 0; i &lt; size; i++) {</span>
+<span class="fc" id="L337">            distancesArray[i] = distances.get(i);</span>
+<span class="fc" id="L338">            distanceStandardDeviationsArray[i] = distanceStandardDeviations.get(i);</span>
+        }
+
+        try {
+<span class="fc" id="L342">            trilaterationSolver.setPositionsDistancesAndStandardDeviations(positionsArray, distancesArray,</span>
+                    distanceStandardDeviationsArray);
+<span class="nc" id="L344">        } catch (final LockedException e) {</span>
+<span class="nc" id="L345">            throw new IllegalArgumentException(e);</span>
+<span class="fc" id="L346">        }</span>
+<span class="fc" id="L347">    }</span>
+
+    /**
+     * Initializes lateration solver.
+     */
+    private void initialize() {
+<span class="fc" id="L353">        trilaterationSolver = new NonLinearLeastSquaresLateration3DSolver(laterationSolverListener);</span>
+<span class="fc" id="L354">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

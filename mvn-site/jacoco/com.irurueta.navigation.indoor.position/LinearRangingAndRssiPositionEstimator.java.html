@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LinearRangingAndRssiPositionEstimator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-indoor</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.indoor.position</a> &gt; <span class="el_source">LinearRangingAndRssiPositionEstimator.java</span></div><h1>LinearRangingAndRssiPositionEstimator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2019 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.indoor.position;
+
+import com.irurueta.geometry.Point;
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.NotReadyException;
+import com.irurueta.navigation.indoor.Fingerprint;
+import com.irurueta.navigation.indoor.RadioSource;
+import com.irurueta.navigation.indoor.RadioSourceLocated;
+import com.irurueta.navigation.indoor.RangingAndRssiReading;
+import com.irurueta.navigation.lateration.HomogeneousLinearLeastSquaresLaterationSolver;
+import com.irurueta.navigation.lateration.InhomogeneousLinearLeastSquaresLaterationSolver;
+import com.irurueta.navigation.lateration.LaterationException;
+import com.irurueta.navigation.lateration.LaterationSolver;
+import com.irurueta.navigation.lateration.LaterationSolverListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Linearly estimates position using located radio sources and their RSSI+ranging readings
+ * at unknown locations.
+ * These kind of estimators can be used to determine the position of a given device by
+ * getting RSSI+ranging readings at an unknown location of different radio sources whose
+ * locations are known.
+ *
+ * @param &lt;P&gt; a {@link Point} type.
+ */
+public abstract class LinearRangingAndRssiPositionEstimator&lt;P extends Point&lt;P&gt;&gt; extends
+        RangingAndRssiPositionEstimator&lt;P&gt; {
+
+    /**
+     * Indicates that by default an homogeneous linear solver is used to estimate
+     * position.
+     */
+    public static final boolean DEFAULT_USE_HOMOGENEOUS_LINEAR_SOLVER = true;
+
+    /**
+     * An homogeneous linear lateration solver to solve position.
+     */
+    protected HomogeneousLinearLeastSquaresLaterationSolver&lt;P&gt; homogeneousTrilaterationSolver;
+
+    /**
+     * An inhomogeneous linear lateration solver to solve position.
+     */
+    protected InhomogeneousLinearLeastSquaresLaterationSolver&lt;P&gt; inhomogeneousTrilaterationSolver;
+
+    /**
+     * Listener for the lateration solver.
+     */
+    protected LaterationSolverListener&lt;P&gt; laterationSolverListener;
+
+    /**
+     * Indicates whether an homogeneous linear solver is used to estimate position.
+     */
+<span class="fc" id="L70">    protected boolean useHomogeneousLinearSolver = DEFAULT_USE_HOMOGENEOUS_LINEAR_SOLVER;</span>
+
+    /**
+     * Constructor.
+     */
+    protected LinearRangingAndRssiPositionEstimator() {
+<span class="fc" id="L76">        super();</span>
+<span class="fc" id="L77">        init();</span>
+<span class="fc" id="L78">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener in charge of handling events.
+     */
+    protected LinearRangingAndRssiPositionEstimator(final RangingAndRssiPositionEstimatorListener&lt;P&gt; listener) {
+<span class="fc" id="L86">        super(listener);</span>
+<span class="fc" id="L87">        init();</span>
+<span class="fc" id="L88">    }</span>
+
+    /**
+     * Indicates whether an homogeneous linear solver is used to estimate position.
+     *
+     * @return true if homogeneous linear solver is used, false if an inhomogeneous
+     * linear one is used instead.
+     */
+    public boolean isHomogeneousLinearSolverUsed() {
+<span class="fc" id="L97">        return useHomogeneousLinearSolver;</span>
+    }
+
+    /**
+     * Specifies whether an homogeneous linear solver is used to estimate position.
+     *
+     * @param useHomogeneousLinearSolver true if homogeneous linear solver is used, false
+     *                                   if an inhomogeneous linear one is used instead.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setHomogeneousLinearSolverUsed(final boolean useHomogeneousLinearSolver) throws LockedException {
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L109">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L112">        this.useHomogeneousLinearSolver = useHomogeneousLinearSolver;</span>
+<span class="fc" id="L113">    }</span>
+
+    /**
+     * Gets minimum required number of located radio sources to perform lateration.
+     *
+     * @return minimum required number of located radio sources to perform lateration.
+     */
+    @Override
+    public int getMinRequiredSources() {
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">        return useHomogeneousLinearSolver ? homogeneousTrilaterationSolver.getMinRequiredPositionsAndDistances()</span>
+<span class="nc" id="L123">                : inhomogeneousTrilaterationSolver.getMinRequiredPositionsAndDistances();</span>
+    }
+
+    /**
+     * Indicates whether estimator is ready to find a solution.
+     *
+     * @return true if estimator is ready, false otherwise.
+     */
+    @Override
+    public boolean isReady() {
+<span class="pc bpc" id="L133" title="2 of 6 branches missed.">        return (!useHomogeneousLinearSolver &amp;&amp; inhomogeneousTrilaterationSolver.isReady())</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">                || (useHomogeneousLinearSolver &amp;&amp; homogeneousTrilaterationSolver.isReady());</span>
+    }
+
+    /**
+     * Returns boolean indicating whether this estimator is locked because an estimation is already in progress.
+     *
+     * @return true if estimator is locked, false otherwise.
+     */
+    @Override
+    public boolean isLocked() {
+<span class="fc bfc" id="L144" title="All 4 branches covered.">        return inhomogeneousTrilaterationSolver.isLocked() || homogeneousTrilaterationSolver.isLocked();</span>
+    }
+
+    /**
+     * Estimates position based on provided located radio sources and RSSI readings of
+     * such radio sources at an unknown location.
+     *
+     * @throws LockedException             if estimator is locked.
+     * @throws NotReadyException           if estimator is not ready.
+     * @throws PositionEstimationException if estimation fails for some other reason.
+     */
+    @SuppressWarnings(&quot;Duplicates&quot;)
+    @Override
+    public void estimate() throws LockedException, NotReadyException, PositionEstimationException {
+        try {
+<span class="fc bfc" id="L159" title="All 2 branches covered.">            if (useHomogeneousLinearSolver) {</span>
+<span class="fc" id="L160">                homogeneousTrilaterationSolver.solve();</span>
+<span class="fc" id="L161">                estimatedPositionCoordinates = homogeneousTrilaterationSolver.getEstimatedPositionCoordinates();</span>
+            } else {
+<span class="fc" id="L163">                inhomogeneousTrilaterationSolver.solve();</span>
+<span class="fc" id="L164">                estimatedPositionCoordinates = inhomogeneousTrilaterationSolver.getEstimatedPositionCoordinates();</span>
+            }
+<span class="nc" id="L166">        } catch (final LaterationException e) {</span>
+<span class="nc" id="L167">            throw new PositionEstimationException(e);</span>
+<span class="fc" id="L168">        }</span>
+<span class="fc" id="L169">    }</span>
+
+    /**
+     * Gets known positions of radio sources used internally to solve lateration.
+     *
+     * @return known positions used internally.
+     */
+    @Override
+    public P[] getPositions() {
+<span class="fc bfc" id="L178" title="All 2 branches covered.">        return useHomogeneousLinearSolver ? homogeneousTrilaterationSolver.getPositions()</span>
+<span class="fc" id="L179">                : inhomogeneousTrilaterationSolver.getPositions();</span>
+    }
+
+    /**
+     * Gets Euclidean distances from known located radio sources to
+     * the location of provided readings in a fingerprint.
+     * Distance values are used internally to solve lateration.
+     *
+     * @return Euclidean distances used internally.
+     */
+    @Override
+    public double[] getDistances() {
+<span class="fc bfc" id="L191" title="All 2 branches covered.">        return useHomogeneousLinearSolver ? homogeneousTrilaterationSolver.getDistances()</span>
+<span class="fc" id="L192">                : inhomogeneousTrilaterationSolver.getDistances();</span>
+    }
+
+    /**
+     * Internally sets located radio sources used for lateration.
+     *
+     * @param sources located radio sources used for lateration.
+     * @throws IllegalArgumentException if provided value is null or the number of
+     *                                  provided sources is less than the required
+     *                                  minimum.
+     */
+    @Override
+    protected void internalSetSources(final List&lt;? extends RadioSourceLocated&lt;P&gt;&gt; sources) {
+<span class="fc" id="L205">        super.internalSetSources(sources);</span>
+<span class="fc" id="L206">        buildPositionsAndDistances();</span>
+<span class="fc" id="L207">    }</span>
+
+    /**
+     * Internally sets fingerprint containing readings at an unknown location for provided
+     * located radio sources.
+     *
+     * @param fingerprint fingerprint containing readings at an unknown location for
+     *                    provided located radio sources.
+     * @throws IllegalArgumentException if provided value is null.
+     */
+    @Override
+    protected void internalSetFingerprint(
+            final Fingerprint&lt;? extends RadioSource, ? extends RangingAndRssiReading&lt;? extends RadioSource&gt;&gt; fingerprint) {
+<span class="fc" id="L220">        super.internalSetFingerprint(fingerprint);</span>
+<span class="fc" id="L221">        buildPositionsAndDistances();</span>
+<span class="fc" id="L222">    }</span>
+
+    /**
+     * Sets positions and distances on internal lateration solver.
+     *
+     * @param positions positions to be set.
+     * @param distances distances to be set.
+     */
+    protected abstract void setPositionsAndDistances(final List&lt;P&gt; positions, final List&lt;Double&gt; distances);
+
+    /**
+     * Initializes lateration solver listener.
+     */
+    @SuppressWarnings(&quot;Duplicates&quot;)
+    private void init() {
+<span class="fc" id="L237">        laterationSolverListener = new LaterationSolverListener&lt;&gt;() {</span>
+            @Override
+            public void onSolveStart(final LaterationSolver&lt;P&gt; solver) {
+<span class="pc bpc" id="L240" title="1 of 2 branches missed.">                if (listener != null) {</span>
+<span class="fc" id="L241">                    listener.onEstimateStart(LinearRangingAndRssiPositionEstimator.this);</span>
+                }
+<span class="fc" id="L243">            }</span>
+
+            @Override
+            public void onSolveEnd(final LaterationSolver&lt;P&gt; solver) {
+<span class="pc bpc" id="L247" title="1 of 2 branches missed.">                if (listener != null) {</span>
+<span class="fc" id="L248">                    listener.onEstimateEnd(LinearRangingAndRssiPositionEstimator.this);</span>
+                }
+<span class="fc" id="L250">            }</span>
+        };
+<span class="fc" id="L252">    }</span>
+
+    /**
+     * Builds positions and distances for the internal lateration solver.
+     */
+    @SuppressWarnings(&quot;Duplicates&quot;)
+    private void buildPositionsAndDistances() {
+<span class="pc bpc" id="L259" title="5 of 8 branches missed.">        if ((useHomogeneousLinearSolver &amp;&amp; homogeneousTrilaterationSolver == null)</span>
+                || (!useHomogeneousLinearSolver &amp;&amp; inhomogeneousTrilaterationSolver == null)) {
+<span class="nc" id="L261">            return;</span>
+        }
+
+<span class="fc" id="L264">        final int min = getMinRequiredSources();</span>
+<span class="pc bpc" id="L265" title="2 of 8 branches missed.">        if (sources == null || fingerprint == null || sources.size() &lt; min || fingerprint.getReadings() == null</span>
+<span class="fc bfc" id="L266" title="All 2 branches covered.">                || fingerprint.getReadings().size() &lt; min) {</span>
+<span class="fc" id="L267">            return;</span>
+        }
+
+<span class="fc" id="L270">        final var positions = new ArrayList&lt;P&gt;();</span>
+<span class="fc" id="L271">        final var distances = new ArrayList&lt;Double&gt;();</span>
+<span class="fc" id="L272">        PositionEstimatorHelper.buildPositionsAndDistances(sources, fingerprint, positions, distances);</span>
+
+<span class="fc" id="L274">        setPositionsAndDistances(positions, distances);</span>
+<span class="fc" id="L275">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

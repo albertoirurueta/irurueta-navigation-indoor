@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MixedRadioSourceEstimator3D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-indoor</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.indoor.radiosource</a> &gt; <span class="el_source">MixedRadioSourceEstimator3D.java</span></div><h1>MixedRadioSourceEstimator3D.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2018 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.indoor.radiosource;
+
+import com.irurueta.geometry.Point3D;
+import com.irurueta.navigation.indoor.*;
+
+import java.util.List;
+
+/**
+ * Estimates 3D position, transmitted power and path loss exponent of a
+ * radio source (e.g. Wi-Fi access point or bluetooth beacon) assuming
+ * that the ranging data is available to obtain position with greater
+ * accuracy and that the radio source emits isotropically following the
+ * expression below:
+ * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,
+ * where Pr is the received power (expressed in mW),
+ * Gt is the Gain of the transmission antenna
+ * Gr is the Gain of the receiver antenna
+ * d is the distance between emitter and receiver
+ * and lambda is the wavelength and is equal to: lambda = c / f,
+ * where c is the speed of light
+ * and f is the carrier frequency of the radio signal.
+ * Because usually information about the antenna of the radio source cannot be
+ * retrieved (because many measurements are made on unknown devices where
+ * physical access is not possible), this implementation will estimate the
+ * equivalent transmitted power as: Pte = Pt * Gt * Gr.
+ * If Readings contain RSSI standard deviations, those values will be used,
+ * otherwise it will be assumed an RSSI standard deviation of 1 dB.
+ * &lt;p&gt;
+ * This implementation is like RangingAndRssiRadioSourceEstimator3D but allows mixing
+ * different kinds of located radio source readings (ranging, RSSI and ranging+RSSI).
+ *
+ * @param &lt;S&gt; a {@link RadioSource} type.
+ */
+public class MixedRadioSourceEstimator3D&lt;S extends RadioSource&gt; extends MixedRadioSourceEstimator&lt;S, Point3D&gt; {
+
+    /**
+     * Constructor.
+     */
+    public MixedRadioSourceEstimator3D() {
+<span class="fc" id="L55">        super();</span>
+<span class="fc" id="L56">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings radio signal readings belonging to the same
+     *                 radio sources.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public MixedRadioSourceEstimator3D(final List&lt;? extends ReadingLocated&lt;Point3D&gt;&gt; readings) {
+<span class="fc" id="L67">        super(readings);</span>
+<span class="fc" id="L68">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener in charge of attending events raised by this instance.
+     */
+    public MixedRadioSourceEstimator3D(final MixedRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L76">        super(listener);</span>
+<span class="fc" id="L77">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings radio signal readings belonging to the same radio source.
+     * @param listener listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public MixedRadioSourceEstimator3D(
+            final List&lt;? extends ReadingLocated&lt;Point3D&gt;&gt; readings,
+            final MixedRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L90">        super(readings, listener);</span>
+<span class="fc" id="L91">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     */
+    public MixedRadioSourceEstimator3D(final Point3D initialPosition) {
+<span class="fc" id="L100">        super(initialPosition);</span>
+<span class="fc" id="L101">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings        radio signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public MixedRadioSourceEstimator3D(
+            final List&lt;? extends ReadingLocated&lt;Point3D&gt;&gt; readings, final Point3D initialPosition) {
+<span class="fc" id="L114">        super(readings, initialPosition);</span>
+<span class="fc" id="L115">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     */
+    public MixedRadioSourceEstimator3D(
+            final Point3D initialPosition, final MixedRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L126">        super(initialPosition, listener);</span>
+<span class="fc" id="L127">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings        radio signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public MixedRadioSourceEstimator3D(
+            final List&lt;? extends ReadingLocated&lt;Point3D&gt;&gt; readings, final Point3D initialPosition,
+            final MixedRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L142">        super(readings, initialPosition, listener);</span>
+<span class="fc" id="L143">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialTransmittedPowerDbm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     */
+    public MixedRadioSourceEstimator3D(final Double initialTransmittedPowerDbm) {
+<span class="fc" id="L153">        super(initialTransmittedPowerDbm);</span>
+<span class="fc" id="L154">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings                   radio signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public MixedRadioSourceEstimator3D(
+            final List&lt;? extends ReadingLocated&lt;Point3D&gt;&gt; readings, final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L168">        super(readings, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L169">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     */
+    public MixedRadioSourceEstimator3D(
+            final Double initialTransmittedPowerdBm, final MixedRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L181">        super(initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L182">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings                   radio signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public MixedRadioSourceEstimator3D(
+            final List&lt;? extends ReadingLocated&lt;Point3D&gt;&gt; readings, final Double initialTransmittedPowerdBm,
+            final MixedRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L198">        super(readings, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L199">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings                   radio signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public MixedRadioSourceEstimator3D(
+            final List&lt;? extends ReadingLocated&lt;Point3D&gt;&gt; readings, final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L216">        super(readings, initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L217">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     */
+    public MixedRadioSourceEstimator3D(final Point3D initialPosition, final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L229">        super(initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L230">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     */
+    public MixedRadioSourceEstimator3D(
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
+            final MixedRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L245">        super(initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L246">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings                   radio signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public MixedRadioSourceEstimator3D(
+            final List&lt;? extends ReadingLocated&lt;Point3D&gt;&gt; readings, final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm, final MixedRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L264">        super(readings, initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L265">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings                   radio signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public MixedRadioSourceEstimator3D(
+            final List&lt;? extends ReadingLocated&lt;Point3D&gt;&gt; readings, final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm, final double initialPathLossExponent) {
+<span class="fc" id="L283">        super(readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);</span>
+<span class="fc" id="L284">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     */
+    public MixedRadioSourceEstimator3D(
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent) {
+<span class="fc" id="L299">        super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent);</span>
+<span class="fc" id="L300">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     */
+    public MixedRadioSourceEstimator3D(
+            final Point3D initialPosition, final Double initialTransmittedPowerdBm,
+            final double initialPathLossExponent, final MixedRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L316">        super(initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener);</span>
+<span class="fc" id="L317">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings                   radio signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    public MixedRadioSourceEstimator3D(
+            final List&lt;? extends ReadingLocated&lt;Point3D&gt;&gt; readings, final Point3D initialPosition,
+            final Double initialTransmittedPowerdBm, final double initialPathLossExponent,
+            final MixedRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L337">        super(readings, initialPosition, initialTransmittedPowerdBm, initialPathLossExponent, listener);</span>
+<span class="fc" id="L338">    }</span>
+
+    /**
+     * Gets number of dimensions of position points.
+     *
+     * @return number of dimensions of position points.
+     */
+    @Override
+    public int getNumberOfDimensions() {
+<span class="fc" id="L347">        return Point3D.POINT3D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
+    }
+
+    /**
+     * Gets estimated located radio source.
+     *
+     * @return estimated located radio source or null.
+     */
+    @SuppressWarnings({&quot;unchecked&quot;, &quot;DuplicatedCode&quot;})
+    @Override
+    public RadioSourceLocated&lt;Point3D&gt; getEstimatedRadioSource() {
+<span class="fc" id="L358">        final var readings = getReadings();</span>
+<span class="pc bpc" id="L359" title="1 of 4 branches missed.">        if (readings == null || readings.isEmpty()) {</span>
+<span class="fc" id="L360">            return null;</span>
+        }
+
+        final S source;
+<span class="fc" id="L364">        final var reading = readings.get(0);</span>
+<span class="fc bfc" id="L365" title="All 2 branches covered.">        if (reading instanceof RangingReadingLocated) {</span>
+<span class="fc" id="L366">            source = ((RangingReadingLocated&lt;S, Point3D&gt;) reading).getSource();</span>
+<span class="fc bfc" id="L367" title="All 2 branches covered.">        } else if (reading instanceof RssiReadingLocated) {</span>
+<span class="fc" id="L368">            source = ((RssiReadingLocated&lt;S, Point3D&gt;) reading).getSource();</span>
+<span class="pc bpc" id="L369" title="1 of 2 branches missed.">        } else if (reading instanceof RangingAndRssiReadingLocated) {</span>
+<span class="fc" id="L370">            source = ((RangingAndRssiReadingLocated&lt;S, Point3D&gt;) reading).getSource();</span>
+        } else {
+<span class="nc" id="L372">            return null;</span>
+        }
+
+<span class="fc" id="L375">        final var estimatedPosition = getEstimatedPosition();</span>
+<span class="fc bfc" id="L376" title="All 2 branches covered.">        if (estimatedPosition == null) {</span>
+<span class="fc" id="L377">            return null;</span>
+        }
+
+<span class="fc" id="L380">        final var estimatedPositionCovariance = getEstimatedPositionCovariance();</span>
+
+<span class="fc" id="L382">        final var transmittedPowerdBm = getEstimatedTransmittedPowerdBm();</span>
+
+<span class="fc" id="L384">        final var transmittedPowerVariance = getEstimatedTransmittedPowerVariance();</span>
+<span class="fc bfc" id="L385" title="All 2 branches covered.">        final var transmittedPowerStandardDeviation = transmittedPowerVariance != null</span>
+<span class="fc" id="L386">                ? Math.sqrt(transmittedPowerVariance) : null;</span>
+
+<span class="fc" id="L388">        final var pathLossExponent = getEstimatedPathLossExponent();</span>
+
+<span class="fc" id="L390">        final var pathLossExponentVariance = getEstimatedPathLossExponentVariance();</span>
+<span class="fc bfc" id="L391" title="All 2 branches covered.">        final var pathLossExponentStandardDeviation = pathLossExponentVariance != null</span>
+<span class="fc" id="L392">                ? Math.sqrt(pathLossExponentVariance) : null;</span>
+
+<span class="fc bfc" id="L394" title="All 2 branches covered.">        if (source instanceof WifiAccessPoint accessPoint) {</span>
+<span class="fc bfc" id="L395" title="All 2 branches covered.">            if (transmittedPowerdBm != null) {</span>
+<span class="fc" id="L396">                return new WifiAccessPointWithPowerAndLocated3D(accessPoint.getBssid(), accessPoint.getFrequency(),</span>
+<span class="fc" id="L397">                        accessPoint.getSsid(), transmittedPowerdBm, transmittedPowerStandardDeviation, pathLossExponent,</span>
+                        pathLossExponentStandardDeviation, estimatedPosition, estimatedPositionCovariance);
+            } else {
+<span class="fc" id="L400">                return new WifiAccessPointLocated3D(accessPoint.getBssid(), accessPoint.getFrequency(),</span>
+<span class="fc" id="L401">                        accessPoint.getSsid(), estimatedPosition, estimatedPositionCovariance);</span>
+            }
+<span class="pc bpc" id="L403" title="1 of 2 branches missed.">        } else if (source instanceof Beacon beacon) {</span>
+            // transmitted power does not need to be estimated for beacons because
+            // they broadcast such information
+<span class="fc" id="L406">            return new BeaconWithPowerAndLocated3D(beacon.getIdentifiers(), beacon.getTransmittedPower(),</span>
+<span class="fc" id="L407">                    beacon.getFrequency(), beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(),</span>
+<span class="fc" id="L408">                    beacon.getManufacturer(), beacon.getServiceUuid(), beacon.getBluetoothName(), pathLossExponent,</span>
+                    transmittedPowerStandardDeviation, pathLossExponentStandardDeviation, estimatedPosition,
+                    estimatedPositionCovariance);
+        } else {
+<span class="nc" id="L412">            return null;</span>
+        }
+    }
+
+    /**
+     * Creates inner estimators if needed.
+     */
+    @Override
+    protected void createInnerEstimatorsIfNeeded() {
+<span class="fc bfc" id="L421" title="All 2 branches covered.">        if (rangingInnerEstimator == null) {</span>
+<span class="fc" id="L422">            rangingInnerEstimator = new RangingRadioSourceEstimator3D&lt;&gt;();</span>
+        }
+
+<span class="fc bfc" id="L425" title="All 6 branches covered.">        if (rssiInnerEstimator == null &amp;&amp; (transmittedPowerEstimationEnabled || pathLossEstimationEnabled)) {</span>
+<span class="fc" id="L426">            rssiInnerEstimator = new RssiRadioSourceEstimator3D&lt;&gt;();</span>
+        }
+<span class="fc" id="L428">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

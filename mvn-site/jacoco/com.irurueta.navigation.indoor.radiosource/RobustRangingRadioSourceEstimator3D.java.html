@@ -1,0 +1,696 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RobustRangingRadioSourceEstimator3D.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-indoor</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.indoor.radiosource</a> &gt; <span class="el_source">RobustRangingRadioSourceEstimator3D.java</span></div><h1>RobustRangingRadioSourceEstimator3D.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2018 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.indoor.radiosource;
+
+import com.irurueta.geometry.Point3D;
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.NavigationException;
+import com.irurueta.navigation.indoor.Beacon;
+import com.irurueta.navigation.indoor.BeaconLocated3D;
+import com.irurueta.navigation.indoor.RadioSource;
+import com.irurueta.navigation.indoor.RadioSourceLocated;
+import com.irurueta.navigation.indoor.RangingReadingLocated;
+import com.irurueta.navigation.indoor.WifiAccessPoint;
+import com.irurueta.navigation.indoor.WifiAccessPointLocated3D;
+import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * This is an abstract class to robustly estimate 3D position of a radio source (e.g. Wi-Fi
+ * access point or bluetooth beacon), by discarding outliers.
+ *
+ * @param &lt;S&gt; a {@link RadioSource} type.
+ */
+@SuppressWarnings(&quot;DuplicatedCode&quot;)
+public abstract class RobustRangingRadioSourceEstimator3D&lt;S extends RadioSource&gt; extends
+        RobustRangingRadioSourceEstimator&lt;S, Point3D&gt; {
+
+    /**
+     * Radio source estimator used internally.
+     */
+<span class="fc" id="L46">    protected final RangingRadioSourceEstimator3D&lt;S&gt; innerEstimator = new RangingRadioSourceEstimator3D&lt;&gt;();</span>
+
+    /**
+     * Subset of readings used by inner estimator.
+     */
+<span class="fc" id="L51">    private final List&lt;RangingReadingLocated&lt;S, Point3D&gt;&gt; innerReadings = new ArrayList&lt;&gt;();</span>
+
+    /**
+     * Constructor.
+     */
+    protected RobustRangingRadioSourceEstimator3D() {
+<span class="fc" id="L57">        super();</span>
+<span class="fc" id="L58">        preliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L59">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal ranging readings belonging to the same radio source.
+     *
+     * @param readings radio signal ranging readings belonging to the same
+     *                 radio source.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected RobustRangingRadioSourceEstimator3D(final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings) {
+<span class="fc" id="L70">        super(readings);</span>
+<span class="fc" id="L71">        preliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L72">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener in charge of attending events raised by this instance.
+     */
+    protected RobustRangingRadioSourceEstimator3D(
+            final RobustRangingRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L81">        super(listener);</span>
+<span class="fc" id="L82">        preliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L83">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings radio signal readings belonging to the same radio source.
+     * @param listener listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected RobustRangingRadioSourceEstimator3D(
+            final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final RobustRangingRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L96">        super(readings, listener);</span>
+<span class="fc" id="L97">        preliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L98">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition initial position to start the estimation or radio
+     *                        source position.
+     */
+    protected RobustRangingRadioSourceEstimator3D(final Point3D initialPosition) {
+<span class="fc" id="L107">        super(initialPosition);</span>
+<span class="fc" id="L108">        preliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L109">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings        radio signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected RobustRangingRadioSourceEstimator3D(
+            final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings, final Point3D initialPosition) {
+<span class="fc" id="L122">        super(readings, initialPosition);</span>
+<span class="fc" id="L123">        preliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L124">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     */
+    protected RobustRangingRadioSourceEstimator3D(
+            final Point3D initialPosition, final RobustRangingRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L135">        super(initialPosition, listener);</span>
+<span class="fc" id="L136">        preliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L137">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal ranging readings belonging to the same radio source.
+     *
+     * @param readings        radio signal ranging readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio source
+     *                        position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected RobustRangingRadioSourceEstimator3D(
+            final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings, final Point3D initialPosition,
+            final RobustRangingRadioSourceEstimatorListener&lt;S, Point3D&gt; listener) {
+<span class="fc" id="L152">        super(readings, initialPosition, listener);</span>
+<span class="fc" id="L153">        preliminarySubsetSize = getMinReadings();</span>
+<span class="fc" id="L154">    }</span>
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param method robust estimator method.
+     * @param &lt;S&gt;    a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRangingRadioSourceEstimator3D&lt;S&gt; create(
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L165" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L166">            case RANSAC -&gt; new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;();</span>
+<span class="fc" id="L167">            case LMEDS -&gt; new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;();</span>
+<span class="fc" id="L168">            case MSAC -&gt; new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;();</span>
+<span class="fc" id="L169">            case PROSAC -&gt; new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;();</span>
+<span class="fc" id="L170">            default -&gt; new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;();</span>
+        };
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param readings radio signal ranging readings belonging to the same radio source.
+     * @param method   robust estimator method.
+     * @param &lt;S&gt;      a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRangingRadioSourceEstimator3D&lt;S&gt; create(
+            final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings, final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L184" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L185">            case RANSAC -&gt; new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings);</span>
+<span class="fc" id="L186">            case LMEDS -&gt; new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings);</span>
+<span class="fc" id="L187">            case MSAC -&gt; new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings);</span>
+<span class="fc" id="L188">            case PROSAC -&gt; new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings);</span>
+<span class="fc" id="L189">            default -&gt; new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings);</span>
+        };
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param listener listener in charge of attending events raised by this instance.
+     * @param method   robust estimator method.
+     * @param &lt;S&gt;      a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRangingRadioSourceEstimator3D&lt;S&gt; create(
+            final RobustRangingRadioSourceEstimatorListener&lt;S, Point3D&gt; listener, final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L203" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L204">            case RANSAC -&gt; new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(listener);</span>
+<span class="fc" id="L205">            case LMEDS -&gt; new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(listener);</span>
+<span class="fc" id="L206">            case MSAC -&gt; new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(listener);</span>
+<span class="fc" id="L207">            case PROSAC -&gt; new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(listener);</span>
+<span class="fc" id="L208">            default -&gt; new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(listener);</span>
+        };
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param readings radio signal ranging readings belonging to the same radio source.
+     * @param listener listener in charge of attending events raised by this instance.
+     * @param method   robust estimator method.
+     * @param &lt;S&gt;      a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRangingRadioSourceEstimator3D&lt;S&gt; create(
+            final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final RobustRangingRadioSourceEstimatorListener&lt;S, Point3D&gt; listener, final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L224" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L225">            case RANSAC -&gt; new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings, listener);</span>
+<span class="fc" id="L226">            case LMEDS -&gt; new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings, listener);</span>
+<span class="fc" id="L227">            case MSAC -&gt; new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings, listener);</span>
+<span class="fc" id="L228">            case PROSAC -&gt; new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings, listener);</span>
+<span class="fc" id="L229">            default -&gt; new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings, listener);</span>
+        };
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param initialPosition initial position to start the estimation or radio
+     *                        source position.
+     * @param method          robust estimator method.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRangingRadioSourceEstimator3D&lt;S&gt; create(
+            final Point3D initialPosition, final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L244" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L245">            case RANSAC -&gt; new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition);</span>
+<span class="fc" id="L246">            case LMEDS -&gt; new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition);</span>
+<span class="fc" id="L247">            case MSAC -&gt; new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition);</span>
+<span class="fc" id="L248">            case PROSAC -&gt; new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition);</span>
+<span class="fc" id="L249">            default -&gt; new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition);</span>
+        };
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param readings        radio signal ranging readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation or radio
+     *                        source position.
+     * @param method          robust estimator method.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRangingRadioSourceEstimator3D&lt;S&gt; create(
+            final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings, final Point3D initialPosition,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L266" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L267">            case RANSAC -&gt; new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings, initialPosition);</span>
+<span class="fc" id="L268">            case LMEDS -&gt; new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings, initialPosition);</span>
+<span class="fc" id="L269">            case MSAC -&gt; new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings, initialPosition);</span>
+<span class="fc" id="L270">            case PROSAC -&gt; new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings, initialPosition);</span>
+<span class="fc" id="L271">            default -&gt; new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings, initialPosition);</span>
+        };
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param initialPosition initial position to start the estimation or radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     * @param method          robust estimator method.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRangingRadioSourceEstimator3D&lt;S&gt; create(
+            final Point3D initialPosition, final RobustRangingRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L288" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L289">            case RANSAC -&gt; new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition, listener);</span>
+<span class="fc" id="L290">            case LMEDS -&gt; new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition, listener);</span>
+<span class="fc" id="L291">            case MSAC -&gt; new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition, listener);</span>
+<span class="fc" id="L292">            case PROSAC -&gt; new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition, listener);</span>
+<span class="fc" id="L293">            default -&gt; new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition, listener);</span>
+        };
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param readings        radio signal ranging readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation or radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     * @param method          robust estimator method.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRangingRadioSourceEstimator3D&lt;S&gt; create(
+            final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings, final Point3D initialPosition,
+            final RobustRangingRadioSourceEstimatorListener&lt;S, Point3D&gt; listener, final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L311" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L312">            case RANSAC -&gt; new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings, initialPosition, listener);</span>
+<span class="fc" id="L313">            case LMEDS -&gt; new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings, initialPosition, listener);</span>
+<span class="fc" id="L314">            case MSAC -&gt; new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings, initialPosition, listener);</span>
+<span class="fc" id="L315">            case PROSAC -&gt; new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings, initialPosition, listener);</span>
+<span class="fc" id="L316">            default -&gt; new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings, initialPosition, listener);</span>
+        };
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      sample. The larger the score value the better
+     *                      the quality of the sample.
+     * @param method        robust estimator method.
+     * @param &lt;S&gt;           a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRangingRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores, final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L332" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L333">            case RANSAC -&gt; new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;();</span>
+<span class="fc" id="L334">            case LMEDS -&gt; new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;();</span>
+<span class="fc" id="L335">            case MSAC -&gt; new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;();</span>
+<span class="fc" id="L336">            case PROSAC -&gt; new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores);</span>
+<span class="fc" id="L337">            default -&gt; new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores);</span>
+        };
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      sample. The larger the score value the better
+     *                      the quality of the sample.*
+     * @param readings      radio signal ranging readings belonging to the same radio source.
+     * @param method        robust estimator method.
+     * @param &lt;S&gt;           a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRangingRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores, final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L355" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L356">            case RANSAC -&gt; new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings);</span>
+<span class="fc" id="L357">            case LMEDS -&gt; new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings);</span>
+<span class="fc" id="L358">            case MSAC -&gt; new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings);</span>
+<span class="fc" id="L359">            case PROSAC -&gt; new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores, readings);</span>
+<span class="fc" id="L360">            default -&gt; new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores, readings);</span>
+        };
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      sample. The larger the score value the better
+     *                      the quality of the sample.*
+     * @param listener      listener in charge of attending events raised by this instance.
+     * @param method        robust estimator method.
+     * @param &lt;S&gt;           a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRangingRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores, final RobustRangingRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L378" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L379">            case RANSAC -&gt; new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(listener);</span>
+<span class="fc" id="L380">            case LMEDS -&gt; new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(listener);</span>
+<span class="fc" id="L381">            case MSAC -&gt; new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(listener);</span>
+<span class="fc" id="L382">            case PROSAC -&gt; new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores, listener);</span>
+<span class="fc" id="L383">            default -&gt; new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores, listener);</span>
+        };
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param qualityScores quality scores corresponding to each provided
+     *                      sample. The larger the score value the better
+     *                      the quality of the sample.**
+     * @param readings      radio signal ranging readings belonging to the same radio source.
+     * @param listener      listener in charge of attending events raised by this instance.
+     * @param method        robust estimator method.
+     * @param &lt;S&gt;           a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRangingRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores, final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final RobustRangingRadioSourceEstimatorListener&lt;S, Point3D&gt; listener, final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L402" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L403">            case RANSAC -&gt; new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings, listener);</span>
+<span class="fc" id="L404">            case LMEDS -&gt; new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings, listener);</span>
+<span class="fc" id="L405">            case MSAC -&gt; new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings, listener);</span>
+<span class="fc" id="L406">            case PROSAC -&gt; new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores, readings, listener);</span>
+<span class="fc" id="L407">            default -&gt; new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores, readings, listener);</span>
+        };
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        sample. The larger the score value the better
+     *                        the quality of the sample.*
+     * @param initialPosition initial position to start the estimation or radio
+     *                        source position.
+     * @param method          robust estimator method.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRangingRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores, final Point3D initialPosition, final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L425" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L426">            case RANSAC -&gt; new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition);</span>
+<span class="fc" id="L427">            case LMEDS -&gt; new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition);</span>
+<span class="fc" id="L428">            case MSAC -&gt; new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition);</span>
+<span class="fc" id="L429">            case PROSAC -&gt; new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores, initialPosition);</span>
+<span class="fc" id="L430">            default -&gt; new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores, initialPosition);</span>
+        };
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        sample. The larger the score value the better
+     *                        the quality of the sample.*
+     * @param readings        radio signal ranging readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation or radio
+     *                        source position.
+     * @param method          robust estimator method.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRangingRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores, final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition, final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L450" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L451">            case RANSAC -&gt; new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings, initialPosition);</span>
+<span class="fc" id="L452">            case LMEDS -&gt; new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings, initialPosition);</span>
+<span class="fc" id="L453">            case MSAC -&gt; new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings, initialPosition);</span>
+<span class="fc" id="L454">            case PROSAC -&gt; new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores, readings, initialPosition);</span>
+<span class="fc" id="L455">            default -&gt; new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores, readings, initialPosition);</span>
+        };
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        sample. The larger the score value the better
+     *                        the quality of the sample.*
+     * @param initialPosition initial position to start the estimation or radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     * @param method          robust estimator method.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRangingRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores, final Point3D initialPosition,
+            final RobustRangingRadioSourceEstimatorListener&lt;S, Point3D&gt; listener, final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L475" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L476">            case RANSAC -&gt; new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition, listener);</span>
+<span class="fc" id="L477">            case LMEDS -&gt; new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition, listener);</span>
+<span class="fc" id="L478">            case MSAC -&gt; new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(initialPosition, listener);</span>
+<span class="fc" id="L479">            case PROSAC -&gt; new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores, initialPosition, listener);</span>
+<span class="fc" id="L480">            default -&gt; new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores, initialPosition, listener);</span>
+        };
+    }
+
+    /**
+     * Creates a robust 3D position radio source estimator.
+     *
+     * @param qualityScores   quality scores corresponding to each provided
+     *                        sample. The larger the score value the better
+     *                        the quality of the sample.*
+     * @param readings        radio signal ranging readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation or radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     * @param method          robust estimator method.
+     * @param &lt;S&gt;             a {@link RadioSource} type.
+     * @return a new robust 3D position radio source estimator.
+     */
+    public static &lt;S extends RadioSource&gt; RobustRangingRadioSourceEstimator3D&lt;S&gt; create(
+            final double[] qualityScores, final List&lt;? extends RangingReadingLocated&lt;S, Point3D&gt;&gt; readings,
+            final Point3D initialPosition, final RobustRangingRadioSourceEstimatorListener&lt;S, Point3D&gt; listener,
+            final RobustEstimatorMethod method) {
+<span class="fc bfc" id="L502" title="All 5 branches covered.">        return switch (method) {</span>
+<span class="fc" id="L503">            case RANSAC -&gt; new RANSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings, initialPosition, listener);</span>
+<span class="fc" id="L504">            case LMEDS -&gt; new LMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(readings, initialPosition, listener);</span>
+<span class="fc" id="L505">            case MSAC -&gt; new MSACRobustRangingRadioSourceEstimator3D&lt;&gt;(readings, initialPosition, listener);</span>
+<span class="fc" id="L506">            case PROSAC -&gt; new PROSACRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores, readings, initialPosition,</span>
+                    listener);
+<span class="fc" id="L508">            default -&gt; new PROMedSRobustRangingRadioSourceEstimator3D&lt;&gt;(qualityScores, readings, initialPosition,</span>
+                    listener);
+        };
+    }
+
+    /**
+     * Gets minimum required number of readings to estimate position of radio source,
+     * which is 4 readings.
+     *
+     * @return minimum required number of readings.
+     */
+    @Override
+    public int getMinReadings() {
+<span class="fc" id="L521">        return Point3D.POINT3D_INHOMOGENEOUS_COORDINATES_LENGTH + 1;</span>
+    }
+
+    /**
+     * Gets number of dimensions of position points.
+     * This is always 3.
+     *
+     * @return number of dimensions of position points.
+     */
+    @Override
+    public int getNumberOfDimensions() {
+<span class="fc" id="L532">        return Point3D.POINT3D_INHOMOGENEOUS_COORDINATES_LENGTH;</span>
+    }
+
+    /**
+     * Gets estimated located radio source.
+     *
+     * @return estimated located radio source or null.
+     */
+    @SuppressWarnings(&quot;unchecked&quot;)
+    @Override
+    public RadioSourceLocated&lt;Point3D&gt; getEstimatedRadioSource() {
+<span class="fc" id="L543">        final var readings = getReadings();</span>
+<span class="pc bpc" id="L544" title="1 of 4 branches missed.">        if (readings == null || readings.isEmpty()) {</span>
+<span class="fc" id="L545">            return null;</span>
+        }
+<span class="fc" id="L547">        final var source = readings.get(0).getSource();</span>
+
+<span class="fc" id="L549">        final var estimatedPosition = getEstimatedPosition();</span>
+<span class="fc bfc" id="L550" title="All 2 branches covered.">        if (estimatedPosition == null) {</span>
+<span class="fc" id="L551">            return null;</span>
+        }
+
+<span class="fc" id="L554">        final var estimatedPositionCovariance = getEstimatedPositionCovariance();</span>
+
+<span class="fc bfc" id="L556" title="All 2 branches covered.">        if (source instanceof WifiAccessPoint accessPoint) {</span>
+<span class="fc" id="L557">            return new WifiAccessPointLocated3D(accessPoint.getBssid(), accessPoint.getFrequency(),</span>
+<span class="fc" id="L558">                    accessPoint.getSsid(), estimatedPosition, estimatedPositionCovariance);</span>
+<span class="pc bpc" id="L559" title="1 of 2 branches missed.">        } else if (source instanceof Beacon beacon) {</span>
+<span class="fc" id="L560">            return new BeaconLocated3D(beacon.getIdentifiers(), beacon.getTransmittedPower(), beacon.getFrequency(),</span>
+<span class="fc" id="L561">                    beacon.getBluetoothAddress(), beacon.getBeaconTypeCode(), beacon.getManufacturer(),</span>
+<span class="fc" id="L562">                    beacon.getServiceUuid(), beacon.getBluetoothName(), estimatedPosition, estimatedPositionCovariance);</span>
+        } else {
+<span class="nc" id="L564">            return null;</span>
+        }
+    }
+
+    /**
+     * Indicates whether an homogeneous linear solver is used to estimate an initial
+     * position.
+     *
+     * @return true if homogeneous linear solver is used, false if an inhomogeneous linear
+     * one is used instead.
+     */
+    @Override
+    public boolean isHomogeneousLinearSolverUsed() {
+<span class="fc" id="L577">        return innerEstimator.isHomogeneousLinearSolverUsed();</span>
+    }
+
+    /**
+     * Specifies whether an homogeneous linear solver is used to estimate an initial
+     * position.
+     *
+     * @param useHomogeneousLinearSolver true if homogeneous linear solver is used, false
+     *                                   if an inhomogeneous linear one is used instead.
+     * @throws LockedException if estimator is locked.
+     */
+    @Override
+    public void setHomogeneousLinearSolverUsed(final boolean useHomogeneousLinearSolver) throws LockedException {
+<span class="fc bfc" id="L590" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L591">            throw new LockedException();</span>
+        }
+<span class="fc" id="L593">        innerEstimator.setHomogeneousLinearSolverUsed(useHomogeneousLinearSolver);</span>
+<span class="fc" id="L594">    }</span>
+
+    /**
+     * Solves preliminary solution for a subset of samples.
+     *
+     * @param samplesIndices indices of subset samples.
+     * @param solutions      instance where solution will be stored.
+     */
+    @Override
+    protected void solvePreliminarySolutions(final int[] samplesIndices, final List&lt;Solution&lt;Point3D&gt;&gt; solutions) {
+        try {
+<span class="fc" id="L605">            innerReadings.clear();</span>
+<span class="fc bfc" id="L606" title="All 2 branches covered.">            for (final var samplesIndex : samplesIndices) {</span>
+<span class="fc" id="L607">                innerReadings.add(readings.get(samplesIndex));</span>
+            }
+
+            // initial position might or might not be available
+<span class="fc" id="L611">            innerEstimator.setInitialPosition(initialPosition);</span>
+
+<span class="fc" id="L613">            innerEstimator.setReadings(innerReadings);</span>
+
+            // for preliminary solutions, non-linear solver is not needed, and if no
+            // initial position is used, we can obtain faster solutions disabling
+            // non-linear solver and using a linear one only (because covariance is not
+            // required)
+<span class="fc bfc" id="L619" title="All 2 branches covered.">            innerEstimator.setNonLinearSolverEnabled(initialPosition != null);</span>
+
+            // indicates whether readings position covariances must be taken into account
+<span class="fc" id="L622">            innerEstimator.setUseReadingPositionCovariances(useReadingPositionCovariances);</span>
+
+<span class="fc" id="L624">            innerEstimator.estimate();</span>
+
+<span class="fc" id="L626">            final var estimatedPosition = innerEstimator.getEstimatedPosition();</span>
+<span class="fc" id="L627">            solutions.add(new Solution&lt;&gt;(estimatedPosition));</span>
+<span class="fc" id="L628">        } catch (final NavigationException ignore) {</span>
+            // if anything fails, no solution is added
+<span class="fc" id="L630">        }</span>
+<span class="fc" id="L631">    }</span>
+
+    /**
+     * Attempts to refine estimated position and transmitted power contained in
+     * provided solution if refinement is requested.
+     * This method sets a refined result and transmitted power or provided input
+     * result if refinement is not requested or has failed.
+     * If refinement is enabled, and it is requested to keep covariance, this method
+     * will also keep covariance of refined result.
+     * solution if not requested or refinement failed.
+     *
+     * @param result result to be refined.
+     */
+    protected void attemptRefine(final Solution&lt;Point3D&gt; result) {
+<span class="fc" id="L645">        final var initialPosition = result.getEstimatedPosition();</span>
+
+<span class="pc bpc" id="L647" title="1 of 4 branches missed.">        if (refineResult &amp;&amp; inliersData != null) {</span>
+<span class="fc" id="L648">            final var inliers = inliersData.getInliers();</span>
+<span class="fc" id="L649">            final var nSamples = readings.size();</span>
+
+<span class="fc" id="L651">            innerReadings.clear();</span>
+
+<span class="fc bfc" id="L653" title="All 2 branches covered.">            for (var i = 0; i &lt; nSamples; i++) {</span>
+<span class="fc bfc" id="L654" title="All 2 branches covered.">                if (inliers.get(i)) {</span>
+                    // sample is inlier
+<span class="fc" id="L656">                    innerReadings.add(readings.get(i));</span>
+                }
+            }
+
+            try {
+<span class="fc" id="L661">                innerEstimator.setInitialPosition(initialPosition);</span>
+<span class="fc" id="L662">                innerEstimator.setReadings(innerReadings);</span>
+
+<span class="fc" id="L664">                innerEstimator.setNonLinearSolverEnabled(true);</span>
+<span class="fc" id="L665">                innerEstimator.setUseReadingPositionCovariances(useReadingPositionCovariances);</span>
+<span class="fc" id="L666">                innerEstimator.estimate();</span>
+
+<span class="fc" id="L668">                final var cov = innerEstimator.getEstimatedCovariance();</span>
+<span class="pc bpc" id="L669" title="2 of 4 branches missed.">                if (keepCovariance &amp;&amp; cov != null) {</span>
+                    // keep covariance
+<span class="fc" id="L671">                    estimatedPositionCovariance = covariance = cov;</span>
+
+                } else {
+<span class="nc" id="L674">                    covariance = null;</span>
+<span class="nc" id="L675">                    estimatedPositionCovariance = null;</span>
+                }
+
+<span class="fc" id="L678">                estimatedPosition = innerEstimator.getEstimatedPosition();</span>
+<span class="nc" id="L679">            } catch (final Exception e) {</span>
+                // refinement failed, so we return input value, and covariance
+                // becomes unavailable
+<span class="nc" id="L682">                covariance = null;</span>
+<span class="nc" id="L683">                estimatedPositionCovariance = null;</span>
+
+<span class="nc" id="L685">                estimatedPosition = initialPosition;</span>
+<span class="fc" id="L686">            }</span>
+<span class="fc" id="L687">        } else {</span>
+<span class="fc" id="L688">            covariance = null;</span>
+<span class="fc" id="L689">            estimatedPositionCovariance = null;</span>
+
+<span class="fc" id="L691">            estimatedPosition = initialPosition;</span>
+        }
+<span class="fc" id="L693">    }</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>
