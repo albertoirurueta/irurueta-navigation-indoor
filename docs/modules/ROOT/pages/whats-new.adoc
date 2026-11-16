@@ -4,6 +4,13 @@
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 
+== 1.6.1 - 2026-11-16
+
+* 🐛 Fixed `BeaconIdentifier.compareTo` so identifiers of the same length are compared byte by byte as unsigned
+  values; bytes of `0x80` and above previously sorted incorrectly.
+* ♻️ Upgraded compile-scope dependencies: `irurueta-navigation` 1.8.1 → 1.8.2, `irurueta-numerical` 1.6.0 → 1.6.1,
+  `irurueta-geometry` 1.6.0 → 1.6.1, `irurueta-units` 1.4.0 → 1.4.1, `irurueta-algebra` 1.4.0 → 1.4.1.
+
 == 1.6.0 - 2026-07-26
 
 * ♻️ Raised the minimum Java version requirement from 17 to 21.

@@ -16,7 +16,7 @@ Latest release:
 <dependency>
     <groupId>com.irurueta</groupId>
     <artifactId>irurueta-navigation-indoor</artifactId>
-    <version>1.6.0</version>
+    <version>1.6.1</version>
     <scope>compile</scope>
 </dependency>
 ----
@@ -43,7 +43,7 @@ Latest release:
 
 [source,groovy]
 ----
-implementation 'com.irurueta:irurueta-navigation-indoor:1.6.0'
+implementation 'com.irurueta:irurueta-navigation-indoor:1.6.1'
 ----
 
 Latest snapshot:
