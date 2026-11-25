@@ -1,5 +1,5 @@
 name: irurueta-navigation-indoor
-version: 1.6.1
+version: 1.6.2
 title: Irurueta Indoor Navigation
 nav:
   - modules/ROOT/nav.adoc
