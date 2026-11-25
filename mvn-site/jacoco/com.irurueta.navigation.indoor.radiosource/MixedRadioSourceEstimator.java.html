@@ -1,0 +1,1141 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MixedRadioSourceEstimator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-indoor</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.indoor.radiosource</a> &gt; <span class="el_source">MixedRadioSourceEstimator.java</span></div><h1>MixedRadioSourceEstimator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2018 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.indoor.radiosource;
+
+import com.irurueta.algebra.AlgebraException;
+import com.irurueta.algebra.Matrix;
+import com.irurueta.geometry.Point;
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.NotReadyException;
+import com.irurueta.navigation.indoor.RadioSource;
+import com.irurueta.navigation.indoor.RangingAndRssiReadingLocated;
+import com.irurueta.navigation.indoor.RangingReadingLocated;
+import com.irurueta.navigation.indoor.ReadingLocated;
+import com.irurueta.navigation.indoor.RssiReadingLocated;
+import com.irurueta.navigation.indoor.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * This is an abstract class to robustly estimate position, transmitted power and
+ * path loss exponent of a radio source (e.g. Wi-Fi access point or bluetooth
+ * beacon) assuming that the ranging data is available to obtain position with greater
+ * accuracy and that the radio source emits isotropically following the
+ * expression below:
+ * Pr = Pt*Gt*Gr*lambda^2 / (4*pi*d)^2,
+ * where Pr is the received power (expressed in mW),
+ * Gt is the Gain of the transmission antenna
+ * Gr is the Gain of the receiver antenna
+ * d is the distance between emitter and receiver
+ * and lambda is the wavelength and is equal to: lambda = c / f,
+ * where c is the speed of light
+ * and f is the carrier frequency of the radio signal.
+ * Because usually information about the antenna of the radio source cannot be
+ * retrieved (because many measurements are made on unknown devices where
+ * physical access is not possible), this implementation will estimate the
+ * equivalent transmitted power as: Pte = Pt * Gt * Gr.
+ * If Readings contain RSSI standard deviations, those values will be used,
+ * otherwise it will be assumed an RSSI standard deviation of 1 dB.
+ * &lt;p&gt;
+ * This implementation is like RangingAndRssiRadioSourceEstimator but allows mixing
+ * different kinds of located radio source readings (ranging, RSSI and ranging+RSSI).
+ *
+ * @param &lt;S&gt; a {@link RadioSource} type.
+ * @param &lt;P&gt; a {@link Point} type.
+ */
+public abstract class MixedRadioSourceEstimator&lt;S extends RadioSource, P extends Point&lt;P&gt;&gt;
+        extends RadioSourceEstimator&lt;P, ReadingLocated&lt;P&gt;, MixedRadioSourceEstimatorListener&lt;S, P&gt;&gt; {
+
+    /**
+     * Speed of light expressed in meters per second (m/s).
+     */
+    public static final double SPEED_OF_LIGHT = 299792458.0;
+
+    /**
+     * Default exponent typically used on free space for path loss propagation in
+     * terms of distance. This value is used for free space environments.
+     */
+    public static final double DEFAULT_PATH_LOSS_EXPONENT = 2.0;
+
+    /**
+     * Indicates whether radio source transmitted power estimation is enabled or not by
+     * default. Typically, this data is required for Wi-Fi Access points, but it is already
+     * provided for Beacons (and hence its estimation is not needed).
+     */
+    public static final boolean DEFAULT_TRANSMITTED_POWER_ESTIMATION_ENABLED = true;
+
+    /**
+     * Indicates whether path loss estimation is enabled or not by default.
+     */
+    public static final boolean DEFAULT_PATHLOSS_ESTIMATION_ENABLED = false;
+
+    /**
+     * Indicates that by default position covariances of readings must be taken into account to increase
+     * the amount of standard deviation of each ranging measure by the amount of position standard deviation
+     * assuming that both measures are statistically independent.
+     */
+    public static final boolean DEFAULT_USE_READING_POSITION_COVARIANCES = true;
+
+    /**
+     * RSSI radio source estimator.
+     */
+    protected RssiRadioSourceEstimator&lt;S, P&gt; rssiInnerEstimator;
+
+    /**
+     * Ranging radio source estimator.
+     */
+    protected RangingRadioSourceEstimator&lt;S, P&gt; rangingInnerEstimator;
+
+    /**
+     * Indicates whether transmitted power estimation is enabled or not.
+     */
+<span class="fc" id="L106">    protected boolean transmittedPowerEstimationEnabled = DEFAULT_TRANSMITTED_POWER_ESTIMATION_ENABLED;</span>
+
+    /**
+     * Indicates whether path loss estimation is enabled or not.
+     */
+<span class="fc" id="L111">    protected boolean pathLossEstimationEnabled = DEFAULT_PATHLOSS_ESTIMATION_ENABLED;</span>
+
+    /**
+     * Estimated transmitted power expressed in dBm's or null if not available.
+     */
+    private Double estimatedTransmittedPowerdBm;
+
+    /**
+     * Estimated exponent typically used on free space for path loss propagation in
+     * terms of distance.
+     * On different environments path loss exponent might have different values:
+     * - Free space: 2.0
+     * - Urban Area: 2.7 to 3.5
+     * - Suburban Area: 3 to 5
+     * - Indoor (line-of-sight): 1.6 to 1.8
+     * If path loss exponent estimation is not enabled, this value will always be equal to
+     * {@link #DEFAULT_PATH_LOSS_EXPONENT}
+     */
+<span class="fc" id="L129">    private double estimatedPathLossExponent = DEFAULT_PATH_LOSS_EXPONENT;</span>
+
+    /**
+     * Variance of estimated transmitted power.
+     * This value will only be available when transmitted power
+     * estimation is enabled.
+     */
+    private Double estimatedTransmittedPowerVariance;
+
+    /**
+     * Variance of estimated path loss exponent.
+     * This value will only be available when path-loss
+     * exponent estimation is enabled.
+     */
+    private Double estimatedPathLossExponentVariance;
+
+    /**
+     * Initial transmitted power to start the estimation of radio source
+     * transmitted power.
+     * If not defined, average value of received power readings will be used.
+     */
+    private Double initialTransmittedPowerdBm;
+
+    /**
+     * Initial position to start the estimation of radio source position.
+     * If not defined, centroid of provided readings will be used.
+     */
+    private P initialPosition;
+
+    /**
+     * Initial exponent typically used on free space for path loss propagation in
+     * terms of distance.
+     * On different environments path loss exponent might have different values:
+     * - Free space: 2.0
+     * - Urban Area: 2.7 to 3.5
+     * - Suburban Area: 3 to 5
+     * - Indoor (line-of-sight): 1.6 to 1.8
+     * &lt;p&gt;
+     * If path loss exponent estimation is enabled, estimation will start at this
+     * value and will converge to the most appropriate value.
+     * If path loss exponent estimation is disabled, this value will be assumed
+     * to be exact and the estimated path loss exponent will be equal to this
+     * value.
+     */
+<span class="fc" id="L173">    private double initialPathLossExponent = DEFAULT_PATH_LOSS_EXPONENT;</span>
+
+    /**
+     * Indicates whether position covariances of readings must be taken into account to increase
+     * the amount of standard deviation of each ranging measure by the amount of position standard deviation
+     * assuming that both measures are statistically independent.
+     */
+<span class="fc" id="L180">    private boolean useReadingPositionCovariances = DEFAULT_USE_READING_POSITION_COVARIANCES;</span>
+
+    /**
+     * Number of ranging readings available among all readings.
+     */
+    private int numRangingReadings;
+
+    /**
+     * Number of RSSI readings available among all readings.
+     */
+    private int numRssiReadings;
+
+    /**
+     * Indicates whether position is estimated using RSSI data.
+     * If enough ranging readings are available, this is false and position is estimated using ranging readings,
+     * otherwise this is true and position is estimated using RSSI data in a less reliable way.
+     */
+    private boolean rssiPositionEnabled;
+
+    /**
+     * Indicates whether an homogeneous linear solver is used to estimate an initial
+     * position for the internal ranging radio source estimator.
+     */
+<span class="fc" id="L203">    private boolean useHomogeneousRangingLinearSolver =</span>
+            RangingRadioSourceEstimator.DEFAULT_USE_HOMOGENEOUS_LINEAR_SOLVER;
+
+    /**
+     * Constructor.
+     */
+    protected MixedRadioSourceEstimator() {
+<span class="fc" id="L210">        super();</span>
+<span class="fc" id="L211">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings radio signal readings belonging to the same
+     *                 radio sources.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected MixedRadioSourceEstimator(final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings) {
+<span class="fc" id="L222">        super(readings);</span>
+<span class="fc" id="L223">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener in charge of attending events raised by this instance.
+     */
+    protected MixedRadioSourceEstimator(final MixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L231">        super(listener);</span>
+<span class="fc" id="L232">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings radio signal readings belonging to the same radio source.
+     * @param listener listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected MixedRadioSourceEstimator(
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings, final MixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L244">        super(readings, listener);</span>
+<span class="fc" id="L245">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     */
+<span class="fc" id="L253">    protected MixedRadioSourceEstimator(final P initialPosition) {</span>
+<span class="fc" id="L254">        this.initialPosition = initialPosition;</span>
+<span class="fc" id="L255">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings        radio signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected MixedRadioSourceEstimator(
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings, final P initialPosition) {
+<span class="fc" id="L268">        super(readings);</span>
+<span class="fc" id="L269">        this.initialPosition = initialPosition;</span>
+<span class="fc" id="L270">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     */
+    protected MixedRadioSourceEstimator(
+            final P initialPosition, final MixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L281">        super(listener);</span>
+<span class="fc" id="L282">        this.initialPosition = initialPosition;</span>
+<span class="fc" id="L283">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings        radio signal readings belonging to the same radio source.
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @param listener        listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected MixedRadioSourceEstimator(
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings, final P initialPosition,
+            final MixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L298">        super(readings, listener);</span>
+<span class="fc" id="L299">        this.initialPosition = initialPosition;</span>
+<span class="fc" id="L300">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialTransmittedPowerDbm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     */
+<span class="fc" id="L309">    protected MixedRadioSourceEstimator(final Double initialTransmittedPowerDbm) {</span>
+<span class="fc" id="L310">        initialTransmittedPowerdBm = initialTransmittedPowerDbm;</span>
+<span class="fc" id="L311">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings                   radio signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected MixedRadioSourceEstimator(
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings, final Double initialTransmittedPowerdBm) {
+<span class="fc" id="L325">        super(readings);</span>
+<span class="fc" id="L326">        this.initialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L327">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     */
+    protected MixedRadioSourceEstimator(
+            final Double initialTransmittedPowerdBm, final MixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L339">        super(listener);</span>
+<span class="fc" id="L340">        this.initialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L341">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings                   radio signal readings belonging to the same radio source.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected MixedRadioSourceEstimator(
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings, final Double initialTransmittedPowerdBm,
+            final MixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L357">        super(readings, listener);</span>
+<span class="fc" id="L358">        this.initialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L359">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings                   radio signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected MixedRadioSourceEstimator(
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings, final P initialPosition,
+            Double initialTransmittedPowerdBm) {
+<span class="fc" id="L376">        super(readings);</span>
+<span class="fc" id="L377">        this.initialPosition = initialPosition;</span>
+<span class="fc" id="L378">        this.initialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L379">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     */
+<span class="fc" id="L390">    protected MixedRadioSourceEstimator(final P initialPosition, final Double initialTransmittedPowerdBm) {</span>
+<span class="fc" id="L391">        this.initialPosition = initialPosition;</span>
+<span class="fc" id="L392">        this.initialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L393">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     */
+    protected MixedRadioSourceEstimator(
+            final P initialPosition, final Double initialTransmittedPowerdBm,
+            final MixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L408">        super(listener);</span>
+<span class="fc" id="L409">        this.initialPosition = initialPosition;</span>
+<span class="fc" id="L410">        this.initialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L411">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings                   radio signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected MixedRadioSourceEstimator(
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings, final P initialPosition,
+            final Double initialTransmittedPowerdBm, final MixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L429">        super(readings, listener);</span>
+<span class="fc" id="L430">        this.initialPosition = initialPosition;</span>
+<span class="fc" id="L431">        this.initialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L432">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings                   radio signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected MixedRadioSourceEstimator(
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings, final P initialPosition,
+            final Double initialTransmittedPowerdBm, final double initialPathLossExponent) {
+<span class="fc" id="L450">        this(readings, initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L451">        this.initialPathLossExponent = initialPathLossExponent;</span>
+<span class="fc" id="L452">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     */
+    protected MixedRadioSourceEstimator(
+            final P initialPosition, final Double initialTransmittedPowerdBm, final double initialPathLossExponent) {
+<span class="fc" id="L466">        this(initialPosition, initialTransmittedPowerdBm);</span>
+<span class="fc" id="L467">        this.initialPathLossExponent = initialPathLossExponent;</span>
+<span class="fc" id="L468">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     */
+    protected MixedRadioSourceEstimator(
+            final P initialPosition, final Double initialTransmittedPowerdBm, final double initialPathLossExponent,
+            final MixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L484">        this(initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L485">        this.initialPathLossExponent = initialPathLossExponent;</span>
+<span class="fc" id="L486">    }</span>
+
+    /**
+     * Constructor.
+     * Sets radio signal readings belonging to the same radio source.
+     *
+     * @param readings                   radio signal readings belonging to the same radio source.
+     * @param initialPosition            initial position to start the estimation of radio
+     *                                   source position.
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted power
+     *                                   (expressed in dBm's).
+     * @param initialPathLossExponent    initial path loss exponent. A typical value is 2.0.
+     * @param listener                   listener in charge of attending events raised by this instance.
+     * @throws IllegalArgumentException if readings are not valid.
+     */
+    protected MixedRadioSourceEstimator(
+            final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings,
+            final P initialPosition, final Double initialTransmittedPowerdBm, final double initialPathLossExponent,
+            final MixedRadioSourceEstimatorListener&lt;S, P&gt; listener) {
+<span class="fc" id="L506">        this(readings, initialPosition, initialTransmittedPowerdBm, listener);</span>
+<span class="fc" id="L507">        this.initialPathLossExponent = initialPathLossExponent;</span>
+<span class="fc" id="L508">    }</span>
+
+    /**
+     * Gets initial transmitted power to start the estimation of radio source
+     * transmitted power (expressed in dBm's).
+     * If not defined, average value of received power readings will be used.
+     * &lt;p&gt;
+     * If transmitted power estimation is enabled, estimation will start at this
+     * value and will be converted to the most appropriate value.
+     * If transmitted power estimation is disabled, this value will be assumed to be
+     * exact and the estimated transmitted power will be equal to this value
+     * (converted to dBm's).
+     *
+     * @return initial transmitted power to start the estimation of radio source
+     * transmitted power.
+     */
+    public Double getInitialTransmittedPowerdBm() {
+<span class="fc" id="L525">        return initialTransmittedPowerdBm;</span>
+    }
+
+    /**
+     * Sets initial transmitted power to start the estimation of radio source
+     * transmitted power (expressed in dBm's).
+     * If not defined, average value of received power readings will be used.
+     * &lt;p&gt;
+     * If transmitted power estimation is enabled, estimation will start at this
+     * value and will be converted to the most appropriate value.
+     * If transmitted power estimation is disabled, this value will be assumed to be
+     * exact and the estimated transmitted power will be equal to this value
+     * (converted to dBm's).
+     *
+     * @param initialTransmittedPowerdBm initial transmitted power to start the
+     *                                   estimation of radio source transmitted
+     *                                   power.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setInitialTransmittedPowerdBm(final Double initialTransmittedPowerdBm) throws LockedException {
+<span class="fc bfc" id="L545" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L546">            throw new LockedException();</span>
+        }
+<span class="fc" id="L548">        this.initialTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L549">    }</span>
+
+    /**
+     * Gets initial transmitted power to start the estimation of radio source
+     * transmitted power (expressed in mW).
+     * If not defined, average value of received power readings will be used.
+     * &lt;p&gt;
+     * If transmitted power estimation is enabled, estimation will start at this
+     * value and will be converted to the most appropriate value.
+     * If transmitted power estimation is disabled, this value will be assumed to be
+     * exact and the estimated transmitted power will be equal to this value
+     * (converted to dBm's).
+     *
+     * @return initial transmitted power to start the estimation of radio source
+     * transmitted power.
+     */
+    public Double getInitialTransmittedPower() {
+<span class="fc bfc" id="L566" title="All 2 branches covered.">        return initialTransmittedPowerdBm != null ? Utils.dBmToPower(initialTransmittedPowerdBm) : null;</span>
+    }
+
+    /**
+     * Sets initial transmitted power to start the estimation of radio source
+     * transmitted power (expressed in mW).
+     * If not defined, average value of received power readings will be used.
+     * &lt;p&gt;
+     * If transmitted power estimation is enabled, estimation will start at this
+     * value and will be converted to the most appropriate value.
+     * If transmitted power estimation is disabled, this value will be assumed to be
+     * exact and the estimated transmitted power will be equal to this value
+     * (converted to dBm's).
+     *
+     * @param initialTransmittedPower initial transmitted power to start the
+     *                                estimation of radio source transmitted power.
+     * @throws LockedException          if estimator is locked.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public void setInitialTransmittedPower(final Double initialTransmittedPower) throws LockedException {
+<span class="fc bfc" id="L586" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L587">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L589" title="All 2 branches covered.">        if (initialTransmittedPower != null) {</span>
+<span class="fc bfc" id="L590" title="All 2 branches covered.">            if (initialTransmittedPower &lt; 0.0) {</span>
+<span class="fc" id="L591">                throw new IllegalArgumentException();</span>
+            }
+<span class="fc" id="L593">            initialTransmittedPowerdBm = Utils.powerTodBm(initialTransmittedPower);</span>
+        } else {
+<span class="fc" id="L595">            initialTransmittedPowerdBm = null;</span>
+        }
+<span class="fc" id="L597">    }</span>
+
+    /**
+     * Indicates whether transmitted power estimation is enabled or not.
+     *
+     * @return true if transmitted power estimation is enabled, false otherwise.
+     */
+    public boolean isTransmittedPowerEstimationEnabled() {
+<span class="fc" id="L605">        return transmittedPowerEstimationEnabled;</span>
+    }
+
+    /**
+     * Specifies whether transmitted power estimation is enabled or not.
+     *
+     * @param transmittedPowerEstimationEnabled true if transmitted power estimation is enabled,
+     *                                          false otherwise.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setTransmittedPowerEstimationEnabled(final boolean transmittedPowerEstimationEnabled)
+            throws LockedException {
+<span class="fc bfc" id="L617" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L618">            throw new LockedException();</span>
+        }
+<span class="fc" id="L620">        this.transmittedPowerEstimationEnabled = transmittedPowerEstimationEnabled;</span>
+<span class="fc" id="L621">    }</span>
+
+    /**
+     * Gets initial position to start the estimation of radio source position.
+     * If not defined, centroid of provided readings will be used.
+     * &lt;p&gt;
+     * If position estimation is enabled, estimation will start at this value
+     * and will converge to the most appropriate value.
+     * If position estimation is disabled, this value will be assumed to
+     * be exact and the estimated position will be equal to this value.
+     *
+     * @return initial position to start the estimation of radio source position.
+     */
+    public P getInitialPosition() {
+<span class="fc" id="L635">        return initialPosition;</span>
+    }
+
+    /**
+     * Sets initial position to start the estimation of radio source position.
+     * If not defined, centroid of provided fingerprints will be used.
+     * &lt;p&gt;
+     * If position estimation is enabled, estimation will start at this value
+     * and will converge to the most appropriate value.
+     * If position estimation is disabled, this value will be assumed to
+     * be exact and the estimated position will be equal to this value.
+     *
+     * @param initialPosition initial position to start the estimation of radio
+     *                        source position.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setInitialPosition(final P initialPosition) throws LockedException {
+<span class="fc bfc" id="L652" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L653">            throw new LockedException();</span>
+        }
+<span class="fc" id="L655">        this.initialPosition = initialPosition;</span>
+<span class="fc" id="L656">    }</span>
+
+    /**
+     * Gets initial exponent typically used on free space for path loss propagation
+     * in terms of distance.
+     * On different environments path loss exponent might have different value:
+     * - Free space: 2.0
+     * - Urban Area: 2.7 to 3.5
+     * - Suburban Area: 3 to 5
+     * - Indoor (line-of-sight): 1.6 to 1.8
+     * &lt;p&gt;
+     * If path loss exponent estimation is enabled, estimation will start at this
+     * value and will converge to the most appropriate value.
+     * If path loss exponent estimation is disabled, this value will be assumed
+     * to be exact and the estimated path loss exponent will be equal to this
+     * value.
+     *
+     * @return initial path loss exponent.
+     */
+    public double getInitialPathLossExponent() {
+<span class="fc" id="L676">        return initialPathLossExponent;</span>
+    }
+
+    /**
+     * Sets initial exponent typically used on free space for path loss propagation
+     * in terms of distance.
+     * On different environments path loss exponent might have different value:
+     * - Free space: 2.0
+     * - Urban Area: 2.7 to 3.5
+     * - Suburban Area: 3 to 5
+     * - Indoor (line-of-sight): 1.6 to 1.8
+     * &lt;p&gt;
+     * If path loss exponent estimation is enabled, estimation will start at this
+     * value and will converge to the most appropriate value.
+     * If path loss exponent estimation is disabled, this value will be assumed
+     * to be exact and the estimated path loss exponent will be equal to this
+     * value.
+     *
+     * @param initialPathLossExponent initial path loss exponent.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setInitialPathLossExponent(final double initialPathLossExponent) throws LockedException {
+<span class="fc bfc" id="L698" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L699">            throw new LockedException();</span>
+        }
+<span class="fc" id="L701">        this.initialPathLossExponent = initialPathLossExponent;</span>
+<span class="fc" id="L702">    }</span>
+
+    /**
+     * Indicates whether path loss estimation is enabled or not.
+     *
+     * @return true if path loss estimation is enabled, false otherwise.
+     */
+    public boolean isPathLossEstimationEnabled() {
+<span class="fc" id="L710">        return pathLossEstimationEnabled;</span>
+    }
+
+    /**
+     * Specifies whether path loss estimation is enabled or not.
+     *
+     * @param pathLossEstimationEnabled true if path loss estimation is enabled,
+     *                                  false otherwise.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setPathLossEstimationEnabled(final boolean pathLossEstimationEnabled) throws LockedException {
+<span class="fc bfc" id="L721" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L722">            throw new LockedException();</span>
+        }
+<span class="fc" id="L724">        this.pathLossEstimationEnabled = pathLossEstimationEnabled;</span>
+<span class="fc" id="L725">    }</span>
+
+    /**
+     * Indicates whether position covariances of readings must be taken into account to increase
+     * the amount of standard deviation of each ranging measure by the amount of position standard
+     * deviation assuming that both measures are statistically independent.
+     *
+     * @return true to take into account reading position covariances, false otherwise.
+     */
+    public boolean getUseReadingPositionCovariance() {
+<span class="fc" id="L735">        return useReadingPositionCovariances;</span>
+    }
+
+    /**
+     * Specifies whether position covariances of readings must be taken into account to increase
+     * the amount of standard deviation of each ranging measure by the amount of position standard
+     * deviation assuming that both measures are statistically independent.
+     *
+     * @param useReadingPositionCovariances true to take into account reading position covariances, false
+     *                                      otherwise.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setUseReadingPositionCovariances(final boolean useReadingPositionCovariances) throws LockedException {
+<span class="fc bfc" id="L748" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L749">            throw new LockedException();</span>
+        }
+<span class="fc" id="L751">        this.useReadingPositionCovariances = useReadingPositionCovariances;</span>
+<span class="fc" id="L752">    }</span>
+
+    /**
+     * Indicates whether an homogeneous linear solver is used to estimate an initial
+     * position for the internal ranging radio source estimator.
+     *
+     * @return true if homogeneous linear solver is used, false if an inhomogeneous linear
+     * one is used instead.
+     */
+    public boolean isHomogeneousRangingLinearSolverUsed() {
+<span class="fc" id="L762">        return useHomogeneousRangingLinearSolver;</span>
+    }
+
+    /**
+     * Specifies whether an homogeneous linear solver is used to estimate an initial
+     * position for the internal ranging radio source estimator.
+     *
+     * @param useHomogeneousLinearSolver true if homogeneous linear solver is used, false
+     *                                   if an inhomogeneous linear one is used instead.
+     * @throws LockedException if estimator is locked.
+     */
+    public void setHomogeneousRangingLinearSolverUsed(final boolean useHomogeneousLinearSolver) throws LockedException {
+<span class="fc bfc" id="L774" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L775">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L778">        useHomogeneousRangingLinearSolver = useHomogeneousLinearSolver;</span>
+<span class="fc" id="L779">    }</span>
+
+    /**
+     * Gets minimum required number of ranging or ranging+rssi readings
+     * required to start estimation.
+     *
+     * @return minimum required number of ranging or ranging+rssi readings.
+     */
+    public int getMinRangingReadings() {
+<span class="fc" id="L788">        return getNumberOfDimensions() + 1;</span>
+    }
+
+    /**
+     * Gets minimum required number of rssi or ranging+rssi readings
+     * required to start estimation.
+     *
+     * @return minimum required number of rssi or ranging+rssi readings.
+     */
+    public int getMinRssiReadings() {
+<span class="fc" id="L798">        return getMinReadings();</span>
+    }
+
+    /**
+     * Gets minimum required number of readings to estimate
+     * power, position and path-loss exponent.
+     * This value depends on the number of parameters to
+     * be estimated, but for position only, this is 3
+     * readings.
+     *
+     * @return minimum required number of readings.
+     * @throws IllegalStateException if inner RSSI estimator is busy.
+     */
+    @Override
+    public int getMinReadings() {
+<span class="fc" id="L813">        createInnerEstimatorsIfNeeded();</span>
+
+<span class="fc" id="L815">        var result = getNumberOfDimensions();</span>
+<span class="fc bfc" id="L816" title="All 6 branches covered.">        if (rssiInnerEstimator != null &amp;&amp; (transmittedPowerEstimationEnabled || pathLossEstimationEnabled)) {</span>
+            try {
+<span class="fc" id="L818">                rssiInnerEstimator.setPositionEstimationEnabled(rssiPositionEnabled);</span>
+<span class="fc" id="L819">                rssiInnerEstimator.setTransmittedPowerEstimationEnabled(transmittedPowerEstimationEnabled);</span>
+<span class="fc" id="L820">                rssiInnerEstimator.setPathLossEstimationEnabled(pathLossEstimationEnabled);</span>
+<span class="nc" id="L821">            } catch (final LockedException e) {</span>
+<span class="nc" id="L822">                throw new IllegalStateException(e);</span>
+<span class="fc" id="L823">            }</span>
+
+<span class="fc" id="L825">            result += rssiInnerEstimator.getMinReadings();</span>
+        } else {
+<span class="fc" id="L827">            result++;</span>
+        }
+
+<span class="fc" id="L830">        return result;</span>
+    }
+
+    /**
+     * Gets estimated radio source position.
+     *
+     * @return estimated radio source position.
+     */
+    public P getEstimatedPosition() {
+<span class="fc bfc" id="L839" title="All 2 branches covered.">        return rssiPositionEnabled ? rssiInnerEstimator.getEstimatedPosition()</span>
+<span class="fc" id="L840">                : rangingInnerEstimator.getEstimatedPosition();</span>
+    }
+
+    /**
+     * Indicates whether readings are valid or not.
+     * Readings are considered valid when there are enough readings.
+     *
+     * @param readings readings to be validated.
+     * @return true if readings are valid, false otherwise.
+     */
+    @Override
+    public boolean areValidReadings(final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings) {
+<span class="fc bfc" id="L852" title="All 2 branches covered.">        if (readings == null) {</span>
+<span class="fc" id="L853">            return false;</span>
+        }
+
+<span class="fc" id="L856">        checkReadings(readings);</span>
+
+        // if enough ranging data is available, we check validity both for ranging and RSSI readings
+<span class="pc bpc" id="L859" title="1 of 4 branches missed.">        return ((!rssiPositionEnabled &amp;&amp; numRangingReadings &gt;= getMinRangingReadings()</span>
+<span class="fc bfc" id="L860" title="All 4 branches covered.">                &amp;&amp; numRssiReadings &gt;= getMinRssiReadings())</span>
+                // if not enough ranging data is available, we check validity only for RSSI readings
+<span class="pc bpc" id="L862" title="1 of 6 branches missed.">                || (rssiPositionEnabled &amp;&amp; numRssiReadings &gt;= getMinRssiReadings())</span>
+                // if only position is enabled, then only check for ranging readings
+                || (!transmittedPowerEstimationEnabled &amp;&amp; !pathLossEstimationEnabled
+<span class="fc bfc" id="L865" title="All 2 branches covered.">                &amp;&amp; numRangingReadings &gt;= getMinRangingReadings()))</span>
+                // in both upper cases enough general readings must be available
+<span class="pc bpc" id="L867" title="1 of 2 branches missed.">                &amp;&amp; super.areValidReadings(readings);</span>
+    }
+
+    /**
+     * Indicates whether this instance is ready to start the estimation.
+     *
+     * @return true if this instance is ready, false otherwise.
+     */
+    @Override
+    public boolean isReady() {
+<span class="fc" id="L877">        return areValidReadings(readings);</span>
+    }
+
+    /**
+     * Estimate position, transmitted power and path loss exponent.
+     *
+     * @throws RadioSourceEstimationException if estimation fails.
+     * @throws NotReadyException              if estimator is not ready.
+     * @throws LockedException                if estimator is locked.
+     */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
+    @Override
+    public void estimate() throws RadioSourceEstimationException, NotReadyException, LockedException {
+<span class="fc bfc" id="L890" title="All 2 branches covered.">        if (isLocked()) {</span>
+<span class="fc" id="L891">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L893" title="All 2 branches covered.">        if (!isReady()) {</span>
+<span class="fc" id="L894">            throw new NotReadyException();</span>
+        }
+
+        try {
+<span class="fc" id="L898">            locked = true;</span>
+
+<span class="fc bfc" id="L900" title="All 2 branches covered.">            if (listener != null) {</span>
+<span class="fc" id="L901">                listener.onEstimateStart(this);</span>
+            }
+
+<span class="fc" id="L904">            createInnerEstimatorsIfNeeded();</span>
+
+<span class="fc" id="L906">            final var rangingReadings = new ArrayList&lt;RangingReadingLocated&lt;S, P&gt;&gt;();</span>
+<span class="fc" id="L907">            final var rssiReadings = new ArrayList&lt;RssiReadingLocated&lt;S, P&gt;&gt;();</span>
+<span class="fc bfc" id="L908" title="All 2 branches covered.">            for (final var reading : readings) {</span>
+<span class="fc bfc" id="L909" title="All 2 branches covered.">                if (reading instanceof RangingReadingLocated) {</span>
+<span class="fc" id="L910">                    rangingReadings.add((RangingReadingLocated&lt;S, P&gt;) reading);</span>
+
+<span class="fc bfc" id="L912" title="All 2 branches covered.">                } else if (reading instanceof RssiReadingLocated) {</span>
+<span class="fc" id="L913">                    rssiReadings.add((RssiReadingLocated&lt;S, P&gt;) reading);</span>
+
+<span class="pc bpc" id="L915" title="1 of 2 branches missed.">                } else if (reading instanceof RangingAndRssiReadingLocated) {</span>
+<span class="fc" id="L916">                    rangingReadings.add(createRangingReading((RangingAndRssiReadingLocated&lt;S, P&gt;) reading));</span>
+<span class="fc" id="L917">                    rssiReadings.add(createRssiReading((RangingAndRssiReadingLocated&lt;S, P&gt;) reading));</span>
+                }
+<span class="fc" id="L919">            }</span>
+
+            // estimate position using ranging data, if possible
+<span class="fc" id="L922">            P estimatedPosition = null;</span>
+<span class="fc bfc" id="L923" title="All 2 branches covered.">            if (!rssiPositionEnabled) {</span>
+<span class="fc" id="L924">                rangingInnerEstimator.setUseReadingPositionCovariances(useReadingPositionCovariances);</span>
+<span class="fc" id="L925">                rangingInnerEstimator.setHomogeneousLinearSolverUsed(useHomogeneousRangingLinearSolver);</span>
+<span class="fc" id="L926">                rangingInnerEstimator.setReadings(rangingReadings);</span>
+<span class="fc" id="L927">                rangingInnerEstimator.setInitialPosition(initialPosition);</span>
+
+<span class="fc" id="L929">                rangingInnerEstimator.estimate();</span>
+
+<span class="fc" id="L931">                estimatedPositionCoordinates = rangingInnerEstimator.getEstimatedPositionCoordinates();</span>
+<span class="fc" id="L932">                estimatedPositionCovariance = rangingInnerEstimator.getEstimatedPositionCovariance();</span>
+<span class="fc" id="L933">                estimatedPosition = rangingInnerEstimator.getEstimatedPosition();</span>
+            }
+
+            // estimate transmitted power and/or path-loss if enabled
+<span class="pc bpc" id="L937" title="1 of 6 branches missed.">            if (transmittedPowerEstimationEnabled || pathLossEstimationEnabled || rssiPositionEnabled) {</span>
+<span class="fc" id="L938">                rssiInnerEstimator.setPositionEstimationEnabled(rssiPositionEnabled);</span>
+<span class="fc" id="L939">                rssiInnerEstimator.setInitialPosition(estimatedPosition);</span>
+
+<span class="fc" id="L941">                rssiInnerEstimator.setTransmittedPowerEstimationEnabled(transmittedPowerEstimationEnabled);</span>
+<span class="fc" id="L942">                rssiInnerEstimator.setInitialTransmittedPowerdBm(initialTransmittedPowerdBm);</span>
+
+<span class="fc" id="L944">                rssiInnerEstimator.setPathLossEstimationEnabled(pathLossEstimationEnabled);</span>
+<span class="fc" id="L945">                rssiInnerEstimator.setInitialPathLossExponent(initialPathLossExponent);</span>
+
+<span class="fc" id="L947">                rssiInnerEstimator.setReadings(rssiReadings);</span>
+
+<span class="fc" id="L949">                rssiInnerEstimator.estimate();</span>
+
+<span class="fc bfc" id="L951" title="All 2 branches covered.">                if (rssiPositionEnabled) {</span>
+<span class="fc" id="L952">                    estimatedPositionCoordinates = rssiInnerEstimator.getEstimatedPositionCoordinates();</span>
+<span class="fc" id="L953">                    estimatedPositionCovariance = rssiInnerEstimator.getEstimatedPositionCovariance();</span>
+                }
+
+<span class="fc bfc" id="L956" title="All 2 branches covered.">                if (transmittedPowerEstimationEnabled) {</span>
+                    // transmitted power estimation enabled
+<span class="fc" id="L958">                    estimatedTransmittedPowerdBm = rssiInnerEstimator.getEstimatedTransmittedPowerdBm();</span>
+<span class="fc" id="L959">                    estimatedTransmittedPowerVariance = rssiInnerEstimator.getEstimatedTransmittedPowerVariance();</span>
+                } else {
+                    // transmitted power estimation disabled
+<span class="fc" id="L962">                    estimatedTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L963">                    estimatedTransmittedPowerVariance = null;</span>
+                }
+
+<span class="fc bfc" id="L966" title="All 2 branches covered.">                if (pathLossEstimationEnabled) {</span>
+                    // path-loss exponent estimation enabled
+<span class="fc" id="L968">                    estimatedPathLossExponent = rssiInnerEstimator.getEstimatedPathLossExponent();</span>
+<span class="fc" id="L969">                    estimatedPathLossExponentVariance = rssiInnerEstimator.getEstimatedPathLossExponentVariance();</span>
+                } else {
+                    // path-loss exponent estimation disabled
+<span class="fc" id="L972">                    estimatedPathLossExponent = initialPathLossExponent;</span>
+<span class="fc" id="L973">                    estimatedPathLossExponentVariance = null;</span>
+                }
+
+                // build covariance matrix
+<span class="fc bfc" id="L977" title="All 2 branches covered.">                if (rssiPositionEnabled) {</span>
+                    // if only RSSI estimation is done, we use directly the available estimated covariance
+<span class="fc" id="L979">                    estimatedCovariance = rssiInnerEstimator.getEstimatedCovariance();</span>
+
+                } else {
+                    // if both ranging and RSSI data is used, we build covariance matrix by setting
+                    // position covariance estimated by ranging estimator into top-left corner, and then
+                    // adding covariance terms related to path-loss exponent and transmitted power
+<span class="fc" id="L985">                    final var rssiCov = rssiInnerEstimator.getEstimatedCovariance();</span>
+<span class="pc bpc" id="L986" title="2 of 4 branches missed.">                    if (estimatedPositionCovariance != null &amp;&amp; rssiCov != null) {</span>
+<span class="fc" id="L987">                        final var dims = getNumberOfDimensions();</span>
+<span class="fc" id="L988">                        var n = dims;</span>
+<span class="fc bfc" id="L989" title="All 2 branches covered.">                        if (transmittedPowerEstimationEnabled) {</span>
+<span class="fc" id="L990">                            n++;</span>
+                        }
+<span class="fc bfc" id="L992" title="All 2 branches covered.">                        if (pathLossEstimationEnabled) {</span>
+<span class="fc" id="L993">                            n++;</span>
+                        }
+
+<span class="fc" id="L996">                        final var dimsMinus1 = dims - 1;</span>
+<span class="fc" id="L997">                        final var nMinus1 = n - 1;</span>
+<span class="fc" id="L998">                        estimatedCovariance = new Matrix(n, n);</span>
+<span class="fc" id="L999">                        estimatedCovariance.setSubmatrix(0, 0, dimsMinus1, dimsMinus1,</span>
+                                estimatedPositionCovariance);
+<span class="fc" id="L1001">                        estimatedCovariance.setSubmatrix(dims, dims, nMinus1, nMinus1, rssiCov);</span>
+<span class="fc" id="L1002">                    } else {</span>
+<span class="nc" id="L1003">                        estimatedCovariance = null;</span>
+                    }
+<span class="fc" id="L1005">                }</span>
+
+            } else {
+<span class="fc" id="L1008">                estimatedCovariance = estimatedPositionCovariance;</span>
+<span class="fc" id="L1009">                estimatedTransmittedPowerdBm = initialTransmittedPowerdBm;</span>
+<span class="fc" id="L1010">                estimatedTransmittedPowerVariance = null;</span>
+
+<span class="fc" id="L1012">                estimatedPathLossExponent = initialPathLossExponent;</span>
+<span class="fc" id="L1013">                estimatedPathLossExponentVariance = null;</span>
+            }
+
+<span class="fc bfc" id="L1016" title="All 2 branches covered.">            if (listener != null) {</span>
+<span class="fc" id="L1017">                listener.onEstimateEnd(this);</span>
+            }
+
+<span class="nc" id="L1020">        } catch (final AlgebraException e) {</span>
+<span class="nc" id="L1021">            throw new RadioSourceEstimationException(e);</span>
+        } finally {
+<span class="fc" id="L1023">            locked = false;</span>
+        }
+<span class="fc" id="L1025">    }</span>
+
+    /**
+     * Gets estimated transmitted power expressed in milli watts (mW) or null if
+     * not available.
+     *
+     * @return estimated transmitted power expressed in milli watts or null.
+     */
+    public Double getEstimatedTransmittedPower() {
+<span class="fc bfc" id="L1034" title="All 2 branches covered.">        return estimatedTransmittedPowerdBm != null ? Utils.dBmToPower(estimatedTransmittedPowerdBm) : null;</span>
+    }
+
+    /**
+     * Gets estimated transmitted power expressed in dBm's or null if not available.
+     *
+     * @return estimated transmitted power expressed in dBm's or null.
+     */
+    public Double getEstimatedTransmittedPowerdBm() {
+<span class="fc" id="L1043">        return estimatedTransmittedPowerdBm;</span>
+    }
+
+    /**
+     * Gets estimated exponent typically used on free space for path loss propagation in
+     * terms of distance.
+     * On different environments path loss exponent might have different values:
+     * - Free space: 2.0
+     * - Urban Area: 2.7 to 3.5
+     * - Suburban Area: 3 to 5
+     * - Indoor (line-of-sight): 1.6 to 1.8
+     * If path loss exponent estimation is not enabled, this value will always be equal to
+     * {@link #DEFAULT_PATH_LOSS_EXPONENT}
+     *
+     * @return estimated path loss exponent.
+     */
+    public double getEstimatedPathLossExponent() {
+<span class="fc" id="L1060">        return estimatedPathLossExponent;</span>
+    }
+
+    /**
+     * Gets estimated transmitted power variance.
+     * This value will only be available when transmitted power
+     * estimation is enabled.
+     *
+     * @return estimated transmitted power variance or null.
+     */
+    public Double getEstimatedTransmittedPowerVariance() {
+<span class="fc" id="L1071">        return estimatedTransmittedPowerVariance;</span>
+    }
+
+    /**
+     * Gets estimated path loss exponent variance.
+     * This value will only be available when path-loss
+     * exponent estimation is enabled.
+     *
+     * @return estimated path loss exponent variance or null.
+     */
+    public Double getEstimatedPathLossExponentVariance() {
+<span class="fc" id="L1082">        return estimatedPathLossExponentVariance;</span>
+    }
+
+    /**
+     * Creates inner estimators if needed.
+     */
+    protected abstract void createInnerEstimatorsIfNeeded();
+
+    /**
+     * Creates a ranging reading from a ranging and RSSI reading.
+     *
+     * @param reading input reading to convert from.
+     * @return a ranging reading containing only the ranging data of input reading.
+     */
+    private RangingReadingLocated&lt;S, P&gt; createRangingReading(final RangingAndRssiReadingLocated&lt;S, P&gt; reading) {
+<span class="fc" id="L1097">        return new RangingReadingLocated&lt;&gt;(reading.getSource(), reading.getDistance(), reading.getPosition(),</span>
+<span class="fc" id="L1098">                reading.getDistanceStandardDeviation(), reading.getPositionCovariance());</span>
+    }
+
+    /**
+     * Creates an RSSI reading from a ranging and RSSI reading.
+     *
+     * @param reading input reading to convert from.
+     * @return an RSSI reading containing only the RSSI data of input reading.
+     */
+    private RssiReadingLocated&lt;S, P&gt; createRssiReading(final RangingAndRssiReadingLocated&lt;S, P&gt; reading) {
+<span class="fc" id="L1108">        return new RssiReadingLocated&lt;&gt;(reading.getSource(), reading.getRssi(), reading.getPosition(),</span>
+<span class="fc" id="L1109">                reading.getRssiStandardDeviation(), reading.getPositionCovariance());</span>
+    }
+
+    /**
+     * Checks number of available ranging readings and number of available RSSI readings. Also determines
+     * whether position must be estimated using ranging data or RSSI data.
+     *
+     * @param readings readings to be checked.
+     */
+    private void checkReadings(final List&lt;? extends ReadingLocated&lt;P&gt;&gt; readings) {
+<span class="fc" id="L1119">        numRangingReadings = numRssiReadings = 0;</span>
+
+<span class="pc bpc" id="L1121" title="1 of 2 branches missed.">        if (readings == null) {</span>
+<span class="nc" id="L1122">            return;</span>
+        }
+
+<span class="fc bfc" id="L1125" title="All 2 branches covered.">        for (final var reading : readings) {</span>
+<span class="fc bfc" id="L1126" title="All 2 branches covered.">            if (reading instanceof RangingReadingLocated) {</span>
+<span class="fc" id="L1127">                numRangingReadings++;</span>
+
+<span class="fc bfc" id="L1129" title="All 2 branches covered.">            } else if (reading instanceof RssiReadingLocated) {</span>
+<span class="fc" id="L1130">                numRssiReadings++;</span>
+
+<span class="pc bpc" id="L1132" title="1 of 2 branches missed.">            } else if (reading instanceof RangingAndRssiReadingLocated) {</span>
+<span class="fc" id="L1133">                numRangingReadings++;</span>
+<span class="fc" id="L1134">                numRssiReadings++;</span>
+            }
+<span class="fc" id="L1136">        }</span>
+
+<span class="fc bfc" id="L1138" title="All 2 branches covered.">        rssiPositionEnabled = numRangingReadings &lt; getMinRangingReadings();</span>
+<span class="fc" id="L1139">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.13.202504020838</span></div></body></html>

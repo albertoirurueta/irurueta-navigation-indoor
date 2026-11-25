@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 460" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <clipPath id="frame-ranging">
+      <rect x="8" y="8" width="624" height="384" rx="12" ry="12"/>
+    </clipPath>
+    <marker id="arrow-ranging-a" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#475569"/>
+    </marker>
+    <marker id="arrow-ranging-b" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto-start-reverse">
+      <path d="M0,0 L8,4 L0,8 z" fill="#475569"/>
+    </marker>
+  </defs>
+
+  <rect x="8" y="8" width="624" height="384" rx="12" ry="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+
+  <g clip-path="url(#frame-ranging)">
+    <!-- measured distance circles (directly from time-of-flight ranging, not a modeled estimate) -->
+    <circle cx="150" cy="100" r="193" fill="none" stroke="#2563eb" stroke-width="2" opacity="0.6"/>
+    <circle cx="480" cy="95" r="220" fill="none" stroke="#2563eb" stroke-width="2" opacity="0.6"/>
+    <circle cx="315" cy="330" r="109" fill="none" stroke="#2563eb" stroke-width="2" opacity="0.6"/>
+  </g>
+
+  <!-- round-trip signal between AP1 and the device, illustrating time-of-flight ranging -->
+  <line x1="158" y1="112" x2="292" y2="215" stroke="#475569" stroke-width="1.3" stroke-dasharray="3 3"
+        marker-end="url(#arrow-ranging-a)" marker-start="url(#arrow-ranging-b)"/>
+  <text x="175" y="150" font-size="12" fill="#334155">round-trip time</text>
+  <text x="175" y="165" font-size="12" fill="#334155">&#8594; distance d&#8321; (e.g. Wi-Fi RTT)</text>
+
+  <!-- access points (known position) -->
+  <g>
+    <circle cx="150" cy="100" r="8" fill="#2563eb"/>
+    <text x="150" y="80" text-anchor="middle" font-size="15" fill="#1e293b" font-weight="600">AP1</text>
+    <text x="150" y="130" text-anchor="middle" font-size="11" fill="#64748b">d&#8321; = 19.3 m</text>
+
+    <circle cx="480" cy="95" r="8" fill="#2563eb"/>
+    <text x="480" y="75" text-anchor="middle" font-size="15" fill="#1e293b" font-weight="600">AP2</text>
+    <text x="480" y="125" text-anchor="middle" font-size="11" fill="#64748b">d&#8322; = 22.0 m</text>
+
+    <circle cx="315" cy="330" r="8" fill="#2563eb"/>
+    <text x="315" y="358" text-anchor="middle" font-size="15" fill="#1e293b" font-weight="600">AP3</text>
+    <text x="315" y="308" text-anchor="middle" font-size="11" fill="#64748b">d&#8323; = 10.9 m</text>
+  </g>
+
+  <!-- estimated device position: the three circles meet almost exactly, since ranging distances are measured -->
+  <!-- directly rather than derived from a noisy path-loss model -->
+  <circle cx="298" cy="221" r="7" fill="#f59e0b" stroke="#ffffff" stroke-width="1.5"/>
+  <text x="298" y="204" text-anchor="middle" font-size="12" fill="#92400e" font-weight="600">estimated position</text>
+
+  <!-- caption -->
+  <text x="320" y="418" text-anchor="middle" font-size="13" fill="#334155">
+    round-trip time &#8594; measured distance &#8594; multilateration
+  </text>
+  <text x="320" y="438" text-anchor="middle" font-size="11" fill="#94a3b8">
+    solid circles: distance measured directly (no path-loss model needed) — circles meet more precisely than with RSSI
+  </text>
+</svg>
