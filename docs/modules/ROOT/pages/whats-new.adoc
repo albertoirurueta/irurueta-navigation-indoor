@@ -4,6 +4,11 @@
 
 NOTE: This documentation was generated with the assistance of AI. Please report any inaccuracies.
 
+== 1.6.2 - 2026-11-25
+
+* ♻️ Upgraded compile-scope dependencies: `irurueta-numerical` 1.6.1 → 1.7.1, `irurueta-geometry` 1.6.1 → 1.6.2,
+  `irurueta-navigation` 1.8.2 → 1.8.3.
+
 == 1.6.1 - 2026-11-16
 
 * 🐛 Fixed `BeaconIdentifier.compareTo` so identifiers of the same length are compared byte by byte as unsigned
